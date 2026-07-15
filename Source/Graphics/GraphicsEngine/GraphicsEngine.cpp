@@ -1,0 +1,801 @@
+#include "GraphicsEngine.pch.h"
+#include "GraphicsEngine.hpp"
+
+#include "CommonUtilities/Matrix3x3.hpp"
+
+#include "Objects/Mesh.h"
+#include "Objects/Vertex.h"
+#include "Objects/Light.h"
+#include "Objects/Texture.h"
+
+#include "Objects/Sampler.h"
+
+#include "ConstantBuffers/FrameBuffer.h"
+#include "ConstantBuffers/ObjectBuffer.h"
+#include "ConstantBuffers/AnimationBuffer.h"
+#include "ConstantBuffers/LightBuffer.h"
+
+#include "RHI/GraphicsCommandList.h"
+#include "RHI/RHIShaderReflectionInfo.h"
+#include "RHI/PipelineStateObject.h"
+
+#include "Materials/Material.h"
+#include "Materials/MaterialHelpers.h"
+#include "Materials/MaterialShaderIncludeHandler.h"
+
+#include "Textures/Albedo/Default_C.h"
+#include "Textures/Normal/Default_N.h"
+
+#include "ShadowCube_GS.h"
+
+#include "Objects/Shader.h"
+
+/*
+* GraphicsEngine handles rendering of a scene.
+* Handles culling using whatever cameras it's told to use.
+* Renders onto a user-provided render target and depth.
+*/
+
+GraphicsEngine::GraphicsEngine() = default;
+GraphicsEngine::~GraphicsEngine() = default;
+
+GraphicsEngine& GraphicsEngine::Get()
+{
+	static GraphicsEngine myInstance;
+	return myInstance;
+}
+
+bool GraphicsEngine::Initialize(HWND aWindowHandle, const std::filesystem::path& aShaderRoot)
+{
+	if (!std::filesystem::exists(aShaderRoot))
+	{
+		GELOG(Error, "Shader root dir is not a valid path! Provided root was {}.", aShaderRoot.string());
+		return false;
+	}
+
+	myShaderRoot = aShaderRoot;
+
+	myBackBuffer = std::make_unique<Texture>();
+	myDepthBuffer = std::make_unique<Texture>();
+
+	if (!myRHI.Initialize(aWindowHandle, true, *myBackBuffer, *myDepthBuffer))
+	{
+		return false;
+	}
+
+	CreateShadowCascades(2048);
+	RegisterMaterialShaders();
+
+	if (!LoadDefaultAssets())
+	{
+		return false;
+	};
+
+	if (!CreateRenderResources())
+	{
+		return false;
+	};
+
+	return true;
+}
+
+void GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const Scene& aScene)
+{
+	inoutCommandList.BeginEvent("Reset Pipeline");
+	{
+		inoutCommandList.ClearRenderTarget(*myBackBuffer);
+		inoutCommandList.ClearDepthStencil(*myDepthBuffer);
+	}
+	inoutCommandList.EndEvent();
+
+	{
+		std::vector<Sampler*> samplerList(mySamplers.size());
+
+		for (size_t s = 0; s < mySamplers.size(); s++)
+		{
+			samplerList[s] = mySamplers[s].get();
+		}
+
+		inoutCommandList.SetShaderSamplers(samplerList.data(), samplerList.size(), 0, PipelineStage_VertexShader | PipelineStage_PixelShader);
+	}
+
+	inoutCommandList.BeginEvent("Shadow Pass");
+	{
+		inoutCommandList.SetOverridePipelineState(*myShadowPSO, PipelineStage_None);
+
+		RenderShadowMaps(inoutCommandList, aScene);
+
+		inoutCommandList.ClearOverridePipelineState();
+	}
+	inoutCommandList.EndEvent();
+
+	inoutCommandList.BeginEvent("Main Pass");
+	{
+		inoutCommandList.SetRenderTarget(myBackBuffer.get(), myDepthBuffer.get());
+
+		{
+			FrameBuffer frameBuffer;
+			frameBuffer.View = aScene.SceneCamera.Transform.GetFastInverse();
+			frameBuffer.Projection = aScene.SceneCamera.Camera.GetProjection();
+			frameBuffer.CameraPosition = aScene.SceneCamera.Transform.GetTranslation();
+
+			UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::FrameBuffer, frameBuffer, 0, PipelineStage_VertexShader);
+		}
+
+		UploadSceneLightingData(inoutCommandList, aScene.SceneLights);
+
+		RenderDrawCalls(inoutCommandList, aScene.DrawCalls, RenderDrawCallFlag_BindTextures | RenderDrawCallFlag_BindMaterial);
+	}
+	inoutCommandList.EndEvent();
+}
+
+void GraphicsEngine::Present() const
+{
+	myRHI.Present();
+}
+
+bool GraphicsEngine::CreateConstantBuffer(ConstantBuffer aBufferID, std::string_view aName, size_t aBufferSize)
+{
+	return CreateConstantBufferInternal(aBufferID, aName, aBufferSize);
+}
+
+CommonUtilities::Vector2ui GraphicsEngine::GetClientSize() const
+{
+	return myRHI.GetClientSize();
+}
+
+bool GraphicsEngine::CreateCommandList(std::string_view aName, GraphicsCommandList& outCommandList) const
+{
+	return myRHI.CreateCommandList(aName, outCommandList);
+}
+
+void GraphicsEngine::ExecuteCommandList(const GraphicsCommandList& aCommandList) const
+{
+	myRHI.ExecuteCommandList(aCommandList);
+}
+
+bool GraphicsEngine::CreateMaterial(const MaterialDescription& aDescription, Material& outMaterial) const
+{
+	Shader materialVS;
+	Shader materialPS;
+
+	if (aDescription.BlendMode == BlendMode::None)
+	{
+		GELOG(Error, "Material {} has invalid Blend Mode setting!", aDescription.Name);
+		return false;
+	}
+
+	if (aDescription.Domain == MaterialDomain::None)
+	{
+		GELOG(Error, "Material {} has invalid Material Domain setting!", aDescription.Name);
+		return false;
+	}
+
+	if (aDescription.ShadingModel == ShadingModel::None)
+	{
+		GELOG(Error, "Material {} has invalid Shading Model setting!", aDescription.Name);
+		return false;
+	}
+
+	if (aDescription.Name.empty())
+	{
+		GELOG(Error, "Material {} has no given name!", aDescription.Name);
+		return false;
+	}
+
+	{
+		const std::filesystem::path& path = myMaterialDomainShaders.at(aDescription.Domain);
+		MaterialShaderIncludeHandler handler(myShaderRoot / "Material", path, aDescription.MaterialShaderCode);
+
+		if (!myRHI.CompileShader(ShaderType::VertexShader, path, &handler, true, materialVS))
+		{
+			return false;
+		}
+	}
+
+	{
+		const std::filesystem::path& path = myMaterialShadingModelShaders.at(aDescription.ShadingModel);
+		MaterialShaderIncludeHandler handler(myShaderRoot / "Material", path, aDescription.MaterialShaderCode);
+
+		if (!myRHI.CompileShader(ShaderType::PixelShader, path, &handler, true, materialPS))
+		{
+			return false;
+		}
+	}
+
+	RHIShaderReflectionInfo vsInfo, psInfo;
+	RHIShaderReflector::Reflect(materialVS.GetDataPtr(), materialVS.GetDataSize(), vsInfo);
+	RHIShaderReflector::Reflect(materialPS.GetDataPtr(), materialPS.GetDataSize(), psInfo);
+
+	const RHIShaderReflectionInfo* materialBufferSource = nullptr;
+	static std::string materialBufferName = "MaterialBuffer";
+
+	if (vsInfo.ConstantBufferNameToIndex.contains(materialBufferName))
+	{
+		materialBufferSource = &vsInfo;
+	}
+	else if (psInfo.ConstantBufferNameToIndex.contains(materialBufferName))
+	{
+		materialBufferSource = &psInfo;
+	}
+
+	memset(outMaterial.myData, 0, Material::MATERIAL_BUFFER_SIZE);
+
+	if (materialBufferSource != nullptr)
+	{
+		const RHIShaderReflectionInfo::ConstantBufferInfo& info = materialBufferSource->ConstantBuffers[materialBufferSource->ConstantBufferNameToIndex.at(materialBufferName)];
+
+		for (size_t i = 0; i < info.Members.size(); i++)
+		{
+			const auto& member = info.Members[i];
+
+			MaterialParameterInfo param;
+			param.Name = member.Name;
+			param.Type = MaterialHelpers::HLSLTypeToMaterialParameterType(member.Type);
+			param.Size = member.Size;
+			param.Offset = member.Offset;
+			param.Index = i;
+
+			memcpy_s(outMaterial.myData + param.Offset, param.Size, member.Default, member.Size);
+
+			outMaterial.myParameterNameToIndex.emplace(param.Name, static_cast<unsigned int>(outMaterial.myParameters.size()));
+			outMaterial.myParameters.emplace_back(std::move(param));
+		}
+	}
+
+	PipelineStateDescription matPSODesc;
+	matPSODesc.Name = std::format("{}_MAT_PSO", aDescription.Name);
+	matPSODesc.VertexShader.ByteCode = materialVS.GetDataPtr();
+	matPSODesc.VertexShader.ByteCodeSize = materialVS.GetDataSize();
+	matPSODesc.PixelShader.ByteCode = materialPS.GetDataPtr();
+	matPSODesc.PixelShader.ByteCodeSize = materialPS.GetDataSize();
+	matPSODesc.InputLayoutElements = Vertex::Description;
+	matPSODesc.Topology = Topology::TriangleList;
+
+	PipelineStateObject matPSO;
+
+	if (!myRHI.CreatePipelineStateObject(matPSODesc, matPSO))
+	{
+		return false;
+	}
+
+	CreateMaterialTextureSlots(vsInfo, outMaterial);
+	CreateMaterialTextureSlots(psInfo, outMaterial);
+	
+	outMaterial.myPSO = matPSO;
+	outMaterial.myName = aDescription.Name;
+	outMaterial.myDescription = aDescription;
+
+	return true;
+}
+
+bool GraphicsEngine::CreateShadowMap(std::string_view aName, unsigned int aWidth, unsigned int aHeight, Texture& outShadowMap, bool aCube) const
+{
+	return myRHI.CreateDepthStencil(aName, aWidth, aHeight, outShadowMap, aCube);
+}
+
+bool GraphicsEngine::LoadTexture(const std::filesystem::path& aPath, Texture& outTexture) const
+{
+	if (!std::filesystem::exists(aPath))
+	{
+		GELOG(Error, "Failed to load Texture {}! File not found!", aPath.string());
+		return false;
+	}
+
+	std::ifstream file(aPath, std::ios::binary | std::ios::ate);
+
+	if (!file)
+	{
+		GELOG(Error, "Failed to load Texture {}! Could not open file!", aPath.string());
+		return false;
+	}
+
+	const std::streamsize size = file.tellg();
+	file.seekg(0, std::ios::beg);
+
+	std::vector<uint8_t> fileData(size);
+	file.read(reinterpret_cast<char*>(fileData.data()), size);
+	file.close();
+
+	return myRHI.CreateTexture(aPath.stem().string(), fileData.data(), fileData.size(), outTexture);
+}
+
+bool GraphicsEngine::HasFlag(RenderDrawCallFlags aFlags, RenderDrawCallFlag_ aFlag)
+{
+	return (aFlags & aFlag) != 0;
+}
+
+bool GraphicsEngine::CreateConstantBufferInternal(ConstantBuffer aBufferID, std::string_view aName, size_t aBufferSize)
+{
+	Buffer buffer;
+
+	if (!myRHI.CreateConstantBuffer(aName, aBufferSize, buffer))
+	{
+		return false;
+	}
+
+	myConstantBuffers.emplace(aBufferID, std::move(buffer));
+
+	return true;
+}
+
+bool GraphicsEngine::UpdateAndSetConstantBufferInternal(GraphicsCommandList& inoutCommandList, ConstantBuffer aBufferID, const void* aData, size_t aDataSize, unsigned aSlot, PipelineStages aStages)
+{
+	if (!myConstantBuffers.contains(aBufferID))
+	{
+		GELOG(Warning, "Requested constant buffer update failed because this buffer does not exist!");
+		return false;
+	}
+
+	const Buffer& buffer = myConstantBuffers.at(aBufferID);
+
+	if (!inoutCommandList.UpdateConstantBuffer(buffer, aData, aDataSize))
+	{
+		return false;
+	}
+
+	inoutCommandList.SetConstantBuffer(&buffer, aSlot, aStages);
+
+	return true;
+}
+
+bool GraphicsEngine::PrepareMeshForRendering(const Mesh& aMesh) const
+{
+	if (!aMesh.myVertexBuffer.IsValid())
+	{
+		if (!myRHI.CreateVertexBuffer(aMesh.myName, aMesh.myVertices, aMesh.myVertexBuffer))
+		{
+			GELOG(Warning, "Could not prepare mesh {}! Vertex Buffer could not be created!", aMesh.myName);
+			return false;
+		}
+	}
+
+	if (!aMesh.myIndexBuffer.IsValid())
+	{
+		if (!myRHI.CreateIndexBuffer(aMesh.myName, aMesh.myIndices, aMesh.myIndexBuffer))
+		{
+			GELOG(Warning, "Could not prepare mesh {}! Index Buffer could not be created!", aMesh.myName);
+			return false;
+		}
+	}
+
+	return true;
+}
+
+void GraphicsEngine::CreateMaterialTextureSlots(const RHIShaderReflectionInfo& aShaderInfo, Material& inoutMaterial) const
+{
+	for (const auto& shaderTextureSlot : aShaderInfo.Bindings)
+	{
+		if (shaderTextureSlot.Type != 2 || shaderTextureSlot.BindPoint >= Material::MAX_MATERIAL_TEXTURE_COUNT)
+		{
+			continue;
+		}
+
+		std::string lowerName = shaderTextureSlot.Name;
+		std::ranges::transform(lowerName, lowerName.begin(), tolower);
+
+		if (inoutMaterial.myTexturesSlotNameToIndex.contains(lowerName) && inoutMaterial.myTexturesSlotNameToIndex.at(lowerName) != shaderTextureSlot.BindPoint)
+		{
+			GELOG(Warning, "Found texture {} in multiple places when setting up material. Only the first instance will be used!", shaderTextureSlot.Name);
+			continue;
+		}
+
+		inoutMaterial.myTexturesSlotNameToIndex.emplace(lowerName, shaderTextureSlot.BindPoint);
+	}
+}
+
+void GraphicsEngine::RenderShadowMaps(GraphicsCommandList& inoutCommandList, const Scene& aScene)
+{
+	for (const auto& light : aScene.SceneLights)
+	{
+		if (light.LightData->Type != LightType::Directional && light.ShadowMap == nullptr)
+		{
+			continue;
+		}
+
+		switch (light.LightData->Type)
+		{
+			case LightType::Directional:
+			{
+				for (size_t c = 0; c < myCascades.size(); c++)
+				{
+					// TODO: Verify that my textures are being renderd correctly to.
+
+					float cameraNear = aScene.SceneCamera.Camera.GetNearPlane();
+					float cameraFar = aScene.SceneCamera.Camera.GetFarPlane();
+					float cameraFov = aScene.SceneCamera.Camera.GetFov();
+					CommonUtilities::Vector2ui cameraResolution = aScene.SceneCamera.Camera.GetResolution();
+					CommonUtilities::Matrix4x4f cameraView = aScene.SceneCamera.Transform.GetFastInverse();
+
+					float cascadeNear = cameraNear + (cameraFar - cameraNear) * (static_cast<float>(c) / static_cast<float>(myCascades.size()));
+					float cascadeFar = cameraNear + (cameraFar - cameraNear) * (static_cast<float>(c + 1) / static_cast<float>(myCascades.size()));
+
+					CommonUtilities::Matrix4x4f cascadeProjection = 
+						CommonUtilities::Matrix4x4f::CreatePerspectiveProjection(cameraFov, cascadeNear, cascadeFar, cameraResolution.x, cameraResolution.y);
+
+					CommonUtilities::Frustum<float> cascadeFrustum = 
+						CommonUtilities::Frustum<float>(cameraFov, cascadeNear, cascadeFar, aScene.SceneCamera.Camera.GetAspectRatio());
+
+					std::vector<CommonUtilities::Vector3f> frustumCorners = cascadeFrustum.GetCorners(cameraView, cascadeProjection);
+
+					float radius = (frustumCorners[0] - frustumCorners[7]).Length() * 0.5f;
+
+					CommonUtilities::Vector3f lightDirection = light.Transform.GetForward();
+					CommonUtilities::Vector3f frustumCenter = cascadeFrustum.GetCenter(cameraView, cascadeProjection);
+					CommonUtilities::Vector3f worldUpVector = CommonUtilities::Vector3f(0.0f, 1.0f, 0.0f);
+
+					CommonUtilities::Vector3f eye = frustumCenter - lightDirection * radius * 2.0f;
+
+					CommonUtilities::Matrix4x4f cascadeView =
+						CommonUtilities::Matrix4x4f::CreateLookAt(eye, lightDirection, worldUpVector);
+
+					float shadowNear = 0.01f;
+					float shadowFar = radius * 2.0f + radius;
+
+					CommonUtilities::Matrix4x4f cascadeOrthographicProjection =
+						CommonUtilities::Matrix4x4f::CreateOrthographicProjection(shadowNear, shadowFar, radius * 2.0f, radius * 2.0f);
+
+					FrameBuffer frameBuffer;
+					frameBuffer.Projection = cascadeOrthographicProjection;
+					frameBuffer.View = cascadeView;
+
+					std::string cascadeEventName = std::format("Directional Light Shadow Pass - Cascade {}", (c + 1));
+
+					inoutCommandList.BeginEvent(cascadeEventName);
+
+					inoutCommandList.ClearDepthStencil(*myCascades[c].ShadowMap);
+					inoutCommandList.SetRenderTarget(nullptr, myCascades[c].ShadowMap.get());
+
+					inoutCommandList.ChangeActiveOverrides(PipelineStage_Rasterizer | PipelineStage_PixelShader);
+					UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::FrameBuffer, frameBuffer, 0, PipelineStage_VertexShader);
+
+					RenderDrawCalls(inoutCommandList, aScene.DrawCalls, RenderDrawCallFlag_BindMaterial);
+
+					inoutCommandList.EndEvent();
+				}
+
+				break;
+			}
+			case LightType::Spot:
+			{
+				FrameBuffer frameBuffer;
+				frameBuffer.Projection = light.Projection;
+				frameBuffer.View = light.Transform.GetFastInverse();
+				frameBuffer.CameraPosition = light.Transform.GetTranslation();
+
+				inoutCommandList.BeginEvent("Spot Light Shadow Pass");
+
+				inoutCommandList.ClearDepthStencil(*light.ShadowMap);
+				inoutCommandList.SetRenderTarget(nullptr, light.ShadowMap);
+
+				inoutCommandList.ChangeActiveOverrides(PipelineStage_Rasterizer | PipelineStage_PixelShader);
+				UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::FrameBuffer, frameBuffer, 0, PipelineStage_VertexShader);
+
+				RenderDrawCalls(inoutCommandList, aScene.DrawCalls, RenderDrawCallFlag_BindMaterial);
+
+				inoutCommandList.EndEvent();
+				break;
+			}
+			case LightType::Point:
+			{
+				FrameBuffer frameBuffer;
+				frameBuffer.Projection = light.Projection;
+				frameBuffer.View = light.Transform.GetFastInverse();
+				frameBuffer.CameraPosition = light.Transform.GetTranslation();
+
+				inoutCommandList.BeginEvent("Point Light Shadow Pass");
+
+				inoutCommandList.ClearDepthStencil(*light.ShadowMap);
+				inoutCommandList.SetRenderTarget(nullptr, light.ShadowMap);
+
+				inoutCommandList.ChangeActiveOverrides(PipelineStage_GeometryShader | PipelineStage_Rasterizer | PipelineStage_PixelShader);
+				UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::FrameBuffer, frameBuffer, 0, PipelineStage_VertexShader | PipelineStage_GeometryShader);
+
+				RenderDrawCalls(inoutCommandList, aScene.DrawCalls, RenderDrawCallFlag_BindMaterial);
+
+				inoutCommandList.EndEvent();
+				break;
+			}
+		}
+	}
+}
+
+void GraphicsEngine::UploadSceneLightingData(GraphicsCommandList& inoutCommandList, const std::vector<SceneLight>& aLights)
+{
+	LightBuffer lightBuffer;
+	lightBuffer.NumLights = static_cast<unsigned int>(std::min(aLights.size(), static_cast<size_t>(MAX_LIGHTS)));
+
+	std::vector<const Texture*> spotLightShadowMaps;
+	std::vector<const Texture*> pointLightShadowCubes;
+
+	unsigned int spotShadowIndex = 0;
+	unsigned int pointShadowIndex = 0;
+
+	for (unsigned int i = 0; i < lightBuffer.NumLights; i++)
+	{
+		if (aLights[i].LightData == nullptr)
+		{
+			continue;
+		}
+
+		lightBuffer.Lights[i] = *aLights[i].LightData;
+
+		if (aLights[i].ShadowMap != nullptr)
+		{
+			switch (aLights[i].LightData->Type)
+			{
+				case LightType::Directional:
+				{
+					inoutCommandList.SetShaderResources(&aLights[i].ShadowMap, 1, 100, PipelineStage_PixelShader);
+					break;
+				}
+				case LightType::Spot:
+				{
+					spotLightShadowMaps.emplace_back(aLights[i].ShadowMap);
+					lightBuffer.Lights[i].ShadowIndex = spotShadowIndex++;
+					break;
+				}
+				case LightType::Point:
+				{
+					pointLightShadowCubes.emplace_back(aLights[i].ShadowMap);
+					lightBuffer.Lights[i].ShadowIndex = pointShadowIndex++;
+					break;
+				}
+			}
+		}
+	}
+
+	inoutCommandList.SetShaderResources(spotLightShadowMaps.data(), spotLightShadowMaps.size(), 101, PipelineStage_PixelShader);
+	inoutCommandList.SetShaderResources(pointLightShadowCubes.data(), pointLightShadowCubes.size(), 110, PipelineStage_PixelShader);
+
+	UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::LightBuffer, lightBuffer, 3, PipelineStage_PixelShader);
+}
+
+void GraphicsEngine::RenderDrawCalls(GraphicsCommandList& inoutCommandList, const std::vector<DrawCall>& aDrawCalls, RenderDrawCallFlags someFlags)
+{
+	for (const auto& drawCall : aDrawCalls)
+	{
+		if (drawCall.Mesh == nullptr)
+		{
+			GELOG(Error, "Tried to render a draw call with a null mesh!");
+			continue;
+		}
+
+		if (!PrepareMeshForRendering(*drawCall.Mesh))
+		{
+			continue;
+		}
+
+		inoutCommandList.BeginEvent(drawCall.Mesh->GetName());
+
+		inoutCommandList.SetVertexBuffer(&drawCall.Mesh->myVertexBuffer);
+		inoutCommandList.SetIndexBuffer(&drawCall.Mesh->myIndexBuffer);
+
+		ObjectBuffer objectBuffer;
+		objectBuffer.World = drawCall.Transform;
+		objectBuffer.WorldInvT = (drawCall.Transform.GetInverse()).GetTranspose();
+		objectBuffer.HasSkinning = drawCall.HasSkinning;
+
+		UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::ObjectBuffer, objectBuffer, 1, PipelineStage_VertexShader);
+
+		if (drawCall.HasSkinning)
+		{
+			AnimationBuffer animationBuffer;
+			memcpy(animationBuffer.JointTransforms, drawCall.JointTransforms, 128 * sizeof(CommonUtilities::Matrix4x4f));
+			UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::AnimationBuffer, animationBuffer, 2, PipelineStage_VertexShader);
+		}
+
+		const MaterialInterface* material = nullptr;
+
+		for (const Mesh::Element& element : drawCall.Mesh->myElements)
+		{
+			if (HasFlag(someFlags, RenderDrawCallFlag_BindMaterial))
+			{
+				const MaterialInterface* elementMaterial = drawCall.Materials[element.MaterialIndex];
+
+				if (elementMaterial != nullptr)
+				{
+					material = elementMaterial;
+				}
+				else
+				{
+					material = myDefaultMaterial.get();
+				}
+
+				if (material->HasParameters())
+				{
+					if (material->IsMaterialDataDirty())
+					{
+						material->RefreshMaterialData();
+					}
+
+					UpdateAndSetConstantBufferInternal(inoutCommandList, ConstantBuffer::MaterialBuffer, material->GetParameterDataBlock(), Material::MATERIAL_BUFFER_SIZE, 3, PipelineStage_VertexShader | PipelineStage_PixelShader);
+				}
+
+				if (HasFlag(someFlags, RenderDrawCallFlag_BindTextures))
+				{
+					std::vector<const Texture*> textures(Material::MAX_MATERIAL_TEXTURE_COUNT);
+
+					for (size_t t = 0; t < Material::MAX_MATERIAL_TEXTURE_COUNT; t++)
+					{
+						const std::shared_ptr<Texture>& texture = material->GetTexture(static_cast<unsigned int>(t));
+
+						if (texture != nullptr)
+						{
+							textures[t] = texture.get();
+						}
+					}
+
+					inoutCommandList.SetShaderResources(textures.data(), textures.size(), 0, PipelineStage_VertexShader | PipelineStage_PixelShader);
+				}
+
+				inoutCommandList.SetPipelineStateObject(material->GetPSO());
+			}
+
+			inoutCommandList.DrawIndexed(element.NumIndices, element.IndexOffset);
+		}
+
+		// Ends event for the draw call!
+		inoutCommandList.EndEvent();
+	}
+}
+
+void GraphicsEngine::RegisterMaterialShaders()
+{
+	// Domain
+	{
+		myMaterialDomainShaders.emplace(MaterialDomain::Surface, myShaderRoot / "Material" / "Surface_VS.hlsl");
+	}
+
+	// Shading Model
+	{
+		myMaterialShadingModelShaders.emplace(ShadingModel::Unlit, myShaderRoot / "Material" / "Unlit_PS.hlsl");
+		myMaterialShadingModelShaders.emplace(ShadingModel::Lit, myShaderRoot / "Material" / "Lit_PS.hlsl");
+	}
+}
+
+void GraphicsEngine::CreateShadowCascades(unsigned int aHighestCascadeSize)
+{
+	for (size_t c = 0; c < AMOUNT_OF_CASCADES; c++)
+	{
+		std::string name = std::format("Shadow Cascade {}", (c + 1));
+
+		myCascades[c].ShadowMap = std::make_unique<Texture>();
+
+		unsigned int width = aHighestCascadeSize >> c;
+		unsigned int height = aHighestCascadeSize >> c;
+
+		CreateShadowMap(name, width, height, *myCascades[c].ShadowMap, false);
+	}
+}
+
+bool GraphicsEngine::LoadDefaultAssets()
+{
+	// Material
+	{
+		myDefaultMaterial = std::make_unique<Material>();
+
+		MaterialDescription defaultMatDesc;
+		defaultMatDesc.Name = "Default";
+		defaultMatDesc.BlendMode = BlendMode::Opaque;
+		defaultMatDesc.Domain = MaterialDomain::Surface;
+		defaultMatDesc.ShadingModel = ShadingModel::Unlit;
+		defaultMatDesc.MaterialShaderCode = myShaderRoot / "Material" / "Material.hlsli";
+
+		if (!CreateMaterial(defaultMatDesc, *myDefaultMaterial))
+		{
+			GELOG(Error, "Failed to create default material!");
+			return false;
+		}
+	}
+
+	// Albedo Texture
+	{
+		myDefaultAlbedoTexture = std::make_shared<Texture>();
+
+		if (!myRHI.CreateTexture("Default Albedo", BuiltIn_Default_C_ByteCode, sizeof(BuiltIn_Default_C_ByteCode), *myDefaultAlbedoTexture))
+		{
+			GELOG(Error, "Failed to create default albedo texture!");
+			return false;
+		}
+
+		myDefaultMaterial->SetTexture(0, myDefaultAlbedoTexture);
+	}
+
+	// Normal Texture
+	{
+		myDefaultNormalTexture = std::make_shared<Texture>();
+
+		if (!myRHI.CreateTexture("Default Normal", BuiltIn_Default_N_ByteCode, sizeof(BuiltIn_Default_N_ByteCode), *myDefaultNormalTexture))
+		{
+			GELOG(Error, "Failed to create default normal texture!");
+			return false;
+		}
+
+		myDefaultMaterial->SetTexture(1, myDefaultNormalTexture);
+	}
+
+	return true;
+}
+
+bool GraphicsEngine::CreateRenderResources()
+{
+	// Constant Buffers
+	{
+		if (!CreateConstantBuffer<FrameBuffer>(ConstantBuffer::FrameBuffer, "FrameBuffer"))
+		{
+			return false;
+		}
+		if (!CreateConstantBuffer<ObjectBuffer>(ConstantBuffer::ObjectBuffer, "ObjectBuffer"))
+		{
+			return false;
+		}
+		if (!CreateConstantBuffer<AnimationBuffer>(ConstantBuffer::AnimationBuffer, "AnimationBuffer"))
+		{
+			return false;
+		}
+		if (!CreateConstantBuffer<LightBuffer>(ConstantBuffer::LightBuffer, "LightBuffer"))
+		{
+			return false;
+		}
+		if (!CreateConstantBuffer(ConstantBuffer::MaterialBuffer, "MaterialBuffer", Material::MATERIAL_BUFFER_SIZE))
+		{
+			return false;
+		}
+	}
+
+	// TrilinearWrap
+	{
+		SamplerDescription samplerDesc;
+		samplerDesc.Name = "TrilinearWrap";
+		samplerDesc.AddressMode = SamplerAddressMode::Wrap;
+		samplerDesc.FilterMode = SamplerFilterMode::Trilinear;
+
+		std::unique_ptr<Sampler> sampler = std::make_unique<Sampler>();
+
+		if (!myRHI.CreateSampler(samplerDesc, *sampler))
+		{
+			return false;
+		}
+
+		mySamplers.emplace_back(std::move(sampler));
+	}
+
+	// ShadowSampler
+	{
+		SamplerDescription samplerDesc;
+		samplerDesc.Name = "ShadowSampler";
+		samplerDesc.AddressMode = SamplerAddressMode::Border;
+		samplerDesc.FilterMode = SamplerFilterMode::ComparisonLinearPoint;
+		samplerDesc.ComparisonFunction = SamplerComparisonFunc::LessEqual;
+		samplerDesc.BorderColor = CommonUtilities::Vector4f::One;
+
+		std::unique_ptr<Sampler> sampler = std::make_unique<Sampler>();
+
+		if (!myRHI.CreateSampler(samplerDesc, *sampler))
+		{
+			return false;
+		}
+
+		mySamplers.emplace_back(std::move(sampler));
+	}
+
+	// Shadow PSO
+	{
+		PipelineStateDescription shadowPSODesc = {};
+		shadowPSODesc.Name = "ShadowPSO";
+		shadowPSODesc.RasterizerState = RasterizerState::FillSolidCullFront;
+		shadowPSODesc.GeometryShader.ByteCode = INTERNAL_ShadowCube_GS_ByteCode;
+		shadowPSODesc.GeometryShader.ByteCodeSize = sizeof(INTERNAL_ShadowCube_GS_ByteCode);
+
+		myShadowPSO = std::make_unique<PipelineStateObject>();
+
+		if (!myRHI.CreatePipelineStateObject(shadowPSODesc, *myShadowPSO))
+		{
+			GELOG(Error, "Failed to create shadow pipeline state object!");
+			return false;
+		}
+	}
+
+	return true;
+}

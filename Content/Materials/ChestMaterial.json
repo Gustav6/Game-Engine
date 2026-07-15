@@ -1,0 +1,6 @@
+{
+  "Name": "ChestMaterial",
+  "ParentMaterial": "Materials/BaseLitMaterial.json",
+  "AlbedoTexture": "Textures/Albedo/T_Chest_C.dds",
+  "NormalTexture": "Textures/Normal/T_Chest_N.dds"
+}
