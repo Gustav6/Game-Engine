@@ -17,5 +17,5 @@ void PointLightComponent::SetRadius(float aRadius)
 
 const CommonUtilities::Matrix4x4f PointLightComponent::CreateProjectionMatrix() const
 {
-	return CommonUtilities::Matrix4x4f::CreatePerspectiveProjection(90, 1.0f, myData->Radius, myShadowMapSize.x, myShadowMapSize.y);
+	return CommonUtilities::Matrix4x4f::CreatePerspectiveProjection(90, 0.1f, myData->Radius, 1.0f);
 }

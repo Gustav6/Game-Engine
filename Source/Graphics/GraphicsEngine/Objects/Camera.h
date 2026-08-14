@@ -17,7 +17,8 @@ public:
 
 	float GetNearPlane() const;
 	float GetFarPlane() const;
-	float GetFov() const;
+	float GetFovInDegrees() const;
+	float GetFovInRadians() const;
 	float GetAspectRatio() const;
 	CommonUtilities::Vector2ui GetResolution() const;
 
@@ -27,6 +28,7 @@ private:
 
 	float myNearPlane;
 	float myFarPlane;
+	float myFovInDegrees;
 
 	CommonUtilities::Vector2ui myResolution;
 };

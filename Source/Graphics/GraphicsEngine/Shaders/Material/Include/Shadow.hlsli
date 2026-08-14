@@ -5,9 +5,20 @@
 #include "Samplers.hlsli"
 #include "PoissonDisks.hlsli"
 
-Texture2D DirectionalLightShadowMap : register(t100);
-Texture2D SpotLightShadowMaps[MAX_FORWARD_LIGHTS] : register(t101);
-TextureCube PointLightShadowMaps[MAX_FORWARD_LIGHTS] : register(t110);
+#define MAX_CASCADES 3
+
+cbuffer CascadeBuffer : register(b4)
+{
+    float4x4 CB_LightViewProjectionTextures[MAX_CASCADES];
+    float3 CB_CascadeFarPlanes;
+    float _CB_Padding1;
+    float3 CB_CameraPosition;
+    float _CB_Padding2;
+}
+
+Texture2D DirectionalLightShadowMap[MAX_CASCADES] : register(t100);
+Texture2D SpotLightShadowMaps[MAX_FORWARD_LIGHTS] : register(t103);
+TextureCube PointLightShadowMaps[MAX_FORWARD_LIGHTS] : register(t111);
 
 float SampleSpotLightShadow(uint aIndex, float2 aShadowUV, float aShadowDepth)
 {
@@ -59,7 +70,22 @@ float SamplePointLightShadow(uint aIndex, float3 aShadowDirection, float aShadow
     }
 }
 
-void GetShadowMapDimensions(uint aIndex, out uint aWidth, out uint aHeight, out uint aMips)
+float SampleDirectionalLightShadow(uint aIndex, float2 aShadowUV, float aShadowDepth)
+{
+    switch (aIndex)
+    {
+        case 0:
+            return DirectionalLightShadowMap[0].SampleCmpLevelZero(ShadowCmpSampler, aShadowUV, aShadowDepth);
+        case 1:
+            return DirectionalLightShadowMap[1].SampleCmpLevelZero(ShadowCmpSampler, aShadowUV, aShadowDepth);
+        case 2:
+            return DirectionalLightShadowMap[2].SampleCmpLevelZero(ShadowCmpSampler, aShadowUV, aShadowDepth);
+        default:
+            return 1;
+    }
+}
+
+void GetSpotLightShadowMapDimensions(uint aIndex, out uint aWidth, out uint aHeight, out uint aMips)
 {
     switch (aIndex)
     {
@@ -95,7 +121,28 @@ void GetShadowMapDimensions(uint aIndex, out uint aWidth, out uint aHeight, out 
     }
 }
 
-float CalculateDirectionalLightShadowFactor(float4x4 aLightViewProjectionTexture, float4 aWorldPosition, float3 aNormal, float3 aLightDirection)
+void GetDirectionalLightShadowMapDimensions(uint aIndex, out uint aWidth, out uint aHeight, out uint aMips)
+{
+    switch (aIndex)
+    {
+        case 0:
+            DirectionalLightShadowMap[0].GetDimensions(0, aWidth, aHeight, aMips);
+            break;
+        case 1:
+            DirectionalLightShadowMap[1].GetDimensions(0, aWidth, aHeight, aMips);
+            break;
+        case 2:
+            DirectionalLightShadowMap[2].GetDimensions(0, aWidth, aHeight, aMips);
+            break;
+        default:
+            aWidth = 1;
+            aHeight = 1;
+            aMips = 1;
+            break;
+    }
+}
+
+float CalculateDirectionalLightShadowFactor(uint aCascadeIndex, float4x4 aLightViewProjectionTexture, float4 aWorldPosition, float3 aNormal, float3 aLightDirection)
 {
     float4 lightSpacePosition = mul(aLightViewProjectionTexture, aWorldPosition);
     float3 convertedPosition = lightSpacePosition.xyz / lightSpacePosition.w;
@@ -103,7 +150,7 @@ float CalculateDirectionalLightShadowFactor(float4x4 aLightViewProjectionTexture
     float P = convertedPosition.z;
     
     uint shadowWidth, shadowHeight, shadowMips;
-    DirectionalLightShadowMap.GetDimensions(0, shadowWidth, shadowHeight, shadowMips);
+    GetDirectionalLightShadowMapDimensions(aCascadeIndex, shadowWidth, shadowHeight, shadowMips);
     float shadowTexelSize = 1.0f / shadowWidth;
     
     float shadowFactor = 0;
@@ -111,7 +158,7 @@ float CalculateDirectionalLightShadowFactor(float4x4 aLightViewProjectionTexture
     for (int i = 0; i < 16; ++i)
     {
         float2 offset = poissonDisk16[i] * shadowTexelSize;
-        shadowFactor += DirectionalLightShadowMap.SampleCmpLevelZero(ShadowCmpSampler, shadowUV + offset, P);
+        shadowFactor += SampleDirectionalLightShadow(aCascadeIndex, shadowUV + offset, P);
     }
     
     return shadowFactor / 16;
@@ -125,7 +172,7 @@ float CalculateSpotLightShadowFactor(uint aShadowIndex, float4x4 aLightViewProje
     float P = convertedPosition.z;
 
     uint shadowWidth, shadowHeight, shadowMips;
-    GetShadowMapDimensions(aShadowIndex, shadowWidth, shadowHeight, shadowMips);
+    GetSpotLightShadowMapDimensions(aShadowIndex, shadowWidth, shadowHeight, shadowMips);
     float shadowTexelSize = 1.0f / shadowWidth;
     
     float shadowFactor = 0;

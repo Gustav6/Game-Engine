@@ -1,19 +1,25 @@
 #include "GraphicsEngine.pch.h"
 #include "GraphicsEngine.hpp"
 
-#include "CommonUtilities/Matrix3x3.hpp"
+#include <string>
+
+#include "CommonUtilities/Matrix4x4.hpp"
+#include "CommonUtilities/Frustum.hpp"
+#include <CommonUtilities/Vector3.hpp>
+#include <CommonUtilities/Vector4.hpp>
 
 #include "Objects/Mesh.h"
 #include "Objects/Vertex.h"
 #include "Objects/Light.h"
 #include "Objects/Texture.h"
-
+#include "Objects/Shader.h"
 #include "Objects/Sampler.h"
 
 #include "ConstantBuffers/FrameBuffer.h"
 #include "ConstantBuffers/ObjectBuffer.h"
 #include "ConstantBuffers/AnimationBuffer.h"
 #include "ConstantBuffers/LightBuffer.h"
+#include "ConstantBuffers/CascadeBuffer.h"
 
 #include "RHI/GraphicsCommandList.h"
 #include "RHI/RHIShaderReflectionInfo.h"
@@ -27,8 +33,6 @@
 #include "Textures/Normal/Default_N.h"
 
 #include "ShadowCube_GS.h"
-
-#include "Objects/Shader.h"
 
 /*
 * GraphicsEngine handles rendering of a scene.
@@ -63,7 +67,6 @@ bool GraphicsEngine::Initialize(HWND aWindowHandle, const std::filesystem::path&
 		return false;
 	}
 
-	CreateShadowCascades(2048);
 	RegisterMaterialShaders();
 
 	if (!LoadDefaultAssets())
@@ -124,7 +127,7 @@ void GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const Scene& 
 
 		UploadSceneLightingData(inoutCommandList, aScene.SceneLights);
 
-		RenderDrawCalls(inoutCommandList, aScene.DrawCalls, RenderDrawCallFlag_BindTextures | RenderDrawCallFlag_BindMaterial);
+		RenderDrawCalls(inoutCommandList, aScene.DrawCalls, DrawCallFlag_BindTextures | DrawCallFlag_BindMaterial);
 	}
 	inoutCommandList.EndEvent();
 }
@@ -300,7 +303,7 @@ bool GraphicsEngine::LoadTexture(const std::filesystem::path& aPath, Texture& ou
 	return myRHI.CreateTexture(aPath.stem().string(), fileData.data(), fileData.size(), outTexture);
 }
 
-bool GraphicsEngine::HasFlag(RenderDrawCallFlags aFlags, RenderDrawCallFlag_ aFlag)
+bool GraphicsEngine::HasDrawCallFlag(DrawCallFlags aFlags, DrawCallFlag_ aFlag)
 {
 	return (aFlags & aFlag) != 0;
 }
@@ -388,112 +391,173 @@ void GraphicsEngine::RenderShadowMaps(GraphicsCommandList& inoutCommandList, con
 {
 	for (const auto& light : aScene.SceneLights)
 	{
-		if (light.LightData->Type != LightType::Directional && light.ShadowMap == nullptr)
-		{
-			continue;
-		}
-
 		switch (light.LightData->Type)
 		{
 			case LightType::Directional:
 			{
-				for (size_t c = 0; c < myCascades.size(); c++)
+				// TODO: Blend between cascades
+				// https://learn.microsoft.com/en-us/windows/win32/dxtecharts/cascaded-shadow-maps
+
+				static float cameraNear = 0.0f;
+				static float cameraFar = 0.0f;
+
+				if (cameraNear != aScene.SceneCamera.Camera.GetNearPlane() || cameraFar != aScene.SceneCamera.Camera.GetFarPlane()) 
 				{
-					// TODO: Verify that my textures are being renderd correctly to.
+					cameraNear = aScene.SceneCamera.Camera.GetNearPlane();
+					cameraFar = aScene.SceneCamera.Camera.GetFarPlane();
+					BuildShadowCascades({4096, 2048, 2048 }, cameraNear, cameraFar);
+				}
 
-					float cameraNear = aScene.SceneCamera.Camera.GetNearPlane();
-					float cameraFar = aScene.SceneCamera.Camera.GetFarPlane();
-					float cameraFov = aScene.SceneCamera.Camera.GetFov();
-					CommonUtilities::Vector2ui cameraResolution = aScene.SceneCamera.Camera.GetResolution();
-					CommonUtilities::Matrix4x4f cameraView = aScene.SceneCamera.Transform.GetFastInverse();
+				CommonUtilities::Matrix4x4f lightViewProjectionTextures[NUM_CASCADES];
 
-					float cascadeNear = cameraNear + (cameraFar - cameraNear) * (static_cast<float>(c) / static_cast<float>(myCascades.size()));
-					float cascadeFar = cameraNear + (cameraFar - cameraNear) * (static_cast<float>(c + 1) / static_cast<float>(myCascades.size()));
+				CommonUtilities::Matrix4x4f cameraView = aScene.SceneCamera.Transform.GetFastInverse();
 
-					CommonUtilities::Matrix4x4f cascadeProjection = 
-						CommonUtilities::Matrix4x4f::CreatePerspectiveProjection(cameraFov, cascadeNear, cascadeFar, cameraResolution.x, cameraResolution.y);
+				for (size_t c = 0; c < myCascades.size(); c++ )
+				{
+					CommonUtilities::Frustum<float> frustum = CommonUtilities::Frustum<float>(
+						aScene.SceneCamera.Camera.GetFovInDegrees(),
+						myCascades[c].NearPlane,
+						myCascades[c].FarPlane,
+						aScene.SceneCamera.Camera.GetAspectRatio()
+					);
 
-					CommonUtilities::Frustum<float> cascadeFrustum = 
-						CommonUtilities::Frustum<float>(cameraFov, cascadeNear, cascadeFar, aScene.SceneCamera.Camera.GetAspectRatio());
+					CommonUtilities::Matrix4x4f projection = CommonUtilities::Matrix4x4f::CreatePerspectiveProjection(
+						aScene.SceneCamera.Camera.GetFovInDegrees(),
+						myCascades[c].NearPlane,
+						myCascades[c].FarPlane,
+						aScene.SceneCamera.Camera.GetAspectRatio()
+					);
 
-					std::vector<CommonUtilities::Vector3f> frustumCorners = cascadeFrustum.GetCorners(cameraView, cascadeProjection);
+					CommonUtilities::Matrix4x4f invViewProjection = (cameraView * projection).GetGeneralInverse();
+					
+					std::vector<CommonUtilities::Vector4f> corners = frustum.GetCornersInWorldSpace(invViewProjection);
 
-					float radius = (frustumCorners[0] - frustumCorners[7]).Length() * 0.5f;
+					CommonUtilities::Vector4f center;
 
-					CommonUtilities::Vector3f lightDirection = light.Transform.GetForward();
-					CommonUtilities::Vector3f frustumCenter = cascadeFrustum.GetCenter(cameraView, cascadeProjection);
-					CommonUtilities::Vector3f worldUpVector = CommonUtilities::Vector3f(0.0f, 1.0f, 0.0f);
+					for (auto& corner : corners)
+					{
+						center += corner;
+					}
 
-					CommonUtilities::Vector3f eye = frustumCenter - lightDirection * radius * 2.0f;
+					center = center / 8.0f;
 
-					CommonUtilities::Matrix4x4f cascadeView =
-						CommonUtilities::Matrix4x4f::CreateLookAt(eye, lightDirection, worldUpVector);
+					float radius = 0.0f;
 
-					float shadowNear = 0.01f;
-					float shadowFar = radius * 2.0f + radius;
+					for (const auto& corner : corners)
+					{
+						float distance = (CommonUtilities::Vector3f(corner.x, corner.y, corner.z) - center.ToXYZ()).Length();
+						radius = std::max(radius, distance);
+					}
 
-					CommonUtilities::Matrix4x4f cascadeOrthographicProjection =
-						CommonUtilities::Matrix4x4f::CreateOrthographicProjection(shadowNear, shadowFar, radius * 2.0f, radius * 2.0f);
+					radius = std::ceil(radius);
+
+					float texelsPerUnit = myCascades[c].ShadowMap->GetViewport().Width / (radius * 2.0f);
+
+					CommonUtilities::Vector3f eye = center.ToXYZ() - light.Transform.GetForward().GetNormalized() * radius;
+
+					CommonUtilities::Matrix4x4f directionLightTransform = light.Transform;
+					directionLightTransform.SetTranslation(eye);
+					CommonUtilities::Matrix4x4f lightView = directionLightTransform.GetFastInverse();
+
+					CommonUtilities::Vector4f shadowOrigin = (CommonUtilities::Vector4f(0, 0, 0, 1) * lightView) * texelsPerUnit;
+					CommonUtilities::Vector4f rounded = { std::round(shadowOrigin.x), std::round(shadowOrigin.y), shadowOrigin.z, shadowOrigin.w };
+					CommonUtilities::Vector4f offset = (rounded - shadowOrigin) / texelsPerUnit;
+
+					lightView(4, 2) += offset.y;
+					lightView(4, 1) += offset.x;
+
+					CommonUtilities::Matrix4x4f orthoProjection =
+						CommonUtilities::Matrix4x4f::CreateOrthographicProjection(-radius * 6.0f, radius * 6.0f, -radius, radius, -radius, radius);
+
+					lightViewProjectionTextures[c] = lightView * orthoProjection * CommonUtilities::Matrix4x4f::CreateNDCToTextureSpace();
 
 					FrameBuffer frameBuffer;
-					frameBuffer.Projection = cascadeOrthographicProjection;
-					frameBuffer.View = cascadeView;
+					frameBuffer.Projection = orthoProjection;
+					frameBuffer.View = lightView;
 
-					std::string cascadeEventName = std::format("Directional Light Shadow Pass - Cascade {}", (c + 1));
+					// Sends to the gpu
+					{
+						inoutCommandList.BeginEvent(std::format("Cascade Shadow Pass {}", (c + 1)));
 
-					inoutCommandList.BeginEvent(cascadeEventName);
+						inoutCommandList.ClearDepthStencil(*myCascades[c].ShadowMap);
+						inoutCommandList.SetRenderTarget(nullptr, myCascades[c].ShadowMap.get());
 
-					inoutCommandList.ClearDepthStencil(*myCascades[c].ShadowMap);
-					inoutCommandList.SetRenderTarget(nullptr, myCascades[c].ShadowMap.get());
+						inoutCommandList.ChangeActiveOverrides(PipelineStage_Rasterizer | PipelineStage_PixelShader);
+						UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::FrameBuffer, frameBuffer, 0, PipelineStage_VertexShader);
+
+						RenderDrawCalls(inoutCommandList, aScene.DrawCalls, DrawCallFlag_BindMaterial);
+
+						inoutCommandList.EndEvent();
+					}
+				}
+
+				CascadeBuffer cascadeBuffer;
+				cascadeBuffer.CascadeFarPlanes = { myCascades[0].FarPlane, myCascades[1].FarPlane, myCascades[2].FarPlane };
+				cascadeBuffer.CameraPosition = aScene.SceneCamera.Transform.GetTranslation();
+				memcpy_s(cascadeBuffer.LightViewProjectionTextures, sizeof(CommonUtilities::Matrix4x4f) * NUM_CASCADES, lightViewProjectionTextures, sizeof(lightViewProjectionTextures));
+
+				UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::CascadeBuffer, cascadeBuffer, 4, PipelineStage_PixelShader);
+				
+				break;
+			}
+			case LightType::Spot:
+			{
+				if (light.ShadowMap == nullptr)
+				{
+					continue;
+				}
+
+				FrameBuffer frameBuffer;
+				frameBuffer.Projection = light.Projection;
+				frameBuffer.View = light.Transform.GetFastInverse();
+				frameBuffer.CameraPosition = light.Transform.GetTranslation();
+
+				// Sends to the gpu
+				{
+					inoutCommandList.BeginEvent("Spot Light Shadow Pass");
+
+					inoutCommandList.ClearDepthStencil(*light.ShadowMap);
+					inoutCommandList.SetRenderTarget(nullptr, light.ShadowMap);
 
 					inoutCommandList.ChangeActiveOverrides(PipelineStage_Rasterizer | PipelineStage_PixelShader);
+
 					UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::FrameBuffer, frameBuffer, 0, PipelineStage_VertexShader);
 
-					RenderDrawCalls(inoutCommandList, aScene.DrawCalls, RenderDrawCallFlag_BindMaterial);
+					RenderDrawCalls(inoutCommandList, aScene.DrawCalls, DrawCallFlag_BindMaterial);
 
 					inoutCommandList.EndEvent();
 				}
 
 				break;
 			}
-			case LightType::Spot:
-			{
-				FrameBuffer frameBuffer;
-				frameBuffer.Projection = light.Projection;
-				frameBuffer.View = light.Transform.GetFastInverse();
-				frameBuffer.CameraPosition = light.Transform.GetTranslation();
-
-				inoutCommandList.BeginEvent("Spot Light Shadow Pass");
-
-				inoutCommandList.ClearDepthStencil(*light.ShadowMap);
-				inoutCommandList.SetRenderTarget(nullptr, light.ShadowMap);
-
-				inoutCommandList.ChangeActiveOverrides(PipelineStage_Rasterizer | PipelineStage_PixelShader);
-				UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::FrameBuffer, frameBuffer, 0, PipelineStage_VertexShader);
-
-				RenderDrawCalls(inoutCommandList, aScene.DrawCalls, RenderDrawCallFlag_BindMaterial);
-
-				inoutCommandList.EndEvent();
-				break;
-			}
 			case LightType::Point:
 			{
+				if (light.ShadowMap == nullptr)
+				{
+					continue;
+				}
+
 				FrameBuffer frameBuffer;
 				frameBuffer.Projection = light.Projection;
 				frameBuffer.View = light.Transform.GetFastInverse();
 				frameBuffer.CameraPosition = light.Transform.GetTranslation();
 
-				inoutCommandList.BeginEvent("Point Light Shadow Pass");
+				// Sends to the gpu
+				{
+					inoutCommandList.BeginEvent("Point Light Shadow Pass");
 
-				inoutCommandList.ClearDepthStencil(*light.ShadowMap);
-				inoutCommandList.SetRenderTarget(nullptr, light.ShadowMap);
+					inoutCommandList.ClearDepthStencil(*light.ShadowMap);
+					inoutCommandList.SetRenderTarget(nullptr, light.ShadowMap);
 
-				inoutCommandList.ChangeActiveOverrides(PipelineStage_GeometryShader | PipelineStage_Rasterizer | PipelineStage_PixelShader);
-				UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::FrameBuffer, frameBuffer, 0, PipelineStage_VertexShader | PipelineStage_GeometryShader);
+					inoutCommandList.ChangeActiveOverrides(PipelineStage_GeometryShader | PipelineStage_Rasterizer | PipelineStage_PixelShader);
 
-				RenderDrawCalls(inoutCommandList, aScene.DrawCalls, RenderDrawCallFlag_BindMaterial);
+					UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::FrameBuffer, frameBuffer, 0, PipelineStage_VertexShader | PipelineStage_GeometryShader);
 
-				inoutCommandList.EndEvent();
+					RenderDrawCalls(inoutCommandList, aScene.DrawCalls, DrawCallFlag_BindMaterial);
+
+					inoutCommandList.EndEvent();
+				}
+
 				break;
 			}
 		}
@@ -505,6 +569,7 @@ void GraphicsEngine::UploadSceneLightingData(GraphicsCommandList& inoutCommandLi
 	LightBuffer lightBuffer;
 	lightBuffer.NumLights = static_cast<unsigned int>(std::min(aLights.size(), static_cast<size_t>(MAX_LIGHTS)));
 
+	std::vector<const Texture*> dirLightShadowMaps;
 	std::vector<const Texture*> spotLightShadowMaps;
 	std::vector<const Texture*> pointLightShadowCubes;
 
@@ -520,38 +585,50 @@ void GraphicsEngine::UploadSceneLightingData(GraphicsCommandList& inoutCommandLi
 
 		lightBuffer.Lights[i] = *aLights[i].LightData;
 
-		if (aLights[i].ShadowMap != nullptr)
+		switch (aLights[i].LightData->Type)
 		{
-			switch (aLights[i].LightData->Type)
+			case LightType::Directional:
 			{
-				case LightType::Directional:
+				for (size_t c = 0; c < myCascades.size(); c++)
 				{
-					inoutCommandList.SetShaderResources(&aLights[i].ShadowMap, 1, 100, PipelineStage_PixelShader);
-					break;
+					dirLightShadowMaps.emplace_back(myCascades[c].ShadowMap.get());
 				}
-				case LightType::Spot:
+
+				break;
+			}
+			case LightType::Spot:
+			{
+				if (aLights[i].ShadowMap == nullptr)
 				{
-					spotLightShadowMaps.emplace_back(aLights[i].ShadowMap);
-					lightBuffer.Lights[i].ShadowIndex = spotShadowIndex++;
-					break;
+					continue;
 				}
-				case LightType::Point:
+
+				spotLightShadowMaps.emplace_back(aLights[i].ShadowMap);
+				lightBuffer.Lights[i].ShadowIndex = spotShadowIndex++;
+				break;
+			}
+			case LightType::Point:
+			{
+				if (aLights[i].ShadowMap == nullptr)
 				{
-					pointLightShadowCubes.emplace_back(aLights[i].ShadowMap);
-					lightBuffer.Lights[i].ShadowIndex = pointShadowIndex++;
-					break;
+					continue;
 				}
+
+				pointLightShadowCubes.emplace_back(aLights[i].ShadowMap);
+				lightBuffer.Lights[i].ShadowIndex = pointShadowIndex++;
+				break;
 			}
 		}
 	}
 
-	inoutCommandList.SetShaderResources(spotLightShadowMaps.data(), spotLightShadowMaps.size(), 101, PipelineStage_PixelShader);
-	inoutCommandList.SetShaderResources(pointLightShadowCubes.data(), pointLightShadowCubes.size(), 110, PipelineStage_PixelShader);
+	inoutCommandList.SetShaderResources(dirLightShadowMaps.data(), dirLightShadowMaps.size(), 100, PipelineStage_PixelShader);
+	inoutCommandList.SetShaderResources(spotLightShadowMaps.data(), spotLightShadowMaps.size(), 103, PipelineStage_PixelShader);
+	inoutCommandList.SetShaderResources(pointLightShadowCubes.data(), pointLightShadowCubes.size(), 111, PipelineStage_PixelShader);
 
 	UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::LightBuffer, lightBuffer, 3, PipelineStage_PixelShader);
 }
 
-void GraphicsEngine::RenderDrawCalls(GraphicsCommandList& inoutCommandList, const std::vector<DrawCall>& aDrawCalls, RenderDrawCallFlags someFlags)
+void GraphicsEngine::RenderDrawCalls(GraphicsCommandList& inoutCommandList, const std::vector<DrawCall>& aDrawCalls, DrawCallFlags someFlags)
 {
 	for (const auto& drawCall : aDrawCalls)
 	{
@@ -589,7 +666,7 @@ void GraphicsEngine::RenderDrawCalls(GraphicsCommandList& inoutCommandList, cons
 
 		for (const Mesh::Element& element : drawCall.Mesh->myElements)
 		{
-			if (HasFlag(someFlags, RenderDrawCallFlag_BindMaterial))
+			if (HasDrawCallFlag(someFlags, DrawCallFlag_BindMaterial))
 			{
 				const MaterialInterface* elementMaterial = drawCall.Materials[element.MaterialIndex];
 
@@ -612,7 +689,7 @@ void GraphicsEngine::RenderDrawCalls(GraphicsCommandList& inoutCommandList, cons
 					UpdateAndSetConstantBufferInternal(inoutCommandList, ConstantBuffer::MaterialBuffer, material->GetParameterDataBlock(), Material::MATERIAL_BUFFER_SIZE, 3, PipelineStage_VertexShader | PipelineStage_PixelShader);
 				}
 
-				if (HasFlag(someFlags, RenderDrawCallFlag_BindTextures))
+				if (HasDrawCallFlag(someFlags, DrawCallFlag_BindTextures))
 				{
 					std::vector<const Texture*> textures(Material::MAX_MATERIAL_TEXTURE_COUNT);
 
@@ -654,18 +731,39 @@ void GraphicsEngine::RegisterMaterialShaders()
 	}
 }
 
-void GraphicsEngine::CreateShadowCascades(unsigned int aHighestCascadeSize)
+void GraphicsEngine::BuildShadowCascades(std::array<int, NUM_CASCADES> aCascadeSizes, float aCameraNear, float aCameraFar)
 {
-	for (size_t c = 0; c < AMOUNT_OF_CASCADES; c++)
+	// Range from 0 to 1 to balance distributions
+    float lambda = 0.5f;
+
+    std::array<float, NUM_CASCADES + 1> splits = 
 	{
-		std::string name = std::format("Shadow Cascade {}", (c + 1));
+		aCameraNear
+	};
 
-		myCascades[c].ShadowMap = std::make_unique<Texture>();
+    for (int c = 1; c <= NUM_CASCADES; c++)
+    {
+		float cascadeRatio = static_cast<float>(c) / static_cast<float>(NUM_CASCADES);
 
-		unsigned int width = aHighestCascadeSize >> c;
-		unsigned int height = aHighestCascadeSize >> c;
+		float linearSplit = aCameraNear + cascadeRatio * (aCameraFar - aCameraNear);
+        float logSplit = aCameraNear * std::pow((aCameraFar / aCameraNear), cascadeRatio);
 
-		CreateShadowMap(name, width, height, *myCascades[c].ShadowMap, false);
+        splits[c] = lambda * logSplit + (1.0f - lambda) * linearSplit;
+    }
+
+	for (size_t c = 0; c < NUM_CASCADES; c++)
+	{
+		myCascades[c].NearPlane = splits[c];
+		myCascades[c].FarPlane = splits[c + 1];
+
+		if (myCascades[c].ShadowMap == nullptr)
+		{
+			std::string name = std::format("Shadow Cascade {}", (c + 1));
+
+			myCascades[c].ShadowMap = std::make_unique<Texture>();
+
+			CreateShadowMap(name, aCascadeSizes[c], aCascadeSizes[c], *myCascades[c].ShadowMap, false);
+		}
 	}
 }
 
@@ -739,6 +837,10 @@ bool GraphicsEngine::CreateRenderResources()
 			return false;
 		}
 		if (!CreateConstantBuffer(ConstantBuffer::MaterialBuffer, "MaterialBuffer", Material::MATERIAL_BUFFER_SIZE))
+		{
+			return false;
+		}
+		if (!CreateConstantBuffer<CascadeBuffer>(ConstantBuffer::CascadeBuffer, "CascadeBuffer"))
 		{
 			return false;
 		}

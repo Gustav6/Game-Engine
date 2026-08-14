@@ -5,10 +5,8 @@
 #include <vector>
 #include <memory>
 #include <array>
-#include <string>
 
 #include "CommonUtilities/Matrix4x4.hpp"
-#include "CommonUtilities/Frustum.hpp"
 
 #include "RHI/RenderHardwareInterface.h"
 
@@ -31,6 +29,7 @@ enum class ConstantBuffer : uint8_t
 	AnimationBuffer,
 	LightBuffer,
 	MaterialBuffer,
+	CascadeBuffer,
 	MAX
 };
 
@@ -39,7 +38,7 @@ struct DrawCall
 	bool HasSkinning = false;
 	const Mesh* Mesh = nullptr;
 	const MaterialInterface* Materials[Material::MAX_MATERIAL_TEXTURE_COUNT] = {};
-	CommonUtilities::Matrix4x4f Transform;
+	const CommonUtilities::Matrix4x4f Transform;
 	const CommonUtilities::Matrix4x4f* JointTransforms = nullptr;
 };
 
@@ -53,8 +52,8 @@ struct SceneLight
 {
 	const Light* LightData = nullptr;
 	const Texture* ShadowMap = nullptr;
-	CommonUtilities::Matrix4x4f Transform;
-	CommonUtilities::Matrix4x4f Projection;
+	const CommonUtilities::Matrix4x4f Transform;
+	const CommonUtilities::Matrix4x4f Projection;
 };
 
 struct Scene
@@ -67,8 +66,8 @@ struct Scene
 class GraphicsEngine
 {
 public:
-	static constexpr unsigned AMOUNT_OF_CASCADES = 3;
-
+	static constexpr unsigned NUM_CASCADES = 3;
+	
 	static GraphicsEngine& Get();
 
 	bool Initialize(HWND aWindowHandle, const std::filesystem::path& aShaderRoot);
@@ -106,18 +105,20 @@ private:
 	struct ShadowCascade
 	{
 		std::unique_ptr<Texture> ShadowMap = nullptr;
+		float NearPlane = 0.0f;
+		float FarPlane = 0.0f;
 	};
 
-	enum RenderDrawCallFlag_
+	enum DrawCallFlag_
 	{
-		RenderDrawCallFlag_None = 0,
-		RenderDrawCallFlag_BindTextures = 1 << 0,
-		RenderDrawCallFlag_BindMaterial = 1 << 1,
+		DrawCallFlag_None = 0,
+		DrawCallFlag_BindTextures = 1 << 0,
+		DrawCallFlag_BindMaterial = 1 << 1,
 	};
 
-	typedef int RenderDrawCallFlags;
+	typedef int DrawCallFlags;
 
-	bool HasFlag(RenderDrawCallFlags aFlags, RenderDrawCallFlag_ aFlag);
+	bool HasDrawCallFlag(DrawCallFlags aFlags, DrawCallFlag_ aFlag);
 
 	bool CreateConstantBufferInternal(ConstantBuffer aBufferID, std::string_view aName, size_t aBufferSize);
 	bool UpdateAndSetConstantBufferInternal(GraphicsCommandList& inoutCommandList, ConstantBuffer aBufferID, const void* aData, size_t aDataSize, unsigned aSlot, PipelineStages aStages);
@@ -129,10 +130,15 @@ private:
 	void RenderShadowMaps(GraphicsCommandList& inoutCommandList, const Scene& aScene);
 	
 	void UploadSceneLightingData(GraphicsCommandList& inoutCommandList, const std::vector<SceneLight>& aLights);
-	void RenderDrawCalls(GraphicsCommandList& inoutCommandList, const std::vector<DrawCall>& aDrawCalls, RenderDrawCallFlags someFlags);
+	void RenderDrawCalls(GraphicsCommandList& inoutCommandList, const std::vector<DrawCall>& aDrawCalls, DrawCallFlags someFlags);
 
 	void RegisterMaterialShaders();
-	void CreateShadowCascades(unsigned int aHighestCascadeSize);
+
+	/**
+	 * Will create the shadow cascades with specified sizes.
+	 * @param aCascadeSizes Sizes will apply in order from closest to furthest away.
+	 */
+	void BuildShadowCascades(std::array<int, NUM_CASCADES> aCascadeSizes, float aCameraNear, float aCameraFar);
 	bool LoadDefaultAssets();
 	bool CreateRenderResources();
 
@@ -158,5 +164,5 @@ private:
 	std::unique_ptr<PipelineStateObject> myShadowPSO;
 
 	// First Index = Near Cascade ... last index = Far Cascade
-	std::array<ShadowCascade, AMOUNT_OF_CASCADES> myCascades;
+	std::array<ShadowCascade, NUM_CASCADES> myCascades;
 };

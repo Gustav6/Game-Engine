@@ -10,6 +10,7 @@ class Texture;
 
 /**
  * Which Domain this Material belongs to. Controls the Vertex type, Vertex Shader and Topology.
+ * @return
  */
 enum class MaterialDomain : uint8_t
 {
@@ -19,6 +20,7 @@ enum class MaterialDomain : uint8_t
 
 /**
  * The Shading Model of this Material. Controls the Pixel Shader.
+ * @return
  */
 enum class ShadingModel : uint8_t
 {
@@ -29,6 +31,7 @@ enum class ShadingModel : uint8_t
 
 /**
  * How this Material is Blended. Controls how a finished pixel is composited.
+ * @return
  */
 enum class BlendMode : uint8_t
 {
@@ -38,6 +41,7 @@ enum class BlendMode : uint8_t
 
 /**
  * Enum of types used in HLSL during the AGP Course. To make matching easier.
+ * @return
  */
 enum class MaterialParameterType : uint8_t
 {
@@ -50,6 +54,7 @@ enum class MaterialParameterType : uint8_t
 
 /**
  * Information about a Material Parameter found in the HLSL MaterialParametersBuffer
+ * @return
  */
 struct MaterialParameterInfo
 {
@@ -64,6 +69,7 @@ struct MaterialParameterInfo
  * Generic Interface for Material-like objects.
  * Provides a concrete method of communication with both Material and MaterialInstance
  * which both look the same outwards but work differently internally.
+ * @return
  */
 class MaterialInterface
 {

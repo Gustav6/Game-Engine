@@ -174,7 +174,7 @@ void ModelViewer::LoadScene()
     }
 
     {
-        myGameCamera = GameCamera(90.0f, 1.0f, 2000.0f, GraphicsEngine::Get().GetClientSize());
+        myGameCamera = GameCamera(90.0f, 1.0f, 5000.0f, GraphicsEngine::Get().GetClientSize());
         myGameCamera.GetTransform().SetPosition({ 0, 100, -200 });
     }
 
@@ -278,12 +278,11 @@ void ModelViewer::LoadScene()
     {
         std::unique_ptr<GameObject> object = std::make_unique<GameObject>();
 
-        DirectionalLightComponent* directionlLight = object->AddComponent<DirectionalLightComponent>();
+        DirectionalLightComponent* directionalLight = object->AddComponent<DirectionalLightComponent>();
 
-		directionlLight->SetPosition({ 0.0f, 500.0f, -500.0f });
-        directionlLight->SetColor({ 1.0f, 0.95f, 0.85f });
-        directionlLight->SetIntensity(1.0f);
-        directionlLight->SetDirection({ 0.0f, -1.0f, 1.0f });
+        directionalLight->SetColor({ 1.0f, 0.95f, 0.85f });
+        directionalLight->SetIntensity(1.0f);
+        directionalLight->SetDirection({ 0.0f, -1.0f, 1.0f });
 
         myDirectionLightObject = myGameWorld.AddGameObject(std::move(object));
     }
@@ -455,9 +454,11 @@ void ModelViewer::BuildRenderScene()
 
             if (meshComponent != nullptr)
             {
-                DrawCall drawCall;
-                drawCall.Mesh = meshComponent->GetMesh().get();
-                drawCall.Transform = gameObject->GetTransform().GetWorldMatrix();
+                DrawCall drawCall = 
+                {
+                    .Mesh = meshComponent->GetMesh().get(),
+                    .Transform = gameObject->GetTransform().GetWorldMatrix()
+                };
 
                 const auto& materials = meshComponent->GetMaterialList();
 
@@ -485,11 +486,12 @@ void ModelViewer::BuildRenderScene()
             {
                 directionalLight->UpdateLightViewProjection();
 
-                SceneLight light;
-                light.LightData = directionalLight->GetData();
-                light.ShadowMap = directionalLight->GetShadowMap();
-                light.Transform = directionalLight->GetTransform();
-                light.Projection = directionalLight->GetProjection();
+                SceneLight light = 
+                {
+                    .LightData = directionalLight->GetData(),
+                    .Transform = directionalLight->GetTransform(),
+                    .Projection = directionalLight->GetProjection()
+                };
 
                 myScene->SceneLights.emplace_back(light);
             }
@@ -500,11 +502,13 @@ void ModelViewer::BuildRenderScene()
 
             if (pointLight != nullptr)
             {
-                SceneLight light;
-                light.LightData = pointLight->GetData();
-                light.ShadowMap = pointLight->GetShadowMap();
-                light.Transform = pointLight->GetTransform();
-                light.Projection = pointLight->GetProjection();
+                SceneLight light =
+                {
+                    .LightData = pointLight->GetData(),
+                    .ShadowMap = pointLight->GetShadowMap(),
+                    .Transform = pointLight->GetTransform(),
+                    .Projection = pointLight->GetProjection()
+                };
 
                 myScene->SceneLights.emplace_back(light);
             }
@@ -517,11 +521,13 @@ void ModelViewer::BuildRenderScene()
             {
                 spotLight->UpdateLightViewProjection();
 
-                SceneLight light;
-				light.LightData = spotLight->GetData();
-                light.ShadowMap = spotLight->GetShadowMap();
-                light.Transform = spotLight->GetTransform();
-                light.Projection = spotLight->GetProjection();
+                SceneLight light =
+                {
+                    .LightData = spotLight->GetData(),
+                    .ShadowMap = spotLight->GetShadowMap(),
+                    .Transform = spotLight->GetTransform(),
+                    .Projection = spotLight->GetProjection()
+                };
 
                 myScene->SceneLights.emplace_back(light);
             }

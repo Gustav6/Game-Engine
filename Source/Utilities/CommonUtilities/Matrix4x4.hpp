@@ -54,12 +54,17 @@ namespace CommonUtilities
 
 			Matrix4x4<T> GetInverse() const;
 			Matrix4x4<T> GetFastInverse() const;
+			Matrix4x4<T> GetGeneralInverse() const;
+
+			void SetTranslation(const Vector3<T>& aTranslation);
+			void SetScaling(const Vector3<T>& aScaling);
 
 			T* GetData();
 			const T* GetData() const;
 
 			static Matrix4x4<T> CreateOrthographicProjection(float aNearPlane, float aFarPlane, float aWidth, float aHeight);
-			static Matrix4x4<T> CreatePerspectiveProjection(float aHorizontalFov, float aNearPlane, float aFarPlane, unsigned int aWidth, unsigned int aHeight);
+			static Matrix4x4<T> CreateOrthographicProjection(float aNearPlane, float aFarPlane, float aLeft, float aRight, float aBottom, float aTop);
+			static Matrix4x4<T> CreatePerspectiveProjection(float aHorizontalFov, float aNearPlane, float aFarPlane, float aAspectRatio);
 			static Matrix4x4<T> CreateLookAt(const Vector3<T>& aPosition, const Vector3<T>& aDirection, const Vector3<T>& aUp);
 
 			static constexpr Matrix4x4<T> CreateNDCToTextureSpace();
@@ -667,6 +672,65 @@ namespace CommonUtilities
 	}
 
 	template<typename T>
+	inline Matrix4x4<T> Matrix4x4<T>::GetGeneralInverse() const
+	{
+		const T* m = GetData();
+		T inv[16] = {};
+
+		inv[0] = m[5] * m[10] * m[15] - m[5] * m[11] * m[14] - m[9] * m[6] * m[15] + m[9] * m[7] * m[14] + m[13] * m[6] * m[11] - m[13] * m[7] * m[10];
+		inv[4] = -m[4] * m[10] * m[15] + m[4] * m[11] * m[14] + m[8] * m[6] * m[15] - m[8] * m[7] * m[14] - m[12] * m[6] * m[11] + m[12] * m[7] * m[10];
+		inv[8] = m[4] * m[9] * m[15] - m[4] * m[11] * m[13] - m[8] * m[5] * m[15] + m[8] * m[7] * m[13] + m[12] * m[5] * m[11] - m[12] * m[7] * m[9];
+		inv[12] = -m[4] * m[9] * m[14] + m[4] * m[10] * m[13] + m[8] * m[5] * m[14] - m[8] * m[6] * m[13] - m[12] * m[5] * m[10] + m[12] * m[6] * m[9];
+
+		inv[1] = -m[1] * m[10] * m[15] + m[1] * m[11] * m[14] + m[9] * m[2] * m[15] - m[9] * m[3] * m[14] - m[13] * m[2] * m[11] + m[13] * m[3] * m[10];
+		inv[5] = m[0] * m[10] * m[15] - m[0] * m[11] * m[14] - m[8] * m[2] * m[15] + m[8] * m[3] * m[14] + m[12] * m[2] * m[11] - m[12] * m[3] * m[10];
+		inv[9] = -m[0] * m[9] * m[15] + m[0] * m[11] * m[13] + m[8] * m[1] * m[15] - m[8] * m[3] * m[13] - m[12] * m[1] * m[11] + m[12] * m[3] * m[9];
+		inv[13] = m[0] * m[9] * m[14] - m[0] * m[10] * m[13] - m[8] * m[1] * m[14] + m[8] * m[2] * m[13] + m[12] * m[1] * m[10] - m[12] * m[2] * m[9];
+
+		inv[2] = m[1] * m[6] * m[15] - m[1] * m[7] * m[14] - m[5] * m[2] * m[15] + m[5] * m[3] * m[14] + m[13] * m[2] * m[7] - m[13] * m[3] * m[6];
+		inv[6] = -m[0] * m[6] * m[15] + m[0] * m[7] * m[14] + m[4] * m[2] * m[15] - m[4] * m[3] * m[14] - m[12] * m[2] * m[7] + m[12] * m[3] * m[6];
+		inv[10] = m[0] * m[5] * m[15] - m[0] * m[7] * m[13] - m[4] * m[1] * m[15] + m[4] * m[3] * m[13] + m[12] * m[1] * m[7] - m[12] * m[3] * m[5];
+		inv[14] = -m[0] * m[5] * m[14] + m[0] * m[6] * m[13] + m[4] * m[1] * m[14] - m[4] * m[2] * m[13] - m[12] * m[1] * m[6] + m[12] * m[2] * m[5];
+
+		inv[3] = -m[1] * m[6] * m[11] + m[1] * m[7] * m[10] + m[5] * m[2] * m[11] - m[5] * m[3] * m[10] - m[9] * m[2] * m[7] + m[9] * m[3] * m[6];
+		inv[7] = m[0] * m[6] * m[11] - m[0] * m[7] * m[10] - m[4] * m[2] * m[11] + m[4] * m[3] * m[10] + m[8] * m[2] * m[7] - m[8] * m[3] * m[6];
+		inv[11] = -m[0] * m[5] * m[11] + m[0] * m[7] * m[9] + m[4] * m[1] * m[11] - m[4] * m[3] * m[9] - m[8] * m[1] * m[7] + m[8] * m[3] * m[5];
+		inv[15] = m[0] * m[5] * m[10] - m[0] * m[6] * m[9] - m[4] * m[1] * m[10] + m[4] * m[2] * m[9] + m[8] * m[1] * m[6] - m[8] * m[2] * m[5];
+
+		T det = m[0] * inv[0] + m[1] * inv[4] + m[2] * inv[8] + m[3] * inv[12];
+
+		assert(det != static_cast<T>(0));
+
+		T invDet = static_cast<T>(1) / det;
+
+		Matrix4x4<T> result;
+		T* r = result.GetData();
+
+		for (int i = 0; i < 16; ++i)
+		{
+			r[i] = inv[i] * invDet;
+		}
+
+		return result;
+	}
+
+	template<typename T>
+	inline void Matrix4x4<T>::SetTranslation(const Vector3<T>& aTranslation)
+	{
+		myData[12] = aTranslation.x; 
+		myData[13] = aTranslation.y;
+		myData[14] = aTranslation.z;
+	}
+
+	template<typename T>
+	inline void Matrix4x4<T>::SetScaling(const Vector3<T>& aScaling)
+	{
+		myData[0] = aScaling.x;
+		myData[5] = aScaling.y;
+		myData[10] = aScaling.z;
+	}
+
+	template<typename T>
 	Matrix4x4<T> Matrix4x4<T>::CreateOrthographicProjection(float aNearPlane, float aFarPlane, float aWidth, float aHeight)
 	{
 		assert(aNearPlane > 0.0f && aFarPlane > aNearPlane);
@@ -679,20 +743,42 @@ namespace CommonUtilities
 
 		return Matrix4x4<T>
 		{
-			scaleX, 0, 0, 0,
-			0, scaleY, 0, 0,
-			0, 0, depthNormalize, 0,
-			0, 0, depthNearOffset, 1
+			scaleX, 0, 		0, 				 0,
+			0, 		scaleY, 0, 				 0,
+			0, 		0, 		depthNormalize,  0,
+			0, 		0, 		depthNearOffset, 1
 		};
 	}
 
 	template<typename T>
-	inline Matrix4x4<T> Matrix4x4<T>::CreatePerspectiveProjection(float aHorizontalFov, float aNearPlane, float aFarPlane, unsigned int aWidth, unsigned int aHeight)
+	Matrix4x4<T> Matrix4x4<T>::CreateOrthographicProjection(float aNearPlane, float aFarPlane, float aLeft, float aRight, float aBottom, float aTop)
+	{
+		assert(aNearPlane < aFarPlane);
+
+		float scaleX = 2.0f / static_cast<float>(aRight - aLeft);
+		float scaleY = 2.0f / static_cast<float>(aTop - aBottom);
+		
+		const float offsetX = -(aRight + aLeft) / (aRight - aLeft);
+		const float offsetY = -(aTop + aBottom) / (aTop - aBottom);
+
+		float depthNormalize = 1.0f / (aFarPlane - aNearPlane);
+		float depthNearOffset = aNearPlane / (aNearPlane - aFarPlane);
+
+		return Matrix4x4<T>
+		{
+			scaleX,  0, 	  0, 			   0,
+			0, 		 scaleY,  0, 			   0,
+			0, 		 0, 	  depthNormalize,  0,
+			offsetX, offsetY, depthNearOffset, 1
+		};
+	}
+
+	template<typename T>
+	inline Matrix4x4<T> Matrix4x4<T>::CreatePerspectiveProjection(float aHorizontalFov, float aNearPlane, float aFarPlane, float aAspectRatio)
 	{
 		assert(aNearPlane > 0.0f && aFarPlane > aNearPlane);
 
-		float aspectRatio = static_cast<float>(aWidth) / static_cast<float>(aHeight);
-		float inverseAspectRatio = 1.0f / aspectRatio;
+		float inverseAspectRatio = 1.0f / aAspectRatio;
 
 		float hFovRad = aHorizontalFov * 3.14159265358979323846f / 180.0f;
 		float vFovRad = 2.0f * std::atan(std::tan(hFovRad * 0.5f) * inverseAspectRatio);

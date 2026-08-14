@@ -20,7 +20,7 @@ Camera::Camera(float aHorizontalFov, float aNearPlane, float aFarPlane, CommonUt
 	float aspectRatio = static_cast<float>(aResolution.x) / static_cast<float>(aResolution.y);
 
 	myFrustum = CommonUtilities::Frustum<float>(aHorizontalFov, aNearPlane, aFarPlane, aspectRatio);
-    myProjection = CommonUtilities::Matrix4x4f::CreatePerspectiveProjection(aHorizontalFov, aNearPlane, aFarPlane, aResolution.x, aResolution.y);
+    myProjection = CommonUtilities::Matrix4x4f::CreatePerspectiveProjection(aHorizontalFov, aNearPlane, aFarPlane, aspectRatio);
 }
 
 void Camera::UpdateFrustum(const CommonUtilities::Matrix4x4f& aWorldTransform)
@@ -48,7 +48,12 @@ float Camera::GetFarPlane() const
 	return myFarPlane;
 }
 
-float Camera::GetFov() const
+float Camera::GetFovInDegrees() const
+{
+	return myFrustum.GetFov() * CommonUtilities::Math::RAD_TO_DEG<float>;
+}
+
+float Camera::GetFovInRadians() const
 {
 	return myFrustum.GetFov();
 }

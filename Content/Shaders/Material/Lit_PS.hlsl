@@ -50,8 +50,40 @@ float4 main(VStoPS aPixel) : SV_TARGET
                     light.Intensity
                 );
                 
+                float pixelDistance = length(aPixel.WorldPosition.xyz - CB_CameraPosition);
+
+                uint cascadeIndex;
+                
+                if (pixelDistance < CB_CascadeFarPlanes.x)
+                {
+                    cascadeIndex = 0;
+                }
+                else if (pixelDistance < CB_CascadeFarPlanes.y)
+                {
+                    cascadeIndex = 1;
+                }
+                else
+                {
+                    cascadeIndex = 2;
+                }
+                
+                // Renders the cascade splits with distinct colors
+                //if (pixelDistance < CB_CascadeFarPlanes.x)
+                //{
+                //    lightContribution = float3(1.0f, 0.0f, 0.0f);
+                //}
+                //else if (pixelDistance < CB_CascadeFarPlanes.y)
+                //{
+                //    lightContribution = float3(0.0f, 1.0f, 0.0f);
+                //}
+                //else
+                //{
+                //    lightContribution = float3(0.0f, 0.0f, 1.0f);
+                //}
+                
                 float shadowFactor = CalculateDirectionalLightShadowFactor(
-                    light.LightViewProjectionTexture, 
+                    cascadeIndex,
+                    CB_LightViewProjectionTextures[cascadeIndex],
                     aPixel.WorldPosition, 
                     normal, 
                     light.Direction

@@ -61,5 +61,5 @@ const CommonUtilities::Matrix4x4f SpotLightComponent::CreateProjectionMatrix() c
 {
     const float fov = acos(myData->OuterCone) * 2.0f * CommonUtilities::Math::RAD_TO_DEG<float>;
 
-	return CommonUtilities::Matrix4x4f::CreatePerspectiveProjection(fov, 1.0f, myData->Radius, myShadowMapSize.x, myShadowMapSize.y);
+	return CommonUtilities::Matrix4x4f::CreatePerspectiveProjection(fov, 0.1f, myData->Radius, 1.0f);
 }

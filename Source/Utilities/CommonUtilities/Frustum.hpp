@@ -9,28 +9,29 @@
 #include "Vector3.hpp"
 #include "Vector4.hpp"
 #include "PlaneVolume.hpp"
+#include "MathUtils.hpp"
 
 #pragma warning(push)
 #pragma warning(disable : 4201)
 
 namespace CommonUtilities
 {
-	enum class FrustumCorner
-	{
-		NearTopLeft,
-		NearTopRight,
-		NearBottomLeft,
-		NearBottomRight,
-		FarTopLeft,
-		FarTopRight,
-		FarBottomLeft,
-		FarBottomRight
-	};
-
 	template <typename T>
 	class Frustum
 	{
 	public:
+		enum Corner_
+		{
+			Corner_NearTopLeft,
+			Corner_NearTopRight,
+			Corner_NearBottomLeft,
+			Corner_NearBottomRight,
+			Corner_FarTopLeft,
+			Corner_FarTopRight,
+			Corner_FarBottomLeft,
+			Corner_FarBottomRight
+		};
+
 		union 
 		{
 			PlaneVolume<T> planeVolume;
@@ -58,8 +59,9 @@ namespace CommonUtilities
 
 		void BuildFrustum(const Matrix4x4<T>& aCameraTransform);
 
-		std::vector<Vector3<T>> GetCorners(const Matrix4x4<T>& aCameraViewMatrix, const Matrix4x4<T>& aCameraProjection) const;
-		CommonUtilities::Vector3<T> GetCenter(const Matrix4x4<T>& aCameraViewMatrix, const Matrix4x4<T>& aCameraProjection) const;
+		std::vector<Vector4<T>> GetCornersInWorldSpace(const Matrix4x4<T>& aInverseViewProjection) const;
+		
+		Vector3<T> GetCenterInWorldSpace(const Matrix4x4<T>& aInverseViewProjection) const;
 
 		bool IsInside(const Vector3<T>& aPoint);
 		bool IsInside(const Sphere<T>& aSphere);
@@ -71,7 +73,6 @@ namespace CommonUtilities
 		T myZFar;
 		T myAspectRatio;
 	};
-
 
 	template<typename T>
 	inline Frustum<T>::Frustum()
@@ -95,7 +96,7 @@ namespace CommonUtilities
 		assert(aNearPlane > static_cast<T>(0) && aNearPlane < aFarPlane);
 		assert(aAspectRatio > static_cast<T>(0));
 
-		myFov = aFov * (T(3.14159265358979323846) / T(180));
+		myFov = aFov * Math::DEG_TO_RAD<T>;
 		myZNear = aNearPlane;
 		myZFar = aFarPlane;
 		myAspectRatio = aAspectRatio;
@@ -180,62 +181,55 @@ namespace CommonUtilities
 	}
 
 	template<typename T>
-	inline std::vector<Vector3<T>> Frustum<T>::GetCorners(const Matrix4x4<T>& aCameraViewMatrix, const Matrix4x4<T>& aCameraProjection) const
+	inline std::vector<Vector4<T>> Frustum<T>::GetCornersInWorldSpace(const Matrix4x4<T>& aInverseViewProjection) const
 	{
-		std::vector<Vector4<T>> vector4Corners(8);
+		std::vector<Vector4<T>> corners(8);
 
-		vector4Corners[static_cast<int>(FrustumCorner::NearTopLeft)]	 = Vector4<T>(-1, 1, 0, 1);
-		vector4Corners[static_cast<int>(FrustumCorner::NearTopRight)]	 = Vector4<T>( 1, 1, 0, 1);
-		vector4Corners[static_cast<int>(FrustumCorner::NearBottomLeft)]  = Vector4<T>(-1,-1, 0, 1);
-		vector4Corners[static_cast<int>(FrustumCorner::NearBottomRight)] = Vector4<T>( 1,-1, 0, 1);
-		vector4Corners[static_cast<int>(FrustumCorner::FarTopLeft)]		 = Vector4<T>(-1, 1, 1, 1);
-		vector4Corners[static_cast<int>(FrustumCorner::FarTopRight)]	 = Vector4<T>( 1, 1, 1, 1);
-		vector4Corners[static_cast<int>(FrustumCorner::FarBottomLeft)]	 = Vector4<T>(-1,-1, 1, 1);
-		vector4Corners[static_cast<int>(FrustumCorner::FarBottomRight)]  = Vector4<T>( 1,-1, 1, 1);
+		corners[static_cast<int>(Corner_NearTopLeft)]	  = Vector4<T>(-1.0f,  1.0f, 0.0f, 1.0f);
+		corners[static_cast<int>(Corner_NearTopRight)]	  = Vector4<T>( 1.0f,  1.0f, 0.0f, 1.0f);
+		corners[static_cast<int>(Corner_NearBottomLeft)]  = Vector4<T>(-1.0f, -1.0f, 0.0f, 1.0f);
+		corners[static_cast<int>(Corner_NearBottomRight)] = Vector4<T>( 1.0f, -1.0f, 0.0f, 1.0f);
+		corners[static_cast<int>(Corner_FarTopLeft)]	  = Vector4<T>(-1.0f,  1.0f, 1.0f, 1.0f);
+		corners[static_cast<int>(Corner_FarTopRight)]	  = Vector4<T>( 1.0f,  1.0f, 1.0f, 1.0f);
+		corners[static_cast<int>(Corner_FarBottomLeft)]	  = Vector4<T>(-1.0f, -1.0f, 1.0f, 1.0f);
+		corners[static_cast<int>(Corner_FarBottomRight)]  = Vector4<T>( 1.0f, -1.0f, 1.0f, 1.0f);
 
-		Matrix4x4<T> inverseViewProjection = Matrix4x4<T>(aCameraViewMatrix * aCameraProjection).GetInverse();
+		corners[static_cast<int>(Corner_NearTopLeft)]	  *= aInverseViewProjection;
+		corners[static_cast<int>(Corner_NearTopRight)]	  *= aInverseViewProjection;
+		corners[static_cast<int>(Corner_NearBottomLeft)]  *= aInverseViewProjection;
+		corners[static_cast<int>(Corner_NearBottomRight)] *= aInverseViewProjection;
+		corners[static_cast<int>(Corner_FarTopLeft)]	  *= aInverseViewProjection;
+		corners[static_cast<int>(Corner_FarTopRight)]	  *= aInverseViewProjection;
+		corners[static_cast<int>(Corner_FarBottomLeft)]	  *= aInverseViewProjection;
+		corners[static_cast<int>(Corner_FarBottomRight)]  *= aInverseViewProjection;
 
-		vector4Corners[static_cast<int>(FrustumCorner::NearTopLeft)]	 *= inverseViewProjection;
-		vector4Corners[static_cast<int>(FrustumCorner::NearTopRight)]	 *= inverseViewProjection;
-		vector4Corners[static_cast<int>(FrustumCorner::NearBottomLeft)]  *= inverseViewProjection;
-		vector4Corners[static_cast<int>(FrustumCorner::NearBottomRight)] *= inverseViewProjection;
-		vector4Corners[static_cast<int>(FrustumCorner::FarTopLeft)]		 *= inverseViewProjection;
-		vector4Corners[static_cast<int>(FrustumCorner::FarTopRight)]	 *= inverseViewProjection;
-		vector4Corners[static_cast<int>(FrustumCorner::FarBottomLeft)]	 *= inverseViewProjection;
-		vector4Corners[static_cast<int>(FrustumCorner::FarBottomRight)]  *= inverseViewProjection;
-
-		vector4Corners[static_cast<int>(FrustumCorner::NearTopLeft)]	 /= vector4Corners[static_cast<int>(FrustumCorner::NearTopLeft)].w;
-		vector4Corners[static_cast<int>(FrustumCorner::NearTopRight)]	 /= vector4Corners[static_cast<int>(FrustumCorner::NearTopRight)].w;
-		vector4Corners[static_cast<int>(FrustumCorner::NearBottomLeft)]  /= vector4Corners[static_cast<int>(FrustumCorner::NearBottomLeft)].w;
-		vector4Corners[static_cast<int>(FrustumCorner::NearBottomRight)] /= vector4Corners[static_cast<int>(FrustumCorner::NearBottomRight)].w;
-		vector4Corners[static_cast<int>(FrustumCorner::FarTopLeft)]		 /= vector4Corners[static_cast<int>(FrustumCorner::FarTopLeft)].w;
-		vector4Corners[static_cast<int>(FrustumCorner::FarTopRight)]	 /= vector4Corners[static_cast<int>(FrustumCorner::FarTopRight)].w;
-		vector4Corners[static_cast<int>(FrustumCorner::FarBottomLeft)]	 /= vector4Corners[static_cast<int>(FrustumCorner::FarBottomLeft)].w;
-		vector4Corners[static_cast<int>(FrustumCorner::FarBottomRight)]  /= vector4Corners[static_cast<int>(FrustumCorner::FarBottomRight)].w;
-
-		std::vector<Vector3<T>> corners(8);
-
-		for (int c = 0; c < 8; c++)
-		{
-			corners[c] = Vector3<T>(vector4Corners[c].x, vector4Corners[c].y, vector4Corners[c].z);
-		}
+		corners[static_cast<int>(Corner_NearTopLeft)]	  /= corners[static_cast<int>(Corner_NearTopLeft)].w;
+		corners[static_cast<int>(Corner_NearTopRight)]	  /= corners[static_cast<int>(Corner_NearTopRight)].w;
+		corners[static_cast<int>(Corner_NearBottomLeft)]  /= corners[static_cast<int>(Corner_NearBottomLeft)].w;
+		corners[static_cast<int>(Corner_NearBottomRight)] /= corners[static_cast<int>(Corner_NearBottomRight)].w;
+		corners[static_cast<int>(Corner_FarTopLeft)]	  /= corners[static_cast<int>(Corner_FarTopLeft)].w;
+		corners[static_cast<int>(Corner_FarTopRight)]	  /= corners[static_cast<int>(Corner_FarTopRight)].w;
+		corners[static_cast<int>(Corner_FarBottomLeft)]	  /= corners[static_cast<int>(Corner_FarBottomLeft)].w;
+		corners[static_cast<int>(Corner_FarBottomRight)]  /= corners[static_cast<int>(Corner_FarBottomRight)].w;
 
 		return corners;
 	}
 
 	template<typename T>
-	inline CommonUtilities::Vector3<T> Frustum<T>::GetCenter(const Matrix4x4<T>& aCameraViewMatrix, const Matrix4x4<T>& aCameraProjection) const
+	inline CommonUtilities::Vector3<T> Frustum<T>::GetCenterInWorldSpace(const Matrix4x4<T>& aInverseViewProjection) const
 	{
-		std::vector<Vector3<T>> corners = GetCorners(aCameraViewMatrix, aCameraProjection);
+		std::vector<Vector4<T>> corners = GetCornersInWorldSpace(aInverseViewProjection);
 
-		Vector3<T> center;
+		Vector4<T> center4;
 
-		for (const Vector3<T>& corner : corners)
+		for (size_t c = 0; c < corners.size(); c++)
 		{
-			center += corner;
+			center4 += corners[c];
 		}
 
-		center /= static_cast<T>(corners.size());
+		center4 /= T(8);
+
+		Vector3<T> center = { center4.x, center4.y, center4.z };
 
 		return center;
 	}

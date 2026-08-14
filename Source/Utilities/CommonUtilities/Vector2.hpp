@@ -15,6 +15,8 @@ namespace CommonUtilities
 {
 	template <typename T>
 	class Vector3;
+	template <typename T>
+	class Vector4;
 }
 
 namespace CommonUtilities
@@ -54,6 +56,7 @@ namespace CommonUtilities
 			static T Dot(const Vector2<T>& aVector0, const Vector2<T>& aVector1);
 
 			Vector3<T> ToXY0() const;
+			Vector4<T> ToXY00() const;
 	};
 
 	using Vector2f = Vector2<float>;
@@ -296,6 +299,12 @@ namespace CommonUtilities
 	inline Vector3<T> Vector2<T>::ToXY0() const
 	{
 		return Vector3<T>(x, y, 0);
+	}
+
+	template<typename T>
+	inline Vector4<T> Vector2<T>::ToXY00() const
+	{
+		return Vector4<T>(x, y, 0, 0);
 	}
 }
 

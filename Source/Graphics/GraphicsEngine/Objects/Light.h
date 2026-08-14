@@ -2,7 +2,6 @@
 
 #include "CommonUtilities/Matrix4x4.hpp"
 #include "CommonUtilities/Vector3.hpp"
-#include "CommonUtilities/Vector2.hpp"
 
 enum class LightType : unsigned int
 {

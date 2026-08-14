@@ -213,6 +213,7 @@ xcopy /E /I /R /Y /D "%SHADERSRC%" "%SHADERDEST%"</Command>
     </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="ConstantBuffers\CascadeBuffer.h" />
     <ClInclude Include="ConstantBuffers\AnimationBuffer.h" />
     <ClInclude Include="InterOp\DDSTextureLoader11.h" />
     <ClInclude Include="ConstantBuffers\LightBuffer.h" />
@@ -245,6 +246,7 @@ xcopy /E /I /R /Y /D "%SHADERSRC%" "%SHADERDEST%"</Command>
     <ClInclude Include="Textures\Normal\Default_N.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ConstantBuffers\CascadeBuffer.cpp" />
     <ClCompile Include="ConstantBuffers\AnimationBuffer.cpp" />
     <ClCompile Include="InterOp\DDSTextureLoader11.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>

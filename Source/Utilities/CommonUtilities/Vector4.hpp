@@ -14,6 +14,14 @@ namespace Tga
 namespace CommonUtilities
 {
 	template <typename T>
+	class Vector2;
+	template <typename T>
+	class Vector3;
+}
+
+namespace CommonUtilities
+{
+	template <typename T>
 	class Vector4
 	{
 		public:
@@ -48,6 +56,9 @@ namespace CommonUtilities
 
 			T Dot(const Vector4<T> &aVector) const;
 			static T Dot(const Vector4<T>& aVector0, const Vector4<T>& aVector1);
+
+			Vector2<T> ToXY() const;
+			Vector3<T> ToXYZ() const;
 	};
 
 	using Vector4f = Vector4<float>;
@@ -295,6 +306,18 @@ namespace CommonUtilities
 	inline T Vector4<T>::Dot(const Vector4<T>& aVector0, const Vector4<T>& aVector1)
 	{
 		return (aVector0.x * aVector1.x) + (aVector0.y * aVector1.y) + (aVector0.z * aVector1.z) + (aVector0.w * aVector1.w);
+	}
+
+	template<typename T>
+	inline Vector2<T> Vector4<T>::ToXY() const
+	{
+		return Vector2<T>(x, y);
+	}
+
+	template<typename T>
+	inline Vector3<T> Vector4<T>::ToXYZ() const
+	{
+		return Vector3<T>(x, y, z);
 	}
 }
 
