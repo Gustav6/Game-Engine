@@ -295,7 +295,7 @@ void ModelViewer::LoadScene()
         PointLightComponent* pointLight = object->AddComponent<PointLightComponent>();
         pointLight->SetPosition({ -200.0f, 150.0f, 0.0f });
         pointLight->SetColor({ 1.0f, 0.95f, 0.85f });
-        pointLight->SetIntensity(1000.0f);
+        pointLight->SetIntensity(7500.0f);
         pointLight->SetRadius(900.0f);
         pointLight->SetShadowMapSize({ 512, 512 });
 

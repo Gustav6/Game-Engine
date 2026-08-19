@@ -56,30 +56,19 @@ float4 main(VStoPS aPixel) : SV_TARGET
                 
                 if (pixelDistance < CB_CascadeFarPlanes.x)
                 {
+                    //lightContribution = float3(1.0f, 0.0f, 0.0f);
                     cascadeIndex = 0;
                 }
                 else if (pixelDistance < CB_CascadeFarPlanes.y)
                 {
+                    //lightContribution = float3(0.0f, 1.0f, 0.0f);
                     cascadeIndex = 1;
                 }
                 else
                 {
+                    //lightContribution = float3(0.0f, 0.0f, 1.0f);
                     cascadeIndex = 2;
                 }
-                
-                // Renders the cascade splits with distinct colors
-                //if (pixelDistance < CB_CascadeFarPlanes.x)
-                //{
-                //    lightContribution = float3(1.0f, 0.0f, 0.0f);
-                //}
-                //else if (pixelDistance < CB_CascadeFarPlanes.y)
-                //{
-                //    lightContribution = float3(0.0f, 1.0f, 0.0f);
-                //}
-                //else
-                //{
-                //    lightContribution = float3(0.0f, 0.0f, 1.0f);
-                //}
                 
                 float shadowFactor = CalculateDirectionalLightShadowFactor(
                     cascadeIndex,
