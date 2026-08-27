@@ -184,16 +184,18 @@
   <ItemGroup>
     <FxCompile Include="Shaders\Material\Surface_VS.hlsl" />
     <FxCompile Include="Shaders\Material\Unlit_PS.hlsl" />
-    <FxCompile Include="Shaders\Material\Lit_PS.hlsl" />
+    <FxCompile Include="Shaders\Material\Lambert_PS.hlsl" />
     <FxCompile Include="Shaders\Material\ShadowCube_GS.hlsl" />
+    <FxCompile Include="Shaders\Material\PBL_PS.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\Material\Include\Common.hlsli" />
-    <None Include="Shaders\Material\Include\MaterialParameters.hlsli" />
-    <None Include="Shaders\Material\Include\Material.hlsli" />
     <None Include="Shaders\Material\Include\Light.hlsli" />
     <None Include="Shaders\Material\Include\Samplers.hlsli" />
     <None Include="Shaders\Material\Include\PoissonDisks.hlsli" />
     <None Include="Shaders\Material\Include\Shadow.hlsli" />
+    <None Include="Shaders\Material\Include\LUTFunctions.hlsli" />
+    <None Include="Shaders\Material\Include\Material.hlsli" />
+    <None Include="Shaders\Material\Include\MaterialParameters.hlsli" />
   </ItemGroup>
 </Project>

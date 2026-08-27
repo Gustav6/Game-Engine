@@ -188,7 +188,7 @@ bool GraphicsEngine::CreateMaterial(const MaterialDescription& aDescription, Mat
 
 	{
 		const std::filesystem::path& path = myMaterialDomainShaders.at(aDescription.Domain);
-		MaterialShaderIncludeHandler handler(myShaderRoot / "Material", path, aDescription.MaterialShaderCode);
+		MaterialShaderIncludeHandler handler(myShaderRoot / "Material" / "Include", path, aDescription.MaterialShaderCode);
 
 		if (!myRHI.CompileShader(ShaderType::VertexShader, path, &handler, true, materialVS))
 		{
@@ -198,7 +198,7 @@ bool GraphicsEngine::CreateMaterial(const MaterialDescription& aDescription, Mat
 
 	{
 		const std::filesystem::path& path = myMaterialShadingModelShaders.at(aDescription.ShadingModel);
-		MaterialShaderIncludeHandler handler(myShaderRoot / "Material", path, aDescription.MaterialShaderCode);
+		MaterialShaderIncludeHandler handler(myShaderRoot / "Material" / "Include", path, aDescription.MaterialShaderCode);
 
 		if (!myRHI.CompileShader(ShaderType::PixelShader, path, &handler, true, materialPS))
 		{
@@ -727,7 +727,8 @@ void GraphicsEngine::RegisterMaterialShaders()
 	// Shading Model
 	{
 		myMaterialShadingModelShaders.emplace(ShadingModel::Unlit, myShaderRoot / "Material" / "Unlit_PS.hlsl");
-		myMaterialShadingModelShaders.emplace(ShadingModel::Lit, myShaderRoot / "Material" / "Lit_PS.hlsl");
+		myMaterialShadingModelShaders.emplace(ShadingModel::Lambert, myShaderRoot / "Material" / "Lambert_PS.hlsl");
+		myMaterialShadingModelShaders.emplace(ShadingModel::PBL, myShaderRoot / "Material" / "PBL_PS.hlsl");
 	}
 }
 
@@ -778,7 +779,7 @@ bool GraphicsEngine::LoadDefaultAssets()
 		defaultMatDesc.BlendMode = BlendMode::Opaque;
 		defaultMatDesc.Domain = MaterialDomain::Surface;
 		defaultMatDesc.ShadingModel = ShadingModel::Unlit;
-		defaultMatDesc.MaterialShaderCode = myShaderRoot / "Material" / "Material.hlsli";
+		defaultMatDesc.MaterialShaderCode = myShaderRoot / "Material" / "Include" / "Material.hlsli";
 
 		if (!CreateMaterial(defaultMatDesc, *myDefaultMaterial))
 		{

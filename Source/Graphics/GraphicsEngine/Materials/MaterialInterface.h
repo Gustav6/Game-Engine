@@ -26,7 +26,8 @@ enum class ShadingModel : uint8_t
 {
 	None,
 	Unlit,
-	Lit
+	Lambert,
+	PBL
 };
 
 /**

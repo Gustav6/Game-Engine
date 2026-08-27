@@ -1,0 +1,10 @@
+{
+  "Name": "BaseMaterial",
+  "MaterialDomain": 1,
+  "ShadingModel": 2,
+  "BlendMode": 1,
+  "ShaderCode": "Shaders/BaseMaterial.hlsli",
+  "AlbedoTexture": "Textures/Albedo/T_Marble_Tiles_C.dds",
+  "NormalTexture": "Textures/Normal/T_Marble_Tiles_N.dds",
+  "MaterialTexture": "Textures/Normal/T_Marble_Tiles_M.dds"
+}

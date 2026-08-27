@@ -252,7 +252,7 @@ xcopy /E /I /R /Y /D "$(SolutionDir)ThirdParty\Dll" "$(OutDir)"
   </ItemGroup>
   <ItemGroup>
     <None Include="Materials\shadertoolsconfig.json" />
-    <None Include="Materials\BaseLitMaterial.hlsli">
+    <None Include="Materials\BaseMaterial.hlsli">
       <FileType>Document</FileType>
     </None>
     <None Include="ModelViewer.aps" />

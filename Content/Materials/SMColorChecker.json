@@ -1,0 +1,7 @@
+{
+  "Name": "SMColorChecker",
+  "ParentMaterial": "Materials/BaseMaterial.json",
+  "AlbedoTexture": "Textures/Albedo/T_Color_Checker_C.dds",
+  "NormalTexture": "Textures/Normal/T_Color_Checker_N.dds",
+  "MaterialTexture": "Textures/Normal/T_Color_Checker_M.dds"
+}

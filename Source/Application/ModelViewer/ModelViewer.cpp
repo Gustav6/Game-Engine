@@ -146,6 +146,7 @@ void ModelViewer::LoadScene()
     {
         Application.AssetLibrary.LoadMesh("Meshes/SM_Chest.fbx");
         Application.AssetLibrary.LoadMesh("Meshes/SK_C_TGA_Bro.fbx");
+        Application.AssetLibrary.LoadMesh("Meshes/SM_Color_Checker.fbx");
     }
 
     {
@@ -156,26 +157,29 @@ void ModelViewer::LoadScene()
     }
 
     {
-        Application.AssetLibrary.LoadTexture("Textures/Albedo/T_Chest_C.dds");
-        Application.AssetLibrary.LoadTexture("Textures/Albedo/T_TGA_Bro_C.dds");
-        Application.AssetLibrary.LoadTexture("Textures/Albedo/T_Marble_Tiles_C.dds");
-    }
-
-    {
-        Application.AssetLibrary.LoadTexture("Textures/Normal/T_Chest_N.dds");
-        Application.AssetLibrary.LoadTexture("Textures/Normal/T_TGA_Bro_N.dds");
-        Application.AssetLibrary.LoadTexture("Textures/Normal/T_Marble_Tiles_N.dds");
-    }
-
-    {
-        Application.AssetLibrary.LoadMaterial("Materials/BaseLitMaterial.json");
+        Application.AssetLibrary.LoadMaterial("Materials/BaseMaterial.json");
         Application.AssetLibrary.LoadMaterial("Materials/ChestMaterial.json");
         Application.AssetLibrary.LoadMaterial("Materials/TGABroMaterial.json");
+        Application.AssetLibrary.LoadMaterial("Materials/SMColorChecker.json");
     }
 
     {
         myGameCamera = GameCamera(90.0f, 1.0f, 5000.0f, GraphicsEngine::Get().GetClientSize());
         myGameCamera.GetTransform().SetPosition({ 0, 100, -200 });
+    }
+
+    {
+        std::unique_ptr<GameObject> object = std::make_unique<GameObject>();
+
+        MeshComponent* meshComponent = object->AddComponent<MeshComponent>();
+
+        meshComponent->SetMesh(Application.AssetLibrary.GetMesh("Meshes/SM_Color_Checker.fbx"));
+        meshComponent->SetMaterial(0, Application.AssetLibrary.GetMaterial("Materials/SMColorChecker.json"));
+
+        object->GetTransform().Translate({ -400, 40, 0 });
+        object->GetTransform().Rotate(CommonUtilities::Vector3f{ -90, 0, 0 });
+
+        myGameWorld.AddGameObject(std::move(object));
     }
 
     {
@@ -197,7 +201,7 @@ void ModelViewer::LoadScene()
         MeshComponent* meshComponent = object->AddComponent<MeshComponent>();
 
         meshComponent->SetMesh(Application.AssetLibrary.GetMesh("UnitPlane"));
-        meshComponent->SetMaterial(0, Application.AssetLibrary.GetMaterial("Materials/BaseLitMaterial.json"));
+        meshComponent->SetMaterial(0, Application.AssetLibrary.GetMaterial("Materials/BaseMaterial.json"));
 
         object->GetTransform().Translate({ 0, 0, 0 });
         object->GetTransform().SetScale({ 2000, 2000, 2000 });
@@ -211,7 +215,7 @@ void ModelViewer::LoadScene()
         MeshComponent* meshComponent = object->AddComponent<MeshComponent>();
 
         meshComponent->SetMesh(Application.AssetLibrary.GetMesh("UnitCube"));
-        meshComponent->SetMaterial(0, Application.AssetLibrary.GetMaterial("Materials/BaseLitMaterial.json"));
+        meshComponent->SetMaterial(0, Application.AssetLibrary.GetMaterial("Materials/BaseMaterial.json"));
 
         object->GetTransform().Translate({ 0, 50, 0 });
         object->GetTransform().SetScale({ 100, 100, 100 });
@@ -225,7 +229,7 @@ void ModelViewer::LoadScene()
         MeshComponent* meshComponent = object->AddComponent<MeshComponent>();
 
         meshComponent->SetMesh(Application.AssetLibrary.GetMesh("UnitCube"));
-        meshComponent->SetMaterial(0, Application.AssetLibrary.GetMaterial("Materials/BaseLitMaterial.json"));
+        meshComponent->SetMaterial(0, Application.AssetLibrary.GetMaterial("Materials/BaseMaterial.json"));
 
         object->GetTransform().SetEulerRotation({ 45.0f, 180.0f, 45.0f });
         object->GetTransform().Translate({ -200, 100, 400 });
@@ -281,7 +285,7 @@ void ModelViewer::LoadScene()
         DirectionalLightComponent* directionalLight = object->AddComponent<DirectionalLightComponent>();
 
         directionalLight->SetColor({ 1.0f, 0.95f, 0.85f });
-        directionalLight->SetIntensity(1.0f);
+        directionalLight->SetIntensity(2.0f);
         directionalLight->SetDirection({ 0.0f, -1.0f, 1.0f });
 
         myDirectionLightObject = myGameWorld.AddGameObject(std::move(object));

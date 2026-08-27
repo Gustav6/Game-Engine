@@ -282,11 +282,14 @@ xcopy /E /I /R /Y /D "%SHADERSRC%" "%SHADERDEST%"</Command>
     <ClCompile Include="Objects\Sprite.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="Shaders\Material\Lit_PS.hlsl">
+    <FxCompile Include="Shaders\Material\Lambert_PS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Shaders\Material\PBL_PS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
     </FxCompile>
     <FxCompile Include="Shaders\Material\ShadowCube_GS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Geometry</ShaderType>
@@ -314,8 +317,7 @@ xcopy /E /I /R /Y /D "%SHADERSRC%" "%SHADERDEST%"</Command>
   <ItemGroup>
     <None Include="Shaders\Material\Include\Common.hlsli" />
     <None Include="Shaders\Material\Include\Light.hlsli" />
-    <None Include="Shaders\Material\Include\Material.hlsli" />
-    <None Include="Shaders\Material\Include\MaterialParameters.hlsli" />
+    <None Include="Shaders\Material\Include\LUTFunctions.hlsli" />
     <None Include="Shaders\Material\Include\PoissonDisks.hlsli" />
     <None Include="Shaders\Material\Include\Samplers.hlsli" />
     <None Include="Shaders\Material\Include\Shadow.hlsli" />

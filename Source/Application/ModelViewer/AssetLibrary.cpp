@@ -1,6 +1,7 @@
 #include "AssetLibrary.h"
 
 #include <string>
+#include <filesystem>
 
 #include "GraphicsEngine/GraphicsEngine.hpp"
 
@@ -51,7 +52,7 @@ std::shared_ptr<Mesh> AssetLibrary::GetMesh(std::string_view aName)
 
     if (it == myMeshes.end())
     {
-        LOG(FBXLog, Error, "Could not fetch Mesh {}!", aName);
+        LOG(FBXLog, Error, "Could not find Mesh [{}]", aName);
         return nullptr;
     }
 
@@ -64,7 +65,7 @@ std::shared_ptr<Animation> AssetLibrary::GetAnimation(std::string_view aName)
 
     if (it == myAnimations.end())
     {
-        LOG(FBXLog, Error, "Could not fetch Animation {}!", aName);
+        LOG(FBXLog, Error, "Could not find Animation [{}]", aName);
         return nullptr;
     }
 
@@ -77,7 +78,7 @@ std::shared_ptr<Texture> AssetLibrary::GetTexture(std::string_view aName)
 
     if (it == myTextures.end())
     {
-        LOG(FBXLog, Error, "Could not fetch Texture {}!", aName);
+        LOG(FBXLog, Error, "Could not find Texture [{}]", aName);
         return nullptr;
     }
 
@@ -90,7 +91,7 @@ std::shared_ptr<MaterialInterface> AssetLibrary::GetMaterial(std::string_view aN
 
     if (it == myMaterials.end())
     {
-        LOG(FBXLog, Error, "Could not fetch Material {}!", aName);
+        LOG(FBXLog, Error, "Could not find Material [{}]", aName);
         return nullptr;
     }
 
@@ -119,19 +120,19 @@ bool AssetLibrary::LoadMesh(const std::filesystem::path& aPath)
         switch (importStatus.Result)
         {
             case TGA::FBX::FbxImportResult::InternalError:
-                LOG(FBXLog, Error, "Could not load mesh {}: Internal FBX importer error!", pathString);
+                LOG(FBXLog, Error, "Could not load mesh [{}] : Internal FBX importer error!", pathString);
                 break;
             case TGA::FBX::FbxImportResult::NotInitialized:
-                LOG(FBXLog, Error, "Could not load mesh {}: FBX importer is not initialized!", pathString);
+                LOG(FBXLog, Error, "Could not load mesh [{}] : FBX importer is not initialized!", pathString);
                 break;
             case TGA::FBX::FbxImportResult::FileNotFound:
-                LOG(FBXLog, Error, "Could not load mesh {}: File was not found!", pathString);
+                LOG(FBXLog, Error, "Could not load mesh [{}] : File was not found!", pathString);
                 break;
             case TGA::FBX::FbxImportResult::NoMeshData:
-                LOG(FBXLog, Error, "Could not load mesh {}: No mesh data found in file!", pathString);
+                LOG(FBXLog, Error, "Could not load mesh [{}] : No mesh data found in file!", pathString);
                 break;
             default:
-                LOG(FBXLog, Error, "Could not load mesh {}: Unknown error!", pathString);
+                LOG(FBXLog, Error, "Could not load mesh [{}] : Unknown error!", pathString);
                 break;
         }
 
@@ -145,25 +146,25 @@ bool AssetLibrary::LoadMesh(const std::filesystem::path& aPath)
         switch (warning)
         {
             case TGA::FBX::FbxImportWarning::TooManySkinWeights:
-                LOG(FBXLog, Warning, "Mesh {}: Vertices had too many skin weights and were truncated!", pathString);
+                LOG(FBXLog, Warning, "Mesh [{}] : Vertices had too many skin weights and were truncated!", pathString);
                 break;
             case TGA::FBX::FbxImportWarning::MissingSkinWeights:
-                LOG(FBXLog, Warning, "Mesh {}: Vertices are missing skin weights!", pathString);
+                LOG(FBXLog, Warning, "Mesh [{}] : Vertices are missing skin weights!", pathString);
                 break;
             case TGA::FBX::FbxImportWarning::NoUVCoordinates:
-                LOG(FBXLog, Warning, "Mesh {}: Surfaces have no UV coordinates!", pathString);
+                LOG(FBXLog, Warning, "Mesh [{}] : Surfaces have no UV coordinates!", pathString);
                 break;
             case TGA::FBX::FbxImportWarning::GenerateNormalsFailed:
-                LOG(FBXLog, Warning, "Mesh {}: Failed to generate normal's for surfaces!", pathString);
+                LOG(FBXLog, Warning, "Mesh [{}] : Failed to generate normal's for surfaces!", pathString);
                 break;
             case TGA::FBX::FbxImportWarning::CannotTriangulate:
-                LOG(FBXLog, Warning, "Mesh {}: Could not triangulate polygons!", pathString);
+                LOG(FBXLog, Warning, "Mesh [{}] : Could not triangulate polygons!", pathString);
                 break;
             case TGA::FBX::FbxImportWarning::DuplicateBoneNames:
-                LOG(FBXLog, Warning, "Mesh {}: Duplicate bone names detected!", pathString);
+                LOG(FBXLog, Warning, "Mesh [{}] : Duplicate bone names detected!", pathString);
                 break;
             default:
-                LOG(FBXLog, Warning, "Mesh {}: Unknown warning!", pathString);
+                LOG(FBXLog, Warning, "Mesh [{}] : Unknown warning!", pathString);
                 break;
         }
     }
@@ -241,7 +242,7 @@ bool AssetLibrary::LoadMesh(const std::filesystem::path& aPath)
 
     myMeshes.emplace(normalizedPath, std::move(mesh));
 
-    LOG(FBXLog, Verbose, "Mesh has loaded {}!", normalizedPath.string());
+    LOG(FBXLog, Verbose, "Mesh has loaded [{}]", normalizedPath.string());
 
     return true;
 }
@@ -268,22 +269,22 @@ bool AssetLibrary::LoadAnimation(const std::filesystem::path& aPath)
         switch (importStatus.Result)
         {
             case TGA::FBX::FbxImportResult::InternalError:
-                LOG(FBXLog, Error, "Could not load animation '{}': Internal FBX importer error!", pathString);
+                LOG(FBXLog, Error, "Could not load animation [{}] : Internal FBX importer error!", pathString);
                 break;
             case TGA::FBX::FbxImportResult::NotInitialized:
-                LOG(FBXLog, Error, "Could not load animation '{}': FBX importer is not initialized!", pathString);
+                LOG(FBXLog, Error, "Could not load animation [{}] : FBX importer is not initialized!", pathString);
                 break;
             case TGA::FBX::FbxImportResult::FileNotFound:
-                LOG(FBXLog, Error, "Could not load animation '{}': File not found!", pathString);
+                LOG(FBXLog, Error, "Could not load animation [{}] : File not found!", pathString);
                 break;
             case TGA::FBX::FbxImportResult::NoSkeletonData:
-                LOG(FBXLog, Error, "Could not load animation '{}': No skeleton data found in file!", pathString);
+                LOG(FBXLog, Error, "Could not load animation [{}] : No skeleton data found in file!", pathString);
                 break;
             case TGA::FBX::FbxImportResult::NoAnimationData:
-                LOG(FBXLog, Error, "Could not load animation '{}': No animation data found in file!", pathString);
+                LOG(FBXLog, Error, "Could not load animation [{}] : No animation data found in file!", pathString);
                 break;
             default:
-                LOG(FBXLog, Error, "Could not load animation '{}': Unknown error!", pathString);
+                LOG(FBXLog, Error, "Could not load animation [{}] : Unknown error!", pathString);
                 break;
         }
 
@@ -297,16 +298,16 @@ bool AssetLibrary::LoadAnimation(const std::filesystem::path& aPath)
         switch (warning)
         {
             case TGA::FBX::FbxImportWarning::TooManySkinWeights:
-                LOG(FBXLog, Warning, "Animation '{}': vertices had too many skin weights and were truncated!", pathString);
+                LOG(FBXLog, Warning, "Animation [{}] : vertices had too many skin weights and were truncated!", pathString);
                 break;
             case TGA::FBX::FbxImportWarning::MissingSkinWeights:
-                LOG(FBXLog, Warning, "Animation '{}': vertices are missing skin weights!", pathString);
+                LOG(FBXLog, Warning, "Animation [{}] : vertices are missing skin weights!", pathString);
                 break;
             case TGA::FBX::FbxImportWarning::DuplicateBoneNames:
-                LOG(FBXLog, Warning, "Animation '{}': duplicate bone names detected, skinning may be incorrect!", pathString);
+                LOG(FBXLog, Warning, "Animation [{}] : duplicate bone names detected, skinning may be incorrect!", pathString);
                 break;
             default:
-                LOG(FBXLog, Warning, "Animation '{}': Unknown warning!", pathString);
+                LOG(FBXLog, Warning, "Animation [{}] : Unknown warning!", pathString);
                 break;
         }
     }
@@ -333,7 +334,7 @@ bool AssetLibrary::LoadAnimation(const std::filesystem::path& aPath)
 
     myAnimations.emplace(normalizedPath, std::move(animation));
 
-    LOG(FBXLog, Verbose, "Animation has loaded {}!", normalizedPath.string());
+    LOG(FBXLog, Verbose, "Animation has loaded [{}]", normalizedPath.string());
 
     return true;
 }
@@ -359,7 +360,7 @@ bool AssetLibrary::LoadTexture(const std::filesystem::path& aPath)
 
     myTextures.emplace(normalizedPath, std::move(texture));
 
-    LOG(FBXLog, Verbose, "Texture has loaded {}!", normalizedPath.string());
+    LOG(FBXLog, Verbose, "Texture has loaded [{}]", normalizedPath.string());
 
     return true;
 }
@@ -402,12 +403,26 @@ bool AssetLibrary::LoadMaterial(const std::filesystem::path& aPath)
 
         auto instance = MaterialInstance::Create(materialData.GetString("Name"), it->second);
 
-        instance->SetTexture(0, GetTexture(materialData.GetString("AlbedoTexture")));
-        instance->SetTexture(1, GetTexture(materialData.GetString("NormalTexture")));
+        {
+            std::filesystem::path albedoTexturePath = materialData.GetString("AlbedoTexture");
+            std::filesystem::path normalTexturePath = materialData.GetString("NormalTexture");
+
+            if (!LoadTexture(albedoTexturePath))
+            {
+                return false;
+            }
+            if (!LoadTexture(normalTexturePath))
+            {
+                return false;
+            }
+
+            instance->SetTexture(0, GetTexture(albedoTexturePath.string()));
+            instance->SetTexture(1, GetTexture(normalTexturePath.string()));
+        }
 
         myMaterials.emplace(normalizedPath, std::move(instance));
 
-        LOG(FBXLog, Verbose, "Material instance has loaded {}!", normalizedPath.string());
+        LOG(FBXLog, Verbose, "Material instance has loaded [{}]", normalizedPath.string());
 
         return true;
     }
@@ -426,12 +441,26 @@ bool AssetLibrary::LoadMaterial(const std::filesystem::path& aPath)
         return false;
     }
 
-    material->SetTexture(0, GetTexture(materialData.GetString("AlbedoTexture")));
-    material->SetTexture(1, GetTexture(materialData.GetString("NormalTexture")));
+    {
+        std::filesystem::path albedoTexturePath = materialData.GetString("AlbedoTexture");
+        std::filesystem::path normalTexturePath = materialData.GetString("NormalTexture");
+
+        if (!LoadTexture(albedoTexturePath))
+        {
+            return false;
+        }
+        if (!LoadTexture(normalTexturePath))
+        {
+            return false;
+        }
+
+        material->SetTexture(0, GetTexture(albedoTexturePath.string()));
+        material->SetTexture(1, GetTexture(normalTexturePath.string()));
+    }
 
     myMaterials.emplace(normalizedPath, std::move(material));
 
-    LOG(FBXLog, Verbose, "Material has loaded {}!", normalizedPath.string());
+    LOG(FBXLog, Verbose, "Material has loaded [{}]", normalizedPath.string());
 
     return true;
 }
@@ -509,7 +538,7 @@ void AssetLibrary::InitUnitCube()
     element.NumVertices = static_cast<unsigned>(meshVertices.size());
     element.NumIndices = static_cast<unsigned>(meshIndices.size());
 
-	// TODO: Calculate bounding sphere for unit cube
+	// TODO: Calculate bounding box / sphere for unit cube
     std::unique_ptr<CommonUtilities::Sphere<float>> boundingSphere = nullptr;
 
     std::shared_ptr<Mesh> mesh = std::make_shared<Mesh>();
@@ -542,7 +571,7 @@ void AssetLibrary::InitUnitPlane()
     element.NumVertices = static_cast<unsigned>(meshVertices.size());
     element.NumIndices = static_cast<unsigned>(meshIndices.size());
 
-	// TODO: Calculate bounding sphere for unit plane
+	// TODO: Calculate bounding box / sphere for unit plane
     std::unique_ptr<CommonUtilities::Sphere<float>> boundingSphere = nullptr;
     
     std::shared_ptr<Mesh> mesh = std::make_shared<Mesh>();
@@ -556,5 +585,28 @@ void AssetLibrary::InitUnitPlane()
 
 void AssetLibrary::InitUnitAxes()
 {
-    
+
+    std::vector<Vertex> meshVertices =
+    {
+    };
+
+    std::vector<unsigned> meshIndices =
+    {
+    };
+
+    Mesh::Element element;
+
+    element.NumVertices = static_cast<unsigned>(meshVertices.size());
+    element.NumIndices = static_cast<unsigned>(meshIndices.size());
+
+    // TODO: Calculate bounding box / sphere for unit axes
+    std::unique_ptr<CommonUtilities::Sphere<float>> boundingSphere = nullptr;
+
+    std::shared_ptr<Mesh> mesh = std::make_shared<Mesh>();
+
+    std::string name = "Unit Axes";
+
+    mesh->Initialize(name, { element }, std::move(meshVertices), std::move(meshIndices), nullptr, std::move(boundingSphere));
+
+    myMeshes.emplace("UnitAxes", mesh);
 }

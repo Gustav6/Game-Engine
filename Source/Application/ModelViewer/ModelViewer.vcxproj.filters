@@ -138,7 +138,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="ModelViewer.aps" />
-    <None Include="Materials\BaseLitMaterial.hlsli" />
+    <None Include="Materials\BaseMaterial.hlsli" />
     <None Include="Materials\shadertoolsconfig.json" />
   </ItemGroup>
 </Project>
