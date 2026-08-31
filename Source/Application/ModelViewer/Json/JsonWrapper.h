@@ -1,6 +1,7 @@
 #pragma once
 
 #include <filesystem>
+#include <string_view>
 
 struct yyjson_doc;
 struct yyjson_val;

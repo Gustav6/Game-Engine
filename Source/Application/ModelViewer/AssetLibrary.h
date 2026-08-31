@@ -22,7 +22,7 @@ public:
 	void Initialize(const std::filesystem::path& aContentRoot);
 
 	/**
-	 * Will free any resources used by the FBX importer by uninitializing it.
+	 * Will free any resources used by the FBX importer.
 	 * @return
 	 */
 	void UnInitialize();
@@ -32,9 +32,32 @@ public:
 	std::shared_ptr<Texture> GetTexture(std::string_view aName);
 	std::shared_ptr<MaterialInterface> GetMaterial(std::string_view aName);
 
+	/**
+	 * Attempts to load the specified mesh.
+	 * @param aPath Path to the mesh, relative to the content root.
+	 * @return True if the mesh was loaded successfully, otherwise false.
+	 */
 	bool LoadMesh(const std::filesystem::path& aPath);
+
+	/**
+	 * Attempts to load the specified animation.
+	 * @param aPath Path to the animation, relative to the content root.
+	 * @return True if the animation was loaded successfully, otherwise false.
+	 */
 	bool LoadAnimation(const std::filesystem::path& aPath);
+
+	/**
+	 * Attempts to load the specified texture.
+	 * @param aPath Path to the texture, relative to the content root.
+	 * @return True if the texture was loaded successfully, otherwise false.
+	 */
 	bool LoadTexture(const std::filesystem::path& aPath);
+
+	/**
+	 * Attempts to load the specified material, and all textures associated.
+	 * @param aPath Path to the material, relative to the content root.
+	 * @return True if the material and its associated textures were loaded successfully, otherwise false.
+	 */
 	bool LoadMaterial(const std::filesystem::path& aPath);
 
 private:
