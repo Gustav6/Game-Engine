@@ -2,6 +2,7 @@
 
 #include "CommonUtilities/Matrix4x4.hpp"
 #include "CommonUtilities/Vector3.hpp"
+#include "CommonUtilities/Vector2.hpp"
 
 enum class LightType : unsigned int
 {
@@ -21,6 +22,9 @@ struct Light
     float OuterCone = 0.0f;
     float Radius = 0.0f;
     unsigned int ShadowIndex = 0;
-    float _padding;
+    float _padding1;
     CommonUtilities::Matrix4x4f LightViewProjectionTexture;
+    CommonUtilities::Vector2ui ShadowMapSize = { 0, 0 };
+    float _padding2;
+    float _padding3;
 };

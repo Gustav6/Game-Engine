@@ -81,6 +81,8 @@ private:
 	GameCamera myGameCamera;
 
 	// TODO: TEMP
+	float myCamerasMoveSpeed = 400;
+
 	GameObject* myAnimatedObject = nullptr;
 
 	GameObject* myDirectionLightObject = nullptr;

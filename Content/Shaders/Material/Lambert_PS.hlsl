@@ -56,18 +56,24 @@ float4 main(VStoPS aPixel) : SV_TARGET
                 
                 if (pixelDistance < CB_CascadeFarPlanes.x)
                 {
-                    //lightContribution = float3(1.0f, 0.0f, 0.0f);
+                    //lightContribution.r *= 5;
                     cascadeIndex = 0;
                 }
                 else if (pixelDistance < CB_CascadeFarPlanes.y)
                 {
-                    //lightContribution = float3(0.0f, 1.0f, 0.0f);
+                    //lightContribution.g *= 5;
                     cascadeIndex = 1;
+                }
+                else if (pixelDistance < CB_CascadeFarPlanes.z)
+                {
+                    //lightContribution.b *= 5;
+                    cascadeIndex = 2;
                 }
                 else
                 {
-                    //lightContribution = float3(0.0f, 0.0f, 1.0f);
-                    cascadeIndex = 2;
+                    //lightContribution.r *= 5;
+                    //lightContribution.g *= 5;
+                    cascadeIndex = 3;
                 }
                 
                 float shadowFactor = CalculateDirectionalLightShadowFactor(
@@ -122,6 +128,7 @@ float4 main(VStoPS aPixel) : SV_TARGET
                 
                 float shadowFactor = CalculateSpotLightShadowFactor(
                     light.ShadowIndex, 
+                    light.ShadowMapSize,
                     light.LightViewProjectionTexture, 
                     aPixel.WorldPosition, 
                     normal, 

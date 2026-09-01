@@ -66,7 +66,7 @@ struct Scene
 class GraphicsEngine
 {
 public:
-	static constexpr unsigned NUM_CASCADES = 3;
+	static constexpr unsigned NUM_CASCADES = 4;
 	
 	static GraphicsEngine& Get();
 
@@ -138,7 +138,7 @@ private:
 	 * Will create the shadow cascades with specified sizes.
 	 * @param aCascadeSizes Sizes will apply in order from closest to furthest away.
 	 */
-	void BuildShadowCascades(std::array<int, NUM_CASCADES> aCascadeSizes, float aCameraNear, float aCameraFar);
+	void BuildShadowCascades(const std::array<int, NUM_CASCADES>& aCascadeSizes, float aCameraNear, float aCameraFar);
 	bool LoadDefaultAssets();
 	bool CreateRenderResources();
 

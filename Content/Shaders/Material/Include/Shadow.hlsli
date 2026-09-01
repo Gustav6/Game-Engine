@@ -5,20 +5,20 @@
 #include "Samplers.hlsli"
 #include "PoissonDisks.hlsli"
 
-#define MAX_CASCADES 3
+#define MAX_CASCADES 4
 
 cbuffer CascadeBuffer : register(b4)
 {
     float4x4 CB_LightViewProjectionTextures[MAX_CASCADES];
-    float3 CB_CascadeFarPlanes;
-    float _CB_Padding1;
+    float4 CB_CascadeFarPlanes;
+    float4 CB_CascadeShadowMapSizes;
     float3 CB_CameraPosition;
-    float _CB_Padding2;
+    float _CB_Padding;
 }
 
 Texture2D DirectionalLightShadowMap[MAX_CASCADES] : register(t100);
-Texture2D SpotLightShadowMaps[MAX_FORWARD_LIGHTS] : register(t103);
-TextureCube PointLightShadowMaps[MAX_FORWARD_LIGHTS] : register(t111);
+Texture2D SpotLightShadowMaps[MAX_FORWARD_LIGHTS] : register(t104);
+TextureCube PointLightShadowMaps[MAX_FORWARD_LIGHTS] : register(t112);
 
 float SampleSpotLightShadow(uint aIndex, float2 aShadowUV, float aShadowDepth)
 {
@@ -80,78 +80,42 @@ float SampleDirectionalLightShadow(uint aIndex, float2 aShadowUV, float aShadowD
             return DirectionalLightShadowMap[1].SampleCmpLevelZero(ShadowCmpSampler, aShadowUV, aShadowDepth);
         case 2:
             return DirectionalLightShadowMap[2].SampleCmpLevelZero(ShadowCmpSampler, aShadowUV, aShadowDepth);
+        case 3:
+            return DirectionalLightShadowMap[3].SampleCmpLevelZero(ShadowCmpSampler, aShadowUV, aShadowDepth);
         default:
             return 1;
     }
 }
 
-void GetSpotLightShadowMapDimensions(uint aIndex, out uint aWidth, out uint aHeight, out uint aMips)
+float GetCascadeShadowMapSize(uint aCascadeIndex)
 {
-    switch (aIndex)
+    switch (aCascadeIndex)
     {
         case 0:
-            SpotLightShadowMaps[0].GetDimensions(0, aWidth, aHeight, aMips);
-            break;
+            return CB_CascadeShadowMapSizes.x;
         case 1:
-            SpotLightShadowMaps[1].GetDimensions(0, aWidth, aHeight, aMips);
-            break;
+            return CB_CascadeShadowMapSizes.y;
         case 2:
-            SpotLightShadowMaps[2].GetDimensions(0, aWidth, aHeight, aMips);
-            break;
+            return CB_CascadeShadowMapSizes.z;
         case 3:
-            SpotLightShadowMaps[3].GetDimensions(0, aWidth, aHeight, aMips);
-            break;
-        case 4:
-            SpotLightShadowMaps[4].GetDimensions(0, aWidth, aHeight, aMips);
-            break;
-        case 5:
-            SpotLightShadowMaps[5].GetDimensions(0, aWidth, aHeight, aMips);
-            break;
-        case 6:
-            SpotLightShadowMaps[6].GetDimensions(0, aWidth, aHeight, aMips);
-            break;
-        case 7:
-            SpotLightShadowMaps[7].GetDimensions(0, aWidth, aHeight, aMips);
-            break;
+            return CB_CascadeShadowMapSizes.w;
         default:
-            aWidth = 1;
-            aHeight = 1;
-            aMips = 1;
-            break;
-    }
-}
-
-void GetDirectionalLightShadowMapDimensions(uint aIndex, out uint aWidth, out uint aHeight, out uint aMips)
-{
-    switch (aIndex)
-    {
-        case 0:
-            DirectionalLightShadowMap[0].GetDimensions(0, aWidth, aHeight, aMips);
-            break;
-        case 1:
-            DirectionalLightShadowMap[1].GetDimensions(0, aWidth, aHeight, aMips);
-            break;
-        case 2:
-            DirectionalLightShadowMap[2].GetDimensions(0, aWidth, aHeight, aMips);
-            break;
-        default:
-            aWidth = 1;
-            aHeight = 1;
-            aMips = 1;
-            break;
+            return 1;
     }
 }
 
 float CalculateDirectionalLightShadowFactor(uint aCascadeIndex, float4x4 aLightViewProjectionTexture, float4 aWorldPosition, float3 aNormal, float3 aLightDirection)
 {
+    //float baseBias = 0.0000025f * (aCascadeIndex + 1);
+    //const float NdotL = saturate(dot(aNormal, -aLightDirection));
+    //float bias = max(baseBias * (1.0 - NdotL), baseBias * 0.5);
+    
     float4 lightSpacePosition = mul(aLightViewProjectionTexture, aWorldPosition);
     float3 convertedPosition = lightSpacePosition.xyz / lightSpacePosition.w;
     float2 shadowUV = convertedPosition.xy;
     float P = convertedPosition.z;
     
-    uint shadowWidth, shadowHeight, shadowMips;
-    GetDirectionalLightShadowMapDimensions(aCascadeIndex, shadowWidth, shadowHeight, shadowMips);
-    float shadowTexelSize = 1.0f / shadowWidth;
+    float shadowTexelSize = 1.0f / GetCascadeShadowMapSize(aCascadeIndex);
     
     float shadowFactor = 0;
     
@@ -159,21 +123,20 @@ float CalculateDirectionalLightShadowFactor(uint aCascadeIndex, float4x4 aLightV
     {
         float2 offset = poissonDisk16[i] * shadowTexelSize;
         shadowFactor += SampleDirectionalLightShadow(aCascadeIndex, shadowUV + offset, P);
+        //shadowFactor += SampleDirectionalLightShadow(aCascadeIndex, shadowUV + offset, P - bias);
     }
     
     return shadowFactor / 16;
 }
 
-float CalculateSpotLightShadowFactor(uint aShadowIndex, float4x4 aLightViewProjectionTexture, float4 aWorldPosition, float3 aNormal, float3 aLightDirection)
+float CalculateSpotLightShadowFactor(uint aShadowIndex, uint2 aShadowMapSize, float4x4 aLightViewProjectionTexture, float4 aWorldPosition, float3 aNormal, float3 aLightDirection)
 {
     float4 lightSpacePosition = mul(aLightViewProjectionTexture, aWorldPosition);
     float3 convertedPosition = lightSpacePosition.xyz / lightSpacePosition.w;
     float2 shadowUV = convertedPosition.xy;
     float P = convertedPosition.z;
-
-    uint shadowWidth, shadowHeight, shadowMips;
-    GetSpotLightShadowMapDimensions(aShadowIndex, shadowWidth, shadowHeight, shadowMips);
-    float shadowTexelSize = 1.0f / shadowWidth;
+    
+    float shadowTexelSize = 1.0f / aShadowMapSize.x;
     
     float shadowFactor = 0;
     

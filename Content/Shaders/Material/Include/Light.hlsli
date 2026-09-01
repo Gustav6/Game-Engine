@@ -14,8 +14,11 @@ struct Light
     float OuterCone;
     float Radius;
     uint ShadowIndex;
-    float _padding;
+    float _padding1;
     float4x4 LightViewProjectionTexture;
+    uint2 ShadowMapSize;
+    float _padding2;
+    float _padding3;
 };
 
 cbuffer LightBuffer : register(b3)

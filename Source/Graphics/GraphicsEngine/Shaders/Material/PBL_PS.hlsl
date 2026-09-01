@@ -48,7 +48,7 @@ float4 main(VStoPS aPixel) : SV_TARGET
         {
             case 0:
             {
-                    float3 lightContribution = CalculateDirectionalLight(
+                float3 lightContribution = CalculateDirectionalLight(
                     light.Direction,
                     normal,
                     albedoPixel,
@@ -56,27 +56,32 @@ float4 main(VStoPS aPixel) : SV_TARGET
                     light.Intensity
                 );
                 
-                    float pixelDistance = length(aPixel.WorldPosition.xyz - CB_CameraPosition);
+                float pixelDistance = length(aPixel.WorldPosition.xyz - CB_CameraPosition);
 
-                    uint cascadeIndex;
+                uint cascadeIndex;
                 
-                    if (pixelDistance < CB_CascadeFarPlanes.x)
-                    {
-                        //lightContribution = float3(1.0f, 0.0f, 0.0f);
-                        cascadeIndex = 0;
-                    }
-                    else if (pixelDistance < CB_CascadeFarPlanes.y)
-                    {
-                        //lightContribution = float3(0.0f, 1.0f, 0.0f);
-                        cascadeIndex = 1;
-                    }
-                    else
-                    {
-                        //lightContribution = float3(0.0f, 0.0f, 1.0f);
-                        cascadeIndex = 2;
-                    }
+                if (pixelDistance < CB_CascadeFarPlanes.x)
+                {
+                    lightContribution = float3(1.0f, 0.0f, 0.0f);
+                    cascadeIndex = 0;
+                }
+                else if (pixelDistance < CB_CascadeFarPlanes.y)
+                {
+                    lightContribution = float3(0.0f, 1.0f, 0.0f);
+                    cascadeIndex = 1;
+                }
+                else if (pixelDistance < CB_CascadeFarPlanes.z)
+                {
+                    lightContribution = float3(0.0f, 0.0f, 1.0f);
+                    cascadeIndex = 2;
+                }
+                else
+                {
+                    lightContribution = float3(0.0f, 1.0f, 1.0f);
+                    cascadeIndex = 3;
+                }
                 
-                    float shadowFactor = CalculateDirectionalLightShadowFactor(
+                float shadowFactor = CalculateDirectionalLightShadowFactor(
                     cascadeIndex,
                     CB_LightViewProjectionTextures[cascadeIndex],
                     aPixel.WorldPosition,
@@ -84,13 +89,13 @@ float4 main(VStoPS aPixel) : SV_TARGET
                     light.Direction
                 );
                 
-                    radiance += lightContribution * shadowFactor;
+                radiance += lightContribution * shadowFactor;
                 
-                    break;
+                break;
                 }
             case 1:
             {
-                    float3 lightContribution = CalculatePointLight(
+                float3 lightContribution = CalculatePointLight(
                     light.Position,
                     aPixel.WorldPosition.xyz,
                     normal,
@@ -100,20 +105,20 @@ float4 main(VStoPS aPixel) : SV_TARGET
                     light.Radius
                 );
                 
-                    float shadowFactor = CalculatePointLightShadowFactor(
+                float shadowFactor = CalculatePointLightShadowFactor(
                     light.ShadowIndex,
                     aPixel.WorldPosition.xyz,
                     light.Position,
                     light.Radius
                 );
                 
-                    radiance += lightContribution * shadowFactor;
+                radiance += lightContribution * shadowFactor;
                 
-                    break;
-                }
+                break;
+            }
             case 2:
             {
-                    float3 lightContribution = CalculateSpotLight(
+                float3 lightContribution = CalculateSpotLight(
                     light.Position,
                     light.Direction,
                     aPixel.WorldPosition.xyz,
@@ -126,18 +131,19 @@ float4 main(VStoPS aPixel) : SV_TARGET
                     light.OuterCone
                 );
                 
-                    float shadowFactor = CalculateSpotLightShadowFactor(
+                float shadowFactor = CalculateSpotLightShadowFactor(
                     light.ShadowIndex,
+                    light.ShadowMapSize,
                     light.LightViewProjectionTexture,
                     aPixel.WorldPosition,
                     normal,
                     light.Direction
                 );
                
-                    radiance += lightContribution * shadowFactor;
+                radiance += lightContribution * shadowFactor;
                 
-                    break;
-                }
+                break;
+            }
         }
     }
     

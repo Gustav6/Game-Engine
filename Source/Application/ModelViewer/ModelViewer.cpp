@@ -164,7 +164,7 @@ void ModelViewer::LoadScene()
     }
 
     {
-        myGameCamera = GameCamera(90.0f, 1.0f, 5000.0f, GraphicsEngine::Get().GetClientSize());
+        myGameCamera = GameCamera(90.0f, 1.0f, 10000.0f, GraphicsEngine::Get().GetClientSize());
         myGameCamera.GetTransform().SetPosition({ 0, 100, -200 });
     }
 
@@ -203,7 +203,6 @@ void ModelViewer::LoadScene()
         meshComponent->SetMesh(Application.AssetLibrary.GetMesh("UnitPlane"));
         meshComponent->SetMaterial(0, Application.AssetLibrary.GetMaterial("Materials/BaseMaterial.json"));
 
-        object->GetTransform().Translate({ 0, 0, 0 });
         object->GetTransform().SetScale({ 2000, 2000, 2000 });
 
         myGameWorld.AddGameObject(std::move(object));
@@ -286,7 +285,7 @@ void ModelViewer::LoadScene()
 
         directionalLight->SetColor({ 1.0f, 0.95f, 0.85f });
         directionalLight->SetIntensity(2.0f);
-        directionalLight->SetDirection({ 0.0f, -1.0f, 1.0f });
+        directionalLight->SetDirection({ 0.2f, -1.0f, 1.0f });
 
         myDirectionLightObject = myGameWorld.AddGameObject(std::move(object));
     }
@@ -332,32 +331,30 @@ void ModelViewer::UpdateScene(float aDeltaTime)
 
     // Camera controls
     {
-        const float moveSpeed = 400.0f;
-
         if (Application.InputManager.IsKeyDown(KeyCode::W))
         {
-            CommonUtilities::Vector3f delta = myGameCamera.GetTransform().GetForward() * moveSpeed * aDeltaTime;
+            CommonUtilities::Vector3f delta = myGameCamera.GetTransform().GetForward() * myCamerasMoveSpeed * aDeltaTime;
 
             myGameCamera.GetTransform().Translate(delta);
             myGameCamera.UpdateFrustum();
         }
         if (Application.InputManager.IsKeyDown(KeyCode::A))
         {
-            CommonUtilities::Vector3f delta = -myGameCamera.GetTransform().GetRight() * moveSpeed * aDeltaTime;
+            CommonUtilities::Vector3f delta = -myGameCamera.GetTransform().GetRight() * myCamerasMoveSpeed * aDeltaTime;
 
             myGameCamera.GetTransform().Translate(delta);
             myGameCamera.UpdateFrustum();
         }
         if (Application.InputManager.IsKeyDown(KeyCode::S))
         {
-            CommonUtilities::Vector3f delta = -myGameCamera.GetTransform().GetForward() * moveSpeed * aDeltaTime;
+            CommonUtilities::Vector3f delta = -myGameCamera.GetTransform().GetForward() * myCamerasMoveSpeed * aDeltaTime;
 
             myGameCamera.GetTransform().Translate(delta);
             myGameCamera.UpdateFrustum();
         }
         if (Application.InputManager.IsKeyDown(KeyCode::D))
         {
-            CommonUtilities::Vector3f delta = myGameCamera.GetTransform().GetRight() * moveSpeed * aDeltaTime;
+            CommonUtilities::Vector3f delta = myGameCamera.GetTransform().GetRight() * myCamerasMoveSpeed * aDeltaTime;
 
             myGameCamera.GetTransform().Translate(delta);
             myGameCamera.UpdateFrustum();
@@ -365,14 +362,14 @@ void ModelViewer::UpdateScene(float aDeltaTime)
 
         if (Application.InputManager.IsKeyDown(KeyCode::Space))
         {
-            CommonUtilities::Vector3f delta = myGameCamera.GetTransform().GetUp() * moveSpeed * aDeltaTime;
+            CommonUtilities::Vector3f delta = myGameCamera.GetTransform().GetUp() * myCamerasMoveSpeed * aDeltaTime;
 
             myGameCamera.GetTransform().Translate(delta);
             myGameCamera.UpdateFrustum();
         }
         if (Application.InputManager.IsKeyDown(KeyCode::Control))
         {
-            CommonUtilities::Vector3f delta = -myGameCamera.GetTransform().GetUp() * moveSpeed * aDeltaTime;
+            CommonUtilities::Vector3f delta = -myGameCamera.GetTransform().GetUp() * myCamerasMoveSpeed * aDeltaTime;
 
             myGameCamera.GetTransform().Translate(delta);
             myGameCamera.UpdateFrustum();
@@ -394,6 +391,15 @@ void ModelViewer::UpdateScene(float aDeltaTime)
             myGameCamera.GetTransform().Rotate(yawQuat, true);
             myGameCamera.UpdateFrustum();
         }
+
+		if (Application.InputManager.GetScrollWheelDelta() > 0) 
+		{
+			myCamerasMoveSpeed *= 1.05f;
+		}
+		else if (Application.InputManager.GetScrollWheelDelta() < 0) 
+		{
+			myCamerasMoveSpeed *= 0.95f;
+		}
 
         if (Application.InputManager.IsKeyPressed(KeyCode::RMB))
         {

@@ -195,7 +195,7 @@
     <None Include="Shaders\Material\Include\PoissonDisks.hlsli" />
     <None Include="Shaders\Material\Include\Shadow.hlsli" />
     <None Include="Shaders\Material\Include\LUTFunctions.hlsli" />
-    <None Include="Shaders\Material\Include\Material.hlsli" />
     <None Include="Shaders\Material\Include\MaterialParameters.hlsli" />
+    <None Include="Shaders\Material\Include\Material.hlsli" />
   </ItemGroup>
 </Project>

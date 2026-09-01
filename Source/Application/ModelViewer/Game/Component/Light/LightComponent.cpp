@@ -58,11 +58,11 @@ void LightComponent::SetIntensity(float aIntensity)
 
 void LightComponent::SetShadowMapSize(const CommonUtilities::Vector2ui& aSize)
 {
-	if (myShadowMapSize.x != aSize.x || myShadowMapSize.y != aSize.y)
+	if (myData->ShadowMapSize.x != aSize.x || myData->ShadowMapSize.y != aSize.y)
 	{
-		myShadowMapSize = aSize;
+		myData->ShadowMapSize = aSize;
 
-		if (myShadowMapSize.x == myShadowMapSize.y == 0)
+		if (myData->ShadowMapSize.x == myData->ShadowMapSize.y == 0)
 		{
 			myShadowMap = nullptr;
 			return;
@@ -78,21 +78,21 @@ void LightComponent::SetShadowMapSize(const CommonUtilities::Vector2ui& aSize)
 			{
 				name = "Directional_SM";
 
-				GraphicsEngine::Get().CreateShadowMap(name, myShadowMapSize.x, myShadowMapSize.y, *myShadowMap, false);
+				GraphicsEngine::Get().CreateShadowMap(name, myData->ShadowMapSize.x, myData->ShadowMapSize.y, *myShadowMap, false);
 				break;
 			}
 			case LightType::Point:
 			{
 				name = "Point_SM";
 
-				GraphicsEngine::Get().CreateShadowMap(name, myShadowMapSize.x, myShadowMapSize.y, *myShadowMap, true);
+				GraphicsEngine::Get().CreateShadowMap(name, myData->ShadowMapSize.x, myData->ShadowMapSize.y, *myShadowMap, true);
 				break;
 			}
 			case LightType::Spot:
 			{
 				name = "Spot_SM";
 
-				GraphicsEngine::Get().CreateShadowMap(name, myShadowMapSize.x, myShadowMapSize.y, *myShadowMap, false);
+				GraphicsEngine::Get().CreateShadowMap(name, myData->ShadowMapSize.x, myData->ShadowMapSize.y, *myShadowMap, false);
 				break;
 			}
 		}

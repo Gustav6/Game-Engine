@@ -482,22 +482,22 @@ void AssetLibrary::InitUnitCube()
         { .Position = { 0.5f,  0.5f,  0.5f, 1 }, .Color = { 1, 1, 1, 1 }, .UV0 = { 0, 0 }, .Normal = { 0, 0, 1 }, .Tangent = {-1, 0, 0 } },
 
         // Left
-        { .Position = {-0.5f, -0.5f, -0.5f, 1 }, .Color = { 1, 1, 1, 1 }, .UV0 = { 1, 1 }, .Normal = {-1, 0, 0 }, .Tangent = { 0, 0, 1 } },
-        { .Position = {-0.5f,  0.5f, -0.5f, 1 }, .Color = { 1, 1, 1, 1 }, .UV0 = { 1, 0 }, .Normal = {-1, 0, 0 }, .Tangent = { 0, 0, 1 } },
-        { .Position = {-0.5f, -0.5f,  0.5f, 1 }, .Color = { 1, 1, 1, 1 }, .UV0 = { 0, 1 }, .Normal = {-1, 0, 0 }, .Tangent = { 0, 0, 1 } },
-        { .Position = {-0.5f,  0.5f,  0.5f, 1 }, .Color = { 1, 1, 1, 1 }, .UV0 = { 0, 0 }, .Normal = {-1, 0, 0 }, .Tangent = { 0, 0, 1 } },
+        { .Position = {-0.5f, -0.5f, -0.5f, 1 }, .Color = { 1, 1, 1, 1 }, .UV0 = { 1, 1 }, .Normal = {-1, 0, 0 }, .Tangent = { 0, 0,-1 } },
+        { .Position = {-0.5f,  0.5f, -0.5f, 1 }, .Color = { 1, 1, 1, 1 }, .UV0 = { 1, 0 }, .Normal = {-1, 0, 0 }, .Tangent = { 0, 0,-1 } },
+        { .Position = {-0.5f, -0.5f,  0.5f, 1 }, .Color = { 1, 1, 1, 1 }, .UV0 = { 0, 1 }, .Normal = {-1, 0, 0 }, .Tangent = { 0, 0,-1 } },
+        { .Position = {-0.5f,  0.5f,  0.5f, 1 }, .Color = { 1, 1, 1, 1 }, .UV0 = { 0, 0 }, .Normal = {-1, 0, 0 }, .Tangent = { 0, 0,-1 } },
 
         // Right
-        { .Position = { 0.5f, -0.5f, -0.5f, 1 }, .Color = { 1, 1, 1, 1 }, .UV0 = { 0, 1 }, .Normal = { 1, 0, 0 }, .Tangent = { 0, 0,-1 } },
-        { .Position = { 0.5f,  0.5f, -0.5f, 1 }, .Color = { 1, 1, 1, 1 }, .UV0 = { 0, 0 }, .Normal = { 1, 0, 0 }, .Tangent = { 0, 0,-1 } },
-        { .Position = { 0.5f, -0.5f,  0.5f, 1 }, .Color = { 1, 1, 1, 1 }, .UV0 = { 1, 1 }, .Normal = { 1, 0, 0 }, .Tangent = { 0, 0,-1 } },
-        { .Position = { 0.5f,  0.5f,  0.5f, 1 }, .Color = { 1, 1, 1, 1 }, .UV0 = { 1, 0 }, .Normal = { 1, 0, 0 }, .Tangent = { 0, 0,-1 } },
+        { .Position = { 0.5f, -0.5f, -0.5f, 1 }, .Color = { 1, 1, 1, 1 }, .UV0 = { 0, 1 }, .Normal = { 1, 0, 0 }, .Tangent = { 0, 0, 1 } },
+        { .Position = { 0.5f,  0.5f, -0.5f, 1 }, .Color = { 1, 1, 1, 1 }, .UV0 = { 0, 0 }, .Normal = { 1, 0, 0 }, .Tangent = { 0, 0, 1 } },
+        { .Position = { 0.5f, -0.5f,  0.5f, 1 }, .Color = { 1, 1, 1, 1 }, .UV0 = { 1, 1 }, .Normal = { 1, 0, 0 }, .Tangent = { 0, 0, 1 } },
+        { .Position = { 0.5f,  0.5f,  0.5f, 1 }, .Color = { 1, 1, 1, 1 }, .UV0 = { 1, 0 }, .Normal = { 1, 0, 0 }, .Tangent = { 0, 0, 1 } },
 
         // Top
-        { .Position = {-0.5f,  0.5f, -0.5f, 1 }, .Color = { 1, 1, 1, 1 }, .UV0 = { 1, 0 }, .Normal = { 0, 1, 0 }, .Tangent = { 1, 0, 0 } },
-        { .Position = {-0.5f,  0.5f,  0.5f, 1 }, .Color = { 1, 1, 1, 1 }, .UV0 = { 1, 1 }, .Normal = { 0, 1, 0 }, .Tangent = { 1, 0, 0 } },
-        { .Position = { 0.5f,  0.5f, -0.5f, 1 }, .Color = { 1, 1, 1, 1 }, .UV0 = { 0, 0 }, .Normal = { 0, 1, 0 }, .Tangent = { 1, 0, 0 } },
-        { .Position = { 0.5f,  0.5f,  0.5f, 1 }, .Color = { 1, 1, 1, 1 }, .UV0 = { 0, 1 }, .Normal = { 0, 1, 0 }, .Tangent = { 1, 0, 0 } },
+        { .Position = {-0.5f,  0.5f, -0.5f, 1 }, .Color = { 1, 1, 1, 1 }, .UV0 = { 1, 0 }, .Normal = { 0, 1, 0 }, .Tangent = {-1, 0, 0 } },
+        { .Position = {-0.5f,  0.5f,  0.5f, 1 }, .Color = { 1, 1, 1, 1 }, .UV0 = { 1, 1 }, .Normal = { 0, 1, 0 }, .Tangent = {-1, 0, 0 } },
+        { .Position = { 0.5f,  0.5f, -0.5f, 1 }, .Color = { 1, 1, 1, 1 }, .UV0 = { 0, 0 }, .Normal = { 0, 1, 0 }, .Tangent = {-1, 0, 0 } },
+        { .Position = { 0.5f,  0.5f,  0.5f, 1 }, .Color = { 1, 1, 1, 1 }, .UV0 = { 0, 1 }, .Normal = { 0, 1, 0 }, .Tangent = {-1, 0, 0 } },
 
         // Bottom
         { .Position = {-0.5f, -0.5f, -0.5f, 1 }, .Color = { 1, 1, 1, 1 }, .UV0 = { 0, 1 }, .Normal = { 0,-1, 0 }, .Tangent = { 1, 0, 0 } },
@@ -539,13 +539,13 @@ void AssetLibrary::InitUnitCube()
     element.NumIndices = static_cast<unsigned>(meshIndices.size());
 
 	// TODO: Calculate bounding box / sphere for unit cube
-    std::unique_ptr<CommonUtilities::Sphere<float>> boundingSphere = nullptr;
+    //std::unique_ptr<CommonUtilities::Sphere<float>> boundingSphere = nullptr;
 
     std::shared_ptr<Mesh> mesh = std::make_shared<Mesh>();
 
     std::string name = "Unit Cube";
 
-    mesh->Initialize(name, { element }, std::move(meshVertices), std::move(meshIndices), nullptr, std::move(boundingSphere));
+    mesh->Initialize(name, { element }, std::move(meshVertices), std::move(meshIndices), nullptr, nullptr);
 
     myMeshes.emplace("UnitCube", mesh);
 }
@@ -554,10 +554,10 @@ void AssetLibrary::InitUnitPlane()
 {
     std::vector<Vertex> meshVertices =
     {
-        { .Position = {-0.5f, 0, -0.5f, 1 }, .Color = { 1, 1, 1, 1 }, .UV0 = { 1, 0 }, .Normal = { 0, 1, 0 }, .Tangent = { 1, 0, 0 } },
-        { .Position = {-0.5f, 0,  0.5f, 1 }, .Color = { 1, 1, 1, 1 }, .UV0 = { 1, 1 }, .Normal = { 0, 1, 0 }, .Tangent = { 1, 0, 0 } },
-        { .Position = { 0.5f, 0, -0.5f, 1 }, .Color = { 1, 1, 1, 1 }, .UV0 = { 0, 0 }, .Normal = { 0, 1, 0 }, .Tangent = { 1, 0, 0 } },
-        { .Position = { 0.5f, 0,  0.5f, 1 }, .Color = { 1, 1, 1, 1 }, .UV0 = { 0, 1 }, .Normal = { 0, 1, 0 }, .Tangent = { 1, 0, 0 } }
+        { .Position = {-0.5f, 0, -0.5f, 1 }, .Color = { 1, 1, 1, 1 }, .UV0 = { 1, 0 }, .Normal = { 0, 1, 0 }, .Tangent = {-1, 0, 0 } },
+        { .Position = {-0.5f, 0,  0.5f, 1 }, .Color = { 1, 1, 1, 1 }, .UV0 = { 1, 1 }, .Normal = { 0, 1, 0 }, .Tangent = {-1, 0, 0 } },
+        { .Position = { 0.5f, 0, -0.5f, 1 }, .Color = { 1, 1, 1, 1 }, .UV0 = { 0, 0 }, .Normal = { 0, 1, 0 }, .Tangent = {-1, 0, 0 } },
+        { .Position = { 0.5f, 0,  0.5f, 1 }, .Color = { 1, 1, 1, 1 }, .UV0 = { 0, 1 }, .Normal = { 0, 1, 0 }, .Tangent = {-1, 0, 0 } }
     };
 
     std::vector<unsigned> meshIndices =
@@ -572,20 +572,19 @@ void AssetLibrary::InitUnitPlane()
     element.NumIndices = static_cast<unsigned>(meshIndices.size());
 
 	// TODO: Calculate bounding box / sphere for unit plane
-    std::unique_ptr<CommonUtilities::Sphere<float>> boundingSphere = nullptr;
+    //std::unique_ptr<CommonUtilities::Sphere<float>> boundingSphere = nullptr;
     
     std::shared_ptr<Mesh> mesh = std::make_shared<Mesh>();
 
     std::string name = "Unit Plane";
 
-    mesh->Initialize(name, { element }, std::move(meshVertices), std::move(meshIndices), nullptr, std::move(boundingSphere));
+    mesh->Initialize(name, { element }, std::move(meshVertices), std::move(meshIndices), nullptr, nullptr);
 
     myMeshes.emplace("UnitPlane", mesh);
 }
 
 void AssetLibrary::InitUnitAxes()
 {
-
     std::vector<Vertex> meshVertices =
     {
     };
@@ -600,13 +599,13 @@ void AssetLibrary::InitUnitAxes()
     element.NumIndices = static_cast<unsigned>(meshIndices.size());
 
     // TODO: Calculate bounding box / sphere for unit axes
-    std::unique_ptr<CommonUtilities::Sphere<float>> boundingSphere = nullptr;
+    //std::unique_ptr<CommonUtilities::Sphere<float>> boundingSphere = nullptr;
 
     std::shared_ptr<Mesh> mesh = std::make_shared<Mesh>();
 
     std::string name = "Unit Axes";
 
-    mesh->Initialize(name, { element }, std::move(meshVertices), std::move(meshIndices), nullptr, std::move(boundingSphere));
+    mesh->Initialize(name, { element }, std::move(meshVertices), std::move(meshIndices), nullptr, nullptr);
 
     myMeshes.emplace("UnitAxes", mesh);
 }

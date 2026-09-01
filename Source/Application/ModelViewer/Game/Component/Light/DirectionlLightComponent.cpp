@@ -42,5 +42,5 @@ void DirectionalLightComponent::SetDirection(const CommonUtilities::Vector3f& aD
 
 const CommonUtilities::Matrix4x4f DirectionalLightComponent::CreateProjectionMatrix() const
 {
-	return CommonUtilities::Matrix4x4f::CreateOrthographicProjection(1.0f, 5000.0f, static_cast<float>(myShadowMapSize.x), static_cast<float>(myShadowMapSize.y));
+	return CommonUtilities::Matrix4x4f::CreateOrthographicProjection(1.0f, 5000.0f, static_cast<float>(myData->ShadowMapSize.x), static_cast<float>(myData->ShadowMapSize.y));
 }

@@ -3,6 +3,9 @@
 #include <filesystem>
 #include <string_view>
 
+// More info can be found at their repo:
+// https://github.com/ibireme/yyjson 
+
 struct yyjson_doc;
 struct yyjson_val;
 
