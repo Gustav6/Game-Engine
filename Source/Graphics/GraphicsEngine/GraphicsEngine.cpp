@@ -277,6 +277,11 @@ bool GraphicsEngine::CreateShadowMap(std::string_view aName, unsigned int aWidth
 	return myRHI.CreateDepthStencil(aName, aWidth, aHeight, outShadowMap, aCube);
 }
 
+bool GraphicsEngine::CreateTexture(std::string_view aName, unsigned aWidth, unsigned aHeight, unsigned aNumMips, ResourceFormat aFormat, ResourceBindFlags aBindFlags, Texture& outTexture) const
+{
+	return myRHI.CreateTexture(aName, aWidth, aHeight, aNumMips, aFormat, aBindFlags, outTexture);
+}
+
 bool GraphicsEngine::LoadTexture(const std::filesystem::path& aPath, Texture& outTexture) const
 {
 	if (!std::filesystem::exists(aPath))
@@ -405,7 +410,7 @@ void GraphicsEngine::RenderShadowMaps(GraphicsCommandList& inoutCommandList, con
 				{
 					cameraNear = aScene.SceneCamera.Camera.GetNearPlane();
 					cameraFar = aScene.SceneCamera.Camera.GetFarPlane();
-					BuildShadowCascades({2048, 2048, 2048, 2048 }, cameraNear, cameraFar);
+					BuildShadowCascades({4096, 2048, 2048, 2048 }, cameraNear, cameraFar);
 				}
 
 				CommonUtilities::Matrix4x4f lightViewProjectionTextures[NUM_CASCADES];
@@ -878,6 +883,24 @@ bool GraphicsEngine::CreateRenderResources()
 		samplerDesc.AddressMode = SamplerAddressMode::Border;
 		samplerDesc.FilterMode = SamplerFilterMode::ComparisonLinearPoint;
 		samplerDesc.ComparisonFunction = SamplerComparisonFunc::LessEqual;
+		samplerDesc.BorderColor = CommonUtilities::Vector4f::One;
+
+		std::unique_ptr<Sampler> sampler = std::make_unique<Sampler>();
+
+		if (!myRHI.CreateSampler(samplerDesc, *sampler))
+		{
+			return false;
+		}
+
+		mySamplers.emplace_back(std::move(sampler));
+	}
+
+	// ShadowSampler
+	{
+		SamplerDescription samplerDesc;
+		samplerDesc.Name = "LutSampler";
+		samplerDesc.AddressMode = SamplerAddressMode::Clamp;
+		samplerDesc.FilterMode = SamplerFilterMode::Linear;
 		samplerDesc.BorderColor = CommonUtilities::Vector4f::One;
 
 		std::unique_ptr<Sampler> sampler = std::make_unique<Sampler>();

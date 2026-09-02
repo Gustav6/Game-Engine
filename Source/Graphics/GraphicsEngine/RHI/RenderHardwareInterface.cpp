@@ -513,6 +513,88 @@ bool RenderHardwareInterface::CreateTexture(std::string_view aName, const uint8_
 	return true;
 }
 
+bool RenderHardwareInterface::CreateTexture(std::string_view aName, unsigned aWidth, unsigned aHeight, unsigned aNumMips, ResourceFormat aFormat, ResourceBindFlags aBindFlags, Texture& outTexture) const
+{
+	ensure(!aName.empty());
+
+	D3D11_TEXTURE2D_DESC desc;
+	desc.Width = aWidth;
+	desc.Height = aHeight;
+	desc.MipLevels = aNumMips; // If this is 0 DX will create ALL possible Mips which is not always right!
+	desc.ArraySize = 1;
+	desc.Format = static_cast<DXGI_FORMAT>(aFormat);
+	desc.SampleDesc.Count = 1;
+	desc.SampleDesc.Quality = 0;
+	desc.Usage = D3D11_USAGE_DEFAULT;
+	desc.BindFlags = static_cast<UINT>(aBindFlags);
+	desc.CPUAccessFlags = aBindFlags == ResourceBindFlag_Staging ? D3D11_CPU_ACCESS_READ : 0;
+	desc.MiscFlags = aNumMips != 1 ? D3D11_RESOURCE_MISC_GENERATE_MIPS : 0;
+
+	ComPtr<ID3D11Texture2D> texture;
+	HRESULT result = myDevice->CreateTexture2D(&desc, nullptr, &texture);
+	if (FAILED(result))
+	{
+		LOG(RhiLog, Error, "Failed to create the texture {}!", aName);
+		return false;
+	}
+
+	const std::string textureName = std::format("{}_T2D", aName);
+	SetObjectName(texture, textureName);
+
+	if (aBindFlags > 0)
+	{
+		if (aBindFlags & ResourceBindFlag_RenderTarget)
+		{
+			result = myDevice->CreateRenderTargetView(texture.Get(), nullptr, &outTexture.myRTV);
+			if (FAILED(result))
+			{
+				LOG(RhiLog, Error, "Failed to create the render target view for texture {}!", aName);
+				return false;
+			}
+
+			const std::string resourceName = std::format("{}_RTV", aName);
+			SetObjectName(outTexture.myRTV, resourceName);
+		}
+
+		if (aBindFlags & ResourceBindFlag_ShaderResource)
+		{
+			result = myDevice->CreateShaderResourceView(texture.Get(), nullptr, &outTexture.mySRV);
+			if (FAILED(result))
+			{
+				LOG(RhiLog, Error, "Failed to create the shader resource view for texture {}!", aName);
+				return false;
+			}
+
+			const std::string resourceName = std::format("{}_SRV", aName);
+			SetObjectName(outTexture.mySRV, resourceName);
+		}
+
+		// This is not required for the course but allows you to use this function to create
+        // ShadowMaps as well if you wish!
+		if (aBindFlags & ResourceBindFlag_DepthStencil)
+		{
+			result = myDevice->CreateDepthStencilView(texture.Get(), nullptr, &outTexture.myDSV);
+			if (FAILED(result))
+			{
+				LOG(RhiLog, Error, "Failed to create the depth stencil view for texture {}!", aName);
+				return false;
+			}
+
+			const std::string resourceName = std::format("{}_DSV", aName);
+			SetObjectName(outTexture.myDSV, resourceName);
+		}
+	}
+
+	outTexture.myViewport.TopLeftX = 0;
+	outTexture.myViewport.TopLeftY = 0;
+	outTexture.myViewport.Width = static_cast<float>(aWidth);
+	outTexture.myViewport.Height = static_cast<float>(aHeight);
+	outTexture.myViewport.MinDepth = 0;
+	outTexture.myViewport.MaxDepth = 1;
+
+	return true;
+}
+
 bool RenderHardwareInterface::CreateSampler(const SamplerDescription& aDescription, Sampler& outSampler)
 {
 	ensure(!aDescription.Name.empty());

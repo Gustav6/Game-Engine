@@ -95,6 +95,7 @@ public:
 
 	bool CreateMaterial(const MaterialDescription& aDescription, Material& outMaterial) const;
 	bool CreateShadowMap(std::string_view aName, unsigned int aWidth, unsigned int aHeight, Texture& outShadowMap, bool aCube) const;
+	bool CreateTexture(std::string_view aName, unsigned aWidth, unsigned aHeight, unsigned aNumMips, ResourceFormat aFormat, ResourceBindFlags aBindFlags, Texture& outTexture) const;
 
 	bool LoadTexture(const std::filesystem::path& aPath, Texture& outTexture) const;
 

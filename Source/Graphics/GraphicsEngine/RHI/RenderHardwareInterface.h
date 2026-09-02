@@ -40,6 +40,7 @@ public:
 	bool CreatePipelineStateObject(const PipelineStateDescription& aDescription, PipelineStateObject& outPSO) const;
 	bool CreateCommandList(std::string_view aName, GraphicsCommandList& outCommandList) const;
 	bool CreateTexture(std::string_view aName, const uint8_t* aByteCode, size_t aByteCodeSize, Texture& outTexture) const;
+	bool CreateTexture(std::string_view aName, unsigned aWidth, unsigned aHeight, unsigned aNumMips, ResourceFormat aFormat, ResourceBindFlags aBindFlags, Texture& outTexture ) const;
 	bool CreateSampler(const SamplerDescription& aDescription, Sampler& outSampler);
 	bool CreateDepthStencil(std::string_view aName, unsigned int aWidth, unsigned int aHeight, Texture& outDepthStencil, bool aCube) const;
 

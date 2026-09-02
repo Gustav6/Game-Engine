@@ -106,10 +106,6 @@ float GetCascadeShadowMapSize(uint aCascadeIndex)
 
 float CalculateDirectionalLightShadowFactor(uint aCascadeIndex, float4x4 aLightViewProjectionTexture, float4 aWorldPosition, float3 aNormal, float3 aLightDirection)
 {
-    //float baseBias = 0.0000025f * (aCascadeIndex + 1);
-    //const float NdotL = saturate(dot(aNormal, -aLightDirection));
-    //float bias = max(baseBias * (1.0 - NdotL), baseBias * 0.5);
-    
     float4 lightSpacePosition = mul(aLightViewProjectionTexture, aWorldPosition);
     float3 convertedPosition = lightSpacePosition.xyz / lightSpacePosition.w;
     float2 shadowUV = convertedPosition.xy;
@@ -123,7 +119,6 @@ float CalculateDirectionalLightShadowFactor(uint aCascadeIndex, float4x4 aLightV
     {
         float2 offset = poissonDisk16[i] * shadowTexelSize;
         shadowFactor += SampleDirectionalLightShadow(aCascadeIndex, shadowUV + offset, P);
-        //shadowFactor += SampleDirectionalLightShadow(aCascadeIndex, shadowUV + offset, P - bias);
     }
     
     return shadowFactor / 16;

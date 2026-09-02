@@ -21,10 +21,10 @@ struct Light
     float InnerCone = 0.0f;
     float OuterCone = 0.0f;
     float Radius = 0.0f;
+    CommonUtilities::Vector2ui ShadowMapSize = { 0, 0 };
     unsigned int ShadowIndex = 0;
     float _padding1;
-    CommonUtilities::Matrix4x4f LightViewProjectionTexture;
-    CommonUtilities::Vector2ui ShadowMapSize = { 0, 0 };
     float _padding2;
     float _padding3;
+    CommonUtilities::Matrix4x4f LightViewProjectionTexture;
 };

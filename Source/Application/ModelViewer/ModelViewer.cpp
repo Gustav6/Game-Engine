@@ -189,7 +189,8 @@ void ModelViewer::LoadScene()
 
         meshComponent->SetMesh(Application.AssetLibrary.GetMesh("Meshes/SM_Chest.fbx"));
         meshComponent->SetMaterial(0, Application.AssetLibrary.GetMaterial("Materials/ChestMaterial.json"));
-
+		
+        object->GetTransform().Rotate(CommonUtilities::Vector3f{ 0, -180, 0 });
         object->GetTransform().Translate({ 200, 0, 400 });
 
         myGameWorld.AddGameObject(std::move(object));
@@ -284,8 +285,8 @@ void ModelViewer::LoadScene()
         DirectionalLightComponent* directionalLight = object->AddComponent<DirectionalLightComponent>();
 
         directionalLight->SetColor({ 1.0f, 0.95f, 0.85f });
-        directionalLight->SetIntensity(2.0f);
-        directionalLight->SetDirection({ 0.2f, -1.0f, 1.0f });
+        directionalLight->SetIntensity(1.0f);
+        directionalLight->SetDirection({ 0.0f, -1.0f, 1.0f });
 
         myDirectionLightObject = myGameWorld.AddGameObject(std::move(object));
     }

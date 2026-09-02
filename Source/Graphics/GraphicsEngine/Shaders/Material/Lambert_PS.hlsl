@@ -7,12 +7,66 @@
 Texture2D AlbedoTexture : register(t0);
 Texture2D NormalTexture : register(t1);
 
+float3 CalculateDirectionalLight(float3 aWorldLightDirection, float3 aWorldNormal, float3 aSurfaceColor, float3 aLightColor, float aLightIntensity)
+{
+    float3 L = normalize(-aWorldLightDirection);
+    
+    float3 N = normalize(aWorldNormal);
+    
+    float NdotL = saturate(dot(L, N));
+    
+    return NdotL * (aSurfaceColor / PI) * (aLightColor * aLightIntensity);
+}
+
+float3 CalculatePointLight(float3 aLightPosition, float3 aPixelPosition, float3 aWorldNormal, float3 aSurfaceColor, float3 aLightColor, float aIntensity, float aRadius)
+{
+    float3 lightDelta = aLightPosition - aPixelPosition;
+    float DL = max(length(lightDelta), 0.01f);
+    
+    float alpha = saturate(1.0f - pow(abs(DL / aRadius), 2.0f));
+    alpha = alpha * alpha;
+    
+    float IL = (aIntensity / (DL * DL)) * alpha;
+    
+    float3 L = normalize(lightDelta);
+    float3 N = normalize(aWorldNormal);
+    
+    float NdotL = saturate(dot(L, N));
+    
+    return NdotL * (aSurfaceColor / PI) * (aLightColor * IL);
+}
+
+float3 CalculateSpotLight(float3 aLightPosition, float3 aLightDirection, float3 aPixelPosition, float3 aWorldNormal, float3 aSurfaceColor, float3 aLightColor, float aIntensity, float aRadius, float aInnerCone, float aOuterCone)
+{
+    float3 lightDelta = aLightPosition - aPixelPosition;
+    float DL = max(length(lightDelta), 0.01f);
+    
+    float3 L = normalize(lightDelta);
+    
+    float spotFactor = saturate(dot(-L, aLightDirection));
+    
+    float cosInnerCone = cos(aInnerCone);
+    float cosOuterCone = cos(aOuterCone);
+    
+    float IS = smoothstep(cosOuterCone, cosInnerCone, spotFactor);
+    
+    float alpha = saturate(1.0f - pow(abs(DL / aRadius), 2.0f));
+    alpha = alpha * alpha * IS;
+    
+    float IL = (aIntensity / (DL * DL)) * alpha;
+    
+    float3 N = normalize(aWorldNormal);
+    float NdotL = saturate(dot(L, N));
+    
+    return NdotL * (aSurfaceColor / PI) * (aLightColor * IL);
+}
+
 float4 main(VStoPS aPixel) : SV_TARGET
 {
-    float3 albedoPixel = AlbedoTexture.Sample(TrilinearWrap, aPixel.UV0).rgb;
-    float2 normalPixel = NormalTexture.Sample(TrilinearWrap, aPixel.UV0).rg;
+    const float3 albedoMap = AlbedoTexture.Sample(TrilinearWrap, aPixel.UV0).rgb;
+    const float2 normalMap = NormalTexture.Sample(TrilinearWrap, aPixel.UV0).rg;
     
-    float2 unpackedNormal = normalPixel * 2.0 - 1.0;
+    float2 unpackedNormal = normalMap * 2.0 - 1.0;
     
     float3 normal = normalize(float3(unpackedNormal, sqrt(saturate(1.0 - dot(unpackedNormal, unpackedNormal)))));
 
@@ -25,7 +79,7 @@ float4 main(VStoPS aPixel) : SV_TARGET
     normal = normalize(mul(normal, TBN));
     
     MaterialPixelParameters parameters;
-    parameters.PixelColor = float4(albedoPixel, 1);
+    parameters.PixelColor = float4(albedoMap, 1);
     parameters.WorldPosition = aPixel.WorldPosition;
     parameters.Normal = normal;
     parameters.UV0 = aPixel.UV0;
@@ -42,14 +96,6 @@ float4 main(VStoPS aPixel) : SV_TARGET
         {
             case 0:
             {
-                float3 lightContribution = CalculateDirectionalLight(
-                    light.Direction,
-                    normal,
-                    albedoPixel,
-                    light.Color,
-                    light.Intensity
-                );
-                
                 float pixelDistance = length(aPixel.WorldPosition.xyz - CB_CameraPosition);
 
                 uint cascadeIndex;
@@ -76,6 +122,14 @@ float4 main(VStoPS aPixel) : SV_TARGET
                     cascadeIndex = 3;
                 }
                 
+                float3 lightContribution = CalculateDirectionalLight(
+                    light.Direction,
+                    normal,
+                    albedoMap,
+                    light.Color,
+                    light.Intensity
+                );
+                
                 float shadowFactor = CalculateDirectionalLightShadowFactor(
                     cascadeIndex,
                     CB_LightViewProjectionTextures[cascadeIndex],
@@ -94,7 +148,7 @@ float4 main(VStoPS aPixel) : SV_TARGET
                     light.Position,
                     aPixel.WorldPosition.xyz,
                     normal,
-                    albedoPixel,
+                    albedoMap,
                     light.Color,
                     light.Intensity,
                     light.Radius
@@ -118,7 +172,7 @@ float4 main(VStoPS aPixel) : SV_TARGET
                     light.Direction,
                     aPixel.WorldPosition.xyz,
                     normal,
-                    albedoPixel,
+                    albedoMap,
                     light.Color,
                     light.Intensity,
                     light.Radius,

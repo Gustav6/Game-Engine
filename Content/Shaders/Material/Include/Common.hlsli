@@ -1,6 +1,8 @@
 #ifndef COMMON_HLSLI
 #define COMMON_HLSLI
 
+static const float PI = 3.14159265f;
+
 struct VStoPS
 {
     float4 Position : SV_Position;
@@ -17,7 +19,7 @@ cbuffer FrameBuffer : register(b0)
 {
     float4x4 FB_View;
     float4x4 FB_Projection;
-    float3 FB_Position;
+    float3 FB_CameraPosition;
     float _FB_Padding;
 }
 

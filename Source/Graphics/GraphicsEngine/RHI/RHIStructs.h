@@ -53,3 +53,28 @@ enum class ShaderType : unsigned int
 	GeometryShader,
 	ComputeShader
 };
+
+enum class ResourceFormat
+{
+	UNKNOWN = 0,
+	R16G16B16A16_FLOAT = 10,
+	R32G32_FLOAT = 16,
+	R32G8X24_TYPELESS = 19,
+	R8G8B8A8_UNORM = 28,
+	R16G16_FLOAT = 34,
+	R32_FLOAT = 41,
+	R8G8_UNORM = 49,
+	R16_FLOAT = 54,
+	R8_UNORM = 61
+};
+
+enum ResourceBindFlag_
+{
+	ResourceBindFlag_Staging = 0,
+	ResourceBindFlag_ShaderResource = 8,
+	ResourceBindFlag_RenderTarget = 32,
+	ResourceBindFlag_DepthStencil = 64,
+	ResourceBindFlag_UnorderedAccessView = 128,
+};
+
+typedef int ResourceBindFlags;

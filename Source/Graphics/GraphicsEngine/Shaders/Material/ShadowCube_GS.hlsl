@@ -67,7 +67,7 @@ void main(triangle VStoPS input[3], inout TriangleStream<ShadowGSOut> output)
         ShadowGSOut vertex;
         for (int v = 0; v < 3; ++v)
         {
-            float3 posRelativeToLight = input[v].WorldPosition.xyz - FB_Position;
+            float3 posRelativeToLight = input[v].WorldPosition.xyz - FB_CameraPosition;
             float4 viewSpacePos = mul(cubeViews[f], float4(posRelativeToLight, 1.0f));
             vertex.Position = mul(FB_Projection, viewSpacePos);
             vertex.CubeFace = f;

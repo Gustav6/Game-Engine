@@ -406,6 +406,7 @@ bool AssetLibrary::LoadMaterial(const std::filesystem::path& aPath)
         {
             std::filesystem::path albedoTexturePath = materialData.GetString("AlbedoTexture");
             std::filesystem::path normalTexturePath = materialData.GetString("NormalTexture");
+            std::filesystem::path materialTexturePath = materialData.GetString("MaterialTexture");
 
             if (!LoadTexture(albedoTexturePath))
             {
@@ -415,9 +416,14 @@ bool AssetLibrary::LoadMaterial(const std::filesystem::path& aPath)
             {
                 return false;
             }
+            if (!LoadTexture(materialTexturePath))
+            {
+                return false;
+            }
 
             instance->SetTexture(0, GetTexture(albedoTexturePath.string()));
             instance->SetTexture(1, GetTexture(normalTexturePath.string()));
+            instance->SetTexture(2, GetTexture(materialTexturePath.string()));
         }
 
         myMaterials.emplace(normalizedPath, std::move(instance));
@@ -444,6 +450,7 @@ bool AssetLibrary::LoadMaterial(const std::filesystem::path& aPath)
     {
         std::filesystem::path albedoTexturePath = materialData.GetString("AlbedoTexture");
         std::filesystem::path normalTexturePath = materialData.GetString("NormalTexture");
+        std::filesystem::path materialTexturePath = materialData.GetString("MaterialTexture");
 
         if (!LoadTexture(albedoTexturePath))
         {
@@ -453,9 +460,14 @@ bool AssetLibrary::LoadMaterial(const std::filesystem::path& aPath)
         {
             return false;
         }
+        if (!LoadTexture(materialTexturePath))
+        {
+            return false;
+        }
 
         material->SetTexture(0, GetTexture(albedoTexturePath.string()));
         material->SetTexture(1, GetTexture(normalTexturePath.string()));
+        material->SetTexture(2, GetTexture(materialTexturePath.string()));
     }
 
     myMaterials.emplace(normalizedPath, std::move(material));
