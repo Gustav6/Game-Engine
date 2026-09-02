@@ -54,6 +54,17 @@ float3 Diffuse_BRDF(float3 aDiffuseColor)
     return aDiffuseColor / PI;
 }
 
+int GetNumMips(TextureCube aCube)
+{
+    int w = 0;
+    int h = 0;
+    int m = 0;
+    
+    aCube.GetDimensions(0, w, h, m);
+    
+    return m;
+}
+
 float4 main(VStoPS aPixel) : SV_TARGET
 {
     const float3 albedoMap = AlbedoTexture.Sample(TrilinearWrap, aPixel.UV0).rgb;
@@ -118,6 +129,24 @@ float4 main(VStoPS aPixel) : SV_TARGET
                     cascadeIndex = 3;
                 }
                 
+                // Indirect Diffuse
+                
+                // const int numMips = GetNumMips(EnvCubeTexture) – 1;
+                // const float3 iblDiffuse = EnvCubeTexture.SampleLevel(TrilinearWrap, normal, numMips).rgb;
+                
+                // Indirect Specular 
+                
+                // Figure out where to read the cube map by finding the reflection vector 
+                // const float3 R = reflect ( - toViewDir , pixelNormal ); 
+                
+                // Get a pixel from a specific mip. 
+                // const float3 envColor = EnvCubeTexture.SampleLevel(TrilinearWrap, R, roughness * numMips).rgb; 
+                
+                // Fetch the integral result from the LUT 
+                // const float NdotV = saturate(dot(pixelNormal, toViewDir)); 
+                // const float2 brdfLUT = BRDF_LUT_Texture.Sample(LUTSampler, float2(NdotV, roughness)).rg; 
+                // const float3 iblSpecular = envColor * (specularColor * brdfLUT.x + brdfLUT.y);
+                
                 float3 pixelToCamera = normalize(FB_CameraPosition - aPixel.WorldPosition.xyz);
                 float3 pixelToLight = normalize(-light.Direction);
                 float3 halfAngleToCamera = (pixelToLight + pixelToCamera) / length(pixelToLight + pixelToCamera);
@@ -137,7 +166,7 @@ float4 main(VStoPS aPixel) : SV_TARGET
                     light.Direction
                 );
                 
-                radiance += lightContribution;
+                radiance += lightContribution * shadowFactor;
                 
                 break;
                 }

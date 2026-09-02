@@ -137,7 +137,7 @@ float4 main(VStoPS aPixel) : SV_TARGET
                     light.Direction
                 );
                 
-                radiance += lightContribution;
+                radiance += lightContribution * shadowFactor;
                 
                 break;
                 }

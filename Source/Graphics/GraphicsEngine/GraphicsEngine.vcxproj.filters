@@ -187,6 +187,7 @@
     <FxCompile Include="Shaders\Material\Lambert_PS.hlsl" />
     <FxCompile Include="Shaders\Material\ShadowCube_GS.hlsl" />
     <FxCompile Include="Shaders\Material\PBL_PS.hlsl" />
+    <FxCompile Include="Shaders\Material\FullTexture_VS.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\Material\Include\Common.hlsli" />
