@@ -133,9 +133,7 @@ float4 main(VStoPS aPixel) : SV_TARGET
                 float shadowFactor = CalculateDirectionalLightShadowFactor(
                     cascadeIndex,
                     CB_LightViewProjectionTextures[cascadeIndex],
-                    aPixel.WorldPosition, 
-                    normal, 
-                    light.Direction
+                    aPixel.WorldPosition
                 );
                 
                 radiance += lightContribution * shadowFactor;

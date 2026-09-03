@@ -162,6 +162,9 @@ private:
 	std::shared_ptr<Texture> myDefaultAlbedoTexture;
 	std::shared_ptr<Texture> myDefaultNormalTexture;
 
+	std::unique_ptr<Texture> myEnvironmentCubemap;
+	std::unique_ptr<Texture> myLUTTexture;
+
 	std::unique_ptr<PipelineStateObject> myShadowPSO;
 
 	// First Index = Near Cascade ... last index = Far Cascade

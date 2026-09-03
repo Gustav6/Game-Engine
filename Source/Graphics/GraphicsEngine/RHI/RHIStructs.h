@@ -22,6 +22,7 @@ enum class Topology : unsigned int
 {
 	Undefined = 0,
 	TriangleList = 4,
+	TriangleStrip = 5,
 };
 
 struct VertexElementDescription

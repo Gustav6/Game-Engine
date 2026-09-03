@@ -79,6 +79,75 @@ bool GraphicsEngine::Initialize(HWND aWindowHandle, const std::filesystem::path&
 		return false;
 	};
 
+	// LUT
+	{
+		Shader lutVS;
+		Shader lutPS;
+		
+		{
+			MaterialShaderIncludeHandler handler(myShaderRoot / "Material" / "Include", myShaderRoot / "Material" / "FullTexture_VS.hlsl", myShaderRoot / "FullTexture_VS.hlsl");
+
+			if (!myRHI.CompileShader(ShaderType::VertexShader, myShaderRoot / "Material" / "FullTexture_VS.hlsl", &handler, true, lutVS))
+			{
+				GELOG(Error, "Failed to compile FullTexture_VS shader!");
+				return false;
+			}
+		}
+
+		{
+			MaterialShaderIncludeHandler handler(myShaderRoot / "Material" / "Include", myShaderRoot / "Material" / "BRDF_LUT_PS.hlsl", myShaderRoot / "BRDF_LUT_PS.hlsl");
+
+			if (!myRHI.CompileShader(ShaderType::PixelShader, myShaderRoot / "Material" / "BRDF_LUT_PS.hlsl", &handler, true, lutPS))
+			{
+				GELOG(Error, "Failed to compile BRDF LUT pixel shader!");
+				return false;
+			}
+		}
+
+		PipelineStateDescription lutPSODesc = {};
+		lutPSODesc.Name = "LUTPSO";
+		lutPSODesc.Topology = Topology::TriangleStrip;
+		lutPSODesc.VertexShader.ByteCode = lutVS.GetDataPtr();
+		lutPSODesc.VertexShader.ByteCodeSize = lutVS.GetDataSize();
+		lutPSODesc.PixelShader.ByteCode = lutPS.GetDataPtr();
+		lutPSODesc.PixelShader.ByteCodeSize = lutPS.GetDataSize();
+
+		PipelineStateObject lutPSO;
+
+		if (!myRHI.CreatePipelineStateObject(lutPSODesc, lutPSO))
+		{
+			GELOG(Error, "Failed to create LUT pipeline state object!");
+			return false;
+		}
+
+		myLUTTexture = std::make_unique<Texture>();
+
+		if (!myRHI.CreateTexture("BRDF_LUT", 512, 512, 1, ResourceFormat::R16G16_FLOAT, ResourceBindFlag_ShaderResource | ResourceBindFlag_RenderTarget, *myLUTTexture))
+		{
+			GELOG(Error, "Failed to create BRDF LUT texture!");
+			return false;
+		}
+
+		GraphicsCommandList initCommandList;
+
+		if (!myRHI.CreateCommandList("LUT Init", initCommandList))
+		{
+			GELOG(Error, "Failed to create LUT init command list!");
+			return false;
+		}
+
+		initCommandList.SetPipelineStateObject(lutPSO);
+		initCommandList.SetRenderTarget(myLUTTexture.get(), nullptr);
+		initCommandList.Draw(4);
+
+		initCommandList.FinishCommandList();
+		myRHI.ExecuteCommandList(initCommandList);
+
+		myEnvironmentCubemap = std::make_unique<Texture>();
+
+		LoadTexture(myShaderRoot.parent_path() / "Textures" / "Environment Map" / "T_Shipyard.dds", *myEnvironmentCubemap);
+	}
+
 	return true;
 }
 
@@ -100,6 +169,11 @@ void GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const Scene& 
 		}
 
 		inoutCommandList.SetShaderSamplers(samplerList.data(), samplerList.size(), 0, PipelineStage_VertexShader | PipelineStage_PixelShader);
+	}
+	
+	{
+		inoutCommandList.SetShaderResource(myEnvironmentCubemap.get(), 98, PipelineStage_PixelShader);
+		inoutCommandList.SetShaderResource(myLUTTexture.get(), 99, PipelineStage_PixelShader);
 	}
 
 	inoutCommandList.BeginEvent("Shadow Pass");
@@ -859,7 +933,7 @@ bool GraphicsEngine::CreateRenderResources()
 		}
 	}
 
-	// TrilinearWrap
+	// Trilinear Wrap
 	{
 		SamplerDescription samplerDesc;
 		samplerDesc.Name = "TrilinearWrap";
@@ -876,7 +950,7 @@ bool GraphicsEngine::CreateRenderResources()
 		mySamplers.emplace_back(std::move(sampler));
 	}
 
-	// ShadowSampler
+	// Shadow Sampler
 	{
 		SamplerDescription samplerDesc;
 		samplerDesc.Name = "ShadowSampler";
@@ -895,12 +969,12 @@ bool GraphicsEngine::CreateRenderResources()
 		mySamplers.emplace_back(std::move(sampler));
 	}
 
-	// ShadowSampler
+	// LUT Sampler
 	{
 		SamplerDescription samplerDesc;
-		samplerDesc.Name = "LutSampler";
+		samplerDesc.Name = "LUTSampler";
 		samplerDesc.AddressMode = SamplerAddressMode::Clamp;
-		samplerDesc.FilterMode = SamplerFilterMode::Linear;
+		samplerDesc.FilterMode = SamplerFilterMode::Trilinear; // Might need to change to Trilinear
 		samplerDesc.BorderColor = CommonUtilities::Vector4f::One;
 
 		std::unique_ptr<Sampler> sampler = std::make_unique<Sampler>();

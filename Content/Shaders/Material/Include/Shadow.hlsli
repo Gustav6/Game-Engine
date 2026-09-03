@@ -104,7 +104,7 @@ float GetCascadeShadowMapSize(uint aCascadeIndex)
     }
 }
 
-float CalculateDirectionalLightShadowFactor(uint aCascadeIndex, float4x4 aLightViewProjectionTexture, float4 aWorldPosition, float3 aNormal, float3 aLightDirection)
+float CalculateDirectionalLightShadowFactor(uint aCascadeIndex, float4x4 aLightViewProjectionTexture, float4 aWorldPosition)
 {
     float4 lightSpacePosition = mul(aLightViewProjectionTexture, aWorldPosition);
     float3 convertedPosition = lightSpacePosition.xyz / lightSpacePosition.w;

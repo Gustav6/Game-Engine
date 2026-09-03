@@ -1,7 +1,7 @@
 #ifndef COMMON_HLSLI
 #define COMMON_HLSLI
 
-static const float PI = 3.14159265f;
+static const float PI = 3.14159265358979323846f;
 
 struct VStoPS
 {
@@ -13,6 +13,12 @@ struct VStoPS
     float3 Normal : NORMAL;
     float3 Tangent : TANGENT;
     float3 BiNormal : BINORMAL;
+};
+
+struct FullTextureVertex
+{
+    float4 Position : SV_Position;
+    float2 UV : UV0;
 };
 
 cbuffer FrameBuffer : register(b0)
