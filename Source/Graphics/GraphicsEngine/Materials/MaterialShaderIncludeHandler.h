@@ -7,6 +7,7 @@
 
 /**
  * Handles management of the HLSL Program include file for Materials.
+ * @return
  */
 class MaterialShaderIncludeHandler : public ID3DInclude
 {

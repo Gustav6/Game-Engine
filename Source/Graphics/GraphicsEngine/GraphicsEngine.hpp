@@ -99,6 +99,12 @@ public:
 
 	bool LoadTexture(const std::filesystem::path& aPath, Texture& outTexture) const;
 
+	/**
+	 * Will set the texture for the environment, which is used in PBL.
+	 * @param aEnvironmentTexture A texture which is in Cubemap format.
+	 */
+	void SetEnvironmentTexture(std::unique_ptr<Texture> aEnvironmentTexture);
+
 private:
 	GraphicsEngine();
 	~GraphicsEngine();
@@ -140,8 +146,8 @@ private:
 	 * @param aCascadeSizes Sizes will apply in order from closest to furthest away.
 	 */
 	void BuildShadowCascades(const std::array<int, NUM_CASCADES>& aCascadeSizes, float aCameraNear, float aCameraFar);
-	bool LoadDefaultAssets();
-	bool CreateRenderResources();
+	bool InitializeBuiltinAssets();
+	bool InitializeRenderResources();
 
 	RenderHardwareInterface myRHI;
 

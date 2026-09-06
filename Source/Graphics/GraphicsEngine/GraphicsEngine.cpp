@@ -2,6 +2,7 @@
 #include "GraphicsEngine.hpp"
 
 #include <string>
+#include <cassert>
 
 #include "CommonUtilities/Matrix4x4.hpp"
 #include "CommonUtilities/Frustum.hpp"
@@ -69,84 +70,15 @@ bool GraphicsEngine::Initialize(HWND aWindowHandle, const std::filesystem::path&
 
 	RegisterMaterialShaders();
 
-	if (!LoadDefaultAssets())
+	if (!InitializeBuiltinAssets())
 	{
 		return false;
 	};
 
-	if (!CreateRenderResources())
+	if (!InitializeRenderResources())
 	{
 		return false;
 	};
-
-	// LUT
-	{
-		Shader lutVS;
-		Shader lutPS;
-		
-		{
-			MaterialShaderIncludeHandler handler(myShaderRoot / "Material" / "Include", myShaderRoot / "Material" / "FullTexture_VS.hlsl", myShaderRoot / "FullTexture_VS.hlsl");
-
-			if (!myRHI.CompileShader(ShaderType::VertexShader, myShaderRoot / "Material" / "FullTexture_VS.hlsl", &handler, true, lutVS))
-			{
-				GELOG(Error, "Failed to compile FullTexture_VS shader!");
-				return false;
-			}
-		}
-
-		{
-			MaterialShaderIncludeHandler handler(myShaderRoot / "Material" / "Include", myShaderRoot / "Material" / "BRDF_LUT_PS.hlsl", myShaderRoot / "BRDF_LUT_PS.hlsl");
-
-			if (!myRHI.CompileShader(ShaderType::PixelShader, myShaderRoot / "Material" / "BRDF_LUT_PS.hlsl", &handler, true, lutPS))
-			{
-				GELOG(Error, "Failed to compile BRDF LUT pixel shader!");
-				return false;
-			}
-		}
-
-		PipelineStateDescription lutPSODesc = {};
-		lutPSODesc.Name = "LUTPSO";
-		lutPSODesc.Topology = Topology::TriangleStrip;
-		lutPSODesc.VertexShader.ByteCode = lutVS.GetDataPtr();
-		lutPSODesc.VertexShader.ByteCodeSize = lutVS.GetDataSize();
-		lutPSODesc.PixelShader.ByteCode = lutPS.GetDataPtr();
-		lutPSODesc.PixelShader.ByteCodeSize = lutPS.GetDataSize();
-
-		PipelineStateObject lutPSO;
-
-		if (!myRHI.CreatePipelineStateObject(lutPSODesc, lutPSO))
-		{
-			GELOG(Error, "Failed to create LUT pipeline state object!");
-			return false;
-		}
-
-		myLUTTexture = std::make_unique<Texture>();
-
-		if (!myRHI.CreateTexture("BRDF_LUT", 512, 512, 1, ResourceFormat::R16G16_FLOAT, ResourceBindFlag_ShaderResource | ResourceBindFlag_RenderTarget, *myLUTTexture))
-		{
-			GELOG(Error, "Failed to create BRDF LUT texture!");
-			return false;
-		}
-
-		GraphicsCommandList initCommandList;
-
-		if (!myRHI.CreateCommandList("LUT Init", initCommandList))
-		{
-			GELOG(Error, "Failed to create LUT init command list!");
-			return false;
-		}
-
-		initCommandList.SetPipelineStateObject(lutPSO);
-		initCommandList.SetRenderTarget(myLUTTexture.get(), nullptr);
-		initCommandList.Draw(4);
-
-		initCommandList.FinishCommandList();
-		myRHI.ExecuteCommandList(initCommandList);
-
-		myEnvironmentCubemap = std::make_unique<Texture>();
-
-		LoadTexture(myShaderRoot.parent_path() / "Textures" / "Environment Map" / "T_Shipyard.dds", *myEnvironmentCubemap);
-	}
 
 	return true;
 }
@@ -196,7 +128,7 @@ void GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const Scene& 
 			frameBuffer.Projection = aScene.SceneCamera.Camera.GetProjection();
 			frameBuffer.CameraPosition = aScene.SceneCamera.Transform.GetTranslation();
 
-			UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::FrameBuffer, frameBuffer, 0, PipelineStage_VertexShader);
+			UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::FrameBuffer, frameBuffer, 0, PipelineStage_VertexShader | PipelineStage_PixelShader);
 		}
 
 		UploadSceneLightingData(inoutCommandList, aScene.SceneLights);
@@ -380,6 +312,11 @@ bool GraphicsEngine::LoadTexture(const std::filesystem::path& aPath, Texture& ou
 	file.close();
 
 	return myRHI.CreateTexture(aPath.stem().string(), fileData.data(), fileData.size(), outTexture);
+}
+
+void GraphicsEngine::SetEnvironmentTexture(std::unique_ptr<Texture> aEnvironmentTexture)
+{
+	myEnvironmentCubemap = std::move(aEnvironmentTexture);
 }
 
 bool GraphicsEngine::HasDrawCallFlag(DrawCallFlags aFlags, DrawCallFlag_ aFlag)
@@ -774,6 +711,8 @@ void GraphicsEngine::RenderDrawCalls(GraphicsCommandList& inoutCommandList, cons
 						material->RefreshMaterialData();
 					}
 
+					// TODO: Rewatch "AGP Workshop 5.mkv"
+					// Need to change slot and make it work again!
 					UpdateAndSetConstantBufferInternal(inoutCommandList, ConstantBuffer::MaterialBuffer, material->GetParameterDataBlock(), Material::MATERIAL_BUFFER_SIZE, 3, PipelineStage_VertexShader | PipelineStage_PixelShader);
 				}
 
@@ -854,7 +793,7 @@ void GraphicsEngine::BuildShadowCascades(const std::array<int, NUM_CASCADES>& aC
 	}
 }
 
-bool GraphicsEngine::LoadDefaultAssets()
+bool GraphicsEngine::InitializeBuiltinAssets()
 {
 	// Material
 	{
@@ -903,7 +842,7 @@ bool GraphicsEngine::LoadDefaultAssets()
 	return true;
 }
 
-bool GraphicsEngine::CreateRenderResources()
+bool GraphicsEngine::InitializeRenderResources()
 {
 	// Constant Buffers
 	{
@@ -974,7 +913,7 @@ bool GraphicsEngine::CreateRenderResources()
 		SamplerDescription samplerDesc;
 		samplerDesc.Name = "LUTSampler";
 		samplerDesc.AddressMode = SamplerAddressMode::Clamp;
-		samplerDesc.FilterMode = SamplerFilterMode::Trilinear; // Might need to change to Trilinear
+		samplerDesc.FilterMode = SamplerFilterMode::Trilinear;
 		samplerDesc.BorderColor = CommonUtilities::Vector4f::One;
 
 		std::unique_ptr<Sampler> sampler = std::make_unique<Sampler>();
@@ -1002,6 +941,71 @@ bool GraphicsEngine::CreateRenderResources()
 			GELOG(Error, "Failed to create shadow pipeline state object!");
 			return false;
 		}
+	}
+
+	// LUT Texture
+	{
+		Shader lutVS;
+		Shader lutPS;
+
+		{
+			MaterialShaderIncludeHandler handler("", myShaderRoot / "Material" / "FullTexture_VS.hlsl", "");
+
+			if (!myRHI.CompileShader(ShaderType::VertexShader, myShaderRoot / "Material" / "FullTexture_VS.hlsl", &handler, true, lutVS))
+			{
+				GELOG(Error, "Failed to compile FullTexture_VS shader!");
+				return false;
+			}
+		}
+
+		{
+			MaterialShaderIncludeHandler handler("", myShaderRoot / "Material" / "BRDF_LUT_PS.hlsl", "");
+
+			if (!myRHI.CompileShader(ShaderType::PixelShader, myShaderRoot / "Material" / "BRDF_LUT_PS.hlsl", &handler, true, lutPS))
+			{
+				GELOG(Error, "Failed to compile BRDF LUT pixel shader!");
+				return false;
+			}
+		}
+
+		PipelineStateDescription lutPSODesc = {};
+		lutPSODesc.Name = "LUTPSO";
+		lutPSODesc.Topology = Topology::TriangleStrip;
+		lutPSODesc.VertexShader.ByteCode = lutVS.GetDataPtr();
+		lutPSODesc.VertexShader.ByteCodeSize = lutVS.GetDataSize();
+		lutPSODesc.PixelShader.ByteCode = lutPS.GetDataPtr();
+		lutPSODesc.PixelShader.ByteCodeSize = lutPS.GetDataSize();
+
+		PipelineStateObject lutPSO;
+
+		if (!myRHI.CreatePipelineStateObject(lutPSODesc, lutPSO))
+		{
+			GELOG(Error, "Failed to create LUT pipeline state object!");
+			return false;
+		}
+
+		myLUTTexture = std::make_unique<Texture>();
+
+		if (!myRHI.CreateTexture("BRDF_LUT", 512, 512, 1, ResourceFormat::R16G16_FLOAT, ResourceBindFlag_ShaderResource | ResourceBindFlag_RenderTarget, *myLUTTexture))
+		{
+			GELOG(Error, "Failed to create BRDF LUT texture!");
+			return false;
+		}
+
+		GraphicsCommandList initCommandList;
+
+		if (!myRHI.CreateCommandList("LUT Init", initCommandList))
+		{
+			GELOG(Error, "Failed to create LUT init command list!");
+			return false;
+		}
+
+		initCommandList.SetPipelineStateObject(lutPSO);
+		initCommandList.SetRenderTarget(myLUTTexture.get(), nullptr);
+		initCommandList.Draw(4);
+		initCommandList.FinishCommandList();
+
+		myRHI.ExecuteCommandList(initCommandList);
 	}
 
 	return true;

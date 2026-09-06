@@ -3,63 +3,10 @@
 #include "Include/Light.hlsli"
 #include "Include/Shadow.hlsli"
 #include "Include/Samplers.hlsli"
+#include "Include/Lambert_Functions.hlsli"
 
 Texture2D AlbedoTexture : register(t0);
 Texture2D NormalTexture : register(t1);
-
-float3 CalculateDirectionalLight(float3 aWorldLightDirection, float3 aWorldNormal, float3 aSurfaceColor, float3 aLightColor, float aLightIntensity)
-{
-    float3 L = normalize(-aWorldLightDirection);
-    
-    float3 N = normalize(aWorldNormal);
-    
-    float NdotL = saturate(dot(L, N));
-    
-    return NdotL * (aSurfaceColor / PI) * (aLightColor * aLightIntensity);
-}
-
-float3 CalculatePointLight(float3 aLightPosition, float3 aPixelPosition, float3 aWorldNormal, float3 aSurfaceColor, float3 aLightColor, float aIntensity, float aRadius)
-{
-    float3 lightDelta = aLightPosition - aPixelPosition;
-    float DL = max(length(lightDelta), 0.01f);
-    
-    float alpha = saturate(1.0f - pow(abs(DL / aRadius), 2.0f));
-    alpha = alpha * alpha;
-    
-    float IL = (aIntensity / (DL * DL)) * alpha;
-    
-    float3 L = normalize(lightDelta);
-    float3 N = normalize(aWorldNormal);
-    
-    float NdotL = saturate(dot(L, N));
-    
-    return NdotL * (aSurfaceColor / PI) * (aLightColor * IL);
-}
-
-float3 CalculateSpotLight(float3 aLightPosition, float3 aLightDirection, float3 aPixelPosition, float3 aWorldNormal, float3 aSurfaceColor, float3 aLightColor, float aIntensity, float aRadius, float aInnerCone, float aOuterCone)
-{
-    float3 lightDelta = aLightPosition - aPixelPosition;
-    float DL = max(length(lightDelta), 0.01f);
-    
-    float3 L = normalize(lightDelta);
-    
-    float spotFactor = saturate(dot(-L, aLightDirection));
-    
-    float cosInnerCone = cos(aInnerCone);
-    float cosOuterCone = cos(aOuterCone);
-    
-    float IS = smoothstep(cosOuterCone, cosInnerCone, spotFactor);
-    
-    float alpha = saturate(1.0f - pow(abs(DL / aRadius), 2.0f));
-    alpha = alpha * alpha * IS;
-    
-    float IL = (aIntensity / (DL * DL)) * alpha;
-    
-    float3 N = normalize(aWorldNormal);
-    float NdotL = saturate(dot(L, N));
-    
-    return NdotL * (aSurfaceColor / PI) * (aLightColor * IL);
-}
 
 float4 main(VStoPS aPixel) : SV_TARGET
 {
@@ -102,37 +49,33 @@ float4 main(VStoPS aPixel) : SV_TARGET
                 
                 if (pixelDistance < CB_CascadeFarPlanes.x)
                 {
-                    //lightContribution.r *= 5;
+                    //radiance = float3(1, 0, 0);
                     cascadeIndex = 0;
                 }
                 else if (pixelDistance < CB_CascadeFarPlanes.y)
                 {
-                    //lightContribution.g *= 5;
+                    //radiance = float3(0, 1, 0);
                     cascadeIndex = 1;
                 }
                 else if (pixelDistance < CB_CascadeFarPlanes.z)
                 {
-                    //lightContribution.b *= 5;
+                    //radiance = float3(0, 0, 1);
                     cascadeIndex = 2;
                 }
                 else
                 {
-                    //lightContribution.r *= 5;
-                    //lightContribution.g *= 5;
+                    //radiance = float3(1, 1, 0);
                     cascadeIndex = 3;
                 }
                 
                 float3 lightContribution = CalculateDirectionalLight(
-                    light.Direction,
+                    light,
                     normal,
-                    albedoMap,
-                    light.Color,
-                    light.Intensity
+                    albedoMap
                 );
                 
                 float shadowFactor = CalculateDirectionalLightShadowFactor(
                     cascadeIndex,
-                    CB_LightViewProjectionTextures[cascadeIndex],
                     aPixel.WorldPosition
                 );
                 
@@ -143,20 +86,15 @@ float4 main(VStoPS aPixel) : SV_TARGET
             case 1:
             {
                float3 lightContribution = CalculatePointLight(
-                    light.Position,
+                    light,
                     aPixel.WorldPosition.xyz,
                     normal,
-                    albedoMap,
-                    light.Color,
-                    light.Intensity,
-                    light.Radius
+                    albedoMap
                 );
                 
                 float shadowFactor = CalculatePointLightShadowFactor(
-                    light.ShadowIndex, 
-                    aPixel.WorldPosition.xyz, 
-                    light.Position, 
-                    light.Radius
+                    light, 
+                    aPixel.WorldPosition.xyz
                 );
                 
                 radiance += lightContribution * shadowFactor;
@@ -166,25 +104,16 @@ float4 main(VStoPS aPixel) : SV_TARGET
             case 2:
             {
                 float3 lightContribution = CalculateSpotLight(
-                    light.Position,
-                    light.Direction,
+                    light,
                     aPixel.WorldPosition.xyz,
                     normal,
-                    albedoMap,
-                    light.Color,
-                    light.Intensity,
-                    light.Radius,
-                    light.InnerCone,
-                    light.OuterCone
+                    albedoMap
                 );
                 
                 float shadowFactor = CalculateSpotLightShadowFactor(
-                    light.ShadowIndex, 
-                    light.ShadowMapSize,
-                    light.LightViewProjectionTexture, 
+                    light, 
                     aPixel.WorldPosition, 
-                    normal, 
-                    light.Direction
+                    normal
                 );
                
                 radiance += lightContribution * shadowFactor;

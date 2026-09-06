@@ -328,10 +328,12 @@ xcopy /E /I /R /Y /D "%SHADERSRC%" "%SHADERDEST%"</Command>
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\Material\Include\Common.hlsli" />
+    <None Include="Shaders\Material\Include\Lambert_Functions.hlsli" />
     <None Include="Shaders\Material\Include\Light.hlsli" />
     <None Include="Shaders\Material\Include\LUTFunctions.hlsli" />
     <None Include="Shaders\Material\Include\Material.hlsli" />
     <None Include="Shaders\Material\Include\MaterialParameters.hlsli" />
+    <None Include="Shaders\Material\Include\PBL_Functions.hlsli" />
     <None Include="Shaders\Material\Include\PoissonDisks.hlsli" />
     <None Include="Shaders\Material\Include\Samplers.hlsli" />
     <None Include="Shaders\Material\Include\Shadow.hlsli" />

@@ -1,12 +1,14 @@
 #include "ModelViewer.h"
 
+#include <utility>
 #include <algorithm>
 #include <filesystem>
-#include <future>
 #include <iostream>
 #include <vector>
+#include <memory>
 
 #include "Application.h"
+#include "AssetLibrary.h"
 
 #include "Game/Component/Rendering/MeshComponent.h"
 #include "Game/Component/Rendering/AnimationComponent.h"
@@ -15,6 +17,7 @@
 #include "Game/Component/Light/SpotLightComponent.h"
 
 #include "GraphicsEngine/GraphicsEngine.hpp"
+#include "GraphicsEngine/Objects/Texture.h"
 #include "GraphicsEngine/RHI/GraphicsCommandList.h"
 
 #include "tracy/core/Tracy.hpp"
@@ -71,6 +74,11 @@ bool ModelViewer::Initialize(SIZE aWindowSize, WNDPROC aWindowProcess, LPCWSTR a
 	    {
             return false;
         }
+
+		std::unique_ptr<Texture> environmentTexture = std::make_unique<Texture>();
+
+		GE.LoadTexture(contentPath / "Textures" / "Environment Map" / "T_Shipyard.dds", *environmentTexture);
+        GE.SetEnvironmentTexture(std::move(environmentTexture));
 
 		myGraphicsCommandList = std::make_unique<GraphicsCommandList>();
 
@@ -286,7 +294,7 @@ void ModelViewer::LoadScene()
 
         directionalLight->SetColor({ 1.0f, 0.95f, 0.85f });
         directionalLight->SetIntensity(1.0f);
-        directionalLight->SetDirection({ 0.0f, -1.0f, 1.0f });
+        directionalLight->SetDirection({ 0.0f, -0.75f, 1.0f });
 
         myDirectionLightObject = myGameWorld.AddGameObject(std::move(object));
     }
