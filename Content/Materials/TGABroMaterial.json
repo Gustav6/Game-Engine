@@ -5,5 +5,10 @@
     "AlbedoTexture": "Textures/Albedo/T_TGA_Bro_C.dds",
     "NormalTexture": "Textures/Normal/T_TGA_Bro_N.dds",
     "MaterialTexture": "Textures/Material/T_TGA_Bro_M.dds"
+  },
+  "Shader": {
+    "Parameters": {
+      "TintValue": 0.5
+    }
   }
 }

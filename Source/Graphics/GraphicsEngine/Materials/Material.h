@@ -12,7 +12,7 @@ struct MaterialDescription
 
 	MaterialDomain Domain = MaterialDomain::None;
 	ShadingModel ShadingModel = ShadingModel::None;
-	BlendMode BlendMode = BlendMode::None;
+	MaterialBlendMode BlendMode = MaterialBlendMode::None;
 
 	std::filesystem::path MaterialShaderCode;
 };
@@ -25,7 +25,7 @@ public:
 	std::string_view GetName() const override { return myName; }
 	MaterialDomain GetDomain() const override { return myDescription.Domain; }
 	ShadingModel GetShadingModel() const override { return myDescription.ShadingModel; }
-	BlendMode GetBlendMode() const override { return myDescription.BlendMode; }
+	MaterialBlendMode GetBlendMode() const override { return myDescription.BlendMode; }
 
 	const PipelineStateObject& GetPSO() const override { return myPSO; }
 	
@@ -67,7 +67,7 @@ public:
 	std::string_view GetName() const override { return myName; }
 	MaterialDomain GetDomain() const override { return myParentMaterial->GetDomain(); }
 	ShadingModel GetShadingModel() const override { return myParentMaterial->GetShadingModel(); }
-	BlendMode GetBlendMode() const override { return myParentMaterial->GetBlendMode(); }
+	MaterialBlendMode GetBlendMode() const override { return myParentMaterial->GetBlendMode(); }
 
 	const PipelineStateObject& GetPSO() const override { return myParentMaterial->GetPSO(); }
 	

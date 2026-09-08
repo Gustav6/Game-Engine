@@ -451,7 +451,7 @@ bool AssetLibrary::LoadMaterial(const std::filesystem::path& aPath)
 
         desc.Domain = static_cast<MaterialDomain>(materialSettings.GetInt("MaterialDomain"));
         desc.ShadingModel = static_cast<ShadingModel>(materialSettings.GetInt("ShadingModel"));
-        desc.BlendMode = static_cast<BlendMode>(materialSettings.GetInt("BlendMode"));
+        desc.BlendMode = static_cast<MaterialBlendMode>(materialSettings.GetInt("BlendMode"));
     }
     else
     {

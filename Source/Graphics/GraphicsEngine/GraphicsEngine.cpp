@@ -167,7 +167,7 @@ bool GraphicsEngine::CreateMaterial(const MaterialDescription& aDescription, Mat
 	Shader materialVS;
 	Shader materialPS;
 
-	if (aDescription.BlendMode == BlendMode::None)
+	if (aDescription.BlendMode == MaterialBlendMode::None)
 	{
 		GELOG(Error, "Material {} has invalid Blend Mode setting!", aDescription.Name);
 		return false;
@@ -824,7 +824,7 @@ bool GraphicsEngine::InitializeBuiltinAssets()
 
 		MaterialDescription defaultMatDesc;
 		defaultMatDesc.Name = "Default";
-		defaultMatDesc.BlendMode = BlendMode::Opaque;
+		defaultMatDesc.BlendMode = MaterialBlendMode::Opaque;
 		defaultMatDesc.Domain = MaterialDomain::Surface;
 		defaultMatDesc.ShadingModel = ShadingModel::Unlit;
 		defaultMatDesc.MaterialShaderCode = myShaderRoot / "Material" / "Include" / "Material.hlsli";

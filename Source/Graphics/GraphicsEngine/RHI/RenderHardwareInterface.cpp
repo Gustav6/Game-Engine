@@ -462,12 +462,12 @@ bool RenderHardwareInterface::CreatePipelineStateObject(const PipelineStateDescr
 
 	switch (aDescription.BlendMode)
 	{
-		case PSOBlendMode::Opaque:
+		case BlendMode::Opaque:
 		{
 			outPSO.myBlendState = nullptr;
 			break;
 		}
-		case PSOBlendMode::Alpha:
+		case BlendMode::Alpha:
 		{
 			D3D11_RENDER_TARGET_BLEND_DESC blend = {};
 

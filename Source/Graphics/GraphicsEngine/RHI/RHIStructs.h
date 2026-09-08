@@ -80,7 +80,7 @@ enum ResourceBindFlag_
 
 typedef int ResourceBindFlags;
 
-enum class PSOBlendMode : uint8_t 
+enum class BlendMode : uint8_t 
 { 
 	Opaque, 
 	Alpha, 

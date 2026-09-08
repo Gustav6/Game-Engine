@@ -34,7 +34,7 @@ enum class ShadingModel : uint8_t
  * How this Material is Blended. Controls how a finished pixel is composited.
  * @return
  */
-enum class BlendMode : uint8_t
+enum class MaterialBlendMode : uint8_t
 {
 	None,
 	Opaque
@@ -99,7 +99,7 @@ public:
 
 	virtual MaterialDomain GetDomain() const = 0;
 	virtual ShadingModel GetShadingModel() const = 0;
-	virtual BlendMode GetBlendMode() const = 0;
+	virtual MaterialBlendMode GetBlendMode() const = 0;
 
 	virtual const PipelineStateObject& GetPSO() const = 0;
 

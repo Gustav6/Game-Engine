@@ -32,7 +32,7 @@ struct PipelineStateDescription
 
 	std::vector<VertexElementDescription> InputLayoutElements;
 	Topology Topology = Topology::TriangleList;
-	PSOBlendMode BlendMode = PSOBlendMode::Opaque;
+	BlendMode BlendMode = BlendMode::Opaque;
 	RasterizerState RasterizerState = RasterizerState::FillSolidCullBack;
 };
 
