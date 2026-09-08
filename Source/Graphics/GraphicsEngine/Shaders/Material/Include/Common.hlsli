@@ -5,7 +5,7 @@ static const float PI = 3.14159265358979323846f;
 
 struct VStoPS
 {
-    float4 Position : SV_Position;
+    float4 Position : SV_POSITION;
     float4 WorldPosition : WORLDPOS;
     float4 Color : COLOR;
     float2 UV0 : UV0;
@@ -17,7 +17,7 @@ struct VStoPS
 
 struct FullTextureVertex
 {
-    float4 Position : SV_Position;
+    float4 Position : SV_POSITION;
     float2 UV : UV0;
 };
 

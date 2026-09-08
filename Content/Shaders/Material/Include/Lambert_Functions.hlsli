@@ -42,10 +42,7 @@ float3 CalculateSpotLight(in Light aSpotLight, float3 aPixelPosition, float3 aNo
     
     float spotFactor = saturate(dot(-L, aSpotLight.Direction));
     
-    float cosInnerCone = cos(aSpotLight.InnerCone);
-    float cosOuterCone = cos(aSpotLight.OuterCone);
-    
-    float IS = smoothstep(cosOuterCone, cosInnerCone, spotFactor);
+    float IS = smoothstep(aSpotLight.CosOuterCone, aSpotLight.CosInnerCone, spotFactor);
     
     float alpha = saturate(1.0f - pow(abs(DL / aSpotLight.Radius), 2.0f));
     alpha = alpha * alpha * IS;

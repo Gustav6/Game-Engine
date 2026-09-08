@@ -43,7 +43,7 @@ float4 main(VStoPS aPixel) : SV_TARGET
         {
             case 0:
             {
-                float pixelDistance = length(aPixel.WorldPosition.xyz - CB_CameraPosition);
+                float pixelDistance = length(parameters.WorldPosition.xyz - CB_CameraPosition);
 
                 uint cascadeIndex;
                 
@@ -70,13 +70,13 @@ float4 main(VStoPS aPixel) : SV_TARGET
                 
                 float3 lightContribution = CalculateDirectionalLight(
                     light,
-                    normal,
-                    albedoMap
+                    parameters.Normal,
+                    parameters.PixelColor.rgb
                 );
                 
                 float shadowFactor = CalculateDirectionalLightShadowFactor(
                     cascadeIndex,
-                    aPixel.WorldPosition
+                    parameters.WorldPosition
                 );
                 
                 radiance += lightContribution * shadowFactor;
@@ -87,14 +87,14 @@ float4 main(VStoPS aPixel) : SV_TARGET
             {
                float3 lightContribution = CalculatePointLight(
                     light,
-                    aPixel.WorldPosition.xyz,
-                    normal,
-                    albedoMap
+                    parameters.WorldPosition.xyz,
+                    parameters.Normal,
+                    parameters.PixelColor.rgb
                 );
                 
                 float shadowFactor = CalculatePointLightShadowFactor(
                     light, 
-                    aPixel.WorldPosition.xyz
+                    parameters.WorldPosition.xyz
                 );
                 
                 radiance += lightContribution * shadowFactor;
@@ -105,15 +105,15 @@ float4 main(VStoPS aPixel) : SV_TARGET
             {
                 float3 lightContribution = CalculateSpotLight(
                     light,
-                    aPixel.WorldPosition.xyz,
-                    normal,
-                    albedoMap
+                    parameters.WorldPosition.xyz,
+                    parameters.Normal,
+                    parameters.PixelColor.rgb
                 );
                 
                 float shadowFactor = CalculateSpotLightShadowFactor(
                     light, 
-                    aPixel.WorldPosition, 
-                    normal
+                    parameters.WorldPosition,
+                    parameters.Normal
                 );
                
                 radiance += lightContribution * shadowFactor;

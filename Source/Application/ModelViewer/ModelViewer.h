@@ -68,7 +68,7 @@ public:
 private:
 	void LoadScene();
 	void UpdateScene(float aDeltaTime);
-	void BuildRenderScene();
+	void BuildSceneForRender();
 
 	bool myIsRunning = false;
 

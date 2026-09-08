@@ -49,17 +49,29 @@ void SpotLightComponent::SetRadius(float aRadius)
 
 void SpotLightComponent::SetCone(float aInner, float aOuter)
 {
-	assert(aInner >= 0.0f && aInner <= 1.0f);
-	assert(aOuter >= 0.0f && aOuter <= 1.0f);
-	assert(aInner <= aOuter);
+    SetInnerCone(aInner);
+    SetOuterCone(aOuter);
+}
 
-	myData->InnerCone = aInner;
-	myData->OuterCone = aOuter;
+void SpotLightComponent::SetInnerCone(float aInnerCone)
+{
+    assert(aInnerCone >= 0.0f && aInnerCone <= 1.0f);
+    assert(aInnerCone <= std::acos(myData->CosOuterCone));
+
+    myData->CosInnerCone = std::cos(aInnerCone);
+}
+
+void SpotLightComponent::SetOuterCone(float aOuterCone)
+{
+    assert(aOuterCone >= 0.0f && aOuterCone <= 1.0f);
+    assert(std::acos(myData->CosInnerCone) <= aOuterCone);
+
+    myData->CosOuterCone = std::cos(aOuterCone);
 }
 
 const CommonUtilities::Matrix4x4f SpotLightComponent::CreateProjectionMatrix() const
 {
-    const float fov = acos(myData->OuterCone) * 2.0f * CommonUtilities::Math::RAD_TO_DEG<float>;
+    const float fov = acos(myData->CosOuterCone) * 2.0f * CommonUtilities::Math::RAD_TO_DEG<float>;
 
 	return CommonUtilities::Matrix4x4f::CreatePerspectiveProjection(fov, 0.1f, myData->Radius, 1.0f);
 }

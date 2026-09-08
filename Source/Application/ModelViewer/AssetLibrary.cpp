@@ -367,6 +367,8 @@ bool AssetLibrary::LoadTexture(const std::filesystem::path& aPath)
 
 bool AssetLibrary::LoadMaterial(const std::filesystem::path& aPath)
 {
+    // TODO: Add support for loading materialbuffer values (ex: "MB_Tint")
+
     ZoneScopedN("Load Material");
 
     const std::filesystem::path normalizedPath = aPath.lexically_normal();
@@ -438,7 +440,11 @@ bool AssetLibrary::LoadMaterial(const std::filesystem::path& aPath)
     desc.ShadingModel = static_cast<ShadingModel>(materialData.GetInt("ShadingModel"));
     desc.BlendMode = static_cast<BlendMode>(materialData.GetInt("BlendMode"));
     desc.Name = materialData.GetString("Name");
-    desc.MaterialShaderCode = myContentRoot / materialData.GetString("ShaderCode");
+
+    if (materialData.HasKey("ShaderCode"))
+    {
+        desc.MaterialShaderCode = myContentRoot / materialData.GetString("ShaderCode");
+    }
 
     std::shared_ptr<Material> material = std::make_shared<Material>();
 

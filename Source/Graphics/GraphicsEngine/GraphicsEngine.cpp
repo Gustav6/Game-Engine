@@ -1,13 +1,10 @@
 #include "GraphicsEngine.pch.h"
 #include "GraphicsEngine.hpp"
 
-#include <string>
-#include <cassert>
-
 #include "CommonUtilities/Matrix4x4.hpp"
 #include "CommonUtilities/Frustum.hpp"
-#include <CommonUtilities/Vector3.hpp>
-#include <CommonUtilities/Vector4.hpp>
+#include "CommonUtilities/Vector3.hpp"
+#include "CommonUtilities/Vector4.hpp"
 
 #include "Objects/Mesh.h"
 #include "Objects/Vertex.h"
@@ -34,6 +31,8 @@
 #include "Textures/Normal/Default_N.h"
 
 #include "ShadowCube_GS.h"
+#include "FullTexture_VS.h"
+#include "BRDF_LUT_PS.h"
 
 /*
 * GraphicsEngine handles rendering of a scene.
@@ -193,20 +192,46 @@ bool GraphicsEngine::CreateMaterial(const MaterialDescription& aDescription, Mat
 	}
 
 	{
-		const std::filesystem::path& path = myMaterialDomainShaders.at(aDescription.Domain);
-		MaterialShaderIncludeHandler handler(myShaderRoot / "Material" / "Include", path, aDescription.MaterialShaderCode);
+		const std::filesystem::path& shaderProgramPath = myMaterialDomainShaders.at(aDescription.Domain);
+		const std::filesystem::path shaderRoot = myShaderRoot / "Material" / "Include";
 
-		if (!myRHI.CompileShader(ShaderType::VertexShader, path, &handler, true, materialVS))
+		std::filesystem::path materialProgramPath;
+
+		if (aDescription.MaterialShaderCode.empty())
+		{
+			materialProgramPath = myShaderRoot / "Material" / "Include" / "Material.hlsli";
+		}
+		else
+		{
+			materialProgramPath = aDescription.MaterialShaderCode;
+		}
+
+		MaterialShaderIncludeHandler handler(shaderRoot, shaderProgramPath, materialProgramPath);
+
+		if (!myRHI.CompileShader(ShaderType::VertexShader, shaderProgramPath, &handler, true, materialVS))
 		{
 			return false;
 		}
 	}
 
 	{
-		const std::filesystem::path& path = myMaterialShadingModelShaders.at(aDescription.ShadingModel);
-		MaterialShaderIncludeHandler handler(myShaderRoot / "Material" / "Include", path, aDescription.MaterialShaderCode);
+		const std::filesystem::path& shaderProgramPath = myMaterialShadingModelShaders.at(aDescription.ShadingModel);
+		const std::filesystem::path shaderRoot = myShaderRoot / "Material" / "Include";
 
-		if (!myRHI.CompileShader(ShaderType::PixelShader, path, &handler, true, materialPS))
+		std::filesystem::path materialProgramPath;
+
+		if (aDescription.MaterialShaderCode.empty())
+		{
+			materialProgramPath = myShaderRoot / "Material" / "Include" / "Material.hlsli";
+		}
+		else
+		{
+			materialProgramPath = aDescription.MaterialShaderCode;
+		}
+
+		MaterialShaderIncludeHandler handler(shaderRoot, shaderProgramPath, materialProgramPath);
+
+		if (!myRHI.CompileShader(ShaderType::PixelShader, shaderProgramPath, &handler, true, materialPS))
 		{
 			return false;
 		}
@@ -711,9 +736,7 @@ void GraphicsEngine::RenderDrawCalls(GraphicsCommandList& inoutCommandList, cons
 						material->RefreshMaterialData();
 					}
 
-					// TODO: Rewatch "AGP Workshop 5.mkv"
-					// Need to change slot and make it work again!
-					UpdateAndSetConstantBufferInternal(inoutCommandList, ConstantBuffer::MaterialBuffer, material->GetParameterDataBlock(), Material::MATERIAL_BUFFER_SIZE, 3, PipelineStage_VertexShader | PipelineStage_PixelShader);
+					UpdateAndSetConstantBufferInternal(inoutCommandList, ConstantBuffer::MaterialBuffer, material->GetParameterDataBlock(), Material::MATERIAL_BUFFER_SIZE, 5, PipelineStage_VertexShader | PipelineStage_PixelShader);
 				}
 
 				if (HasDrawCallFlag(someFlags, DrawCallFlag_BindTextures))
@@ -945,36 +968,13 @@ bool GraphicsEngine::InitializeRenderResources()
 
 	// LUT Texture
 	{
-		Shader lutVS;
-		Shader lutPS;
-
-		{
-			MaterialShaderIncludeHandler handler("", myShaderRoot / "Material" / "FullTexture_VS.hlsl", "");
-
-			if (!myRHI.CompileShader(ShaderType::VertexShader, myShaderRoot / "Material" / "FullTexture_VS.hlsl", &handler, true, lutVS))
-			{
-				GELOG(Error, "Failed to compile FullTexture_VS shader!");
-				return false;
-			}
-		}
-
-		{
-			MaterialShaderIncludeHandler handler("", myShaderRoot / "Material" / "BRDF_LUT_PS.hlsl", "");
-
-			if (!myRHI.CompileShader(ShaderType::PixelShader, myShaderRoot / "Material" / "BRDF_LUT_PS.hlsl", &handler, true, lutPS))
-			{
-				GELOG(Error, "Failed to compile BRDF LUT pixel shader!");
-				return false;
-			}
-		}
-
 		PipelineStateDescription lutPSODesc = {};
 		lutPSODesc.Name = "LUTPSO";
 		lutPSODesc.Topology = Topology::TriangleStrip;
-		lutPSODesc.VertexShader.ByteCode = lutVS.GetDataPtr();
-		lutPSODesc.VertexShader.ByteCodeSize = lutVS.GetDataSize();
-		lutPSODesc.PixelShader.ByteCode = lutPS.GetDataPtr();
-		lutPSODesc.PixelShader.ByteCodeSize = lutPS.GetDataSize();
+		lutPSODesc.VertexShader.ByteCode = INTERNAL_FullTexture_VS_ByteCode;
+		lutPSODesc.VertexShader.ByteCodeSize = sizeof(INTERNAL_FullTexture_VS_ByteCode);
+		lutPSODesc.PixelShader.ByteCode = INTERNAL_BRDF_LUT_PS_ByteCode;
+		lutPSODesc.PixelShader.ByteCodeSize = sizeof(INTERNAL_BRDF_LUT_PS_ByteCode);
 
 		PipelineStateObject lutPSO;
 

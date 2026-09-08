@@ -10,8 +10,8 @@ struct Light
     float3 Position;
     uint Type;
     float3 Direction;
-    float InnerCone;
-    float OuterCone;
+    float CosInnerCone;
+    float CosOuterCone;
     float Radius;
     uint2 ShadowMapSize;
     uint ShadowIndex;

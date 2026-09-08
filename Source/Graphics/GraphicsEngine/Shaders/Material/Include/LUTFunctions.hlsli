@@ -1,4 +1,7 @@
-#define PI 3.14159265358979323846f
+#ifndef LUT_FUNCTIONS_HLSLI
+#define LUT_FUNCTIONS_HLSLI
+
+#include "Common.hlsli"
 
 // Functions required for setting up the LUT
 // NOTE: These are NOT the same functions used when calculating PBL!
@@ -102,3 +105,5 @@ float2 IntegrateBRDF(float aNdotV, float aRoughness)
 
     return float2(a, b) / NUM_SAMPLES;
 }
+
+#endif

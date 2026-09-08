@@ -104,9 +104,9 @@ float GetCascadeShadowMapSize(uint aCascadeIndex)
     }
 }
 
-float CalculateDirectionalLightShadowFactor(uint aCascadeIndex, float4 aWorldPosition)
+float CalculateDirectionalLightShadowFactor(uint aCascadeIndex, float4 aPixelWorldPosition)
 {
-    float4 lightSpacePosition = mul(CB_LightViewProjectionTextures[aCascadeIndex], aWorldPosition);
+    float4 lightSpacePosition = mul(CB_LightViewProjectionTextures[aCascadeIndex], aPixelWorldPosition);
     float3 convertedPosition = lightSpacePosition.xyz / lightSpacePosition.w;
     float2 shadowUV = convertedPosition.xy;
     float P = convertedPosition.z;
@@ -124,9 +124,30 @@ float CalculateDirectionalLightShadowFactor(uint aCascadeIndex, float4 aWorldPos
     return shadowFactor / 16;
 }
 
-float CalculateSpotLightShadowFactor(in Light aSpotLight, float4 aWorldPosition, float3 aNormal)
+float CalculatePointLightShadowFactor(in Light aPointLight, float3 aPixelWorldPosition)
 {
-    float4 lightSpacePosition = mul(aSpotLight.LightViewProjectionTexture, aWorldPosition);
+    const float near = 1.0f;
+    const float far = aPointLight.Radius;
+
+    const float3 toPixel = aPixelWorldPosition.xyz - aPointLight.Position;
+    const float3 toLightDir = normalize(toPixel);
+    
+    const float3 toPixelAbs = abs(toPixel);
+    const float Z = max(toPixelAbs.x, max(toPixelAbs.y, toPixelAbs.z));
+    
+    const float fRange = far / (far - near);
+    const float v = -fRange * near;
+    
+    float D = (fRange * Z + v) / Z;
+    
+    float shadowFactor = SamplePointLightShadow(aPointLight.ShadowIndex, toLightDir, D);
+    
+    return shadowFactor;
+}
+
+float CalculateSpotLightShadowFactor(in Light aSpotLight, float4 aPixelWorldPosition, float3 aNormal)
+{
+    float4 lightSpacePosition = mul(aSpotLight.LightViewProjectionTexture, aPixelWorldPosition);
     float3 convertedPosition = lightSpacePosition.xyz / lightSpacePosition.w;
     float2 shadowUV = convertedPosition.xy;
     float P = convertedPosition.z;
@@ -142,27 +163,6 @@ float CalculateSpotLightShadowFactor(in Light aSpotLight, float4 aWorldPosition,
     }
 
     return shadowFactor / 16;
-}
-
-float CalculatePointLightShadowFactor(in Light aPointLight, float3 aWorldPosition)
-{
-    const float near = 1.0f;
-    const float far = aPointLight.Radius;
-
-    const float3 toPixel = aWorldPosition.xyz - aPointLight.Position;
-    const float3 toLightDir = normalize(toPixel);
-    
-    const float3 toPixelAbs = abs(toPixel);
-    const float Z = max(toPixelAbs.x, max(toPixelAbs.y, toPixelAbs.z));
-    
-    const float fRange = far / (far - near);
-    const float v = -fRange * near;
-    
-    float D = (fRange * Z + v) / Z;
-    
-    float shadowFactor = SamplePointLightShadow(aPointLight.ShadowIndex, toLightDir, D);
-    
-    return shadowFactor;
 }
 
 #endif

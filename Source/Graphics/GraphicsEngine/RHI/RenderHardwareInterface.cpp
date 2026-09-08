@@ -460,6 +460,57 @@ bool RenderHardwareInterface::CreatePipelineStateObject(const PipelineStateDescr
 		}
 	}
 
+	switch (aDescription.BlendMode)
+	{
+		case PSOBlendMode::Opaque:
+		{
+			outPSO.myBlendState = nullptr;
+			break;
+		}
+		case PSOBlendMode::Alpha:
+		{
+			D3D11_RENDER_TARGET_BLEND_DESC blend = {};
+
+			blend.BlendEnable = true;
+
+			blend.SrcBlend = D3D11_BLEND_SRC_ALPHA;
+			blend.DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
+			blend.BlendOp = D3D11_BLEND_OP_ADD;
+
+			blend.SrcBlendAlpha = D3D11_BLEND_ONE; 
+			blend.DestBlendAlpha = D3D11_BLEND_ZERO; 
+			blend.BlendOpAlpha = D3D11_BLEND_OP_ADD;
+
+			blend.RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
+
+			D3D11_BLEND_DESC desc = CD3D11_BLEND_DESC(D3D11_DEFAULT);
+
+			desc.RenderTarget[0] = blend;
+
+			ComPtr<ID3D11BlendState> blendState; 
+
+			const HRESULT result = myDevice->CreateBlendState(&desc, &blendState);
+
+			if (FAILED(result)) 
+			{
+				LOG(RhiLog, Error, "Failed to create blend state for pipeline state object {}!", aDescription.Name);
+				hasErrored = true;
+			}
+			else 
+			{ 
+				outPSO.myBlendState = blendState; 
+			}
+
+			break;
+		}
+		default:
+		{
+			LOG(RhiLog, Error, "Unsupported blend mode provided for pipeline state object {}!", aDescription.Name);
+			hasErrored = true;
+			break;
+		}
+	}
+
 	outPSO.myName = aDescription.Name;
 	outPSO.myTopology = aDescription.Topology;
 

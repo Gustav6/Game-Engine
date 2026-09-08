@@ -16,6 +16,13 @@
 #include <d3d11_1.h>
 #include <dxgi.h>
 #include <ranges>
+#include <string>
+#include <cassert>
+#include <filesystem>	
+#include <unordered_map>
+#include <vector>
+#include <memory>
+#include <array>
 
 #include "GraphicsEngine.hpp"
 #include "Logger/Logger.h"

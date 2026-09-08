@@ -23,7 +23,7 @@ float3 NormalDistributionFunction_GGX(float aNdotH, float aRoughness)
 {
     float aRoughnessSquared = pow(aRoughness, 4);
     
-    return aRoughnessSquared / (PI * pow(aNdotH * aNdotH * (aRoughnessSquared - 1) + 1, 2));
+    return aRoughnessSquared / (PI * pow((aNdotH * aNdotH * (aRoughnessSquared - 1) + 1), 2));
 }
 
 float3 Fresnel_SphericalGaussianSchlick(float aVdotH, float3 aSpecularColor)
@@ -65,16 +65,16 @@ float3 Diffuse_BRDF(float3 aDiffuseColor)
     return aDiffuseColor / PI;
 }
 
-float3 Diffuse_IBL(float3 aNormal, float aNumMips)
+float3 Diffuse_IBL(float3 aNormal, float aEnvNumMips)
 {
-    return EnvCubeTexture.SampleLevel(TrilinearWrap, aNormal, aNumMips).rgb;
+    return EnvCubeTexture.SampleLevel(TrilinearWrap, aNormal, aEnvNumMips).rgb;
 }
 
-float3 Specular_IBL(float3 aNormal, float3 aPixelView, float3 aSpecularColor, float aNumMips, float aRoughness)
+float3 Specular_IBL(float3 aNormal, float3 aPixelView, float3 aSpecularColor, float aEnvNumMips, float aRoughness)
 {
     const float3 R = reflect(-aPixelView, aNormal);
-               
-    const float3 envColor = EnvCubeTexture.SampleLevel(TrilinearWrap, R, aRoughness * aNumMips).rgb;
+    
+    const float3 envColor = EnvCubeTexture.SampleLevel(TrilinearWrap, R, aRoughness * aEnvNumMips).rgb;
                 
     float NdotV = saturate(dot(aNormal, aPixelView));
     const float2 brdfLUT = BRDF_LUT_Texture.Sample(LUTSampler, float2(NdotV, aRoughness)).rg;
@@ -82,15 +82,15 @@ float3 Specular_IBL(float3 aNormal, float3 aPixelView, float3 aSpecularColor, fl
     return envColor * (aSpecularColor * brdfLUT.x + brdfLUT.y);
 }
 
-float3 CalculateAmbientContribution(float3 aNormal, float3 aPixelView, float3 aSpecularColor, float3 aDiffuseColor, float aNumMips, float aRoughness, float aOcclusion)
+float3 CalculateAmbientContribution(float3 aNormal, float3 aPixelView, float3 aSpecularColor, float3 aDiffuseColor, float aEnvNumMips, float aRoughness, float aOcclusion)
 {
-    const float3 diffuseIBL = Diffuse_IBL(aNormal, aNumMips);
-    const float3 specularIBL = Specular_IBL(aNormal, aPixelView, aSpecularColor, aNumMips, aRoughness);
+    const float3 diffuseIBL = Diffuse_IBL(aNormal, aEnvNumMips);
+    const float3 specularIBL = Specular_IBL(aNormal, aPixelView, aSpecularColor, aEnvNumMips, aRoughness);
     
     return (aDiffuseColor * diffuseIBL + specularIBL) * aOcclusion;
 }
 
-float3 CalculateDirectionalLightContribution(Light aDirectionalLight, float3 aNormal, float3 aPixelView, float3 aSpecularColor, float3 aDiffuseColor, float aRoughness)
+float3 CalculateDirectionalLightContribution(in Light aDirectionalLight, float3 aNormal, float3 aPixelView, float3 aSpecularColor, float3 aDiffuseColor, float aRoughness)
 {
     float3 pixelToLight = normalize(-aDirectionalLight.Direction);
     float3 halfAngleToCamera = normalize(pixelToLight + aPixelView);
@@ -105,7 +105,7 @@ float3 CalculateDirectionalLightContribution(Light aDirectionalLight, float3 aNo
     return (diffuseBRDF + specularBRDF) * NdotL * radiance;
 }
 
-float3 CalculatePointLightContribution(Light aPointLight, float3 aNormal, float3 aPixelView, float3 aPixelPosition, float3 aSpecularColor, float3 aDiffuseColor, float aRoughness)
+float3 CalculatePointLightContribution(in Light aPointLight, float3 aNormal, float3 aPixelPosition, float3 aPixelView, float3 aSpecularColor, float3 aDiffuseColor, float aRoughness)
 {
     float3 pixelToLight = normalize(aPointLight.Position - aPixelPosition);
     float distance = length(aPointLight.Position - aPixelPosition);
@@ -126,17 +126,14 @@ float3 CalculatePointLightContribution(Light aPointLight, float3 aNormal, float3
     return (diffuseBRDF + specularBRDF) * NdotL * radiance;
 }
 
-float3 CalculateSpotLightContribution(Light aSpotLight, float3 aNormal, float3 aPixelView, float3 aPixelPosition, float3 aSpecularColor, float3 aDiffuseColor, float aRoughness)
+float3 CalculateSpotLightContribution(in Light aSpotLight, float3 aNormal, float3 aPixelPosition, float3 aPixelView, float3 aSpecularColor, float3 aDiffuseColor, float aRoughness)
 {
     float3 pixelToLight = normalize(aSpotLight.Position - aPixelPosition);
     float distance = length(aSpotLight.Position - aPixelPosition);
     
     float spotFactor = saturate(dot(-pixelToLight, aSpotLight.Direction));
     
-    float cosInnerCone = cos(aSpotLight.InnerCone);
-    float cosOuterCone = cos(aSpotLight.OuterCone);
-    
-    float IS = smoothstep(cosOuterCone, cosInnerCone, spotFactor);
+    float IS = smoothstep(aSpotLight.CosOuterCone, aSpotLight.CosInnerCone, spotFactor);
     
     float alpha = saturate(1.0f - pow(abs(distance / aSpotLight.Radius), 2.0f));
     alpha = alpha * alpha * IS;

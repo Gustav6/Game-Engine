@@ -124,7 +124,7 @@ int ModelViewer::Run()
         Application.InputManager.UpdateInput();
 
         UpdateScene(Application.TimeManager.GetDeltaTime());
-        BuildRenderScene();
+        BuildSceneForRender();
 
 		// Render to graphics engine and present to screen
         {
@@ -306,8 +306,8 @@ void ModelViewer::LoadScene()
 
         PointLightComponent* pointLight = object->AddComponent<PointLightComponent>();
         pointLight->SetPosition({ -200.0f, 150.0f, 0.0f });
-        pointLight->SetColor({ 1.0f, 0.95f, 0.85f });
-        pointLight->SetIntensity(7500.0f);
+        pointLight->SetColor({ 0.0f, 0.0f, 1.0f });
+        pointLight->SetIntensity(75000.0f);
         pointLight->SetRadius(900.0f);
         pointLight->SetShadowMapSize({ 512, 512 });
 
@@ -320,9 +320,9 @@ void ModelViewer::LoadScene()
         object->SetEnabled(false);
 
         SpotLightComponent* spotLight = object->AddComponent<SpotLightComponent>();
-        spotLight->SetPosition({ 0.0f, 50.0f, -200.0f });
-        spotLight->SetColor({ 1.0f, 0.95f, 0.85f });
-        spotLight->SetIntensity(30000.0f);
+        spotLight->SetPosition({ 0.0f, 50.0f, -300.0f });
+        spotLight->SetColor({ 0.0f, 1.0f, 0.0f });
+        spotLight->SetIntensity(50000.0f);
         spotLight->SetRadius(1000.0f);
         spotLight->SetDirection({ 0.0f, 0.0f, 1.0f });
         spotLight->SetCone(0.0f, 0.7f);
@@ -454,7 +454,7 @@ void ModelViewer::UpdateScene(float aDeltaTime)
     }
 }
 
-void ModelViewer::BuildRenderScene()
+void ModelViewer::BuildSceneForRender()
 {
     ZoneScopedN("Render Scene");
 

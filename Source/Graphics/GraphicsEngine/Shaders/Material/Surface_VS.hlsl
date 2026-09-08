@@ -55,7 +55,7 @@ VStoPS main(Vertex aVertex)
     const float4 clipPos = mul(FB_Projection, viewPos);
     
     result.Position = clipPos;
-    result.WorldPosition = worldPos;
+    result.WorldPosition = parameters.WorldPosition;
     result.Color = parameters.VertexColor;
     result.UV0 = aVertex.UV0;
     result.UV1 = aVertex.UV1;
