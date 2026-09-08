@@ -1,7 +1,9 @@
 {
   "Name": "TGABroMaterial",
   "ParentMaterial": "Materials/BaseMaterial.json",
-  "AlbedoTexture": "Textures/Albedo/T_TGA_Bro_C.dds",
-  "NormalTexture": "Textures/Normal/T_TGA_Bro_N.dds",
-  "MaterialTexture": "Textures/Material/T_TGA_Bro_M.dds"
+  "Textures": {
+    "AlbedoTexture": "Textures/Albedo/T_TGA_Bro_C.dds",
+    "NormalTexture": "Textures/Normal/T_TGA_Bro_N.dds",
+    "MaterialTexture": "Textures/Material/T_TGA_Bro_M.dds"
+  }
 }

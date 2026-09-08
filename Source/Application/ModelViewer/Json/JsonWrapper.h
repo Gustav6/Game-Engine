@@ -12,6 +12,7 @@ struct yyjson_val;
 class JsonData
 {
 public:
+	JsonData();
 	JsonData(const std::filesystem::path& aJsonPath);
 	~JsonData();
 
@@ -25,13 +26,19 @@ public:
 	float GetFloat(const char* aName) const;
 	std::string_view GetString(const char* aName) const;
 
+	JsonData GetObjectValue(const char* aName) const;
+
 	bool HasKey(const char* aName) const;
 
 private:
+	JsonData(yyjson_doc* aDocument, yyjson_val* aValue);
+
 	yyjson_doc* myDocument;
 	yyjson_val* myRoot;
 
 	std::filesystem::path myPath;
+
+	bool myOwnsDocument;
 };
 
 class Json

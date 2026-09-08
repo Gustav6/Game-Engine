@@ -8,10 +8,18 @@ DECLARE_LOG_CATEGORY_WITH_NAME(JSONLog, JSON, Verbose);
 
 DEFINE_LOG_CATEGORY(JSONLog);
 
+JsonData::JsonData()
+{
+	myRoot = nullptr;
+	myDocument = nullptr;
+	myOwnsDocument = false;
+}
+
 JsonData::JsonData(const std::filesystem::path& aJsonPath)
 {
 	myRoot = nullptr;
 	myDocument = nullptr;
+	myOwnsDocument = true;
 	myPath = aJsonPath;
 
 	if (!std::filesystem::exists(aJsonPath))
@@ -32,14 +40,24 @@ JsonData::JsonData(const std::filesystem::path& aJsonPath)
 	myRoot = yyjson_doc_get_root(myDocument);
 }
 
+JsonData::JsonData(yyjson_doc* aDocument, yyjson_val* aValue)
+{
+	myDocument = aDocument;
+	myRoot = aValue;
+	myOwnsDocument = false;
+}
+
 JsonData::~JsonData()
 {
-	yyjson_doc_free(myDocument);
+	if (myOwnsDocument)
+	{
+		yyjson_doc_free(myDocument);
+	}
 }
 
 bool JsonData::Valid() const
 {
-	if (myRoot == nullptr)
+	if (myRoot == nullptr || myDocument == nullptr)
 	{
 		return false;
 	}
@@ -121,6 +139,27 @@ std::string_view JsonData::GetString(const char* aName) const
 	}
 
 	return yyjson_get_str(data);
+}
+
+JsonData JsonData::GetObjectValue(const char* aName) const
+{
+	yyjson_val* object = yyjson_obj_get(myRoot, aName);
+
+	if (object == nullptr)
+	{
+		LOG(JSONLog, Warning, "Key {} not found in {}!", aName, myPath.string());
+
+		return JsonData();
+	}
+
+	if (!yyjson_is_obj(object))
+	{
+		LOG(JSONLog, Warning, "Key {} exists but is not an object, type: {} in {}!", aName, yyjson_get_type_desc(object), myPath.string());
+
+		return JsonData();
+	}
+
+	return JsonData(myDocument, object);
 }
 
 bool JsonData::HasKey(const char* aName) const

@@ -405,10 +405,13 @@ bool AssetLibrary::LoadMaterial(const std::filesystem::path& aPath)
 
         auto instance = MaterialInstance::Create(materialData.GetString("Name"), it->second);
 
+        if (materialData.HasKey("Textures"))
         {
-            std::filesystem::path albedoTexturePath = materialData.GetString("AlbedoTexture");
-            std::filesystem::path normalTexturePath = materialData.GetString("NormalTexture");
-            std::filesystem::path materialTexturePath = materialData.GetString("MaterialTexture");
+            JsonData textureSettings = materialData.GetObjectValue("Textures");
+
+            std::filesystem::path albedoTexturePath = textureSettings.GetString("AlbedoTexture");
+            std::filesystem::path normalTexturePath = textureSettings.GetString("NormalTexture");
+            std::filesystem::path materialTexturePath = textureSettings.GetString("MaterialTexture");
 
             if (!LoadTexture(albedoTexturePath))
             {
@@ -427,6 +430,10 @@ bool AssetLibrary::LoadMaterial(const std::filesystem::path& aPath)
             instance->SetTexture(1, GetTexture(normalTexturePath.string()));
             instance->SetTexture(2, GetTexture(materialTexturePath.string()));
         }
+        else
+        {
+            LOG(FBXLog, Error, "Could not find material's texture settings in json [{}]", normalizedPath.string());
+        }
 
         myMaterials.emplace(normalizedPath, std::move(instance));
 
@@ -436,27 +443,32 @@ bool AssetLibrary::LoadMaterial(const std::filesystem::path& aPath)
     }
 
     MaterialDescription desc;
-    desc.Domain = static_cast<MaterialDomain>(materialData.GetInt("MaterialDomain"));
-    desc.ShadingModel = static_cast<ShadingModel>(materialData.GetInt("ShadingModel"));
-    desc.BlendMode = static_cast<BlendMode>(materialData.GetInt("BlendMode"));
     desc.Name = materialData.GetString("Name");
 
-    if (materialData.HasKey("ShaderCode"))
+    if (materialData.HasKey("Settings"))
     {
-        desc.MaterialShaderCode = myContentRoot / materialData.GetString("ShaderCode");
+        JsonData materialSettings = materialData.GetObjectValue("Settings");
+
+        desc.Domain = static_cast<MaterialDomain>(materialSettings.GetInt("MaterialDomain"));
+        desc.ShadingModel = static_cast<ShadingModel>(materialSettings.GetInt("ShadingModel"));
+        desc.BlendMode = static_cast<BlendMode>(materialSettings.GetInt("BlendMode"));
+    }
+    else
+    {
+        LOG(FBXLog, Error, "Could not load material's base settings in json [{}]", normalizedPath.string());
     }
 
-    std::shared_ptr<Material> material = std::make_shared<Material>();
+    std::filesystem::path albedoTexturePath;
+    std::filesystem::path normalTexturePath;
+    std::filesystem::path materialTexturePath;
 
-    if (!GraphicsEngine::Get().CreateMaterial(desc, *material))
+    if (materialData.HasKey("Textures"))
     {
-        return false;
-    }
+        JsonData textureSettings = materialData.GetObjectValue("Textures");
 
-    {
-        std::filesystem::path albedoTexturePath = materialData.GetString("AlbedoTexture");
-        std::filesystem::path normalTexturePath = materialData.GetString("NormalTexture");
-        std::filesystem::path materialTexturePath = materialData.GetString("MaterialTexture");
+        albedoTexturePath = textureSettings.GetString("AlbedoTexture");
+        normalTexturePath = textureSettings.GetString("NormalTexture");
+        materialTexturePath = textureSettings.GetString("MaterialTexture");
 
         if (!LoadTexture(albedoTexturePath))
         {
@@ -470,11 +482,41 @@ bool AssetLibrary::LoadMaterial(const std::filesystem::path& aPath)
         {
             return false;
         }
-
-        material->SetTexture(0, GetTexture(albedoTexturePath.string()));
-        material->SetTexture(1, GetTexture(normalTexturePath.string()));
-        material->SetTexture(2, GetTexture(materialTexturePath.string()));
     }
+    else
+    {
+        LOG(FBXLog, Error, "Could not find material's texture settings in json [{}]", normalizedPath.string());
+    }
+
+    if (materialData.HasKey("Shader"))
+    {
+        JsonData shaderSettings = materialData.GetObjectValue("Shader");
+
+        if (shaderSettings.HasKey("Code"))
+        {
+            desc.MaterialShaderCode = myContentRoot / shaderSettings.GetString("Code");
+        }
+
+        /*if (shaderSettings.HasKey("Parameters"))
+        {
+            JsonData materialParameters = shaderSettings.GetObjectValue("Parameters");
+
+            if (materialParameters.HasKey("TintValue"))
+            {
+            }
+        }*/
+    }
+
+    std::shared_ptr<Material> material = std::make_shared<Material>();
+
+    if (!GraphicsEngine::Get().CreateMaterial(desc, *material))
+    {
+        return false;
+    }
+
+    material->SetTexture(0, GetTexture(albedoTexturePath.string()));
+    material->SetTexture(1, GetTexture(normalTexturePath.string()));
+    material->SetTexture(2, GetTexture(materialTexturePath.string()));
 
     myMaterials.emplace(normalizedPath, std::move(material));
 

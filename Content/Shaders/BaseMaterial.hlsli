@@ -12,5 +12,5 @@ void Material_Vertex(inout MaterialVertexParameters aParameters)
 
 void Material_Pixel(inout MaterialPixelParameters aParameters)
 {
-    //aParameters.PixelColor = float4(1, 0, 0, 1);
+    aParameters.PixelColor = float4(1, 0, 0, 1);
 }

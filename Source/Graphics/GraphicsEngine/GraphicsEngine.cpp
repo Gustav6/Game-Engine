@@ -758,7 +758,7 @@ void GraphicsEngine::RenderDrawCalls(GraphicsCommandList& inoutCommandList, cons
 
 				inoutCommandList.SetPipelineStateObject(material->GetPSO());
 			}
-
+			
 			inoutCommandList.DrawIndexed(element.NumIndices, element.IndexOffset);
 		}
 
