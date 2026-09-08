@@ -8,7 +8,7 @@
   },
   "Shader": {
     "Parameters": {
-      "TintValue": 0.5
+      "MB_Tint": [ 1.0, 1.0, 0.0, 1.0 ]
     }
   }
 }

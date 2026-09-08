@@ -12,5 +12,5 @@ void Material_Vertex(inout MaterialVertexParameters aParameters)
 
 void Material_Pixel(inout MaterialPixelParameters aParameters)
 {
-    aParameters.PixelColor = MB_Tint;
+    aParameters.PixelColor = aParameters.PixelColor * MB_Tint;
 }

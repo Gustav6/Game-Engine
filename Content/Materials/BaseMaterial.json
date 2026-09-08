@@ -11,9 +11,6 @@
     "MaterialTexture": "Textures/Material/T_Marble_Tiles_M.dds"
   },
   "Shader": {
-    "Code": "Shaders/BaseMaterial.hlsli",
-    "Parameters": {
-      "TintValue": 1.0
-    }
+    "Code": "Shaders/BaseMaterial.hlsli"
   }
 }

@@ -27,6 +27,9 @@ float4 main(VStoPS aPixel) : SV_TARGET
     parameters.WorldPosition = aPixel.WorldPosition;
     parameters.Normal = normal;
     parameters.UV0 = aPixel.UV0;
+    parameters.Occlusion = 0;
+    parameters.Roughness = 0;
+    parameters.Metalness = 0;
     
     Material_Pixel(parameters);
     

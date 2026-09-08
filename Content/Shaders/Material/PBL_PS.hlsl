@@ -12,14 +12,13 @@ Texture2D MaterialTexture : register(t2);
 float4 main(VStoPS aPixel) : SV_TARGET
 {
     const float4 albedoMap = AlbedoTexture.Sample(TrilinearWrap, aPixel.UV0);
+    const float2 normalMap = NormalTexture.Sample(TrilinearWrap, aPixel.UV0).rg;
+    const float3 materialMap = MaterialTexture.Sample(TrilinearWrap, aPixel.UV0).rgb;
     
     if (albedoMap.a < 0.05f)
     {
         discard;
     }
-    
-    const float2 normalMap = NormalTexture.Sample(TrilinearWrap, aPixel.UV0).rg;
-    const float3 materialMap = MaterialTexture.Sample(TrilinearWrap, aPixel.UV0).rgb;
     
     float2 unpackedNormal = normalMap * 2.0 - 1.0;
     
@@ -38,20 +37,19 @@ float4 main(VStoPS aPixel) : SV_TARGET
     parameters.WorldPosition = aPixel.WorldPosition;
     parameters.Normal = normal;
     parameters.UV0 = aPixel.UV0;
+    parameters.Occlusion = materialMap.r;
+    parameters.Roughness = materialMap.g;
+    parameters.Metalness = materialMap.b;
     
     Material_Pixel(parameters);
     
-    const float occlusion = materialMap.r;
-    const float roughness = materialMap.g;
-    const float metalness = materialMap.b;
-    
-    const float3 specularColor = lerp((float3) 0.04f, parameters.PixelColor.rgb, metalness);
-    const float3 diffuseColor = lerp((float3) 0.00f, parameters.PixelColor.rgb, 1 - metalness);
+    const float3 specularColor = lerp((float3) 0.04f, parameters.PixelColor.rgb, parameters.Metalness);
+    const float3 diffuseColor = lerp((float3) 0.00f, parameters.PixelColor.rgb, 1 - parameters.Metalness);
     const float3 pixelView = normalize(FB_CameraPosition - parameters.WorldPosition.xyz);
     
     const int envNumMips = GetNumMips(EnvCubeTexture) - 1;
     
-    float3 radiance = CalculateAmbientContribution(parameters.Normal, pixelView, specularColor, diffuseColor, envNumMips, roughness, occlusion);
+    float3 radiance = CalculateAmbientContribution(parameters.Normal, pixelView, specularColor, diffuseColor, envNumMips, parameters.Roughness, parameters.Occlusion);
     
     for (uint l = 0; l < LB_NumActiveLights; ++l)
     {
@@ -92,7 +90,7 @@ float4 main(VStoPS aPixel) : SV_TARGET
                     pixelView,
                     specularColor,
                     diffuseColor,
-                    roughness
+                    parameters.Roughness
                 );
                 
                 float shadowFactor = CalculateDirectionalLightShadowFactor(
@@ -113,7 +111,7 @@ float4 main(VStoPS aPixel) : SV_TARGET
                     pixelView,
                     specularColor,
                     diffuseColor,
-                    roughness
+                    parameters.Roughness
                 );
                 
                 float shadowFactor = CalculatePointLightShadowFactor(
@@ -134,7 +132,7 @@ float4 main(VStoPS aPixel) : SV_TARGET
                     pixelView,
                     specularColor,
                     diffuseColor,
-                    roughness
+                    parameters.Roughness
                 );
                 
                 float shadowFactor = CalculateSpotLightShadowFactor(

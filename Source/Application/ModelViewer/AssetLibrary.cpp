@@ -381,7 +381,7 @@ bool AssetLibrary::LoadMaterial(const std::filesystem::path& aPath)
 
     JsonData materialData = Json::Read(fullPath);
 
-    if (!materialData.Valid())
+    if (!materialData.IsValid())
     {
         return false;
     }
@@ -429,6 +429,34 @@ bool AssetLibrary::LoadMaterial(const std::filesystem::path& aPath)
             instance->SetTexture(0, GetTexture(albedoTexturePath.string()));
             instance->SetTexture(1, GetTexture(normalTexturePath.string()));
             instance->SetTexture(2, GetTexture(materialTexturePath.string()));
+
+			if (materialData.HasKey("Shader"))
+			{
+				JsonData shaderSettings = materialData.GetObjectValue("Shader");
+
+				if (shaderSettings.HasKey("Parameters"))
+				{
+					JsonData materialParameters = shaderSettings.GetObjectValue("Parameters");
+
+					if (materialParameters.HasKey("MB_Tint"))
+					{
+                        std::vector<float> value = materialParameters.GetFloatArray("MB_Tint");
+
+                        if (!value.empty())
+                        {
+                            CommonUtilities::Vector4f tint =
+                            {
+                                value[0],
+                                value[1],
+                                value[2],
+                                value[3]
+                            };
+
+                            instance->SetValue("MB_Tint", tint);
+                        }
+					}
+				}
+			}
         }
         else
         {

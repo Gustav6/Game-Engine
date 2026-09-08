@@ -14,6 +14,9 @@ struct MaterialPixelParameters
     float4 WorldPosition;
     float3 Normal;
     float2 UV0;
+    float Occlusion;
+    float Roughness;
+    float Metalness;
 };
-
+    
 #endif
