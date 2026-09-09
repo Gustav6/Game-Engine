@@ -27,7 +27,7 @@
     <ClInclude Include="Application.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="AssetLibrary.h">
+    <ClInclude Include="AssetHandling\AssetLibrary.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Game\GameCamera.h">
@@ -77,7 +77,7 @@
     <ClCompile Include="Application.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="AssetLibrary.cpp">
+    <ClCompile Include="AssetHandling\AssetLibrary.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Game\GameCamera.cpp">
@@ -140,5 +140,6 @@
     <None Include="ModelViewer.aps" />
     <None Include="Materials\BaseMaterial.hlsli" />
     <None Include="Materials\shadertoolsconfig.json" />
+    <None Include="Materials\BlendMaterial.hlsli" />
   </ItemGroup>
 </Project>

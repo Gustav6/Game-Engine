@@ -1,14 +1,16 @@
 {
   "Name": "ChestMaterial",
-  "ParentMaterial": "Materials/BaseMaterial.json",
+  "Settings": {
+    "MaterialDomain": 1,
+    "ShadingModel": 3,
+    "BlendMode": 2
+  },
   "Textures": {
     "AlbedoTexture": "Textures/Albedo/T_Chest_C.dds",
     "NormalTexture": "Textures/Normal/T_Chest_N.dds",
     "MaterialTexture": "Textures/Material/T_Chest_M.dds"
   },
   "Shader": {
-    "Parameters": {
-      "MB_Tint": [ 0.0, 1.0, 1.0, 1.0 ]
-    }
+    "Code": "Shaders/BlendMaterial.hlsli"
   }
 }

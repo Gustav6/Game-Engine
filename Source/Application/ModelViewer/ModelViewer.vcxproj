@@ -207,7 +207,7 @@ xcopy /E /I /R /Y /D "$(SolutionDir)ThirdParty\Dll" "$(OutDir)"
   <ItemGroup>
     <ClInclude Include="Game\Component\Light\DirectionlLightComponent.h" />
     <ClInclude Include="Game\Component\Rendering\AnimationComponent.h" />
-    <ClInclude Include="AssetLibrary.h" />
+    <ClInclude Include="AssetHandling\AssetLibrary.h" />
     <ClInclude Include="Application.h" />
     <ClInclude Include="Game\Component\Component.h" />
     <ClInclude Include="Game\Component\Transform.h" />
@@ -228,7 +228,7 @@ xcopy /E /I /R /Y /D "$(SolutionDir)ThirdParty\Dll" "$(OutDir)"
     <ClCompile Include="..\..\..\ThirdParty\Source\yyjson\yyjson.c" />
     <ClCompile Include="Game\Component\Light\DirectionlLightComponent.cpp" />
     <ClCompile Include="Game\Component\Rendering\AnimationComponent.cpp" />
-    <ClCompile Include="AssetLibrary.cpp" />
+    <ClCompile Include="AssetHandling\AssetLibrary.cpp" />
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="Game\Component\Component.cpp" />
     <ClCompile Include="Game\Component\Transform.cpp" />
@@ -251,6 +251,7 @@ xcopy /E /I /R /Y /D "$(SolutionDir)ThirdParty\Dll" "$(OutDir)"
     <Image Include="small.ico" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Materials\BlendMaterial.hlsli" />
     <None Include="Materials\shadertoolsconfig.json" />
     <None Include="Materials\BaseMaterial.hlsli">
       <FileType>Document</FileType>

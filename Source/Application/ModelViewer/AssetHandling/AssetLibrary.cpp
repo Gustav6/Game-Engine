@@ -24,8 +24,12 @@
 #include <tracy/core/Tracy.hpp>
 
 DECLARE_LOG_CATEGORY_WITH_NAME(FBXLog, FBX, Verbose);
+DECLARE_LOG_CATEGORY_WITH_NAME(TextureLog, TEXTURE, Verbose);
+DECLARE_LOG_CATEGORY_WITH_NAME(MaterialLog, MATERIAL, Verbose);
 
 DEFINE_LOG_CATEGORY(FBXLog);
+DEFINE_LOG_CATEGORY(TextureLog);
+DEFINE_LOG_CATEGORY(MaterialLog);
 
 AssetLibrary::AssetLibrary() = default;
 AssetLibrary::~AssetLibrary() = default;
@@ -360,15 +364,13 @@ bool AssetLibrary::LoadTexture(const std::filesystem::path& aPath)
 
     myTextures.emplace(normalizedPath, std::move(texture));
 
-    LOG(FBXLog, Verbose, "Texture has loaded [{}]", normalizedPath.string());
+    LOG(TextureLog, Verbose, "Texture has loaded [{}]", normalizedPath.string());
 
     return true;
 }
 
 bool AssetLibrary::LoadMaterial(const std::filesystem::path& aPath)
 {
-    // TODO: Add support for loading materialbuffer values (ex: "MB_Tint")
-
     ZoneScopedN("Load Material");
 
     const std::filesystem::path normalizedPath = aPath.lexically_normal();
@@ -455,17 +457,22 @@ bool AssetLibrary::LoadMaterial(const std::filesystem::path& aPath)
                             instance->SetValue("MB_Tint", tint);
                         }
 					}
+
+                    if (materialParameters.HasKey("MB_Alpha"))
+                    {
+                        instance->SetValue("MB_Alpha", materialParameters.GetFloat("MB_Alpha"));
+                    }
 				}
 			}
         }
         else
         {
-            LOG(FBXLog, Error, "Could not find material's texture settings in json [{}]", normalizedPath.string());
+            LOG(MaterialLog, Error, "Could not find material's texture settings in json [{}]", normalizedPath.string());
         }
 
         myMaterials.emplace(normalizedPath, std::move(instance));
 
-        LOG(FBXLog, Verbose, "Material instance has loaded [{}]", normalizedPath.string());
+        LOG(MaterialLog, Verbose, "Material instance has loaded [{}]", normalizedPath.string());
 
         return true;
     }
@@ -483,7 +490,7 @@ bool AssetLibrary::LoadMaterial(const std::filesystem::path& aPath)
     }
     else
     {
-        LOG(FBXLog, Error, "Could not load material's base settings in json [{}]", normalizedPath.string());
+        LOG(MaterialLog, Error, "Could not load material's base settings in json [{}]", normalizedPath.string());
     }
 
     std::filesystem::path albedoTexturePath;
@@ -513,7 +520,7 @@ bool AssetLibrary::LoadMaterial(const std::filesystem::path& aPath)
     }
     else
     {
-        LOG(FBXLog, Error, "Could not find material's texture settings in json [{}]", normalizedPath.string());
+        LOG(MaterialLog, Error, "Could not find material's texture settings in json [{}]", normalizedPath.string());
     }
 
     if (materialData.HasKey("Shader"))
@@ -524,15 +531,6 @@ bool AssetLibrary::LoadMaterial(const std::filesystem::path& aPath)
         {
             desc.MaterialShaderCode = myContentRoot / shaderSettings.GetString("Code");
         }
-
-        /*if (shaderSettings.HasKey("Parameters"))
-        {
-            JsonData materialParameters = shaderSettings.GetObjectValue("Parameters");
-
-            if (materialParameters.HasKey("TintValue"))
-            {
-            }
-        }*/
     }
 
     std::shared_ptr<Material> material = std::make_shared<Material>();
@@ -548,7 +546,7 @@ bool AssetLibrary::LoadMaterial(const std::filesystem::path& aPath)
 
     myMaterials.emplace(normalizedPath, std::move(material));
 
-    LOG(FBXLog, Verbose, "Material has loaded [{}]", normalizedPath.string());
+    LOG(MaterialLog, Verbose, "Material has loaded [{}]", normalizedPath.string());
 
     return true;
 }

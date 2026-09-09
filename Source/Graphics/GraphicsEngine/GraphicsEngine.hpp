@@ -21,6 +21,7 @@ struct Light;
 class Shader;
 class Texture;
 class Sampler;
+struct RenderItem;
 
 enum class ConstantBuffer : uint8_t
 {
@@ -45,7 +46,7 @@ struct DrawCall
 struct SceneCamera
 {
 	CommonUtilities::Matrix4x4f Transform;
-	Camera Camera;
+	Camera RenderCamera;
 };
 
 struct SceneLight
@@ -134,10 +135,10 @@ private:
 
 	void CreateMaterialTextureSlots(const RHIShaderReflectionInfo& aShaderInfo, Material& inoutMaterial) const;
 
-	void RenderShadowMaps(GraphicsCommandList& inoutCommandList, const Scene& aScene);
+	void RenderShadowMaps(GraphicsCommandList& inoutCommandList, const std::vector<SceneLight>& SceneLights, const SceneCamera& aSceneCamera, std::vector<RenderItem>& aShadowItems);
 	
 	void UploadSceneLightingData(GraphicsCommandList& inoutCommandList, const std::vector<SceneLight>& aLights);
-	void RenderDrawCalls(GraphicsCommandList& inoutCommandList, const std::vector<DrawCall>& aDrawCalls, DrawCallFlags someFlags);
+	void RenderDrawCalls(GraphicsCommandList& inoutCommandList, const std::vector<RenderItem>& aRenderItems, DrawCallFlags someFlags);
 
 	void RegisterMaterialShaders();
 

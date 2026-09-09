@@ -225,6 +225,7 @@ void GraphicsCommandList::SetPipelineStateObject(const PipelineStateObject& aPSO
 
 	myContext->IASetPrimitiveTopology(static_cast<D3D11_PRIMITIVE_TOPOLOGY>(aPSO.myTopology));
 	myContext->IASetInputLayout(aPSO.myInputLayout.Get());
+	myContext->OMSetBlendState(aPSO.myBlendState.Get(), nullptr, 0xffffffff);
 
 	if (aMarkerLabel.empty())
 	{

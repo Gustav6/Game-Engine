@@ -8,7 +8,6 @@
 #include <memory>
 
 #include "Application.h"
-#include "AssetLibrary.h"
 
 #include "Game/Component/Rendering/MeshComponent.h"
 #include "Game/Component/Rendering/AnimationComponent.h"
@@ -556,6 +555,6 @@ void ModelViewer::BuildSceneForRender()
     myScene->SceneCamera = 
 	{ 
 		.Transform = myGameCamera.GetTransform().GetWorldMatrix(), 
-		.Camera = myGameCamera.GetCamera()
+		.RenderCamera = myGameCamera.GetCamera()
 	};
 }

@@ -3,7 +3,7 @@
 
 cbuffer MaterialBuffer : register(b5)
 {
-    float4 MB_Tint = float4(1, 1, 1, 0.5f);
+    float4 MB_Tint = float4(1, 1, 1, 1);
 }
 
 void Material_Vertex(inout MaterialVertexParameters aParameters)

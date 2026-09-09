@@ -40,6 +40,13 @@
 * Renders onto a user-provided render target and depth.
 */
 
+struct RenderItem
+{
+    const DrawCall* DrawCall;
+    const Mesh::Element* Element;
+    const MaterialInterface* Material;
+};
+
 GraphicsEngine::GraphicsEngine() = default;
 GraphicsEngine::~GraphicsEngine() = default;
 
@@ -91,6 +98,68 @@ void GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const Scene& 
 	}
 	inoutCommandList.EndEvent();
 
+	std::vector<RenderItem> opaqueItems;
+	std::vector<RenderItem> alphaItems;
+	std::vector<RenderItem> shadowItems;
+
+	for (const auto& drawCall : aScene.DrawCalls)
+	{
+		for (const Mesh::Element& element : drawCall.Mesh->myElements)
+		{
+			const MaterialInterface* material = drawCall.Materials[element.MaterialIndex];
+
+			if (material == nullptr)
+			{
+				material = myDefaultMaterial.get();
+			}
+
+			RenderItem item =
+			{
+				.DrawCall = &drawCall,
+				.Element = &element,
+				.Material = material
+			};
+
+			switch (material->GetBlendMode())
+			{
+				case MaterialBlendMode::Opaque:
+				{
+					opaqueItems.push_back(item);
+					break;
+				}
+				case MaterialBlendMode::Alpha:
+				{
+					alphaItems.push_back(item);
+					break;
+				}
+			}
+
+			shadowItems.push_back(item);
+		}
+	}
+
+	CommonUtilities::Vector3f cameraPosition = aScene.SceneCamera.Transform.GetTranslation();
+
+	// Front to Back
+	std::sort(opaqueItems.begin(), opaqueItems.end(),
+		[&](const RenderItem& A, const RenderItem& B) -> bool
+		{
+			float distanceToA = (A.DrawCall->Transform.GetTranslation() - cameraPosition).LengthSqr();
+			float distanceToB = (B.DrawCall->Transform.GetTranslation() - cameraPosition).LengthSqr();
+
+			return distanceToA < distanceToB;
+		});
+
+	// Back to Front
+	std::sort(alphaItems.begin(), alphaItems.end(),
+		[&](const RenderItem& A, const RenderItem& B) -> bool
+		{
+			float distanceToA = (A.DrawCall->Transform.GetTranslation() - cameraPosition).LengthSqr();
+			float distanceToB = (B.DrawCall->Transform.GetTranslation() - cameraPosition).LengthSqr();
+
+			return distanceToA > distanceToB;
+		});
+
 	{
 		std::vector<Sampler*> samplerList(mySamplers.size());
 
@@ -111,7 +180,7 @@ void GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const Scene& 
 	{
 		inoutCommandList.SetOverridePipelineState(*myShadowPSO, PipelineStage_None);
 
-		RenderShadowMaps(inoutCommandList, aScene);
+		RenderShadowMaps(inoutCommandList, aScene.SceneLights, aScene.SceneCamera, shadowItems);
 
 		inoutCommandList.ClearOverridePipelineState();
 	}
@@ -124,7 +193,7 @@ void GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const Scene& 
 		{
 			FrameBuffer frameBuffer;
 			frameBuffer.View = aScene.SceneCamera.Transform.GetFastInverse();
-			frameBuffer.Projection = aScene.SceneCamera.Camera.GetProjection();
+			frameBuffer.Projection = aScene.SceneCamera.RenderCamera.GetProjection();
 			frameBuffer.CameraPosition = aScene.SceneCamera.Transform.GetTranslation();
 
 			UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::FrameBuffer, frameBuffer, 0, PipelineStage_VertexShader | PipelineStage_PixelShader);
@@ -132,7 +201,8 @@ void GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const Scene& 
 
 		UploadSceneLightingData(inoutCommandList, aScene.SceneLights);
 
-		RenderDrawCalls(inoutCommandList, aScene.DrawCalls, DrawCallFlag_BindTextures | DrawCallFlag_BindMaterial);
+		RenderDrawCalls(inoutCommandList, opaqueItems, DrawCallFlag_BindTextures | DrawCallFlag_BindMaterial);
+		RenderDrawCalls(inoutCommandList, alphaItems, DrawCallFlag_BindTextures | DrawCallFlag_BindMaterial);
 	}
 	inoutCommandList.EndEvent();
 }
@@ -286,6 +356,15 @@ bool GraphicsEngine::CreateMaterial(const MaterialDescription& aDescription, Mat
 	matPSODesc.InputLayoutElements = Vertex::Description;
 	matPSODesc.Topology = Topology::TriangleList;
 
+	switch (aDescription.BlendMode)
+	{
+		case MaterialBlendMode::Alpha:
+		{
+			matPSODesc.BlendMode = BlendMode::Alpha;
+			break;
+		}
+	}
+
 	PipelineStateObject matPSO;
 
 	if (!myRHI.CreatePipelineStateObject(matPSODesc, matPSO))
@@ -428,9 +507,9 @@ void GraphicsEngine::CreateMaterialTextureSlots(const RHIShaderReflectionInfo& a
 	}
 }
 
-void GraphicsEngine::RenderShadowMaps(GraphicsCommandList& inoutCommandList, const Scene& aScene)
+void GraphicsEngine::RenderShadowMaps(GraphicsCommandList& inoutCommandList, const std::vector<SceneLight>& SceneLights, const SceneCamera& aSceneCamera, std::vector<RenderItem>& aShadowItems)
 {
-	for (const auto& light : aScene.SceneLights)
+	for (const auto& light : SceneLights)
 	{
 		switch (light.LightData->Type)
 		{
@@ -442,31 +521,31 @@ void GraphicsEngine::RenderShadowMaps(GraphicsCommandList& inoutCommandList, con
 				static float cameraNear = 0.0f;
 				static float cameraFar = 0.0f;
 
-				if (cameraNear != aScene.SceneCamera.Camera.GetNearPlane() || cameraFar != aScene.SceneCamera.Camera.GetFarPlane()) 
+				if (cameraNear != aSceneCamera.RenderCamera.GetNearPlane() || cameraFar != aSceneCamera.RenderCamera.GetFarPlane())
 				{
-					cameraNear = aScene.SceneCamera.Camera.GetNearPlane();
-					cameraFar = aScene.SceneCamera.Camera.GetFarPlane();
+					cameraNear = aSceneCamera.RenderCamera.GetNearPlane();
+					cameraFar = aSceneCamera.RenderCamera.GetFarPlane();
 					BuildShadowCascades({4096, 2048, 2048, 2048 }, cameraNear, cameraFar);
 				}
 
 				CommonUtilities::Matrix4x4f lightViewProjectionTextures[NUM_CASCADES];
 
-				CommonUtilities::Matrix4x4f cameraView = aScene.SceneCamera.Transform.GetFastInverse();
+				CommonUtilities::Matrix4x4f cameraView = aSceneCamera.Transform.GetFastInverse();
 
 				for (size_t c = 0; c < NUM_CASCADES; c++ )
 				{
 					CommonUtilities::Frustum<float> frustum = CommonUtilities::Frustum<float>(
-						aScene.SceneCamera.Camera.GetFovInDegrees(),
+						aSceneCamera.RenderCamera.GetFovInDegrees(),
 						myCascades[c].NearPlane,
 						myCascades[c].FarPlane,
-						aScene.SceneCamera.Camera.GetAspectRatio()
+						aSceneCamera.RenderCamera.GetAspectRatio()
 					);
 
 					CommonUtilities::Matrix4x4f projection = CommonUtilities::Matrix4x4f::CreatePerspectiveProjection(
-						aScene.SceneCamera.Camera.GetFovInDegrees(),
+						aSceneCamera.RenderCamera.GetFovInDegrees(),
 						myCascades[c].NearPlane,
 						myCascades[c].FarPlane,
-						aScene.SceneCamera.Camera.GetAspectRatio()
+						aSceneCamera.RenderCamera.GetAspectRatio()
 					);
 
 					CommonUtilities::Matrix4x4f invViewProjection = (cameraView * projection).GetGeneralInverse();
@@ -528,7 +607,7 @@ void GraphicsEngine::RenderShadowMaps(GraphicsCommandList& inoutCommandList, con
 						inoutCommandList.ChangeActiveOverrides(PipelineStage_Rasterizer | PipelineStage_PixelShader);
 						UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::FrameBuffer, frameBuffer, 0, PipelineStage_VertexShader);
 
-						RenderDrawCalls(inoutCommandList, aScene.DrawCalls, DrawCallFlag_BindMaterial);
+						RenderDrawCalls(inoutCommandList, aShadowItems, DrawCallFlag_BindMaterial);
 
 						inoutCommandList.EndEvent();
 					}
@@ -549,7 +628,7 @@ void GraphicsEngine::RenderShadowMaps(GraphicsCommandList& inoutCommandList, con
 					myCascades[2].ShadowMap->GetViewport().Width,
 					myCascades[3].ShadowMap->GetViewport().Width
 				};
-				cascadeBuffer.CameraPosition = aScene.SceneCamera.Transform.GetTranslation();
+				cascadeBuffer.CameraPosition = aSceneCamera.Transform.GetTranslation();
 				memcpy_s(cascadeBuffer.LightViewProjectionTextures, sizeof(CommonUtilities::Matrix4x4f) * NUM_CASCADES, lightViewProjectionTextures, sizeof(lightViewProjectionTextures));
 
 				UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::CascadeBuffer, cascadeBuffer, 4, PipelineStage_PixelShader);
@@ -577,7 +656,7 @@ void GraphicsEngine::RenderShadowMaps(GraphicsCommandList& inoutCommandList, con
 
 				UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::FrameBuffer, frameBuffer, 0, PipelineStage_VertexShader);
 
-				RenderDrawCalls(inoutCommandList, aScene.DrawCalls, DrawCallFlag_BindMaterial);
+				RenderDrawCalls(inoutCommandList, aShadowItems, DrawCallFlag_BindMaterial);
 
 				inoutCommandList.EndEvent();
 
@@ -604,7 +683,7 @@ void GraphicsEngine::RenderShadowMaps(GraphicsCommandList& inoutCommandList, con
 
 				UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::FrameBuffer, frameBuffer, 0, PipelineStage_VertexShader | PipelineStage_GeometryShader);
 
-				RenderDrawCalls(inoutCommandList, aScene.DrawCalls, DrawCallFlag_BindMaterial);
+				RenderDrawCalls(inoutCommandList, aShadowItems, DrawCallFlag_BindMaterial);
 
 				inoutCommandList.EndEvent();
 
@@ -678,25 +757,30 @@ void GraphicsEngine::UploadSceneLightingData(GraphicsCommandList& inoutCommandLi
 	UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::LightBuffer, lightBuffer, 3, PipelineStage_PixelShader);
 }
 
-void GraphicsEngine::RenderDrawCalls(GraphicsCommandList& inoutCommandList, const std::vector<DrawCall>& aDrawCalls, DrawCallFlags someFlags)
+void GraphicsEngine::RenderDrawCalls(GraphicsCommandList& inoutCommandList, const std::vector<RenderItem>& aRenderItems, DrawCallFlags someFlags)
 {
-	for (const auto& drawCall : aDrawCalls)
+	for (const auto& renderItem : aRenderItems)
 	{
-		if (drawCall.Mesh == nullptr)
+		if (renderItem.DrawCall == nullptr)
 		{
 			GELOG(Error, "Tried to render a draw call with a null mesh!");
 			continue;
 		}
 
-		if (!PrepareMeshForRendering(*drawCall.Mesh))
+		const DrawCall& drawCall = *renderItem.DrawCall;
+		const Mesh& mesh = *drawCall.Mesh;
+		const Mesh::Element& element = *renderItem.Element;
+		const MaterialInterface& material = *renderItem.Material;
+
+		if (!PrepareMeshForRendering(mesh))
 		{
 			continue;
 		}
 
-		inoutCommandList.BeginEvent(drawCall.Mesh->GetName());
+		inoutCommandList.BeginEvent(mesh.GetName());
 
-		inoutCommandList.SetVertexBuffer(&drawCall.Mesh->myVertexBuffer);
-		inoutCommandList.SetIndexBuffer(&drawCall.Mesh->myIndexBuffer);
+		inoutCommandList.SetVertexBuffer(&mesh.myVertexBuffer);
+		inoutCommandList.SetIndexBuffer(&mesh.myIndexBuffer);
 
 		ObjectBuffer objectBuffer;
 		objectBuffer.World = drawCall.Transform;
@@ -712,55 +796,39 @@ void GraphicsEngine::RenderDrawCalls(GraphicsCommandList& inoutCommandList, cons
 			UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::AnimationBuffer, animationBuffer, 2, PipelineStage_VertexShader);
 		}
 
-		const MaterialInterface* material = nullptr;
-
-		for (const Mesh::Element& element : drawCall.Mesh->myElements)
+		if (HasDrawCallFlag(someFlags, DrawCallFlag_BindMaterial))
 		{
-			if (HasDrawCallFlag(someFlags, DrawCallFlag_BindMaterial))
+			if (material.HasParameters())
 			{
-				const MaterialInterface* elementMaterial = drawCall.Materials[element.MaterialIndex];
-
-				if (elementMaterial != nullptr)
+				if (material.IsMaterialDataDirty())
 				{
-					material = elementMaterial;
-				}
-				else
-				{
-					material = myDefaultMaterial.get();
+					material.RefreshMaterialData();
 				}
 
-				if (material->HasParameters())
-				{
-					if (material->IsMaterialDataDirty())
-					{
-						material->RefreshMaterialData();
-					}
-
-					UpdateAndSetConstantBufferInternal(inoutCommandList, ConstantBuffer::MaterialBuffer, material->GetParameterDataBlock(), Material::MATERIAL_BUFFER_SIZE, 5, PipelineStage_VertexShader | PipelineStage_PixelShader);
-				}
-
-				if (HasDrawCallFlag(someFlags, DrawCallFlag_BindTextures))
-				{
-					std::vector<const Texture*> textures(Material::MAX_MATERIAL_TEXTURE_COUNT);
-
-					for (size_t t = 0; t < Material::MAX_MATERIAL_TEXTURE_COUNT; t++)
-					{
-						const std::shared_ptr<Texture>& texture = material->GetTexture(static_cast<unsigned int>(t));
-
-						if (texture != nullptr)
-						{
-							textures[t] = texture.get();
-						}
-					}
-
-					inoutCommandList.SetShaderResources(textures.data(), textures.size(), 0, PipelineStage_VertexShader | PipelineStage_PixelShader);
-				}
-
-				inoutCommandList.SetPipelineStateObject(material->GetPSO());
+				UpdateAndSetConstantBufferInternal(inoutCommandList, ConstantBuffer::MaterialBuffer, material.GetParameterDataBlock(), Material::MATERIAL_BUFFER_SIZE, 5, PipelineStage_VertexShader | PipelineStage_PixelShader);
 			}
-			
-			inoutCommandList.DrawIndexed(element.NumIndices, element.IndexOffset);
+
+			if (HasDrawCallFlag(someFlags, DrawCallFlag_BindTextures))
+			{
+				std::vector<const Texture*> textures(Material::MAX_MATERIAL_TEXTURE_COUNT);
+
+				for (size_t t = 0; t < Material::MAX_MATERIAL_TEXTURE_COUNT; t++)
+				{
+					const std::shared_ptr<Texture>& texture = material.GetTexture(static_cast<unsigned int>(t));
+
+					if (texture != nullptr)
+					{
+						textures[t] = texture.get();
+					}
+				}
+
+				inoutCommandList.SetShaderResources(textures.data(), textures.size(), 0, PipelineStage_VertexShader | PipelineStage_PixelShader);
+			}
+
+			inoutCommandList.SetPipelineStateObject(material.GetPSO());
 		}
+			
+		inoutCommandList.DrawIndexed(element.NumIndices, element.IndexOffset);
 
 		// Ends event for the draw call!
 		inoutCommandList.EndEvent();

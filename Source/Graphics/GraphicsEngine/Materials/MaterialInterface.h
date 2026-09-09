@@ -37,7 +37,8 @@ enum class ShadingModel : uint8_t
 enum class MaterialBlendMode : uint8_t
 {
 	None,
-	Opaque
+	Opaque,
+	Alpha
 };
 
 /**

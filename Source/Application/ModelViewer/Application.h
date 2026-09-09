@@ -5,7 +5,7 @@
 #include "CommonUtilities/Input.h"
 #include "CommonUtilities/Timer.h"
 
-#include "AssetLibrary.h"
+#include "AssetHandling/AssetLibrary.h"
 
 #if _DEBUG
 DECLARE_LOG_CATEGORY_WITH_NAME(LogModelViewer, ModelViewer, Verbose);
