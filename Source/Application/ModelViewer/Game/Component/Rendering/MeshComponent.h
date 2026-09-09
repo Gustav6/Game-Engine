@@ -4,6 +4,8 @@
 
 #include "CommonUtilities/Sphere.hpp"
 
+#include <AssetHandling/Asset/Types/MeshAsset.h>
+
 #include <memory>
 #include <vector>
 
@@ -16,9 +18,9 @@ class MeshComponent : public Component
 public:
 	MeshComponent(GameObject* aOwner);
 
-	std::shared_ptr<Mesh> GetMesh();
-	void SetMesh(const std::shared_ptr<Mesh>& aMesh);
+	void SetMesh(const std::shared_ptr<MeshAsset>& aMeshAsset);
 
+	const Mesh& GetMesh();
 	Skeleton* GetSkeleton() const;
 
 	void SetMaterial(unsigned int aMaterialIndex, const std::shared_ptr<MaterialInterface>& aMaterial);
@@ -28,7 +30,7 @@ public:
 	CommonUtilities::Sphere<float> GetLocalSpaceBoundingSphere() const;
 
 private:
-	std::shared_ptr<Mesh> myMesh;
+	std::shared_ptr<MeshAsset> myMeshAsset;
 	std::vector<std::shared_ptr<MaterialInterface>> myMaterials;
 };
 

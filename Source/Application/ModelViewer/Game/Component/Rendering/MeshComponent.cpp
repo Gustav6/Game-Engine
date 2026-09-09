@@ -9,20 +9,20 @@ MeshComponent::MeshComponent(GameObject* aOwner)
 	: Component(aOwner)
 {}
 
-std::shared_ptr<Mesh> MeshComponent::GetMesh()
+void MeshComponent::SetMesh(const std::shared_ptr<MeshAsset>& aMeshAsset)
 {
-	return myMesh;
+	myMeshAsset = aMeshAsset;
+	myMaterials.resize(myMeshAsset->GetMesh().GetNumMaterialSlots());
 }
 
-void MeshComponent::SetMesh(const std::shared_ptr<Mesh>& aMesh)
+const Mesh& MeshComponent::GetMesh()
 {
-	myMesh = aMesh;
-	myMaterials.resize(myMesh->GetNumMaterialSlots());
+	return myMeshAsset->GetMesh();
 }
 
 Skeleton* MeshComponent::GetSkeleton() const
 {
-	return myMesh->GetSkeleton();
+	return myMeshAsset->GetMesh().GetSkeleton();
 }
 
 void MeshComponent::SetMaterial(unsigned int aMaterialIndex, const std::shared_ptr<MaterialInterface>& aMaterial)
@@ -40,13 +40,13 @@ const std::vector<std::shared_ptr<MaterialInterface>>& MeshComponent::GetMateria
 CommonUtilities::Sphere<float> MeshComponent::GetWorldSpaceBoundingSphere() const
 {
 	const CommonUtilities::Vector3f worldPosition = myOwner->GetTransform().GetPosition();
-	const CommonUtilities::Vector3f& meshCenter = myMesh->GetBoundingSphere()->GetCenter();
-	const float meshRadius = myMesh->GetBoundingSphere()->GetRadius();
+	const CommonUtilities::Vector3f& meshCenter = myMeshAsset->GetMesh().GetBoundingSphere()->GetCenter();
+	const float meshRadius = myMeshAsset->GetMesh().GetBoundingSphere()->GetRadius();
 
 	return CommonUtilities::Sphere<float>(meshCenter + worldPosition, meshRadius);
 }
 
 CommonUtilities::Sphere<float> MeshComponent::GetLocalSpaceBoundingSphere() const
 {
-	return *myMesh->GetBoundingSphere();
+	return *myMeshAsset->GetMesh().GetBoundingSphere();
 }

@@ -6,6 +6,7 @@
 #include "CommonUtilities/Timer.h"
 
 #include "AssetHandling/AssetLibrary.h"
+#include "AssetHandling/AssetRegistry.h"
 
 #if _DEBUG
 DECLARE_LOG_CATEGORY_WITH_NAME(LogModelViewer, ModelViewer, Verbose);
@@ -20,6 +21,7 @@ struct ApplicationData
 	CommonUtilities::Input InputManager;
 	CommonUtilities::Timer TimeManager;
 	AssetLibrary AssetLibrary;
+	AssetRegistry AssetRegistry;
 };
 
 inline ApplicationData Application;

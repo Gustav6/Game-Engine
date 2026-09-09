@@ -1,5 +1,9 @@
 #pragma once
 
+#include <string>
+#include <vector>
+#include <unordered_map>
+
 #include "CommonUtilities/Matrix4x4.hpp"
 
 struct Animation

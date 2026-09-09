@@ -11,6 +11,7 @@
 
 struct Animation;
 struct Skeleton;
+struct AnimationAsset;
 
 enum class JointGroup
 {
@@ -23,7 +24,7 @@ enum class JointGroup
 
 struct AnimationEntry
 {
-	const std::shared_ptr<Animation> Animation;
+	const std::shared_ptr<AnimationAsset> AnimationAsset;
 	const bool ShouldLoop;
 };
 

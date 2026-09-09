@@ -1,0 +1,96 @@
+#include "AnimationAsset.h"
+
+#include <CommonUtilities/Matrix4x4.hpp>
+
+#include "tgafbx/Importer.h"
+#include "tgafbx/TgaFbxStructs.h"
+
+#include <tracy/core/Tracy.hpp>
+
+AnimationAsset::~AnimationAsset() = default;
+
+const Animation& AnimationAsset::GetAnimation() const
+{
+    return myAnimation;
+}
+
+bool AnimationAsset::Load(const std::filesystem::path& aPath)
+{
+    ZoneScopedN("Load Animation");
+
+    std::unique_ptr<TGA::FBX::Animation> tgaAnimation = std::make_unique<TGA::FBX::Animation>();
+    const TGA::FBX::FbxImportStatus& importStatus = TGA::FBX::Importer::LoadAnimation(aPath, *tgaAnimation);
+
+    if (!importStatus)
+    {
+        const std::string pathString = aPath.string();
+
+        switch (importStatus.Result)
+        {
+            case TGA::FBX::FbxImportResult::InternalError:
+                LOG(FBXLog, Error, "Could not load animation [{}] : Internal FBX importer error!", pathString);
+                break;
+            case TGA::FBX::FbxImportResult::NotInitialized:
+                LOG(FBXLog, Error, "Could not load animation [{}] : FBX importer is not initialized!", pathString);
+                break;
+            case TGA::FBX::FbxImportResult::FileNotFound:
+                LOG(FBXLog, Error, "Could not load animation [{}] : File not found!", pathString);
+                break;
+            case TGA::FBX::FbxImportResult::NoSkeletonData:
+                LOG(FBXLog, Error, "Could not load animation [{}] : No skeleton data found in file!", pathString);
+                break;
+            case TGA::FBX::FbxImportResult::NoAnimationData:
+                LOG(FBXLog, Error, "Could not load animation [{}] : No animation data found in file!", pathString);
+                break;
+            default:
+                LOG(FBXLog, Error, "Could not load animation [{}] : Unknown error!", pathString);
+                break;
+        }
+
+        return false;
+    }
+
+    for (const auto& [warning, count] : importStatus.Warnings)
+    {
+        const std::string pathString = aPath.string();
+
+        switch (warning)
+        {
+            case TGA::FBX::FbxImportWarning::TooManySkinWeights:
+                LOG(FBXLog, Warning, "Animation [{}] : vertices had too many skin weights and were truncated!", pathString);
+                break;
+            case TGA::FBX::FbxImportWarning::MissingSkinWeights:
+                LOG(FBXLog, Warning, "Animation [{}] : vertices are missing skin weights!", pathString);
+                break;
+            case TGA::FBX::FbxImportWarning::DuplicateBoneNames:
+                LOG(FBXLog, Warning, "Animation [{}] : duplicate bone names detected, skinning may be incorrect!", pathString);
+                break;
+            default:
+                LOG(FBXLog, Warning, "Animation [{}] : Unknown warning!", pathString);
+                break;
+        }
+    }
+
+    std::vector<Animation::Frame> frames;
+    frames.reserve(tgaAnimation->Frames.size());
+
+    for (TGA::FBX::Animation::Frame& tgaFrame : tgaAnimation->Frames)
+    {
+        Animation::Frame frame;
+
+        for (auto& [tgaJointName, tgaJointTransform] : tgaFrame.LocalTransforms)
+        {
+            memcpy_s(&frame.Transforms[tgaJointName], sizeof(CommonUtilities::Matrix4x4f), &tgaJointTransform, sizeof(TGA::FBX::Matrix));
+        }
+
+        frames.emplace_back(std::move(frame));
+    }
+
+    myAnimation.Frames = std::move(frames);
+    memcpy_s(&myAnimation.Duration, sizeof(float), &tgaAnimation->Duration, sizeof(float));
+    memcpy_s(&myAnimation.FramesPerSecond, sizeof(float), &tgaAnimation->FramesPerSecond, sizeof(float));
+
+    LOG(FBXLog, Verbose, "Animation has loaded [{}]", aPath.string());
+
+    return true;
+}

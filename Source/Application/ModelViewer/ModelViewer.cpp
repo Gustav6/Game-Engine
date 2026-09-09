@@ -9,6 +9,9 @@
 
 #include "Application.h"
 
+#include "AssetHandling/Asset/Types/MeshAsset.h"
+#include "AssetHandling/Asset/Types/AnimationAsset.h"
+
 #include "Game/Component/Rendering/MeshComponent.h"
 #include "Game/Component/Rendering/AnimationComponent.h"
 #include "Game/Component/Light/DirectionlLightComponent.h"
@@ -27,6 +30,11 @@ ModelViewer::~ModelViewer() = default;
 bool ModelViewer::Initialize(SIZE aWindowSize, WNDPROC aWindowProcess, LPCWSTR aWindowTitle)
 {
     std::filesystem::path contentPath = std::filesystem::current_path().parent_path().parent_path() / "Content";
+
+    Application.AssetRegistry.RegisterAssetType<MeshAsset>({ ".fbx" });
+    Application.AssetRegistry.RegisterAssetType<AnimationAsset>({ ".fbx" });
+
+    Application.AssetRegistry.Initialize(true);
 
     Application.AssetLibrary.Initialize(contentPath);
     Application.InputManager.SetWindowHandle(myMainWindowHandle);
@@ -151,19 +159,6 @@ void ModelViewer::LoadScene()
 	myScene = std::make_unique<Scene>();
 
     {
-        Application.AssetLibrary.LoadMesh("Meshes/SM_Chest.fbx");
-        Application.AssetLibrary.LoadMesh("Meshes/SK_C_TGA_Bro.fbx");
-        Application.AssetLibrary.LoadMesh("Meshes/SM_Color_Checker.fbx");
-    }
-
-    {
-        Application.AssetLibrary.LoadAnimation("Animations/Idle/A_C_TGA_Bro_Idle_Breathing.fbx");
-        Application.AssetLibrary.LoadAnimation("Animations/Idle/A_C_TGA_Bro_Idle_Wave.fbx");
-        Application.AssetLibrary.LoadAnimation("Animations/Locomotion/A_C_TGA_Bro_Run.fbx");
-        Application.AssetLibrary.LoadAnimation("Animations/Locomotion/A_C_TGA_Bro_Walk.fbx");
-    }
-
-    {
         Application.AssetLibrary.LoadMaterial("Materials/BaseMaterial.json");
         Application.AssetLibrary.LoadMaterial("Materials/ChestMaterial.json");
         Application.AssetLibrary.LoadMaterial("Materials/TGABroMaterial.json");
@@ -180,7 +175,7 @@ void ModelViewer::LoadScene()
 
         MeshComponent* meshComponent = object->AddComponent<MeshComponent>();
 
-        meshComponent->SetMesh(Application.AssetLibrary.GetMesh("Meshes/SM_Color_Checker.fbx"));
+        meshComponent->SetMesh(Application.AssetRegistry.GetAsset<MeshAsset>("SM_Color_Checker"));
         meshComponent->SetMaterial(0, Application.AssetLibrary.GetMaterial("Materials/SMColorChecker.json"));
 
         object->GetTransform().Translate({ -400, 40, 0 });
@@ -194,7 +189,7 @@ void ModelViewer::LoadScene()
 
         MeshComponent* meshComponent = object->AddComponent<MeshComponent>();
 
-        meshComponent->SetMesh(Application.AssetLibrary.GetMesh("Meshes/SM_Chest.fbx"));
+        meshComponent->SetMesh(Application.AssetRegistry.GetAsset<MeshAsset>("SM_Chest"));
         meshComponent->SetMaterial(0, Application.AssetLibrary.GetMaterial("Materials/ChestMaterial.json"));
 		
         object->GetTransform().Rotate(CommonUtilities::Vector3f{ 0, -180, 0 });
@@ -208,7 +203,7 @@ void ModelViewer::LoadScene()
 
         MeshComponent* meshComponent = object->AddComponent<MeshComponent>();
 
-        meshComponent->SetMesh(Application.AssetLibrary.GetMesh("UnitPlane"));
+        meshComponent->SetMesh(Application.AssetRegistry.GetAsset<MeshAsset>("Unit_Plane"));
         meshComponent->SetMaterial(0, Application.AssetLibrary.GetMaterial("Materials/BaseMaterial.json"));
 
         object->GetTransform().SetScale({ 2000, 2000, 2000 });
@@ -221,7 +216,7 @@ void ModelViewer::LoadScene()
 
         MeshComponent* meshComponent = object->AddComponent<MeshComponent>();
 
-        meshComponent->SetMesh(Application.AssetLibrary.GetMesh("UnitCube"));
+        meshComponent->SetMesh(Application.AssetRegistry.GetAsset<MeshAsset>("Unit_Cube"));
         meshComponent->SetMaterial(0, Application.AssetLibrary.GetMaterial("Materials/BaseMaterial.json"));
 
         object->GetTransform().Translate({ 0, 50, 0 });
@@ -235,7 +230,7 @@ void ModelViewer::LoadScene()
 
         MeshComponent* meshComponent = object->AddComponent<MeshComponent>();
 
-        meshComponent->SetMesh(Application.AssetLibrary.GetMesh("UnitCube"));
+        meshComponent->SetMesh(Application.AssetRegistry.GetAsset<MeshAsset>("Unit_Cube"));
         meshComponent->SetMaterial(0, Application.AssetLibrary.GetMaterial("Materials/BaseMaterial.json"));
 
         object->GetTransform().SetEulerRotation({ 45.0f, 180.0f, 45.0f });
@@ -252,29 +247,29 @@ void ModelViewer::LoadScene()
 
         MeshComponent* meshComponent = object->AddComponent<MeshComponent>();
 
-        meshComponent->SetMesh(Application.AssetLibrary.GetMesh("Meshes/SK_C_TGA_Bro.fbx"));
+        meshComponent->SetMesh(Application.AssetRegistry.GetAsset<MeshAsset>("SK_C_TGA_Bro"));
         meshComponent->SetMaterial(0, Application.AssetLibrary.GetMaterial("Materials/TGABroMaterial.json"));
 
         AnimationComponent* animationComponent = object->AddComponent<AnimationComponent>(meshComponent->GetSkeleton());
 
         AnimationEntry breathingAnimation =
         {
-            .Animation = Application.AssetLibrary.GetAnimation("Animations/Idle/A_C_TGA_Bro_Idle_Breathing.fbx"),
+            .AnimationAsset = Application.AssetRegistry.GetAsset<AnimationAsset>("A_C_TGA_Bro_Idle_Breathing"),
             .ShouldLoop = true
         };
         AnimationEntry waveAnimation =
         {
-            .Animation = Application.AssetLibrary.GetAnimation("Animations/Idle/A_C_TGA_Bro_Idle_Wave.fbx"),
+            .AnimationAsset = Application.AssetRegistry.GetAsset<AnimationAsset>("A_C_TGA_Bro_Idle_Wave"),
             .ShouldLoop = true
         };
         AnimationEntry runAnimation =
         {
-            .Animation = Application.AssetLibrary.GetAnimation("Animations/Locomotion/A_C_TGA_Bro_Run.fbx"),
+            .AnimationAsset = Application.AssetRegistry.GetAsset<AnimationAsset>("A_C_TGA_Bro_Run"),
             .ShouldLoop = true
         };
         AnimationEntry walkAnimation =
         {
-            .Animation = Application.AssetLibrary.GetAnimation("Animations/Locomotion/A_C_TGA_Bro_Walk.fbx"),
+            .AnimationAsset = Application.AssetRegistry.GetAsset<AnimationAsset>("A_C_TGA_Bro_Walk"),
             .ShouldLoop = true
         };
 
@@ -474,7 +469,7 @@ void ModelViewer::BuildSceneForRender()
             {
                 DrawCall drawCall = 
                 {
-                    .Mesh = meshComponent->GetMesh().get(),
+                    .Mesh = &meshComponent->GetMesh(),
                     .Transform = gameObject->GetTransform().GetWorldMatrix()
                 };
 

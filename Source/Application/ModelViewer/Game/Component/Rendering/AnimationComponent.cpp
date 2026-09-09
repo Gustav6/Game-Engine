@@ -6,6 +6,8 @@
 #include <CommonUtilities/MathUtils.hpp>
 #include <CommonUtilities/Quaternion.hpp>
 
+#include "AssetHandling/Asset/Types/AnimationAsset.h"
+
 AnimationComponent::AnimationComponent(GameObject* aOwner, const Skeleton* aSkeleton)
 	: Component(aOwner)
 {
@@ -36,7 +38,7 @@ void AnimationComponent::Update(float aDeltaTime)
 
 		size_t nextFrame = layer.CurrentFrame + 1;
 
-		if (nextFrame >= entry.Animation->Frames.size())
+		if (nextFrame >= entry.AnimationAsset->GetAnimation().Frames.size())
 		{
 			if (!entry.ShouldLoop)
 			{
@@ -73,7 +75,7 @@ void AnimationComponent::PlayAnimation(std::string aName, bool aIsNewRoot, Joint
 	layer.Group = aGroup;
 	layer.CurrentFrame = 0;
 	layer.AnimationTimer = 0;
-	layer.FrameTime = 1.0f / myAnimations.at(aName).Animation->FramesPerSecond;
+	layer.FrameTime = 1.0f / myAnimations.at(aName).AnimationAsset->GetAnimation().FramesPerSecond;
 	layer.HasFinished = false;
 
 	LayeredAnimation animation;
@@ -162,11 +164,11 @@ bool AnimationComponent::LayerEffectsJoint(JointGroup aGroup, size_t aJointIndex
 
 void AnimationComponent::UpdateAnimation(size_t aCurrentFrame, unsigned int aJointIdx, const CommonUtilities::Matrix4x4f& aParentJointTransform, CommonUtilities::Matrix4x4f* outTransforms, JointGroup aGroup, const std::string& aCurrentAnimation)
 {
-	const std::shared_ptr<Animation>& currentAnimation = myAnimations.at(aCurrentAnimation).Animation;
+	const Animation& currentAnimation = myAnimations.at(aCurrentAnimation).AnimationAsset->GetAnimation();
 
 	const Skeleton::Joint& currentJoint = mySkeleton->Joints[aJointIdx];
 
-	const CommonUtilities::Matrix4x4f& jointLocalTransform = currentAnimation->Frames[aCurrentFrame].Transforms.at(currentJoint.Name);
+	const CommonUtilities::Matrix4x4f& jointLocalTransform = currentAnimation.Frames[aCurrentFrame].Transforms.at(currentJoint.Name);
 
 	const CommonUtilities::Matrix4x4f localTransform = jointLocalTransform * aParentJointTransform;
 

@@ -66,6 +66,24 @@
     <ClInclude Include="Game\Component\Transform.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="AssetHandling\AssetRegistry.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AssetHandling\Asset\Base\Asset.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AssetHandling\Asset\Types\MeshAsset.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AssetHandling\Asset\Types\MaterialAsset.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AssetHandling\Asset\Types\TextureAsset.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AssetHandling\Asset\Types\AnimationAsset.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModelViewer.cpp">
@@ -120,6 +138,24 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Game\Component\Transform.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AssetHandling\AssetRegistry.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AssetHandling\Asset\Base\Asset.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AssetHandling\Asset\Types\MeshAsset.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AssetHandling\Asset\Types\MaterialAsset.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AssetHandling\Asset\Types\TextureAsset.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AssetHandling\Asset\Types\AnimationAsset.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
