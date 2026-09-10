@@ -49,9 +49,9 @@
 
 #include <memory>
 
-#include "Game/GameCamera.h"
-#include "Game/GameObject.hpp"
-#include "Game/GameWorld.h"
+#include "Game/Camera/GameCamera.h"
+#include "Game/World/Actor.hpp"
+#include "Game/World/GameWorld.h"
 
 struct Scene;
 class GraphicsCommandList;
@@ -83,9 +83,9 @@ private:
 	// TODO: TEMP
 	float myCamerasMoveSpeed = 400;
 
-	GameObject* myAnimatedObject = nullptr;
+	Actor* myAnimatedObject = nullptr;
 
-	GameObject* myDirectionLightObject = nullptr;
-	GameObject* myPointLightObject = nullptr;
-	GameObject* mySpotLightObject = nullptr;
+	Actor* myDirectionLightObject = nullptr;
+	Actor* myPointLightObject = nullptr;
+	Actor* mySpotLightObject = nullptr;
 };

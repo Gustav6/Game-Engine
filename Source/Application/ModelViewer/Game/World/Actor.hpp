@@ -4,21 +4,21 @@
 #include <typeindex>
 #include <unordered_map>
 
-#include "Game/Component/Transform.h"
+#include "Game/Components/Transform.h"
 
-#include "Game/Component/Component.h"
+#include "Game/Components/Component.h"
 
-class GameObject
+class Actor
 {
 public:
-	GameObject();
-	virtual ~GameObject();
+	Actor();
+	virtual ~Actor();
 
-	GameObject(const GameObject&) = delete;
-	GameObject& operator=(const GameObject&) = delete;
+	Actor(const Actor&) = delete;
+	Actor& operator=(const Actor&) = delete;
 
-	GameObject(GameObject&&) = default;
-	GameObject& operator=(GameObject&&) = default;
+	Actor(Actor&&) = default;
+	Actor& operator=(Actor&&) = default;
 
 	template<typename T, typename... Args>
 	T* AddComponent(Args&&... args)

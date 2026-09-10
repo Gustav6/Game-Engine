@@ -1,11 +1,11 @@
 #pragma once
 
-#include "Game/Component/Light/LightComponent.h"
+#include "Game/Components/Light/LightComponent.h"
 
 class PointLightComponent : public LightComponent
 {
 public:
-    PointLightComponent(GameObject* aOwner);
+    PointLightComponent(Actor* aOwner);
 
     void SetRadius(float aRadius);
 

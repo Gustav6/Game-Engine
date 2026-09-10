@@ -8,5 +8,5 @@ struct FrameBuffer
 	CommonUtilities::Matrix4x4f View;
 	CommonUtilities::Matrix4x4f Projection;
 	CommonUtilities::Vector3f CameraPosition;
-	float _padding;
+	unsigned int TypeOfRenderPass;
 };

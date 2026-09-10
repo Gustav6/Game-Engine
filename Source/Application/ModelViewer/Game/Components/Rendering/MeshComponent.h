@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Game/Component/Component.h"
+#include "Game/Components/Component.h"
 
 #include "CommonUtilities/Sphere.hpp"
 
@@ -17,7 +17,7 @@ class MaterialInterface;
 class MeshComponent : public Component
 {
 public:
-	MeshComponent(GameObject* aOwner);
+	MeshComponent(Actor* aOwner);
 
 	void SetMesh(const std::shared_ptr<MeshAsset>& aMeshAsset);
 

@@ -3,9 +3,9 @@
 #include "Ensure.h"
 
 #include "GraphicsEngine/Objects/Mesh.h"
-#include "Game/GameObject.hpp"
+#include "Game/World/Actor.hpp"
 
-MeshComponent::MeshComponent(GameObject* aOwner)
+MeshComponent::MeshComponent(Actor* aOwner)
 	: Component(aOwner)
 {}
 

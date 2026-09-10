@@ -32,6 +32,41 @@ float4 main(VStoPS aPixel) : SV_TARGET
 
     normal = normalize(mul(normal, TBN));
     
+    switch (FB_TypeOfRenderPass)
+    {
+        case 0:
+            // sRGB pass do nothing!
+            break;
+        case 1: 
+            // Rougness pass
+            return float4(materialMap.g, materialMap.g, materialMap.g, 1.0f);
+            break;
+        case 2:
+            // Metalness pass
+            return float4(materialMap.b, materialMap.b, materialMap.b, 1.0f);
+            break;
+        case 3:
+            // Ambient Occlusion texture pass
+            return float4(materialMap.r, materialMap.r, materialMap.r, 1.0f);
+            break;
+        case 4:
+            // Ambient Occlusion screen space pass
+            return float4(1.0f, 1.0f, 1.0f, 1.0f); // TODO : FIX
+            break;
+        case 5:
+            // Normals tangent space pass
+            return float4(normalMap, 0.0f, 1.0f);
+            break;
+        case 6:
+            // Normals world space pass
+            return float4(normal, 1.0f);
+            break;
+        case 7:
+            // Shadows pass
+            return float4(1.0f, 1.0f, 1.0f, 1.0f); // TODO : FIX
+            break;
+    }
+    
     MaterialPixelParameters parameters;
     parameters.PixelColor = albedoMap;
     parameters.WorldPosition = aPixel.WorldPosition;

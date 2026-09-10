@@ -64,6 +64,8 @@ bool GraphicsEngine::Initialize(HWND aWindowHandle, const std::filesystem::path&
 		return false;
 	}
 
+	myCurrentRenderPass = RenderPass::sRGB;
+
 	myShaderRoot = aShaderRoot;
 
 	myBackBuffer = std::make_unique<Texture>();
@@ -195,6 +197,7 @@ void GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const Scene& 
 			frameBuffer.View = aScene.SceneCamera.Transform.GetFastInverse();
 			frameBuffer.Projection = aScene.SceneCamera.RenderCamera.GetProjection();
 			frameBuffer.CameraPosition = aScene.SceneCamera.Transform.GetTranslation();
+			frameBuffer.TypeOfRenderPass = static_cast<unsigned int>(myCurrentRenderPass);
 
 			UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::FrameBuffer, frameBuffer, 0, PipelineStage_VertexShader | PipelineStage_PixelShader);
 		}
@@ -210,6 +213,18 @@ void GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const Scene& 
 void GraphicsEngine::Present() const
 {
 	myRHI.Present();
+}
+
+void GraphicsEngine::CycleToNextRenderPass()
+{
+	int nextRenderPass = static_cast<int>(myCurrentRenderPass) + 1;
+
+	if (nextRenderPass == static_cast<int>(RenderPass::MAX)) 
+	{
+		nextRenderPass = 0;
+	}
+
+	myCurrentRenderPass = static_cast<RenderPass>(nextRenderPass);
 }
 
 bool GraphicsEngine::CreateConstantBuffer(ConstantBuffer aBufferID, std::string_view aName, size_t aBufferSize)

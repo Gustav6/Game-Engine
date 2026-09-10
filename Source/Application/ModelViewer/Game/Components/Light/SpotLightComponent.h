@@ -1,11 +1,11 @@
 #pragma once
 
-#include "Game/Component/Light/LightComponent.h"
+#include "Game/Components/Light/LightComponent.h"
 
 class SpotLightComponent : public LightComponent
 {
 public:
-    SpotLightComponent(GameObject* aOwner);
+    SpotLightComponent(Actor* aOwner);
 
     void SetDirection(const CommonUtilities::Vector3f& aDirection);
     void SetRadius(float aRadius);

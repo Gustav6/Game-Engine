@@ -8,7 +8,7 @@
 
 #include "AssetHandling/Asset/Types/AnimationAsset.h"
 
-AnimationComponent::AnimationComponent(GameObject* aOwner, const Skeleton* aSkeleton)
+AnimationComponent::AnimationComponent(Actor* aOwner, const Skeleton* aSkeleton)
 	: Component(aOwner)
 {
 	SetupJointGroups(aSkeleton);

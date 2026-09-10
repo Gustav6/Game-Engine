@@ -1,6 +1,6 @@
 #include "Component.h"
 
-Component::Component(GameObject* aOwner)
+Component::Component(Actor* aOwner)
 {
 	myOwner = aOwner;
 }

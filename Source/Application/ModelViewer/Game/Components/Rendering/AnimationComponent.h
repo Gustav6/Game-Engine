@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Game/Component/Component.h"
+#include "Game/Components/Component.h"
 
 #include <string>
 #include <vector>
@@ -47,7 +47,7 @@ struct LayeredAnimation
 class AnimationComponent : public Component
 {
 public:
-	AnimationComponent(GameObject* aOwner, const Skeleton* aSkeleton);
+	AnimationComponent(Actor* aOwner, const Skeleton* aSkeleton);
 
 	void Update(float aDeltaTime) override;
 

@@ -75,6 +75,8 @@ public:
 	void Render(GraphicsCommandList& inoutCommandList, const Scene& aScene);
 	void Present() const;
 
+	void CycleToNextRenderPass();
+
 	template<class T>
 	bool CreateConstantBuffer(ConstantBuffer aBufferID, std::string_view aName)
 	{
@@ -126,6 +128,19 @@ private:
 
 	typedef int DrawCallFlags;
 
+	enum class RenderPass
+	{
+		sRGB,
+		Roughness,
+		Metalness,
+		AmbientOcclusionTexture,
+		AmbientOcclusionScreenspace,
+		NormalsTangentSpace,
+		NormalsWorldSpace,
+		Shadows,
+		MAX
+	};
+
 	bool HasDrawCallFlag(DrawCallFlags aFlags, DrawCallFlag_ aFlag);
 
 	bool CreateConstantBufferInternal(ConstantBuffer aBufferID, std::string_view aName, size_t aBufferSize);
@@ -176,4 +191,6 @@ private:
 
 	// First Index = Near Cascade ... last index = Far Cascade
 	std::array<ShadowCascade, NUM_CASCADES> myCascades;
+
+	RenderPass myCurrentRenderPass;
 };

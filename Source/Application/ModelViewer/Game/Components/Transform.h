@@ -27,7 +27,7 @@ public:
 	void SetEulerRotation(const CommonUtilities::Vector3f& aEulerRotation);
 
 	const CommonUtilities::Quaternionf& GetLocalRotation() const;
-	const CommonUtilities::Vector3f& GetLocalEulerRotation() const;
+	const CommonUtilities::Vector3f GetLocalEulerRotation() const;
 	void SetLocalRotation(const CommonUtilities::Quaternionf& aRotation);
 	void SetLocalEulerRotation(const CommonUtilities::Vector3f& aEulerRotation);
 

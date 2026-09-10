@@ -1,15 +1,15 @@
 #pragma once
 
-class GameObject;
+class Actor;
 
 class Component
 {
 public:
-	Component(GameObject* aOwner);
+	Component(Actor* aOwner);
 
 	virtual void Update(float aDeltaTime) {};
 	virtual void Render() {};
 
 protected:
-	GameObject* myOwner;
+	Actor* myOwner;
 };

@@ -190,7 +190,7 @@ const CommonUtilities::Quaternionf& Transform::GetLocalRotation() const
 	return myLocalRotation;
 }
 
-const CommonUtilities::Vector3f& Transform::GetLocalEulerRotation() const
+const CommonUtilities::Vector3f Transform::GetLocalEulerRotation() const
 {
 	return myLocalRotation.GetYawPitchRoll();
 }

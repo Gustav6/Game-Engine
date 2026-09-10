@@ -7,7 +7,7 @@
 
 #include "GraphicsEngine/Objects/Light.h"
 
-SpotLightComponent::SpotLightComponent(GameObject* aOwner)
+SpotLightComponent::SpotLightComponent(Actor* aOwner)
 	: LightComponent(aOwner)
 {
 	myData->Type = LightType::Spot;

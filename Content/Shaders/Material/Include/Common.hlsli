@@ -26,7 +26,7 @@ cbuffer FrameBuffer : register(b0)
     float4x4 FB_View;
     float4x4 FB_Projection;
     float3 FB_CameraPosition;
-    float _FB_Padding;
+    uint FB_TypeOfRenderPass;
 }
 
 cbuffer ObjectBuffer : register(b1)

@@ -2,14 +2,14 @@
 
 #include <vector>
 
-#include "Game/Component/Light/LightComponent.h"
+#include "Game/Components/Light/LightComponent.h"
 
 struct SceneShadowCascade;
 
 class DirectionalLightComponent : public LightComponent
 {
 public:
-    DirectionalLightComponent(GameObject* aOwner);
+    DirectionalLightComponent(Actor* aOwner);
 
     void SetDirection(const CommonUtilities::Vector3f& aDirection);
 

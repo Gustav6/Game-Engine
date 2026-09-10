@@ -2,10 +2,10 @@
 
 #include "GraphicsEngine/Objects/Light.h"
 
-#include "Game/Component/Transform.h"
-#include "Game/GameObject.hpp"
+#include "Game/Components/Transform.h"
+#include "Game/World/Actor.hpp"
 
-DirectionalLightComponent::DirectionalLightComponent(GameObject* aOwner)
+DirectionalLightComponent::DirectionalLightComponent(Actor* aOwner)
 	: LightComponent(aOwner)
 {
 	myData->Type = LightType::Directional;

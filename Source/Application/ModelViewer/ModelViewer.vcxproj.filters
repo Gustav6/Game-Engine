@@ -27,40 +27,40 @@
     <ClInclude Include="Application.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Game\GameCamera.h">
+    <ClInclude Include="Game\Camera\GameCamera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Game\GameObject.hpp">
+    <ClInclude Include="Game\World\Actor.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Game\GameWorld.h">
+    <ClInclude Include="Game\World\GameWorld.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Game\Component\Component.h">
+    <ClInclude Include="Game\Components\Component.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Game\Component\Rendering\MeshComponent.h">
+    <ClInclude Include="Game\Components\Rendering\MeshComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Game\Component\Rendering\AnimationComponent.h">
+    <ClInclude Include="Game\Components\Rendering\AnimationComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Game\Component\Light\LightComponent.h">
+    <ClInclude Include="Game\Components\Light\LightComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Game\Component\Light\SpotLightComponent.h">
+    <ClInclude Include="Game\Components\Light\SpotLightComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Game\Component\Light\DirectionlLightComponent.h">
+    <ClInclude Include="Game\Components\Light\DirectionlLightComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Game\Component\Light\PointLightComponent.h">
+    <ClInclude Include="Game\Components\Light\PointLightComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Json\JsonWrapper.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Game\Component\Transform.h">
+    <ClInclude Include="Game\Components\Transform.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="AssetHandling\AssetRegistry.h">
@@ -81,6 +81,12 @@
     <ClInclude Include="AssetHandling\Asset\Types\AnimationAsset.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="WindowManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AssetHandling\Asset\Types\UnrealSceneAsset.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModelViewer.cpp">
@@ -92,37 +98,37 @@
     <ClCompile Include="Application.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Game\GameCamera.cpp">
+    <ClCompile Include="Game\Camera\GameCamera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Game\GameObject.cpp">
+    <ClCompile Include="Game\World\Actor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Game\GameWorld.cpp">
+    <ClCompile Include="Game\World\GameWorld.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\ThirdParty\Source\tracy\TracyClient.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Game\Component\Component.cpp">
+    <ClCompile Include="Game\Components\Component.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Game\Component\Rendering\MeshComponent.cpp">
+    <ClCompile Include="Game\Components\Rendering\MeshComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Game\Component\Rendering\AnimationComponent.cpp">
+    <ClCompile Include="Game\Components\Rendering\AnimationComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Game\Component\Light\LightComponent.cpp">
+    <ClCompile Include="Game\Components\Light\LightComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Game\Component\Light\SpotLightComponent.cpp">
+    <ClCompile Include="Game\Components\Light\SpotLightComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Game\Component\Light\DirectionlLightComponent.cpp">
+    <ClCompile Include="Game\Components\Light\DirectionlLightComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Game\Component\Light\PointLightComponent.cpp">
+    <ClCompile Include="Game\Components\Light\PointLightComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Json\JsonWrapper.cpp">
@@ -131,7 +137,7 @@
     <ClCompile Include="..\..\..\ThirdParty\Source\yyjson\yyjson.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Game\Component\Transform.cpp">
+    <ClCompile Include="Game\Components\Transform.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="AssetHandling\AssetRegistry.cpp">
@@ -150,6 +156,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="AssetHandling\Asset\Types\AnimationAsset.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="WindowManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AssetHandling\Asset\Types\UnrealSceneAsset.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

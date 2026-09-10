@@ -2,7 +2,7 @@
 
 #include <memory>
 
-#include "Game/Component/Component.h"
+#include "Game/Components/Component.h"
 
 #include "CommonUtilities/Vector2.hpp"
 #include "CommonUtilities/Vector3.hpp"
@@ -14,7 +14,7 @@ class Texture;
 class LightComponent : public Component
 {
 public:
-    LightComponent(GameObject* aOwner);
+    LightComponent(Actor* aOwner);
     virtual ~LightComponent();
 
     void UpdateLightViewProjection();

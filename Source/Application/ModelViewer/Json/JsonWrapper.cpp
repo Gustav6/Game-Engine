@@ -239,7 +239,7 @@ std::vector<float> JsonData::GetFloatArray(const char* aName) const
 	{
 		if (yyjson_is_num(value))
 		{
-			values.push_back(yyjson_get_num(value));
+			values.push_back(static_cast<float>(yyjson_get_num(value)));
 		}
 		else
 		{

@@ -5,9 +5,9 @@
 
 #include "GraphicsEngine/Objects/Camera.h"
 
-#include "GameObject.hpp"
+#include "Game/World/Actor.hpp"
 
-class GameCamera : public GameObject
+class GameCamera : public Actor
 {
 public:
 	GameCamera();

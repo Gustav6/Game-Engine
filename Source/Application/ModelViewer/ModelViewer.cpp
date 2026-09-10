@@ -13,12 +13,13 @@
 #include "AssetHandling/Asset/Types/AnimationAsset.h"
 #include "AssetHandling/Asset/Types/MaterialAsset.h"
 #include "AssetHandling/Asset/Types/TextureAsset.h"
+#include "AssetHandling/Asset/Types/UnrealSceneAsset.h"
 
-#include "Game/Component/Rendering/MeshComponent.h"
-#include "Game/Component/Rendering/AnimationComponent.h"
-#include "Game/Component/Light/DirectionlLightComponent.h"
-#include "Game/Component/Light/PointLightComponent.h"
-#include "Game/Component/Light/SpotLightComponent.h"
+#include "Game/Components/Rendering/MeshComponent.h"
+#include "Game/Components/Rendering/AnimationComponent.h"
+#include "Game/Components/Light/DirectionlLightComponent.h"
+#include "Game/Components/Light/PointLightComponent.h"
+#include "Game/Components/Light/SpotLightComponent.h"
 
 #include "GraphicsEngine/GraphicsEngine.hpp"
 #include "GraphicsEngine/Objects/Texture.h"
@@ -37,6 +38,7 @@ bool ModelViewer::Initialize(SIZE aWindowSize, WNDPROC aWindowProcess, LPCWSTR a
     Application.AssetRegistry.RegisterAssetType<AnimationAsset>({ ".fbx" });
     Application.AssetRegistry.RegisterAssetType<MaterialAsset>({ ".json" });
     Application.AssetRegistry.RegisterAssetType<TextureAsset>({ ".dds" });
+    Application.AssetRegistry.RegisterAssetType<UnrealSceneAsset>({ ".json" });
 
     std::filesystem::path workingDirectory = std::filesystem::current_path().parent_path().parent_path() / "Content";
 
@@ -169,7 +171,7 @@ void ModelViewer::LoadScene()
     }
 
     {
-        std::unique_ptr<GameObject> object = std::make_unique<GameObject>();
+        std::unique_ptr<Actor> object = std::make_unique<Actor>();
 
         MeshComponent* meshComponent = object->AddComponent<MeshComponent>();
 
@@ -179,11 +181,11 @@ void ModelViewer::LoadScene()
         object->GetTransform().Translate({ -400, 40, 0 });
         object->GetTransform().Rotate(CommonUtilities::Vector3f{ -90, 0, 0 });
 
-        myGameWorld.AddGameObject(std::move(object));
+        myGameWorld.AddActor(std::move(object));
     }
 
     {
-        std::unique_ptr<GameObject> object = std::make_unique<GameObject>();
+        std::unique_ptr<Actor> object = std::make_unique<Actor>();
 
         MeshComponent* meshComponent = object->AddComponent<MeshComponent>();
 
@@ -193,11 +195,11 @@ void ModelViewer::LoadScene()
         object->GetTransform().Rotate(CommonUtilities::Vector3f{ 0, -180, 0 });
         object->GetTransform().Translate({ 200, 0, 400 });
 
-        myGameWorld.AddGameObject(std::move(object));
+        myGameWorld.AddActor(std::move(object));
     }
 
     {
-        std::unique_ptr<GameObject> object = std::make_unique<GameObject>();
+        std::unique_ptr<Actor> object = std::make_unique<Actor>();
 
         MeshComponent* meshComponent = object->AddComponent<MeshComponent>();
 
@@ -206,11 +208,11 @@ void ModelViewer::LoadScene()
 
         object->GetTransform().SetScale({ 2000, 2000, 2000 });
 
-        myGameWorld.AddGameObject(std::move(object));
+        myGameWorld.AddActor(std::move(object));
     }
 
     {
-        std::unique_ptr<GameObject> object = std::make_unique<GameObject>();
+        std::unique_ptr<Actor> object = std::make_unique<Actor>();
 
         MeshComponent* meshComponent = object->AddComponent<MeshComponent>();
 
@@ -220,11 +222,11 @@ void ModelViewer::LoadScene()
         object->GetTransform().Translate({ 0, 50, 0 });
         object->GetTransform().SetScale({ 100, 100, 100 });
 
-        myGameWorld.AddGameObject(std::move(object));
+        myGameWorld.AddActor(std::move(object));
     }
 
     {
-        std::unique_ptr<GameObject> object = std::make_unique<GameObject>();
+        std::unique_ptr<Actor> object = std::make_unique<Actor>();
 
         MeshComponent* meshComponent = object->AddComponent<MeshComponent>();
 
@@ -235,11 +237,11 @@ void ModelViewer::LoadScene()
         object->GetTransform().Translate({ -200, 100, 400 });
         object->GetTransform().SetScale({ 100, 100, 100 });
 
-        myGameWorld.AddGameObject(std::move(object));
+        myGameWorld.AddActor(std::move(object));
     }
 
     {
-        std::unique_ptr<GameObject> object = std::make_unique<GameObject>();
+        std::unique_ptr<Actor> object = std::make_unique<Actor>();
 
         object->GetTransform().Translate({ 200, 0, 0 });
 
@@ -276,11 +278,11 @@ void ModelViewer::LoadScene()
         animationComponent->AddAnimation("Run", runAnimation);
         animationComponent->AddAnimation("Walk", walkAnimation);
         
-        myAnimatedObject = myGameWorld.AddGameObject(std::move(object));
+        myAnimatedObject = myGameWorld.AddActor(std::move(object));
     }
 
     {
-        std::unique_ptr<GameObject> object = std::make_unique<GameObject>();
+        std::unique_ptr<Actor> object = std::make_unique<Actor>();
 
         DirectionalLightComponent* directionalLight = object->AddComponent<DirectionalLightComponent>();
 
@@ -288,11 +290,11 @@ void ModelViewer::LoadScene()
         directionalLight->SetIntensity(1.0f);
         directionalLight->SetDirection({ 0.0f, -0.75f, 1.0f });
 
-        myDirectionLightObject = myGameWorld.AddGameObject(std::move(object));
+        myDirectionLightObject = myGameWorld.AddActor(std::move(object));
     }
 
     {
-        std::unique_ptr<GameObject> object = std::make_unique<GameObject>();
+        std::unique_ptr<Actor> object = std::make_unique<Actor>();
 
         object->SetEnabled(false);
 
@@ -303,11 +305,11 @@ void ModelViewer::LoadScene()
         pointLight->SetRadius(900.0f);
         pointLight->SetShadowMapSize({ 512, 512 });
 
-        myPointLightObject = myGameWorld.AddGameObject(std::move(object));
+        myPointLightObject = myGameWorld.AddActor(std::move(object));
     }
 
     {
-        std::unique_ptr<GameObject> object = std::make_unique<GameObject>();
+        std::unique_ptr<Actor> object = std::make_unique<Actor>();
 
         object->SetEnabled(false);
 
@@ -320,7 +322,7 @@ void ModelViewer::LoadScene()
         spotLight->SetCone(0.0f, 0.7f);
         spotLight->SetShadowMapSize({ 512, 512 });
 
-        mySpotLightObject = myGameWorld.AddGameObject(std::move(object));
+        mySpotLightObject = myGameWorld.AddActor(std::move(object));
     }
 }
 
@@ -440,6 +442,12 @@ void ModelViewer::UpdateScene(float aDeltaTime)
     {
         mySpotLightObject->SetEnabled(!mySpotLightObject->GetIsEnabled());
     }
+
+	if (Application.InputManager.IsKeyPressed(KeyCode::F6))
+	{
+		GraphicsEngine::Get().CycleToNextRenderPass();
+	}
+
     if (Application.InputManager.IsKeyReleased(KeyCode::Escape))
     {
         PostQuitMessage(0);
@@ -453,22 +461,22 @@ void ModelViewer::BuildSceneForRender()
     myScene->SceneLights.clear();
     myScene->DrawCalls.clear();
 
-    for (auto& gameObject : myGameWorld.GetGameObjects())
+    for (auto& actor : myGameWorld.GetActors())
     {
-        if (!gameObject->GetIsEnabled())
+        if (!actor->GetIsEnabled())
         {
             continue;
         }
 
         {
-            MeshComponent* meshComponent = gameObject.get()->GetComponent<MeshComponent>();
+            MeshComponent* meshComponent = actor.get()->GetComponent<MeshComponent>();
 
             if (meshComponent != nullptr)
             {
                 DrawCall drawCall = 
                 {
                     .Mesh = &meshComponent->GetMesh(),
-                    .Transform = gameObject->GetTransform().GetWorldMatrix()
+                    .Transform = actor->GetTransform().GetWorldMatrix()
                 };
 
                 const auto& materialAssets = meshComponent->GetMaterialAssetList();
@@ -478,7 +486,7 @@ void ModelViewer::BuildSceneForRender()
                     drawCall.Materials[i] = materialAssets[i]->GetMaterial().get();
                 }
 
-                AnimationComponent* animationComponent = gameObject.get()->GetComponent<AnimationComponent>();
+                AnimationComponent* animationComponent = actor.get()->GetComponent<AnimationComponent>();
 
                 if (animationComponent != nullptr)
                 {
@@ -491,7 +499,7 @@ void ModelViewer::BuildSceneForRender()
         }
 
         {
-            DirectionalLightComponent* directionalLight = gameObject.get()->GetComponent<DirectionalLightComponent>();
+            DirectionalLightComponent* directionalLight = actor.get()->GetComponent<DirectionalLightComponent>();
 
             if (directionalLight != nullptr)
             {
@@ -509,7 +517,7 @@ void ModelViewer::BuildSceneForRender()
         }
 
         {
-            PointLightComponent* pointLight = gameObject.get()->GetComponent<PointLightComponent>();
+            PointLightComponent* pointLight = actor.get()->GetComponent<PointLightComponent>();
 
             if (pointLight != nullptr)
             {
@@ -526,7 +534,7 @@ void ModelViewer::BuildSceneForRender()
         }
 
         {
-            SpotLightComponent* spotLight = gameObject.get()->GetComponent<SpotLightComponent>();
+            SpotLightComponent* spotLight = actor.get()->GetComponent<SpotLightComponent>();
 
             if (spotLight != nullptr)
             {

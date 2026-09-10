@@ -9,7 +9,7 @@
 
 #include "ensure.h"
 
-LightComponent::LightComponent(GameObject* aOwner)
+LightComponent::LightComponent(Actor* aOwner)
 	: Component(aOwner)
 {
 	myData = std::make_unique<Light>();

@@ -4,7 +4,7 @@
 
 #include "GraphicsEngine/Objects/Light.h"
 
-PointLightComponent::PointLightComponent(GameObject* aOwner)
+PointLightComponent::PointLightComponent(Actor* aOwner)
 	: LightComponent(aOwner)
 {
 	myData->Type = LightType::Point;
