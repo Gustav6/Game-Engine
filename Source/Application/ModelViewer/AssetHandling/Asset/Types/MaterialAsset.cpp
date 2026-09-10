@@ -1,21 +1,31 @@
 #include "MaterialAsset.h"
 
+#include "Application.h"
+
 #include "GraphicsEngine/GraphicsEngine.hpp"
+
+#include "TextureAsset.h"
 
 #include "Json/JsonWrapper.h"
 
 #include <tracy/core/Tracy.hpp>
 
+#include "Logger/Logger.h"
+
+DECLARE_LOG_CATEGORY_WITH_NAME(MaterialLog, MATERIAL, Verbose);
+
+DEFINE_LOG_CATEGORY(MaterialLog);
+
 MaterialAsset::~MaterialAsset() = default;
 
-const Material& MaterialAsset::GetMaterial() const
+const std::shared_ptr<MaterialInterface> MaterialAsset::GetMaterial() const
 {
     return myMaterial;
 }
 
 bool MaterialAsset::Load(const std::filesystem::path& aPath)
 {
-    /*ZoneScopedN("Load Material");
+    ZoneScopedN("Load Material");
 
     JsonData materialData = Json::Read(aPath);
 
@@ -26,47 +36,17 @@ bool MaterialAsset::Load(const std::filesystem::path& aPath)
 
     if (materialData.HasKey("ParentMaterial"))
     {
-        std::string_view parent = materialData.GetString("ParentMaterial");
-        std::filesystem::path parentPath = std::filesystem::path(parent).lexically_normal();
+        std::shared_ptr<MaterialAsset> parentMaterial = Application.AssetRegistry.GetAsset<MaterialAsset>(materialData.GetString("ParentMaterial"));
 
-        auto it = myMaterials.find(parentPath);
-
-        if (it == myMaterials.end())
-        {
-            if (!LoadMaterial(parentPath))
-            {
-                return false;
-            }
-
-            it = myMaterials.find(parentPath);
-        }
-
-        auto instance = MaterialInstance::Create(materialData.GetString("Name"), it->second);
+        auto instance = MaterialInstance::Create(materialData.GetString("Name"), parentMaterial->GetMaterial());
 
         if (materialData.HasKey("Textures"))
         {
             JsonData textureSettings = materialData.GetObjectValue("Textures");
 
-            std::filesystem::path albedoTexturePath = textureSettings.GetString("AlbedoTexture");
-            std::filesystem::path normalTexturePath = textureSettings.GetString("NormalTexture");
-            std::filesystem::path materialTexturePath = textureSettings.GetString("MaterialTexture");
-
-            if (!LoadTexture(albedoTexturePath))
-            {
-                return false;
-            }
-            if (!LoadTexture(normalTexturePath))
-            {
-                return false;
-            }
-            if (!LoadTexture(materialTexturePath))
-            {
-                return false;
-            }
-
-            instance->SetTexture(0, GetTexture(albedoTexturePath.string()));
-            instance->SetTexture(1, GetTexture(normalTexturePath.string()));
-            instance->SetTexture(2, GetTexture(materialTexturePath.string()));
+            myTextureAssets.push_back(Application.AssetRegistry.GetAsset<TextureAsset>(textureSettings.GetString("AlbedoTexture")));
+            myTextureAssets.push_back(Application.AssetRegistry.GetAsset<TextureAsset>(textureSettings.GetString("NormalTexture")));
+            myTextureAssets.push_back(Application.AssetRegistry.GetAsset<TextureAsset>(textureSettings.GetString("MaterialTexture")));
 
             if (materialData.HasKey("Shader"))
             {
@@ -103,12 +83,16 @@ bool MaterialAsset::Load(const std::filesystem::path& aPath)
         }
         else
         {
-            LOG(MaterialLog, Error, "Could not find material's texture settings in json [{}]", normalizedPath.string());
+            LOG(MaterialLog, Error, "Could not find material's texture settings in json [{}]", aPath.string());
         }
 
-        myMaterials.emplace(normalizedPath, std::move(instance));
+        instance->SetTexture(0, myTextureAssets[0]->GetTexture());
+        instance->SetTexture(1, myTextureAssets[1]->GetTexture());
+        instance->SetTexture(2, myTextureAssets[2]->GetTexture());
 
-        LOG(MaterialLog, Verbose, "Material instance has loaded [{}]", normalizedPath.string());
+        myMaterial = std::move(instance);
+
+        LOG(MaterialLog, Verbose, "Material instance has loaded [{}]", aPath.string());
 
         return true;
     }
@@ -126,7 +110,7 @@ bool MaterialAsset::Load(const std::filesystem::path& aPath)
     }
     else
     {
-        LOG(MaterialLog, Error, "Could not load material's base settings in json [{}]", normalizedPath.string());
+        LOG(MaterialLog, Error, "Could not load material's base settings in json [{}]", aPath.string());
     }
 
     std::filesystem::path albedoTexturePath;
@@ -137,26 +121,13 @@ bool MaterialAsset::Load(const std::filesystem::path& aPath)
     {
         JsonData textureSettings = materialData.GetObjectValue("Textures");
 
-        albedoTexturePath = textureSettings.GetString("AlbedoTexture");
-        normalTexturePath = textureSettings.GetString("NormalTexture");
-        materialTexturePath = textureSettings.GetString("MaterialTexture");
-
-        if (!LoadTexture(albedoTexturePath))
-        {
-            return false;
-        }
-        if (!LoadTexture(normalTexturePath))
-        {
-            return false;
-        }
-        if (!LoadTexture(materialTexturePath))
-        {
-            return false;
-        }
+        myTextureAssets.push_back(Application.AssetRegistry.GetAsset<TextureAsset>(textureSettings.GetString("AlbedoTexture")));
+        myTextureAssets.push_back(Application.AssetRegistry.GetAsset<TextureAsset>(textureSettings.GetString("NormalTexture")));
+        myTextureAssets.push_back(Application.AssetRegistry.GetAsset<TextureAsset>(textureSettings.GetString("MaterialTexture")));
     }
     else
     {
-        LOG(MaterialLog, Error, "Could not find material's texture settings in json [{}]", normalizedPath.string());
+        LOG(MaterialLog, Error, "Could not find material's texture settings in json [{}]", aPath.string());
     }
 
     if (materialData.HasKey("Shader"))
@@ -165,20 +136,24 @@ bool MaterialAsset::Load(const std::filesystem::path& aPath)
 
         if (shaderSettings.HasKey("Code"))
         {
-            desc.MaterialShaderCode = myContentRoot / shaderSettings.GetString("Code");
+            desc.MaterialShaderCode = Application.AssetRegistry.GetWorkingDirectory() / shaderSettings.GetString("Code");
         }
     }
 
-    if (!GraphicsEngine::Get().CreateMaterial(desc, myMaterial))
+    std::shared_ptr<Material> material = std::make_shared<Material>();
+
+    if (!GraphicsEngine::Get().CreateMaterial(desc, *material))
     {
         return false;
     }
 
-    myMaterial.SetTexture(0, GetTexture(albedoTexturePath.string()));
-    myMaterial.SetTexture(1, GetTexture(normalTexturePath.string()));
-    myMaterial.SetTexture(2, GetTexture(materialTexturePath.string()));
+    material->SetTexture(0, myTextureAssets[0]->GetTexture());
+    material->SetTexture(1, myTextureAssets[1]->GetTexture());
+    material->SetTexture(2, myTextureAssets[2]->GetTexture());
 
-    LOG(MaterialLog, Verbose, "Material has loaded [{}]", aPath.string());*/
+    myMaterial = std::move(material);
+
+    LOG(MaterialLog, Verbose, "Material has loaded [{}]", aPath.string());
 
     return true;
 }

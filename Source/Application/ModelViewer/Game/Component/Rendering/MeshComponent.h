@@ -5,6 +5,7 @@
 #include "CommonUtilities/Sphere.hpp"
 
 #include <AssetHandling/Asset/Types/MeshAsset.h>
+#include <AssetHandling/Asset/Types/MaterialAsset.h>
 
 #include <memory>
 #include <vector>
@@ -23,14 +24,14 @@ public:
 	const Mesh& GetMesh();
 	Skeleton* GetSkeleton() const;
 
-	void SetMaterial(unsigned int aMaterialIndex, const std::shared_ptr<MaterialInterface>& aMaterial);
-	const std::vector<std::shared_ptr<MaterialInterface>>& GetMaterialList() const;
+	void SetMaterial(unsigned int aMaterialIndex, const std::shared_ptr<MaterialAsset> aMaterialAsset);
+	const std::vector<std::shared_ptr<MaterialAsset>>& GetMaterialAssetList() const;
 
 	CommonUtilities::Sphere<float> GetWorldSpaceBoundingSphere() const;
 	CommonUtilities::Sphere<float> GetLocalSpaceBoundingSphere() const;
 
 private:
 	std::shared_ptr<MeshAsset> myMeshAsset;
-	std::vector<std::shared_ptr<MaterialInterface>> myMaterials;
+	std::vector<std::shared_ptr<MaterialAsset>> myMaterialAssets;
 };
 

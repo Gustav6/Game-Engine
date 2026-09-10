@@ -12,41 +12,43 @@
 AssetRegistry::AssetRegistry() = default;
 AssetRegistry::~AssetRegistry() = default;
 
-void AssetRegistry::Initialize(bool aLoadAllFilesRecursively)
+void AssetRegistry::Initialize(std::filesystem::path aWorkingDirectory)
 {
 	ensure(myAssets.empty());
 
+    myWorkingDirectory = std::filesystem::absolute(aWorkingDirectory);
+
+    TGA::FBX::Importer::InitImporter();
+
+    InitUnitAxes();
+    InitUnitCube();
 	InitUnitPlane();
-	InitUnitCube();
 
-	TGA::FBX::Importer::InitImporter();
-
-	myWorkingDirectory = std::filesystem::current_path().parent_path().parent_path() / "Content";
-
-    myWorkingDirectory = std::filesystem::absolute(myWorkingDirectory);
-
-    if (aLoadAllFilesRecursively)
+    for (const auto& item : std::filesystem::recursive_directory_iterator(myWorkingDirectory))
     {
-        for (const auto& item : std::filesystem::recursive_directory_iterator(myWorkingDirectory))
+        if (item.is_regular_file() && item.path().has_extension())
         {
-            if (item.is_regular_file() && item.path().has_extension())
+            std::string lowerCaseFileExtension = item.path().extension().string();
+            std::ranges::transform(lowerCaseFileExtension, lowerCaseFileExtension.begin(), tolower);
+
+            if (myFileExtensionToAssetTypeMap.contains(lowerCaseFileExtension))
             {
-                std::string lowerCaseFileExtension = item.path().extension().string();
-                std::ranges::transform(lowerCaseFileExtension, lowerCaseFileExtension.begin(), tolower);
+                std::string assetName = item.path().stem().string();
+                std::ranges::transform(assetName, assetName.begin(), tolower);
 
-                if (myFileExtensionToAssetTypeMap.contains(lowerCaseFileExtension))
-                {
-                    std::string assetName = item.path().stem().string();
-                    std::ranges::transform(assetName, assetName.begin(), tolower);
+                AssetInformation asset;
 
-                    AssetInformation asset;
-
-                    asset.Path = item.path();
-                    myAssets.emplace(assetName, asset);
-                }
+                asset.Path = item.path();
+                myAssets.emplace(assetName, asset);
             }
         }
     }
+}
+
+void AssetRegistry::UnInitialize()
+{
+    TGA::FBX::Importer::UninitImporter();
+    myAssets.clear();
 }
 
 const std::filesystem::path& AssetRegistry::GetWorkingDirectory()
@@ -203,4 +205,8 @@ void AssetRegistry::InitUnitPlane()
     myAssets.emplace(assetName, assetInformation);
 
     myPersistentAssets.emplace(assetName, asset);
+}
+
+void AssetRegistry::InitUnitAxes()
+{
 }

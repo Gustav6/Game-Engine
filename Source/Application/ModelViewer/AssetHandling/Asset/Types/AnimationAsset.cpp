@@ -7,6 +7,10 @@
 
 #include <tracy/core/Tracy.hpp>
 
+#include "Logger/Logger.h"
+
+DECLARE_LOG_CATEGORY_WITH_NAME(FBXLog, FBX, Verbose);
+
 AnimationAsset::~AnimationAsset() = default;
 
 const Animation& AnimationAsset::GetAnimation() const

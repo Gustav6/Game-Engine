@@ -2,6 +2,8 @@
 
 #include <filesystem>
 
+#include "TextureAsset.h"
+
 #include "AssetHandling/Asset/Base/Asset.h"
 
 #include "GraphicsEngine/Materials/Material.h"
@@ -13,12 +15,14 @@ class MaterialAsset : public Asset
 public:
 	~MaterialAsset() override;
 
-	const Material& GetMaterial() const;
+	const std::shared_ptr<MaterialInterface> GetMaterial() const;
 
 protected:
 	bool Load(const std::filesystem::path& aPath) override;
 
 private:
-	Material myMaterial;
+	std::shared_ptr<MaterialInterface> myMaterial;
+
+	std::vector<std::shared_ptr<TextureAsset>> myTextureAssets;
 };
 

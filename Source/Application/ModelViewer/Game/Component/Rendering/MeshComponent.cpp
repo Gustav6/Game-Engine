@@ -12,7 +12,7 @@ MeshComponent::MeshComponent(GameObject* aOwner)
 void MeshComponent::SetMesh(const std::shared_ptr<MeshAsset>& aMeshAsset)
 {
 	myMeshAsset = aMeshAsset;
-	myMaterials.resize(myMeshAsset->GetMesh().GetNumMaterialSlots());
+	myMaterialAssets.resize(myMeshAsset->GetMesh().GetNumMaterialSlots());
 }
 
 const Mesh& MeshComponent::GetMesh()
@@ -25,16 +25,16 @@ Skeleton* MeshComponent::GetSkeleton() const
 	return myMeshAsset->GetMesh().GetSkeleton();
 }
 
-void MeshComponent::SetMaterial(unsigned int aMaterialIndex, const std::shared_ptr<MaterialInterface>& aMaterial)
+void MeshComponent::SetMaterial(unsigned int aMaterialIndex, std::shared_ptr<MaterialAsset> aMaterialAsset)
 {
-	ensure(aMaterialIndex < myMaterials.size());
+	ensure(aMaterialIndex < myMaterialAssets.size());
 
-	myMaterials[aMaterialIndex] = aMaterial;
+	myMaterialAssets[aMaterialIndex] = aMaterialAsset;
 }
 
-const std::vector<std::shared_ptr<MaterialInterface>>& MeshComponent::GetMaterialList() const
+const std::vector<std::shared_ptr<MaterialAsset>>& MeshComponent::GetMaterialAssetList() const
 {
-	return myMaterials;
+	return myMaterialAssets;
 }
 
 CommonUtilities::Sphere<float> MeshComponent::GetWorldSpaceBoundingSphere() const

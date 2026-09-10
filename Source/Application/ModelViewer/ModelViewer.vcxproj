@@ -210,7 +210,6 @@ xcopy /E /I /R /Y /D "$(SolutionDir)ThirdParty\Dll" "$(OutDir)"
     <ClInclude Include="AssetHandling\AssetRegistry.h" />
     <ClInclude Include="Game\Component\Light\DirectionlLightComponent.h" />
     <ClInclude Include="Game\Component\Rendering\AnimationComponent.h" />
-    <ClInclude Include="AssetHandling\AssetLibrary.h" />
     <ClInclude Include="Application.h" />
     <ClInclude Include="Game\Component\Component.h" />
     <ClInclude Include="Game\Component\Transform.h" />
@@ -237,7 +236,6 @@ xcopy /E /I /R /Y /D "$(SolutionDir)ThirdParty\Dll" "$(OutDir)"
     <ClCompile Include="AssetHandling\AssetRegistry.cpp" />
     <ClCompile Include="Game\Component\Light\DirectionlLightComponent.cpp" />
     <ClCompile Include="Game\Component\Rendering\AnimationComponent.cpp" />
-    <ClCompile Include="AssetHandling\AssetLibrary.cpp" />
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="Game\Component\Component.cpp" />
     <ClCompile Include="Game\Component\Transform.cpp" />

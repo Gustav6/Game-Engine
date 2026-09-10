@@ -11,7 +11,7 @@
 
 struct Animation;
 struct Skeleton;
-struct AnimationAsset;
+class AnimationAsset;
 
 enum class JointGroup
 {

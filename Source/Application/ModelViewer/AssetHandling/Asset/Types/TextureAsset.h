@@ -13,12 +13,12 @@ class TextureAsset : public Asset
 public:
 	~TextureAsset() override;
 
-	const Texture& GetTexture() const;
+	const std::shared_ptr<Texture>& GetTexture() const;
 
 protected:
 	bool Load(const std::filesystem::path& aPath) override;
 
 private:
-	Texture myTexture;
+	std::shared_ptr<Texture> myTexture;
 };
 

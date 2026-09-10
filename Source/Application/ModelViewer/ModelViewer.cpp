@@ -11,6 +11,8 @@
 
 #include "AssetHandling/Asset/Types/MeshAsset.h"
 #include "AssetHandling/Asset/Types/AnimationAsset.h"
+#include "AssetHandling/Asset/Types/MaterialAsset.h"
+#include "AssetHandling/Asset/Types/TextureAsset.h"
 
 #include "Game/Component/Rendering/MeshComponent.h"
 #include "Game/Component/Rendering/AnimationComponent.h"
@@ -33,10 +35,13 @@ bool ModelViewer::Initialize(SIZE aWindowSize, WNDPROC aWindowProcess, LPCWSTR a
 
     Application.AssetRegistry.RegisterAssetType<MeshAsset>({ ".fbx" });
     Application.AssetRegistry.RegisterAssetType<AnimationAsset>({ ".fbx" });
+    Application.AssetRegistry.RegisterAssetType<MaterialAsset>({ ".json" });
+    Application.AssetRegistry.RegisterAssetType<TextureAsset>({ ".dds" });
 
-    Application.AssetRegistry.Initialize(true);
+    std::filesystem::path workingDirectory = std::filesystem::current_path().parent_path().parent_path() / "Content";
 
-    Application.AssetLibrary.Initialize(contentPath);
+    Application.AssetRegistry.Initialize(workingDirectory);
+
     Application.InputManager.SetWindowHandle(myMainWindowHandle);
 
 	constexpr LPCWSTR windowClassName = L"ModelViewerMainWindow";
@@ -149,7 +154,7 @@ int ModelViewer::Run()
     }
 
     // Cleanup
-    Application.AssetLibrary.UnInitialize();
+    Application.AssetRegistry.UnInitialize();
 
     return 0;
 }
@@ -157,13 +162,6 @@ int ModelViewer::Run()
 void ModelViewer::LoadScene()
 {
 	myScene = std::make_unique<Scene>();
-
-    {
-        Application.AssetLibrary.LoadMaterial("Materials/BaseMaterial.json");
-        Application.AssetLibrary.LoadMaterial("Materials/ChestMaterial.json");
-        Application.AssetLibrary.LoadMaterial("Materials/TGABroMaterial.json");
-        Application.AssetLibrary.LoadMaterial("Materials/SMColorChecker.json");
-    }
 
     {
         myGameCamera = GameCamera(90.0f, 1.0f, 10000.0f, GraphicsEngine::Get().GetClientSize());
@@ -176,7 +174,7 @@ void ModelViewer::LoadScene()
         MeshComponent* meshComponent = object->AddComponent<MeshComponent>();
 
         meshComponent->SetMesh(Application.AssetRegistry.GetAsset<MeshAsset>("SM_Color_Checker"));
-        meshComponent->SetMaterial(0, Application.AssetLibrary.GetMaterial("Materials/SMColorChecker.json"));
+        meshComponent->SetMaterial(0, Application.AssetRegistry.GetAsset<MaterialAsset>("SMColorChecker"));
 
         object->GetTransform().Translate({ -400, 40, 0 });
         object->GetTransform().Rotate(CommonUtilities::Vector3f{ -90, 0, 0 });
@@ -190,7 +188,7 @@ void ModelViewer::LoadScene()
         MeshComponent* meshComponent = object->AddComponent<MeshComponent>();
 
         meshComponent->SetMesh(Application.AssetRegistry.GetAsset<MeshAsset>("SM_Chest"));
-        meshComponent->SetMaterial(0, Application.AssetLibrary.GetMaterial("Materials/ChestMaterial.json"));
+        meshComponent->SetMaterial(0, Application.AssetRegistry.GetAsset<MaterialAsset>("ChestMaterial"));
 		
         object->GetTransform().Rotate(CommonUtilities::Vector3f{ 0, -180, 0 });
         object->GetTransform().Translate({ 200, 0, 400 });
@@ -204,7 +202,7 @@ void ModelViewer::LoadScene()
         MeshComponent* meshComponent = object->AddComponent<MeshComponent>();
 
         meshComponent->SetMesh(Application.AssetRegistry.GetAsset<MeshAsset>("Unit_Plane"));
-        meshComponent->SetMaterial(0, Application.AssetLibrary.GetMaterial("Materials/BaseMaterial.json"));
+        meshComponent->SetMaterial(0, Application.AssetRegistry.GetAsset<MaterialAsset>("BaseMaterial"));
 
         object->GetTransform().SetScale({ 2000, 2000, 2000 });
 
@@ -217,7 +215,7 @@ void ModelViewer::LoadScene()
         MeshComponent* meshComponent = object->AddComponent<MeshComponent>();
 
         meshComponent->SetMesh(Application.AssetRegistry.GetAsset<MeshAsset>("Unit_Cube"));
-        meshComponent->SetMaterial(0, Application.AssetLibrary.GetMaterial("Materials/BaseMaterial.json"));
+        meshComponent->SetMaterial(0, Application.AssetRegistry.GetAsset<MaterialAsset>("BaseMaterial"));
 
         object->GetTransform().Translate({ 0, 50, 0 });
         object->GetTransform().SetScale({ 100, 100, 100 });
@@ -231,7 +229,7 @@ void ModelViewer::LoadScene()
         MeshComponent* meshComponent = object->AddComponent<MeshComponent>();
 
         meshComponent->SetMesh(Application.AssetRegistry.GetAsset<MeshAsset>("Unit_Cube"));
-        meshComponent->SetMaterial(0, Application.AssetLibrary.GetMaterial("Materials/BaseMaterial.json"));
+        meshComponent->SetMaterial(0, Application.AssetRegistry.GetAsset<MaterialAsset>("BaseMaterial"));
 
         object->GetTransform().SetEulerRotation({ 45.0f, 180.0f, 45.0f });
         object->GetTransform().Translate({ -200, 100, 400 });
@@ -248,7 +246,7 @@ void ModelViewer::LoadScene()
         MeshComponent* meshComponent = object->AddComponent<MeshComponent>();
 
         meshComponent->SetMesh(Application.AssetRegistry.GetAsset<MeshAsset>("SK_C_TGA_Bro"));
-        meshComponent->SetMaterial(0, Application.AssetLibrary.GetMaterial("Materials/TGABroMaterial.json"));
+        meshComponent->SetMaterial(0, Application.AssetRegistry.GetAsset<MaterialAsset>("TGABroMaterial"));
 
         AnimationComponent* animationComponent = object->AddComponent<AnimationComponent>(meshComponent->GetSkeleton());
 
@@ -473,11 +471,11 @@ void ModelViewer::BuildSceneForRender()
                     .Transform = gameObject->GetTransform().GetWorldMatrix()
                 };
 
-                const auto& materials = meshComponent->GetMaterialList();
+                const auto& materialAssets = meshComponent->GetMaterialAssetList();
 
-                for (size_t i = 0; i < materials.size(); i++)
+                for (size_t i = 0; i < materialAssets.size(); i++)
                 {
-                    drawCall.Materials[i] = materials[i].get();
+                    drawCall.Materials[i] = materialAssets[i]->GetMaterial().get();
                 }
 
                 AnimationComponent* animationComponent = gameObject.get()->GetComponent<AnimationComponent>();

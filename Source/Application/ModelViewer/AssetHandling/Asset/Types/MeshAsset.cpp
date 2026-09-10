@@ -16,6 +16,12 @@
 
 #include <tracy/core/Tracy.hpp>
 
+#include "Logger/Logger.h"
+
+DECLARE_LOG_CATEGORY_WITH_NAME(FBXLog, FBX, Verbose);
+
+DEFINE_LOG_CATEGORY(FBXLog);
+
 MeshAsset::~MeshAsset() = default;
 
 const Mesh& MeshAsset::GetMesh() const

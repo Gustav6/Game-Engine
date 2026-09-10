@@ -5,7 +5,6 @@
 #include "CommonUtilities/Input.h"
 #include "CommonUtilities/Timer.h"
 
-#include "AssetHandling/AssetLibrary.h"
 #include "AssetHandling/AssetRegistry.h"
 
 #if _DEBUG
@@ -20,7 +19,6 @@ struct ApplicationData
 {
 	CommonUtilities::Input InputManager;
 	CommonUtilities::Timer TimeManager;
-	AssetLibrary AssetLibrary;
 	AssetRegistry AssetRegistry;
 };
 

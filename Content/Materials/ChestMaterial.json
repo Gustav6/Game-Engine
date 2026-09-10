@@ -6,9 +6,9 @@
     "BlendMode": 2
   },
   "Textures": {
-    "AlbedoTexture": "Textures/Albedo/T_Chest_C.dds",
-    "NormalTexture": "Textures/Normal/T_Chest_N.dds",
-    "MaterialTexture": "Textures/Material/T_Chest_M.dds"
+    "AlbedoTexture": "T_Chest_C",
+    "NormalTexture": "T_Chest_N",
+    "MaterialTexture": "T_Chest_M"
   },
   "Shader": {
     "Code": "Shaders/BlendMaterial.hlsli"

@@ -22,7 +22,8 @@ public:
 	AssetRegistry();
 	~AssetRegistry();
 
-	void Initialize(bool aLoadAllFilesRecursively);
+	void Initialize(std::filesystem::path aWorkingDirectory);
+	void UnInitialize();
 
 	const std::filesystem::path& GetWorkingDirectory();
 
@@ -73,11 +74,10 @@ public:
 private:
 	void RegisterAssetTypeInternal(const std::vector<std::string>& aExtensionList, const MakeAssetFunction& aMakeAssetFunction);
 
-	void InitUnitCube();
-	void InitUnitPlane();
-
 	// TODO: Not implemented
 	void InitUnitAxes();
+	void InitUnitCube();
+	void InitUnitPlane();
 
 	struct AssetInformation
 	{

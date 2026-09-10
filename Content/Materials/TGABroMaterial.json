@@ -1,14 +1,14 @@
 {
   "Name": "TGABroMaterial",
-  "ParentMaterial": "Materials/ChestMaterial.json",
+  "ParentMaterial": "ChestMaterial",
   "Textures": {
-    "AlbedoTexture": "Textures/Albedo/T_TGA_Bro_C.dds",
-    "NormalTexture": "Textures/Normal/T_TGA_Bro_N.dds",
-    "MaterialTexture": "Textures/Material/T_TGA_Bro_M.dds"
+    "AlbedoTexture": "T_TGA_Bro_C",
+    "NormalTexture": "T_TGA_Bro_N",
+    "MaterialTexture": "T_TGA_Bro_M"
   },
   "Shader": {
     "Parameters": {
-      "MB_Tint": [ 1.0, 1.0, 0.0, 1.0 ],
+      "MB_Tint": [ 1.0, 1.0, 1.0, 1.0 ],
       "MB_Alpha": 0.75
     }
   }
