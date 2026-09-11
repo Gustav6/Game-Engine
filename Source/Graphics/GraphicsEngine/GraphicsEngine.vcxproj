@@ -1,14 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
-    <ProjectConfiguration Include="Debug|Win32">
-      <Configuration>Debug</Configuration>
-      <Platform>Win32</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="Release|Win32">
-      <Configuration>Release</Configuration>
-      <Platform>Win32</Platform>
-    </ProjectConfiguration>
     <ProjectConfiguration Include="Debug|x64">
       <Configuration>Debug</Configuration>
       <Platform>x64</Platform>
@@ -17,51 +9,48 @@
       <Configuration>Release</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
+    <ProjectConfiguration Include="Retail|x64">
+      <Configuration>Retail</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <VCProjectVersion>17.0</VCProjectVersion>
+    <ProjectGuid>{AC8E76BE-985C-6AC4-81F0-DAEA6D5D4629}</ProjectGuid>
+    <IgnoreWarnCompileDuplicatedFilename>true</IgnoreWarnCompileDuplicatedFilename>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{949cdb08-2579-4f0e-8ba4-5ae09a39c4df}</ProjectGuid>
     <RootNamespace>GraphicsEngine</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Globals">
+    <DisableFastUpToDateCheck>true</DisableFastUpToDateCheck>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Globals">
+    <DisableFastUpToDateCheck>true</DisableFastUpToDateCheck>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Retail|x64'" Label="Globals">
+    <DisableFastUpToDateCheck>true</DisableFastUpToDateCheck>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
-    <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v145</PlatformToolset>
-    <CharacterSet>Unicode</CharacterSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
-    <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v145</PlatformToolset>
-    <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>Unicode</CharacterSet>
-  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v145</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v145</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v145</PlatformToolset>
-    <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v145</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Retail|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v145</PlatformToolset>
+    <EnableUnitySupport>true</EnableUnitySupport>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
-  </ImportGroup>
-  <ImportGroup Label="Shared">
-  </ImportGroup>
-  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-  </ImportGroup>
-  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
@@ -69,274 +58,282 @@
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Retail|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <OutDir>$(SolutionDir)Lib\$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)Intermediate\$(ProjectName)\$(Configuration)\</IntDir>
-    <IncludePath>$(SolutionDir)Source\Graphics\;$(SolutionDir)Source\Utilities\;$(IntDir)PrecompiledShaders\;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)Lib\$(Configuration)\;$(LibraryPath)</LibraryPath>
-    <CustomBuildAfterTargets>Build</CustomBuildAfterTargets>
+    <OutDir>$(ProjectDir)..\..\..\Lib\Debug\</OutDir>
+    <IntDir>$(ProjectDir)..\..\..\Intermediate\GraphicsEngine\Debug\</IntDir>
+    <TargetName>GraphicsEngine</TargetName>
+    <TargetExt>.lib</TargetExt>
+    <ExternalIncludePath>.;$(VC_IncludePath);$(WindowsSDK_IncludePath);$(ExternalIncludePath)</ExternalIncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <OutDir>$(SolutionDir)Lib\$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)Intermediate\$(ProjectName)\$(Configuration)\</IntDir>
-    <IncludePath>$(SolutionDir)Source\Graphics\;$(SolutionDir)Source\Utilities\;$(IntDir)PrecompiledShaders\;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)Lib\$(Configuration)\;$(LibraryPath)</LibraryPath>
-    <CustomBuildAfterTargets>Build</CustomBuildAfterTargets>
+    <OutDir>$(ProjectDir)..\..\..\Lib\Release\</OutDir>
+    <IntDir>$(ProjectDir)..\..\..\Intermediate\GraphicsEngine\Release\</IntDir>
+    <TargetName>GraphicsEngine</TargetName>
+    <TargetExt>.lib</TargetExt>
+    <ExternalIncludePath>.;$(VC_IncludePath);$(WindowsSDK_IncludePath);$(ExternalIncludePath)</ExternalIncludePath>
   </PropertyGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
-      <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <ConformanceMode>true</ConformanceMode>
-      <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-    </ClCompile>
-    <Link>
-      <SubSystem>
-      </SubSystem>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-    </Link>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
-      <FunctionLevelLinking>true</FunctionLevelLinking>
-      <IntrinsicFunctions>true</IntrinsicFunctions>
-      <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <ConformanceMode>true</ConformanceMode>
-      <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-    </ClCompile>
-    <Link>
-      <SubSystem>
-      </SubSystem>
-      <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <OptimizeReferences>true</OptimizeReferences>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-    </Link>
-  </ItemDefinitionGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Retail|x64'">
+    <OutDir>$(ProjectDir)..\..\..\Lib\Retail\</OutDir>
+    <IntDir>$(ProjectDir)..\..\..\Intermediate\GraphicsEngine\Retail\</IntDir>
+    <TargetName>GraphicsEngine</TargetName>
+    <TargetExt>.lib</TargetExt>
+    <ExternalIncludePath>.;$(VC_IncludePath);$(WindowsSDK_IncludePath);$(ExternalIncludePath)</ExternalIncludePath>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
-      <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <ConformanceMode>true</ConformanceMode>
-      <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>GraphicsEngine.pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level4</WarningLevel>
+      <PreprocessorDefinitions>_DEBUG;TRACY_ENABLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..;..\..\Utilities;..\..\..\Intermediate\GraphicsEngine\Debug\PrecompiledShaders;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <Optimization>Disabled</Optimization>
+      <MinimalRebuild>false</MinimalRebuild>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <AdditionalOptions>/sdl %(AdditionalOptions)</AdditionalOptions>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(projectdir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ExternalWarningLevel>Level3</ExternalWarningLevel>
     </ClCompile>
-    <Link>
-      <SubSystem>
-      </SubSystem>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-    </Link>
     <FxCompile>
       <ShaderModel>5.0</ShaderModel>
-      <ObjectFileOutput />
-      <TreatWarningAsError>true</TreatWarningAsError>
-      <VariableName>INTERNAL_%(Filename)_ByteCode</VariableName>
-      <HeaderFileOutput>$(IntDir)PrecompiledShaders\%(Filename).h</HeaderFileOutput>
+      <EntryPointName>main</EntryPointName>
     </FxCompile>
-    <Lib />
-    <PostBuildEvent />
-    <PostBuildEvent />
-    <Lib />
-    <Lib />
-    <CustomBuildStep>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+    <ProjectReference>
+    </ProjectReference>
+    <PostBuildEvent>
       <Command>set "CONTENTROOT=$(SolutionDir)Content"
 set "SHADERSRC=$(ProjectDir)Shaders"
 set "SHADERDEST=%CONTENTROOT%\Shaders"
 
-IF NOT EXIST "%CONTENTROOT%" (
-           mkdir "%CONTENTROOT%"
-)
-
-IF NOT EXIST "%SHADERDEST%" (
-           mkdir "%SHADERDEST%"
-)
+IF NOT EXIST "%CONTENTROOT%" ( mkdir "%CONTENTROOT%" )
+IF NOT EXIST "%SHADERDEST%" ( mkdir "%SHADERDEST%" )
 xcopy /E /I /R /Y /D "%SHADERSRC%" "%SHADERDEST%"</Command>
       <Message>Copying Shaders to Content Dir</Message>
-      <Outputs>*.hlsl*</Outputs>
-    </CustomBuildStep>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level4</WarningLevel>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <AdditionalIncludeDirectories>..;..\..\Utilities;..\..\..\Intermediate\GraphicsEngine\Release\PrecompiledShaders;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <ConformanceMode>true</ConformanceMode>
-      <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>GraphicsEngine.pch.h</PrecompiledHeaderFile>
+      <MinimalRebuild>false</MinimalRebuild>
+      <StringPooling>true</StringPooling>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <AdditionalOptions>/sdl %(AdditionalOptions)</AdditionalOptions>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(projectdir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ExternalWarningLevel>Level3</ExternalWarningLevel>
     </ClCompile>
-    <Link>
-      <SubSystem>
-      </SubSystem>
-      <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <OptimizeReferences>true</OptimizeReferences>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-    </Link>
     <FxCompile>
       <ShaderModel>5.0</ShaderModel>
-      <ObjectFileOutput />
-      <TreatWarningAsError>true</TreatWarningAsError>
-      <VariableName>INTERNAL_%(Filename)_ByteCode</VariableName>
-      <HeaderFileOutput>$(IntDir)PrecompiledShaders\%(Filename).h</HeaderFileOutput>
+      <EntryPointName>main</EntryPointName>
     </FxCompile>
-    <Lib />
-    <PostBuildEvent />
-    <PostBuildEvent />
-    <Lib />
-    <Lib />
-    <CustomBuildStep>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+    <ProjectReference>
+    </ProjectReference>
+    <PostBuildEvent>
       <Command>set "CONTENTROOT=$(SolutionDir)Content"
 set "SHADERSRC=$(ProjectDir)Shaders"
 set "SHADERDEST=%CONTENTROOT%\Shaders"
 
-IF NOT EXIST "%CONTENTROOT%" (
-           mkdir "%CONTENTROOT%"
-)
-
-IF NOT EXIST "%SHADERDEST%" (
-           mkdir "%SHADERDEST%"
-)
+IF NOT EXIST "%CONTENTROOT%" ( mkdir "%CONTENTROOT%" )
+IF NOT EXIST "%SHADERDEST%" ( mkdir "%SHADERDEST%" )
 xcopy /E /I /R /Y /D "%SHADERSRC%" "%SHADERDEST%"</Command>
       <Message>Copying Shaders to Content Dir</Message>
-      <Outputs>*.hlsl*</Outputs>
-    </CustomBuildStep>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Retail|x64'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level4</WarningLevel>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <PreprocessorDefinitions>_RETAIL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..;..\..\Utilities;..\..\..\Intermediate\GraphicsEngine\Retail\PrecompiledShaders;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <Optimization>Full</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <MinimalRebuild>false</MinimalRebuild>
+      <StringPooling>true</StringPooling>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <AdditionalOptions>/sdl %(AdditionalOptions)</AdditionalOptions>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <ExternalWarningLevel>Level3</ExternalWarningLevel>
+    </ClCompile>
+    <FxCompile>
+      <ShaderModel>5.0</ShaderModel>
+      <EntryPointName>main</EntryPointName>
+    </FxCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+    <ProjectReference>
+    </ProjectReference>
+    <PostBuildEvent>
+      <Command>set "CONTENTROOT=$(SolutionDir)Content"
+set "SHADERSRC=$(ProjectDir)Shaders"
+set "SHADERDEST=%CONTENTROOT%\Shaders"
+
+IF NOT EXIST "%CONTENTROOT%" ( mkdir "%CONTENTROOT%" )
+IF NOT EXIST "%SHADERDEST%" ( mkdir "%SHADERDEST%" )
+xcopy /E /I /R /Y /D "%SHADERSRC%" "%SHADERDEST%"</Command>
+      <Message>Copying Shaders to Content Dir</Message>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="ConstantBuffers\CascadeBuffer.h" />
     <ClInclude Include="ConstantBuffers\AnimationBuffer.h" />
-    <ClInclude Include="InterOp\DDSTextureLoader11.h" />
+    <ClInclude Include="ConstantBuffers\CascadeBuffer.h" />
+    <ClInclude Include="ConstantBuffers\FrameBuffer.h" />
     <ClInclude Include="ConstantBuffers\LightBuffer.h" />
-    <ClInclude Include="Objects\Light.h" />
-    <ClInclude Include="Materials\Default_C.h" />
+    <ClInclude Include="ConstantBuffers\ObjectBuffer.h" />
+    <ClInclude Include="GraphicsEngine.hpp" />
+    <ClInclude Include="GraphicsEngine.pch.h" />
+    <ClInclude Include="InterOp\DDSTextureLoader11.h" />
+    <ClInclude Include="Materials\Material.h" />
     <ClInclude Include="Materials\MaterialHelpers.h" />
     <ClInclude Include="Materials\MaterialInterface.h" />
     <ClInclude Include="Materials\MaterialShaderIncludeHandler.h" />
-    <ClInclude Include="Materials\Material.h" />
     <ClInclude Include="Objects\Animation.h" />
-    <ClInclude Include="ConstantBuffers\FrameBuffer.h" />
-    <ClInclude Include="RHI\GraphicsCommandList.h" />
-    <ClInclude Include="GraphicsEngine.hpp" />
-    <ClInclude Include="GraphicsEngine.pch.h" />
-    <ClInclude Include="ConstantBuffers\ObjectBuffer.h" />
-    <ClInclude Include="Objects\Mesh.h" />
-    <ClInclude Include="RHI\PipelineStateObject.h" />
-    <ClInclude Include="RHI\RenderHardwareInterface.h" />
-    <ClInclude Include="Objects\Texture.h" />
-    <ClInclude Include="RHI\RHIShaderReflectionInfo.h" />
-    <ClInclude Include="RHI\RHIStructs.h" />
-    <ClInclude Include="Objects\Vertex.h" />
     <ClInclude Include="Objects\Buffer.h" />
     <ClInclude Include="Objects\Camera.h" />
-    <ClInclude Include="Objects\Skeleton.h" />
-    <ClInclude Include="Objects\Shader.h" />
+    <ClInclude Include="Objects\Light.h" />
+    <ClInclude Include="Objects\Mesh.h" />
     <ClInclude Include="Objects\Sampler.h" />
+    <ClInclude Include="Objects\Shader.h" />
+    <ClInclude Include="Objects\Skeleton.h" />
     <ClInclude Include="Objects\Sprite.h" />
+    <ClInclude Include="Objects\Texture.h" />
+    <ClInclude Include="Objects\Vertex.h" />
+    <ClInclude Include="RHI\GraphicsCommandList.h" />
+    <ClInclude Include="RHI\PipelineStateObject.h" />
+    <ClInclude Include="RHI\RHIShaderReflectionInfo.h" />
+    <ClInclude Include="RHI\RHIStructs.h" />
+    <ClInclude Include="RHI\RenderHardwareInterface.h" />
     <ClInclude Include="Textures\Albedo\Default_C.h" />
     <ClInclude Include="Textures\Normal\Default_N.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ConstantBuffers\CascadeBuffer.cpp" />
     <ClCompile Include="ConstantBuffers\AnimationBuffer.cpp" />
-    <ClCompile Include="InterOp\DDSTextureLoader11.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
+    <ClCompile Include="ConstantBuffers\CascadeBuffer.cpp" />
+    <ClCompile Include="ConstantBuffers\FrameBuffer.cpp" />
     <ClCompile Include="ConstantBuffers\LightBuffer.cpp" />
-    <ClCompile Include="Objects\Light.cpp" />
+    <ClCompile Include="ConstantBuffers\ObjectBuffer.cpp" />
+    <ClCompile Include="GraphicsEngine.cpp" />
+    <ClCompile Include="GraphicsEngine.pch.cpp" />
+    <ClCompile Include="InterOp\DDSTextureLoader11.cpp" />
+    <ClCompile Include="Materials\Material.cpp" />
     <ClCompile Include="Materials\MaterialInterface.cpp" />
     <ClCompile Include="Materials\MaterialShaderIncludeHandler.cpp" />
-    <ClCompile Include="Materials\Material.cpp" />
     <ClCompile Include="Objects\Animation.cpp" />
-    <ClCompile Include="ConstantBuffers\FrameBuffer.cpp" />
-    <ClCompile Include="RHI\GraphicsCommandList.cpp" />
-    <ClCompile Include="GraphicsEngine.cpp" />
-    <ClCompile Include="GraphicsEngine.pch.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="ConstantBuffers\ObjectBuffer.cpp" />
-    <ClCompile Include="Objects\Mesh.cpp" />
-    <ClCompile Include="Objects\Vertex.cpp" />
-    <ClCompile Include="RHI\PipelineStateObject.cpp" />
-    <ClCompile Include="RHI\RenderHardwareInterface.cpp" />
-    <ClCompile Include="Objects\Texture.cpp" />
     <ClCompile Include="Objects\Buffer.cpp" />
     <ClCompile Include="Objects\Camera.cpp" />
-    <ClCompile Include="Objects\Skeleton.cpp" />
-    <ClCompile Include="Objects\Shader.cpp" />
-    <ClCompile Include="RHI\RHIShaderReflectionInfo.cpp" />
+    <ClCompile Include="Objects\Light.cpp" />
+    <ClCompile Include="Objects\Mesh.cpp" />
     <ClCompile Include="Objects\Sampler.cpp" />
+    <ClCompile Include="Objects\Shader.cpp" />
+    <ClCompile Include="Objects\Skeleton.cpp" />
     <ClCompile Include="Objects\Sprite.cpp" />
+    <ClCompile Include="Objects\Texture.cpp" />
+    <ClCompile Include="Objects\Vertex.cpp" />
+    <ClCompile Include="RHI\GraphicsCommandList.cpp" />
+    <ClCompile Include="RHI\PipelineStateObject.cpp" />
+    <ClCompile Include="RHI\RHIShaderReflectionInfo.cpp" />
+    <ClCompile Include="RHI\RenderHardwareInterface.cpp" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Shaders\Material\BRDF_LUT_PS.hlsl">
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <ShaderType>Pixel</ShaderType>
+      <VariableName>INTERNAL_%(Filename)_ByteCode</VariableName>
+      <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">../../..\Intermediate\GraphicsEngine\Debug\PrecompiledShaders\%(Filename).h</HeaderFileOutput>
+      <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../../..\Intermediate\GraphicsEngine\Release\PrecompiledShaders\%(Filename).h</HeaderFileOutput>
+      <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Retail|x64'">../../..\Intermediate\GraphicsEngine\Retail\PrecompiledShaders\%(Filename).h</HeaderFileOutput>
+      <ObjectFileOutput></ObjectFileOutput>
     </FxCompile>
     <FxCompile Include="Shaders\Material\FullTexture_VS.hlsl">
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+      <ShaderType>Vertex</ShaderType>
+      <VariableName>INTERNAL_%(Filename)_ByteCode</VariableName>
+      <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">../../..\Intermediate\GraphicsEngine\Debug\PrecompiledShaders\%(Filename).h</HeaderFileOutput>
+      <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../../..\Intermediate\GraphicsEngine\Release\PrecompiledShaders\%(Filename).h</HeaderFileOutput>
+      <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Retail|x64'">../../..\Intermediate\GraphicsEngine\Retail\PrecompiledShaders\%(Filename).h</HeaderFileOutput>
+      <ObjectFileOutput></ObjectFileOutput>
     </FxCompile>
     <FxCompile Include="Shaders\Material\Lambert_PS.hlsl">
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <ShaderType>Pixel</ShaderType>
+      <VariableName>INTERNAL_%(Filename)_ByteCode</VariableName>
+      <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">../../..\Intermediate\GraphicsEngine\Debug\PrecompiledShaders\%(Filename).h</HeaderFileOutput>
+      <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../../..\Intermediate\GraphicsEngine\Release\PrecompiledShaders\%(Filename).h</HeaderFileOutput>
+      <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Retail|x64'">../../..\Intermediate\GraphicsEngine\Retail\PrecompiledShaders\%(Filename).h</HeaderFileOutput>
+      <ObjectFileOutput></ObjectFileOutput>
     </FxCompile>
     <FxCompile Include="Shaders\Material\PBL_PS.hlsl">
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType>Pixel</ShaderType>
+      <VariableName>INTERNAL_%(Filename)_ByteCode</VariableName>
+      <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">../../..\Intermediate\GraphicsEngine\Debug\PrecompiledShaders\%(Filename).h</HeaderFileOutput>
+      <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../../..\Intermediate\GraphicsEngine\Release\PrecompiledShaders\%(Filename).h</HeaderFileOutput>
+      <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Retail|x64'">../../..\Intermediate\GraphicsEngine\Retail\PrecompiledShaders\%(Filename).h</HeaderFileOutput>
+      <ObjectFileOutput></ObjectFileOutput>
     </FxCompile>
     <FxCompile Include="Shaders\Material\ShadowCube_GS.hlsl">
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Geometry</ShaderType>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">4.0</ShaderModel>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Geometry</ShaderType>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">4.0</ShaderModel>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Geometry</ShaderType>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">4.0</ShaderModel>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Geometry</ShaderType>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">4.0</ShaderModel>
-    </FxCompile>
-    <FxCompile Include="Shaders\Material\Unlit_PS.hlsl">
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderType>Geometry</ShaderType>
+      <VariableName>INTERNAL_%(Filename)_ByteCode</VariableName>
+      <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">../../..\Intermediate\GraphicsEngine\Debug\PrecompiledShaders\%(Filename).h</HeaderFileOutput>
+      <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../../..\Intermediate\GraphicsEngine\Release\PrecompiledShaders\%(Filename).h</HeaderFileOutput>
+      <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Retail|x64'">../../..\Intermediate\GraphicsEngine\Retail\PrecompiledShaders\%(Filename).h</HeaderFileOutput>
+      <ObjectFileOutput></ObjectFileOutput>
     </FxCompile>
     <FxCompile Include="Shaders\Material\Surface_VS.hlsl">
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+      <ShaderType>Vertex</ShaderType>
+      <VariableName>INTERNAL_%(Filename)_ByteCode</VariableName>
+      <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">../../..\Intermediate\GraphicsEngine\Debug\PrecompiledShaders\%(Filename).h</HeaderFileOutput>
+      <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../../..\Intermediate\GraphicsEngine\Release\PrecompiledShaders\%(Filename).h</HeaderFileOutput>
+      <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Retail|x64'">../../..\Intermediate\GraphicsEngine\Retail\PrecompiledShaders\%(Filename).h</HeaderFileOutput>
+      <ObjectFileOutput></ObjectFileOutput>
+    </FxCompile>
+    <FxCompile Include="Shaders\Material\Unlit_PS.hlsl">
+      <ShaderType>Pixel</ShaderType>
+      <VariableName>INTERNAL_%(Filename)_ByteCode</VariableName>
+      <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">../../..\Intermediate\GraphicsEngine\Debug\PrecompiledShaders\%(Filename).h</HeaderFileOutput>
+      <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../../..\Intermediate\GraphicsEngine\Release\PrecompiledShaders\%(Filename).h</HeaderFileOutput>
+      <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Retail|x64'">../../..\Intermediate\GraphicsEngine\Retail\PrecompiledShaders\%(Filename).h</HeaderFileOutput>
+      <ObjectFileOutput></ObjectFileOutput>
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\Material\Include\Common.hlsli" />
+    <None Include="Shaders\Material\Include\LUTFunctions.hlsli" />
     <None Include="Shaders\Material\Include\Lambert_Functions.hlsli" />
     <None Include="Shaders\Material\Include\Light.hlsli" />
-    <None Include="Shaders\Material\Include\LUTFunctions.hlsli" />
     <None Include="Shaders\Material\Include\Material.hlsli" />
     <None Include="Shaders\Material\Include\MaterialParameters.hlsli" />
     <None Include="Shaders\Material\Include\PBL_Functions.hlsli" />
     <None Include="Shaders\Material\Include\PoissonDisks.hlsli" />
     <None Include="Shaders\Material\Include\Samplers.hlsli" />
     <None Include="Shaders\Material\Include\Shadow.hlsli" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Utilities\CommonUtilities\CommonUtilities.vcxproj">
+      <Project>{AA29E689-16B5-534E-1FC6-D6428BD0AF4E}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Utilities\Logger\Logger.vcxproj">
+      <Project>{25F339C1-1195-6497-FA4F-78EBE690EBE7}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

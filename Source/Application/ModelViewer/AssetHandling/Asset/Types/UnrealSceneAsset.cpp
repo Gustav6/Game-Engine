@@ -2,10 +2,10 @@
 
 UnrealSceneAsset::~UnrealSceneAsset() = default;
 
-//std::vector<std::unique_ptr<Actor>> UnrealSceneAsset::GetSceneActors() const
-//{
-//	return myActors;
-//}
+std::vector<std::unique_ptr<Actor>>& UnrealSceneAsset::GetSceneActors()
+{
+	return myActors;
+}
 
 bool UnrealSceneAsset::Load(const std::filesystem::path& aPath)
 {

@@ -1,0 +1,265 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Retail|x64">
+      <Configuration>Retail</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{7FA9857C-6BE0-860D-14CD-6C1000E3020F}</ProjectGuid>
+    <IgnoreWarnCompileDuplicatedFilename>true</IgnoreWarnCompileDuplicatedFilename>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>Game</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v145</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v145</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Retail|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v145</PlatformToolset>
+    <EnableUnitySupport>true</EnableUnitySupport>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Retail|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+    <OutDir>$(ProjectDir)..\..\..\Bin\Debug\</OutDir>
+    <IntDir>$(ProjectDir)..\..\..\Intermediate\Game\Debug\</IntDir>
+    <TargetName>Game</TargetName>
+    <TargetExt>.exe</TargetExt>
+    <ExternalIncludePath>.;$(VC_IncludePath);$(WindowsSDK_IncludePath);$(ExternalIncludePath)</ExternalIncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+    <OutDir>$(ProjectDir)..\..\..\Bin\Release\</OutDir>
+    <IntDir>$(ProjectDir)..\..\..\Intermediate\Game\Release\</IntDir>
+    <TargetName>Game</TargetName>
+    <TargetExt>.exe</TargetExt>
+    <ExternalIncludePath>.;$(VC_IncludePath);$(WindowsSDK_IncludePath);$(ExternalIncludePath)</ExternalIncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Retail|x64'">
+    <LinkIncremental>false</LinkIncremental>
+    <OutDir>$(ProjectDir)..\..\..\Bin\Retail\</OutDir>
+    <IntDir>$(ProjectDir)..\..\..\Intermediate\Game\Retail\</IntDir>
+    <TargetName>Game</TargetName>
+    <TargetExt>.exe</TargetExt>
+    <ExternalIncludePath>.;$(VC_IncludePath);$(WindowsSDK_IncludePath);$(ExternalIncludePath)</ExternalIncludePath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level4</WarningLevel>
+      <PreprocessorDefinitions>_DEBUG;TRACY_ENABLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\..\Utilities;..\..\Graphics;..\..\..\ThirdParty\Source;..\..\Graphics\GraphicsEngine\Shaders\Material;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <Optimization>Disabled</Optimization>
+      <MinimalRebuild>false</MinimalRebuild>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <AdditionalOptions>/sdl %(AdditionalOptions)</AdditionalOptions>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <ExternalWarningLevel>Level3</ExternalWarningLevel>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>d3d11.lib;dxguid.lib;dxgi.lib;d3dcompiler.lib;TGAFbx.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\..\..\ThirdParty\Lib\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+    <ProjectReference>
+    </ProjectReference>
+    <PostBuildEvent>
+      <Command>set "CONTENTROOT=$(SolutionDir)Content"
+set "SHADERSRC=$(ProjectDir)Materials"
+set "SHADERDEST=%CONTENTROOT%\Shaders"
+
+IF NOT EXIST "%CONTENTROOT%" ( mkdir "%CONTENTROOT%" )
+IF NOT EXIST "%SHADERDEST%" ( mkdir "%SHADERDEST%" )
+xcopy /E /I /R /Y /D "%SHADERSRC%" "%SHADERDEST%"
+
+IF EXIST "$(SolutionDir)ThirdParty\Dll" ( xcopy /E /I /R /Y /D "$(SolutionDir)ThirdParty\Dll" "$(OutDir)" )</Command>
+      <Message>Copying Materials and DLLs</Message>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level4</WarningLevel>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <AdditionalIncludeDirectories>..\..\Utilities;..\..\Graphics;..\..\..\ThirdParty\Source;..\..\Graphics\GraphicsEngine\Shaders\Material;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <Optimization>Full</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <MinimalRebuild>false</MinimalRebuild>
+      <StringPooling>true</StringPooling>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <AdditionalOptions>/sdl %(AdditionalOptions)</AdditionalOptions>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <ExternalWarningLevel>Level3</ExternalWarningLevel>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>d3d11.lib;dxguid.lib;dxgi.lib;d3dcompiler.lib;TGAFbx.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\..\..\ThirdParty\Lib\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+    <ProjectReference>
+    </ProjectReference>
+    <PostBuildEvent>
+      <Command>set "CONTENTROOT=$(SolutionDir)Content"
+set "SHADERSRC=$(ProjectDir)Materials"
+set "SHADERDEST=%CONTENTROOT%\Shaders"
+
+IF NOT EXIST "%CONTENTROOT%" ( mkdir "%CONTENTROOT%" )
+IF NOT EXIST "%SHADERDEST%" ( mkdir "%SHADERDEST%" )
+xcopy /E /I /R /Y /D "%SHADERSRC%" "%SHADERDEST%"
+
+IF EXIST "$(SolutionDir)ThirdParty\Dll" ( xcopy /E /I /R /Y /D "$(SolutionDir)ThirdParty\Dll" "$(OutDir)" )</Command>
+      <Message>Copying Materials and DLLs</Message>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Retail|x64'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level4</WarningLevel>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <PreprocessorDefinitions>_RETAIL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\..\Utilities;..\..\Graphics;..\..\..\ThirdParty\Source;..\..\Graphics\GraphicsEngine\Shaders\Material;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <Optimization>Full</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <MinimalRebuild>false</MinimalRebuild>
+      <StringPooling>true</StringPooling>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <AdditionalOptions>/sdl %(AdditionalOptions)</AdditionalOptions>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <ExternalWarningLevel>Level3</ExternalWarningLevel>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>d3d11.lib;dxguid.lib;dxgi.lib;d3dcompiler.lib;TGAFbx.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\..\..\ThirdParty\Lib\Retail;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+    <ProjectReference>
+    </ProjectReference>
+    <PostBuildEvent>
+      <Command>set "CONTENTROOT=$(SolutionDir)Content"
+set "SHADERSRC=$(ProjectDir)Materials"
+set "SHADERDEST=%CONTENTROOT%\Shaders"
+
+IF NOT EXIST "%CONTENTROOT%" ( mkdir "%CONTENTROOT%" )
+IF NOT EXIST "%SHADERDEST%" ( mkdir "%SHADERDEST%" )
+xcopy /E /I /R /Y /D "%SHADERSRC%" "%SHADERDEST%"
+
+IF EXIST "$(SolutionDir)ThirdParty\Dll" ( xcopy /E /I /R /Y /D "$(SolutionDir)ThirdParty\Dll" "$(OutDir)" )</Command>
+      <Message>Copying Materials and DLLs</Message>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="Application.h" />
+    <ClInclude Include="AssetHandling\Asset\Base\Asset.h" />
+    <ClInclude Include="AssetHandling\Asset\Types\AnimationAsset.h" />
+    <ClInclude Include="AssetHandling\Asset\Types\MaterialAsset.h" />
+    <ClInclude Include="AssetHandling\Asset\Types\MeshAsset.h" />
+    <ClInclude Include="AssetHandling\Asset\Types\TextureAsset.h" />
+    <ClInclude Include="AssetHandling\Asset\Types\UnrealSceneAsset.h" />
+    <ClInclude Include="AssetHandling\AssetRegistry.h" />
+    <ClInclude Include="Game\Camera\GameCamera.h" />
+    <ClInclude Include="Game\Components\Component.h" />
+    <ClInclude Include="Game\Components\Light\DirectionlLightComponent.h" />
+    <ClInclude Include="Game\Components\Light\LightComponent.h" />
+    <ClInclude Include="Game\Components\Light\PointLightComponent.h" />
+    <ClInclude Include="Game\Components\Light\SpotLightComponent.h" />
+    <ClInclude Include="Game\Components\Rendering\AnimationComponent.h" />
+    <ClInclude Include="Game\Components\Rendering\MeshComponent.h" />
+    <ClInclude Include="Game\Components\Transform.h" />
+    <ClInclude Include="Game\World\Actor.hpp" />
+    <ClInclude Include="Game\World\GameWorld.h" />
+    <ClInclude Include="Json\JsonWrapper.h" />
+    <ClInclude Include="ModelViewer.h" />
+    <ClInclude Include="WindowManager.h" />
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="targetver.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\ThirdParty\Source\tracy\TracyClient.cpp" />
+    <ClCompile Include="..\..\..\ThirdParty\Source\yyjson\yyjson.c" />
+    <ClCompile Include="Application.cpp" />
+    <ClCompile Include="AssetHandling\Asset\Base\Asset.cpp" />
+    <ClCompile Include="AssetHandling\Asset\Types\AnimationAsset.cpp" />
+    <ClCompile Include="AssetHandling\Asset\Types\MaterialAsset.cpp" />
+    <ClCompile Include="AssetHandling\Asset\Types\MeshAsset.cpp" />
+    <ClCompile Include="AssetHandling\Asset\Types\TextureAsset.cpp" />
+    <ClCompile Include="AssetHandling\Asset\Types\UnrealSceneAsset.cpp" />
+    <ClCompile Include="AssetHandling\AssetRegistry.cpp" />
+    <ClCompile Include="Game\Camera\GameCamera.cpp" />
+    <ClCompile Include="Game\Components\Component.cpp" />
+    <ClCompile Include="Game\Components\Light\DirectionlLightComponent.cpp" />
+    <ClCompile Include="Game\Components\Light\LightComponent.cpp" />
+    <ClCompile Include="Game\Components\Light\PointLightComponent.cpp" />
+    <ClCompile Include="Game\Components\Light\SpotLightComponent.cpp" />
+    <ClCompile Include="Game\Components\Rendering\AnimationComponent.cpp" />
+    <ClCompile Include="Game\Components\Rendering\MeshComponent.cpp" />
+    <ClCompile Include="Game\Components\Transform.cpp" />
+    <ClCompile Include="Game\World\Actor.cpp" />
+    <ClCompile Include="Game\World\GameWorld.cpp" />
+    <ClCompile Include="Json\JsonWrapper.cpp" />
+    <ClCompile Include="Main.cpp" />
+    <ClCompile Include="ModelViewer.cpp" />
+    <ClCompile Include="WindowManager.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Materials\BaseMaterial.hlsli" />
+    <None Include="Materials\BlendMaterial.hlsli" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Utilities\Logger\Logger.vcxproj">
+      <Project>{25F339C1-1195-6497-FA4F-78EBE690EBE7}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Graphics\GraphicsEngine\GraphicsEngine.vcxproj">
+      <Project>{AC8E76BE-985C-6AC4-81F0-DAEA6D5D4629}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Utilities\CommonUtilities\CommonUtilities.vcxproj">
+      <Project>{AA29E689-16B5-534E-1FC6-D6428BD0AF4E}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

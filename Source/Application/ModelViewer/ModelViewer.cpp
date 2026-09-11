@@ -32,7 +32,9 @@ ModelViewer::~ModelViewer() = default;
 
 bool ModelViewer::Initialize(SIZE aWindowSize, WNDPROC aWindowProcess, LPCWSTR aWindowTitle)
 {
-    std::filesystem::path contentPath = std::filesystem::current_path().parent_path().parent_path() / "Content";
+    myScene = std::make_unique<Scene>();
+
+    std::filesystem::path contentPath = std::filesystem::current_path().parent_path().parent_path().parent_path() / "Content";
 
     Application.AssetRegistry.RegisterAssetType<MeshAsset>({ ".fbx" });
     Application.AssetRegistry.RegisterAssetType<AnimationAsset>({ ".fbx" });
@@ -40,7 +42,7 @@ bool ModelViewer::Initialize(SIZE aWindowSize, WNDPROC aWindowProcess, LPCWSTR a
     Application.AssetRegistry.RegisterAssetType<TextureAsset>({ ".dds" });
     Application.AssetRegistry.RegisterAssetType<UnrealSceneAsset>({ ".json" });
 
-    std::filesystem::path workingDirectory = std::filesystem::current_path().parent_path().parent_path() / "Content";
+    std::filesystem::path workingDirectory = std::filesystem::current_path().parent_path().parent_path().parent_path() / "Content";
 
     Application.AssetRegistry.Initialize(workingDirectory);
 
@@ -163,8 +165,6 @@ int ModelViewer::Run()
 
 void ModelViewer::LoadScene()
 {
-	myScene = std::make_unique<Scene>();
-
     {
         myGameCamera = GameCamera(90.0f, 1.0f, 10000.0f, GraphicsEngine::Get().GetClientSize());
         myGameCamera.GetTransform().SetPosition({ 0, 100, -200 });
@@ -457,6 +457,11 @@ void ModelViewer::UpdateScene(float aDeltaTime)
 void ModelViewer::BuildSceneForRender()
 {
     ZoneScopedN("Render Scene");
+
+    if (myScene == nullptr)
+    {
+        return;
+    }
 
     myScene->SceneLights.clear();
     myScene->DrawCalls.clear();

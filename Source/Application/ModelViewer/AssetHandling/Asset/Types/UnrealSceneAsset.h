@@ -15,7 +15,7 @@ class UnrealSceneAsset : public Asset
 public:
 	~UnrealSceneAsset() override;
 
-	//std::vector<std::unique_ptr<Actor>> GetSceneActors() const;
+	std::vector<std::unique_ptr<Actor>>& GetSceneActors();
 
 protected:
 	bool Load(const std::filesystem::path& aPath) override;
