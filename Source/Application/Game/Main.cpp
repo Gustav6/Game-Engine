@@ -3,7 +3,7 @@
 #include <exception>
 
 #include "Application.h"
-#include "ModelViewer.h"
+#include "Game.h"
 #include "Windows.h"
 
 #include "StringHelpers.h"
@@ -80,7 +80,7 @@ int GuardedMain()
     constexpr SIZE windowSize = { 1920, 1080 };
     constexpr LPCWSTR windowTitle = L"AGP Modelviewer"; // L"" denotes "I want this to be a wide-string".
 
-    ModelViewer MV;
+    Game MV;
     MV.Initialize(windowSize, WinProc, windowTitle);
     return MV.Run();
 }

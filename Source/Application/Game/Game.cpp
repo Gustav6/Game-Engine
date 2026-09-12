@@ -1,4 +1,4 @@
-#include "ModelViewer.h"
+#include "Game.h"
 
 #include <utility>
 #include <algorithm>
@@ -27,22 +27,20 @@
 
 #include "tracy/core/Tracy.hpp"
 
-ModelViewer::ModelViewer() = default;
-ModelViewer::~ModelViewer() = default;
+Game::Game() = default;
+Game::~Game() = default;
 
-bool ModelViewer::Initialize(SIZE aWindowSize, WNDPROC aWindowProcess, LPCWSTR aWindowTitle)
+bool Game::Initialize(SIZE aWindowSize, WNDPROC aWindowProcess, LPCWSTR aWindowTitle)
 {
     myScene = std::make_unique<Scene>();
 
-    std::filesystem::path contentPath = std::filesystem::current_path().parent_path().parent_path().parent_path() / "Content";
+    std::filesystem::path workingDirectory = std::filesystem::current_path().parent_path().parent_path().parent_path() / "Content";
 
     Application.AssetRegistry.RegisterAssetType<MeshAsset>({ ".fbx" });
     Application.AssetRegistry.RegisterAssetType<AnimationAsset>({ ".fbx" });
     Application.AssetRegistry.RegisterAssetType<MaterialAsset>({ ".json" });
     Application.AssetRegistry.RegisterAssetType<TextureAsset>({ ".dds" });
     Application.AssetRegistry.RegisterAssetType<UnrealSceneAsset>({ ".json" });
-
-    std::filesystem::path workingDirectory = std::filesystem::current_path().parent_path().parent_path().parent_path() / "Content";
 
     Application.AssetRegistry.Initialize(workingDirectory);
 
@@ -86,14 +84,14 @@ bool ModelViewer::Initialize(SIZE aWindowSize, WNDPROC aWindowProcess, LPCWSTR a
 
 		GraphicsEngine& GE = GraphicsEngine::Get();
 
-	    if(!GE.Initialize(myMainWindowHandle, contentPath / "Shaders"))
+	    if(!GE.Initialize(myMainWindowHandle, workingDirectory / "Shaders"))
 	    {
             return false;
         }
 
 		std::unique_ptr<Texture> environmentTexture = std::make_unique<Texture>();
 
-		GE.LoadTexture(contentPath / "Textures" / "Environment Map" / "T_Shipyard.dds", *environmentTexture);
+		GE.LoadTexture(workingDirectory / "Textures" / "Environment Map" / "T_Shipyard.dds", *environmentTexture);
         GE.SetEnvironmentTexture(std::move(environmentTexture));
 
 		myGraphicsCommandList = std::make_unique<GraphicsCommandList>();
@@ -110,7 +108,7 @@ bool ModelViewer::Initialize(SIZE aWindowSize, WNDPROC aWindowProcess, LPCWSTR a
     return true;
 }
 
-int ModelViewer::Run()
+int Game::Run()
 {
     MSG msg;
     ZeroMemory(&msg, sizeof(MSG));
@@ -163,7 +161,7 @@ int ModelViewer::Run()
     return 0;
 }
 
-void ModelViewer::LoadScene()
+void Game::LoadScene()
 {
     {
         myGameCamera = GameCamera(90.0f, 1.0f, 10000.0f, GraphicsEngine::Get().GetClientSize());
@@ -326,7 +324,7 @@ void ModelViewer::LoadScene()
     }
 }
 
-void ModelViewer::UpdateScene(float aDeltaTime)
+void Game::UpdateScene(float aDeltaTime)
 {
     ZoneScopedN("Update Game");
 
@@ -454,7 +452,7 @@ void ModelViewer::UpdateScene(float aDeltaTime)
     }
 }
 
-void ModelViewer::BuildSceneForRender()
+void Game::BuildSceneForRender()
 {
     ZoneScopedN("Render Scene");
 

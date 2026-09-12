@@ -200,6 +200,7 @@ IF EXIST "$(SolutionDir)ThirdParty\Dll" ( xcopy /E /I /R /Y /D "$(SolutionDir)Th
     <ClInclude Include="AssetHandling\Asset\Types\TextureAsset.h" />
     <ClInclude Include="AssetHandling\Asset\Types\UnrealSceneAsset.h" />
     <ClInclude Include="AssetHandling\AssetRegistry.h" />
+    <ClInclude Include="Game.h" />
     <ClInclude Include="Game\Camera\GameCamera.h" />
     <ClInclude Include="Game\Components\Component.h" />
     <ClInclude Include="Game\Components\Light\DirectionlLightComponent.h" />
@@ -212,7 +213,6 @@ IF EXIST "$(SolutionDir)ThirdParty\Dll" ( xcopy /E /I /R /Y /D "$(SolutionDir)Th
     <ClInclude Include="Game\World\Actor.hpp" />
     <ClInclude Include="Game\World\GameWorld.h" />
     <ClInclude Include="Json\JsonWrapper.h" />
-    <ClInclude Include="ModelViewer.h" />
     <ClInclude Include="WindowManager.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="targetver.h" />
@@ -228,6 +228,7 @@ IF EXIST "$(SolutionDir)ThirdParty\Dll" ( xcopy /E /I /R /Y /D "$(SolutionDir)Th
     <ClCompile Include="AssetHandling\Asset\Types\TextureAsset.cpp" />
     <ClCompile Include="AssetHandling\Asset\Types\UnrealSceneAsset.cpp" />
     <ClCompile Include="AssetHandling\AssetRegistry.cpp" />
+    <ClCompile Include="Game.cpp" />
     <ClCompile Include="Game\Camera\GameCamera.cpp" />
     <ClCompile Include="Game\Components\Component.cpp" />
     <ClCompile Include="Game\Components\Light\DirectionlLightComponent.cpp" />
@@ -241,7 +242,6 @@ IF EXIST "$(SolutionDir)ThirdParty\Dll" ( xcopy /E /I /R /Y /D "$(SolutionDir)Th
     <ClCompile Include="Game\World\GameWorld.cpp" />
     <ClCompile Include="Json\JsonWrapper.cpp" />
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="ModelViewer.cpp" />
     <ClCompile Include="WindowManager.cpp" />
   </ItemGroup>
   <ItemGroup>

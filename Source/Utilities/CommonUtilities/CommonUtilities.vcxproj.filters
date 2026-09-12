@@ -1,0 +1,119 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Collision">
+      <UniqueIdentifier>{B11A655C-1D85-19D3-66C3-CA78D26CF727}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DataStructures">
+      <UniqueIdentifier>{039EC1FD-EF6B-B503-D8FF-252AC46C9168}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Input">
+      <UniqueIdentifier>{953A660D-014F-8EBE-CAD0-311E36A48AEF}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Math">
+      <UniqueIdentifier>{AFF4887C-9B2B-8A0D-4418-7010302E060F}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Time">
+      <UniqueIdentifier>{74EC8C7C-6023-8E0D-0910-7410F5250A0F}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utility">
+      <UniqueIdentifier>{594615A9-C525-9444-CE3D-1F1B3A9CFAA5}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Collision\AABB3D.hpp">
+      <Filter>Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Collision\Frustum.hpp">
+      <Filter>Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Collision\Intersection.hpp">
+      <Filter>Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Collision\Line.hpp">
+      <Filter>Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Collision\LineVolume.hpp">
+      <Filter>Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Collision\OBB3D.hpp">
+      <Filter>Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Collision\Plane.hpp">
+      <Filter>Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Collision\PlaneVolume.hpp">
+      <Filter>Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Collision\Ray.hpp">
+      <Filter>Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Collision\Sphere.hpp">
+      <Filter>Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="CommonUtilities.pch.h" />
+    <ClInclude Include="DataStructures\BSTSet.hpp">
+      <Filter>DataStructures</Filter>
+    </ClInclude>
+    <ClInclude Include="DataStructures\DoublyLinkedList.hpp">
+      <Filter>DataStructures</Filter>
+    </ClInclude>
+    <ClInclude Include="DataStructures\HashMap.hpp">
+      <Filter>DataStructures</Filter>
+    </ClInclude>
+    <ClInclude Include="DataStructures\Heap.hpp">
+      <Filter>DataStructures</Filter>
+    </ClInclude>
+    <ClInclude Include="DataStructures\Queue.hpp">
+      <Filter>DataStructures</Filter>
+    </ClInclude>
+    <ClInclude Include="DataStructures\Stack.hpp">
+      <Filter>DataStructures</Filter>
+    </ClInclude>
+    <ClInclude Include="Input\Input.h">
+      <Filter>Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\MathUtils.hpp">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Matrix3x3.hpp">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Matrix4x4.hpp">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Quaternion.hpp">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Vector2.hpp">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Vector3.hpp">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Vector4.hpp">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Time\Timer.h">
+      <Filter>Time</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\Alias.h">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\Random.hpp">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\Sort.hpp">
+      <Filter>Utility</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="CommonUtilities.pch.cpp" />
+    <ClCompile Include="Input\Input.cpp">
+      <Filter>Input</Filter>
+    </ClCompile>
+    <ClCompile Include="Time\Timer.cpp">
+      <Filter>Time</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

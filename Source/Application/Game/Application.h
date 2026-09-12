@@ -2,8 +2,8 @@
 
 #include "Logger/Logger.h"
 
-#include "CommonUtilities/Input.h"
-#include "CommonUtilities/Timer.h"
+#include "CommonUtilities/Input/Input.h"
+#include "CommonUtilities/Time/Timer.h"
 
 #include "AssetHandling/AssetRegistry.h"
 #include "WindowManager.h"

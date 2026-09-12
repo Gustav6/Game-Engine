@@ -6,7 +6,7 @@
 #include <memory>
 #include <array>
 
-#include "CommonUtilities/Matrix4x4.hpp"
+#include "CommonUtilities/Math/Matrix4x4.hpp"
 
 #include "RHI/RenderHardwareInterface.h"
 

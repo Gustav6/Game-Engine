@@ -43,4 +43,4 @@ group "Dependencies"
     include "Source/Utilities/Logger/premake5.lua"
 
 group "Game"
-    include "Source/Application/ModelViewer/premake5.lua"
+    include "Source/Application/Game/premake5.lua"

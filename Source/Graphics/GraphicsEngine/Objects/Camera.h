@@ -1,8 +1,8 @@
 #pragma once
 
-#include "CommonUtilities/Vector2.hpp"
-#include "CommonUtilities/Matrix4x4.hpp"
-#include "CommonUtilities/Frustum.hpp"
+#include "CommonUtilities/Math/Vector2.hpp"
+#include "CommonUtilities/Math/Matrix4x4.hpp"
+#include "CommonUtilities/Collision/Frustum.hpp"
 
 class Camera
 {

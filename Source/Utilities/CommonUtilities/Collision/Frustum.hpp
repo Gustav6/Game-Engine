@@ -5,11 +5,11 @@
 
 #include "Sphere.hpp"
 #include "AABB3D.hpp"
-#include "Matrix4x4.hpp"
-#include "Vector3.hpp"
-#include "Vector4.hpp"
 #include "PlaneVolume.hpp"
-#include "MathUtils.hpp"
+#include "../Math/Matrix4x4.hpp"
+#include "../Math/Vector3.hpp"
+#include "../Math/Vector4.hpp"
+#include "../Math/MathUtils.hpp"
 
 #pragma warning(push)
 #pragma warning(disable : 4201)

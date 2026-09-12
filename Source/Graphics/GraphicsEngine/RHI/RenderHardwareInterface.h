@@ -4,7 +4,7 @@
 #include <string_view>
 #include <vector>
 
-#include "CommonUtilities/Vector2.hpp"
+#include "CommonUtilities/Math/Vector2.hpp"
 #include "RHI/RHIStructs.h"
 
 class Sampler;

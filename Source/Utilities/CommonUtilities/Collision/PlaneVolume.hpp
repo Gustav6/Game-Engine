@@ -2,7 +2,7 @@
 
 #include <vector>
 
-#include "Vector3.hpp"
+#include "../Math/Vector3.hpp"
 #include "Plane.hpp"
 
 namespace CommonUtilities

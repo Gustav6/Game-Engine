@@ -56,11 +56,11 @@
 struct Scene;
 class GraphicsCommandList;
 
-class ModelViewer
+class Game
 {
 public:
-	ModelViewer();
-	~ModelViewer();
+	Game();
+	~Game();
 
 	bool Initialize(SIZE aWindowSize, WNDPROC aWindowProcess, LPCWSTR aWindowTitle);
 	int Run();

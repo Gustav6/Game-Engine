@@ -153,40 +153,40 @@
     </ProjectReference>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="AABB3D.hpp" />
-    <ClInclude Include="Alias.h" />
-    <ClInclude Include="BSTSet.hpp" />
+    <ClInclude Include="Collision\AABB3D.hpp" />
+    <ClInclude Include="Collision\Frustum.hpp" />
+    <ClInclude Include="Collision\Intersection.hpp" />
+    <ClInclude Include="Collision\Line.hpp" />
+    <ClInclude Include="Collision\LineVolume.hpp" />
+    <ClInclude Include="Collision\OBB3D.hpp" />
+    <ClInclude Include="Collision\Plane.hpp" />
+    <ClInclude Include="Collision\PlaneVolume.hpp" />
+    <ClInclude Include="Collision\Ray.hpp" />
+    <ClInclude Include="Collision\Sphere.hpp" />
     <ClInclude Include="CommonUtilities.pch.h" />
-    <ClInclude Include="DoublyLinkedList.hpp" />
-    <ClInclude Include="Frustum.hpp" />
-    <ClInclude Include="HashMap.hpp" />
-    <ClInclude Include="Heap.hpp" />
-    <ClInclude Include="Input.h" />
-    <ClInclude Include="Intersection.hpp" />
-    <ClInclude Include="Line.hpp" />
-    <ClInclude Include="LineVolume.hpp" />
-    <ClInclude Include="MathUtils.hpp" />
-    <ClInclude Include="Matrix3x3.hpp" />
-    <ClInclude Include="Matrix4x4.hpp" />
-    <ClInclude Include="OBB3D.hpp" />
-    <ClInclude Include="Plane.hpp" />
-    <ClInclude Include="PlaneVolume.hpp" />
-    <ClInclude Include="Quaternion.hpp" />
-    <ClInclude Include="Queue.hpp" />
-    <ClInclude Include="Random.hpp" />
-    <ClInclude Include="Ray.hpp" />
-    <ClInclude Include="Sort.hpp" />
-    <ClInclude Include="Sphere.hpp" />
-    <ClInclude Include="Stack.hpp" />
-    <ClInclude Include="Timer.h" />
-    <ClInclude Include="Vector2.hpp" />
-    <ClInclude Include="Vector3.hpp" />
-    <ClInclude Include="Vector4.hpp" />
+    <ClInclude Include="DataStructures\BSTSet.hpp" />
+    <ClInclude Include="DataStructures\DoublyLinkedList.hpp" />
+    <ClInclude Include="DataStructures\HashMap.hpp" />
+    <ClInclude Include="DataStructures\Heap.hpp" />
+    <ClInclude Include="DataStructures\Queue.hpp" />
+    <ClInclude Include="DataStructures\Stack.hpp" />
+    <ClInclude Include="Input\Input.h" />
+    <ClInclude Include="Math\MathUtils.hpp" />
+    <ClInclude Include="Math\Matrix3x3.hpp" />
+    <ClInclude Include="Math\Matrix4x4.hpp" />
+    <ClInclude Include="Math\Quaternion.hpp" />
+    <ClInclude Include="Math\Vector2.hpp" />
+    <ClInclude Include="Math\Vector3.hpp" />
+    <ClInclude Include="Math\Vector4.hpp" />
+    <ClInclude Include="Time\Timer.h" />
+    <ClInclude Include="Utility\Alias.h" />
+    <ClInclude Include="Utility\Random.hpp" />
+    <ClInclude Include="Utility\Sort.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CommonUtilities.pch.cpp" />
-    <ClCompile Include="Input.cpp" />
-    <ClCompile Include="Timer.cpp" />
+    <ClCompile Include="Input\Input.cpp" />
+    <ClCompile Include="Time\Timer.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

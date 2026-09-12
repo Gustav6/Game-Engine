@@ -73,6 +73,7 @@
     <ClInclude Include="AssetHandling\AssetRegistry.h">
       <Filter>AssetHandling</Filter>
     </ClInclude>
+    <ClInclude Include="Game.h" />
     <ClInclude Include="Game\Camera\GameCamera.h">
       <Filter>Game\Camera</Filter>
     </ClInclude>
@@ -109,7 +110,6 @@
     <ClInclude Include="Json\JsonWrapper.h">
       <Filter>Json</Filter>
     </ClInclude>
-    <ClInclude Include="ModelViewer.h" />
     <ClInclude Include="WindowManager.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="targetver.h" />
@@ -143,6 +143,7 @@
     <ClCompile Include="AssetHandling\AssetRegistry.cpp">
       <Filter>AssetHandling</Filter>
     </ClCompile>
+    <ClCompile Include="Game.cpp" />
     <ClCompile Include="Game\Camera\GameCamera.cpp">
       <Filter>Game\Camera</Filter>
     </ClCompile>
@@ -180,7 +181,6 @@
       <Filter>Json</Filter>
     </ClCompile>
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="ModelViewer.cpp" />
     <ClCompile Include="WindowManager.cpp" />
   </ItemGroup>
   <ItemGroup>
