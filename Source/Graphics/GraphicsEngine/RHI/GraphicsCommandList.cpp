@@ -92,6 +92,43 @@ void GraphicsCommandList::SetRenderTarget(const Texture* aTexture, const Texture
 	myContext->RSSetViewports(1, &viewport);
 }
 
+void GraphicsCommandList::SetRenderTargets(const Texture** aTargetList, unsigned aNumTargets, const Texture* aDepthStencil) const
+{
+	// Early out if no targets/depth are provided
+	if (aNumTargets == 0 && !aDepthStencil)
+	{
+		ID3D11RenderTargetView* nullRTV = nullptr;
+		myContext->OMSetRenderTargets(1, &nullRTV, nullptr);
+		return;
+	}
+
+	ID3D11RenderTargetView* rtvs[8] = {};
+	ID3D11DepthStencilView* dsv = nullptr;
+	D3D11_VIEWPORT viewport = { 0, 0, 0, 0, 0, 1 };
+
+	if (aNumTargets > 0)
+	{
+		unsigned numTargets = std::min(aNumTargets, 8u);
+		memcpy_s(&viewport, sizeof(D3D11_VIEWPORT), &aTargetList[0]->myViewport, sizeof(Viewport));
+		for (unsigned t = 0; t < numTargets; ++t)
+		{
+			rtvs[t] = aTargetList[t]->myRTV.Get();
+		}
+	}
+
+	if (aDepthStencil != nullptr)
+	{
+		dsv = aDepthStencil->myDSV.Get();
+
+		if (aNumTargets == 0)
+		{
+			memcpy_s(&viewport, sizeof(D3D11_VIEWPORT), &aDepthStencil->myViewport, sizeof(Viewport));
+		}
+	}
+
+	myContext->OMSetRenderTargets(8u, rtvs, dsv);
+	myContext->RSSetViewports(1, &viewport);
+}
 
 bool GraphicsCommandList::UpdateConstantBuffer(const Buffer& aConstantBuffer, const void* aBufferData, size_t aBufferDataSize) const
 {

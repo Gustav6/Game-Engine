@@ -1,6 +1,6 @@
 #include "AnimationAsset.h"
 
-#include <CommonUtilities/Matrix4x4.hpp>
+#include <CommonUtilities/Math/Matrix4x4.hpp>
 
 #include "tgafbx/Importer.h"
 #include "tgafbx/TgaFbxStructs.h"

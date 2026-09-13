@@ -2,7 +2,7 @@
 
 #include "Game/Components/Component.h"
 
-#include "CommonUtilities/Sphere.hpp"
+#include "CommonUtilities/Collision/Sphere.hpp"
 
 #include <AssetHandling/Asset/Types/MeshAsset.h>
 #include <AssetHandling/Asset/Types/MaterialAsset.h>

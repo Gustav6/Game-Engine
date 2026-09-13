@@ -3,8 +3,8 @@
 #include "GraphicsEngine/Objects/Skeleton.h"
 #include "GraphicsEngine/Objects/Animation.h"
 
-#include <CommonUtilities/MathUtils.hpp>
-#include <CommonUtilities/Quaternion.hpp>
+#include <CommonUtilities/Math/MathUtils.hpp>
+#include <CommonUtilities/Math/Quaternion.hpp>
 
 #include "AssetHandling/Asset/Types/AnimationAsset.h"
 

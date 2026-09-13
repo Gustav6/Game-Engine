@@ -3,7 +3,7 @@
 #include <memory>
 #include <vector>
 
-#include "CommonUtilities/Sphere.hpp"
+#include "CommonUtilities/Collision/Sphere.hpp"
 
 #include "Buffer.h"
 

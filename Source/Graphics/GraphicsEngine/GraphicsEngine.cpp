@@ -1,10 +1,10 @@
 #include "GraphicsEngine.pch.h"
 #include "GraphicsEngine.hpp"
 
-#include "CommonUtilities/Matrix4x4.hpp"
-#include "CommonUtilities/Frustum.hpp"
-#include "CommonUtilities/Vector3.hpp"
-#include "CommonUtilities/Vector4.hpp"
+#include "CommonUtilities/Collision/Frustum.hpp"
+#include "CommonUtilities/Math/Matrix4x4.hpp"
+#include "CommonUtilities/Math/Vector3.hpp"
+#include "CommonUtilities/Math/Vector4.hpp"
 
 #include "Objects/Mesh.h"
 #include "Objects/Vertex.h"
@@ -860,8 +860,7 @@ void GraphicsEngine::RegisterMaterialShaders()
 	// Shading Model
 	{
 		myMaterialShadingModelShaders.emplace(ShadingModel::Unlit, myShaderRoot / "Material" / "Unlit_PS.hlsl");
-		myMaterialShadingModelShaders.emplace(ShadingModel::Lambert, myShaderRoot / "Material" / "Lambert_PS.hlsl");
-		myMaterialShadingModelShaders.emplace(ShadingModel::PBL, myShaderRoot / "Material" / "PBL_PS.hlsl");
+		myMaterialShadingModelShaders.emplace(ShadingModel::Lit, myShaderRoot / "Material" / "PBL_PS.hlsl");
 	}
 }
 

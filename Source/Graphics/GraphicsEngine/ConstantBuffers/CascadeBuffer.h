@@ -1,7 +1,7 @@
 #pragma once
 
-#include "CommonUtilities/Matrix4x4.hpp"
-#include "CommonUtilities/Vector3.hpp"
+#include "CommonUtilities/Math/Matrix4x4.hpp"
+#include "CommonUtilities/Math/Vector3.hpp"
 
 struct CascadeBuffer
 {

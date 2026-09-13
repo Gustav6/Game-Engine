@@ -1,6 +1,6 @@
 #include "PointLightComponent.h"
 
-#include "CommonUtilities/Vector4.hpp"
+#include "CommonUtilities/Math/Vector4.hpp"
 
 #include "GraphicsEngine/Objects/Light.h"
 

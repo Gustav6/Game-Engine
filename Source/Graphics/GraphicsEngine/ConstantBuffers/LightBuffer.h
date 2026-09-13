@@ -1,6 +1,6 @@
 #pragma once
 
-#include "CommonUtilities/Vector3.hpp"
+#include "CommonUtilities/Math/Vector3.hpp"
 
 #include "Objects/Light.h"
 

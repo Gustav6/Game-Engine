@@ -77,6 +77,9 @@
     <ClInclude Include="Objects\Camera.h">
       <Filter>Objects</Filter>
     </ClInclude>
+    <ClInclude Include="Objects\GBuffer.h">
+      <Filter>Objects</Filter>
+    </ClInclude>
     <ClInclude Include="Objects\Light.h">
       <Filter>Objects</Filter>
     </ClInclude>
@@ -162,6 +165,9 @@
     <ClCompile Include="Objects\Camera.cpp">
       <Filter>Objects</Filter>
     </ClCompile>
+    <ClCompile Include="Objects\GBuffer.cpp">
+      <Filter>Objects</Filter>
+    </ClCompile>
     <ClCompile Include="Objects\Light.cpp">
       <Filter>Objects</Filter>
     </ClCompile>
@@ -204,6 +210,9 @@
       <Filter>Shaders\Material</Filter>
     </FxCompile>
     <FxCompile Include="Shaders\Material\FullTexture_VS.hlsl">
+      <Filter>Shaders\Material</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Material\GBuffer_PS.hlsl">
       <Filter>Shaders\Material</Filter>
     </FxCompile>
     <FxCompile Include="Shaders\Material\Lambert_PS.hlsl">

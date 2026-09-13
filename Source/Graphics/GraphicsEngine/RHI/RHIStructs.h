@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string>
+
 struct Viewport
 {
 	float TopLeftX = 0;

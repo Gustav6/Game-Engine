@@ -2,7 +2,7 @@
 
 #include <wrl.h>
 
-#include "CommonUtilities/Vector4.hpp"
+#include "CommonUtilities/Math/Vector4.hpp"
 
 struct ID3D11SamplerState;
 

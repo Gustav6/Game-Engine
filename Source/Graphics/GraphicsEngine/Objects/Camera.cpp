@@ -4,7 +4,7 @@
 #include <cassert>
 #include <cmath>
 
-#include "CommonUtilities/MathUtils.hpp"
+#include "CommonUtilities/Math/MathUtils.hpp"
 
 Camera::Camera() = default;
 

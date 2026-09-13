@@ -33,6 +33,7 @@ public:
 	void ClearRenderTarget(const Texture& aTarget) const;
 	void ClearDepthStencil(const Texture& aTarget) const;
 	void SetRenderTarget(const Texture* aTarget, const Texture* aDepthStencil) const;
+	void SetRenderTargets(const Texture** aTargetList, unsigned aNumTargets, const Texture* aDepthStencil) const;
 
 	bool UpdateConstantBuffer(const Buffer& aConstantBuffer, const void* aBufferData, size_t aBufferDataSize) const;
 

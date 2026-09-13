@@ -1,8 +1,8 @@
 #pragma once
 
-#include "CommonUtilities/Vector2.hpp"
-#include "CommonUtilities/Vector3.hpp"
-#include "CommonUtilities/Vector4.hpp"
+#include "CommonUtilities/Math/Vector2.hpp"
+#include "CommonUtilities/Math/Vector3.hpp"
+#include "CommonUtilities/Math/Vector4.hpp"
 #include "GraphicsEngine/RHI/RHIStructs.h"
 
 struct Vertex

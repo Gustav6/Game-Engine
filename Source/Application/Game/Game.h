@@ -1,6 +1,5 @@
 #pragma once
 
-#pragma region WindowsIncludes
 #define	WIN32_LEAN_AND_MEAN
 
 #define NOGDICAPMASKS     
@@ -45,8 +44,6 @@
 
 #include <Windows.h>
 
-#pragma endregion
-
 #include <memory>
 
 #include "Game/Camera/GameCamera.h"
@@ -81,6 +78,7 @@ private:
 	GameCamera myGameCamera;
 
 	// TODO: TEMP
+
 	float myCamerasMoveSpeed = 400;
 
 	Actor* myAnimatedObject = nullptr;

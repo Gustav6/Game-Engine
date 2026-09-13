@@ -2,7 +2,7 @@
   "Name": "ChestMaterial",
   "Settings": {
     "MaterialDomain": 1,
-    "ShadingModel": 3,
+    "ShadingModel": 2,
     "BlendMode": 2
   },
   "Textures": {

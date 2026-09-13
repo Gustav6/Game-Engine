@@ -2,8 +2,8 @@
 
 #include <cassert>
 
-#include "CommonUtilities/Vector4.hpp"
-#include "CommonUtilities/MathUtils.hpp"
+#include "CommonUtilities/Math/Vector4.hpp"
+#include "CommonUtilities/Math/MathUtils.hpp"
 
 #include "GraphicsEngine/Objects/Light.h"
 

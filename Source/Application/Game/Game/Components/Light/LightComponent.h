@@ -4,9 +4,9 @@
 
 #include "Game/Components/Component.h"
 
-#include "CommonUtilities/Vector2.hpp"
-#include "CommonUtilities/Vector3.hpp"
-#include "CommonUtilities/Matrix4x4.hpp"
+#include "CommonUtilities/Math/Vector2.hpp"
+#include "CommonUtilities/Math/Vector3.hpp"
+#include "CommonUtilities/Math/Matrix4x4.hpp"
 
 struct Light;
 class Texture;

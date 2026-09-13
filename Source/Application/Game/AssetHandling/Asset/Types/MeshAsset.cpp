@@ -5,11 +5,11 @@
 
 #include "GraphicsEngine/Objects/Vertex.h"
 
-#include <CommonUtilities/Sphere.hpp>
-#include <CommonUtilities/Vector2.hpp>
-#include <CommonUtilities/Vector4.hpp>
-#include <CommonUtilities/Vector3.hpp>
-#include <CommonUtilities/Matrix4x4.hpp>
+#include <CommonUtilities/Collision/Sphere.hpp>
+#include <CommonUtilities/Math/Vector2.hpp>
+#include <CommonUtilities/Math/Vector4.hpp>
+#include <CommonUtilities/Math/Vector3.hpp>
+#include <CommonUtilities/Math/Matrix4x4.hpp>
 
 #include "tgafbx/Importer.h"
 #include "tgafbx/TgaFbxStructs.h"

@@ -4,7 +4,7 @@
 #include <vector>
 #include <unordered_map>
 
-#include "CommonUtilities/Matrix4x4.hpp"
+#include "CommonUtilities/Math/Matrix4x4.hpp"
 
 struct Animation
 {
