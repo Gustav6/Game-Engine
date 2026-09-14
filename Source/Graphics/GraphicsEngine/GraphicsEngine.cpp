@@ -33,6 +33,8 @@
 #include "ShadowCube_GS.h"
 #include "FullTexture_VS.h"
 #include "BRDF_LUT_PS.h"
+#include "GBuffer_PS.h"
+#include "Surface_VS.h"
 
 /*
 * GraphicsEngine handles rendering of a scene.
@@ -60,7 +62,7 @@ bool GraphicsEngine::Initialize(HWND aWindowHandle, const std::filesystem::path&
 {
 	if (!std::filesystem::exists(aShaderRoot))
 	{
-		GELOG(Error, "Shader root dir is not a valid path! Provided root was {}.", aShaderRoot.string());
+		GELOG(Fatal, "Shader root dir is not a valid path! Provided root was {}.", aShaderRoot.string());
 		return false;
 	}
 
@@ -132,6 +134,11 @@ void GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const Scene& 
 				case MaterialBlendMode::Alpha:
 				{
 					alphaItems.push_back(item);
+					break;
+				}
+				default:
+				{
+					// TODO: Log error here
 					break;
 				}
 			}
@@ -373,9 +380,19 @@ bool GraphicsEngine::CreateMaterial(const MaterialDescription& aDescription, Mat
 
 	switch (aDescription.BlendMode)
 	{
+		case MaterialBlendMode::Opaque:
+		{
+			matPSODesc.BlendMode = BlendMode::Opaque;
+			break;
+		}
 		case MaterialBlendMode::Alpha:
 		{
 			matPSODesc.BlendMode = BlendMode::Alpha;
+			break;
+		}
+		default:
+		{
+			// TODO: Log error
 			break;
 		}
 	}

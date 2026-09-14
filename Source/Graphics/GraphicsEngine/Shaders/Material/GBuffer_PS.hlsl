@@ -1,5 +1,6 @@
 #include "Include/Common.hlsli"
 #include "Include/Samplers.hlsli"
+#include "Include/Material.hlsli"
 
 struct GBufferOutput
 {
@@ -32,12 +33,21 @@ GBufferOutput main(VStoPS aPixel)
     
     normal = normalize(mul(normal, TBN));
     
+    MaterialPixelParameters parameters;
+    parameters.PixelColor = albedoMap;
+    parameters.WorldPosition = aPixel.WorldPosition;
+    parameters.Normal = normal;
+    parameters.UV0 = aPixel.UV0;
+    parameters.Occlusion = materialMap.r;
+    parameters.Roughness = materialMap.g;
+    parameters.Metalness = materialMap.b;
+    
     GBufferOutput result;
     
-    result.AlbedoTexture = float4(albedoMap.rgb, 1);
-    result.NormalTexture = float4(normal, 0);
-    result.MaterialTexture = float4(materialMap, 0);
-    result.WorldPosition = aPixel.WorldPosition;
+    result.AlbedoTexture = float4(parameters.PixelColor.rgb, 1);
+    result.NormalTexture = float4(parameters.Normal, 0);
+    result.MaterialTexture = float4(parameters.Occlusion, parameters.Roughness, parameters.Metalness, 0);
+    result.WorldPosition = parameters.WorldPosition;
     
     return result;
 }

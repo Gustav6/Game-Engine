@@ -193,13 +193,13 @@ IF EXIST "$(SolutionDir)ThirdParty\Dll" ( xcopy /E /I /R /Y /D "$(SolutionDir)Th
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
-    <ClInclude Include="AssetHandling\Asset\Base\Asset.h" />
-    <ClInclude Include="AssetHandling\Asset\Types\AnimationAsset.h" />
-    <ClInclude Include="AssetHandling\Asset\Types\MaterialAsset.h" />
-    <ClInclude Include="AssetHandling\Asset\Types\MeshAsset.h" />
-    <ClInclude Include="AssetHandling\Asset\Types\TextureAsset.h" />
-    <ClInclude Include="AssetHandling\Asset\Types\UnrealSceneAsset.h" />
     <ClInclude Include="AssetHandling\AssetRegistry.h" />
+    <ClInclude Include="AssetHandling\Assets\Base\Asset.h" />
+    <ClInclude Include="AssetHandling\Assets\Types\AnimationAsset.h" />
+    <ClInclude Include="AssetHandling\Assets\Types\MaterialAsset.h" />
+    <ClInclude Include="AssetHandling\Assets\Types\MeshAsset.h" />
+    <ClInclude Include="AssetHandling\Assets\Types\TextureAsset.h" />
+    <ClInclude Include="AssetHandling\Assets\Types\UnrealSceneAsset.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Game\Camera\GameCamera.h" />
     <ClInclude Include="Game\Components\Component.h" />
@@ -221,13 +221,13 @@ IF EXIST "$(SolutionDir)ThirdParty\Dll" ( xcopy /E /I /R /Y /D "$(SolutionDir)Th
     <ClCompile Include="..\..\..\ThirdParty\Source\tracy\TracyClient.cpp" />
     <ClCompile Include="..\..\..\ThirdParty\Source\yyjson\yyjson.c" />
     <ClCompile Include="Application.cpp" />
-    <ClCompile Include="AssetHandling\Asset\Base\Asset.cpp" />
-    <ClCompile Include="AssetHandling\Asset\Types\AnimationAsset.cpp" />
-    <ClCompile Include="AssetHandling\Asset\Types\MaterialAsset.cpp" />
-    <ClCompile Include="AssetHandling\Asset\Types\MeshAsset.cpp" />
-    <ClCompile Include="AssetHandling\Asset\Types\TextureAsset.cpp" />
-    <ClCompile Include="AssetHandling\Asset\Types\UnrealSceneAsset.cpp" />
     <ClCompile Include="AssetHandling\AssetRegistry.cpp" />
+    <ClCompile Include="AssetHandling\Assets\Base\Asset.cpp" />
+    <ClCompile Include="AssetHandling\Assets\Types\AnimationAsset.cpp" />
+    <ClCompile Include="AssetHandling\Assets\Types\MaterialAsset.cpp" />
+    <ClCompile Include="AssetHandling\Assets\Types\MeshAsset.cpp" />
+    <ClCompile Include="AssetHandling\Assets\Types\TextureAsset.cpp" />
+    <ClCompile Include="AssetHandling\Assets\Types\UnrealSceneAsset.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Game\Camera\GameCamera.cpp" />
     <ClCompile Include="Game\Components\Component.cpp" />

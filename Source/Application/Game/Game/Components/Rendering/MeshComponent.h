@@ -4,8 +4,8 @@
 
 #include "CommonUtilities/Collision/Sphere.hpp"
 
-#include <AssetHandling/Asset/Types/MeshAsset.h>
-#include <AssetHandling/Asset/Types/MaterialAsset.h>
+#include <AssetHandling/Assets/Types/MeshAsset.h>
+#include <AssetHandling/Assets/Types/MaterialAsset.h>
 
 #include <memory>
 #include <vector>

@@ -2,7 +2,7 @@
 
 #include <filesystem>
 
-#include "AssetHandling/Asset/Base/Asset.h"
+#include <AssetHandling/Assets/Base/Asset.h>
 
 #include "GraphicsEngine/Objects/Mesh.h"
 #include "GraphicsEngine/Objects/Skeleton.h"

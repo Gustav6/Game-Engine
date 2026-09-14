@@ -4,7 +4,7 @@
 #include <vector>
 #include <memory>
 
-#include "AssetHandling/Asset/Base/Asset.h"
+#include <AssetHandling/Assets/Base/Asset.h>
 
 #include "Game/World/Actor.hpp"
 

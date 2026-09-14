@@ -43,20 +43,30 @@ bool MeshAsset::Load(const std::filesystem::path& aPath)
         switch (importStatus.Result)
         {
             case TGA::FBX::FbxImportResult::InternalError:
+            {
                 LOG(FBXLog, Error, "Could not load mesh [{}] : Internal FBX importer error!", pathString);
                 break;
+            }
             case TGA::FBX::FbxImportResult::NotInitialized:
+            {
                 LOG(FBXLog, Error, "Could not load mesh [{}] : FBX importer is not initialized!", pathString);
                 break;
+            }
             case TGA::FBX::FbxImportResult::FileNotFound:
+            {
                 LOG(FBXLog, Error, "Could not load mesh [{}] : File was not found!", pathString);
                 break;
+            }
             case TGA::FBX::FbxImportResult::NoMeshData:
+            {
                 LOG(FBXLog, Error, "Could not load mesh [{}] : No mesh data found in file!", pathString);
                 break;
+            }
             default:
+            {
                 LOG(FBXLog, Error, "Could not load mesh [{}] : Unknown error!", pathString);
                 break;
+            }
         }
 
         return false;
@@ -69,26 +79,40 @@ bool MeshAsset::Load(const std::filesystem::path& aPath)
         switch (warning)
         {
             case TGA::FBX::FbxImportWarning::TooManySkinWeights:
+            {
                 LOG(FBXLog, Warning, "Mesh [{}] : Vertices had too many skin weights and were truncated!", pathString);
                 break;
+            }
             case TGA::FBX::FbxImportWarning::MissingSkinWeights:
+            {
                 LOG(FBXLog, Warning, "Mesh [{}] : Vertices are missing skin weights!", pathString);
                 break;
+            }
             case TGA::FBX::FbxImportWarning::NoUVCoordinates:
+            {
                 LOG(FBXLog, Warning, "Mesh [{}] : Surfaces have no UV coordinates!", pathString);
                 break;
+            }
             case TGA::FBX::FbxImportWarning::GenerateNormalsFailed:
+            {
                 LOG(FBXLog, Warning, "Mesh [{}] : Failed to generate normal's for surfaces!", pathString);
                 break;
+            }
             case TGA::FBX::FbxImportWarning::CannotTriangulate:
+            {
                 LOG(FBXLog, Warning, "Mesh [{}] : Could not triangulate polygons!", pathString);
                 break;
+            }
             case TGA::FBX::FbxImportWarning::DuplicateBoneNames:
+            {
                 LOG(FBXLog, Warning, "Mesh [{}] : Duplicate bone names detected!", pathString);
                 break;
+            }
             default:
+            {
                 LOG(FBXLog, Warning, "Mesh [{}] : Unknown warning!", pathString);
                 break;
+            }
         }
     }
 

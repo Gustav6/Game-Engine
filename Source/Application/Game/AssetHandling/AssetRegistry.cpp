@@ -5,14 +5,20 @@
 #include "GraphicsEngine/Objects/Vertex.h"
 #include "GraphicsEngine/Objects/Mesh.h"
 
+#include "Logger/Logger.h"
+
 #include "tgafbx/Importer.h"
 
-#include "Asset/Types/MeshAsset.h"
+#include "Assets/Types/MeshAsset.h"
+
+DECLARE_LOG_CATEGORY_WITH_NAME(ASSETLog, ASSETREGISTRY, Verbose);
+
+DEFINE_LOG_CATEGORY(ASSETLog);
 
 AssetRegistry::AssetRegistry() = default;
 AssetRegistry::~AssetRegistry() = default;
 
-void AssetRegistry::Initialize(std::filesystem::path aWorkingDirectory)
+bool AssetRegistry::Initialize(std::filesystem::path aWorkingDirectory)
 {
 	ensure(myAssets.empty());
 
@@ -23,6 +29,12 @@ void AssetRegistry::Initialize(std::filesystem::path aWorkingDirectory)
     InitUnitAxes();
     InitUnitCube();
 	InitUnitPlane();
+
+    if (!std::filesystem::exists(myWorkingDirectory))
+    {
+        LOG(ASSETLog, Fatal, "Content root dir is not a valid path! Provided root was {}.", aWorkingDirectory.string());
+        return false;
+    }
 
     for (const auto& item : std::filesystem::recursive_directory_iterator(myWorkingDirectory))
     {
@@ -43,6 +55,8 @@ void AssetRegistry::Initialize(std::filesystem::path aWorkingDirectory)
             }
         }
     }
+
+    return true;
 }
 
 void AssetRegistry::UnInitialize()

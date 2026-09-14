@@ -11,8 +11,7 @@
 #include <ranges>
 
 #include "ensure.h"
-
-#include <AssetHandling/Asset/Base/Asset.h>
+#include <AssetHandling/Assets/Base/Asset.h>
 
 class AssetRegistry
 {
@@ -22,14 +21,14 @@ public:
 	AssetRegistry();
 	~AssetRegistry();
 
-	void Initialize(std::filesystem::path aWorkingDirectory);
+	bool Initialize(std::filesystem::path aWorkingDirectory);
 	void UnInitialize();
 
 	const std::filesystem::path& GetWorkingDirectory();
 
-	template<typename AssetClass>
-	requires std::is_base_of_v<Asset, AssetClass>
-	std::shared_ptr<AssetClass> GetAsset(const std::string_view aAssetName)
+	template<typename AssetType>
+	requires std::is_base_of_v<Asset, AssetType>
+	std::shared_ptr<AssetType> GetAsset(const std::string_view aAssetName)
 	{
 		std::string lowerName(aAssetName);
 		std::ranges::transform(lowerName, lowerName.begin(), tolower);
@@ -54,13 +53,13 @@ public:
 						asset->myName = assetInformation.Path.stem().string();
 						assetInformation.Asset = asset;
 
-						return std::dynamic_pointer_cast<AssetClass>(asset);
+						return std::dynamic_pointer_cast<AssetType>(asset);
 					}
 				}
 			}
 		}
 
-		return std::dynamic_pointer_cast<AssetClass>(assetInformation.Asset.lock());
+		return std::dynamic_pointer_cast<AssetType>(assetInformation.Asset.lock());
 	}
 
 	template<typename AssetClass>

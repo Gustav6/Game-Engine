@@ -9,11 +9,11 @@
 
 #include "Application.h"
 
-#include "AssetHandling/Asset/Types/MeshAsset.h"
-#include "AssetHandling/Asset/Types/AnimationAsset.h"
-#include "AssetHandling/Asset/Types/MaterialAsset.h"
-#include "AssetHandling/Asset/Types/TextureAsset.h"
-#include "AssetHandling/Asset/Types/UnrealSceneAsset.h"
+#include "AssetHandling/Assets/Types/MeshAsset.h"
+#include "AssetHandling/Assets/Types/AnimationAsset.h"
+#include "AssetHandling/Assets/Types/MaterialAsset.h"
+#include "AssetHandling/Assets/Types/TextureAsset.h"
+#include "AssetHandling/Assets/Types/UnrealSceneAsset.h"
 
 #include "Game/Components/Rendering/MeshComponent.h"
 #include "Game/Components/Rendering/AnimationComponent.h"
@@ -34,7 +34,7 @@ bool Game::Initialize(SIZE aWindowSize, WNDPROC aWindowProcess, LPCWSTR aWindowT
 {
     myScene = std::make_unique<Scene>();
 
-    std::filesystem::path workingDirectory = std::filesystem::current_path().parent_path().parent_path().parent_path() / "Content";
+    std::filesystem::path workingDirectory = GetExecutableDirectory().parent_path().parent_path() / "Content";
 
     Application.AssetRegistry.RegisterAssetType<MeshAsset>({ ".fbx" });
     Application.AssetRegistry.RegisterAssetType<AnimationAsset>({ ".fbx" });
@@ -42,7 +42,10 @@ bool Game::Initialize(SIZE aWindowSize, WNDPROC aWindowProcess, LPCWSTR aWindowT
     Application.AssetRegistry.RegisterAssetType<TextureAsset>({ ".dds" });
     Application.AssetRegistry.RegisterAssetType<UnrealSceneAsset>({ ".json" });
 
-    Application.AssetRegistry.Initialize(workingDirectory);
+    if (!Application.AssetRegistry.Initialize(workingDirectory))
+    {
+        return false;
+    }
 
     Application.InputManager.SetWindowHandle(myMainWindowHandle);
 

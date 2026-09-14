@@ -6,7 +6,7 @@
 #include <CommonUtilities/Math/MathUtils.hpp>
 #include <CommonUtilities/Math/Quaternion.hpp>
 
-#include "AssetHandling/Asset/Types/AnimationAsset.h"
+#include "AssetHandling/Assets/Types/AnimationAsset.h"
 
 AnimationComponent::AnimationComponent(Actor* aOwner, const Skeleton* aSkeleton)
 	: Component(aOwner)

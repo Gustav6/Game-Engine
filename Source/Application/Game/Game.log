@@ -2527,3 +2527,705 @@ Logging has started at 2026-09-12 22:21:52.
 [22:21:54] [   LOG   ] [FBX] Animation has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Locomotion\A_C_TGA_Bro_Run.fbx]
 [22:21:54] [  ERROR  ] [FBX] Could not load mesh [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Locomotion\A_C_TGA_Bro_Walk.fbx] : No mesh data found in file!
 [22:21:54] [   LOG   ] [FBX] Animation has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Locomotion\A_C_TGA_Bro_Walk.fbx]
+****************************************************************************************************
+Logging has started at 2026-09-14 18:07:31.
+****************************************************************************************************
+[18:07:31] [   LOG   ] [ModelViewer] ModelViewer starting...
+[18:07:31] [   LOG   ] [ModelViewer] Ready!
+[18:07:31] [   LOG   ] [ModelViewer] Initializing Graphics Engine...
+[18:07:31] [   LOG   ] [RHI] Initializing RHI...
+[18:07:31] [   LOG   ] [RHI] Selected adapter is NVIDIA GeForce RTX 5080
+[18:07:31] [   LOG   ] [RHI] RHI Started!
+[18:07:32] [   LOG   ] [FBX] Mesh has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Meshes\SM_Color_Checker.fbx]
+[18:07:32] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Albedo\T_Marble_Tiles_C.dds]
+[18:07:32] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Normal\T_Marble_Tiles_N.dds]
+[18:07:32] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Material\T_Marble_Tiles_M.dds]
+[18:07:32] [   LOG   ] [MATERIAL] Material has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Materials\BaseMaterial.json]
+[18:07:32] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Albedo\T_Color_Checker_C.dds]
+[18:07:32] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Normal\T_Color_Checker_N.dds]
+[18:07:32] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Material\T_Color_Checker_M.dds]
+[18:07:32] [   LOG   ] [MATERIAL] Material instance has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Materials\SMColorChecker.json]
+[18:07:32] [   LOG   ] [FBX] Mesh has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Meshes\SM_Chest.fbx]
+[18:07:32] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Albedo\T_Chest_C.dds]
+[18:07:32] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Normal\T_Chest_N.dds]
+[18:07:32] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Material\T_Chest_M.dds]
+[18:07:33] [   LOG   ] [MATERIAL] Material has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Materials\ChestMaterial.json]
+[18:07:33] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Albedo\T_Marble_Tiles_C.dds]
+[18:07:33] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Normal\T_Marble_Tiles_N.dds]
+[18:07:33] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Material\T_Marble_Tiles_M.dds]
+[18:07:33] [   LOG   ] [MATERIAL] Material has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Materials\BaseMaterial.json]
+[18:07:33] [   LOG   ] [FBX] Mesh has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Meshes\SK_C_TGA_Bro.fbx]
+[18:07:33] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Albedo\T_TGA_Bro_C.dds]
+[18:07:33] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Normal\T_TGA_Bro_N.dds]
+[18:07:33] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Material\T_TGA_Bro_M.dds]
+[18:07:33] [   LOG   ] [MATERIAL] Material instance has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Materials\TGABroMaterial.json]
+[18:07:33] [  ERROR  ] [FBX] Could not load mesh [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Idle\A_C_TGA_Bro_Idle_Breathing.fbx] : No mesh data found in file!
+[18:07:33] [   LOG   ] [FBX] Animation has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Idle\A_C_TGA_Bro_Idle_Breathing.fbx]
+[18:07:33] [  ERROR  ] [FBX] Could not load mesh [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Idle\A_C_TGA_Bro_Idle_Wave.fbx] : No mesh data found in file!
+[18:07:33] [   LOG   ] [FBX] Animation has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Idle\A_C_TGA_Bro_Idle_Wave.fbx]
+[18:07:33] [  ERROR  ] [FBX] Could not load mesh [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Locomotion\A_C_TGA_Bro_Run.fbx] : No mesh data found in file!
+[18:07:33] [   LOG   ] [FBX] Animation has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Locomotion\A_C_TGA_Bro_Run.fbx]
+[18:07:33] [  ERROR  ] [FBX] Could not load mesh [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Locomotion\A_C_TGA_Bro_Walk.fbx] : No mesh data found in file!
+[18:07:33] [   LOG   ] [FBX] Animation has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Locomotion\A_C_TGA_Bro_Walk.fbx]
+****************************************************************************************************
+Logging has started at 2026-09-14 18:25:08.
+****************************************************************************************************
+[18:25:08] [   LOG   ] [ModelViewer] ModelViewer starting...
+[18:25:08] [   LOG   ] [ModelViewer] Ready!
+[18:25:08] [   LOG   ] [ModelViewer] Initializing Graphics Engine...
+[18:25:08] [   LOG   ] [RHI] Initializing RHI...
+[18:25:08] [   LOG   ] [RHI] Selected adapter is NVIDIA GeForce RTX 5080
+[18:25:09] [   LOG   ] [RHI] RHI Started!
+[18:25:09] [   LOG   ] [FBX] Mesh has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Meshes\SM_Color_Checker.fbx]
+[18:25:09] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Albedo\T_Marble_Tiles_C.dds]
+[18:25:09] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Normal\T_Marble_Tiles_N.dds]
+[18:25:09] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Material\T_Marble_Tiles_M.dds]
+[18:25:10] [   LOG   ] [MATERIAL] Material has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Materials\BaseMaterial.json]
+[18:25:10] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Albedo\T_Color_Checker_C.dds]
+[18:25:10] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Normal\T_Color_Checker_N.dds]
+[18:25:10] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Material\T_Color_Checker_M.dds]
+[18:25:10] [   LOG   ] [MATERIAL] Material instance has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Materials\SMColorChecker.json]
+[18:25:10] [   LOG   ] [FBX] Mesh has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Meshes\SM_Chest.fbx]
+[18:25:10] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Albedo\T_Chest_C.dds]
+[18:25:10] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Normal\T_Chest_N.dds]
+[18:25:10] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Material\T_Chest_M.dds]
+[18:25:10] [   LOG   ] [MATERIAL] Material has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Materials\ChestMaterial.json]
+[18:25:10] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Albedo\T_Marble_Tiles_C.dds]
+[18:25:10] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Normal\T_Marble_Tiles_N.dds]
+[18:25:10] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Material\T_Marble_Tiles_M.dds]
+[18:25:10] [   LOG   ] [MATERIAL] Material has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Materials\BaseMaterial.json]
+[18:25:11] [   LOG   ] [FBX] Mesh has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Meshes\SK_C_TGA_Bro.fbx]
+[18:25:11] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Albedo\T_TGA_Bro_C.dds]
+[18:25:11] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Normal\T_TGA_Bro_N.dds]
+[18:25:11] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Material\T_TGA_Bro_M.dds]
+[18:25:11] [   LOG   ] [MATERIAL] Material instance has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Materials\TGABroMaterial.json]
+[18:25:11] [  ERROR  ] [FBX] Could not load mesh [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Idle\A_C_TGA_Bro_Idle_Breathing.fbx] : No mesh data found in file!
+[18:25:11] [   LOG   ] [FBX] Animation has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Idle\A_C_TGA_Bro_Idle_Breathing.fbx]
+[18:25:11] [  ERROR  ] [FBX] Could not load mesh [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Idle\A_C_TGA_Bro_Idle_Wave.fbx] : No mesh data found in file!
+[18:25:11] [   LOG   ] [FBX] Animation has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Idle\A_C_TGA_Bro_Idle_Wave.fbx]
+[18:25:11] [  ERROR  ] [FBX] Could not load mesh [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Locomotion\A_C_TGA_Bro_Run.fbx] : No mesh data found in file!
+[18:25:11] [   LOG   ] [FBX] Animation has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Locomotion\A_C_TGA_Bro_Run.fbx]
+[18:25:11] [  ERROR  ] [FBX] Could not load mesh [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Locomotion\A_C_TGA_Bro_Walk.fbx] : No mesh data found in file!
+[18:25:11] [   LOG   ] [FBX] Animation has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Locomotion\A_C_TGA_Bro_Walk.fbx]
+****************************************************************************************************
+Logging has started at 2026-09-14 18:27:44.
+****************************************************************************************************
+[18:27:44] [   LOG   ] [ModelViewer] ModelViewer starting...
+[18:27:44] [   LOG   ] [ModelViewer] Ready!
+[18:27:44] [   LOG   ] [ModelViewer] Initializing Graphics Engine...
+[18:27:44] [   LOG   ] [RHI] Initializing RHI...
+[18:27:44] [   LOG   ] [RHI] Selected adapter is NVIDIA GeForce RTX 5080
+[18:27:44] [   LOG   ] [RHI] RHI Started!
+[18:27:45] [   LOG   ] [FBX] Mesh has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Meshes\SM_Color_Checker.fbx]
+[18:27:45] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Albedo\T_Marble_Tiles_C.dds]
+[18:27:45] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Normal\T_Marble_Tiles_N.dds]
+[18:27:45] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Material\T_Marble_Tiles_M.dds]
+[18:27:45] [   LOG   ] [MATERIAL] Material has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Materials\BaseMaterial.json]
+[18:27:45] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Albedo\T_Color_Checker_C.dds]
+[18:27:45] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Normal\T_Color_Checker_N.dds]
+[18:27:45] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Material\T_Color_Checker_M.dds]
+[18:27:45] [   LOG   ] [MATERIAL] Material instance has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Materials\SMColorChecker.json]
+[18:27:45] [   LOG   ] [FBX] Mesh has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Meshes\SM_Chest.fbx]
+[18:27:45] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Albedo\T_Chest_C.dds]
+[18:27:45] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Normal\T_Chest_N.dds]
+[18:27:45] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Material\T_Chest_M.dds]
+[18:27:46] [   LOG   ] [MATERIAL] Material has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Materials\ChestMaterial.json]
+[18:27:46] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Albedo\T_Marble_Tiles_C.dds]
+[18:27:46] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Normal\T_Marble_Tiles_N.dds]
+[18:27:46] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Material\T_Marble_Tiles_M.dds]
+****************************************************************************************************
+Logging has started at 2026-09-14 18:33:17.
+****************************************************************************************************
+[18:33:17] [   LOG   ] [ModelViewer] ModelViewer starting...
+[18:33:17] [   LOG   ] [ModelViewer] Ready!
+[18:33:17] [   LOG   ] [ModelViewer] Initializing Graphics Engine...
+[18:33:17] [   LOG   ] [RHI] Initializing RHI...
+[18:33:17] [   LOG   ] [RHI] Selected adapter is NVIDIA GeForce RTX 5080
+[18:33:17] [   LOG   ] [RHI] RHI Started!
+[18:33:18] [   LOG   ] [FBX] Mesh has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Meshes\SM_Color_Checker.fbx]
+[18:33:18] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Albedo\T_Marble_Tiles_C.dds]
+[18:33:18] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Normal\T_Marble_Tiles_N.dds]
+[18:33:18] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Material\T_Marble_Tiles_M.dds]
+[18:33:18] [   LOG   ] [MATERIAL] Material has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Materials\BaseMaterial.json]
+[18:33:18] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Albedo\T_Color_Checker_C.dds]
+[18:33:18] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Normal\T_Color_Checker_N.dds]
+[18:33:18] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Material\T_Color_Checker_M.dds]
+[18:33:18] [   LOG   ] [MATERIAL] Material instance has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Materials\SMColorChecker.json]
+[18:33:18] [   LOG   ] [FBX] Mesh has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Meshes\SM_Chest.fbx]
+[18:33:18] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Albedo\T_Chest_C.dds]
+[18:33:18] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Normal\T_Chest_N.dds]
+[18:33:18] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Material\T_Chest_M.dds]
+[18:33:19] [   LOG   ] [MATERIAL] Material has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Materials\ChestMaterial.json]
+[18:33:19] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Albedo\T_Marble_Tiles_C.dds]
+[18:33:19] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Normal\T_Marble_Tiles_N.dds]
+[18:33:19] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Material\T_Marble_Tiles_M.dds]
+[18:33:19] [   LOG   ] [MATERIAL] Material has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Materials\BaseMaterial.json]
+[18:33:19] [   LOG   ] [FBX] Mesh has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Meshes\SK_C_TGA_Bro.fbx]
+[18:33:19] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Albedo\T_TGA_Bro_C.dds]
+[18:33:19] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Normal\T_TGA_Bro_N.dds]
+[18:33:19] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Material\T_TGA_Bro_M.dds]
+[18:33:19] [   LOG   ] [MATERIAL] Material instance has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Materials\TGABroMaterial.json]
+[18:33:19] [  ERROR  ] [FBX] Could not load mesh [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Idle\A_C_TGA_Bro_Idle_Breathing.fbx] : No mesh data found in file!
+[18:33:19] [   LOG   ] [FBX] Animation has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Idle\A_C_TGA_Bro_Idle_Breathing.fbx]
+[18:33:19] [  ERROR  ] [FBX] Could not load mesh [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Idle\A_C_TGA_Bro_Idle_Wave.fbx] : No mesh data found in file!
+[18:33:19] [   LOG   ] [FBX] Animation has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Idle\A_C_TGA_Bro_Idle_Wave.fbx]
+[18:33:19] [  ERROR  ] [FBX] Could not load mesh [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Locomotion\A_C_TGA_Bro_Run.fbx] : No mesh data found in file!
+[18:33:19] [   LOG   ] [FBX] Animation has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Locomotion\A_C_TGA_Bro_Run.fbx]
+[18:33:19] [  ERROR  ] [FBX] Could not load mesh [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Locomotion\A_C_TGA_Bro_Walk.fbx] : No mesh data found in file!
+[18:33:20] [   LOG   ] [FBX] Animation has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Locomotion\A_C_TGA_Bro_Walk.fbx]
+****************************************************************************************************
+Logging has started at 2026-09-14 18:33:49.
+****************************************************************************************************
+[18:33:49] [   LOG   ] [ModelViewer] ModelViewer starting...
+[18:33:49] [   LOG   ] [ModelViewer] Ready!
+[18:33:49] [   LOG   ] [ModelViewer] Initializing Graphics Engine...
+[18:33:49] [   LOG   ] [RHI] Initializing RHI...
+[18:33:49] [   LOG   ] [RHI] Selected adapter is NVIDIA GeForce RTX 5080
+[18:33:50] [   LOG   ] [RHI] RHI Started!
+[18:33:50] [   LOG   ] [FBX] Mesh has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Meshes\SM_Color_Checker.fbx]
+[18:33:50] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Albedo\T_Marble_Tiles_C.dds]
+[18:33:50] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Normal\T_Marble_Tiles_N.dds]
+[18:33:50] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Material\T_Marble_Tiles_M.dds]
+[18:33:50] [   LOG   ] [MATERIAL] Material has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Materials\BaseMaterial.json]
+[18:33:50] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Albedo\T_Color_Checker_C.dds]
+[18:33:50] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Normal\T_Color_Checker_N.dds]
+[18:33:50] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Material\T_Color_Checker_M.dds]
+[18:33:50] [   LOG   ] [MATERIAL] Material instance has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Materials\SMColorChecker.json]
+[18:33:50] [   LOG   ] [FBX] Mesh has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Meshes\SM_Chest.fbx]
+[18:33:50] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Albedo\T_Chest_C.dds]
+[18:33:50] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Normal\T_Chest_N.dds]
+[18:33:50] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Material\T_Chest_M.dds]
+[18:33:51] [   LOG   ] [MATERIAL] Material has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Materials\ChestMaterial.json]
+[18:33:51] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Albedo\T_Marble_Tiles_C.dds]
+[18:33:51] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Normal\T_Marble_Tiles_N.dds]
+[18:33:51] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Material\T_Marble_Tiles_M.dds]
+[18:33:51] [   LOG   ] [MATERIAL] Material has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Materials\BaseMaterial.json]
+[18:33:51] [   LOG   ] [FBX] Mesh has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Meshes\SK_C_TGA_Bro.fbx]
+[18:33:51] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Albedo\T_TGA_Bro_C.dds]
+[18:33:51] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Normal\T_TGA_Bro_N.dds]
+[18:33:51] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Material\T_TGA_Bro_M.dds]
+[18:33:51] [   LOG   ] [MATERIAL] Material instance has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Materials\TGABroMaterial.json]
+[18:33:51] [  ERROR  ] [FBX] Could not load mesh [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Idle\A_C_TGA_Bro_Idle_Breathing.fbx] : No mesh data found in file!
+[18:33:51] [   LOG   ] [FBX] Animation has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Idle\A_C_TGA_Bro_Idle_Breathing.fbx]
+[18:33:51] [  ERROR  ] [FBX] Could not load mesh [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Idle\A_C_TGA_Bro_Idle_Wave.fbx] : No mesh data found in file!
+[18:33:51] [   LOG   ] [FBX] Animation has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Idle\A_C_TGA_Bro_Idle_Wave.fbx]
+[18:33:51] [  ERROR  ] [FBX] Could not load mesh [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Locomotion\A_C_TGA_Bro_Run.fbx] : No mesh data found in file!
+[18:33:51] [   LOG   ] [FBX] Animation has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Locomotion\A_C_TGA_Bro_Run.fbx]
+[18:33:51] [  ERROR  ] [FBX] Could not load mesh [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Locomotion\A_C_TGA_Bro_Walk.fbx] : No mesh data found in file!
+[18:33:51] [   LOG   ] [FBX] Animation has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Locomotion\A_C_TGA_Bro_Walk.fbx]
+****************************************************************************************************
+Logging has started at 2026-09-14 18:38:25.
+****************************************************************************************************
+[18:38:25] [   LOG   ] [ModelViewer] ModelViewer starting...
+[18:38:25] [   LOG   ] [ModelViewer] Ready!
+[18:38:25] [   LOG   ] [ModelViewer] Initializing Graphics Engine...
+[18:38:25] [   LOG   ] [RHI] Initializing RHI...
+[18:38:25] [   LOG   ] [RHI] Selected adapter is NVIDIA GeForce RTX 5080
+[18:38:25] [   LOG   ] [RHI] RHI Started!
+[18:38:25] [   LOG   ] [FBX] Mesh has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Meshes\SM_Color_Checker.fbx]
+[18:38:26] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Albedo\T_Marble_Tiles_C.dds]
+[18:38:26] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Normal\T_Marble_Tiles_N.dds]
+[18:38:26] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Material\T_Marble_Tiles_M.dds]
+[18:38:26] [   LOG   ] [MATERIAL] Material has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Materials\BaseMaterial.json]
+[18:38:26] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Albedo\T_Color_Checker_C.dds]
+[18:38:26] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Normal\T_Color_Checker_N.dds]
+[18:38:26] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Material\T_Color_Checker_M.dds]
+[18:38:26] [   LOG   ] [MATERIAL] Material instance has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Materials\SMColorChecker.json]
+[18:38:26] [   LOG   ] [FBX] Mesh has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Meshes\SM_Chest.fbx]
+[18:38:26] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Albedo\T_Chest_C.dds]
+[18:38:26] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Normal\T_Chest_N.dds]
+[18:38:26] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Material\T_Chest_M.dds]
+[18:38:26] [   LOG   ] [MATERIAL] Material has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Materials\ChestMaterial.json]
+[18:38:26] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Albedo\T_Marble_Tiles_C.dds]
+[18:38:26] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Normal\T_Marble_Tiles_N.dds]
+[18:38:26] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Material\T_Marble_Tiles_M.dds]
+[18:38:26] [   LOG   ] [MATERIAL] Material has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Materials\BaseMaterial.json]
+[18:38:27] [   LOG   ] [FBX] Mesh has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Meshes\SK_C_TGA_Bro.fbx]
+[18:38:27] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Albedo\T_TGA_Bro_C.dds]
+[18:38:27] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Normal\T_TGA_Bro_N.dds]
+[18:38:27] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Material\T_TGA_Bro_M.dds]
+[18:38:27] [   LOG   ] [MATERIAL] Material instance has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Materials\TGABroMaterial.json]
+[18:38:27] [  ERROR  ] [FBX] Could not load mesh [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Idle\A_C_TGA_Bro_Idle_Breathing.fbx] : No mesh data found in file!
+[18:38:27] [   LOG   ] [FBX] Animation has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Idle\A_C_TGA_Bro_Idle_Breathing.fbx]
+[18:38:27] [  ERROR  ] [FBX] Could not load mesh [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Idle\A_C_TGA_Bro_Idle_Wave.fbx] : No mesh data found in file!
+[18:38:27] [   LOG   ] [FBX] Animation has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Idle\A_C_TGA_Bro_Idle_Wave.fbx]
+[18:38:27] [  ERROR  ] [FBX] Could not load mesh [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Locomotion\A_C_TGA_Bro_Run.fbx] : No mesh data found in file!
+[18:38:27] [   LOG   ] [FBX] Animation has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Locomotion\A_C_TGA_Bro_Run.fbx]
+[18:38:27] [  ERROR  ] [FBX] Could not load mesh [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Locomotion\A_C_TGA_Bro_Walk.fbx] : No mesh data found in file!
+[18:38:27] [   LOG   ] [FBX] Animation has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Locomotion\A_C_TGA_Bro_Walk.fbx]
+****************************************************************************************************
+Logging has started at 2026-09-14 18:38:52.
+****************************************************************************************************
+[18:38:52] [   LOG   ] [ModelViewer] ModelViewer starting...
+[18:38:52] [   LOG   ] [ModelViewer] Ready!
+[18:38:52] [   LOG   ] [ModelViewer] Initializing Graphics Engine...
+[18:38:52] [   LOG   ] [RHI] Initializing RHI...
+[18:38:52] [   LOG   ] [RHI] Selected adapter is NVIDIA GeForce RTX 5080
+[18:38:52] [   LOG   ] [RHI] RHI Started!
+[18:38:52] [   LOG   ] [FBX] Mesh has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Meshes\SM_Color_Checker.fbx]
+[18:38:52] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Albedo\T_Marble_Tiles_C.dds]
+[18:38:52] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Normal\T_Marble_Tiles_N.dds]
+[18:38:52] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Material\T_Marble_Tiles_M.dds]
+[18:38:53] [   LOG   ] [MATERIAL] Material has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Materials\BaseMaterial.json]
+[18:38:53] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Albedo\T_Color_Checker_C.dds]
+[18:38:53] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Normal\T_Color_Checker_N.dds]
+[18:38:53] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Material\T_Color_Checker_M.dds]
+[18:38:53] [   LOG   ] [MATERIAL] Material instance has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Materials\SMColorChecker.json]
+[18:38:53] [   LOG   ] [FBX] Mesh has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Meshes\SM_Chest.fbx]
+[18:38:53] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Albedo\T_Chest_C.dds]
+[18:38:53] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Normal\T_Chest_N.dds]
+[18:38:53] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Material\T_Chest_M.dds]
+[18:38:53] [   LOG   ] [MATERIAL] Material has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Materials\ChestMaterial.json]
+[18:38:53] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Albedo\T_Marble_Tiles_C.dds]
+[18:38:53] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Normal\T_Marble_Tiles_N.dds]
+[18:38:53] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Material\T_Marble_Tiles_M.dds]
+[18:38:53] [   LOG   ] [MATERIAL] Material has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Materials\BaseMaterial.json]
+[18:38:53] [   LOG   ] [FBX] Mesh has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Meshes\SK_C_TGA_Bro.fbx]
+[18:38:53] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Albedo\T_TGA_Bro_C.dds]
+[18:38:53] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Normal\T_TGA_Bro_N.dds]
+[18:38:53] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Material\T_TGA_Bro_M.dds]
+[18:38:53] [   LOG   ] [MATERIAL] Material instance has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Materials\TGABroMaterial.json]
+[18:38:53] [  ERROR  ] [FBX] Could not load mesh [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Idle\A_C_TGA_Bro_Idle_Breathing.fbx] : No mesh data found in file!
+[18:38:54] [   LOG   ] [FBX] Animation has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Idle\A_C_TGA_Bro_Idle_Breathing.fbx]
+[18:38:54] [  ERROR  ] [FBX] Could not load mesh [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Idle\A_C_TGA_Bro_Idle_Wave.fbx] : No mesh data found in file!
+[18:38:54] [   LOG   ] [FBX] Animation has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Idle\A_C_TGA_Bro_Idle_Wave.fbx]
+[18:38:54] [  ERROR  ] [FBX] Could not load mesh [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Locomotion\A_C_TGA_Bro_Run.fbx] : No mesh data found in file!
+[18:38:54] [   LOG   ] [FBX] Animation has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Locomotion\A_C_TGA_Bro_Run.fbx]
+[18:38:54] [  ERROR  ] [FBX] Could not load mesh [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Locomotion\A_C_TGA_Bro_Walk.fbx] : No mesh data found in file!
+[18:38:54] [   LOG   ] [FBX] Animation has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Locomotion\A_C_TGA_Bro_Walk.fbx]
+****************************************************************************************************
+Logging has started at 2026-09-14 18:39:04.
+****************************************************************************************************
+[18:39:04] [   LOG   ] [ModelViewer] ModelViewer starting...
+[18:39:08] [  ERROR  ] [ASSETREGISTRY] Working directory for the asset registry does not exist!
+[18:39:08] [   LOG   ] [ModelViewer] Ready!
+[18:39:08] [   LOG   ] [ModelViewer] Initializing Graphics Engine...
+[18:39:08] [   LOG   ] [RHI] Initializing RHI...
+[18:39:08] [   LOG   ] [RHI] Selected adapter is NVIDIA GeForce RTX 5080
+[18:39:09] [   LOG   ] [RHI] RHI Started!
+****************************************************************************************************
+Logging has started at 2026-09-14 18:39:37.
+****************************************************************************************************
+[18:39:37] [   LOG   ] [ModelViewer] ModelViewer starting...
+[18:39:37] [   LOG   ] [ModelViewer] Ready!
+[18:39:37] [   LOG   ] [ModelViewer] Initializing Graphics Engine...
+[18:39:37] [   LOG   ] [RHI] Initializing RHI...
+[18:39:37] [   LOG   ] [RHI] Selected adapter is NVIDIA GeForce RTX 5080
+[18:39:37] [   LOG   ] [RHI] RHI Started!
+[18:39:38] [   LOG   ] [FBX] Mesh has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Meshes\SM_Color_Checker.fbx]
+[18:39:38] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Albedo\T_Marble_Tiles_C.dds]
+[18:39:38] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Normal\T_Marble_Tiles_N.dds]
+[18:39:38] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Material\T_Marble_Tiles_M.dds]
+[18:39:38] [   LOG   ] [MATERIAL] Material has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Materials\BaseMaterial.json]
+[18:39:38] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Albedo\T_Color_Checker_C.dds]
+[18:39:38] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Normal\T_Color_Checker_N.dds]
+[18:39:38] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Material\T_Color_Checker_M.dds]
+[18:39:38] [   LOG   ] [MATERIAL] Material instance has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Materials\SMColorChecker.json]
+[18:39:38] [   LOG   ] [FBX] Mesh has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Meshes\SM_Chest.fbx]
+[18:39:38] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Albedo\T_Chest_C.dds]
+[18:39:38] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Normal\T_Chest_N.dds]
+[18:39:38] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Material\T_Chest_M.dds]
+[18:39:39] [   LOG   ] [MATERIAL] Material has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Materials\ChestMaterial.json]
+[18:39:39] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Albedo\T_Marble_Tiles_C.dds]
+[18:39:39] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Normal\T_Marble_Tiles_N.dds]
+[18:39:39] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Material\T_Marble_Tiles_M.dds]
+[18:39:39] [   LOG   ] [MATERIAL] Material has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Materials\BaseMaterial.json]
+[18:39:39] [   LOG   ] [FBX] Mesh has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Meshes\SK_C_TGA_Bro.fbx]
+[18:39:39] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Albedo\T_TGA_Bro_C.dds]
+[18:39:39] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Normal\T_TGA_Bro_N.dds]
+[18:39:39] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Material\T_TGA_Bro_M.dds]
+[18:39:39] [   LOG   ] [MATERIAL] Material instance has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Materials\TGABroMaterial.json]
+[18:39:39] [  ERROR  ] [FBX] Could not load mesh [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Idle\A_C_TGA_Bro_Idle_Breathing.fbx] : No mesh data found in file!
+[18:39:39] [   LOG   ] [FBX] Animation has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Idle\A_C_TGA_Bro_Idle_Breathing.fbx]
+[18:39:39] [  ERROR  ] [FBX] Could not load mesh [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Idle\A_C_TGA_Bro_Idle_Wave.fbx] : No mesh data found in file!
+[18:39:39] [   LOG   ] [FBX] Animation has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Idle\A_C_TGA_Bro_Idle_Wave.fbx]
+[18:39:39] [  ERROR  ] [FBX] Could not load mesh [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Locomotion\A_C_TGA_Bro_Run.fbx] : No mesh data found in file!
+[18:39:39] [   LOG   ] [FBX] Animation has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Locomotion\A_C_TGA_Bro_Run.fbx]
+[18:39:39] [  ERROR  ] [FBX] Could not load mesh [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Locomotion\A_C_TGA_Bro_Walk.fbx] : No mesh data found in file!
+[18:39:39] [   LOG   ] [FBX] Animation has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Locomotion\A_C_TGA_Bro_Walk.fbx]
+****************************************************************************************************
+Logging has started at 2026-09-14 18:40:43.
+****************************************************************************************************
+[18:40:43] [   LOG   ] [ModelViewer] ModelViewer starting...
+[18:40:43] [   LOG   ] [ModelViewer] Ready!
+[18:40:43] [   LOG   ] [ModelViewer] Initializing Graphics Engine...
+[18:40:43] [   LOG   ] [RHI] Initializing RHI...
+[18:40:43] [   LOG   ] [RHI] Selected adapter is NVIDIA GeForce RTX 5080
+[18:40:43] [   LOG   ] [RHI] RHI Started!
+[18:40:44] [   LOG   ] [FBX] Mesh has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Meshes\SM_Color_Checker.fbx]
+[18:40:44] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Albedo\T_Marble_Tiles_C.dds]
+[18:40:44] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Normal\T_Marble_Tiles_N.dds]
+[18:40:44] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Material\T_Marble_Tiles_M.dds]
+[18:40:44] [   LOG   ] [MATERIAL] Material has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Materials\BaseMaterial.json]
+[18:40:44] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Albedo\T_Color_Checker_C.dds]
+[18:40:44] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Normal\T_Color_Checker_N.dds]
+[18:40:44] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Material\T_Color_Checker_M.dds]
+[18:40:44] [   LOG   ] [MATERIAL] Material instance has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Materials\SMColorChecker.json]
+[18:40:44] [   LOG   ] [FBX] Mesh has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Meshes\SM_Chest.fbx]
+[18:40:44] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Albedo\T_Chest_C.dds]
+[18:40:44] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Normal\T_Chest_N.dds]
+[18:40:44] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Material\T_Chest_M.dds]
+[18:40:44] [   LOG   ] [MATERIAL] Material has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Materials\ChestMaterial.json]
+[18:40:44] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Albedo\T_Marble_Tiles_C.dds]
+[18:40:44] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Normal\T_Marble_Tiles_N.dds]
+[18:40:44] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Material\T_Marble_Tiles_M.dds]
+[18:40:45] [   LOG   ] [MATERIAL] Material has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Materials\BaseMaterial.json]
+[18:40:45] [   LOG   ] [FBX] Mesh has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Meshes\SK_C_TGA_Bro.fbx]
+[18:40:45] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Albedo\T_TGA_Bro_C.dds]
+[18:40:45] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Normal\T_TGA_Bro_N.dds]
+[18:40:45] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Material\T_TGA_Bro_M.dds]
+[18:40:45] [   LOG   ] [MATERIAL] Material instance has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Materials\TGABroMaterial.json]
+[18:40:45] [  ERROR  ] [FBX] Could not load mesh [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Idle\A_C_TGA_Bro_Idle_Breathing.fbx] : No mesh data found in file!
+[18:40:45] [   LOG   ] [FBX] Animation has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Idle\A_C_TGA_Bro_Idle_Breathing.fbx]
+[18:40:45] [  ERROR  ] [FBX] Could not load mesh [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Idle\A_C_TGA_Bro_Idle_Wave.fbx] : No mesh data found in file!
+[18:40:45] [   LOG   ] [FBX] Animation has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Idle\A_C_TGA_Bro_Idle_Wave.fbx]
+[18:40:45] [  ERROR  ] [FBX] Could not load mesh [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Locomotion\A_C_TGA_Bro_Run.fbx] : No mesh data found in file!
+[18:40:45] [   LOG   ] [FBX] Animation has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Locomotion\A_C_TGA_Bro_Run.fbx]
+[18:40:45] [  ERROR  ] [FBX] Could not load mesh [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Locomotion\A_C_TGA_Bro_Walk.fbx] : No mesh data found in file!
+[18:40:45] [   LOG   ] [FBX] Animation has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Locomotion\A_C_TGA_Bro_Walk.fbx]
+****************************************************************************************************
+Logging has started at 2026-09-14 18:40:56.
+****************************************************************************************************
+[18:40:56] [   LOG   ] [ModelViewer] ModelViewer starting...
+[18:40:56] [   LOG   ] [ModelViewer] Ready!
+[18:40:56] [   LOG   ] [ModelViewer] Initializing Graphics Engine...
+[18:40:56] [   LOG   ] [RHI] Initializing RHI...
+[18:40:56] [   LOG   ] [RHI] Selected adapter is NVIDIA GeForce RTX 5080
+[18:40:57] [   LOG   ] [RHI] RHI Started!
+[18:40:57] [   LOG   ] [FBX] Mesh has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Meshes\SM_Color_Checker.fbx]
+[18:40:57] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Albedo\T_Marble_Tiles_C.dds]
+[18:40:57] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Normal\T_Marble_Tiles_N.dds]
+[18:40:57] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Material\T_Marble_Tiles_M.dds]
+[18:40:57] [   LOG   ] [MATERIAL] Material has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Materials\BaseMaterial.json]
+[18:40:57] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Albedo\T_Color_Checker_C.dds]
+[18:40:57] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Normal\T_Color_Checker_N.dds]
+[18:40:57] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Material\T_Color_Checker_M.dds]
+[18:40:57] [   LOG   ] [MATERIAL] Material instance has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Materials\SMColorChecker.json]
+[18:40:57] [   LOG   ] [FBX] Mesh has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Meshes\SM_Chest.fbx]
+[18:40:57] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Albedo\T_Chest_C.dds]
+[18:40:57] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Normal\T_Chest_N.dds]
+[18:40:57] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Material\T_Chest_M.dds]
+[18:40:58] [   LOG   ] [MATERIAL] Material has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Materials\ChestMaterial.json]
+[18:40:58] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Albedo\T_Marble_Tiles_C.dds]
+[18:40:58] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Normal\T_Marble_Tiles_N.dds]
+[18:40:58] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Material\T_Marble_Tiles_M.dds]
+[18:40:58] [   LOG   ] [MATERIAL] Material has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Materials\BaseMaterial.json]
+[18:40:58] [   LOG   ] [FBX] Mesh has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Meshes\SK_C_TGA_Bro.fbx]
+[18:40:58] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Albedo\T_TGA_Bro_C.dds]
+[18:40:58] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Normal\T_TGA_Bro_N.dds]
+[18:40:58] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Material\T_TGA_Bro_M.dds]
+[18:40:58] [   LOG   ] [MATERIAL] Material instance has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Materials\TGABroMaterial.json]
+[18:40:58] [  ERROR  ] [FBX] Could not load mesh [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Idle\A_C_TGA_Bro_Idle_Breathing.fbx] : No mesh data found in file!
+[18:40:58] [   LOG   ] [FBX] Animation has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Idle\A_C_TGA_Bro_Idle_Breathing.fbx]
+[18:40:58] [  ERROR  ] [FBX] Could not load mesh [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Idle\A_C_TGA_Bro_Idle_Wave.fbx] : No mesh data found in file!
+[18:40:58] [   LOG   ] [FBX] Animation has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Idle\A_C_TGA_Bro_Idle_Wave.fbx]
+[18:40:58] [  ERROR  ] [FBX] Could not load mesh [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Locomotion\A_C_TGA_Bro_Run.fbx] : No mesh data found in file!
+[18:40:58] [   LOG   ] [FBX] Animation has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Locomotion\A_C_TGA_Bro_Run.fbx]
+[18:40:58] [  ERROR  ] [FBX] Could not load mesh [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Locomotion\A_C_TGA_Bro_Walk.fbx] : No mesh data found in file!
+[18:40:58] [   LOG   ] [FBX] Animation has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Locomotion\A_C_TGA_Bro_Walk.fbx]
+****************************************************************************************************
+Logging has started at 2026-09-14 18:41:34.
+****************************************************************************************************
+[18:41:34] [   LOG   ] [ModelViewer] ModelViewer starting...
+[18:41:34] [   LOG   ] [ModelViewer] Ready!
+[18:41:34] [   LOG   ] [ModelViewer] Initializing Graphics Engine...
+[18:41:34] [   LOG   ] [RHI] Initializing RHI...
+[18:41:34] [   LOG   ] [RHI] Selected adapter is NVIDIA GeForce RTX 5080
+[18:41:35] [   LOG   ] [RHI] RHI Started!
+[18:41:35] [   LOG   ] [FBX] Mesh has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Meshes\SM_Color_Checker.fbx]
+[18:41:35] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Albedo\T_Marble_Tiles_C.dds]
+[18:41:35] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Normal\T_Marble_Tiles_N.dds]
+[18:41:35] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Material\T_Marble_Tiles_M.dds]
+[18:41:35] [   LOG   ] [MATERIAL] Material has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Materials\BaseMaterial.json]
+[18:41:35] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Albedo\T_Color_Checker_C.dds]
+[18:41:35] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Normal\T_Color_Checker_N.dds]
+[18:41:35] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Material\T_Color_Checker_M.dds]
+[18:41:35] [   LOG   ] [MATERIAL] Material instance has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Materials\SMColorChecker.json]
+[18:41:35] [   LOG   ] [FBX] Mesh has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Meshes\SM_Chest.fbx]
+[18:41:35] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Albedo\T_Chest_C.dds]
+[18:41:35] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Normal\T_Chest_N.dds]
+[18:41:35] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Material\T_Chest_M.dds]
+[18:41:36] [   LOG   ] [MATERIAL] Material has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Materials\ChestMaterial.json]
+[18:41:36] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Albedo\T_Marble_Tiles_C.dds]
+[18:41:36] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Normal\T_Marble_Tiles_N.dds]
+[18:41:36] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Material\T_Marble_Tiles_M.dds]
+[18:41:36] [   LOG   ] [MATERIAL] Material has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Materials\BaseMaterial.json]
+[18:41:36] [   LOG   ] [FBX] Mesh has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Meshes\SK_C_TGA_Bro.fbx]
+[18:41:36] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Albedo\T_TGA_Bro_C.dds]
+[18:41:36] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Normal\T_TGA_Bro_N.dds]
+[18:41:36] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Material\T_TGA_Bro_M.dds]
+[18:41:36] [   LOG   ] [MATERIAL] Material instance has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Materials\TGABroMaterial.json]
+[18:41:36] [  ERROR  ] [FBX] Could not load mesh [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Idle\A_C_TGA_Bro_Idle_Breathing.fbx] : No mesh data found in file!
+[18:41:36] [   LOG   ] [FBX] Animation has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Idle\A_C_TGA_Bro_Idle_Breathing.fbx]
+[18:41:36] [  ERROR  ] [FBX] Could not load mesh [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Idle\A_C_TGA_Bro_Idle_Wave.fbx] : No mesh data found in file!
+[18:41:36] [   LOG   ] [FBX] Animation has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Idle\A_C_TGA_Bro_Idle_Wave.fbx]
+[18:41:36] [  ERROR  ] [FBX] Could not load mesh [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Locomotion\A_C_TGA_Bro_Run.fbx] : No mesh data found in file!
+[18:41:36] [   LOG   ] [FBX] Animation has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Locomotion\A_C_TGA_Bro_Run.fbx]
+[18:41:36] [  ERROR  ] [FBX] Could not load mesh [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Locomotion\A_C_TGA_Bro_Walk.fbx] : No mesh data found in file!
+[18:41:36] [   LOG   ] [FBX] Animation has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Locomotion\A_C_TGA_Bro_Walk.fbx]
+****************************************************************************************************
+Logging has started at 2026-09-14 20:47:24.
+****************************************************************************************************
+[20:47:24] [   LOG   ] [ModelViewer] ModelViewer starting...
+[20:47:28] [  ERROR  ] [ASSETREGISTRY] Content root dir is not a valid path! Provided root was C:\Users\gusta\Documents\GitHub\Game-Engine\Source\Content.
+****************************************************************************************************
+Logging has started at 2026-09-14 20:48:12.
+****************************************************************************************************
+[20:48:12] [   LOG   ] [ModelViewer] ModelViewer starting...
+[20:48:12] [   LOG   ] [ModelViewer] Ready!
+[20:48:12] [   LOG   ] [ModelViewer] Initializing Graphics Engine...
+[20:48:12] [   LOG   ] [RHI] Initializing RHI...
+[20:48:12] [   LOG   ] [RHI] Selected adapter is NVIDIA GeForce RTX 5080
+[20:48:13] [   LOG   ] [RHI] RHI Started!
+[20:48:13] [   LOG   ] [FBX] Mesh has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Meshes\SM_Color_Checker.fbx]
+[20:48:13] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Albedo\T_Marble_Tiles_C.dds]
+[20:48:13] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Normal\T_Marble_Tiles_N.dds]
+[20:48:13] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Material\T_Marble_Tiles_M.dds]
+[20:48:13] [   LOG   ] [MATERIAL] Material has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Materials\BaseMaterial.json]
+[20:48:13] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Albedo\T_Color_Checker_C.dds]
+[20:48:13] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Normal\T_Color_Checker_N.dds]
+[20:48:13] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Material\T_Color_Checker_M.dds]
+[20:48:13] [   LOG   ] [MATERIAL] Material instance has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Materials\SMColorChecker.json]
+[20:48:13] [   LOG   ] [FBX] Mesh has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Meshes\SM_Chest.fbx]
+[20:48:13] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Albedo\T_Chest_C.dds]
+[20:48:13] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Normal\T_Chest_N.dds]
+[20:48:13] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Material\T_Chest_M.dds]
+[20:48:14] [   LOG   ] [MATERIAL] Material has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Materials\ChestMaterial.json]
+[20:48:14] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Albedo\T_Marble_Tiles_C.dds]
+[20:48:14] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Normal\T_Marble_Tiles_N.dds]
+[20:48:14] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Material\T_Marble_Tiles_M.dds]
+[20:48:14] [   LOG   ] [MATERIAL] Material has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Materials\BaseMaterial.json]
+[20:48:14] [   LOG   ] [FBX] Mesh has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Meshes\SK_C_TGA_Bro.fbx]
+[20:48:14] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Albedo\T_TGA_Bro_C.dds]
+[20:48:14] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Normal\T_TGA_Bro_N.dds]
+[20:48:14] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Material\T_TGA_Bro_M.dds]
+[20:48:14] [   LOG   ] [MATERIAL] Material instance has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Materials\TGABroMaterial.json]
+[20:48:14] [  ERROR  ] [FBX] Could not load mesh [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Idle\A_C_TGA_Bro_Idle_Breathing.fbx] : No mesh data found in file!
+[20:48:14] [   LOG   ] [FBX] Animation has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Idle\A_C_TGA_Bro_Idle_Breathing.fbx]
+[20:48:14] [  ERROR  ] [FBX] Could not load mesh [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Idle\A_C_TGA_Bro_Idle_Wave.fbx] : No mesh data found in file!
+[20:48:14] [   LOG   ] [FBX] Animation has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Idle\A_C_TGA_Bro_Idle_Wave.fbx]
+[20:48:14] [  ERROR  ] [FBX] Could not load mesh [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Locomotion\A_C_TGA_Bro_Run.fbx] : No mesh data found in file!
+[20:48:14] [   LOG   ] [FBX] Animation has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Locomotion\A_C_TGA_Bro_Run.fbx]
+[20:48:14] [  ERROR  ] [FBX] Could not load mesh [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Locomotion\A_C_TGA_Bro_Walk.fbx] : No mesh data found in file!
+[20:48:14] [   LOG   ] [FBX] Animation has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Locomotion\A_C_TGA_Bro_Walk.fbx]
+****************************************************************************************************
+Logging has started at 2026-09-14 20:52:30.
+****************************************************************************************************
+[20:52:30] [   LOG   ] [ModelViewer] ModelViewer starting...
+[20:52:30] [   LOG   ] [ModelViewer] Ready!
+[20:52:30] [   LOG   ] [ModelViewer] Initializing Graphics Engine...
+[20:52:30] [   LOG   ] [RHI] Initializing RHI...
+[20:52:30] [   LOG   ] [RHI] Selected adapter is NVIDIA GeForce RTX 5080
+[20:52:30] [   LOG   ] [RHI] RHI Started!
+[20:52:31] [   LOG   ] [FBX] Mesh has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Meshes\SM_Color_Checker.fbx]
+[20:52:31] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Albedo\T_Marble_Tiles_C.dds]
+[20:52:31] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Normal\T_Marble_Tiles_N.dds]
+[20:52:31] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Material\T_Marble_Tiles_M.dds]
+****************************************************************************************************
+Logging has started at 2026-09-14 21:12:41.
+****************************************************************************************************
+[21:12:41] [   LOG   ] [ModelViewer] ModelViewer starting...
+[21:12:41] [   LOG   ] [ModelViewer] Ready!
+[21:12:41] [   LOG   ] [ModelViewer] Initializing Graphics Engine...
+[21:12:41] [   LOG   ] [RHI] Initializing RHI...
+[21:12:41] [   LOG   ] [RHI] Selected adapter is NVIDIA GeForce RTX 5080
+[21:12:41] [   LOG   ] [RHI] RHI Started!
+[21:12:42] [   LOG   ] [FBX] Mesh has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Meshes\SM_Color_Checker.fbx]
+[21:12:42] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Albedo\T_Marble_Tiles_C.dds]
+[21:12:42] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Normal\T_Marble_Tiles_N.dds]
+[21:12:42] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Material\T_Marble_Tiles_M.dds]
+[21:12:42] [   LOG   ] [MATERIAL] Material has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Materials\BaseMaterial.json]
+[21:12:42] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Albedo\T_Color_Checker_C.dds]
+[21:12:42] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Normal\T_Color_Checker_N.dds]
+[21:12:42] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Material\T_Color_Checker_M.dds]
+[21:12:42] [   LOG   ] [MATERIAL] Material instance has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Materials\SMColorChecker.json]
+[21:12:42] [   LOG   ] [FBX] Mesh has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Meshes\SM_Chest.fbx]
+[21:12:42] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Albedo\T_Chest_C.dds]
+[21:12:42] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Normal\T_Chest_N.dds]
+[21:12:42] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Material\T_Chest_M.dds]
+[21:12:42] [   LOG   ] [MATERIAL] Material has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Materials\ChestMaterial.json]
+[21:12:42] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Albedo\T_Marble_Tiles_C.dds]
+[21:12:42] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Normal\T_Marble_Tiles_N.dds]
+[21:12:42] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Material\T_Marble_Tiles_M.dds]
+[21:12:43] [   LOG   ] [MATERIAL] Material has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Materials\BaseMaterial.json]
+[21:12:43] [   LOG   ] [FBX] Mesh has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Meshes\SK_C_TGA_Bro.fbx]
+[21:12:43] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Albedo\T_TGA_Bro_C.dds]
+[21:12:43] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Normal\T_TGA_Bro_N.dds]
+[21:12:43] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Material\T_TGA_Bro_M.dds]
+[21:12:43] [   LOG   ] [MATERIAL] Material instance has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Materials\TGABroMaterial.json]
+[21:12:43] [  ERROR  ] [FBX] Could not load mesh [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Idle\A_C_TGA_Bro_Idle_Breathing.fbx] : No mesh data found in file!
+[21:12:43] [   LOG   ] [FBX] Animation has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Idle\A_C_TGA_Bro_Idle_Breathing.fbx]
+[21:12:43] [  ERROR  ] [FBX] Could not load mesh [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Idle\A_C_TGA_Bro_Idle_Wave.fbx] : No mesh data found in file!
+[21:12:43] [   LOG   ] [FBX] Animation has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Idle\A_C_TGA_Bro_Idle_Wave.fbx]
+[21:12:43] [  ERROR  ] [FBX] Could not load mesh [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Locomotion\A_C_TGA_Bro_Run.fbx] : No mesh data found in file!
+[21:12:43] [   LOG   ] [FBX] Animation has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Locomotion\A_C_TGA_Bro_Run.fbx]
+[21:12:43] [  ERROR  ] [FBX] Could not load mesh [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Locomotion\A_C_TGA_Bro_Walk.fbx] : No mesh data found in file!
+[21:12:43] [   LOG   ] [FBX] Animation has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Locomotion\A_C_TGA_Bro_Walk.fbx]
+****************************************************************************************************
+Logging has started at 2026-09-14 21:14:36.
+****************************************************************************************************
+[21:14:36] [   LOG   ] [ModelViewer] ModelViewer starting...
+[21:14:36] [   LOG   ] [ModelViewer] Ready!
+[21:14:36] [   LOG   ] [ModelViewer] Initializing Graphics Engine...
+[21:14:36] [   LOG   ] [RHI] Initializing RHI...
+[21:14:36] [   LOG   ] [RHI] Selected adapter is NVIDIA GeForce RTX 5080
+[21:14:36] [   LOG   ] [RHI] RHI Started!
+[21:14:36] [   LOG   ] [FBX] Mesh has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Meshes\SM_Color_Checker.fbx]
+[21:14:36] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Albedo\T_Marble_Tiles_C.dds]
+[21:14:36] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Normal\T_Marble_Tiles_N.dds]
+[21:14:36] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Material\T_Marble_Tiles_M.dds]
+[21:14:37] [   LOG   ] [MATERIAL] Material has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Materials\BaseMaterial.json]
+[21:14:37] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Albedo\T_Color_Checker_C.dds]
+[21:14:37] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Normal\T_Color_Checker_N.dds]
+[21:14:37] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Material\T_Color_Checker_M.dds]
+[21:14:37] [   LOG   ] [MATERIAL] Material instance has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Materials\SMColorChecker.json]
+[21:14:37] [   LOG   ] [FBX] Mesh has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Meshes\SM_Chest.fbx]
+[21:14:37] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Albedo\T_Chest_C.dds]
+[21:14:37] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Normal\T_Chest_N.dds]
+[21:14:37] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Material\T_Chest_M.dds]
+[21:14:37] [   LOG   ] [MATERIAL] Material has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Materials\ChestMaterial.json]
+[21:14:37] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Albedo\T_Marble_Tiles_C.dds]
+[21:14:37] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Normal\T_Marble_Tiles_N.dds]
+[21:14:37] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Material\T_Marble_Tiles_M.dds]
+[21:14:37] [   LOG   ] [MATERIAL] Material has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Materials\BaseMaterial.json]
+[21:14:37] [   LOG   ] [FBX] Mesh has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Meshes\SK_C_TGA_Bro.fbx]
+[21:14:37] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Albedo\T_TGA_Bro_C.dds]
+[21:14:37] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Normal\T_TGA_Bro_N.dds]
+[21:14:37] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Material\T_TGA_Bro_M.dds]
+[21:14:37] [   LOG   ] [MATERIAL] Material instance has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Materials\TGABroMaterial.json]
+[21:14:37] [  ERROR  ] [FBX] Could not load mesh [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Idle\A_C_TGA_Bro_Idle_Breathing.fbx] : No mesh data found in file!
+[21:14:37] [   LOG   ] [FBX] Animation has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Idle\A_C_TGA_Bro_Idle_Breathing.fbx]
+[21:14:37] [  ERROR  ] [FBX] Could not load mesh [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Idle\A_C_TGA_Bro_Idle_Wave.fbx] : No mesh data found in file!
+[21:14:37] [   LOG   ] [FBX] Animation has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Idle\A_C_TGA_Bro_Idle_Wave.fbx]
+[21:14:37] [  ERROR  ] [FBX] Could not load mesh [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Locomotion\A_C_TGA_Bro_Run.fbx] : No mesh data found in file!
+[21:14:38] [   LOG   ] [FBX] Animation has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Locomotion\A_C_TGA_Bro_Run.fbx]
+[21:14:38] [  ERROR  ] [FBX] Could not load mesh [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Locomotion\A_C_TGA_Bro_Walk.fbx] : No mesh data found in file!
+[21:14:38] [   LOG   ] [FBX] Animation has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Locomotion\A_C_TGA_Bro_Walk.fbx]
+****************************************************************************************************
+Logging has started at 2026-09-14 21:24:27.
+****************************************************************************************************
+[21:24:27] [   LOG   ] [ModelViewer] ModelViewer starting...
+****************************************************************************************************
+Logging has started at 2026-09-14 21:24:56.
+****************************************************************************************************
+[21:24:56] [   LOG   ] [ModelViewer] ModelViewer starting...
+****************************************************************************************************
+Logging has started at 2026-09-14 21:25:49.
+****************************************************************************************************
+[21:25:49] [   LOG   ] [ModelViewer] ModelViewer starting...
+[21:25:49] [   LOG   ] [ModelViewer] Ready!
+[21:25:49] [   LOG   ] [ModelViewer] Initializing Graphics Engine...
+[21:25:49] [   LOG   ] [RHI] Initializing RHI...
+[21:25:49] [   LOG   ] [RHI] Selected adapter is NVIDIA GeForce RTX 5080
+[21:25:50] [   LOG   ] [RHI] RHI Started!
+[21:25:50] [   LOG   ] [FBX] Mesh has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Meshes\SM_Color_Checker.fbx]
+[21:25:50] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Albedo\T_Marble_Tiles_C.dds]
+[21:25:50] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Normal\T_Marble_Tiles_N.dds]
+[21:25:50] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Material\T_Marble_Tiles_M.dds]
+[21:25:50] [   LOG   ] [MATERIAL] Material has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Materials\BaseMaterial.json]
+[21:25:50] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Albedo\T_Color_Checker_C.dds]
+[21:25:50] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Normal\T_Color_Checker_N.dds]
+[21:25:50] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Material\T_Color_Checker_M.dds]
+[21:25:50] [   LOG   ] [MATERIAL] Material instance has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Materials\SMColorChecker.json]
+[21:25:50] [   LOG   ] [FBX] Mesh has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Meshes\SM_Chest.fbx]
+[21:25:50] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Albedo\T_Chest_C.dds]
+[21:25:50] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Normal\T_Chest_N.dds]
+[21:25:50] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Material\T_Chest_M.dds]
+[21:25:51] [   LOG   ] [MATERIAL] Material has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Materials\ChestMaterial.json]
+[21:25:51] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Albedo\T_Marble_Tiles_C.dds]
+[21:25:51] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Normal\T_Marble_Tiles_N.dds]
+[21:25:51] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Material\T_Marble_Tiles_M.dds]
+[21:25:51] [   LOG   ] [MATERIAL] Material has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Materials\BaseMaterial.json]
+[21:25:51] [   LOG   ] [FBX] Mesh has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Meshes\SK_C_TGA_Bro.fbx]
+[21:25:51] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Albedo\T_TGA_Bro_C.dds]
+[21:25:51] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Normal\T_TGA_Bro_N.dds]
+[21:25:51] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Material\T_TGA_Bro_M.dds]
+[21:25:51] [   LOG   ] [MATERIAL] Material instance has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Materials\TGABroMaterial.json]
+[21:25:51] [  ERROR  ] [FBX] Could not load mesh [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Idle\A_C_TGA_Bro_Idle_Breathing.fbx] : No mesh data found in file!
+[21:25:51] [   LOG   ] [FBX] Animation has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Idle\A_C_TGA_Bro_Idle_Breathing.fbx]
+[21:25:51] [  ERROR  ] [FBX] Could not load mesh [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Idle\A_C_TGA_Bro_Idle_Wave.fbx] : No mesh data found in file!
+[21:25:51] [   LOG   ] [FBX] Animation has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Idle\A_C_TGA_Bro_Idle_Wave.fbx]
+[21:25:51] [  ERROR  ] [FBX] Could not load mesh [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Locomotion\A_C_TGA_Bro_Run.fbx] : No mesh data found in file!
+[21:25:51] [   LOG   ] [FBX] Animation has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Locomotion\A_C_TGA_Bro_Run.fbx]
+[21:25:51] [  ERROR  ] [FBX] Could not load mesh [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Locomotion\A_C_TGA_Bro_Walk.fbx] : No mesh data found in file!
+[21:25:51] [   LOG   ] [FBX] Animation has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Locomotion\A_C_TGA_Bro_Walk.fbx]
+****************************************************************************************************
+Logging has started at 2026-09-14 21:27:58.
+****************************************************************************************************
+[21:27:58] [   LOG   ] [ModelViewer] ModelViewer starting...
+[21:27:58] [   LOG   ] [ModelViewer] Ready!
+[21:27:58] [   LOG   ] [ModelViewer] Initializing Graphics Engine...
+[21:27:58] [   LOG   ] [RHI] Initializing RHI...
+[21:27:58] [   LOG   ] [RHI] Selected adapter is Capture Adapter
+[21:27:58] [   LOG   ] [RHI] RHI Started!
+[21:27:58] [   LOG   ] [FBX] Mesh has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Meshes\SM_Color_Checker.fbx]
+[21:27:58] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Albedo\T_Marble_Tiles_C.dds]
+[21:27:58] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Normal\T_Marble_Tiles_N.dds]
+[21:27:58] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Material\T_Marble_Tiles_M.dds]
+[21:27:59] [   LOG   ] [MATERIAL] Material has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Materials\BaseMaterial.json]
+[21:27:59] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Albedo\T_Color_Checker_C.dds]
+[21:27:59] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Normal\T_Color_Checker_N.dds]
+[21:27:59] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Material\T_Color_Checker_M.dds]
+[21:27:59] [   LOG   ] [MATERIAL] Material instance has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Materials\SMColorChecker.json]
+[21:27:59] [   LOG   ] [FBX] Mesh has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Meshes\SM_Chest.fbx]
+[21:27:59] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Albedo\T_Chest_C.dds]
+[21:27:59] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Normal\T_Chest_N.dds]
+[21:27:59] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Material\T_Chest_M.dds]
+[21:27:59] [   LOG   ] [MATERIAL] Material has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Materials\ChestMaterial.json]
+[21:27:59] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Albedo\T_Marble_Tiles_C.dds]
+[21:27:59] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Normal\T_Marble_Tiles_N.dds]
+[21:27:59] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Material\T_Marble_Tiles_M.dds]
+[21:27:59] [   LOG   ] [MATERIAL] Material has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Materials\BaseMaterial.json]
+[21:27:59] [   LOG   ] [FBX] Mesh has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Meshes\SK_C_TGA_Bro.fbx]
+[21:27:59] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Albedo\T_TGA_Bro_C.dds]
+[21:27:59] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Normal\T_TGA_Bro_N.dds]
+[21:27:59] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Material\T_TGA_Bro_M.dds]
+[21:27:59] [   LOG   ] [MATERIAL] Material instance has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Materials\TGABroMaterial.json]
+[21:27:59] [  ERROR  ] [FBX] Could not load mesh [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Idle\A_C_TGA_Bro_Idle_Breathing.fbx] : No mesh data found in file!
+[21:27:59] [   LOG   ] [FBX] Animation has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Idle\A_C_TGA_Bro_Idle_Breathing.fbx]
+[21:27:59] [  ERROR  ] [FBX] Could not load mesh [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Idle\A_C_TGA_Bro_Idle_Wave.fbx] : No mesh data found in file!
+[21:28:00] [   LOG   ] [FBX] Animation has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Idle\A_C_TGA_Bro_Idle_Wave.fbx]
+[21:28:00] [  ERROR  ] [FBX] Could not load mesh [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Locomotion\A_C_TGA_Bro_Run.fbx] : No mesh data found in file!
+[21:28:00] [   LOG   ] [FBX] Animation has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Locomotion\A_C_TGA_Bro_Run.fbx]
+[21:28:00] [  ERROR  ] [FBX] Could not load mesh [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Locomotion\A_C_TGA_Bro_Walk.fbx] : No mesh data found in file!
+[21:28:00] [   LOG   ] [FBX] Animation has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Locomotion\A_C_TGA_Bro_Walk.fbx]
+****************************************************************************************************
+Logging has started at 2026-09-14 21:28:56.
+****************************************************************************************************
+[21:28:56] [   LOG   ] [ModelViewer] ModelViewer starting...
+[21:28:56] [   LOG   ] [ModelViewer] Ready!
+[21:28:56] [   LOG   ] [ModelViewer] Initializing Graphics Engine...
+[21:28:56] [   LOG   ] [RHI] Initializing RHI...
+[21:28:56] [   LOG   ] [RHI] Selected adapter is Capture Adapter
+[21:28:56] [   LOG   ] [RHI] RHI Started!
+[21:28:57] [   LOG   ] [FBX] Mesh has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Meshes\SM_Color_Checker.fbx]
+[21:28:57] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Albedo\T_Marble_Tiles_C.dds]
+[21:28:57] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Normal\T_Marble_Tiles_N.dds]
+[21:28:57] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Material\T_Marble_Tiles_M.dds]
+[21:28:57] [   LOG   ] [MATERIAL] Material has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Materials\BaseMaterial.json]
+[21:28:57] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Albedo\T_Color_Checker_C.dds]
+[21:28:57] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Normal\T_Color_Checker_N.dds]
+[21:28:57] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Material\T_Color_Checker_M.dds]
+[21:28:57] [   LOG   ] [MATERIAL] Material instance has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Materials\SMColorChecker.json]
+[21:28:57] [   LOG   ] [FBX] Mesh has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Meshes\SM_Chest.fbx]
+[21:28:57] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Albedo\T_Chest_C.dds]
+[21:28:57] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Normal\T_Chest_N.dds]
+[21:28:57] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Material\T_Chest_M.dds]
+[21:28:57] [   LOG   ] [MATERIAL] Material has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Materials\ChestMaterial.json]
+[21:28:57] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Albedo\T_Marble_Tiles_C.dds]
+[21:28:57] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Normal\T_Marble_Tiles_N.dds]
+[21:28:57] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Material\T_Marble_Tiles_M.dds]
+[21:28:58] [   LOG   ] [MATERIAL] Material has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Materials\BaseMaterial.json]
+[21:28:58] [   LOG   ] [FBX] Mesh has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Meshes\SK_C_TGA_Bro.fbx]
+[21:28:58] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Albedo\T_TGA_Bro_C.dds]
+[21:28:58] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Normal\T_TGA_Bro_N.dds]
+[21:28:58] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Textures\Material\T_TGA_Bro_M.dds]
+[21:28:58] [   LOG   ] [MATERIAL] Material instance has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Materials\TGABroMaterial.json]
+[21:28:58] [  ERROR  ] [FBX] Could not load mesh [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Idle\A_C_TGA_Bro_Idle_Breathing.fbx] : No mesh data found in file!
+[21:28:58] [   LOG   ] [FBX] Animation has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Idle\A_C_TGA_Bro_Idle_Breathing.fbx]
+[21:28:58] [  ERROR  ] [FBX] Could not load mesh [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Idle\A_C_TGA_Bro_Idle_Wave.fbx] : No mesh data found in file!
+[21:28:58] [   LOG   ] [FBX] Animation has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Idle\A_C_TGA_Bro_Idle_Wave.fbx]
+[21:28:58] [  ERROR  ] [FBX] Could not load mesh [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Locomotion\A_C_TGA_Bro_Run.fbx] : No mesh data found in file!
+[21:28:58] [   LOG   ] [FBX] Animation has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Locomotion\A_C_TGA_Bro_Run.fbx]
+[21:28:58] [  ERROR  ] [FBX] Could not load mesh [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Locomotion\A_C_TGA_Bro_Walk.fbx] : No mesh data found in file!
+[21:28:58] [   LOG   ] [FBX] Animation has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Locomotion\A_C_TGA_Bro_Walk.fbx]

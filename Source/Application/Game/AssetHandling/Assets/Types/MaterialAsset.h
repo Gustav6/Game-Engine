@@ -4,7 +4,7 @@
 
 #include "TextureAsset.h"
 
-#include "AssetHandling/Asset/Base/Asset.h"
+#include <AssetHandling/Assets/Base/Asset.h>
 
 #include "GraphicsEngine/Materials/Material.h"
 
