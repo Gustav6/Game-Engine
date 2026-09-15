@@ -43,6 +43,7 @@ namespace CommonUtilities
 
 			Vector4();
 			Vector4(const T &aX, const T &aY, const T &aZ, const T &aW);
+			Vector4(const T* aValues);
 
 			template <class TargetType>
 			Vector4<TargetType> ToType() const;
@@ -226,6 +227,15 @@ namespace CommonUtilities
 		y = aY;
 		z = aZ;
 		w = aW;
+	}
+
+	template<typename T>
+	inline Vector4<T>::Vector4(const T* aValues)
+	{
+		x = aValues[0];
+		y = aValues[1];
+		z = aValues[2];
+		w = aValues[3];
 	}
 
 #pragma endregion

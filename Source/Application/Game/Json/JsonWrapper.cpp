@@ -12,14 +12,12 @@ JsonData::JsonData()
 {
 	myRoot = nullptr;
 	myDocument = nullptr;
-	myOwnsDocument = false;
 }
 
 JsonData::JsonData(const std::filesystem::path& aJsonPath)
 {
 	myRoot = nullptr;
 	myDocument = nullptr;
-	myOwnsDocument = true;
 	myPath = aJsonPath;
 
 	if (!std::filesystem::exists(aJsonPath))
@@ -29,31 +27,25 @@ JsonData::JsonData(const std::filesystem::path& aJsonPath)
 	}
 
 	yyjson_read_err error;
-	myDocument = yyjson_read_file(aJsonPath.string().data(), 0, nullptr, &error);
 
-	if (myDocument == nullptr)
+	yyjson_doc* document = yyjson_read_file(aJsonPath.string().c_str(), 0, nullptr, &error);
+
+	if (document == nullptr)
 	{
 		LOG(JSONLog, Error, "Could not read json [{}]! Error [{}] : [{}] at position: [{}]!", aJsonPath.string(), error.code, error.msg, error.pos);
 		return;
 	}
 
-	myRoot = yyjson_doc_get_root(myDocument);
+	myDocument = std::shared_ptr<yyjson_doc>(document, yyjson_doc_free);
+
+	myRoot = yyjson_doc_get_root(myDocument.get());
 }
 
-JsonData::JsonData(yyjson_doc* aDocument, yyjson_val* aValue, std::filesystem::path aPath)
+JsonData::JsonData(std::shared_ptr<yyjson_doc> aDocument, yyjson_val* aValue, std::filesystem::path aPath)
 {
 	myDocument = aDocument;
 	myRoot = aValue;
 	myPath = aPath;
-	myOwnsDocument = false;
-}
-
-JsonData::~JsonData()
-{
-	if (myOwnsDocument)
-	{
-		yyjson_doc_free(myDocument);
-	}
 }
 
 bool JsonData::IsValid() const
@@ -104,6 +96,25 @@ int JsonData::GetInt(const char* aName) const
 	return yyjson_get_int(data);
 }
 
+unsigned int JsonData::GetUnsigned(const char* aName) const
+{
+	yyjson_val* data = yyjson_obj_get(myRoot, aName);
+
+	if (data == nullptr)
+	{
+		LOG(JSONLog, Warning, "Key [{}] not found in [{}]!", aName, myPath.string());
+		return 0;
+	}
+
+	if (!yyjson_is_uint(data))
+	{
+		LOG(JSONLog, Warning, "Key [{}] exists but is not a int, type: [{}] in [{}]!", aName, yyjson_get_type_desc(data), myPath.string());
+		return 0;
+	}
+
+	return yyjson_get_uint(data);
+}
+
 float JsonData::GetFloat(const char* aName) const
 {
 	yyjson_val* data = yyjson_obj_get(myRoot, aName);
@@ -123,7 +134,7 @@ float JsonData::GetFloat(const char* aName) const
 	return static_cast<float>(yyjson_get_num(data));
 }
 
-std::string_view JsonData::GetString(const char* aName) const
+std::string JsonData::GetString(const char* aName) const
 {
 	yyjson_val* data = yyjson_obj_get(myRoot, aName);
 
@@ -140,6 +151,27 @@ std::string_view JsonData::GetString(const char* aName) const
 	}
 
 	return yyjson_get_str(data);
+}
+
+JsonData JsonData::GetObjectValue(const char* aName) const
+{
+	yyjson_val* object = yyjson_obj_get(myRoot, aName);
+
+	if (object == nullptr)
+	{
+		LOG(JSONLog, Warning, "Key [{}] not found in [{}]!", aName, myPath.string());
+
+		return JsonData();
+	}
+
+	if (!yyjson_is_obj(object))
+	{
+		LOG(JSONLog, Warning, "Key [{}] exists but is not an object, type: [{}] in [{}]!", aName, yyjson_get_type_desc(object), myPath.string());
+
+		return JsonData();
+	}
+
+	return JsonData(myDocument, object, myPath);
 }
 
 std::vector<bool> JsonData::GetBoolArray(const char* aName) const
@@ -214,6 +246,42 @@ std::vector<int> JsonData::GetIntArray(const char* aName) const
 	return values;
 }
 
+std::vector<unsigned int> JsonData::GetUnsignedArray(const char* aName) const
+{
+	std::vector<unsigned int> values;
+
+	yyjson_val* data = yyjson_obj_get(myRoot, aName);
+
+	if (data == nullptr)
+	{
+		LOG(JSONLog, Warning, "Key [{}] not found in [{}]!", aName, myPath.string());
+		return values;
+	}
+
+	if (!yyjson_is_arr(data))
+	{
+		LOG(JSONLog, Warning, "Key [{}] is not an array in [{}]!", aName, myPath.string());
+		return values;
+	}
+
+	yyjson_val* value;
+	size_t idx, max;
+
+	yyjson_arr_foreach(data, idx, max, value)
+	{
+		if (yyjson_is_uint(value))
+		{
+			values.push_back(yyjson_get_uint(value));
+		}
+		else
+		{
+			LOG(JSONLog, Warning, "Array [{}] contains a non-integer value in [{}]!", aName, myPath.string());
+		}
+	}
+
+	return values;
+}
+
 std::vector<float> JsonData::GetFloatArray(const char* aName) const
 {
 	std::vector<float> values;
@@ -250,9 +318,9 @@ std::vector<float> JsonData::GetFloatArray(const char* aName) const
 	return values;
 }
 
-std::vector<std::string_view> JsonData::GetStringArray(const char* aName) const
+std::vector<std::string> JsonData::GetStringArray(const char* aName) const
 {
-	std::vector<std::string_view> values;
+	std::vector<std::string> values;
 
 	yyjson_val* data = yyjson_obj_get(myRoot, aName);
 
@@ -286,25 +354,153 @@ std::vector<std::string_view> JsonData::GetStringArray(const char* aName) const
 	return values;
 }
 
-JsonData JsonData::GetObjectValue(const char* aName) const
+std::vector<JsonData> JsonData::GetObjectValueArray(const char* aName) const
 {
-	yyjson_val* object = yyjson_obj_get(myRoot, aName);
+	std::vector<JsonData> values;
 
-	if (object == nullptr)
+	yyjson_val* data = yyjson_obj_get(myRoot, aName);
+
+	if (data == nullptr)
 	{
 		LOG(JSONLog, Warning, "Key [{}] not found in [{}]!", aName, myPath.string());
-
-		return JsonData();
+		return values;
 	}
 
-	if (!yyjson_is_obj(object))
+	if (!yyjson_is_arr(data))
 	{
-		LOG(JSONLog, Warning, "Key [{}] exists but is not an object, type: [{}] in [{}]!", aName, yyjson_get_type_desc(object), myPath.string());
-
-		return JsonData();
+		LOG(JSONLog, Warning, "Key [{}] is not an array in [{}]!", aName, myPath.string());
+		return values;
 	}
 
-	return JsonData(myDocument, object, myPath);
+	yyjson_val* value;
+	size_t idx, max;
+
+	yyjson_arr_foreach(data, idx, max, value)
+	{
+		if (yyjson_is_obj(value))
+		{
+			JsonData data(myDocument, value, myPath);
+
+			values.emplace_back(std::move(data));
+		}
+		else
+		{
+			LOG(JSONLog, Warning, "Array [{}] contains a non-object value in [{}]!", aName, myPath.string());
+		}
+	}
+
+	return values;
+}
+
+std::vector<std::string> JsonData::GetKeys() const
+{
+	std::vector<std::string> keys;
+
+	if (!yyjson_is_obj(myRoot))
+	{
+		return keys;
+	}
+
+	yyjson_val* key;
+	yyjson_val* value;
+	size_t idx;
+	size_t max;
+
+	yyjson_obj_foreach(myRoot, idx, max, key, value)
+	{
+		keys.emplace_back(yyjson_get_str(key));
+	}
+
+	return keys;
+}
+
+JsonValueType JsonData::GetType(const char* aName) const
+{
+	yyjson_val* data = yyjson_obj_get(myRoot, aName);
+
+	if (data == nullptr)
+	{
+		return JsonValueType::Unknown;
+	}
+
+	if (yyjson_is_bool(data))
+	{
+		return JsonValueType::Bool;
+	}
+	if (yyjson_is_int(data))
+	{
+		return JsonValueType::Int;
+	}
+	if (yyjson_is_uint(data))
+	{
+		return JsonValueType::Unsigned;
+	}
+	if (yyjson_is_num(data))
+	{
+		return JsonValueType::Float;
+	}
+	if (yyjson_is_str(data))
+	{
+		return JsonValueType::String;
+	}
+	if (yyjson_is_arr(data))
+	{
+		return JsonValueType::Array;
+	}
+	if (yyjson_is_obj(data))
+	{
+		return JsonValueType::Object;
+	}
+
+	return JsonValueType::Unknown;
+}
+
+JsonValueType JsonData::GetArrayType(const char* aName) const
+{
+	yyjson_val* data = yyjson_obj_get(myRoot, aName);
+
+	if (data == nullptr || !yyjson_is_arr(data))
+	{
+		return JsonValueType::Unknown;
+	}
+
+	yyjson_val* value = yyjson_arr_get_first(data);
+
+	if (value == nullptr)
+	{
+		return JsonValueType::Unknown;
+	}
+
+	if (yyjson_is_bool(value))
+	{
+		return JsonValueType::Bool;
+	}
+	if (yyjson_is_int(value))
+	{
+		return JsonValueType::Int;
+	}
+	if (yyjson_is_uint(value))
+	{
+		return JsonValueType::Unsigned;
+	}
+	if (yyjson_is_num(value))
+	{
+		return JsonValueType::Float;
+	}
+	if (yyjson_is_str(value))
+	{
+		return JsonValueType::String;
+	}
+	if (yyjson_is_arr(value))
+	{
+		return JsonValueType::Array;
+	}
+	if (yyjson_is_obj(value))
+	{
+		return JsonValueType::Object;
+	}
+
+	return JsonValueType::Unknown;
 }
 
 bool JsonData::HasKey(const char* aName) const

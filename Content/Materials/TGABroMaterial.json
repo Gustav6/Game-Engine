@@ -1,6 +1,6 @@
 {
   "Name": "TGABroMaterial",
-  "ParentMaterial": "ChestMaterial",
+  "MasterMaterial": "ChestMaterial",
   "Textures": {
     "AlbedoTexture": "T_TGA_Bro_C",
     "NormalTexture": "T_TGA_Bro_N",

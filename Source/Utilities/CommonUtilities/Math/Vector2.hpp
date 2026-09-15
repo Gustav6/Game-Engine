@@ -41,6 +41,7 @@ namespace CommonUtilities
 
 			Vector2();
 			Vector2(const T &aX, const T &aY);
+			Vector2(const T* aValues);
 
 			template <class TargetType>
 			Vector2<TargetType> ToType() const;
@@ -219,6 +220,13 @@ namespace CommonUtilities
 	{
 		x = aX;
 		y = aY;
+	}
+
+	template<typename T>
+	inline Vector2<T>::Vector2(const T* aValues)
+	{
+		x = aValues[0];
+		y = aValues[1];
 	}
 
 #pragma endregion

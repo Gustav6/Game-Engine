@@ -98,7 +98,7 @@ void GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const Scene& 
 {
 	inoutCommandList.BeginEvent("Reset Pipeline");
 	{
-		inoutCommandList.ClearRenderTargets(myGBuffer->GetTextures(), GBuffer::NUM_GBUFFER_TARGETS);
+		//inoutCommandList.ClearRenderTargets(myGBuffer->GetTextures(), GBuffer::NUM_GBUFFER_TARGETS);
 		inoutCommandList.ClearRenderTarget(*myBackBuffer);
 		inoutCommandList.ClearDepthStencil(*myDepthBuffer);
 	}
@@ -215,10 +215,11 @@ void GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const Scene& 
 
 		UploadSceneLightingData(inoutCommandList, aScene.SceneLights);
 
-		inoutCommandList.SetRenderTargets(myGBuffer->GetTextures(), GBuffer::NUM_GBUFFER_TARGETS, myDepthBuffer.get());
+		//inoutCommandList.SetRenderTargets(myGBuffer->GetTextures(), GBuffer::NUM_GBUFFER_TARGETS, myDepthBuffer.get());
 		RenderDrawCalls(inoutCommandList, opaqueItems, DrawCallFlag_BindTextures | DrawCallFlag_BindMaterial);
+		//RenderDrawCalls(inoutCommandList, opaqueItems, DrawCallFlag_BindTextures | DrawCallFlag_BindMaterial, myGBufferPSO.get());
 
-		inoutCommandList.SetRenderTarget(myBackBuffer.get(), myDepthBuffer.get());
+		//inoutCommandList.SetRenderTarget(myBackBuffer.get(), myDepthBuffer.get());
 		RenderDrawCalls(inoutCommandList, alphaItems, DrawCallFlag_BindTextures | DrawCallFlag_BindMaterial);
 	}
 	inoutCommandList.EndEvent();
@@ -796,7 +797,7 @@ void GraphicsEngine::UploadSceneLightingData(GraphicsCommandList& inoutCommandLi
 	UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::LightBuffer, lightBuffer, 3, PipelineStage_PixelShader);
 }
 
-void GraphicsEngine::RenderDrawCalls(GraphicsCommandList& inoutCommandList, const std::vector<InternalRenderItem>& aRenderItems, DrawCallFlags someFlags)
+void GraphicsEngine::RenderDrawCalls(GraphicsCommandList& inoutCommandList, const std::vector<InternalRenderItem>& aRenderItems, DrawCallFlags someFlags, const PipelineStateObject* aOverridePSO)
 {
 	for (const auto& renderItem : aRenderItems)
 	{
@@ -864,7 +865,14 @@ void GraphicsEngine::RenderDrawCalls(GraphicsCommandList& inoutCommandList, cons
 				inoutCommandList.SetShaderResources(textures.data(), textures.size(), 0, PipelineStage_VertexShader | PipelineStage_PixelShader);
 			}
 
-			inoutCommandList.SetPipelineStateObject(material.GetPSO());
+			if (aOverridePSO != nullptr)
+			{
+				inoutCommandList.SetPipelineStateObject(*aOverridePSO);
+			}
+			else
+			{
+				inoutCommandList.SetPipelineStateObject(material.GetPSO());
+			}
 		}
 			
 		inoutCommandList.DrawIndexed(element.NumIndices, element.IndexOffset);

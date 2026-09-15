@@ -1,6 +1,6 @@
 {
   "Name": "SMColorCheckerMaterial",
-  "ParentMaterial": "BaseMaterial",
+  "MasterMaterial": "BaseMaterial",
   "Textures": {
     "AlbedoTexture": "T_Color_Checker_C",
     "NormalTexture": "T_Color_Checker_N",
