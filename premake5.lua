@@ -1,8 +1,7 @@
 -- Name of the VS Solution.
 workspace "GameProject"
-    -- What configuration we will have.
+    -- What configurations we will have.
     configurations { "Debug", "Release", "Retail" }
-    -- Platforms we will support, always use x64 for 64-bit builds.
     platforms { "x64" }
     toolset "v145"
     startproject "Game"

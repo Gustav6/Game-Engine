@@ -9,6 +9,7 @@
 #include "GraphicsEngine/Objects/Vertex.h"
 #include "GraphicsEngine/Objects/Shader.h"
 #include "GraphicsEngine/Objects/Sampler.h"
+#include "GraphicsEngine/Objects/GBuffer.h"
 
 #include "PipelineStateObject.h"
 #include "GraphicsCommandList.h"
@@ -737,6 +738,95 @@ bool RenderHardwareInterface::CreateDepthStencil(std::string_view aName, unsigne
 
 	outDepthStencil.myViewport = { 0, 0, static_cast<float>(aWidth), static_cast<float>(aHeight), 0, 1 };
 	outDepthStencil.myName = aName;
+
+	return true;
+}
+
+bool RenderHardwareInterface::CreateGBuffer(std::string_view aName, unsigned aWidth, unsigned aHeight, GBuffer& outGBuffer) const
+{
+	ensure(!aName.empty());
+
+	// To make texture creation easier and keep a debug name available.
+	struct GBufferTextureInfo
+	{
+		std::string Name;
+		DXGI_FORMAT Format;
+	};
+
+	// This order matters! Make SURE you always keep the GBuffer order
+	// the same in all places. I.e. both here and in the shader code!
+	// If there's a mismatch you will get very strange behavior.
+	std::vector<GBufferTextureInfo> textureInfos = {
+		{ "Albedo", DXGI_FORMAT_R8G8B8A8_UNORM },
+		{ "Normal", DXGI_FORMAT_R16G16B16A16_SNORM },
+		{ "Surface", DXGI_FORMAT_R8G8B8A8_UNORM },
+		{ "Emission", DXGI_FORMAT_R16G16B16A16_FLOAT },
+		{ "WorldPosition", DXGI_FORMAT_R32G32B32A32_FLOAT }
+	};
+
+	// Base texture description.
+	D3D11_TEXTURE2D_DESC desc;
+	desc.Width = aWidth;
+	desc.Height = aHeight;
+	desc.MipLevels = 1;
+	desc.ArraySize = 1;
+	// desc.Format - This will be set in the loop below.
+	desc.SampleDesc.Count = 1;
+	desc.SampleDesc.Quality = 0;
+	desc.Usage = D3D11_USAGE_DEFAULT;
+	desc.BindFlags = D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_RENDER_TARGET;
+	desc.CPUAccessFlags = 0;
+	desc.MiscFlags = 0;
+
+	outGBuffer.myName = aName;
+
+	for (size_t t = 0; t < textureInfos.size(); ++t)
+	{
+		const GBufferTextureInfo& info = textureInfos[t];
+		desc.Format = info.Format;
+
+		ComPtr<ID3D11Texture2D> texture;
+		HRESULT result = myDevice->CreateTexture2D(&desc, nullptr, &texture);
+		if (FAILED(result))
+		{
+			LOG(RhiLog, Error, "Failed to create the GBuffer {} channel!", aName, info.Name);
+			return false;
+		}
+		const std::string textureName = std::format("{}_{}_T2D", aName, info.Name);
+		SetObjectName(texture, textureName);
+
+		ComPtr<ID3D11RenderTargetView> rtv;
+		result = myDevice->CreateRenderTargetView(texture.Get(), nullptr, &rtv);
+		if (FAILED(result))
+		{
+			LOG(RhiLog, Error, "Failed to create the GBuffer {} channel!", aName, info.Name);
+			return false;
+		}
+
+		const std::string rtvName = std::format("{}_{}_RTV", aName, info.Name);
+		SetObjectName(rtv, rtvName);
+
+		ComPtr<ID3D11ShaderResourceView> srv;
+		result = myDevice->CreateShaderResourceView(texture.Get(), nullptr, &srv);
+		if (FAILED(result))
+		{
+			LOG(RhiLog, Error, "Failed to create the GBuffer {} channel!", aName, info.Name);
+			return false;
+		}
+
+		const std::string srvName = std::format("{}_{}_SRV", aName, info.Name);
+		SetObjectName(srv, srvName);
+
+		outGBuffer.myTextures[t].myRTV = rtv;
+		outGBuffer.myTextures[t].mySRV = srv;
+		outGBuffer.myTextures[t].myName = info.Name;
+		outGBuffer.myTextures[t].myViewport.TopLeftX = 0;
+		outGBuffer.myTextures[t].myViewport.TopLeftY = 0;
+		outGBuffer.myTextures[t].myViewport.Width = static_cast<float>(aWidth);
+		outGBuffer.myTextures[t].myViewport.Height = static_cast<float>(aHeight);
+		outGBuffer.myTextures[t].myViewport.MinDepth = 0;
+		outGBuffer.myTextures[t].myViewport.MaxDepth = 1;
+	}
 
 	return true;
 }

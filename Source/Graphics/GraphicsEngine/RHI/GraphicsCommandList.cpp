@@ -57,6 +57,23 @@ void GraphicsCommandList::ClearRenderTarget(const Texture& aTarget) const
 	myContext->ClearRenderTargetView(aTarget.myRTV.Get(), clearColor);
 }
 
+void GraphicsCommandList::ClearRenderTargets(const Texture* aTargetList, unsigned aNumTargets) const
+{
+	if (aNumTargets == 0)
+	{
+		return;
+	}
+
+	ensure(!IsReadyForExecution());
+
+	float clearColor[4] = { 0, 0, 0, 0 };
+
+	for (unsigned t = 0; t < aNumTargets; ++t)
+	{
+		myContext->ClearRenderTargetView(aTargetList[t].myRTV.Get(), clearColor);
+	}
+}
+
 void GraphicsCommandList::ClearDepthStencil(const Texture& aTarget) const
 {
 	ensure(!IsReadyForExecution());
@@ -92,7 +109,7 @@ void GraphicsCommandList::SetRenderTarget(const Texture* aTexture, const Texture
 	myContext->RSSetViewports(1, &viewport);
 }
 
-void GraphicsCommandList::SetRenderTargets(const Texture** aTargetList, unsigned aNumTargets, const Texture* aDepthStencil) const
+void GraphicsCommandList::SetRenderTargets(const Texture* aTargetList, unsigned aNumTargets, const Texture* aDepthStencil) const
 {
 	// Early out if no targets/depth are provided
 	if (aNumTargets == 0 && !aDepthStencil)
@@ -109,10 +126,10 @@ void GraphicsCommandList::SetRenderTargets(const Texture** aTargetList, unsigned
 	if (aNumTargets > 0)
 	{
 		unsigned numTargets = std::min(aNumTargets, 8u);
-		memcpy_s(&viewport, sizeof(D3D11_VIEWPORT), &aTargetList[0]->myViewport, sizeof(Viewport));
+		memcpy_s(&viewport, sizeof(D3D11_VIEWPORT), &aTargetList[0].myViewport, sizeof(Viewport));
 		for (unsigned t = 0; t < numTargets; ++t)
 		{
-			rtvs[t] = aTargetList[t]->myRTV.Get();
+			rtvs[t] = aTargetList[t].myRTV.Get();
 		}
 	}
 

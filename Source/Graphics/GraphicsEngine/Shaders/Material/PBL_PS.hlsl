@@ -34,35 +34,27 @@ float4 main(VStoPS aPixel) : SV_TARGET
     
     switch (FB_TypeOfRenderPass)
     {
-        case 0:
-            // sRGB pass do nothing!
+        case 0: // sRGB pass do nothing!
             break;
-        case 1: 
-            // Rougness pass
+        case 1: // Rougness pass
             return float4(materialMap.g, materialMap.g, materialMap.g, 1.0f);
             break;
-        case 2:
-            // Metalness pass
+        case 2: // Metalness pass
             return float4(materialMap.b, materialMap.b, materialMap.b, 1.0f);
             break;
-        case 3:
-            // Ambient Occlusion texture pass
+        case 3: // Ambient Occlusion texture pass
             return float4(materialMap.r, materialMap.r, materialMap.r, 1.0f);
             break;
-        case 4:
-            // Ambient Occlusion screen space pass
+        case 4: // Ambient Occlusion screen space pass
             return float4(1.0f, 1.0f, 1.0f, 1.0f); // TODO : FIX
             break;
-        case 5:
-            // Normals tangent space pass
+        case 5: // Normals tangent space pass
             return float4(normalMap, 0.0f, 1.0f);
             break;
-        case 6:
-            // Normals world space pass
-            return float4(normal, 1.0f);
+        case 6: // Normals world space pass
+            return float4(normal * 0.5f + 0.5f, 1.0f);
             break;
-        case 7:
-            // Shadows pass
+        case 7: // Shadows pass
             return float4(1.0f, 1.0f, 1.0f, 1.0f); // TODO : FIX
             break;
     }
@@ -94,7 +86,7 @@ float4 main(VStoPS aPixel) : SV_TARGET
         {
             case 0:
             {
-                float pixelDistance = length(parameters.WorldPosition.xyz - CB_CameraPosition);
+                float pixelDistance = length(parameters.WorldPosition.xyz - FB_CameraPosition);
 
                 uint cascadeIndex;
                 

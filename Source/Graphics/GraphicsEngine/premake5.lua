@@ -36,9 +36,7 @@ project "GraphicsEngine"
     shadermodel "5.0"
     shaderentry "main"
 
-    -- ===== HLSL-specific settings =====
     filter "files:**.hlsl"
-        --shaderobjectfileoutput "%{wks.location}\\Intermediate\\GraphicsEngine\\%{cfg.buildcfg}\\PrecompiledShaders\\%%(Filename).cso"
         shaderobjectfileoutput ""
         shaderheaderfileoutput "%{wks.location}\\Intermediate\\GraphicsEngine\\%{cfg.buildcfg}\\PrecompiledShaders\\%%(Filename).h"
         shadervariablename "INTERNAL_%%(Filename)_ByteCode"

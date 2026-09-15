@@ -12,6 +12,7 @@
 #include "Objects/Texture.h"
 #include "Objects/Shader.h"
 #include "Objects/Sampler.h"
+#include "Objects/Gbuffer.h"
 
 #include "ConstantBuffers/FrameBuffer.h"
 #include "ConstantBuffers/ObjectBuffer.h"
@@ -42,11 +43,11 @@
 * Renders onto a user-provided render target and depth.
 */
 
-struct RenderItem
+struct InternalRenderItem
 {
     const DrawCall* DrawCall;
-    const Mesh::Element* Element;
-    const MaterialInterface* Material;
+    unsigned int ElementIndex;
+	unsigned int MaterialIndex;
 };
 
 GraphicsEngine::GraphicsEngine() = default;
@@ -97,31 +98,34 @@ void GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const Scene& 
 {
 	inoutCommandList.BeginEvent("Reset Pipeline");
 	{
+		inoutCommandList.ClearRenderTargets(myGBuffer->GetTextures(), GBuffer::NUM_GBUFFER_TARGETS);
 		inoutCommandList.ClearRenderTarget(*myBackBuffer);
 		inoutCommandList.ClearDepthStencil(*myDepthBuffer);
 	}
 	inoutCommandList.EndEvent();
 
-	std::vector<RenderItem> opaqueItems;
-	std::vector<RenderItem> alphaItems;
-	std::vector<RenderItem> shadowItems;
+	std::vector<InternalRenderItem> opaqueItems;
+	std::vector<InternalRenderItem> alphaItems;
+	std::vector<InternalRenderItem> shadowItems;
 
 	for (const auto& drawCall : aScene.DrawCalls)
 	{
-		for (const Mesh::Element& element : drawCall.Mesh->myElements)
+		for (unsigned int e = 0; e < drawCall.Mesh->myElements.size(); e++)
 		{
-			const MaterialInterface* material = drawCall.Materials[element.MaterialIndex];
+			unsigned int materialIndex = drawCall.Mesh->myElements[e].MaterialIndex;
+
+			const MaterialInterface* material = drawCall.Materials[materialIndex];
 
 			if (material == nullptr)
 			{
 				material = myDefaultMaterial.get();
 			}
 
-			RenderItem item =
+			InternalRenderItem item =
 			{
 				.DrawCall = &drawCall,
-				.Element = &element,
-				.Material = material
+				.ElementIndex = e,
+				.MaterialIndex = materialIndex
 			};
 
 			switch (material->GetBlendMode())
@@ -138,7 +142,7 @@ void GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const Scene& 
 				}
 				default:
 				{
-					// TODO: Log error here
+					GELOG(Error, "Mesh {} has a invalid Material Blend Mode setting!", drawCall.Mesh->GetName());
 					break;
 				}
 			}
@@ -151,7 +155,7 @@ void GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const Scene& 
 
 	// Front to Back
 	std::sort(opaqueItems.begin(), opaqueItems.end(),
-		[&](const RenderItem& A, const RenderItem& B) -> bool
+		[&](const InternalRenderItem& A, const InternalRenderItem& B) -> bool
 		{
 			float distanceToA = (A.DrawCall->Transform.GetTranslation() - cameraPosition).LengthSqr();
 			float distanceToB = (B.DrawCall->Transform.GetTranslation() - cameraPosition).LengthSqr();
@@ -161,7 +165,7 @@ void GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const Scene& 
 
 	// Back to Front
 	std::sort(alphaItems.begin(), alphaItems.end(),
-		[&](const RenderItem& A, const RenderItem& B) -> bool
+		[&](const InternalRenderItem& A, const InternalRenderItem& B) -> bool
 		{
 			float distanceToA = (A.DrawCall->Transform.GetTranslation() - cameraPosition).LengthSqr();
 			float distanceToB = (B.DrawCall->Transform.GetTranslation() - cameraPosition).LengthSqr();
@@ -211,7 +215,10 @@ void GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const Scene& 
 
 		UploadSceneLightingData(inoutCommandList, aScene.SceneLights);
 
+		inoutCommandList.SetRenderTargets(myGBuffer->GetTextures(), GBuffer::NUM_GBUFFER_TARGETS, myDepthBuffer.get());
 		RenderDrawCalls(inoutCommandList, opaqueItems, DrawCallFlag_BindTextures | DrawCallFlag_BindMaterial);
+
+		inoutCommandList.SetRenderTarget(myBackBuffer.get(), myDepthBuffer.get());
 		RenderDrawCalls(inoutCommandList, alphaItems, DrawCallFlag_BindTextures | DrawCallFlag_BindMaterial);
 	}
 	inoutCommandList.EndEvent();
@@ -539,7 +546,7 @@ void GraphicsEngine::CreateMaterialTextureSlots(const RHIShaderReflectionInfo& a
 	}
 }
 
-void GraphicsEngine::RenderShadowMaps(GraphicsCommandList& inoutCommandList, const std::vector<SceneLight>& SceneLights, const SceneCamera& aSceneCamera, std::vector<RenderItem>& aShadowItems)
+void GraphicsEngine::RenderShadowMaps(GraphicsCommandList& inoutCommandList, const std::vector<SceneLight>& SceneLights, const SceneCamera& aSceneCamera, std::vector<InternalRenderItem>& aShadowItems)
 {
 	for (const auto& light : SceneLights)
 	{
@@ -789,7 +796,7 @@ void GraphicsEngine::UploadSceneLightingData(GraphicsCommandList& inoutCommandLi
 	UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::LightBuffer, lightBuffer, 3, PipelineStage_PixelShader);
 }
 
-void GraphicsEngine::RenderDrawCalls(GraphicsCommandList& inoutCommandList, const std::vector<RenderItem>& aRenderItems, DrawCallFlags someFlags)
+void GraphicsEngine::RenderDrawCalls(GraphicsCommandList& inoutCommandList, const std::vector<InternalRenderItem>& aRenderItems, DrawCallFlags someFlags)
 {
 	for (const auto& renderItem : aRenderItems)
 	{
@@ -801,8 +808,8 @@ void GraphicsEngine::RenderDrawCalls(GraphicsCommandList& inoutCommandList, cons
 
 		const DrawCall& drawCall = *renderItem.DrawCall;
 		const Mesh& mesh = *drawCall.Mesh;
-		const Mesh::Element& element = *renderItem.Element;
-		const MaterialInterface& material = *renderItem.Material;
+		const Mesh::Element& element = renderItem.DrawCall->Mesh->myElements[renderItem.ElementIndex];
+		const MaterialInterface& material = *renderItem.DrawCall->Materials[renderItem.MaterialIndex];
 
 		if (!PrepareMeshForRendering(mesh))
 		{
@@ -1060,9 +1067,34 @@ bool GraphicsEngine::InitializeRenderResources()
 
 		if (!myRHI.CreatePipelineStateObject(shadowPSODesc, *myShadowPSO))
 		{
-			GELOG(Error, "Failed to create shadow pipeline state object!");
+			GELOG(Error, "Failed to create Shadow pipeline state object!");
 			return false;
 		}
+	}
+
+	// GBuffer & Gbuffer PSO
+	{
+		PipelineStateDescription gBufferPSODesc = {};
+		gBufferPSODesc.Name = "GBufferPSO";
+		gBufferPSODesc.BlendMode = BlendMode::Opaque;
+		gBufferPSODesc.VertexShader.ByteCode = INTERNAL_Surface_VS_ByteCode;
+		gBufferPSODesc.VertexShader.ByteCodeSize = sizeof(INTERNAL_Surface_VS_ByteCode);
+		gBufferPSODesc.PixelShader.ByteCode = INTERNAL_GBuffer_PS_ByteCode;
+		gBufferPSODesc.PixelShader.ByteCodeSize = sizeof(INTERNAL_GBuffer_PS_ByteCode);
+
+		myGBufferPSO = std::make_unique<PipelineStateObject>();
+
+		if (!myRHI.CreatePipelineStateObject(gBufferPSODesc, *myGBufferPSO))
+		{
+			GELOG(Error, "Failed to create GBuffer pipeline state object!");
+			return false;
+		}
+
+		myGBuffer = std::make_unique<GBuffer>();
+
+		CommonUtilities::Vector2ui renderSize = myRHI.GetClientSize();
+
+		myRHI.CreateGBuffer("GBuffer", renderSize.x, renderSize.y, *myGBuffer);
 	}
 
 	// LUT Texture

@@ -26,7 +26,6 @@ struct ApplicationData
 
 inline ApplicationData Application;
 
-
 /**
  * For more info -
  * https://learn.microsoft.com/en-us/windows/win32/api/libloaderapi/nf-libloaderapi-getmodulefilenamew

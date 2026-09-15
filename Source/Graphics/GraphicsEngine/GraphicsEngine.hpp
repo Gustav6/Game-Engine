@@ -21,7 +21,8 @@ struct Light;
 class Shader;
 class Texture;
 class Sampler;
-struct RenderItem;
+struct InternalRenderItem;
+class GBuffer;
 
 enum class ConstantBuffer : uint8_t
 {
@@ -150,10 +151,10 @@ private:
 
 	void CreateMaterialTextureSlots(const RHIShaderReflectionInfo& aShaderInfo, Material& inoutMaterial) const;
 
-	void RenderShadowMaps(GraphicsCommandList& inoutCommandList, const std::vector<SceneLight>& SceneLights, const SceneCamera& aSceneCamera, std::vector<RenderItem>& aShadowItems);
+	void RenderShadowMaps(GraphicsCommandList& inoutCommandList, const std::vector<SceneLight>& SceneLights, const SceneCamera& aSceneCamera, std::vector<InternalRenderItem>& aShadowItems);
 	
 	void UploadSceneLightingData(GraphicsCommandList& inoutCommandList, const std::vector<SceneLight>& aLights);
-	void RenderDrawCalls(GraphicsCommandList& inoutCommandList, const std::vector<RenderItem>& aRenderItems, DrawCallFlags someFlags);
+	void RenderDrawCalls(GraphicsCommandList& inoutCommandList, const std::vector<InternalRenderItem>& aRenderItems, DrawCallFlags someFlags);
 
 	void RegisterMaterialShaders();
 
@@ -187,7 +188,10 @@ private:
 	std::unique_ptr<Texture> myEnvironmentCubemap;
 	std::unique_ptr<Texture> myLUTTexture;
 
+	std::unique_ptr<GBuffer> myGBuffer;
+
 	std::unique_ptr<PipelineStateObject> myShadowPSO;
+	std::unique_ptr<PipelineStateObject> myGBufferPSO;
 
 	// First Index = Near Cascade ... last index = Far Cascade
 	std::array<ShadowCascade, NUM_CASCADES> myCascades;

@@ -33,21 +33,22 @@ GBufferOutput main(VStoPS aPixel)
     
     normal = normalize(mul(normal, TBN));
     
-    MaterialPixelParameters parameters;
-    parameters.PixelColor = albedoMap;
-    parameters.WorldPosition = aPixel.WorldPosition;
-    parameters.Normal = normal;
-    parameters.UV0 = aPixel.UV0;
-    parameters.Occlusion = materialMap.r;
-    parameters.Roughness = materialMap.g;
-    parameters.Metalness = materialMap.b;
+    //MaterialPixelParameters parameters;
+    //parameters.PixelColor = albedoMap;
+    //parameters.WorldPosition = aPixel.WorldPosition;
+    //parameters.Normal = normal;
+    //parameters.UV0 = aPixel.UV0;
+    //parameters.Occlusion = materialMap.r;
+    //parameters.Roughness = materialMap.g;
+    //parameters.Metalness = materialMap.b;
     
     GBufferOutput result;
     
-    result.AlbedoTexture = float4(parameters.PixelColor.rgb, 1);
-    result.NormalTexture = float4(parameters.Normal, 0);
-    result.MaterialTexture = float4(parameters.Occlusion, parameters.Roughness, parameters.Metalness, 0);
-    result.WorldPosition = parameters.WorldPosition;
+    result.AlbedoTexture = float4(albedoMap.rgb, 1);
+    result.NormalTexture = float4(normal * 0.5 + 0.5, 0);
+    result.MaterialTexture = float4(materialMap.rgb, 0);
+    result.Emission = float4(1, 1, 1, 0);
+    result.WorldPosition = aPixel.WorldPosition;
     
     return result;
 }

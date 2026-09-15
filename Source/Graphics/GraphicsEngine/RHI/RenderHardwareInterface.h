@@ -19,6 +19,7 @@ struct ID3D11DeviceChild;
 struct PipelineStateDescription;
 class PipelineStateObject;
 class GraphicsCommandList;
+class GBuffer;
 
 struct ID3DInclude;
 class Shader;
@@ -43,6 +44,7 @@ public:
 	bool CreateTexture(std::string_view aName, unsigned aWidth, unsigned aHeight, unsigned aNumMips, ResourceFormat aFormat, ResourceBindFlags aBindFlags, Texture& outTexture ) const;
 	bool CreateSampler(const SamplerDescription& aDescription, Sampler& outSampler);
 	bool CreateDepthStencil(std::string_view aName, unsigned int aWidth, unsigned int aHeight, Texture& outDepthStencil, bool aCube) const;
+	bool CreateGBuffer(std::string_view aName, unsigned aWidth, unsigned aHeight, GBuffer& outGBuffer) const;
 
 	void ExecuteCommandList(const GraphicsCommandList& aCommandList) const;
 
