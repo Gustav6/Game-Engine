@@ -1,0 +1,218 @@
+<html>
+<head>
+<title>Welcome to FMOD Studio | New in FMOD Studio 2.00</title>
+<link rel="stylesheet" href="style/docs.css">
+<link rel="stylesheet" href="style/code_highlight.css">
+<script type="text/javascript" src="scripts/language-selector.js"></script></head>
+<body>
+<div class="docs-body">
+<div class="manual-toc">
+<p>FMOD Studio User Manual 2.02</p>
+<ul>
+<li class="manual-current-chapter manual-inactive-chapter"><a href="welcome-to-fmod-studio.html">Welcome to FMOD Studio</a><ul class="subchapters"><li><a href="welcome-to-fmod-studio-new-in-202.html">New in FMOD Studio 2.02</a></li><li><a href="welcome-to-fmod-studio-new-in-201.html">New in FMOD Studio 2.01</a></li><li class="manual-current-chapter manual-active-chapter"><a href="welcome-to-fmod-studio-new-in-200.html">New in FMOD Studio 2.00</a></li><li><a href="welcome-to-fmod-studio-new-in-110.html">New in FMOD Studio 1.10</a></li><li><a href="welcome-to-fmod-studio-revision-history.html">Detailed Revision History</a></li></ul></li>
+<li><a href="fmod-studio-concepts.html">FMOD Studio Concepts</a></li>
+<li><a href="organizing-the-project.html">Organizing the Project</a></li>
+<li><a href="authoring-events.html">Authoring Events</a></li>
+<li><a href="working-with-instruments.html">Working with Instruments</a></li>
+<li><a href="managing-assets.html">Managing Assets</a></li>
+<li><a href="parameters.html">Parameters</a></li>
+<li><a href="getting-events-into-your-game.html">Getting Events into Your Game</a></li>
+<li><a href="mixing.html">Mixing</a></li>
+<li><a href="the-sandbox.html">The Sandbox</a></li>
+<li><a href="editing-during-live-update.html">Editing During Live Update</a></li>
+<li><a href="profiling.html">Profiling</a></li>
+<li><a href="dialogue-and-localization.html">Dialogue and Localization</a></li>
+<li><a href="using-source-control.html">Using Source Control</a></li>
+<li><a href="supporting-downloadable-and-user-generated-content.html">Supporting Downloadable and User-generated Content</a></li>
+<li><a href="advanced-topics.html">Advanced Topics</a></li>
+<li><a href="quick-start-tutorial.html">Quick Start Tutorial</a></li>
+<li><a href="effect-reference.html">Effect Reference</a></li>
+<li><a href="event-macro-controls-reference.html">Event Macros Drawer Reference</a></li>
+<li><a href="instrument-reference.html">Instrument Reference</a></li>
+<li><a href="keyboard-shortcut-reference.html">Keyboard Shortcut Reference</a></li>
+<li><a href="modulator-reference.html">Modulator Reference</a></li>
+<li><a href="parameters-reference.html">Parameters Reference</a></li>
+<li><a href="plugin-reference.html">Plug-in Reference</a></li>
+<li><a href="scripting-terminal-reference.html">Scripting</a></li>
+<li><a href="scripting-api-reference.html">Scripting API Reference</a></li>
+<li><a href="troubleshooting.html">Troubleshooting</a></li>
+<li><a href="glossary.html">Glossary</a></li>
+<li><a href="appendix-a-celeste.html">Appendix: Celeste Getting Started Guide</a></li>
+<li><a href="appendix-b-reaper-integration.html">Appendix: Reaper Integration</a></li>
+</ul>
+</div>
+<div class="manual-content studio">
+<h1>1. Welcome to FMOD Studio | New in FMOD Studio 2.00</h1>
+<div class="toc">
+<ul>
+<li><a href="#whats-new-in-fmod-studio-200">What's New in FMOD Studio 2.00?</a><ul>
+<li><a href="#parameters">Parameters</a><ul>
+<li><a href="#labeled-parameters">Labeled parameters</a></li>
+<li><a href="#discrete-parameters">Discrete parameters</a></li>
+<li><a href="#global-parameters">Global parameters</a></li>
+<li><a href="#built-in-speed-parameter">Built-in speed parameter</a></li>
+<li><a href="#flexible-parameters">Flexible parameters</a></li>
+</ul>
+</li>
+<li><a href="#modulation">Modulation</a><ul>
+<li><a href="#lfo-modulator">LFO modulator</a></li>
+<li><a href="#global-modulation">Global modulation</a></li>
+<li><a href="#ahdsr-modulator">AHDSR modulator</a></li>
+</ul>
+</li>
+<li><a href="#reaper-integration">Reaper integration</a><ul>
+<li><a href="#linked-project-assets">Linked project assets</a></li>
+<li><a href="#importing-timelines">Importing timelines</a></li>
+</ul>
+</li>
+<li><a href="#workflow-enhancements">Workflow enhancements</a><ul>
+<li><a href="#editor-workflow">Editor workflow</a></li>
+<li><a href="#event-workflow">Event workflow</a></li>
+</ul>
+</li>
+<li><a href="#transition-timeline-crossfades">Transition timeline crossfades</a></li>
+<li><a href="#multi-instruments">Multi instruments</a><ul>
+<li><a href="#nested-multi-instruments">Nested multi instruments</a></li>
+<li><a href="#playlists">Playlists</a></li>
+</ul>
+</li>
+<li><a href="#preset-effect-chains">Preset effect chains</a></li>
+<li><a href="#dialog-and-localization">Dialog and localization</a></li>
+<li><a href="#command-instruments">Command instruments</a></li>
+<li><a href="#downloadable-and-user-generated-content">Downloadable and user-generated content</a><ul>
+<li><a href="#optional-master-bank">Optional master bank</a></li>
+<li><a href="#project-packaging-and-ugc">Project packaging and UGC</a></li>
+</ul>
+</li>
+<li><a href="#bank-building">Bank building</a><ul>
+<li><a href="#bank-encryption">Bank encryption</a></li>
+<li><a href="#encoding-settings">Encoding settings</a></li>
+<li><a href="#bank-folder-mirroring">Bank folder mirroring</a></li>
+<li><a href="#plug-in-data">Plug-in data</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<h2 id="whats-new-in-fmod-studio-200"><a href="#whats-new-in-fmod-studio-200">What's New in FMOD Studio 2.00?</a></h2>
+<p><a href="glossary.html#fmod-studio">FMOD Studio</a> 2.00 defines a new game audio content creation process, giving complete control to audio artists. New design tools and a live workflow give creative freedom with instant feedback.</p>
+<p>Below are some feature highlights from FMOD Studio 2.00.</p>
+<h3 id="parameters"><a href="#parameters">Parameters</a></h3>
+<p>Studio 2.00 greatly expands the potential of <a href="parameters.html">parameters</a>, simplifies their management, and improves their flexibility.</p>
+<p><img alt="Edit parameter dialog" src="images/200_editParameter.png" /></p>
+<h4 id="labeled-parameters"><a href="#labeled-parameters">Labeled parameters</a></h4>
+<p><a href="glossary.html#labeled-user-parameter">Labeled parameters</a> can be used to discretely align <a href="working-with-instruments.html">parameter content</a> and <a href="authoring-events.html#automation-and-modulation">automations</a> to a set of labeled values.</p>
+<p><img alt="Labeled parameter" src="images/200_labeledParameter.png" /></p>
+<p>Labeled parameters can be defined when creating or editing a parameter. Insertion, reordering, and removal of labels is gracefully handled when when editing labeled parameters.</p>
+<p><img alt="Edit labeled parameter dialog" src="images/200_editLabeledParameter.png" /></p>
+<h4 id="discrete-parameters"><a href="#discrete-parameters">Discrete parameters</a></h4>
+<p><a href="glossary.html#discrete-user-parameter">Discrete parameters</a> use whole numbers instead of decimal values. As with labeled parameters, discrete parameters can be used to discretely align parameter content and automations.</p>
+<p><img alt="Discrete parameter" src="images/200_discreteParameter.png" /></p>
+<h4 id="global-parameters"><a href="#global-parameters">Global parameters</a></h4>
+<p><a href="glossary.html#global-parameter">Global parameters</a> share the same playback position between all <a href="glossary.html#event-instance">event instances</a>. This makes it easy for the game code to set a single parameter value that affects many event instances.</p>
+<p>Global parameters also allow for <a href="glossary.html#automation">automation</a> of properties in the <a href="glossary.html#mixer">global mixer</a>.</p>
+<p><img alt="Global automation" src="images/200_globalAutomation.png" /></p>
+<h4 id="built-in-speed-parameter"><a href="#built-in-speed-parameter">Built-in speed parameter</a></h4>
+<p>The new <span class="dead-link" href="parameter-reference.html#speed-built-in-parameter">speed built-in parameter</span class="dead-link"> is automatically set to the speed of the event instance it's used in (determined by the velocity of the event instance relative to that of the listener). This can be used to automate properties of an event instance based on how fast it is moving.</p>
+<p><img alt="Speed parameter" src="images/200_speedParameter.png" /></p>
+<h4 id="flexible-parameters"><a href="#flexible-parameters">Flexible parameters</a></h4>
+<p>Many changes have been made to expand how flexibly parameters can be used. For example, it is now possible to automate one parameter by the value of another parameter. This can be used to remap the value of a parameter.</p>
+<p><img alt="Parameter automating another parameter" src="images/200_parameterAutomatingParameter.png" /></p>
+<p>Additionally, parameters can now be marked as <span class="dead-link" href="glossary.html#read-only-parameter">read-only</span class="dead-link">. This is useful for indicating that a parameter doesn't need to be set in code. For example, this can be used when a parameter should only be driven by <a href="glossary.html#modulator">modulation</a>.</p>
+<p><img alt="Read-only parameter flag" src="images/200_readOnlyParameterFlag.png" /></p>
+<p>Finally, support has been added for editing a parameter's <a href="parameters.html#parameter-type">type</a> after it is created. This includes gracefully handling changing a <a href="glossary.html#continuous-user-parameter">continuous parameter</a> to a labeled parameter and vice versa.</p>
+<h3 id="modulation"><a href="#modulation">Modulation</a></h3>
+<p>In Studio 2.00, the improved modulation system allows for a wider range of creative options.</p>
+<h4 id="lfo-modulator"><a href="#lfo-modulator">LFO modulator</a></h4>
+<p>The <a href="modulator-reference.html#lfo-modulator">LFO modulator</a> is a new type of modulation that applies a continuous low-frequency oscillation to the value of a property.</p>
+<p><img alt="LFO modulator" src="images/200_lfoModulator.png" /></p>
+<p>LFO modulators feature many wave shapes: Sine, Square, Triangle, Saw Up, Saw Down, Noise (Stepped), and Noise (Ramped). These can be previewed in the graph. When used in events, LFO modulators can be synchronized to the tempo.</p>
+<h4 id="global-modulation"><a href="#global-modulation">Global modulation</a></h4>
+<p>It is now possible to directly add modulation to properties in the global mixer. This makes it easy to apply sidechain or LFO modulation directly in the global mix.</p>
+<p><img alt="Global sidechain modulator" src="images/200_globalSidechainModulator.png" /></p>
+<h4 id="ahdsr-modulator"><a href="#ahdsr-modulator">AHDSR modulator</a></h4>
+<p><a href="modulator-reference.html#ahdsr-modulator">AHDSR modulators</a> now feature a final value property. This allows AHDSR modulators to have a custom release value.</p>
+<p><img alt="AHDSR modulator" src="images/200_ahdsrModulator.png" /></p>
+<p>All properties of AHDSR modulators now support automation.</p>
+<h3 id="reaper-integration"><a href="#reaper-integration">Reaper integration</a></h3>
+<p>The newly added <a href="https://www.reaper.fm/">Reaper</a> integration streamlines the process of importing and updating assets when working with Reaper.</p>
+<h4 id="linked-project-assets"><a href="#linked-project-assets">Linked project assets</a></h4>
+<p>The Reaper integration allows for the linking of a Reaper project as a <span class="dead-link" href="glossary.html#linked-project-asset">linked project asset</span class="dead-link">. <span class="dead-link" href="glossary.html#linked-audio-asset">Linked audio assets</span class="dead-link"> can be updated and refreshed automatically if changes in the source Reaper project file are detected.</p>
+<p><img alt="Imported Reaper project" src="images/200_reaperProject.png" /></p>
+<h4 id="importing-timelines"><a href="#importing-timelines">Importing timelines</a></h4>
+<p>It is also possible to directly import the timeline of a Reaper project as an <a href="glossary.html#event">event</a>. This will create <a href="glossary.html#instrument">instruments</a> and <a href="glossary.html#logic-marker">markers</a> that align to the source Reaper project content.</p>
+<p><img alt="Reaper timeline import" src="images/200_reaperTimelineImport.png" /></p>
+<h3 id="workflow-enhancements"><a href="#workflow-enhancements">Workflow enhancements</a></h3>
+<p>Studio 2.00 streamlines the editor and event creation workflow, improving productivity and project tidiness.</p>
+<h4 id="editor-workflow"><a href="#editor-workflow">Editor workflow</a></h4>
+<p><a href="keyboard-shortcut-reference.html">Keyboard shortcuts</a> can now be easily customized from the <span class="dead-link" href="glossary.html#preferences-dialog">preferences dialog</span class="dead-link">.</p>
+<p><img alt="Custom keyboard shortcuts" src="images/200_customKeyboardShortcuts.png" /></p>
+<p>Studio 2.00 also supports auto-saving projects. When reopening a project that failed to gracefully close, you'll be given the option to recover any lost work.</p>
+<p><img alt="Auto-save option" src="images/200_autosaveOption.png" /></p>
+<h4 id="event-workflow"><a href="#event-workflow">Event workflow</a></h4>
+<p>New features have been added to assist in keeping events tidy. Firstly, it is now possible to name <a href="glossary.html#loop-region">loop regions</a>. This allows you to transition directly to a loop region without needing to add a <a href="glossary.html#destination-marker">destination marker</a>.</p>
+<p><img alt="Transition to loop region" src="images/200_transitionToLoopRegion.png" /></p>
+<p>It is also possible to remove the timeline <a href="parameters.html#parameter-sheets">sheet</a> of an event.</p>
+<p><img alt="Removing an event timeline" src="images/200_removeEventTimeline.png" /></p>
+<p>Finally, the interface for sidechain inputs and toggleable properties have been improved, making it easier to inspect settings at a glance.</p>
+<p><img alt="Sidechain input interface" src="images/200_sidechainInputInterface.png" /></p>
+<h3 id="transition-timeline-crossfades"><a href="#transition-timeline-crossfades">Transition timeline crossfades</a></h3>
+<p>It is now possible to overlap the <span class="dead-link" href="glossary.html#source-region">source</span class="dead-link"> and <a href="glossary.html#destination-region">destination regions</a> of <a href="glossary.html#transition-timeline">transition timelines</a>. This makes it possible to crossfade between the source and destination of timeline transitions, on a per-track basis.</p>
+<p><img alt="Transition timeline crossfade" src="images/200_transitionTimelineCrossfade.png" /></p>
+<p>This feature was added late in Studio 1.10 but is worth highlighting here.</p>
+<h3 id="multi-instruments"><a href="#multi-instruments">Multi instruments</a></h3>
+<p><a href="working-with-instruments.html#multi-instruments">Multi instruments</a> now accommodate a much wider range of playback behaviors.</p>
+<h4 id="nested-multi-instruments"><a href="#nested-multi-instruments">Nested multi instruments</a></h4>
+<p>It is now possible to nest multi instruments in other multi instruments. The new interface also allows for direct automation of <a href="glossary.html#playlist">playlist</a> item properties.</p>
+<p><img alt="Nested multi instrument with automation" src="images/200_nestedMultiInstrument.png" /></p>
+<h4 id="playlists"><a href="#playlists">Playlists</a></h4>
+<p>Late in Studio 1.10, multi instruments received a number of new controls for playlists. This includes new <a href="glossary.html#playlist-selection-mode">playlist selection modes</a> and explicit control over the <span class="dead-link" href="glossary.html#play-count">loop count</span class="dead-link">.</p>
+<p><img alt="Playlist controls" src="images/200_playlistControls.png" /></p>
+<h3 id="preset-effect-chains"><a href="#preset-effect-chains">Preset effect chains</a></h3>
+<p><span class="dead-link" href="glossary.html#effect-chain">Preset effect chains</span class="dead-link"> are chains of effects that can be shared between multiple events. This makes it easy to manage common effect configurations throughout a project.</p>
+<p><img alt="Preset effect chains" src="images/200_presetEffectChains.png" /></p>
+<p>Existing <a href="glossary.html#preset-effect">preset effects</a> can be wrapped in an effect chain through the context menu.</p>
+<p><img alt="Wrap in effect chain" src="images/200_wrapInEffectChain.png" /></p>
+<h3 id="dialog-and-localization"><a href="#dialog-and-localization">Dialog and localization</a></h3>
+<p>Studio 2.00 adds support for defining <span class="dead-link" href="glossary.html#locale">locales</span class="dead-link"> per project, allowing for easy management of <a href="dialogue-and-localization.html">localized content</a>.</p>
+<p><img alt="Locale preferences" src="images/200_localePreferences.png" /></p>
+<p>Once locales have been added, they can be used in conjunction with <a href="dialogue-and-localization.html#localized-audio-tables">localized audio tables</a>. Localized audio tables allow for asset data to be defined per-locale, which is used to create different versions of dialog <a href="glossary.html#bank">banks</a> for each locale.</p>
+<p><img alt="Localized audio table" src="images/200_localizedAudioTable.png" /></p>
+<p>The <a href="glossary.html#audition">auditioning</a> workflow for <a href="dialogue-and-localization.html#audio-tables">audio tables</a> has also been improved. You can now set an audio table as the placeholder for a <a href="glossary.html#programmer-instrument">programmer instrument</a>, allowing for quick auditioning of different audio table assets in the <a href="glossary.html#event-editor-window">event editor</a>.</p>
+<h3 id="command-instruments"><a href="#command-instruments">Command instruments</a></h3>
+<p><a href="working-with-instruments.html#command-instruments">Command instruments</a> are general purpose instruments that are used to control playback. In Studio 2.00, they can currently be used to have one event stop all instances of another event.</p>
+<p><img alt="Stop command instrument" src="images/200_stopCommandInstrument.png" /></p>
+<p>The functionality of command instruments will be expanded in future updates.</p>
+<h3 id="downloadable-and-user-generated-content"><a href="#downloadable-and-user-generated-content">Downloadable and user-generated content</a></h3>
+<p>New features have been added to improve support for <a href="supporting-downloadable-and-user-generated-content.html">downloadable and user-generated content</a>.</p>
+<h4 id="optional-master-bank"><a href="#optional-master-bank">Optional master bank</a></h4>
+<p>In 2.00, the any bank can be optionally marked as a <a href="glossary.html#master-bank">master bank</a>. This removes the restriction for projects to have exactly one master bank.</p>
+<p><img alt="Master bank flag" src="images/200_masterBankFlag.png" /></p>
+<p>Not having a master bank, or having multiple master banks, can be used to meet certain DLC and UGC requirements.</p>
+<h4 id="project-packaging-and-ugc"><a href="#project-packaging-and-ugc">Project packaging and UGC</a></h4>
+<p>The "File &gt; Package project..." menu option has been extended to allow for finer control over the data types to be included in the <span class="dead-link" href="glossary.html#packaged-project">package</span class="dead-link">. This makes it possible to export a project template for <a href="supporting-downloadable-and-user-generated-content.html#ugc">user-generated content</a>.</p>
+<p><img alt="Packaging a project" src="images/200_projectPackaging.png" /></p>
+<h3 id="bank-building"><a href="#bank-building">Bank building</a></h3>
+<p>A number of features have been added to improve the flexibility of the build pipeline.</p>
+<h4 id="bank-encryption"><a href="#bank-encryption">Bank encryption</a></h4>
+<p>Banks can be <a href="advanced-topics.html#bank-encryption">encrypted</a> during bank building. This provides a quick way to obfuscate the audio data in a built bank.</p>
+<p><img alt="Bank encryption setting" src="images/200_bankEncryption.png" /></p>
+<h4 id="encoding-settings"><a href="#encoding-settings">Encoding settings</a></h4>
+<p><a href="getting-events-into-your-game.html#compression-and-encoding-settings">Encoding settings</a> now feature a sample rate mode. This makes it possible to specify a fixed sample rate, inherit the source asset's sample rate, or allow an optimal sample rate to be automatically determined. The sample rate can also be explicitly set when using the Vorbis <span class="dead-link" href="glossary.html#encoding-formats">encoding format</span class="dead-link">.</p>
+<p><img alt="Vorbis sample rate" src="images/200_vorbisSampleRate.png" /></p>
+<h4 id="bank-folder-mirroring"><a href="#bank-folder-mirroring">Bank folder mirroring</a></h4>
+<p>An option has been added to allow the built bank output to mirror the folder structure of the banks browser. This is useful for projects with many banks or projects that require banks be output to separate paths.</p>
+<p><img alt="Bank folder mirroring" src="images/200_bankFolderMirroring.png" /></p>
+<h4 id="plug-in-data"><a href="#plug-in-data">Plug-in data</a></h4>
+<p>Data-based plug-in properties can now be stored as binary assets in the assets browser. This makes it easy to iterate on content that requires frequent updating of plug-in data.</p>
+<p><img alt="Binary data asset" src="images/200_binaryDataAsset.png" /></p>
+<p>Files that are dragged onto a plug-in's data parameter are automatically imported to the <a href="glossary.html#assets-browser">assets browser</a>. To keep the assets browser tidy, a new option has been added to hide unimported assets in the assets browser that are not of a known <a href="glossary.html#audio-file">audio file</a> type.</p>
+<p><img alt="Hide unknown file types" src="images/200_hideUnknownFileTypes.png" /></p>
+<p>In addition to the new features listed, we've made a number of additional stability and usability enhancements. Please see the <a href="welcome-to-fmod-studio-revision-history.html">detailed revision history</a> for full details.</p></div>
+
+<p class="manual-footer">FMOD Studio User Manual 2.02.30 (2025-08-05). &copy; 2025 Firelight Technologies Pty Ltd.</p>
+</body>
+</html>
+
+</div>

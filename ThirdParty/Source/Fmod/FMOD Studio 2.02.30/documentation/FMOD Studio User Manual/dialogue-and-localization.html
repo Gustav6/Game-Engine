@@ -1,0 +1,88 @@
+<html>
+<head>
+<title>Dialogue and Localization</title>
+<link rel="stylesheet" href="style/docs.css">
+<link rel="stylesheet" href="style/code_highlight.css">
+<script type="text/javascript" src="scripts/language-selector.js"></script></head>
+<body>
+<div class="docs-body">
+<div class="manual-toc">
+<p>FMOD Studio User Manual 2.02</p>
+<ul>
+<li><a href="welcome-to-fmod-studio.html">Welcome to FMOD Studio</a></li>
+<li><a href="fmod-studio-concepts.html">FMOD Studio Concepts</a></li>
+<li><a href="organizing-the-project.html">Organizing the Project</a></li>
+<li><a href="authoring-events.html">Authoring Events</a></li>
+<li><a href="working-with-instruments.html">Working with Instruments</a></li>
+<li><a href="managing-assets.html">Managing Assets</a></li>
+<li><a href="parameters.html">Parameters</a></li>
+<li><a href="getting-events-into-your-game.html">Getting Events into Your Game</a></li>
+<li><a href="mixing.html">Mixing</a></li>
+<li><a href="the-sandbox.html">The Sandbox</a></li>
+<li><a href="editing-during-live-update.html">Editing During Live Update</a></li>
+<li><a href="profiling.html">Profiling</a></li>
+<li class="manual-current-chapter manual-active-chapter"><a href="dialogue-and-localization.html">Dialogue and Localization</a><ul>
+<li><a href="#audio-tables">Audio Tables</a><ul>
+<li><a href="#localized-audio-tables">Localized Audio Tables</a></li>
+<li><a href="#keys">Keys</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="using-source-control.html">Using Source Control</a></li>
+<li><a href="supporting-downloadable-and-user-generated-content.html">Supporting Downloadable and User-generated Content</a></li>
+<li><a href="advanced-topics.html">Advanced Topics</a></li>
+<li><a href="quick-start-tutorial.html">Quick Start Tutorial</a></li>
+<li><a href="effect-reference.html">Effect Reference</a></li>
+<li><a href="event-macro-controls-reference.html">Event Macros Drawer Reference</a></li>
+<li><a href="instrument-reference.html">Instrument Reference</a></li>
+<li><a href="keyboard-shortcut-reference.html">Keyboard Shortcut Reference</a></li>
+<li><a href="modulator-reference.html">Modulator Reference</a></li>
+<li><a href="parameters-reference.html">Parameters Reference</a></li>
+<li><a href="plugin-reference.html">Plug-in Reference</a></li>
+<li><a href="scripting-terminal-reference.html">Scripting</a></li>
+<li><a href="scripting-api-reference.html">Scripting API Reference</a></li>
+<li><a href="troubleshooting.html">Troubleshooting</a></li>
+<li><a href="glossary.html">Glossary</a></li>
+<li><a href="appendix-a-celeste.html">Appendix: Celeste Getting Started Guide</a></li>
+<li><a href="appendix-b-reaper-integration.html">Appendix: Reaper Integration</a></li>
+</ul>
+</div>
+<div class="manual-content studio">
+<h1>13. Dialogue and Localization</h1>
+<p>In many game projects, <span class="dead-link" href="glossary.html#dialogue">dialogue</span class="dead-link"> has a number of features that make it different to other kinds of game audio. Most games with dialogue include a large number of individual lines, and need control over which specific lines are played; dialogue is almost always language-specific, and so the <a href="glossary.html#audio-file">audio asset</a> to be played in any given situation depends on the <span class="dead-link" href="glossary.html#locale">language</span class="dead-link"> to which the game is set; and occasionally some lines of dialogue may not be recorded and available to be added to an <a href="glossary.html#fmod-studio">FMOD Studio</a> project until relatively late during a game's development.</p>
+<p>While it is possible to create a unique FMOD Studio <a href="glossary.html#event">event</a> for each and every line of dialogue in each of the languages your game supports, it is faster and easier to create one dialogue event containing a <a href="glossary.html#programmer-instrument">programmer instrument</a>. Then, every time a line of dialogue is spoken in your game, your game can create a new instance of this dialogue event, and your game's code can select the specific line of dialogue which the instance is to play.</p>
+<p><span class="dead-link" href="glossary.html#audio-table">Audio tables</span class="dead-link"> allow you to build <a href="glossary.html#audio-file">audio files</a> into <a href="glossary.html#bank">banks</a> without having to add them to <a href="glossary.html#instrument">instruments</a>. This allows audio files used by programmer instruments to be included in banks, granting them the benefit of bank compression and loading. In addition, <span class="dead-link" href="glossary.html#localized-audio-table">localized audio tables</span class="dead-link"> make it easier to organize audio files of different languages so that they can be swapped in and out depending on your players' language settings.</p>
+<h2 id="audio-tables"><a href="#audio-tables">13.1 Audio Tables</a></h2>
+<p><span class="dead-link" href="glossary.html#audio-table">Audio tables</span class="dead-link"> are lists of <a href="glossary.html#audio-file">audio files</a> stored outside your <a href="glossary.html#fmod-studio">FMOD Studio</a> project's <a href="managing-assets.html">asset folder</a>. They're assigned to the <a href="glossary.html#bank">bank</a> associated with the audio table and, at the time of building, are compressed and bundled together with the other assets assigned to that bank. The files can then be played by <a href="working-with-instruments.html#instrument-types">programmer instruments</a> in your project when your game is being played.</p>
+<p>To create an audio table, right click on a bank in the <a href="glossary.html#banks-browser">banks browser</a> and select "Add Audio Table". Each bank can have only one audio table.</p>
+<p>An audio table automatically includes the audio files in its <span class="dead-link" href="glossary.html#source-directory">source directory</span class="dead-link">. You can set an audio table's source directory by typing a path into its "Source directory" field, or by clicking the "Browse..." button and selecting an appropriate directory from the file dialog. The path in the source directory field can include environment variables, for example <code>%HOME%</code> or <code>$HOME</code>. If the path is relative, e.g. <code>../source</code>, it is treated as relative to the FMOD Studio project folder.</p>
+<p>FMOD Studio searches recursively through every subfolder from the source directory for all audio files if the "Include sub directories" checkbox is checked. If this checkbox is not checked, FMOD Studio searches the directory itself, but none of its subfolders.</p>
+<p><a href="glossary.html#programmer-instrument">Programmer instruments</a> allow you to play these audio files in <a href="glossary.html#event">events</a>. When triggered, programmer instruments generate callbacks within the <a href="https://fmod.com/docs/2.02/api/studio-guide.html">FMOD Studio API</a>, allowing your game to choose which audio file the instrument should play. For more information on callbacks and how to use them, please see the <a href="https://fmod.com/docs/2.02/api/studio-guide.html#dialogue-and-localization">Dialogue and Localization</a> section of the <a href="https://fmod.com/docs/2.02/api">FMOD Engine User Manual</a>, the <a href="https://fmod.com/docs/2.02/ue4/user-guide.html#programmer-sounds">Programmer Sounds</a> section of our <a href="https://fmod.com/docs/2.02/ue4">Unreal Integration documentation</a>, or the <a href="https://fmod.com/docs/2.02/unity/examples-programmer-sounds.html">Programmer Sounds Scripting Example</a> subchapter of our <a href="https://fmod.com/docs/2.02/unity">Unity Integration documentation</a>.</p>
+<p>Audio tables can scale to handle thousands of audio files. Using audio tables can therefore reduce the complexity of your project by allowing one event with a programmer instrument to play many different lines of dialogue in your game.</p>
+<p>When <a href="glossary.html#audition">auditioning</a> in FMOD Studio, a programmer instrument cannot play the file it will reference when triggered in your game. However, you can drag an audio file or audio table onto the "Placeholder" section of a programmer instrument displayed in the deck in order to make that file or audio table play when the instrument is auditioned in FMOD Studio. Making an audio file a placeholder does not automatically assign that audio file to a bank.</p>
+<p>Adding an audio table to a <a href="glossary.html#master-bank">master bank</a> is not recommended. This is because a master bank must be loaded at all times, meaning that it is not possible to unload the master bank in order to conserve memory consumed by its audio table. However, in small projects where only one bank is needed and the assets require very little memory, adding an audio table to the master bank may be viable.</p>
+<h3 id="localized-audio-tables"><a href="#localized-audio-tables">13.1.1 Localized Audio Tables</a></h3>
+<p><span class="dead-link" href="glossary.html#localized-audio-table">Localized audio tables</span class="dead-link"> are a special kind of audio table with features that facilitate <span class="dead-link" href="glossary.html#localization">localization</span class="dead-link">. We recommend using localized audio tables if your game supports multiple spoken languages, or if you intend to add support for additional languages in a future patch.</p>
+<p>Unlike other audio tables, localized audio tables automatically append the <span class="dead-link" href="glossary.html#locale-code">locale code</span class="dead-link"> to the end of their source directory paths. This means that a localized audio table actually has multiple different source directories, one for each of your project's <span class="dead-link" href="glossary.html#locale">locales</span class="dead-link">.</p>
+<p>When you build a bank which contains a localized audio table, FMOD Studio automatically produces one version of the built bank for each locale. Each of these banks contains the audio files for the locale it represents, and has the code for that locale as an underscore-separated suffix to its file name.</p>
+<p>For example, if your game has two locales with the locale codes "PRC" and "FRE", and your game's "Dialogue" bank features a localized audio table with the source directory <code>C:/Audio</code>, the localized audio table's source directories will be <code>/Audio/PRC</code> and <code>/Audio/FRE</code>. When you build your project, FMOD Studio produces two files, <code>Dialogue_PRC.bank</code> and <code>Dialogue_FRE.bank</code>.</p>
+<p>You can define new locales and locale codes in the assets tab of the <span class="dead-link" href="glossary.html#preferences-dialog">preferences dialog</span class="dead-link">.</p>
+<p>To create a localized audio table, right click on a bank in the banks browser and select "Add Localized Audio Table". To make an existing non-localized audio table localized, right-click on it and select "Localized". Localized audio tables are marked with a "Localized" tag in the banks browser.</p>
+<p>Adding a localized audio table to a <a href="glossary.html#master-bank">master bank</a> is not recommended. This is because a localized audio table causes multiple locale-specific versions of its associated bank to be built, resulting in efficient redundancy of the master bank's data. In addition, because a master bank must be loaded at all times for your game's audio to function, it is not possible to unload a locale-specific master bank in order to load the master bank for a different locale without stopping all audio in your game.</p>
+<h3 id="keys"><a href="#keys">13.1.2 Keys</a></h3>
+<p>A <span class="dead-link" href="glossary.html#key">key</span class="dead-link"> is a variable name given to an audio file that is included in an audio table. It can be used in place of the audio file's name and path when creating a sound from that audio file. If you create multiple different banks with keys or use a localized audio table to create multiple versions of a bank from multiple different source directories, you can assign the same key to a different audio file in each bank. This allows you to use one key to create sounds based on various different audio files, such that the name of the audio file used depends on which bank is loaded when you use the key.</p>
+<p>Keys are mostly used for localizing dialogue. If you create a version of a bank for each spoken language your game supports, you can use the key associated with a line of dialogue to play that line of dialogue in the language of the currently loaded bank, even if the name of the audio file for that line of dialogue differs depending on which bank is loaded.</p>
+<p>By default, the key for an audio file is the filename of that audio file, minus the filename extension. If you wish to use different keys for the audio files in a bank, place a text file named <code>keys.txt</code> in the bank's audio table source directory; or, if using a localized audio table, place a text file named <code>keys.txt</code> in each of the audio table's source directories. Fill these files with a list of the keys you want to use, along with the names of the audio files to which they correspond, as in the following example:</p>
+<div class="highlight language-text"><pre><span></span>Greetings,hello01.wav
+Farewell,goodbye01.wav
+</pre></div>
+
+<p>In this example, the keys are "Greetings" and "Farewell", and they correspond to <code>hello01.wav</code> and <code>goodbye01.wav</code>, respectively.</p>
+<p>Audio files not listed in a source directory's keys.txt file are not included in the built bank.</p></div>
+
+<p class="manual-footer">FMOD Studio User Manual 2.02.30 (2025-08-05). &copy; 2025 Firelight Technologies Pty Ltd.</p>
+</body>
+</html>
+
+</div>

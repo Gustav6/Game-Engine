@@ -112,7 +112,7 @@ unsigned int JsonData::GetUnsigned(const char* aName) const
 		return 0;
 	}
 
-	return yyjson_get_uint(data);
+	return static_cast<unsigned int>(yyjson_get_uint(data));
 }
 
 float JsonData::GetFloat(const char* aName) const
@@ -271,7 +271,7 @@ std::vector<unsigned int> JsonData::GetUnsignedArray(const char* aName) const
 	{
 		if (yyjson_is_uint(value))
 		{
-			values.push_back(yyjson_get_uint(value));
+			values.push_back(static_cast<unsigned int>(yyjson_get_uint(value)));
 		}
 		else
 		{
@@ -379,9 +379,9 @@ std::vector<JsonData> JsonData::GetObjectValueArray(const char* aName) const
 	{
 		if (yyjson_is_obj(value))
 		{
-			JsonData data(myDocument, value, myPath);
+			JsonData objectData(myDocument, value, myPath);
 
-			values.emplace_back(std::move(data));
+			values.emplace_back(std::move(objectData));
 		}
 		else
 		{

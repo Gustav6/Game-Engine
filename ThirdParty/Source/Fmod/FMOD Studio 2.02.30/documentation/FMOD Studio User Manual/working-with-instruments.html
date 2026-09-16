@@ -1,0 +1,502 @@
+<html>
+<head>
+<title>Working with Instruments</title>
+<link rel="stylesheet" href="style/docs.css">
+<link rel="stylesheet" href="style/code_highlight.css">
+<script type="text/javascript" src="scripts/language-selector.js"></script></head>
+<body>
+<div class="docs-body">
+<div class="manual-toc">
+<p>FMOD Studio User Manual 2.02</p>
+<ul>
+<li><a href="welcome-to-fmod-studio.html">Welcome to FMOD Studio</a></li>
+<li><a href="fmod-studio-concepts.html">FMOD Studio Concepts</a></li>
+<li><a href="organizing-the-project.html">Organizing the Project</a></li>
+<li><a href="authoring-events.html">Authoring Events</a></li>
+<li class="manual-current-chapter manual-active-chapter"><a href="working-with-instruments.html">Working with Instruments</a><ul>
+<li><a href="#instrument-types">Instrument Types</a><ul>
+<li><a href="#single-instruments">Single Instruments</a></li>
+<li><a href="#multi-instruments">Multi Instruments</a></li>
+<li><a href="#event-instruments">Event Instruments</a></li>
+<li><a href="#scatterer-instruments">Scatterer Instruments</a></li>
+<li><a href="#programmer-instruments">Programmer Instruments</a></li>
+<li><a href="#command-instruments">Command Instruments</a></li>
+<li><a href="#snapshot-instruments">Snapshot Instruments</a></li>
+<li><a href="#plug-in-instruments">Plug-in Instruments</a></li>
+</ul>
+</li>
+<li><a href="#synchronous-and-asynchronous-instruments">Synchronous and Asynchronous Instruments</a><ul>
+<li><a href="#synchronous-instruments">Synchronous Instruments</a></li>
+<li><a href="#asynchronous-instruments">Asynchronous Instruments</a></li>
+</ul>
+</li>
+<li><a href="#looping-instruments">Looping Instruments</a><ul>
+<li><a href="#play-count">Play Count</a></li>
+<li><a href="#the-content-graphics-of-synchronous-instruments">The Content Graphics of Synchronous Instruments</a></li>
+</ul>
+</li>
+<li><a href="#untriggering-instruments">Untriggering Instruments</a></li>
+<li><a href="#fade-in-and-fade-out">Fade In and Fade Out</a></li>
+<li><a href="#cut-and-modulation">Cut and Modulation</a><ul>
+<li><a href="#cut">Cut</a></li>
+<li><a href="#ahdsr-modulation">AHDSR Modulation</a></li>
+</ul>
+</li>
+<li><a href="#delay-and-quantization">Delay And Quantization</a><ul>
+<li><a href="#time">Time</a></li>
+<li><a href="#tempo">Tempo</a></li>
+</ul>
+</li>
+<li><a href="#trigger-conditions">Trigger Conditions</a><ul>
+<li><a href="#parameter-conditions">Parameter Conditions</a></li>
+<li><a href="#event-state-conditions">Event State Conditions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="managing-assets.html">Managing Assets</a></li>
+<li><a href="parameters.html">Parameters</a></li>
+<li><a href="getting-events-into-your-game.html">Getting Events into Your Game</a></li>
+<li><a href="mixing.html">Mixing</a></li>
+<li><a href="the-sandbox.html">The Sandbox</a></li>
+<li><a href="editing-during-live-update.html">Editing During Live Update</a></li>
+<li><a href="profiling.html">Profiling</a></li>
+<li><a href="dialogue-and-localization.html">Dialogue and Localization</a></li>
+<li><a href="using-source-control.html">Using Source Control</a></li>
+<li><a href="supporting-downloadable-and-user-generated-content.html">Supporting Downloadable and User-generated Content</a></li>
+<li><a href="advanced-topics.html">Advanced Topics</a></li>
+<li><a href="quick-start-tutorial.html">Quick Start Tutorial</a></li>
+<li><a href="effect-reference.html">Effect Reference</a></li>
+<li><a href="event-macro-controls-reference.html">Event Macros Drawer Reference</a></li>
+<li><a href="instrument-reference.html">Instrument Reference</a></li>
+<li><a href="keyboard-shortcut-reference.html">Keyboard Shortcut Reference</a></li>
+<li><a href="modulator-reference.html">Modulator Reference</a></li>
+<li><a href="parameters-reference.html">Parameters Reference</a></li>
+<li><a href="plugin-reference.html">Plug-in Reference</a></li>
+<li><a href="scripting-terminal-reference.html">Scripting</a></li>
+<li><a href="scripting-api-reference.html">Scripting API Reference</a></li>
+<li><a href="troubleshooting.html">Troubleshooting</a></li>
+<li><a href="glossary.html">Glossary</a></li>
+<li><a href="appendix-a-celeste.html">Appendix: Celeste Getting Started Guide</a></li>
+<li><a href="appendix-b-reaper-integration.html">Appendix: Reaper Integration</a></li>
+</ul>
+</div>
+<div class="manual-content studio">
+<h1>5. Working with Instruments</h1>
+<p><a href="glossary.html#fmod-studio">FMOD Studio</a> uses the term <a href="glossary.html#instrument">instrument</a> to describe the variety of trigger regions that can be added to the <a href="glossary.html#track">tracks</a> of an <a href="glossary.html#event">event</a>.</p>
+<p>Instruments can be added to any of an event's <a href="glossary.html#action-sheet">action sheets</a> or <a href="glossary.html#parameter-sheet">parameter sheets</a>. Instruments on parameter sheets are triggered when the <a href="glossary.html#playback-position">playback position</a> of that parameter overlaps the instrument, whereas instruments on action sheets are triggered when the event begins. Once triggered, an instrument starts the audio, event, <a href="glossary.html#command-instrument">command</a>, or <a href="glossary.html#snapshot">snapshot</a> associated with it.</p>
+<p>Instruments on parameter sheets can be edited in bulk by holding the Ctrl modifier key and selecting each instrument you wish to edit. Common properties shared between the instruments are highlighted in gold and editing these properties edits them across all selected instruments. If properties are not common to all selected instruments, such as a <a href="glossary.html#playlist-selection-mode">playlist selection mode</a> when selecting a multi instrument and a single instrument, then these properties are not highlighted.</p>
+<h2 id="instrument-types"><a href="#instrument-types">5.1 Instrument Types</a></h2>
+<p>There are several instrument types available for <a href="glossary.html#fmod-studio">FMOD Studio</a>. Each instrument's type is written in its label.</p>
+<p>By default, each type of instrument is a different color. The color of an instrument may make it easier to identify at a glance in FMOD Studio, but has no effect on its behavior, and can be changed by right-clicking on an instrument and selecting "Set Color" from the context menu. Changing an instrument's color does not change its type.</p>
+<h3 id="single-instruments"><a href="#single-instruments">5.1.1 Single Instruments</a></h3>
+<p>Single instruments are the simplest form of instruments in FMOD Studio. When triggered they play a single audio file.</p>
+<p>To create a single instrument, either right click on an <a href="glossary.html#audio-track">audio track</a> or <a href="glossary.html#playlist">playlist</a> and select "Add Single Instrument," or drag an <a href="glossary.html#audio-file">audio file</a> onto an audio track or playlist from the <a href="glossary.html#assets-browser">assets browser</a> or a <a href="glossary.html#file-manager">file manager</a> application.</p>
+<h3 id="multi-instruments"><a href="#multi-instruments">5.1.2 Multi Instruments</a></h3>
+<p>Multi instruments contain <a href="glossary.html#playlist">playlists</a> of single instruments, multi instruments, programmer instruments, and/or event instruments. When triggered they select items to play from their playlists according to the instrument's <a href="glossary.html#playlist-selection-mode">playlist selection mode</a>. Multi instruments are set to <a href="glossary.html#playlist-selection-mode">shuffle playlist selection mode</a> by default, as this is the recommended behavior in most circumstances.</p>
+<p>Multi instruments are commonly used to avoid obvious repetition of audio, in order to make game worlds sound less artificial and more realistic.</p>
+<p>To create a multi instrument, either right click on an <a href="glossary.html#audio-track">audio track</a> or playlist and select "Add Multi Instrument," or drag a multi-selection of audio files onto an audio track from the assets browser or a file manager application.</p>
+<h3 id="event-instruments"><a href="#event-instruments">5.1.3 Event Instruments</a></h3>
+<p>Event instruments are instruments that play the output of <a href="authoring-events.html#referenced-events">referenced events</a> when triggered. An event that contains an event instrument is called the <a href="glossary.html#parent-event">parent event</a> of the referenced event.</p>
+<p>The output of an event instrument is routed into the audio track of the parent event that contains that event instrument, not into the mixer.</p>
+<p>By default, the <a href="glossary.html#parameter">parameters</a> of a referenced event are included in the parent event, and appear in the transport bar when viewing that parent event. Built-in parameters, and parameters whose "Expose recursively via event instruments" checkboxes are not checked, are not exposed in the parent event. If a referenced event makes use of user parameters, controls for those parameters appear in the deck when the event instrument is selected in the parent event.</p>
+<p>Setting the value of an exposed parameter in a parent event also sets it in the referenced event, unless the event instrument's parameter control is automated in the parent event (See <a href="glossary.html#parameter-linking">parameter linking</a>). If the parameter control is automated in the parent event, the referenced event's parameter is controlled by the automation.</p>
+<p>Unlike other instrument types, an event instrument's volume dial does not affect the instrument's output volume directly. Instead, it sets the value of the <a href="glossary.html#master-track">master track's</a> <span class="dead-link" href="glossary.html#volume-fader">volume fader</span class="dead-link"> in every instance of the referenced event created by that event instrument.</p>
+<p>Event instruments allow you to use the same content in multiple parts of your project, and make it possible to use all the features of an event inside an instrument.</p>
+<p>Some referenced events are <a href="authoring-events.html#nested-events">nested events</a>. Unlike other events, nested referenced events do not appear in the routing browser and cannot be played at <span class="dead-link" href="glossary.html#runtime">runtime</span class="dead-link"> except by playing their parent events. Each nested event is shown under a specific parent event in the <a href="glossary.html#events-browser">events browser</a>, and cannot be referenced in events other than that parent event. The main benefit of nested referenced events is that they do not clutter the routing browser and the browsers of your game editor.</p>
+<p>To create an event instrument that references an existing event, drag that event from the <a href="glossary.html#events-browser">events browser</a> onto any audio track of another event. To create an event instrument that references a new nested event, right click on an event's <a href="glossary.html#audio-track">audio track</a> and select "Add Event Instrument".</p>
+<h3 id="scatterer-instruments"><a href="#scatterer-instruments">5.1.4 Scatterer Instruments</a></h3>
+<p><a href="glossary.html#scatterer-instrument">Scatterer instruments</a> are a special type of instrument that continuously spawn instances of the 2D or 3D instruments in their playlists.</p>
+<p>Scatterer instruments spawn instances of instruments in their playlists in a similar manner to <a href="glossary.html#multi-instrument">multi instruments</a>. Unlike multi instruments, however, a scatterer instrument can select and spawn an instrument from its playlist regardless of when the previous one it spawned finishes playing, can randomize the volume and pitch of each spawned instance individually, and can assign a different location to each spawned instance for the purposes of panning and other location-dependent behaviors.</p>
+<p>By setting a scatterer instrument's min &amp; max spawn interval ribbon slider, you can define its temporal randomization behavior. A scatterer instrument's min &amp; max spawn interval ribbon slider defines the range of duration that can pass between the start of one playlist entry instance spawned by that scatterer instrument and the start of the next.</p>
+<p>Switching the spawn interval's mode to "tempo" only spawns new instances from the playlist on specific notes or bars. The timeline positions of beats and bars in an event are determined by the event's tempo markers. If there are no tempo markers in the event, it defaults to 120 beats per minute and 4/4 time for this purpose.</p>
+<p>By setting a scatterer instrument's min &amp; max distance ribbon slider, you can define its spatial randomization behavior. All instances spawned by the scatterer are randomly assigned a location (for the purposes of panning) that's a random distance away from the event emitter in a random direction. The min &amp; max distance ribbon slider defines the range of possible distances. Setting a scatterer instrument's min &amp; max distance to 0 disables spatial randomization for that scatterer instrument.</p>
+<p>Event reference instruments in a scatterer instrument playlist use the referenced events' 3D behaviors for the purposes spatial randomization. This means that referenced events that lack 3D behavior (due to having no built-in parameters or spatializer effects) are not affected in any way by spatial randomization.</p>
+<p>Single instruments and programmer instruments in a scatterer instrument playlist are panned as if affected by a spatializer effect with a linear squared rolloff curve and a max distance of 20. Setting a scatterer instrument's min &amp; max distance to 0 disables this, and prevents that scatterer instrument from applying panning to single instruments in its playlist.</p>
+<p>By setting a scatterer instrument's vol rnd and pitch rnd properties, you can specify the degree to which the pitch and volume of each instance it spawns should be randomized. The degree of pitch or volume adjustment is determined independently for each spawned instance.</p>
+<p>When placed onto an <a href="glossary.html#audio-track">audio track</a> each instrument played from the playlist has its own spatializer attached that allows its location to be randomized, even when the scatterer instrument is placed in a 2D event. If, however, the scatterer instrument's playlist contains 2D <a href="instrument-reference.html#event-instrument">event instruments</a> then those event instrument's output will be in 2D.</p>
+<p>Scatterer instruments are perfect for creating ambience, such as having crickets chirping inside a field.</p>
+<p>To create a scatterer instrument, right click on an <a href="glossary.html#audio-track">audio track</a> and select "Add Scatterer Instrument".</p>
+<h3 id="programmer-instruments"><a href="#programmer-instruments">5.1.5 Programmer Instruments</a></h3>
+<p>Programmer instruments are a type of empty instrument that generates callbacks. These callbacks are then used to play any audio file the programmer chooses - whether it's a part of the FMOD Studio project or not.</p>
+<p>Programmer instruments are perfect for games with a lot of dialogue and localization, especially when combined with <span class="dead-link" href="glossary.html#audio-table">audio tables</span class="dead-link">.</p>
+<p>To create a programmer instrument, right click on an <a href="glossary.html#audio-track">audio track</a> or playlist and select "Add Programmer Instrument".</p>
+<h3 id="command-instruments"><a href="#command-instruments">5.1.6 Command Instruments</a></h3>
+<p>Command instruments are a type of instrument that can issue a specific command to your game's FMOD Studio system. This command is treated just as if it was issued through the <a href="glossary.html#fmod-engine">FMOD Engine</a>.</p>
+<p><img alt="Command Instrument" src="images/command-instrument-trigger-region.png" /></p>
+<p>There are a number of different commands that a command instrument can issue:</p>
+<ul>
+<li>Start Event: Triggering the command instrument creates and plays an instance of the target event. Instruments created in this fashion are routed through their normal routing paths, not through the tracks of the event that contains the command instrument. Instruments started by this command are given <a href="https://fmod.com/docs/2.02/api/studio-api-eventinstance.html#studio_eventinstance_release">Studio::EventInstance::release</a> commands, meaning they will automatically be destroyed and stop consuming memory once they stop.</li>
+<li>Stop Event: Triggering the command instrument stops all ongoing instances of the target event other than instances created by event instruments, just as if they were stopped with <a href="https://fmod.com/docs/2.02/api/studio-api-eventinstance.html#fmod_studio_stop_mode">FMOD_STUDIO_STOP_ALLOWFADEOUT</a>. Event instances stopped by this command are not automatically given <a href="https://fmod.com/docs/2.02/api/studio-api-eventinstance.html#studio_eventinstance_release">Studio::EventInstance::release</a> commands.</li>
+<li>Stop Event - Immediate: Triggering the command instrument stops all ongoing instances of the target event other than instances created by event instruments, just as if they were stopped with <a href="https://fmod.com/docs/2.02/api/studio-api-eventinstance.html#fmod_studio_stop_mode">FMOD_STUDIO_STOP_IMMEDIATE</a>. Event instances stopped by this command are not automatically given <a href="https://fmod.com/docs/2.02/api/studio-api-eventinstance.html#studio_eventinstance_release">Studio::EventInstance::release</a> commands.</li>
+<li>Set Parameter: Triggering the command instrument sets the target parameter to the specified value. If the parameter is local, its value is set only in the event instance in which the command instrument is triggered.</li>
+<li>Increment Parameter: Triggering the command instrument changes the target parameter by the specified amount. If the parameter is local, its value is set only in the event instance in which the command instrument is triggered.</li>
+</ul>
+<p>You can set the command of a command instrument in the deck.</p>
+<p>Unlike other instruments, command instruments have no minimum length.</p>
+<p>To create a command instrument, right click on an audio track or playlist and select "Add Command Instrument".</p>
+<h3 id="snapshot-instruments"><a href="#snapshot-instruments">5.1.7 Snapshot Instruments</a></h3>
+<p>Snapshot instruments are a type of <a href="instrument-reference.html#event-instrument">event instruments</a>. When a snapshot instrument is triggered, an instance of the corresponding snapshot is started, and the properties scoped into that snapshot are set to the values it specifies.</p>
+<p>Once the <a href="glossary.html#playback-position">playback position</a> leaves the instrument, the snapshot instance stops, and the properties scoped into that snapshot return to their normal values.</p>
+<p>Snapshots are perfect for creating reverb zones in your game.</p>
+<p>To create a snapshot instrument, drag a snapshot onto an audio track, or right-click on an audio track and select "Add Snapshot Instrument".</p>
+<p>For more information and other ways of triggering snapshots, see the <a href="mixing.html#snapshots-and-the-tracks-view">snapshots and the tracks view</a> section of the <a href="mixing.html">mixing</a> chapter.</p>
+<h3 id="plug-in-instruments"><a href="#plug-in-instruments">5.1.8 Plug-in Instruments</a></h3>
+<p>Plug-in instruments are a type of instrument that can produce any kind of custom sound you may need.</p>
+<p>For example you may need a specific type of synthesizer, a procedurally generated audio instrument, or even a tracker file playback instrument.</p>
+<p>To create a plug-in instrument, right click on an event's <a href="glossary.html#audio-track">audio track</a> and select a plug-in from one of the sub-menus in "Add Plug-in Instrument".</p>
+<p>By default, FMOD Studio is bundled with trial versions of AudioGaming's AudioWeather and AudioMotors plug-ins.</p>
+<p>You are free to develop your own plug-in instruments. For more information on how to do this, please see the <a href="https://fmod.com/docs/2.02/api/plugin-api-dsp.html">FMOD Core API documentation</a>.</p>
+<h2 id="synchronous-and-asynchronous-instruments"><a href="#synchronous-and-asynchronous-instruments">5.2 Synchronous and Asynchronous Instruments</a></h2>
+<p>With some <a href="glossary.html#instrument">instruments</a>, it's useful to have fine control over the way their associated <a href="glossary.html#audio-file">audio files</a> get played. The type of control you have depends on whether the instrument is synchronous or asynchronous.</p>
+<p>In a synchronous instrument, the part of the <a href="glossary.html#audio-file">audio file</a> that plays corresponds to the position of the <a href="glossary.html#timeline">timeline</a> <a href="glossary.html#playback-position">playback position</a> over the <a href="glossary.html#trigger-region">trigger region's</a> <span class="dead-link" href="glossary.html#waveform-graphic">waveform graphic</span class="dead-link">. This lets you seek or scrub within audio files by moving the timeline playback position.</p>
+<p>In an asynchronous instrument, the precise location of the playback position within the trigger region is ignored. Instead, the instrument plays from the beginning when it is triggered. This lets you treat asynchronous instruments like switches that can be turned on and off, and always do the same thing.</p>
+<p>To check whether an event is synchronous or asynchronous, first select the instrument, then look for the "Async" button in the <a href="glossary.html#deck">deck</a>. If the button is yellow, the instrument is asychnonous, otherwise it is synchronous. If there is no "Async" button in the deck, the instrument can only be asynchronous.</p>
+<p><img alt="Async Button" src="images/asynchronousButton.png" /></p>
+<p>Clicking on the "Async" button toggles the instrument between being asynchronous and synchronous.</p>
+<p>These are the default states of each type of instrument when placed on a timeline parameter sheet:</p>
+<blockquote>
+<ul>
+<li><strong><a href="#single-instruments">Single Instruments</a>.</strong> Synchronous.</li>
+<li><strong><a href="#multi-instruments">Multi Instruments</a>.</strong> Synchronous.</li>
+<li><strong><a href="#event-instruments">Event Instruments</a>.</strong> Asynchronous, cannot be changed.</li>
+<li><strong><a href="#scatterer-instruments">Scatterer Instruments</a>.</strong> Asynchronous, cannot be changed.</li>
+<li><strong><a href="#programmer-instruments">Programmer Instruments</a>.</strong> Synchronous.</li>
+<li><strong><a href="#plug-in-instruments">Plug-in Instruments</a>.</strong> Plug-in instruments may default to being synchronous or asynchronous, depending on how they are designed.</li>
+<li><strong><a href="#command-instruments">Command Instruments</a>.</strong> Asynchronous, cannot be changed.</li>
+<li><strong><a href="#snapshot-instruments">Snapshot Instruments</a>.</strong>: Asynchronous, cannot be changed.</li>
+</ul>
+</blockquote>
+<p>Only instruments on <a href="glossary.html#timeline">timeline</a> <a href="glossary.html#parameter-sheet">parameter sheets</a> can be synchronous. Instruments on other parameter sheets and <a href="glossary.html#action-sheet">action sheets</a> are always asynchronous.</p>
+<h3 id="synchronous-instruments"><a href="#synchronous-instruments">5.2.1 Synchronous Instruments</a></h3>
+<p>In synchronous mode, an instrument's length determines how long its <span class="dead-link" href="glossary.html#asset">assets(s)</span class="dead-link"> plays for.</p>
+<p>If the instrument's length is shorter than that of the asset being played, it will stop producing audio once the <span class="dead-link" href="glossary.html#playback-cursor">playback cursor</span class="dead-link"> leaves the <a href="glossary.html#trigger-region">trigger region</a>. </p>
+<p>The <a href="glossary.html#loop-playback-mode">loop mode</a> of an instrument is a way of making it repeat its content. If the instrument is set to loop, it will replay its content for the length of the instrument. By default, no instruments are set to loop. Instruments created through dragging assets onto an audio track will match the length of that asset or the longest asset in that multi-selection.</p>
+<p>In synchronous mode, the part of the waveform that plays is the part of the waveform that's overlapped by the playback position. This allows you to seek (or scrub) within an <a href="glossary.html#audio-file">audio file</a> instead of always starting to play from the beginning.</p>
+<p>You can trim the beginning and end of an instrument to state when it should start and finish by clicking and dragging either end of the instrument to the left or right.</p>
+<p><img alt="Trimming instruments" src="images/trim.png" /></p>
+<p>If you use a <a href="glossary.html#transition-marker">transition marker</a> to move to the middle of an instrument set to synchronous mode, the instrument will play back audio from that point in the asset.</p>
+<p>Synchronous mode is useful for transitioning around tracks in dynamic music.</p>
+<p>Synchronous instruments only play out the release period of an <a href="glossary.html#ahdsr-modulator">AHDSR modulator</a> if they're <a href="glossary.html#untrigger">untriggered</a> as a result of a <a href="glossary.html#parameter-condition">parameter condition</a>, and not if they're untriggered by the playback position leaving the trigger region.</p>
+<p>If a <a href="glossary.html#loop-region">loop region</a>, <a href="glossary.html#transition-marker">transition marker</a>, or <a href="glossary.html#transition-region">transition region</a> moves the playback position from one part of a synchronous instrument's trigger region to another, that instrument is untriggered and retriggered in the process. Untriggering and retriggering an instrument in this fashion causes attached AHDSR modulators to begin their attack periods.</p>
+<h3 id="asynchronous-instruments"><a href="#asynchronous-instruments">5.2.2 Asynchronous Instruments</a></h3>
+<p>Asynchronous mode is used for when you need assets to play in their entirety once triggered. Asynchronous instruments act like on/off switches - once the playback position has entered any part of the <a href="glossary.html#trigger-region">trigger region</a> the asset associated with that instrument will start playing from the beginning.</p>
+<p>Asynchronous instruments are more useful than synchronous instruments in most situations where you don't need to seek within an audio file. They're more flexible with timeline <a href="glossary.html#transition-marker">transition markers</a> and <a href="glossary.html#transition-region">transition regions</a>, they work better with modulators, and the decoupling of timeline position and the waveform means they often work much better when using instrument <a href="glossary.html#parameter-condition">parameter conditions</a>. This is because when the parameter conditions are met, asynchronous instruments will start playing from the beginning of the waveform. By comparison, synchronous instruments will start playing the waveform from where the playback position <em>is</em> once the <a href="glossary.html#trigger-condition">trigger conditions</a> are met, which is not always desirable.</p>
+<p>An asynchronous instrument <em>will</em> play out the release period of an <a href="glossary.html#ahdsr-modulator">AHDSR modulator</a> if it is untriggered by the playback position leaving the trigger region. Since this is the most common way for an instrument to be untriggered, using asynchronous instruments is very useful when considering modulators.</p>
+<h2 id="looping-instruments"><a href="#looping-instruments">5.3 Looping Instruments</a></h2>
+<p><a href="glossary.html#instrument">Instruments</a> may be set to loop, so that they don't stop immediately after playing a single <a href="glossary.html#audio-file">audio file</a> or <span class="dead-link" href="glossary.html#playlist-entry">playlist entry</span class="dead-link">. To make an instrument loop, select the instrument in the editor, then click on its <span class="dead-link" href="glossary.html#loop-instrument-toggle-button">loop instrument</span class="dead-link"> or <span class="dead-link" href="glossary.html#loop-playlist-toggle-button">loop playlist</span class="dead-link"> toggle button in the deck. </p>
+<p>The loop playlist toggle button is only found on multi instruments, and appears in the <a href="glossary.html#deck">deck</a> when a <a href="glossary.html#multi-instrument">multi instrument</a> is selected in the <a href="glossary.html#editor">editor</a>. When toggled on, the loop playlist toggle button causes the multi instrument to select a new playlist entry to play each time it finishes playing a playlist entry.</p>
+<p><img alt="Loop Playlist Toggle Button" src="images/loopPlaylistToggleButton.png" /></p>
+<p>The loop instrument button is found on most types of instruments. It appears in the deck when a <a href="glossary.html#single-instrument">single instrument</a> or <a href="glossary.html#programmer-instrument">programmer instrument</a> is selected in the editor, and also when a single instrument or programmer instrument is selected in the playlist of a multi instrument or <a href="glossary.html#scatterer-instrument">scatterer instrument</a>. When toggled on, the loop instrument button causes the selected single instrument or programmer instrument to play repeatedly instead of just once. If the loop instrument button is toggled on for only some of the entries in a playlist, only those entries will loop when they are selected for playback.</p>
+<p><img alt="Loop Instrument Toggle Button" src="images/loopInstrumentToggleButton.png" /></p>
+<p>Toggling on either kind of loop toggle button causes the adjacent play count number box to become active and editable.</p>
+<p>The looping behavior of an instrument also depends on the instrument's <span class="dead-link" href="glossary.html#play-count">play count</span class="dead-link"> properties, whether the instrument is <a href="glossary.html#synchronous">synchronous</a> or <a href="glossary.html#asynchronous">asynchronous</a>, and whether it is <a href="glossary.html#untrigger">untriggered</a> while playing.</p>
+<h3 id="play-count"><a href="#play-count">5.3.1 Play Count</a></h3>
+<p>Play count is a property of instruments, playlists other than action sheets, and playlist entries. The exact effect of a play count property depends on whether it is associated with an instrument or playlist entry or with a playlist.</p>
+<p>In the case of an instrument or playlist entry, play count is the maximum number of times the instrument or playlist entry can play when triggered or selected.</p>
+<p>In the case of playlists, play count is the maximum number of times the playlist may select a new entry when the multi instrument is triggered.</p>
+<p>If a loop instrument toggle button or loop playlist toggle button is toggled off, its associated play count number box is grayed out and inactive. In this state, the effective play count of the instrument, playlist entry or playlist is always one.</p>
+<h3 id="the-content-graphics-of-synchronous-instruments"><a href="#the-content-graphics-of-synchronous-instruments">5.3.2 The Content Graphics of Synchronous Instruments</a></h3>
+<p>If a single instrument or programmer instrument is synchronous and its play count is greater than one, the <span class="dead-link" href="glossary.html#content-graphic">content graphic</span class="dead-link"> on its trigger region shows multiple copies of the associated waveform end-to-end, separated by vertical dotted lines. The number of waveforms displayed when the instrument is set to loop is equal to the number of copies that fit on the trigger region, up to a maximum of the instrument's play count property.</p>
+<p><img alt="Looping Synchronous Instrument Content Graphic" src="images/looping-synchronous-instrument-toggle-button.png" /></p>
+<p>If a single or programmer instrument is asynchronous or is not set to loop, its content graphic shows only a single copy of the instrument's associated waveform.</p>
+<h2 id="untriggering-instruments"><a href="#untriggering-instruments">5.4 Untriggering Instruments</a></h2>
+<p>An instrument on a parameter sheet is untriggered when its conditions for being triggered stop being met, which is to say, when the <a href="glossary.html#playback-position">playback position</a> no longer falls between the start and end of the instrument's trigger region or the instrument's other <a href="glossary.html#trigger-condition">trigger conditions</a> stop being met.</p>
+<p>Stopping an event does not untrigger any of the instruments in that event, unless those instruments have an <a href="glossary.html#event-state-trigger-condition">event state trigger condition</a> that says they should. This makes it possible to design an event that gradually fades out, plays new instruments, or has other special behavior when it is stopping.</p>
+<p>Untriggering an instrument causes that instrument to be available for subsequent triggering. Beyond that, the exact behavior of an untriggered instrument depends on a number of factors, as described below. As a general rule, untriggering an instrument causes it to stop producing audio output, either immediately or after a period of time.</p>
+<p>The following factors determine an instrument's behavior when untriggered:</p>
+<ul>
+<li>The instrument's type.</li>
+<li>Whether the instrument is synchronous or asynchronous.</li>
+<li>Whether the instrument is untriggered due to the playback position leaving its trigger region or due to its other trigger conditions no longer being met.</li>
+<li>Whether there is an AHDSR modulator on any of the instrument's properties.</li>
+<li>The instrument's cut mode.</li>
+<li>Whether the instrument (or any of its playlist entries) has infinite looping behavior.</li>
+</ul>
+<p>Untriggering a command instrument has no special effect beyond causing that instrument to be available for subsequent triggering.</p>
+<p>Untriggering a snapshot instrument causes the associated snapshot instance to stop playing. If there is no AHDSR modulator on the snapshot's intensity or the snapshot instrument's intensity, this happens immediately; otherwise, the snapshot instance ends after the AHDSR modulator's release period finishes playing out.</p>
+<p>Untriggering an audio-producing instrument (such as a single instrument, multi instrument, event instrument, scatterer instrument, or programmer instrument) causes it to be affected as described below.</p>
+<p>Synchronous instruments immediately fall silent and stop producing output when no longer overlapped by the <a href="glossary.html#timeline-parameter">timeline</a> <a href="glossary.html#playback-position">playback position</a>, even if they have not finished playing the number of times specified by their loop count properties.</p>
+<p>If a synchronous instrument is overlapped by the timeline playback position when it is untriggered, its behavior depends on whether there are AHDSR modulators on any of its properties. If there are no such AHDSR modulators, it immediately falls silent and stops playing in the same manner as if its trigger region was no longer overlapped by the timeline playback position; whereas if there is an AHDSR modulator on at least one of its properties, those modulators begin playing out their release periods, and the instrument continues playing until the last such AHDSR modulator has finished playing out its release period.</p>
+<p><img alt="AHDSR Modulator" src="images/ADHSRModulator.png" /></p>
+<p>If an asynchronous looping instrument is untriggered and there are AHDSR modulators on one or more of its properties, those modulators begin playing out their release periods, and the instrument continues playing as it it had not been untriggered until the last such AHDSR modulator has finished playing out its release period, at which point the instrument falls silent and stops playing.</p>
+<p>If an asynchronous looping instrument that lacks AHDSR modulators is untriggered, its behavior depends on its <a href="glossary.html#cut-behavior">cut behavior</a>. If the instrument's cut behavior is "cut immediately," the instrument immediately stops producing output when untriggered. If its cut behavior is "play to end," it instead plays out to completion when untriggered, as dictated by its play count properties:</p>
+<ul>
+<li><strong>Finite play count -</strong> The instrument plays out to completion normally.</li>
+<li><strong>Infinite play count -</strong> The instrument finishes the playlist entry that it's currently playing, then stops.</li>
+</ul>
+<p>If an entry in the playlist of an asynchronous multi or scatterer instrument has an infinite play count, its behavior depends on whether an instance of that playlist entry is playing when the instrument is untriggered:</p>
+<ul>
+<li><strong>An instance of the playlist entry is playing -</strong> That instance of the playlist entry plays to its end before stopping.</li>
+<li><strong>No instance of the playlist entry is playing -</strong> That playlist entry is treated as if its play count is 0.</li>
+</ul>
+<p>How the loop mode, play count, synchronicity or asynchronicity, and cut mode of an audio-producing instrument affects its behavior when untriggered is summarized in the following table.</p>
+<table>
+<thead>
+<tr>
+<th>Looping</th>
+<th>Play count</th>
+<th>Sync/Async</th>
+<th>Cut Behavior</th>
+<th>Untrigger method</th>
+<th>Behavior when Untriggered</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>No</td>
+<td>N/A</td>
+<td>Sync</td>
+<td>No AHDSR</td>
+<td>Any</td>
+<td>Stops immediately.</td>
+</tr>
+<tr>
+<td>No</td>
+<td>N/A</td>
+<td>Sync</td>
+<td>ADHSR</td>
+<td>Timeline playback position removed from trigger region</td>
+<td>Stops immediately.</td>
+</tr>
+<tr>
+<td>No</td>
+<td>N/A</td>
+<td>Sync</td>
+<td>ADHSR</td>
+<td>Timeline playback position remains on trigger region</td>
+<td>AHDSR modulators enter their release period.</td>
+</tr>
+<tr>
+<td>No</td>
+<td>N/A</td>
+<td>Async</td>
+<td>Play to end</td>
+<td>Any</td>
+<td>Continues playing*.</td>
+</tr>
+<tr>
+<td>No</td>
+<td>N/A</td>
+<td>Async</td>
+<td>Cut immediately</td>
+<td>Any</td>
+<td>Stops immediately.</td>
+</tr>
+<tr>
+<td>No</td>
+<td>N/A</td>
+<td>Async</td>
+<td>ADHSR</td>
+<td>Any</td>
+<td>AHDSR modulators enter their release periods.</td>
+</tr>
+<tr>
+<td>Yes</td>
+<td>&#8734;</td>
+<td>Sync</td>
+<td>No AHDSR</td>
+<td>Any</td>
+<td>Stops immediately.</td>
+</tr>
+<tr>
+<td>Yes</td>
+<td>&#8734;</td>
+<td>Sync</td>
+<td>AHDSR</td>
+<td>Timeline playback position removed from trigger region</td>
+<td>Stops immediately.</td>
+</tr>
+<tr>
+<td>Yes</td>
+<td>&#8734;</td>
+<td>Sync</td>
+<td>AHDSR</td>
+<td>Timeline playback position remains on trigger region</td>
+<td>AHDSR modulators enter their release periods.</td>
+</tr>
+<tr>
+<td>Yes</td>
+<td>&#8734;</td>
+<td>Async</td>
+<td>Play to end</td>
+<td>Any</td>
+<td>Plays to end of current entry, then stops*.</td>
+</tr>
+<tr>
+<td>Yes</td>
+<td>&#8734;</td>
+<td>Async</td>
+<td>Cut immediately</td>
+<td>Any</td>
+<td>Stops immediately.</td>
+</tr>
+<tr>
+<td>Yes</td>
+<td>&#8734;</td>
+<td>Async</td>
+<td>AHDSR</td>
+<td>Any</td>
+<td>AHDSR modulators enter their release periods.</td>
+</tr>
+<tr>
+<td>Yes</td>
+<td>1</td>
+<td>Sync</td>
+<td>No AHDSR</td>
+<td>Any</td>
+<td>Stops immediately.</td>
+</tr>
+<tr>
+<td>Yes</td>
+<td>1</td>
+<td>Sync</td>
+<td>AHDSR</td>
+<td>Timeline playback position removed from trigger region</td>
+<td>Stops immediately.</td>
+</tr>
+<tr>
+<td>Yes</td>
+<td>1</td>
+<td>Sync</td>
+<td>AHDSR</td>
+<td>Timeline playback position remains on trigger region</td>
+<td>AHDSR modulators enter their release period.</td>
+</tr>
+<tr>
+<td>Yes</td>
+<td>1</td>
+<td>Async</td>
+<td>Play to end</td>
+<td>Any</td>
+<td>Continues playing*.</td>
+</tr>
+<tr>
+<td>Yes</td>
+<td>1</td>
+<td>Async</td>
+<td>Cut immediately</td>
+<td>Any</td>
+<td>Stops immediately.</td>
+</tr>
+<tr>
+<td>Yes</td>
+<td>1</td>
+<td>Async</td>
+<td>AHDSR</td>
+<td>Any</td>
+<td>AHDSR modulators enter their release period.</td>
+</tr>
+<tr>
+<td>Yes</td>
+<td>n</td>
+<td>Sync</td>
+<td>No AHDSR</td>
+<td>Any</td>
+<td>Stops immediately.</td>
+</tr>
+<tr>
+<td>Yes</td>
+<td>n</td>
+<td>Sync</td>
+<td>AHDSR</td>
+<td>Timeline playback position removed from trigger region</td>
+<td>Stops immediately.</td>
+</tr>
+<tr>
+<td>Yes</td>
+<td>n</td>
+<td>Sync</td>
+<td>AHDSR</td>
+<td>Timeline playback position remains on trigger region</td>
+<td>AHDSR modulators enter their release period.</td>
+</tr>
+<tr>
+<td>Yes</td>
+<td>n</td>
+<td>Async</td>
+<td>Play to end</td>
+<td>Any</td>
+<td>Continues playing*.</td>
+</tr>
+<tr>
+<td>Yes</td>
+<td>n</td>
+<td>Async</td>
+<td>Cut immediately</td>
+<td>Any</td>
+<td>Stops immediately.</td>
+</tr>
+<tr>
+<td>Yes</td>
+<td>n</td>
+<td>Async</td>
+<td>AHDSR</td>
+<td>Any</td>
+<td>AHDSR modulators enter their release period.</td>
+</tr>
+</tbody>
+</table>
+<p>*If the instrument has a playlist, and that playlist contains an entry that's set to loop, that entry's behavior depends on whether it is playing when the instrument is untriggered, as described above.</p>
+<h2 id="fade-in-and-fade-out"><a href="#fade-in-and-fade-out">5.5 Fade In and Fade Out</a></h2>
+<p>Each instrument on a <a href="glossary.html#parameter-sheet">parameter sheet</a> can be given fade curves. This allows for smoothly starting or finishing an instrument's sound, but behaves differently from an <a href="glossary.html#ahdsr-modulator">AHDSR modulator</a>.</p>
+<p>To add a fade in or a fade out to an instrument, hover your mouse over the top left or right corner of the instrument. Once the mouse cursor changes to a curved arrow, click and drag to the desired position.</p>
+<p><img alt="Fade In" src="images/fadeIn.png" /></p>
+<p>You can click and drag on the <span class="dead-link" href="glossary.html#shape-handle">shape handle</span class="dead-link"> to adjust the speed of the fading.</p>
+<p>The position of the <a href="glossary.html#playback-position">playback position</a> on the fade curves determines the volume of the instrument at that time. If the playback position moves to a part of the instrument where a fade-in or fade-out appears, then the volume of the instrument will be the level shown by the fade in or fade out curves. This is the same behavior as if you were to use <a href="glossary.html#automation">automation</a> on the instruments volume.</p>
+<p>By comparison, an <a href="glossary.html#ahdsr-modulator">AHDSR modulator</a> will only be applied when an instrument is triggered and released.</p>
+<p>Instruments that have both a fade in or fade out and an AHDSR modulator will have both applied.</p>
+<h2 id="cut-and-modulation"><a href="#cut-and-modulation">5.6 Cut and Modulation</a></h2>
+<p>When an instrument on a parameter sheet is set to <a href="glossary.html#asynchronous">asynchronous</a> mode, you can also toggle its <a href="glossary.html#cut-behavior">cut</a> mode on or off. Using this in conjunction with <a href="glossary.html#ahdsr-modulator">AHDSR modulators</a> can affect how an instrument finishes playing once the <a href="glossary.html#playback-position">playback position</a> has left the <a href="glossary.html#trigger-region">trigger region</a>.</p>
+<h3 id="cut"><a href="#cut">5.6.1 Cut</a></h3>
+<p>Cut allows an asynchronous instrument to stop immediately when it is <a href="glossary.html#untrigger">untriggered</a>. Unlike with synchronous instruments, when an asynchronous instrument becomes untriggered in this way it can then play out using an <a href="glossary.html#ahdsr-modulator">AHDSR Modulator</a>.</p>
+<p>You can enable cut mode by clicking on the "Cut" button to the right of the "Async" button. Cut is not enabled by default. When cut mode is not enabled, the instrument will play its asset in its entirety once triggered.</p>
+<p>If cut mode is enabled on the instrument, then the AHDSR modulation will completely override this behavior no matter which property it is applied to. Once the playback position leaves the trigger region, the instrument becomes untriggered and the release will be applied.</p>
+<h3 id="ahdsr-modulation"><a href="#ahdsr-modulation">5.6.2 AHDSR Modulation</a></h3>
+<p><span class="dead-link" href="glossary.html#ahdsr-modulation">AHDSR (Attack, Hold, Sustain, Decay, Release) modulation</span class="dead-link"> is a type of envelope that gives you control over how a property of an event or instrument changes when the event or instrument starts, what its value is at its peak, and how it changes when the event or instrument is stopped or untriggered. For more information on how to use AHDSR modulation, please see the <a href="authoring-events.html#modulation">modulation</a> section of the <a href="authoring-events.html">authoring events</a> chapter.</p>
+<p>On a synchronous instrument the AHDSR modulation will not apply the release when untriggered by the playback position leaving the trigger region. This is due to the fact that a synchronous instrument will stop playing once the playback position has left the trigger region but that is also the exact same time the release is applied. Release will only be applied on a synchronous instrument if the instrument's <a href="glossary.html#parameter-condition">parameter conditions</a> stop being true.</p>
+<p>On an asynchronous instrument the AHDSR modulation will be applied in its entirety. When the playback position leaves the trigger region, the instrument will become untriggered and apply the release.</p>
+<p>An instrument inside the playlist of another instrument is never directly untriggered, so an AHDSR modulator on a playlist entry of a multi instrument never plays out its release period.</p>
+<h2 id="delay-and-quantization"><a href="#delay-and-quantization">5.7 Delay And Quantization</a></h2>
+<p><a href="glossary.html#fmod-studio">FMOD Studio</a> allows you to set an <a href="glossary.html#instrument">instrument</a> on a <a href="glossary.html#parameter-sheet">parameter sheet</a> to delay playing back until a certain time, until a certain amount of time has elapsed, or until a certain musical beat. This is useful if you need instruments to be played back only at or after certain times. For example, stingers in your dynamic background music that must keep with the tempo of the song, or random fire crackling for a camp fire sound effect.</p>
+<h3 id="time"><a href="#time">5.7.1 Time</a></h3>
+<p>The time property of an instrument's trigger behavior allows you to define a period of time to be waited before playing that <a href="glossary.html#instrument">instrument</a>. While an instrument is triggered the instant the <a href="glossary.html#playback-position">playback position</a> makes contact with its associated trigger region, it does not actually have to start playing the instrument at this point.</p>
+<p>The delay &amp; quantization section of the <a href="glossary.html#trigger">trigger behavior</a> drawer has a "Time" button that, when enabled, displays the "Delay Interval" property that works via a ribbon slider. </p>
+<p>The slider defines the minimum and maximum time values in milliseconds or seconds an instrument's <span class="dead-link" href="glossary.html#condition">conditions</span class="dead-link"> must continue to be met before it will trigger. If the instrument's <a href="glossary.html#trigger-condition">trigger conditions</a> are unmet before the minimum amount of time specified, it will not have a chance to trigger.</p>
+<p>If both the min and max values are the same then a fixed delay is always applied to that instrument every time it is activated. If the min and max values are different then they create a window in time. FMOD Studio counts at least the minimum time value and no more than the maximum time value, but between those two it randomly selects a period of delay to apply to the instrument.</p>
+<p><img alt="Delay and Quantization - Time" src="images/timeButton.png" /></p>
+<p>You can define the values by either dragging the ends of the ribbon slider to the desired values, or double clicking on the displayed numbers to directly input exact values.</p>
+<h3 id="tempo"><a href="#tempo">5.7.2 Tempo</a></h3>
+<p>The delay &amp; quantization section of the trigger behavior drawer has a "Tempo" button that, when enabled, displays the "Quantization Interval" behavior for the instrument.</p>
+<p><img alt="Delay and Quantization - Tempo" src="images/tempoButton.png" /></p>
+<p>When an event includes a <a href="glossary.html#tempo-marker">tempo marker</a>, FMOD Studio applies tempo tracking as well as counting regular time. If an event does not include any tempo markers, it instead defaults to 120 beats per minute and 4/4 time. Tempo quantization allows instruments to be delayed slightly so that they trigger in time with the defined tempo and as such sound more "musical".</p>
+<p>You can switch to view <span class="dead-link" href="glossary.html#time-beats-display">beats</span class="dead-link"> in the timeline and the <span class="dead-link" href="glossary.html#time-beats-display">time indicator</span class="dead-link"> by clicking on the "Beat" button on the time indicator section.</p>
+<p>Once a tempo marker is added to an event, the <a href="glossary.html#parameter-ruler">timeline ruler</a> changes to match the tempo measures in bar and beat format when the timeline is set to display beats. Instrument trigger regions can be moved to align with these measures, but the quantization property ensures they trigger in sync with the musical measures.</p>
+<p>The quantization property can be set to either bar values of 1 or 2, or beat values of minim, crotchet, dotted crotchet or quaver measures.</p>
+<p><img alt="Quantization" src="images/transitionRegionDeckPanelWithQuantization.png" /></p>
+<h2 id="trigger-conditions"><a href="#trigger-conditions">5.8 Trigger Conditions</a></h2>
+<p>It is possible to set certain <span class="dead-link" href="glossary.html#trigger-behavior">trigger conditions</span class="dead-link"> for <a href="glossary.html#instrument">instruments</a> on <a href="glossary.html#parameter-sheet">parameter sheets</a>.</p>
+<p>By default, an instrument on a parameter sheet is triggered when the <a href="glossary.html#playback-position">playback position</a> overlaps the instrument's <a href="glossary.html#trigger-region">trigger region</a>. You can add further conditions in the instrument's <a href="glossary.html#trigger">trigger behavior</a> drawer. Click on the disclosure triangle to the right of the instrument's panel in the <a href="glossary.html#deck">deck</a> to view these settings.</p>
+<p><img alt="Trigger Condition Drawer Closed" src="images/trigger-condition-drawer-closed.png" title="An instrument with its trigger condition drawer closed." /> <img alt="Trigger Condition Drawer Closed" src="images/trigger-condition-drawer-open.png" title="An instrument with its trigger condition drawer open." /></p>
+<p>Two kinds of trigger condition are available: <a href="glossary.html#parameter-condition">Parameter conditions</a>, and <a href="glossary.html#event-state-condition">event state conditions</a>. Parameter conditions are met when a specified <a href="glossary.html#parameter">parameter</a>'s value is within a specified range. Event state conditions are met when the event instance is in a specified <a href="glossary.html#event-state">state</a>. For information about each of these trigger condition types, see the <a href="#parameter-conditions">Parameter Conditions</a> and <a href="#event-state-conditions">Event State Conditions</a> sections of this chapter.</p>
+<p><img alt="Trigger Condition List with Some Conditions Met" src="images/trigger-condition-list-met-conditions-highlighted.png" title="A trigger conditions list with some conditions currently met and others not." /><br />
+<em>Trigger conditions that are currently met are highlighted in the <a href="glossary.html#trigger-condition-list">trigger conditions list</a>.</em></p>
+<p>By default, an instrument or logic marker's <a href="glossary.html#trigger-condition-list">trigger condition list</a> is set to "AND" mode. In this mode, an instrument can only be triggered when the playback position is within the instrument's <a href="glossary.html#trigger-region">trigger region</a> and <em>all</em> the conditions in the list are met, and is <a href="glossary.html#untrigger">untriggered</a> when the playback position leaves the instrument or <em>any</em> of the conditions in the list stop being met. If an instrument is instead set to "OR" mode, it can only be triggered when the playback position is within the instrument's <a href="glossary.html#trigger-region">trigger region</a> and <em>at least one</em> of the conditions in its list are met, and is untriggered if the playback position leaves the instrument or <em>all</em> of its conditions are no longer met.</p>
+<p>If there are any <a href="glossary.html#quantization">delay and quantization</a> settings in place, then the instrument won't start playing unless its conditions are met at the exact moment when the quantization point is reached. Untriggering is not subject to quantization, so a quantized instrument is untriggered immediately when its conditions stop being met.</p>
+<p>You can further customize when an instrument is triggered by setting the instrument's <span class="dead-link" href="glossary.html#probability">probability</span class="dead-link"> mode to "On." In this mode, the "Probability" number box specifies the percentage chance that the instrument triggers when its trigger conditions are met. This chance is generated when the time that the trigger conditions are met and aren't regenerated again until the conditions are subsequently unmet then remet.</p>
+<h3 id="parameter-conditions"><a href="#parameter-conditions">5.8.1 Parameter Conditions</a></h3>
+<p>Parameter conditions are met when a specified <a href="glossary.html#parameter">parameter</a>'s value is within a specified range of values.</p>
+<p>To add a parameter condition to an instrument, click the "Add Condition" button at the bottom of the conditions list and select the <a href="glossary.html#parameter">parameter</a> you want the instrument to be triggered by. This automatically adds the parameter to the <a href="glossary.html#event">event</a> if it is not already present. You can use each parameter no more than once in each instrument's <a href="glossary.html#trigger-condition-list">conditions list</a>, and <a href="glossary.html#timeline-parameter">timeline parameters</a> cannot be used for this purpose.</p>
+<p><img alt="Continuous Parameter Condition" src="images/continuous-parameter-condition.png" title="A continuous parameter condition" /> <img alt="Discrete Parameter Condition" src="images/discrete-parameter-condition.png" title="A discrete parameter condition" /> <img alt="Labeled Parameter Condition" src="images/labeled-parameter-condition.png" title="A labelled parameter condition" /></p>
+<p>Each parameter condition has a listed range of parameter values. In the case of continuous parameters, discrete parameters, and all built-in parameters, this range is defined by a minimum value and a maximum value. In the case of labeled parameters, this range is defined as a single label. By default, a parameter condition is met if the parameter's value is within this range; however, if the condition is set to inverted mode (by clicking its "Inverted" toggle button), the condition is instead met if the parameter's value is outside of that range.</p>
+<h3 id="event-state-conditions"><a href="#event-state-conditions">5.8.2 Event State Conditions</a></h3>
+<p>Event state conditions are met when the event instance is in a specified <a href="glossary.html#event-state">event state</a>. Two types of event state conditions are available: "Stopping" and "Not stopping."</p>
+<p><img alt="Stopping Event State Condition" src="images/stopping-condition.png" title="A stopping event state condition" /> <img alt="Not Stopping Event State Condition" src="images/not-stopping-condition.png" title="A not stopping event state condition" /></p>
+<p>The stopping event state condition is met when the event instance is in the stopping event state, as well as when the event instance is in the paused state after being in the stopping event state. The not stopping state is met when the event instance is in the playing event state, as well as when the event instance is in the paused event state due to being paused while in the playing event state.</p>
+<p>If an event features any event state conditions, instances of that event do not immediately stop when sent a <a href="https://fmod.com/docs/2.02/api/studio-api-eventinstance.html#studio_eventinstance_stop">Studio::EventInstance::stop</a> command in the <a href="https://fmod.com/docs/2.02/api/studio-api-eventinstance.html#fmod_studio_stop_mode">FMOD_STUDIO_STOP_ALLOWFADEOUT stop mode</a>. Instead, they continue playing until they reach a <a href="glossary.html#natural-end">natural end</a>.</p></div>
+
+<p class="manual-footer">FMOD Studio User Manual 2.02.30 (2025-08-05). &copy; 2025 Firelight Technologies Pty Ltd.</p>
+</body>
+</html>
+
+</div>

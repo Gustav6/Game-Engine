@@ -1,0 +1,130 @@
+<html>
+<head>
+<title>Appendix: Reaper Integration</title>
+<link rel="stylesheet" href="style/docs.css">
+<link rel="stylesheet" href="style/code_highlight.css">
+<script type="text/javascript" src="scripts/language-selector.js"></script></head>
+<body>
+<div class="docs-body">
+<div class="manual-toc">
+<p>FMOD Studio User Manual 2.02</p>
+<ul>
+<li><a href="welcome-to-fmod-studio.html">Welcome to FMOD Studio</a></li>
+<li><a href="fmod-studio-concepts.html">FMOD Studio Concepts</a></li>
+<li><a href="organizing-the-project.html">Organizing the Project</a></li>
+<li><a href="authoring-events.html">Authoring Events</a></li>
+<li><a href="working-with-instruments.html">Working with Instruments</a></li>
+<li><a href="managing-assets.html">Managing Assets</a></li>
+<li><a href="parameters.html">Parameters</a></li>
+<li><a href="getting-events-into-your-game.html">Getting Events into Your Game</a></li>
+<li><a href="mixing.html">Mixing</a></li>
+<li><a href="the-sandbox.html">The Sandbox</a></li>
+<li><a href="editing-during-live-update.html">Editing During Live Update</a></li>
+<li><a href="profiling.html">Profiling</a></li>
+<li><a href="dialogue-and-localization.html">Dialogue and Localization</a></li>
+<li><a href="using-source-control.html">Using Source Control</a></li>
+<li><a href="supporting-downloadable-and-user-generated-content.html">Supporting Downloadable and User-generated Content</a></li>
+<li><a href="advanced-topics.html">Advanced Topics</a></li>
+<li><a href="quick-start-tutorial.html">Quick Start Tutorial</a></li>
+<li><a href="effect-reference.html">Effect Reference</a></li>
+<li><a href="event-macro-controls-reference.html">Event Macros Drawer Reference</a></li>
+<li><a href="instrument-reference.html">Instrument Reference</a></li>
+<li><a href="keyboard-shortcut-reference.html">Keyboard Shortcut Reference</a></li>
+<li><a href="modulator-reference.html">Modulator Reference</a></li>
+<li><a href="parameters-reference.html">Parameters Reference</a></li>
+<li><a href="plugin-reference.html">Plug-in Reference</a></li>
+<li><a href="scripting-terminal-reference.html">Scripting</a></li>
+<li><a href="scripting-api-reference.html">Scripting API Reference</a></li>
+<li><a href="troubleshooting.html">Troubleshooting</a></li>
+<li><a href="glossary.html">Glossary</a></li>
+<li><a href="appendix-a-celeste.html">Appendix: Celeste Getting Started Guide</a></li>
+<li class="manual-current-chapter manual-active-chapter"><a href="appendix-b-reaper-integration.html">Appendix: Reaper Integration</a><ul>
+<li><a href="#setting-up-the-reaper-integration">Setting up the Reaper Integration</a><ul>
+<li><a href="#using-both-reaper-and-fmod-studio-on-linux">Using both Reaper and FMOD Studio on Linux</a></li>
+</ul>
+</li>
+<li><a href="#linking-to-a-reaper-project">Linking to a Reaper Project</a></li>
+<li><a href="#using-reaper-project-assets-in-an-event">Using Reaper Project Assets in an Event</a></li>
+<li><a href="#unlinking-a-reaper-project">Unlinking a Reaper project</a></li>
+<li><a href="#installing-the-reaper-timeline-exporter">Installing the Reaper Timeline Exporter</a></li>
+<li><a href="#importing-reaper-timeline-as-an-event">Importing Reaper Timeline as an Event</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="manual-content studio">
+<h1>30. Appendix: Reaper Integration</h1>
+<p>The Reaper integration allows for the linking of a Reaper project as a <span class="dead-link" href="glossary.html#linked-project-asset">linked project asset</span class="dead-link">. Linking a Reaper project imports all of its rendered audio files as <span class="dead-link" href="glossary.html#linked-audio-asset">linked audio assets</span class="dead-link">. Linked audio assets are updated and refreshed automatically if changes in the source Reaper project file are detected. The Reaper integration can also be used to import the timeline of a Reaper project.</p>
+<p>This chapter assumes familiarity with the Reaper user interface. For more information regarding the rendering process and script actions in Reaper, visit the official website of Reaper at <a href="https://www.reaper.fm/">www.reaper.fm</a>.</p>
+<h2 id="setting-up-the-reaper-integration"><a href="#setting-up-the-reaper-integration">30.1 Setting up the Reaper Integration</a></h2>
+<p>The path to the Reaper executable defaults to <code>C:\Program Files\REAPER (x64)\reaper.exe</code> on Windows, <code>/Applications/REAPER64.app/Contents/MacOS/REAPER</code> on the Mac OS X, and <code>/opt/REAPER/reaper</code> on Linux. If Reaper is installed to a different path, the Reaper executable location can be overridden using the "Reaper application path" setting in the DAW tab of the <span class="dead-link" href="glossary.html#preferences-dialog">preferences dialog</span class="dead-link">.</p>
+<p><img alt="Reaper Application Path Settings in Preference Dialog" src="images/reaperApplicationPath.png" /></p>
+<p>By default, a <span class="dead-link" href="glossary.html#linked-project-asset">linked project asset</span class="dead-link"> will set its "Project Path" field to the absolute path of its corresponding Reaper project file (<code>.rpp</code>). This behavior can be customized by specifying a folder in the "Reaper projects folder (optional)" field which will cause linked project assets to store relative paths, when possible.</p>
+<p><img alt="Optional Reaper Projects Folder Settings in Preference Dialog" src="images/reaperProjectsFolder.png" /></p>
+<p>By default, a linked project asset is rendered whenever a change is detected in the corresponding Reaper project file (e.g. after saving project changes in Reaper or when syncing the Reaper project file via source control). Alternatively, automatic rendering can be deferred until an <a href="glossary.html#fmod-studio">FMOD Studio</a> window receives focus or disabled entirely. Rendering can be manually triggered via the "Refresh" <a href="glossary.html#context-menu">context menu</a> item of a linked project asset in the <a href="glossary.html#assets-browser">assets browser</a>.</p>
+<p><img alt="Linked Assets Render Settings in Preference Dialog" src="images/reaperRenderLinkedAssets.png" /></p>
+<p>When Reaper project rendering is triggered, either automatically or manually, any stale <span class="dead-link" href="glossary.html#linked-audio-asset">linked audio assets</span class="dead-link"> will be removed if their corresponding Reaper rendered audio files are no longer on disk. If manual removal of the linked audio assets is preferred, the automatic removal behavior can be disabled entirely.</p>
+<p><img alt="Linked Assets Removal Settings in Preference Dialog" src="images/reaperLinkedAssetsRemoval.png" /></p>
+<h3 id="using-both-reaper-and-fmod-studio-on-linux"><a href="#using-both-reaper-and-fmod-studio-on-linux">30.1.1 Using both Reaper and FMOD Studio on Linux</a></h3>
+<p>Reaper on Linux uses JACK as its output mode by default. FMOD Studio only supports PulseAudio (which is enabled by default) and ALSA. To be able to effectively use FMOD Studio with Reaper, we recommend either:</p>
+<p>Changing Reaper's output mode to PulseAudio:</p>
+<ol>
+<li>In Reaper, go to "Options &gt; Preferences...".</li>
+<li>Choose device from the audio section.</li>
+<li>Change audio system to "PulseAudio".</li>
+</ol>
+<p>Routing PulseAudio to JACK:</p>
+<ol>
+<li>Install QJackCtl and pulseaudio-module-jack (<code>sudo apt install qjackctl pulseaudio-module-jack</code> on Debian based Linux distributions).</li>
+<li>In QJackCtl, click setup, select the options tab, tick "Execute script after Startup".</li>
+<li>Add <code>pactl load-module module-jack-sink channels=2; pactl load-module module-jack-source channels=2; pacmd set-default-sink jack_out</code> to the "Execute script after Startup" text box.</li>
+</ol>
+<p>For more information about combining JACK and PulseAudio, see <a href="https://github.com/jackaudio/jackaudio.github.com/wiki/WalkThrough_User_PulseOnJack">this article</a>.</p>
+<h2 id="linking-to-a-reaper-project"><a href="#linking-to-a-reaper-project">30.2 Linking to a Reaper Project</a></h2>
+<p>Linking to a Reaper project, can be done via dragging the Reaper project file (<code>.rpp</code>) from a <a href="glossary.html#file-manager">file manager</a> into the <a href="glossary.html#assets-browser">assets browser</a>.</p>
+<p><img alt="A Linked Reaper Project in the Assets Browser" src="images/reaperProjectInAssetsBrowser.png" /></p>
+<p><span class="dead-link" href="glossary.html#linked-project-asset">Linked project assets</span class="dead-link"> can be moved and renamed, as with other <span class="dead-link" href="glossary.html#asset">assets</span class="dead-link">. A linked project asset will reference the source Reaper project file by either an absolute or relative path, based on the "Reaper projects folder (optional)" field. The path to the Reaper project can be modified by entering a different path in the "Project Path" field.</p>
+<p>By default, each rendered audio file that resides in the same folder as the Reaper project file is imported as a <span class="dead-link" href="glossary.html#linked-audio-asset">linked audio asset</span class="dead-link">. This behavior can be customized by selecting the linked project asset in the assets browser and entering an absolute or relative path (relative to the Reaper project file) in the "Rendered Assets Path" field. A linked project asset can be expanded in the assets browser to reveal any linked audio assets that it contains.</p>
+<p><img alt="Settings of a Reaper Project" src="images/reaperProjectSettings.png" /></p>
+<p>A linked audio asset is bound to its containing linked project asset and cannot be rearranged or renamed. Any changes made to a Reaper project will be synchronized by importing newly rendered audio files, removing any stale linked audio assets and refreshing any modified linked audio assets. You can customize how and when assets are synchronized in the DAW tab of the <span class="dead-link" href="glossary.html#preferences-dialog">preferences dialog</span class="dead-link">.</p>
+<h2 id="using-reaper-project-assets-in-an-event"><a href="#using-reaper-project-assets-in-an-event">30.3 Using Reaper Project Assets in an Event</a></h2>
+<p>A <span class="dead-link" href="glossary.html#linked-audio-asset">linked audio asset</span class="dead-link"> within a linked project asset can be used in an <a href="glossary.html#instrument">instrument</a>, as with other audio <span class="dead-link" href="glossary.html#asset">assets</span class="dead-link">. When a linked audio asset is modified, a refresh will be triggered to update any of its usages. This is equivalent to triggering "Refresh" manually with the asset selected in the <a href="glossary.html#assets-browser">assets browser</a>.</p>
+<h2 id="unlinking-a-reaper-project"><a href="#unlinking-a-reaper-project">30.4 Unlinking a Reaper project</a></h2>
+<p>A linked project asset can be converted into a regular <span class="dead-link" href="glossary.html#asset">asset</span class="dead-link"> folder which will convert all of its <span class="dead-link" href="glossary.html#linked-audio-asset">linked audio assets</span class="dead-link"> into to regular audio assets. This can be done by selecting "Unlink DAW Projects..." from the <a href="glossary.html#context-menu">context menu</a> of a linked project asset in the <a href="glossary.html#assets-browser">assets browser</a>. The <span class="dead-link" href="glossary.html#encoding-setting">encoding settings</span class="dead-link"> on the linked project asset and its linked audio assets will be preserved and any references to the linked audio assets will be replaced with the converted audio assets.</p>
+<h2 id="installing-the-reaper-timeline-exporter"><a href="#installing-the-reaper-timeline-exporter">30.5 Installing the Reaper Timeline Exporter</a></h2>
+<p>The Reaper integration also supports importing the timeline of a Reaper project as an <a href="glossary.html#event">event</a>.</p>
+<p>To enable importing a timeline from Reaper, a custom ReaScript needs to be installed to Reaper's script folder. The script can then be used to export a Reaper project timeline to a <code>.timeline.fsprometa</code> metafile. The script can be installed to a designated folder from the DAW tab of the <span class="dead-link" href="glossary.html#preferences-dialog">preferences dialog</span class="dead-link"> by clicking on the "Install to Reaper..." button.</p>
+<p><img alt="Timeline Exporter Install Button in Preferences Dialog" src="images/reaperTimelineExporterInstall.png" /></p>
+<p>The default installation path for the exporter script is the <code>REAPER/Scripts</code> resource directory. This is usually <code>%APPDATA%/REAPER/Scripts</code> on Windows and <code>$HOME/Library/Application Support/REAPER/Scripts</code> on Mac OS X.</p>
+<p>To use the installed script in Reaper, it must first be loaded using the actions window that can be opened from the "Actions &gt; Show action list..." menu option.</p>
+<p><img alt="Action Menu in Reaper" src="images/reaperActionsMenu.png" /></p>
+<p>Click on "New Action &gt; Load ReaScript..." and look for the <code>fmod-studio-integration.eel</code> script in the folder selected during the installation process.</p>
+<p><img alt="Action Menu in Reaper" src="images/reaperActionsDialog.png" /></p>
+<p>Once the script is loaded, it will appear in the list of actions. To generate the <code>.timeline.fsprometa</code> metafile, select the script and hit the "Run" button.</p>
+<p>Optionally, if the SWS/S&amp;M extension is installed, the script can be setup as a project startup action. This will allow the metafile to automatically be generated the next time the project is opened, or when the project is loaded as part of the rendering process.</p>
+<h2 id="importing-reaper-timeline-as-an-event"><a href="#importing-reaper-timeline-as-an-event">30.6 Importing Reaper Timeline as an Event</a></h2>
+<p>To export the project timeline correctly, each track and region within the project must have a valid name. Additionally, the project's render options must be configured as follows:</p>
+<ul>
+<li>Source: "Region render matrix"</li>
+<li>File name: "$track_$region"</li>
+<li>Directory: Must match the "Rendered Assets Path" field of the linked project asset. It is best to set this to a path that differs from the media files location of the Reaper project, so that media files used in the Reaper project are not imported as <span class="dead-link" href="glossary.html#linked-audio-asset">linked audio assets</span class="dead-link">.</li>
+<li>Output format: Must be set to "WAV".</li>
+</ul>
+<p><img alt="Render to File dialog in Reaper" src="images/reaperRenderToFileDialog.png" /></p>
+<p>Each track in the project will be exported to the <code>.timeline.fsprometa</code> metafile. Additionally, <a href="glossary.html#single-instrument">single instruments</a> will be generated based on the region render matrix. For each of the render matrix entries on a given track, a single instrument will be exported with the corresponding start time, length, and linked audio asset.</p>
+<p>Each marker in the project will also be exported to the metafile. Unnamed markers will be exported with their name set to match their ID.</p>
+<p>Once the metafile for a Reaper project is generated, it can be imported as an <a href="glossary.html#event">event</a> by dragging the Reaper project file (<code>.rpp</code>) from a file manager into the <a href="glossary.html#events-browser">events browser</a>. Doing so creates a linked project asset for the Reaper project file, if it is not already linked. If the Reaper project is already linked, the linked project asset can be dragged from the <a href="glossary.html#assets-browser">assets browser</a> into the events browser to create an event.</p>
+<p><img alt="Example of Reaper Project Separate Tracks Rendering" src="images/reaperSeparateTracksRendering.png" /></p>
+<p>In the example pictured above, six tracks will be exported and the name of the tracks are "Brass", "Percussion", "Woodwind", "Strings", "First Violins", and "Second Violins" respectively. Based on the region render matrix, three single instruments will be exported and placed on the <a href="glossary.html#track">tracks</a>. For example, this would export a single instrument starting at 00:00.000 with a length of 00:02.000 on the "Brass" track, using the rendered audio file "Brass_Intro.wav".</p>
+<p><img alt="Example of Imported Reaper Project With Separate Tracks Rendering" src="images/reaperImportedSeparateTracks.png" /></p>
+<p>The picture above illustrates the imported event based on the first Reaper project example, where the region render matrix was set to render with entries for each track.</p>
+<p><img alt="Example of Reaper Project Master Mix Only Rendering" src="images/reaperMasterMixRendering.png" /></p>
+<p>In the example pictured above, similar to the previous example, six tracks will be exported. By setting the region render matrix to export the master mix only, three single instruments will be exported and placed on the <a href="glossary.html#master-track">master track</a> of an event. The marker at 00:03.000 would be exported with the name "Marker" and the unnamed marker at 00:05.000 will be exported with the name "2".</p>
+<p><img alt="Example of Imported Reaper Project With Master Mix Only Rendering" src="images/reaperImportedMasterMix.png" /></p>
+<p>The picture above illustrates the imported event based on the second Reaper project example, where the render matrix was set to render for the master mix only. Also included are the two <a href="glossary.html#destination-marker">destination markers</a> with the name "Marker" and "2" respectively.</p></div>
+
+<p class="manual-footer">FMOD Studio User Manual 2.02.30 (2025-08-05). &copy; 2025 Firelight Technologies Pty Ltd.</p>
+</body>
+</html>
+
+</div>

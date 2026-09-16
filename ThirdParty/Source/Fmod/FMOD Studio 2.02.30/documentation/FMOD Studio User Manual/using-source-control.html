@@ -1,0 +1,315 @@
+<html>
+<head>
+<title>Using Source Control</title>
+<link rel="stylesheet" href="style/docs.css">
+<link rel="stylesheet" href="style/code_highlight.css">
+<script type="text/javascript" src="scripts/language-selector.js"></script></head>
+<body>
+<div class="docs-body">
+<div class="manual-toc">
+<p>FMOD Studio User Manual 2.02</p>
+<ul>
+<li><a href="welcome-to-fmod-studio.html">Welcome to FMOD Studio</a></li>
+<li><a href="fmod-studio-concepts.html">FMOD Studio Concepts</a></li>
+<li><a href="organizing-the-project.html">Organizing the Project</a></li>
+<li><a href="authoring-events.html">Authoring Events</a></li>
+<li><a href="working-with-instruments.html">Working with Instruments</a></li>
+<li><a href="managing-assets.html">Managing Assets</a></li>
+<li><a href="parameters.html">Parameters</a></li>
+<li><a href="getting-events-into-your-game.html">Getting Events into Your Game</a></li>
+<li><a href="mixing.html">Mixing</a></li>
+<li><a href="the-sandbox.html">The Sandbox</a></li>
+<li><a href="editing-during-live-update.html">Editing During Live Update</a></li>
+<li><a href="profiling.html">Profiling</a></li>
+<li><a href="dialogue-and-localization.html">Dialogue and Localization</a></li>
+<li class="manual-current-chapter manual-active-chapter"><a href="using-source-control.html">Using Source Control</a><ul>
+<li><a href="#adding-your-project-to-a-repository">Adding Your Project to a Repository</a><ul>
+<li><a href="#adding-your-project-to-a-repository-with-perforce">Adding Your Project to a Repository with Perforce</a></li>
+<li><a href="#adding-your-project-to-a-repository-with-svn">Adding Your Project to a Repository with SVN</a></li>
+</ul>
+</li>
+<li><a href="#getting-a-local-copy-of-your-project">Getting a Local Copy of Your Project</a><ul>
+<li><a href="#getting-a-local-copy-of-your-project-from-a-repository">Getting a Local Copy of Your Project from a Repository</a></li>
+</ul>
+</li>
+<li><a href="#loading-your-project">Loading Your Project</a></li>
+<li><a href="#syncing-your-project">Syncing Your Project</a></li>
+<li><a href="#committing-changes">Committing Changes</a><ul>
+<li><a href="#resolving-conflicts">Resolving Conflicts</a></li>
+</ul>
+</li>
+<li><a href="#reverting-changes">Reverting Changes</a></li>
+<li><a href="#working-offline">Working Offline</a></li>
+<li><a href="#troubleshooting">Troubleshooting</a><ul>
+<li><a href="#revert-local-changes">Revert Local Changes</a></li>
+<li><a href="#project-validation">Project Validation</a></li>
+<li><a href="#removing-hidden-folders">Removing Hidden Folders</a></li>
+<li><a href="#slow-connections-when-using-svn">Slow connections when using SVN</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="supporting-downloadable-and-user-generated-content.html">Supporting Downloadable and User-generated Content</a></li>
+<li><a href="advanced-topics.html">Advanced Topics</a></li>
+<li><a href="quick-start-tutorial.html">Quick Start Tutorial</a></li>
+<li><a href="effect-reference.html">Effect Reference</a></li>
+<li><a href="event-macro-controls-reference.html">Event Macros Drawer Reference</a></li>
+<li><a href="instrument-reference.html">Instrument Reference</a></li>
+<li><a href="keyboard-shortcut-reference.html">Keyboard Shortcut Reference</a></li>
+<li><a href="modulator-reference.html">Modulator Reference</a></li>
+<li><a href="parameters-reference.html">Parameters Reference</a></li>
+<li><a href="plugin-reference.html">Plug-in Reference</a></li>
+<li><a href="scripting-terminal-reference.html">Scripting</a></li>
+<li><a href="scripting-api-reference.html">Scripting API Reference</a></li>
+<li><a href="troubleshooting.html">Troubleshooting</a></li>
+<li><a href="glossary.html">Glossary</a></li>
+<li><a href="appendix-a-celeste.html">Appendix: Celeste Getting Started Guide</a></li>
+<li><a href="appendix-b-reaper-integration.html">Appendix: Reaper Integration</a></li>
+</ul>
+</div>
+<div class="manual-content studio">
+<h1>14. Using Source Control</h1>
+<p>Source control (also known as revision control) is a means of managing and tracking changes made to collections of files. Source control systems such as Perforce, SVN, and Team Foundation Server have many uses, from rolling back to earlier versions of a project to facilitating collaboration between users, and are widely used throughout the games industry.</p>
+<p><a href="glossary.html#fmod-studio">FMOD Studio</a> is integrated with several of the most common source control systems, and can support additional source control system integrations via scripts. This chapter explains how to make use of these integrations.</p>
+<p>This chapter assumes that you've already installed a source control system on your computer and have access to a server with a source control repository. If you haven't yet installed source control software or gained access to a repository, consult your source control software's documentation to find out how.</p>
+<p>For examples on creating your own source control integration scripts, refer to the <code>perforce.sc.js</code> and <code>svn.sc.js</code> example scripts in the "scripts" folder of your FMOD installation, as well as the <a href="scripting-terminal-reference.html">Scripting</a> chapter.</p>
+<h2 id="adding-your-project-to-a-repository"><a href="#adding-your-project-to-a-repository">14.1 Adding Your Project to a Repository</a></h2>
+<p>Before taking advantage of <a href="glossary.html#fmod-studio">FMOD Studio</a>'s source control integration for an FMOD Studio project, the project must be added to the source control repository.</p>
+<p>An FMOD Studio project only has to be added to the repository once. It can be added either through FMOD Studio or an external program. If the project is already in the source control repository, you can skip this tutorial and move straight onto getting a local copy of the project as described in the <a href="using-source-control.html#getting-a-local-copy-of-your-project">Getting a Local Copy of your Project</a> section of this chapter.</p>
+<p>Before adding an FMOD Studio project to the repository, make sure that its <a href="glossary.html#assets-folder">assets folder</a> and <a href="glossary.html#built-banks-output-directory">built banks output directory</a> properties are set correctly.</p>
+<ul>
+<li>The built banks output directory is the same for all users of a project, so it should be set to a relative or absolute path that everyone collaborating on the project agrees on. It is possible to change the bank build directory later, but doing so changes it for all users.</li>
+<li>If any member of your team wishes to use an assets folder outside of the FMOD Studio project folder, all members of your team should use an assets folder outside of the FMOD Studio project folder. This is to prevent files in the project folder's assets subdirectory from bloating the size of the project in the repository. Each user may set a different relative or absolute path for his or her asset directory, as long as each path is outside of the FMOD Studio project folder.</li>
+</ul>
+<p>To add an opened FMOD Studio project to a repository: </p>
+<ol>
+<li>Click "Edit &gt; Preferences..."</li>
+<li>Select the source control tab</li>
+<li>Select your source control solution from the "Integration Type" dropdown</li>
+</ol>
+<p>It is possible to add a project to a repository by using an external tool such as P4V, Helix, Helix Core, or tortoiseSVN. If you do this, it is important to exclude the following files from the repository:</p>
+<ul>
+<li>The FMOD Studio project's folders ".user", ".cache", and ".unsaved" subdirectories, if present. These folders are only created as needed, and so are not present in all FMOD Studio projects. They may also be hidden from view, depending on the operating system's settings.</li>
+<li>The FMOD Studio project's built bank files if it is decided not to include them. The banks can be built locally after acquiring a local project.</li>
+<li>The FMOD Studio project's assets if it is decided not to include them. The assets must be present in a location known to the FMOD Studio project in order to be used, such as a separate folder.</li>
+</ul>
+<p>Failing to exclude these files from the repository will unnecessarily increase the size of the project on the server, and may result in loss of user settings, project validation errors, and other errors.</p>
+<h3 id="adding-your-project-to-a-repository-with-perforce"><a href="#adding-your-project-to-a-repository-with-perforce">14.1.1 Adding Your Project to a Repository with Perforce</a></h3>
+<p>Adding projects to a Perforce repository entirely through FMOD Studio is possible as long as the project is located inside an existing Perforce workspace on the local disk.</p>
+<ol>
+<li>
+<p>Open the preferences dialog and click on the source control tab.</p>
+<p><img alt="The Source Control Tab, Empty" src="images/emptySourceControlTab.png" /></p>
+</li>
+<li>
+<p>Click on the "Integration Type" dropdown menu, and select "Perforce."</p>
+<p><img alt="The Source Control Tab, Perforce" src="images/perforceSourceControlTab.png" /></p>
+</li>
+<li>
+<p>Enter the server, host, user, and password details as needed.</p>
+<p>The existing Perforce environment settings are used to automatically fill in the server and user fields, if possible. This does not include the Perforce password.</p>
+<p>Alternatively, the details can be filled in manually.</p>
+<p>Most workspaces do not require a specific host machine. Enter the name of the required host machine, otherwise leave it blank.</p>
+<p>If the IP address, port, host machine, username, or password of your Perforce server is unknown, contact your Perforce administrator.</p>
+</li>
+<li>
+<p>Select the workspace where the FMOD Studio project is saved from the "Client Workspace" dropdown.</p>
+<p>A few moments after entering the required details, the "client workspace" dropdown menu fills with a list of available workspaces.</p>
+<p>It can take a few seconds for the list to update, depending on the speed of the network.</p>
+</li>
+<li>
+<p>Decide if the project's assets, built banks, and profiler sessions are to be included in the repository.</p>
+<p><img alt="The Enable Source Control Integration for Assets and Built Banks Checkboxes" src="images/perforceAssetAndBankInclusionCheckboxes.png" /></p>
+<p>By default, assets and profiler sessions are included, but built banks are not.</p>
+<p>Including the project's assets in the repository allows those assets to benefit from source control, but also increases the size of the repository. Disabling source control integration for assets may be useful if the team is planning to store their assets on a shared network drive or similar shared location.</p>
+<p>Including the project's built banks in the repository allows people who are working on the same project to get the banks from the server instead of building them themselves, but also increases the size of the repository.</p>
+<p>Including profiler sessions in the repository makes it easier to share diagnostic information about the project, but also increases the size of the repository.</p>
+</li>
+<li>
+<p>Close the preferences dialog.</p>
+</li>
+<li>
+<p>Select "File &gt; Source Control &gt; Sync Latest, Merge &amp; Commit..."</p>
+<p><img alt="The Synchronize to Latest, Merge &amp; Commit Project Dialog" src="images/smcConfirmationDialog.png" /></p>
+<div class="admonition warning">
+<p>Synchronizing and merging the project is not undoable. Clicking "Yes" will automatically save the project and clear the undo stack, just as if you had closed and re-opened FMOD Studio. This is your last chance to undo or make changes before submitting the project.</p>
+</div>
+<p>If you are certain about submitting your changes, click "Yes."</p>
+</li>
+<li>
+<p>Submit your project.</p>
+<p>After a few moments, the submit dialog appears. Its "Changes" tab displays a list of every element of the project to be submitted. At the bottom of the dialog is a field labeled "Enter description here" and a grayed-out button labeled "Submit."</p>
+<p><img alt="The Submit Dialog" src="images/submitDialog.png" /></p>
+<p>The Changes tab displays everything that's going to be submitted to the repository. In this case, that means the entire project.</p>
+<p>The "On Hold" tab lets you exclude specific parts of the project from being submitted. You don't need to use that tab when submitting a project to the repository the first time. For information about the On Hold tab, see the <a href="using-source-control.html#committing-changes">committing Changes</a> section of this chapter.</p>
+<p>Whatever you type into the "Enter description here" field is used as the description of the changelist in Perforce. It's good practice to write a description that can be easily understood without additional context.</p>
+</li>
+<li>
+<p>Click on the "Enter description here" field and type "Added FMOD Studio project to repository."</p>
+</li>
+<li>
+<p>Click the Submit button.</p>
+<p>A progress dialog appears, and starts to fill. Once it reaches 100%, it disappears. Depending on the size of the project and the speed of the network, it may take a few minutes to completely fill.</p>
+</li>
+</ol>
+<p>The project has now been added to the Perforce repository.</p>
+<h3 id="adding-your-project-to-a-repository-with-svn"><a href="#adding-your-project-to-a-repository-with-svn">14.1.2 Adding Your Project to a Repository with SVN</a></h3>
+<p>It isn't possible currently to add a project to an SVN server through FMOD Studio. Instead, this needs to be done manually through either the command line or a user interface such as tortoiseSVN. Please see the documentation for your SVN solution of choice on how to do this.</p>
+<p>After confirming the project has been added to the SVN server, the project can <a href="#loading-your-project">be loaded</a>.</p>
+<h2 id="getting-a-local-copy-of-your-project"><a href="#getting-a-local-copy-of-your-project">14.2 Getting a Local Copy of Your Project</a></h2>
+<p>Once a project has been <a href="#adding-your-project-to-a-repository">added to a repository</a> a local copy of that project is needed on your machine in order to work on it.</p>
+<p>The easiest way to obtain a local copy of a project already in your source control repository is to use <a href="glossary.html#fmod-studio">FMOD Studio</a>'s "File &gt; Source Control &gt; Browse for Project..." menu item and follow the integration-specific instructions below.</p>
+<p>Note that you only need to open a project with "File &gt; Source Control &gt; Browse for Project..." once on each machine that you use. This is because opening a project in this way automatically creates a local copy of that project, which can subsequently be opened by selecting "File &gt; Open..." Opening a project with "File &gt; Open..." is slightly faster than opening it with "File &gt; Source Control &gt; Browse for Project..."</p>
+<p>It is also possible to obtain a local copy of your project by using an external tool, such as P4V or tortiseSVN. If you do this, you will need to set up the local copy's source control settings manually. For more information on how to get a local copy of a folder in a source control repository by using an external tool, see that tool's documentation.</p>
+<h3 id="getting-a-local-copy-of-your-project-from-a-repository"><a href="#getting-a-local-copy-of-your-project-from-a-repository">14.2.1 Getting a Local Copy of Your Project from a Repository</a></h3>
+<p>Before creating a local copy, if you are using Perforce then you'll need a local workspace for the repository in which your project is stored. If you don't already have a local Perforce workspace and don't know how to create one, consult your Perforce administrator. Once you have a local Perforce workspace, you can use FMOD Studio to make a local copy of any FMOD Studio project in the corresponding Perforce depot.</p>
+<p>If you are using SVN, then you do not need to set up anything prior to the next steps.</p>
+<ol>
+<li>
+<p>Select "File &gt; Source Control &gt; Browse for Project"</p>
+<p>The open dialog appears. Select your source control solution of choice from the integration dropdown menu, which is set to Perforce by default. Fields for entering your connection settings properties appear below the dropdown menu.</p>
+<p><img alt="The Open Dialog - Perforce" src="images/browseForProjectDialogOpen.png" /><br />
+<img alt="The Open Dialog - SVN" src="images/svnSourceControlTab.png" /></p>
+<p>The server and user fields might already be filled in. FMOD Studio automatically detects open Perforce connections, and uses the details of those connections to fill out those fields if it can. That said, FMOD Studio can't detect your Perforce password, and if you use multiple open Perforce connections it might not select the one you want.</p>
+</li>
+<li>
+<p>Enter the server you want to connect to and the user you want to connect as into the server and user fields.</p>
+<p>If you don't know the I.P. address and port of your source control server, ask your network administrator.</p>
+</li>
+<li>
+<p>Enter the password in the "password (optional)" field if your source control server requires a password.</p>
+<p>Some source control servers don't require passwords, but most do. If you don't know the password for the user you're connecting as, contact your source control system administrator.</p>
+</li>
+<li>
+<p>If using Perforce, and the workspace is on your local machine, leave the host field blank. If the workspace is located on a machine other than the one you are using, enter that machine's I.P. address and listening port into the host field.</p>
+<p>Once you've finished entering connection details, you can continue.</p>
+</li>
+<li>
+<p>Click the "Find" button at the bottom of the dialog.</p>
+<p>A progress dialog appears as FMOD Studio searches the source control depot. After a few moments, the dialog displays a browser populated with the projects in that depot.</p>
+<p><img alt="The Open Dialog" src="images/browseForProjectDialogBrowser.png" /></p>
+<p>This browser allows you to select a specific FMOD Studio project to create a local copy of and load. If the project you want a local copy of is not displayed in the browser, it may be missing from your Perforce depot, or in a part of the depot other than the part that your local workspace corresponds to.</p>
+</li>
+<li>
+<p>Select the FMOD Studio project you want to create a local copy of, then click the "Open" button at the bottom of the dialog.</p>
+<p>When using Perforce, FMOD Studio creates a local copy of the selected project in your local workspace, then loads the project.</p>
+<p>When using SVN, FMOD Studio prompts you to choose a local location for the project to save to, then loads the project.</p>
+</li>
+</ol>
+<p>With that, a local copy of the FMOD Studio project has been created and is loaded. The project's source control settings have automatically been set up, so you'll be able to start working on the project and submitting the changes you make right away.</p>
+<p>The <span class="dead-link" href="glossary.html#status-bar">status bar</span class="dead-link"> updates to show the "Online" icon. For as long as a valid connection is available, this icon appears in the status bar. If a valid connection is not available, perhaps because of an incorrect source control setting or because the connection with the remote repository has been lost, then an "Offline" icon is shown.</p>
+<p><img alt="Perforce status icon" src="images/perforceOnlineIcon.png" /></p>
+<p>In future, you'll be able to load the project as described in the <a href="#loading-your-project">Loading Your Project</a> section of this chapter, below.</p>
+<p>It is also possible to get a local copy of the project folder by issuing a <code>p4 sync</code> or similar command to the P4/SVN command line, via P4V, or via an SVN GUI application like TortoiseSVN. Provided the project was added to the repository correctly, obtaining a local copy of the project this way differs from getting one via "Browse for Project..." only in that it doing so does not automatically set up the project's source control settings.</p>
+<h2 id="loading-your-project"><a href="#loading-your-project">14.3 Loading Your Project</a></h2>
+<p>Loading an <a href="glossary.html#fmod-studio">FMOD Studio</a> project that uses source control is no different to loading any other FMOD Studio project: Select "File &gt; Open...", then use the ensuing dialog to navigate to and select the FMOD Studio project you wish to load. If there is no local copy of the FMOD Studio project on the machine you are using, see the <a href="using-source-control.html#getting-a-local-copy-of-your-project">getting a local copy of your project</a> section of this chapter.</p>
+<p>After loading a project, select "File &gt; Source Control &gt; Sync Latest &amp; Merge Project..." to get all the latest changes to that project from your source control repository.</p>
+<h2 id="syncing-your-project"><a href="#syncing-your-project">14.4 Syncing Your Project</a></h2>
+<p>When multiple people are using source control to collaborate on the same <span class="dead-link" href="glossary.html#fmod-studio-project">FMOD Studio project</span class="dead-link">, you may notice that some elements of the project are marked with ghosted icons.</p>
+<p><img alt="Ghosted Source Control Icons" src="images/ghostedSourceControlIcons.png" /></p>
+<p>These icons indicate elements of the project that are being edited by other users.</p>
+<p>It is important to regularly synchronize your local copy of the project with the version in your source control repository. This ensures that your local version is the most recent version available, and includes all recent changes and additions.</p>
+<p>To synchronize the entire project, select "File &gt; Source Control &gt; Sync Latest &amp; Merge Project..." This gets the latest version of the project from your source control repository.</p>
+<p>You can also synchronize individual <a href="glossary.html#event">events</a>, <a href="glossary.html#audio-file">assets</a>, <a href="glossary.html#bus">buses</a>, <a href="glossary.html#vca">VCAs</a>, <a href="glossary.html#preset-parameter">parameters</a>, and <a href="glossary.html#preset-effect">effects</a> by right-clicking on the item to be synchronized and selecting "Save &amp; Selection" from the source control integration-specific submenu of the context menu.</p>
+<h2 id="committing-changes"><a href="#committing-changes">14.5 Committing Changes</a></h2>
+<p>After you make changes to a project that uses source control, it is necessary to commit those changes so that they're included in your source control repository.</p>
+<p>Elements of the project that have been changed, but whose changes have not yet been committed to the source control repository, are marked with checkmark icons. Similarly, elements that have been added to the project but have not yet been committed are marked with plus sign icons.</p>
+<p><img alt="Events with Changes" src="images/eventsWithChanges.png" /></p>
+<p>Note that committing changes automatically saves the project.</p>
+<p>To commit the changes you've made to an existing project:</p>
+<ol>
+<li>
+<p>Select "File &gt; Source Control &gt; Sync Latest, Merge &amp; Commit..."</p>
+<p>A dialog appears, warning you that synchronizing and merging the project is not undoable, and that electing to continue will save the project.</p>
+</li>
+<li>
+<p>Click "Yes."</p>
+<p><img alt="The SMC Confirmation Dialog" src="images/smcConfirmationDialog.png" /></p>
+<p>A progress bar dialog shows the project's save progress, followed by a second progress bar dialog that shows the project being prepared for committing changes.</p>
+<p>Once saving and preparation is complete, the submit dialog appears. It has two tabs, "Changes" and "On Hold." Under the Changes tab is a list of project elements with changes to be committed.</p>
+<p><img alt="The Submit Dialog" src="images/submitDialog.png" /></p>
+<p>If there's any elements of the project whose changes you don't want to commit to the repository yet, you can avoid committing them by dragging them onto the On Hold tab. Elements on the On Hold tab are not committed, but will remain marked as changed and can be committed later. If you change your mind about an element that's on hold, you can simply switch to the On Hold tab and drag it onto the Changes tab.</p>
+<p><img alt="The On Hold Tab" src="images/onHoldTab.png" /></p>
+<p>Note that dragging certain elements of the project onto the On Hold tab or Changes tab automatically causes some related elements to move to that tab as well. This indicates that those elements are all stored in the same file on disk, and so cannot be committed or put on hold individually.</p>
+<p>Once you've decided which elements of the project to put on hold and which you want to commit, it's time to send the changed files to the repository.</p>
+</li>
+<li>
+<p>Click on the "Enter description here" field, and type an appropriate description of the changes you've made.</p>
+<p>Whatever you type into the "Enter description here" field is used as the description of the change in your source control repository. It's good practice to write a description that can be easily understood without additional context.</p>
+</li>
+<li>
+<p>Click the "Submit" button.</p>
+<p>The submit dialog closes, and a progress dialog appears as the changes are committed to the repository. After a few moments, the progress dialog disappears.</p>
+</li>
+</ol>
+<p>With that, the files are committed to the repository, and become available to everyone collaborating on your project the next time they select "File &gt; Source Control &gt; Sync Latest &amp; Merge Project..."</p>
+<h3 id="resolving-conflicts"><a href="#resolving-conflicts">14.5.1 Resolving Conflicts</a></h3>
+<p>If any of the changed elements that you commit have also been changed by someone else, the conflict resolution dialog appears.</p>
+<p><img alt="The Conflict Resolution Dialog" src="images/conflictResolutionDialog.png" /></p>
+<p>This dialog lists all the elements of your project that have been changed by other users since you last synchronized your project. In order to finish committing your changes, you must resolve each of the conflicts.</p>
+<p>To resolve a conflict, right-click on the element and select "Accept Theirs", "Accept Yours", "Merge", or "Revert" from the context menu.</p>
+<ul>
+<li>
+<p>Selecting "Accept Yours" means that when you click the accept button, your changed version of the element will be committed to your source control repository, while their changes to that element will be discarded.</p>
+</li>
+<li>
+<p>Selecting "Accept Theirs" means that when you click the accept button, their version of the changed element will remain in your source control repository, while your version will be discarded. Note that changes discarded in this manner cannot be recovered.</p>
+</li>
+<li>
+<p>Selecting "Merge" means that when you click the accept button, <a href="glossary.html#fmod-studio">FMOD Studio</a> will apply both your changes and the other user's changes to the element, as long as those changes are compatible with each other. If any of your changes are incompatible with a change made by the other user, your change will be committed to the source control repository and their change will be discarded, unless their change was to delete some part of the project, in which case your change will be discarded. Note that if any of your changes are discarded in this manner, they cannot be recovered. For example, if you and the other user added new audio tracks to the same event, the changes are compatible, and both new audio tracks will be present in your source control repository. If you and the other user both set the the master track volume of a particular event to different values, selecting "Merge" will set the volume in your source control repository to the value you specified. Finally, if your change was to set the fader volume of a particular audio track, and the other user's change was to delete that audio track, selecting "Merge" causes the audio track to be deleted in your source control repository.</p>
+</li>
+<li>
+<p>Selecting "Revert" causes your version of the changed element to be discarded immediately. This is similar to selecting "Accept Theirs", but your changed version is discarded immediately instead of when you click the accept button. Note that changes discarded in this manner cannot be recovered.</p>
+</li>
+</ul>
+<p>There is no one right way to resolve conflicts. If you are uncertain which option to select, consult with the other members of your team.</p>
+<h2 id="reverting-changes"><a href="#reverting-changes">14.6 Reverting Changes</a></h2>
+<p>If you have made changes to your <a href="glossary.html#fmod-studio">FMOD Studio</a> project that you do not want to keep, it is possible to "revert" the project.</p>
+<p>Reverting makes your local copy of the project identical to the version most recently submitted to your source control repository. This effectively undoes every change made to the project since the last time the project was synchronized, even if you've exited and reopened FMOD Studio after making those changes.</p>
+<p>If your project's <a href="glossary.html#audio-file">assets</a> are stored in the project folder's assets subdirectory, and source control integration is enabled for assets, reverting the project undoes changes made to your project's assets.</p>
+<p>If your project's built banks are stored in the project folder's build subdirectory, and source control integration is enabled for built banks, reverting the project undoes changes to your project's built banks.</p>
+<p>To revert the project, select "File &gt; Source Control... &gt; Revert Project..." This command is also found under the source control-specific submenu of the context menu that appears when you right-click on the <a href="glossary.html#events-browser">events browser</a>, <a href="glossary.html#assets-browser">assets browser</a>, <a href="glossary.html#routing-browser">routing browser</a>, <a href="glossary.html#parameters-browser">parameters browser</a>, or <a href="glossary.html#effects-browser">effects browser</a>.</p>
+<p>For information on reverting individual elements of a project instead of the entire project, see the <a href="using-source-control.html#committing-changes">committing changes</a> section of this chapter.</p>
+<h2 id="working-offline"><a href="#working-offline">14.7 Working Offline</a></h2>
+<p>It is sometimes necessary to work on your <a href="glossary.html#fmod-studio">FMOD Studio</a> project in situations where your project's source control repository is not available, perhaps due to network downtime or working without an internet connection.</p>
+<p>If FMOD Studio is unable to connect to the server used by your project's source control repository, you can still freely edit your FMOD Studio project, but you cannot synchronize the project or commit changes, and elements of the project edited by other users are not marked by ghosted icons.</p>
+<p>In addition, if you attempt to save the project when FMOD Studio is not connected to your project's source control repository, you will be prompted to disable source control and make files writeable.</p>
+<p><img alt="The Disable Source Control and Save Dialog" src="images/disableSourceAndSaveDialog.png" /></p>
+<p>Disabling source control in this way means that you will not be able to sync your project or commit changes to your source control repository until you manually re-enable source control for that project.</p>
+<p>To re-enable source control for a project that has had source control disabled, open the source control tab of the preferences dialog, and enter your source control settings as if preparing to add your project to your source control repository. (For information on how to add your project to a source control repository, see the <a href="#adding-your-project-to-a-repository">adding your project to a repository</a> section of this chapter.) Once you have closed the preferences dialog, select "File &gt; Source Control &gt; Identify Local Changes..." to automatically detect changes made since the last time your project was synchronized and committed. Changes detected this way are included in the changes tab of the submit dialog the next time you commit changes.</p>
+<h2 id="troubleshooting"><a href="#troubleshooting">14.8 Troubleshooting</a></h2>
+<p><a href="glossary.html#fmod-studio">FMOD Studio</a> projects subject to source control may occasionally exhibit validation errors, outdated or missing content, or other problems. The following methods may allow you identify or fix these problems.</p>
+<p>If you encounter a problem that these troubleshooting methods cannot solve, contact FMOD support through the <a href="https://qa.fmod.com/c/fmodstudio">QA Forums</a> with a description of the problem.</p>
+<h3 id="revert-local-changes"><a href="#revert-local-changes">14.8.1 Revert Local Changes</a></h3>
+<p>Reverting the project (as described in the the <a href="using-source-control.html#reverting-changes">reverting changes</a> section of this chapter) can eliminate problems in your local copy of an FMOD Studio project, provided those problems are not also present in the version of your project checked in to your source control repository. Of course, reverting a change effectively undoes that change, so this solution should only be used when the local version of your FMOD Studio project is salvageable.</p>
+<h3 id="project-validation"><a href="#project-validation">14.8.2 Project Validation</a></h3>
+<p>When multiple users edit related elements of a project, the different changes are merged into a single version of the project that includes all the changes. This merging process can occasionally result in the project containing minor inconsistencies known as "project invalidities."</p>
+<p>To detect and fix project invalidities, select "File &gt; Validate Project..."</p>
+<p>If a version of your project containing invalidities has been committed to your source control repository, a member of your team should sync their local version of the project as described in the <a href="using-source-control.html#syncing a project">syncing a project</a> section of this chapter, select "File &gt; Validate Project..." as described above, then commit the change to your source control repository as described in the <a href="using-source-control.html#committing-changes">committing changes</a> section of this chapter. All other members of your team should then sync their local versions of the project to that in the source control repository. This process ensures that the version of the project in your source control repository is purged of invalidities, and that everyone collaborating on your project is using that version as a basis for making further changes and additions.</p>
+<h3 id="removing-hidden-folders"><a href="#removing-hidden-folders">14.8.3 Removing Hidden Folders</a></h3>
+<p>An FMOD Studio project folder may contain <code>.cache</code>, <code>.user</code>, and <code>.unsaved</code> subfolders that store cached build data, user settings, and working data that allow FMOD Studio to run more efficiently and allow its interface to be customized to your needs. These subfolders do not contain any data that affects in-game behavior, and so FMOD Studio does not commit these folders to your source control repository.</p>
+<p>However, if they are somehow committed to your source control repository by mistake, they may result in syncing and committing changes taking longer than necessary, increased project size on disk, and user settings being overwritten when syncing the project.</p>
+<p>If the <code>.cache</code>, <code>.user</code>, or <code>.unsaved</code> subfolder of an FMOD Studio project has been included in your source control repository, removing that folder from your source control repository should result in improved performance.</p>
+<p>If the ".cache", ".user", or ".unsaved" subfolders reappear in your source control repository after being removed, it may mean that an external tool used by your team (such as P4V or tortoiseSVN) has been configured to commit files in those folders to the repository. If so, ask your source control administrator to reconfigure the tool.</p>
+<h3 id="slow-connections-when-using-svn"><a href="#slow-connections-when-using-svn">14.8.4 Slow connections when using SVN</a></h3>
+<p>Under certain circumstances, there might be slowness with the SVN integration. This can be tasks such as saving changes to a single event taking up to a minute with SVN integration enabled. This is due to the integration using the SVN command line. Any slowness in the SVN command line can have a significant impact on the integration performance.</p>
+<p>If a project is already in SVN and checked out you can perform a quick test to verify the performance of the SVN command line. To do this, open a terminal (Mac) or command prompt (Windows) and enter the following command:</p>
+<div class="highlight language-bat"><pre><span></span><span class="p">&lt;</span>path to svn executable<span class="p">&gt;</span> info -r HEAD <span class="s2">&quot;&lt;path to project&gt;/Metadata/Workspace.xml&quot;</span> <span class="s2">&quot;&lt;path to project&gt;/Metadata/Mixer.xml&quot;</span>
+</pre></div>
+
+<p>If the SVN server and the project are setup correctly, the above command displays the output for the 2 files in less than a second or so. There should be no pausing in between the display of the output for each file.</p>
+<p>If the output is slow then this suggests the SVN server and project setup is not optimal. Check the output of the two files for the "Repository Root" field. If the field shows the domain name of the server (e.g.<code>svn://mysvnserver</code>) rather than an IPv4 (e.g.<code>svn://192.168.1.123</code>) or IPv6 address (e.g.<code>svn://[fe80::e9db:5127:a77a:3c50]</code>) then the issue might be due to domain name resolution and an SVN server that prefers IPv4 when resolving.</p>
+<p>The domain name might be resolved to either an IPv4 or an IPv6 address depending on your network and machine setup. If it resolves to IPv6 address and the <code>--prefer-ipv6</code> option is not enabled on the <code>svnserve</code> command, there will be a significant performance penalty. To resolve this issue, either enable the <code>--prefer-ipv6</code> option on the <code>svnserve</code> command or use the <code>svn relocate</code> command to change the repository's root URL of your project from domain name to IPv4 address of your server.</p>
+<p>For example, if the SVN server is started as a service, enabling the IPv6 option would look like:</p>
+<div class="highlight language-bat"><pre><span></span><span class="s2">&quot;C:\Program Files\TortoiseSVN\bin\svnserve.exe&quot;</span> --prefer-ipv6 --service -r E:\SVN\Repository
+</pre></div>
+
+<p>To relocate an existing local copy of SVN project if the SVN prefers IPv4:</p>
+<div class="highlight language-bat"><pre><span></span><span class="s2">&quot;C:\Program Files\TortoiseSVN\bin\svn.exe&quot;</span> relocate svn://mysvnserver svn://192.168.1.123 E:/MyProject
+</pre></div></div>
+
+<p class="manual-footer">FMOD Studio User Manual 2.02.30 (2025-08-05). &copy; 2025 Firelight Technologies Pty Ltd.</p>
+</body>
+</html>
+
+</div>

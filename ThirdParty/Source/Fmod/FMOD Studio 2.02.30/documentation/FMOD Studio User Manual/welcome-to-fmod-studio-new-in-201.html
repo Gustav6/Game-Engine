@@ -1,0 +1,151 @@
+<html>
+<head>
+<title>Welcome to FMOD Studio | New in FMOD Studio 2.01</title>
+<link rel="stylesheet" href="style/docs.css">
+<link rel="stylesheet" href="style/code_highlight.css">
+<script type="text/javascript" src="scripts/language-selector.js"></script></head>
+<body>
+<div class="docs-body">
+<div class="manual-toc">
+<p>FMOD Studio User Manual 2.02</p>
+<ul>
+<li class="manual-current-chapter manual-inactive-chapter"><a href="welcome-to-fmod-studio.html">Welcome to FMOD Studio</a><ul class="subchapters"><li><a href="welcome-to-fmod-studio-new-in-202.html">New in FMOD Studio 2.02</a></li><li class="manual-current-chapter manual-active-chapter"><a href="welcome-to-fmod-studio-new-in-201.html">New in FMOD Studio 2.01</a></li><li><a href="welcome-to-fmod-studio-new-in-200.html">New in FMOD Studio 2.00</a></li><li><a href="welcome-to-fmod-studio-new-in-110.html">New in FMOD Studio 1.10</a></li><li><a href="welcome-to-fmod-studio-revision-history.html">Detailed Revision History</a></li></ul></li>
+<li><a href="fmod-studio-concepts.html">FMOD Studio Concepts</a></li>
+<li><a href="organizing-the-project.html">Organizing the Project</a></li>
+<li><a href="authoring-events.html">Authoring Events</a></li>
+<li><a href="working-with-instruments.html">Working with Instruments</a></li>
+<li><a href="managing-assets.html">Managing Assets</a></li>
+<li><a href="parameters.html">Parameters</a></li>
+<li><a href="getting-events-into-your-game.html">Getting Events into Your Game</a></li>
+<li><a href="mixing.html">Mixing</a></li>
+<li><a href="the-sandbox.html">The Sandbox</a></li>
+<li><a href="editing-during-live-update.html">Editing During Live Update</a></li>
+<li><a href="profiling.html">Profiling</a></li>
+<li><a href="dialogue-and-localization.html">Dialogue and Localization</a></li>
+<li><a href="using-source-control.html">Using Source Control</a></li>
+<li><a href="supporting-downloadable-and-user-generated-content.html">Supporting Downloadable and User-generated Content</a></li>
+<li><a href="advanced-topics.html">Advanced Topics</a></li>
+<li><a href="quick-start-tutorial.html">Quick Start Tutorial</a></li>
+<li><a href="effect-reference.html">Effect Reference</a></li>
+<li><a href="event-macro-controls-reference.html">Event Macros Drawer Reference</a></li>
+<li><a href="instrument-reference.html">Instrument Reference</a></li>
+<li><a href="keyboard-shortcut-reference.html">Keyboard Shortcut Reference</a></li>
+<li><a href="modulator-reference.html">Modulator Reference</a></li>
+<li><a href="parameters-reference.html">Parameters Reference</a></li>
+<li><a href="plugin-reference.html">Plug-in Reference</a></li>
+<li><a href="scripting-terminal-reference.html">Scripting</a></li>
+<li><a href="scripting-api-reference.html">Scripting API Reference</a></li>
+<li><a href="troubleshooting.html">Troubleshooting</a></li>
+<li><a href="glossary.html">Glossary</a></li>
+<li><a href="appendix-a-celeste.html">Appendix: Celeste Getting Started Guide</a></li>
+<li><a href="appendix-b-reaper-integration.html">Appendix: Reaper Integration</a></li>
+</ul>
+</div>
+<div class="manual-content studio">
+<h1>1. Welcome to FMOD Studio | New in FMOD Studio 2.01</h1>
+<div class="toc">
+<ul>
+<li><a href="#whats-new-in-fmod-studio-201">What's New in FMOD Studio 2.01?</a><ul>
+<li><a href="#action-sheets">Action sheets</a></li>
+<li><a href="#browser-item-colors-and-notes">Browser item colors and notes</a></li>
+<li><a href="#sandbox-scenes">Sandbox scenes</a></li>
+<li><a href="#profiling">Profiling</a><ul>
+<li><a href="#profiler-table-view">Profiler table view</a></li>
+<li><a href="#detailed-memory-profiling">Detailed memory profiling</a></li>
+</ul>
+</li>
+<li><a href="#command-instrument-behaviors">Command instrument behaviors</a></li>
+<li><a href="#advanced-conditions">Advanced conditions</a><ul>
+<li><a href="#combining-conditions">Combining conditions</a></li>
+<li><a href="#inverted-parameter-conditions">Inverted parameter conditions</a></li>
+<li><a href="#event-stopping-conditions">Event stopping conditions</a></li>
+</ul>
+</li>
+<li><a href="#3d-view-enhancements">3D view enhancements</a></li>
+<li><a href="#mixer-workflow-enhancements">Mixer workflow enhancements</a></li>
+<li><a href="#playlist-silence-instruments">Playlist silence instruments</a></li>
+<li><a href="#effect-chain-panning">Effect chain panning</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<h2 id="whats-new-in-fmod-studio-201"><a href="#whats-new-in-fmod-studio-201">What's New in FMOD Studio 2.01?</a></h2>
+<p>In <a href="glossary.html#fmod-studio">FMOD Studio</a> 2.01, many aspects of the creation, project navigation, and profiling workflows have been streamlined.</p>
+<p>Beyond general improvements to the overall look and feel, a number of feature highlights from FMOD Studio 2.01 are listed below.</p>
+<p>In addition to the new features listed, a number of additional stability and usability enhancements have been made. Please see the <a href="welcome-to-fmod-studio-revision-history.html">detailed revision history</a> for full details.</p>
+<h3 id="action-sheets"><a href="#action-sheets">Action sheets</a></h3>
+<p>Action sheets provide a new, simplified way to trigger <a href="glossary.html#instrument">instruments</a>. Instruments placed on an action sheet are triggered when an <a href="glossary.html#event">event</a> is played. Action sheets can be set to play instruments in a consecutive or concurrent fashion. Instruments on action sheets are always routed to the event's <a href="glossary.html#master-track">master track</a>.</p>
+<p><img alt="Action sheet" src="images/201_action-sheets.png" /></p>
+<p>Action sheets can be used to tidy up a project and are useful when an event doesn't require the conditional behavior of a <a href="glossary.html#timeline">timeline</a> or <a href="glossary.html#parameter">parameter</a> sheet.</p>
+<h3 id="browser-item-colors-and-notes"><a href="#browser-item-colors-and-notes">Browser item colors and notes</a></h3>
+<p>All browser items can now be assigned a color and notes.</p>
+<p><img alt="Event with colors" src="images/201_event-notes.png" /></p>
+<p>Browser items' notes are now displayed in the inspector at the bottom of the browser pane. For items with <a href="organizing-the-project.html#tags">tags</a> and user properties, these are also displayed at the bottom of the browser pane.</p>
+<p><img alt="Buses with notes" src="images/201_bus-notes.png" /></p>
+<p>Colors are very useful when organizing a project. Browsers items can be filtered by color from the browser search bar's loupe menu.</p>
+<h3 id="sandbox-scenes"><a href="#sandbox-scenes">Sandbox scenes</a></h3>
+<p>The <a href="glossary.html#sandbox-window">sandbox</a> now supports the creation of scenes. Scenes store <a href="glossary.html#event">event</a> emitter locations, <a href="glossary.html#parameter">parameter</a> values, and <a href="glossary.html#listener">listener</a> locations. Scenes can be created to simulate various game states and scenarios for offline testing.</p>
+<p><img alt="Sandbox scenes" src="images/201_sandbox-scenes.png" /></p>
+<p>Objects in a scene are also displayed in the overview on the right of the sandbox window. This can be used to browse a scene's emitters and listeners. The number keys can be used to quickly toggle playback for each of the emitters in a scene.</p>
+<h3 id="profiling"><a href="#profiling">Profiling</a></h3>
+<p>The <a href="profiling.html">profiler</a> has been revamped to make navigating through a session's data much easier.</p>
+<p>In Studio 2.01, profiler sessions are saved as part of the project, instead of being saved per user. This makes it easy to share sessions between team members.</p>
+<h4 id="profiler-table-view"><a href="#profiler-table-view">Profiler table view</a></h4>
+<p>The new profiler table view can be used to get an overview of all recorded data in a session. The table view can be selected from the button group in the transport bar.</p>
+<p><img alt="Profiler table button" src="images/201_profiler-table-button.png" /></p>
+<p>From the profiler table view, you can switch between displaying instantaneous values, or the minimum, maximum or average values for a given range of time. When using a range-based view mode, a range selector is available below the timeline.</p>
+<p><img alt="Profiler table view" src="images/201_profiler-table.png" /></p>
+<p>The profiler table view can be used to quickly filter for data using the search bar at the top of the view. Data can be sorted by a particular column by clicking on column headings. Profiler graphs can be toggled for each data row using the buttons in the name column.</p>
+<h4 id="detailed-memory-profiling"><a href="#detailed-memory-profiling">Detailed memory profiling</a></h4>
+<p>Support for detailed profiling of memory usage has been added in 2.01. This allows memory to be tracked per event, per bus, and globally. Memory is tracked separately for data and samples.</p>
+<p>To enable memory profiling, the <a href="https://fmod.com/docs/2.02/api/studio-api-system.html#fmod_studio_initflags">FMOD_STUDIO_INIT_MEMORY_TRACKING</a> flag must be enabled during initialization of the <a href="glossary.html#fmod-engine">FMOD Engine</a>.</p>
+<p><img alt="Profiler memory view" src="images/201_profiler-memory.png" /></p>
+<h3 id="command-instrument-behaviors"><a href="#command-instrument-behaviors">Command instrument behaviors</a></h3>
+<p><a href="working-with-instruments.html#command-instruments">Command instruments</a> can now issue a variety of different commands:</p>
+<ul>
+<li>Start Event: Starts another <a href="glossary.html#event">event</a> of a specified type. The newly created event is routed directly to the global mixer, as determined by its position in the routing browser.</li>
+<li>Stop Event: Stops all instances of a specific event, causing the event to enter the stopping <a href="advanced-topics.html#event-state">play state</a>.</li>
+<li>Stop Event (Immediate): Stops all instances of a specific event, immediately causing the event to enter the stopped <a href="advanced-topics.html#event-state">play state</a>.</li>
+<li>Set Parameter: Sets a <a href="glossary.html#parameter">parameter's</a> value globally (for global parameters) or for the current event instance (for local parameters).</li>
+<li>Increment Parameter: Increments a parameter's value globally (for global parameters) or for the current event instance (for local parameters).</li>
+</ul>
+<p>These behaviors allow for complex interactions between events and can reduce the need for code modifications.</p>
+<p><img alt="Command instrument types" src="images/201_command-instrument-types.png" /></p>
+<h3 id="advanced-conditions"><a href="#advanced-conditions">Advanced conditions</a></h3>
+<p>Conditional logic has been extended to support a wider range of expressions.</p>
+<h4 id="combining-conditions"><a href="#combining-conditions">Combining conditions</a></h4>
+<p>A mode selector has been added to the condition lists of <a href="glossary.html#instrument">instruments</a> and <a href="glossary.html#logic-marker">logic markers</a>. This can be used to control how multiple conditions are resolved:</p>
+<ul>
+<li>AND: All conditions must be true.</li>
+<li>OR: At least one of the conditions must be true.</li>
+</ul>
+<p><img alt="Combining conditions" src="images/201_advanced-conditions.png" /></p>
+<h4 id="inverted-parameter-conditions"><a href="#inverted-parameter-conditions">Inverted parameter conditions</a></h4>
+<p>Each <a href="glossary.html#parameter-condition">parameter condition</a> can also be inverted, making it possible to check that a <a href="glossary.html#parameter">parameter</a> value falls outside a particular range.</p>
+<p><img alt="Inverted parameter conditions" src="images/201_inverted-conditions.png" /></p>
+<h4 id="event-stopping-conditions"><a href="#event-stopping-conditions">Event stopping conditions</a></h4>
+<p><span class="dead-link" href="glossary.html#event-condition">Event conditions</span class="dead-link"> are now available for conditions lists. Event conditions are used to check whether an event has entered the stopping <a href="advanced-topics.html#event-state">play state</a>.</p>
+<p>When an event containing an event condition is issued the stop command, it waits for its <span class="dead-link" href="glossary.html#event-natural-end">natural end</span class="dead-link"> before entering the stopped play state.</p>
+<p><img alt="Event condition" src="images/201_event-condition.png" /></p>
+<h3 id="3d-view-enhancements"><a href="#3d-view-enhancements">3D view enhancements</a></h3>
+<p>A number of enhancements make working with the event editor's <a href="glossary.html#3d-preview">3D preview</a> and profiler's <a href="profiling.html#3d-view">3D view</a> easier.</p>
+<p>You can now toggle between orthographic and fisheye projections, toggle between front and top views, and specify a custom view radius. These options make it straightforward to work with different camera perspectives.</p>
+<p><img alt="3D View" src="images/201_3d-view.png" /></p>
+<h3 id="mixer-workflow-enhancements"><a href="#mixer-workflow-enhancements">Mixer workflow enhancements</a></h3>
+<p>The <a href="glossary.html#mixer-window">mixer window</a> has been redesigned to be more consistent with other window layouts. The tabs at the top of the mixer can be used to switch between different <a href="glossary.html#snapshot">snapshot</a> selections.</p>
+<p><img alt="Mixing desk" src="images/201_mixing-desk-interface.png" /></p>
+<p>Strips displayed in the mixer have new sets of controls available, allowing for quick access to effects, sends, macros, and routing. These new sets of controls have been optimized to work with both wide and compact strips views.</p>
+<p>A sidebar has been added to the right of the mixing desk. Buttons at the top of the sidebar can be used to show and hide sets of controls. The bottom of the sidebar contains controls for selecting the active <a href="mixing.html#mixing-desk">mixer view</a>.</p>
+<h3 id="playlist-silence-instruments"><a href="#playlist-silence-instruments">Playlist silence instruments</a></h3>
+<p>Silence instruments can now be added to playlists. These can be used to sequence gaps in a multi instrument.</p>
+<p><img alt="Silence instrument" src="images/201_silence-instrument.png" /></p>
+<p>The duration of the silence can be automated or modulated. Silence instruments with random modulators can be used to insert variable length gaps between playlist entries.</p>
+<h3 id="effect-chain-panning"><a href="#effect-chain-panning">Effect chain panning</a></h3>
+<p>The <a href="glossary.html#panner">panner effect</a> can now be placed like a regular effect. This makes it easy to apply panning or change the channel format in the middle of a <a href="glossary.html#signal-chain">signal chain</a>.</p>
+<p><img alt="Panner effect" src="images/201_panner-effect.png" /></p></div>
+
+<p class="manual-footer">FMOD Studio User Manual 2.02.30 (2025-08-05). &copy; 2025 Firelight Technologies Pty Ltd.</p>
+</body>
+</html>
+
+</div>

@@ -1,0 +1,253 @@
+<html>
+<head>
+<title>Profiling</title>
+<link rel="stylesheet" href="style/docs.css">
+<link rel="stylesheet" href="style/code_highlight.css">
+<script type="text/javascript" src="scripts/language-selector.js"></script></head>
+<body>
+<div class="docs-body">
+<div class="manual-toc">
+<p>FMOD Studio User Manual 2.02</p>
+<ul>
+<li><a href="welcome-to-fmod-studio.html">Welcome to FMOD Studio</a></li>
+<li><a href="fmod-studio-concepts.html">FMOD Studio Concepts</a></li>
+<li><a href="organizing-the-project.html">Organizing the Project</a></li>
+<li><a href="authoring-events.html">Authoring Events</a></li>
+<li><a href="working-with-instruments.html">Working with Instruments</a></li>
+<li><a href="managing-assets.html">Managing Assets</a></li>
+<li><a href="parameters.html">Parameters</a></li>
+<li><a href="getting-events-into-your-game.html">Getting Events into Your Game</a></li>
+<li><a href="mixing.html">Mixing</a></li>
+<li><a href="the-sandbox.html">The Sandbox</a></li>
+<li><a href="editing-during-live-update.html">Editing During Live Update</a></li>
+<li class="manual-current-chapter manual-active-chapter"><a href="profiling.html">Profiling</a><ul>
+<li><a href="#managing-sessions">Managing Sessions</a></li>
+<li><a href="#recording-a-new-session">Recording a New Session</a></li>
+<li><a href="#recording-while-authoring">Recording While Authoring</a><ul>
+<li><a href="#recording-events-and-sandbox-sessions-from-within-an-fmod-studio-project">Recording Events and Sandbox Sessions from within an FMOD Studio Project</a></li>
+<li><a href="#recording-recorded-profiler-sessions-from-within-an-fmod-studio-project">Recording Recorded Profiler Sessions from within an FMOD Studio Project</a></li>
+</ul>
+</li>
+<li><a href="#reading-a-recorded-session">Reading a Recorded Session</a><ul>
+<li><a href="#overview">Overview</a><ul>
+<li><a href="#3d-view">3D View</a></li>
+<li><a href="#parameters">Parameters</a></li>
+<li><a href="#snapshot-activity">Snapshot Activity</a></li>
+<li><a href="#properties">Properties</a></li>
+</ul>
+</li>
+<li><a href="#events-and-event-instances">Events and Event Instances</a></li>
+<li><a href="#table-view">Table View</a></li>
+<li><a href="#api-calls-view">API Calls View</a></li>
+</ul>
+</li>
+<li><a href="#playing-back-a-session">Playing Back a Session</a><ul>
+<li><a href="#waveform-playback-mode">Waveform Playback Mode</a></li>
+<li><a href="#simulate-playback-mode">Simulate Playback Mode</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="dialogue-and-localization.html">Dialogue and Localization</a></li>
+<li><a href="using-source-control.html">Using Source Control</a></li>
+<li><a href="supporting-downloadable-and-user-generated-content.html">Supporting Downloadable and User-generated Content</a></li>
+<li><a href="advanced-topics.html">Advanced Topics</a></li>
+<li><a href="quick-start-tutorial.html">Quick Start Tutorial</a></li>
+<li><a href="effect-reference.html">Effect Reference</a></li>
+<li><a href="event-macro-controls-reference.html">Event Macros Drawer Reference</a></li>
+<li><a href="instrument-reference.html">Instrument Reference</a></li>
+<li><a href="keyboard-shortcut-reference.html">Keyboard Shortcut Reference</a></li>
+<li><a href="modulator-reference.html">Modulator Reference</a></li>
+<li><a href="parameters-reference.html">Parameters Reference</a></li>
+<li><a href="plugin-reference.html">Plug-in Reference</a></li>
+<li><a href="scripting-terminal-reference.html">Scripting</a></li>
+<li><a href="scripting-api-reference.html">Scripting API Reference</a></li>
+<li><a href="troubleshooting.html">Troubleshooting</a></li>
+<li><a href="glossary.html">Glossary</a></li>
+<li><a href="appendix-a-celeste.html">Appendix: Celeste Getting Started Guide</a></li>
+<li><a href="appendix-b-reaper-integration.html">Appendix: Reaper Integration</a></li>
+</ul>
+</div>
+<div class="manual-content studio">
+<h1>12. Profiling</h1>
+<p><a href="glossary.html#fmod-studio">FMOD Studio</a>'s profiler allows you to assess the performance and output of your project's events, mix, and snapshots. You can profile locally within FMOD Studio, or connect to a game via <a href="glossary.html#live-update">live update</a> to profile it at runtime.</p>
+<p>You can open the profiler window by clicking "Window &gt; Profiler".</p>
+<p>For information on connecting to your game via live update, please see the <a href="editing-during-live-update.html">editing during live update</a> chapter.</p>
+<h2 id="managing-sessions"><a href="#managing-sessions">12.1 Managing Sessions</a></h2>
+<p>Profiler recordings are organized into sessions. Profiler sessions can be saved, and later, viewed and compared.</p>
+<p>The profiler window's session browser can be used to view previously recorded sessions, create new ones, and organize them into folders for easy access.</p>
+<p>You can also export sessions. This is useful for sharing information on any issues encountered either with fellow audio team members or with <a href="https://www.fmod.com/learn#support">FMOD Studio support</a>. To do this, right click on a recorded session or folder in the sessions browser and choose "Package Selection".</p>
+<p><img alt="Package Sessions" src="images/packageSelection.png" /></p>
+<p>In this dialog you can choose whether to bundle the audio assets and/or the banks along with the session(s). This can be used to share sessions with others.</p>
+<h2 id="recording-a-new-session"><a href="#recording-a-new-session">12.2 Recording a New Session</a></h2>
+<p>To record a new session right click in an empty space of the sessions browser and select "New Session". This creates a new blank session. Click on the "Record" button in the <a href="glossary.html#transport-controls">transport controls</a>, represented by a circle, to begin recording. If you do not have a session actively selected in the sessions browser, clicking "Record" automatically creates a new session.</p>
+<p>You shall see a system track generated, expanded to show waveform data and other graphs, and a master track.</p>
+<p><img alt="Recording Playback" src="images/recordingPlayback.png" /></p>
+<p>Once you have finished capturing data, press the "Stop" button in the transport bar.</p>
+<p>By default, a track for each recorded event will automatically be added to the session once the recording is completed. You can display mixer tracks or event tracks by dragging and dropping them into the profiler session's editor pane.</p>
+<p>You can change when event tracks are added to a recorded profiler session by enabling "Automatically add event tracks to profiler sessions" in the interface tab of the <span class="dead-link" href="glossary.html#preferences-dialog">preferences dialog</span class="dead-link">. You can select whether event tracks are added while recording, after recording, or only when explicitly added.</p>
+<p>You can also toggle the "Continuous Zoom to Fit" button to the right of the time/beats display. When enabled the profiler session will automatically keep zooming out as the recording gets longer so that the entire recorded session remains visible.</p>
+<h2 id="recording-while-authoring"><a href="#recording-while-authoring">12.3 Recording While Authoring</a></h2>
+<p>It is possible to record <a href="glossary.html#fmod-studio">FMOD Studio</a> auditioning events, sandbox sessions, and profiling already recorded profiler sessions. These are useful to analyze the performance of your project or for comparing changes made to your project within the exact same environment as a previously recorded session.</p>
+<h3 id="recording-events-and-sandbox-sessions-from-within-an-fmod-studio-project"><a href="#recording-events-and-sandbox-sessions-from-within-an-fmod-studio-project">12.3.1 Recording Events and Sandbox Sessions from within an FMOD Studio Project</a></h3>
+<p>While an event is playing in the <a href="glossary.html#event-editor-window">event editor</a> or while a <a href="glossary.html#sandbox-window">sandbox</a> session is currently in play, click the record button in a profiler window.</p>
+<h3 id="recording-recorded-profiler-sessions-from-within-an-fmod-studio-project"><a href="#recording-recorded-profiler-sessions-from-within-an-fmod-studio-project">12.3.2 Recording Recorded Profiler Sessions from within an FMOD Studio Project</a></h3>
+<p>Select a profiler session to record ("Tab 1") and open a new tab in the profiler session's editor pane by clicking "View &gt; New Tab" ("Tab 2"). You can then play the recorded profiler ("Tab 1") in simulate mode and record its playback using the new tab ("Tab 2").</p>
+<h2 id="reading-a-recorded-session"><a href="#reading-a-recorded-session">12.4 Reading a Recorded Session</a></h2>
+<p>Once you have a recorded session, you can play it back as you would with an <a href="glossary.html#event">event</a>, and hear your game's recorded output. Areas that show instantaneous values (such as the transport bar and 3D View) correspond to the playhead position. You can also use <a href="glossary.html#loop-region">loop regions</a> to repeat parts of the recording.</p>
+<p>Each <a href="glossary.html#event">event</a> or <a href="glossary.html#bus">bus</a> in the profiler displays a graph for a recorded metric. You can switch which metric of that event or bus is graphed by clicking on the categories of the master profiling statistics in the <a href="glossary.html#transport-controls">transport controls</a>.</p>
+<p><img alt="Graph category selector" src="images/graph-categories.png" /></p>
+<p>You can hover over graphs to see the value at a particular point.</p>
+<p>The graphs available in the profiler are:</p>
+<ul>
+<li>
+<p><strong>Waveform</strong>: Only available on the system master track. Displays the waveform of the recorded session.</p>
+</li>
+<li>
+<p><strong>CPU</strong>: Indicates CPU consumption. Does not include time spent calling <code>update()</code> from your game thread (which theoretically should be quite small). <a href="glossary.html#fmod-studio">FMOD Studio</a> also uses some other smaller worker threads (e.g. File I/O thread) which aren't included in these numbers.</p>
+<ul>
+<li>
+<p><strong>CPU - Mixer (%)</strong>: The CPU time the <a href="glossary.html#mixer">mixer</a> thread is taking. The percentage represents how long it takes, in relation to the amount of time it has to complete a mix. For example, on XBox One where a mix block is 10ms (512 samples), 50% usage represents the mixer thread taking 5ms to complete.</p>
+</li>
+<li>
+<p><strong>CPU - Update (%)</strong>: The CPU time the <a href="glossary.html#fmod-engine">FMOD engine</a> update takes to process commands and schedule sound playback, expressed as a percentage of the amount of time it has to complete an update.</p>
+</li>
+</ul>
+<p>Because the mixer buffers audio in advance, CPU numbers can potentially spike above 100% without having any noticeable effect on your game's audio. However, sustained or frequent spikes above 100% may consume the buffer, resulting in audible stuttering and artifacts.</p>
+</li>
+<li>
+<p><strong>Memory (KB)</strong>: Displays the RAM in use by the system. For memory tracking to work, you must initialize the FMOD Studio system with the <code>FMOD_STUDIO_INIT_MEMORY_TRACKING</code> flag.</p>
+<ul>
+<li>
+<p><strong>Memory - Data (KB)</strong>: Indicates the total size of data of the data used by events and buses. For an event, this includes the memory consumed by the state of all <a href="glossary.html#event-instance">instances</a> of that event, as well as that consumed by all instances of streams playing in instances of that event.<br />
+For a bus, there are two graphs. The memory (self) graph includes only the memory used by the bus itself, while the memory (total) graph includes both the memory used by the bus and the memory used by all events and buses <a href="glossary.html#routing">routed</a> into that bus, as well as by streams in those event instances.<br />
+For the system master track, there are three graphs. The memory (self) graph includes only the memory used by the master bus; the memory (total) graph includes both the memory used by the master bus and the memory used by all events and buses in the project, as well as by streams; and the memory (total) graph includes all the memory included in the memory (total) graph as well as all memory consumed by the FMOD studio system.</p>
+</li>
+<li>
+<p><strong>Memory - Samples (KB)</strong>: Indicates the total size of the non-streaming samples loaded into memory. For an event, this is the total of all sampledata loaded into memory that could be referenced by that event. For the master bus and system master track, this is the total size of all sampledata loaded in the project. For all other buses, this is the total size of all sampledata loaded into memory that could be referenced by the events routed into that bus. Non-streaming sampledata is usually only loaded into memory once even if it is referenced in multiple events and event instances, so the sample memory listed on a bus can be less than the sum of the sample memory listed for the events and buses routed into that bus.</p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>File I/O (KB)</strong>: Only available on the system master track. Displays file I/O. There are three graphs, for sample data, stream data, and bank metadata.</p>
+</li>
+<li>
+<p><strong>Levels (dB)</strong>: Indicates the loudness of the output of an event or bus. The line represents the peak value and the solid colors represent the RMS (Root Mean Square).</p>
+</li>
+<li>
+<p><strong>Voices</strong>: Only available for events and the system master track. Displays how many <span class="dead-link" href="glossary.html#voice">voices</span class="dead-link"> are spawned by the event. The transparent background graph represents voices and virtual voices. Both "Self" and "Total" voices can be displayed.</p>
+</li>
+<li>
+<p><strong>Lifespans</strong>: Only available for events. Displays each instance of the event as a horizontal line. Clicking on one of these lines selects it, and displays the parameters of the instance in the deck.</p>
+</li>
+<li>
+<p><strong>Instances</strong>: Only available for events and the system master track. Displays the number of <a href="glossary.html#event-instance">event instances</a> that exist. There are three graphs: One for all instances including virtual and non-playing instances, one for all playing instances both virtual and non-virtual, and one for active instances only.</p>
+</li>
+</ul>
+<p>For "Voices" and "Instances", you can choose to show either self or total. Self refers to voices or instances that are spawned only from that event. Total refers to voices or instances that are spawned from <a href="glossary.html#referenced-event">referenced events</a>.</p>
+<p>You can see a summary of the active graph type for the entire session in the <span class="dead-link" href="glossary.html#birdseye-view">birds eye view</span class="dead-link">.</p>
+<h3 id="overview"><a href="#overview">12.4.1 Overview</a></h3>
+<p>The overview pane is located to the right of the profiler window's editor pane, and contains the tools for viewing the event instances, parameters, and snapshots active during a session.</p>
+<p><img alt="Profiler Overview Pane" src="images/profiler-overview.png" /></p>
+<h4 id="3d-view"><a href="#3d-view">3D View</a></h4>
+<p>At the top of the overview section is the 3D view. The 3D view represents a spherical or cubic area surrounding the listener. You can toggle between a cubic or spherical area by clicking the ortho toggle button, and between a top-down (XZ) or front-on (XY) view by clicking the front toggle button.</p>
+<p><img alt="The 3D View" src="images/profiler-3d-view.png" /></p>
+<p>The radius of the sphere (or distance from the center of the cube to one of its faces) is defined by its radius property. The listener is always located at the exact center of this space, facing towards the positive extreme of the Z axis.</p>
+<p>The 3D view displays the locations of event instances relative to the listener. Currently playing event instances are shown as filled circles, while virtual events are hollow circles. Event instances beyond the edges of the space are shown at its borders.</p>
+<p>Stopped event instances are grayed out. They gradually fade from view over time, and completely vanish from the 3D view eight seconds after stopping. This makes it easier to notice event instances that are only active for very short periods.</p>
+<h4 id="parameters"><a href="#parameters">Parameters</a></h4>
+<p>Below the 3D view is the parameters list. If an event or snapshot instance is selected in the lifespans graph or the 3D view, it displays a list of the parameters used by that event instance, and their values. If no event or snapshot instance is selected, it instead displays a list of all the <a href="glossary.html#global-parameter">global parameters</a> in your project.</p>
+<p><img alt="The Parameters List" src="images/profiler-parameters.png" /></p>
+<h4 id="snapshot-activity"><a href="#snapshot-activity">Snapshot Activity</a></h4>
+<p>Underneath the 3D View is a list of <a href="glossary.html#snapshot">snapshot</a> names. This list represents all currently-playing and recently-stopped snapshot instances in your project.</p>
+<p><img alt="The Snapshot Activity List" src="images/profiler-snapshot-activity.png" /></p>
+<p>Currently-playing snapshot instances are displayed with a light gray border. The percentage to the right of the name of the snapshot indicates the <a href="mixing.html#snapshot-intensity">intensity</a> of the snapshot.</p>
+<p>Stopped snapshot instances are displayed without a border. They remain in the list for eight seconds after they stop, making it easier to notice snapshot instances that are only active for very short periods.</p>
+<p>To view a snapshot from this list in the mixer, right-click on any instance of that snapshot in the list and select "Open in Mixer" from the context menu.</p>
+<h4 id="properties"><a href="#properties">Properties</a></h4>
+<p>You can add tags and notes for each profiler session in this section.</p>
+<h3 id="events-and-event-instances"><a href="#events-and-event-instances">12.4.2 Events and Event Instances</a></h3>
+<p>The profiler provides additional information about each event instance.</p>
+<p>Clicking on an event in this view highlights its associated track and also presents a secondary 3D view in the deck which shows only events of a given type.</p>
+<p>If an event instance is selected, the deck displays that instance's parameter values over time. Right clicking a parameter dial allows you to add a graph for that particular event instance's parameter. This is added as a subgraph in the multitrack view.</p>
+<p><img alt="Profiler with Parameters" src="images/profilerParameters.png" /></p>
+<h3 id="table-view"><a href="#table-view">12.4.3 Table View</a></h3>
+<p>The information in a recorded session can be displayed in a table. This makes it easier to see the precise values of properties at any point in time within the session.</p>
+<p>To view the information in a recorded session in a table, click on the Table button located next to the <span class="dead-link" href="glossary.html#time-beats-display">time indicator</span class="dead-link">.</p>
+<p>The values displayed in the table correspond to those recorded at the timeline playback position, or over a specific period of time, depending on the mode selected in the drop-down menu above the top-right corner of the table:</p>
+<ul>
+<li>In Instantaneous Value mode, the table displays the property values at the timeline playback position.</li>
+<li>In Average Value mode, the table displays the average value for each property over the range of values selected on the timeline.</li>
+<li>In Maximum Value mode, the table displays the highest value for each property over the time period selected on the timeline.</li>
+<li>In Minimum Value mode, the table displays the lowest value for each property over the time period selected on the timeline.</li>
+</ul>
+<p>In any mode other than instantaneous value, you can select a period of time by clicking and dragging the mouse cursor below the timeline <a href="glossary.html#parameter-ruler">ruler</a>.</p>
+<p>Each column of the table view represents specific information about the events, snapshots, and buses in your project:</p>
+<ul>
+<li><strong>CPU: Mixer (Self).</strong> The CPU time the mixer thread is taking to mix the audio for an event, bus, or the FMOD Studio system, not including CPU time used by other events and buses routed into that event or bus. The percentage represents how long it takes, in relation to the amount of time it has to complete a mix.</li>
+<li><strong>CPU: Mixer (Total).</strong> The CPU time the mixer thread is taking to mix the audio for an event, bus, or the FMOD Studio system, including CPU time used by other events and buses routed into that event or bus. The percentage represents how long it takes, in relation to the amount of time it has to complete a mix.</li>
+<li><strong>CPU: Update (Self).</strong> The CPU time the FMOD engine update takes to process commands and schedule sound playback for an event, bus, or the FMOD Studio system, not including CPU time used by other events and buses routed into that event or bus. The percentage represents how long it takes, in relation to the amount of time it has to complete each update.</li>
+<li><strong>CPU: Update (Total).</strong> The CPU time the FMOD engine update takes to process commands and schedule sound playback for an event, bus, or the FMOD Studio system, including CPU time used by other events and buses routed into that event or bus. The percentage represents how long it takes, in relation to the amount of time it has to complete each update.</li>
+<li><strong>Levels (RMS).</strong> The root mean square loudness of the output of an event, a bus, or (in the system row) the whole project.</li>
+<li><strong>Levels (Peak).</strong> The peak loudness of the output of an event, a bus, or (in the system row) the whole project.</li>
+<li><strong>Instances - Active (Self).</strong> The total number of <a href="advanced-topics.html#virtualization">real</a> instances of an event or snapshot. The system row displays the total number of real event and <a href="glossary.html#snapshot-instrument">snapshot instances</a> in the project. In either case, the number does not include instances spawned by <a href="glossary.html#event-instrument">event</a> and <a href="glossary.html#snapshot-instrument">snapshot instruments</a>.</li>
+<li><strong>Instances - Active (Total).</strong> The total number of real instances of an event or snapshot. The system row displays the total number of real event and snapshot instances in the project. In either case, the number includes instances spawned by event and snapshot instruments.</li>
+<li><strong>Instances - Playing (Self).</strong> The total number of <a href="advanced-topics.html#virtualization">virtual</a> and real instances of an event or snapshot. The system row displays the total number of real event and snapshot instances in the project. In either case, the number does not include instances spawned by event and snapshot instruments.</li>
+<li><strong>Instances - Playing (Total).</strong> The total number of virtual and real instances of an event or snapshot. The system row displays the total number of real event and snapshot instances in the project. In either case, the number includes instances spawned by event and snapshot instruments.</li>
+<li><strong>Instances - All (Self).</strong> The total number of instances of an event or snapshot, including events that have been created but not <a href="advanced-topics.html#event-state">started</a> and instances that have been <a href="advanced-topics.html#event-state">stopped</a>. The system row displays the total number of event and snapshot instances in the project. In either case, the number does not include instances spawned by event and snapshot instruments.</li>
+<li><strong>Instances - All (Total).</strong>  The total number of instances of an event or snapshot, including events that have been created but not started and instances that have been stopped. The system row displays the total number of event and snapshot instances in the project. In either case, the number includes instances spawned by event and snapshot instruments.</li>
+<li><strong>Voices - Active (Self).</strong> The number of real <span class="dead-link" href="glossary.html#voice">voices</span class="dead-link"> used by an event. The system row shows the number of real voices used by the project as a whole. In either case, the number doesn't include voices used by event instances spawned from its event instruments.</li>
+<li><strong>Voices - Active (Total).</strong> The number of real voices used by an event. The system row shows the number of real voices used by the project as a whole. In either case, the number includes voices used by event instances spawned from event instruments.</li>
+<li><strong>Voices - All (Self).</strong> The number of real voices spawned by an event, or by the project as a whole, including virtual voices.</li>
+<li><strong>Voices - All (Total).</strong> The number of real voices spawned by an event, or by the project as a whole, including virtual voices.</li>
+<li><strong>Memory: Data (Self).</strong> The total size of the <a href="glossary.html#metadata">metadata</a> in memory used by an event, bus, or (in the case of the system row) by the master bus, not including data used by other events and buses routed into that event or bus.</li>
+<li><strong>Memory: Data (Total).</strong> The total size of the metadata in memory used by an event, bus, or (in the case of the system row) the master bus, including data used by other events and buses routed into the event or bus.</li>
+<li><strong>Memory: Data (Global).</strong> The total size of the metadata in memory used by the FMOD Studio system, as well as all the events and buses in the project.</li>
+<li><strong>Memory: Samples.</strong> The total size of the <span class="dead-link" href="glossary.html#sample-data">sample data</span class="dead-link"> loaded into memory for an event or (in the case of the system row) for the project as a whole, excluding streams.</li>
+<li><strong>File I/O (Sample).</strong> The amount of file input/output activity being performed to read non-streaming sample data from disk, expressed in kilobytes per second.</li>
+<li><strong>File I/O (Stream).</strong> The amount of file input/output activity being performed to read sample data for streams from disk, expressed in kilobytes per second.</li>
+<li><strong>File I/O (Bank).</strong> The amount of file input/output activity being performed to read banks from disk, expressed in kilobytes per second.</li>
+</ul>
+<p>While in the table view, an eye-shaped icon appears next to each bus and event in the project. These icons indicate and toggle whether the buses and events appear in the profiler's tracks view.</p>
+<p>You can filter the rows visible by using the <a href="glossary.html#search-bar">search bar</a> at the top of the table. You can use the <a href="glossary.html#magnifying-glass-menu">magnifying glass menu</a> to select a filter or manually type in the search bar with the following terms:</p>
+<ul>
+<li><code>#tracked</code> - Displays only the visible tracks in the tracks view</li>
+<li><code>#missing</code> - Displays only tracks with missing metadata</li>
+<li><code>#query:(Colorable.color == &lt;color&gt;)</code> - Displays only tracks labeled with the color specified in <code>&lt;color&gt;</code></li>
+<li><code>#query:(isOfExactType(&lt;type&gt;))</code> - Displays only the type specified in <code>&lt;type&gt;</code>. Available types are:<ul>
+<li><code>Event</code></li>
+<li><code>Snapshot</code></li>
+<li><code>MixerGroup</code></li>
+<li><code>MixerReturn</code></li>
+</ul>
+</li>
+<li><code>#&lt;tag&gt;</code> - Displays only tracks where the event has been <a href="organizing-the-project.html#tags">tagged</a> with the tag specified in <code>&lt;tag&gt;</code></li>
+<li><code>AND</code>, <code>OR</code>, <code>NOT</code> - Operators used for further filtering out search results</li>
+</ul>
+<p>For more information on searching, please see the searching section of the <a href="organizing-the-project.html#searching">Organizing the Project</a> chapter.</p>
+<h3 id="api-calls-view"><a href="#api-calls-view">12.4.4 API Calls View</a></h3>
+<p>All session captures also capture the API calls made by your FMOD Studio project.</p>
+<p>To view the API calls being made, click on the API View button located next to the <span class="dead-link" href="glossary.html#time-beats-display">time indicator</span class="dead-link">.</p>
+<p><img alt="API calls view" src="images/profiler-api-calls-view.png" /></p>
+<p>The API calls view displays the FMOD Studio API functions being called between each <a href="https://fmod.com/docs/2.02/api/studio-api-system.html#studio_system_update">Studio::System::update</a>, known as a <a href="glossary.html#frame">frame</a>. To move between frames, click on the "Previous Frame" or "Next Frame" buttons located at the top right of the API calls view.</p>
+<p>The captured API calls are not written in any particular programming language, instead only displaying what FMOD Engine function was called and the arguments passed into it. All comments are prefixed with a hash (<code>#</code>) and do not affect playback.</p>
+<p>Located at the top of the session editor window are two buttons. The <span class="dead-link" href="glossary.html#tracks-view">track view</span class="dead-link"> and the API calls view. For more information about the API calls view, see the <a href="profiling.html#playing-back-a-session">playing back a session</a> section of this chapter.</p>
+<h2 id="playing-back-a-session"><a href="#playing-back-a-session">12.5 Playing Back a Session</a></h2>
+<p>You can choose to play back a profiler session using either the recorded waveform or the recorded API calls. These are known as the <span class="dead-link" href="glossary.html#waveform">waveform</span class="dead-link"> playback mode and the <span class="dead-link" href="glossary.html#simulate">simulate</span class="dead-link"> playback mode, respectively.</p>
+<p>You can toggle between playing back with the recorded audio or with the API capture by clicking on the "Waveform" or "Simulate" button next to the time indicator.</p>
+<p><img alt="Profiler Transport Bar" src="images/profiler-transport-bar.png" /></p>
+<p>Starting the playback of a profiler session will stop any events currently being <a href="glossary.html#audition">auditioned</a> in the <a href="glossary.html#event-editor-window">event editor</a>.</p>
+<h3 id="waveform-playback-mode"><a href="#waveform-playback-mode">12.5.1 Waveform Playback Mode</a></h3>
+<p>When the waveform mode is selected, <a href="glossary.html#fmod-studio">FMOD Studio</a> will play back the audio as it was recorded during the recording session. Making changes to the project does not alter the recorded session in this mode.</p>
+<h3 id="simulate-playback-mode"><a href="#simulate-playback-mode">12.5.2 Simulate Playback Mode</a></h3>
+<p>When in simulate mode the playback of the recorded profiler sessions uses the API calls rather than playing back recorded audio. Simulate playback mode does not require banks to be rebuilt after making changes.</p>
+<p>This is useful for debugging an audio issue found in a recorded session or making adjustments to events and buses then auditioning them in a real game scenario.</p>
+<p><img alt="Playback in Simulate Mode" src="images/apiPlayback.png" /></p>
+<p>While in simulate mode you can hear events being played as if playing them through the <a href="glossary.html#event-editor-window">event editor</a>, so random playlists in <a href="glossary.html#multi-instrument">multi instruments</a> and <a href="glossary.html#scatterer-instrument">scatterer instruments</a> have randomized results.</p>
+<p>Changes made to the project are updated in real time when in simulate mode so there is no need to rebuild banks.</p></div>
+
+<p class="manual-footer">FMOD Studio User Manual 2.02.30 (2025-08-05). &copy; 2025 Firelight Technologies Pty Ltd.</p>
+</body>
+</html>
+
+</div>

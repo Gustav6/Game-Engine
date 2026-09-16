@@ -26,6 +26,7 @@
 #include "GraphicsEngine/RHI/GraphicsCommandList.h"
 
 #include "tracy/core/Tracy.hpp"
+#include <Audio/FmodAudioSystem.h>
 
 Game::Game() = default;
 Game::~Game() = default;
@@ -35,6 +36,13 @@ bool Game::Initialize(SIZE aWindowSize, WNDPROC aWindowProcess, LPCWSTR aWindowT
     myScene = std::make_unique<Scene>();
 
     std::filesystem::path workingDirectory = GetExecutableDirectory().parent_path().parent_path() / "Content";
+
+    Application.AudioSystem = std::make_unique<FmodAudioSystem>();
+
+    if (!Application.AudioSystem->Initialize()) 
+    {
+        MVLOG(Error, "Failed to initialize audio system.");
+    }
 
     Application.AssetRegistry.RegisterAssetType<MeshAsset>({ ".fbx" });
     Application.AssetRegistry.RegisterAssetType<AnimationAsset>({ ".fbx" });
@@ -141,6 +149,8 @@ int Game::Run()
         Application.InputManager.UpdateInput();
 
         UpdateScene(Application.TimeManager.GetDeltaTime());
+
+        Application.AudioSystem->Update();
         BuildSceneForRender();
 
 		// Render to graphics engine and present to screen
@@ -160,6 +170,12 @@ int Game::Run()
 
     // Cleanup
     Application.AssetRegistry.UnInitialize();
+
+    if (Application.AudioSystem)
+    {
+        Application.AudioSystem->Shutdown();
+        Application.AudioSystem.reset();
+    }
 
     return 0;
 }

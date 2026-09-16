@@ -39,7 +39,7 @@ HRESULT MaterialShaderIncludeHandler::Open(D3D_INCLUDE_TYPE IncludeType, LPCSTR 
 	}
 
 	// Make sure the file exists
-	bool found = false;
+	//bool found = false;
 	// Check if this is a relative include and, if so, update the path.
 	if (pParentData)
 	{

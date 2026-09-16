@@ -1,0 +1,98 @@
+<html>
+<head>
+<title>Welcome to FMOD Studio | New in FMOD Studio 2.02</title>
+<link rel="stylesheet" href="style/docs.css">
+<link rel="stylesheet" href="style/code_highlight.css">
+<script type="text/javascript" src="scripts/language-selector.js"></script></head>
+<body>
+<div class="docs-body">
+<div class="manual-toc">
+<p>FMOD Studio User Manual 2.02</p>
+<ul>
+<li class="manual-current-chapter manual-inactive-chapter"><a href="welcome-to-fmod-studio.html">Welcome to FMOD Studio</a><ul class="subchapters"><li class="manual-current-chapter manual-active-chapter"><a href="welcome-to-fmod-studio-new-in-202.html">New in FMOD Studio 2.02</a></li><li><a href="welcome-to-fmod-studio-new-in-201.html">New in FMOD Studio 2.01</a></li><li><a href="welcome-to-fmod-studio-new-in-200.html">New in FMOD Studio 2.00</a></li><li><a href="welcome-to-fmod-studio-new-in-110.html">New in FMOD Studio 1.10</a></li><li><a href="welcome-to-fmod-studio-revision-history.html">Detailed Revision History</a></li></ul></li>
+<li><a href="fmod-studio-concepts.html">FMOD Studio Concepts</a></li>
+<li><a href="organizing-the-project.html">Organizing the Project</a></li>
+<li><a href="authoring-events.html">Authoring Events</a></li>
+<li><a href="working-with-instruments.html">Working with Instruments</a></li>
+<li><a href="managing-assets.html">Managing Assets</a></li>
+<li><a href="parameters.html">Parameters</a></li>
+<li><a href="getting-events-into-your-game.html">Getting Events into Your Game</a></li>
+<li><a href="mixing.html">Mixing</a></li>
+<li><a href="the-sandbox.html">The Sandbox</a></li>
+<li><a href="editing-during-live-update.html">Editing During Live Update</a></li>
+<li><a href="profiling.html">Profiling</a></li>
+<li><a href="dialogue-and-localization.html">Dialogue and Localization</a></li>
+<li><a href="using-source-control.html">Using Source Control</a></li>
+<li><a href="supporting-downloadable-and-user-generated-content.html">Supporting Downloadable and User-generated Content</a></li>
+<li><a href="advanced-topics.html">Advanced Topics</a></li>
+<li><a href="quick-start-tutorial.html">Quick Start Tutorial</a></li>
+<li><a href="effect-reference.html">Effect Reference</a></li>
+<li><a href="event-macro-controls-reference.html">Event Macros Drawer Reference</a></li>
+<li><a href="instrument-reference.html">Instrument Reference</a></li>
+<li><a href="keyboard-shortcut-reference.html">Keyboard Shortcut Reference</a></li>
+<li><a href="modulator-reference.html">Modulator Reference</a></li>
+<li><a href="parameters-reference.html">Parameters Reference</a></li>
+<li><a href="plugin-reference.html">Plug-in Reference</a></li>
+<li><a href="scripting-terminal-reference.html">Scripting</a></li>
+<li><a href="scripting-api-reference.html">Scripting API Reference</a></li>
+<li><a href="troubleshooting.html">Troubleshooting</a></li>
+<li><a href="glossary.html">Glossary</a></li>
+<li><a href="appendix-a-celeste.html">Appendix: Celeste Getting Started Guide</a></li>
+<li><a href="appendix-b-reaper-integration.html">Appendix: Reaper Integration</a></li>
+</ul>
+</div>
+<div class="manual-content studio">
+<h1>1. Welcome to FMOD Studio | New in FMOD Studio 2.02</h1>
+<div class="toc">
+<ul>
+<li><a href="#whats-new-in-fmod-studio-202">What's New in FMOD Studio 2.02?</a><ul>
+<li><a href="#native-linux">Native Linux</a></li>
+<li><a href="#event-min-max-distance">Event Min / Max Distance</a></li>
+<li><a href="#output-ports">Output Ports</a></li>
+<li><a href="#improved-flexibility">Improved Flexibility</a></li>
+<li><a href="#improved-profiling">Improved Profiling</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<h2 id="whats-new-in-fmod-studio-202"><a href="#whats-new-in-fmod-studio-202">What's New in FMOD Studio 2.02?</a></h2>
+<p><a href="glossary.html#fmod-studio">FMOD Studio</a> 2.02 brings support for a whole new operating system, empowers spatializers and object spatializers with event-level distance, gives more flexibility to scatterer and command instruments, improves sidechains, and gives sound designers more control over their chosen platforms' special output hardware.</p>
+<p>In addition to the new features listed, a number of additional stability and usability enhancements have been made. For full details see the <a href="welcome-to-fmod-studio-revision-history.html">detailed revision history</a>.</p>
+<h3 id="native-linux"><a href="#native-linux">Native Linux</a></h3>
+<p>FMOD Studio now has a native Linux version with support for a wide range of distributions.</p>
+<p><img alt="Linux Desktop" src="images/202-linux-desktop.png" /></p>
+<p>The majority of the functionality supported on Windows and macOS is carried over to Linux with a few caveats:</p>
+<ul>
+<li>Much like the macOS version, be mindful of supported export formats when building banks - console specific formats (XMA / AT9) do not have Linux encoders available for us to use.</li>
+<li>There is currently no support for control surfaces.</li>
+</ul>
+<h3 id="event-min-max-distance"><a href="#event-min-max-distance">Event Min / Max Distance</a></h3>
+<p>The concept of minimum and maximum distance for spatialization and attenuation has long been a feature of FMOD spatializers. Now these properties have been promoted up to the event level.</p>
+<p><img alt="Event Min/Max" src="images/202-event-level-min-max-distance.png" /></p>
+<p>This means any spatializer can now take advantage of min/max automation and modulation for greater flexibility. For compatibility, the 3D and object spatializers now provide an override for event min/max distance to retain the previous individual behavior.</p>
+<p>Additionally by lifting these properties to the event level we can support the new built-in normalized distance parameter. Using a scale that runs from 0 (representing your event’s min distance) to 1 (representing your event’s max distance) you can design custom curves that can be shared between events with different min/max distance ranges.</p>
+<blockquote>
+<p>Note: When migrating a project from a version earlier than 2.02, the event min/max distance will be set to match the values of the first FMOD spatializer or object spatializer found on the event. Additionally, preset FMOD spatializers and object spatializers will all be set to override with their current values.</p>
+</blockquote>
+<h3 id="output-ports"><a href="#output-ports">Output Ports</a></h3>
+<p>Sending audio to auxiliary output ports has traditionally been a programmer task, but now it's part of the sound designer workflow within FMOD Studio.</p>
+<p>With ports, you can make use of your target platforms' features for handling online voice chat and in-game music, route sound to individual controller and headset speakers, control controller vibration, and more.</p>
+<p><img alt="Routing to Ports" src="images/202-routing-ports.png" /></p>
+<p>The master bus is now shown in the routing browser, highlighting the fact that the new port buses are siblings, representing additional outputs from the system. You can specify the destination of each port within the port macros area of the mixer deck.</p>
+<h3 id="improved-flexibility"><a href="#improved-flexibility">Improved Flexibility</a></h3>
+<p>With every release we try to add more flexibility. Here are some recent additions:</p>
+<ul>
+<li>Scatterer instrument spawn total now supports automation and modulation</li>
+<li>Command instruments when configured to set a parameter value now support automation and modulation of that value</li>
+<li>Sidechain effect now exposes a send level that can be automated and modulated</li>
+</ul>
+<p><img alt="Event Deck" src="images/202-side-chain-spatial-override.png" /></p>
+<h3 id="improved-profiling"><a href="#improved-profiling">Improved Profiling</a></h3>
+<p>Streaming and convolution CPU usage are now shown in the profiler.</p>
+<p><img alt="Profiler Stats" src="images/202-profiler-stats.png" /></p></div>
+
+<p class="manual-footer">FMOD Studio User Manual 2.02.30 (2025-08-05). &copy; 2025 Firelight Technologies Pty Ltd.</p>
+</body>
+</html>
+
+</div>

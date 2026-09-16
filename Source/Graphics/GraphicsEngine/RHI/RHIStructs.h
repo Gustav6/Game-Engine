@@ -85,7 +85,7 @@ typedef int ResourceBindFlags;
 enum class BlendMode : uint8_t 
 { 
 	Opaque, 
-	Alpha, 
-	// PremultipliedAlpha, 
-	// Additive,
+	Alpha,
+	Additive,
+	// PremultipliedAlpha
 };

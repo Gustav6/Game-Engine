@@ -3,6 +3,16 @@ project "Game"
     language "C++"
     cppdialect "C++20"
 
+    fatalwarnings { "All" }
+
+    filter "configurations:Release"
+        warnings "Extra"
+
+    filter "configurations:Retail"
+        warnings "Extra"
+
+    filter {}
+
     -- Fix: Use Premake tokens so Visual Studio can resolve paths natively for tracking
     targetdir ("%{wks.location}/Bin/%{cfg.buildcfg}/")
     objdir    ("%{wks.location}/Intermediate/%{prj.name}/%{cfg.buildcfg}/")
@@ -13,6 +23,7 @@ project "Game"
         "%{wks.location}/Source/Utilities",
         "%{wks.location}/Source/Graphics",
         "%{wks.location}/ThirdParty/Source",
+        "%{wks.location}/ThirdParty/Source/fmod",
         "%{wks.location}/Source/Graphics/GraphicsEngine/Shaders/Material"
     }
 
@@ -40,7 +51,9 @@ project "Game"
         "dxguid",
         "dxgi",
         "d3dcompiler",
-        "TGAFbx"
+        "TGAFbx",
+        "fmod_vc",
+        "fmodstudio_vc"
     }
     
     postbuildmessage "Copying Materials and DLLs"

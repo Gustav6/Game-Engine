@@ -5707,3 +5707,614 @@ Logging has started at 2026-09-15 23:23:16.
 [23:23:18] [   LOG   ] [FBX] Animation has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Locomotion\A_C_TGA_Bro_Run.fbx]
 [23:23:18] [  ERROR  ] [FBX] Could not load mesh [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Locomotion\A_C_TGA_Bro_Walk.fbx] : No mesh data found in file!
 [23:23:18] [   LOG   ] [FBX] Animation has loaded [C:\Users\gusta\Documents\GitHub\Game-Engine\Content\Animations\Locomotion\A_C_TGA_Bro_Walk.fbx]
+****************************************************************************************************
+Logging has started at 2026-09-16 10:41:42.
+****************************************************************************************************
+[10:41:42] [   LOG   ] [ModelViewer] ModelViewer starting...
+[10:41:42] [   LOG   ] [ModelViewer] Ready!
+[10:41:42] [   LOG   ] [ModelViewer] Initializing Graphics Engine...
+[10:41:42] [   LOG   ] [RHI] Initializing RHI...
+[10:41:42] [   LOG   ] [RHI] Selected adapter is NVIDIA GeForce RTX 4060
+[10:41:42] [   LOG   ] [RHI] RHI Started!
+[10:41:42] [   LOG   ] [FBX] Mesh has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Meshes\SM_Color_Checker.fbx]
+[10:41:42] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Textures\Albedo\T_Color_Checker_C.dds]
+[10:41:42] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Textures\Normal\T_Color_Checker_N.dds]
+[10:41:42] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Textures\Material\T_Color_Checker_M.dds]
+[10:41:42] [  ERROR  ] [MATERIAL] Material has no valid settings [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Materials\SMColorChecker.json]!
+[10:41:42] [   LOG   ] [FBX] Mesh has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Meshes\SM_Chest.fbx]
+[10:41:42] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Textures\Albedo\T_Chest_C.dds]
+[10:41:42] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Textures\Normal\T_Chest_N.dds]
+[10:41:42] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Textures\Material\T_Chest_M.dds]
+[10:41:43] [   LOG   ] [MATERIAL] Master Material has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Materials\ChestMaterial.json]!
+[10:41:43] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Textures\Albedo\T_Marble_Tiles_C.dds]
+[10:41:43] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Textures\Normal\T_Marble_Tiles_N.dds]
+[10:41:43] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Textures\Material\T_Marble_Tiles_M.dds]
+[10:41:43] [   LOG   ] [MATERIAL] Master Material has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Materials\BaseMaterial.json]!
+[10:41:43] [   LOG   ] [FBX] Mesh has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Meshes\SK_C_TGA_Bro.fbx]
+[10:41:43] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Textures\Albedo\T_TGA_Bro_C.dds]
+[10:41:43] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Textures\Normal\T_TGA_Bro_N.dds]
+[10:41:43] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Textures\Material\T_TGA_Bro_M.dds]
+[10:41:43] [  ERROR  ] [MATERIAL] Material has no valid settings [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Materials\TGABroMaterial.json]!
+[10:41:43] [  ERROR  ] [FBX] Could not load mesh [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Animations\Idle\A_C_TGA_Bro_Idle_Breathing.fbx] : No mesh data found in file!
+[10:41:43] [   LOG   ] [FBX] Animation has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Animations\Idle\A_C_TGA_Bro_Idle_Breathing.fbx]
+[10:41:43] [  ERROR  ] [FBX] Could not load mesh [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Animations\Idle\A_C_TGA_Bro_Idle_Wave.fbx] : No mesh data found in file!
+[10:41:43] [   LOG   ] [FBX] Animation has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Animations\Idle\A_C_TGA_Bro_Idle_Wave.fbx]
+[10:41:44] [  ERROR  ] [FBX] Could not load mesh [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Animations\Locomotion\A_C_TGA_Bro_Run.fbx] : No mesh data found in file!
+[10:41:44] [   LOG   ] [FBX] Animation has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Animations\Locomotion\A_C_TGA_Bro_Run.fbx]
+[10:41:44] [  ERROR  ] [FBX] Could not load mesh [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Animations\Locomotion\A_C_TGA_Bro_Walk.fbx] : No mesh data found in file!
+[10:41:44] [   LOG   ] [FBX] Animation has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Animations\Locomotion\A_C_TGA_Bro_Walk.fbx]
+****************************************************************************************************
+Logging has started at 2026-09-16 10:43:44.
+****************************************************************************************************
+[10:43:44] [   LOG   ] [ModelViewer] ModelViewer starting...
+[10:43:44] [   LOG   ] [ModelViewer] Ready!
+[10:43:44] [   LOG   ] [ModelViewer] Initializing Graphics Engine...
+[10:43:44] [   LOG   ] [RHI] Initializing RHI...
+[10:43:44] [   LOG   ] [RHI] Selected adapter is NVIDIA GeForce RTX 4060
+[10:43:44] [   LOG   ] [RHI] RHI Started!
+[10:43:45] [   LOG   ] [FBX] Mesh has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Meshes\SM_Color_Checker.fbx]
+[10:43:45] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Textures\Albedo\T_Color_Checker_C.dds]
+[10:43:45] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Textures\Normal\T_Color_Checker_N.dds]
+[10:43:45] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Textures\Material\T_Color_Checker_M.dds]
+[10:43:45] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Textures\Albedo\T_Marble_Tiles_C.dds]
+[10:43:45] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Textures\Normal\T_Marble_Tiles_N.dds]
+[10:43:45] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Textures\Material\T_Marble_Tiles_M.dds]
+[10:43:45] [   LOG   ] [MATERIAL] Master Material has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Materials\BaseMaterial.json]!
+[10:43:45] [   LOG   ] [MATERIAL] Material instance has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Materials\SMColorChecker.json]!
+[10:43:45] [   LOG   ] [FBX] Mesh has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Meshes\SM_Chest.fbx]
+[10:43:45] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Textures\Albedo\T_Chest_C.dds]
+[10:43:45] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Textures\Normal\T_Chest_N.dds]
+[10:43:45] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Textures\Material\T_Chest_M.dds]
+[10:43:45] [   LOG   ] [MATERIAL] Master Material has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Materials\ChestMaterial.json]!
+[10:43:45] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Textures\Albedo\T_Marble_Tiles_C.dds]
+[10:43:45] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Textures\Normal\T_Marble_Tiles_N.dds]
+[10:43:45] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Textures\Material\T_Marble_Tiles_M.dds]
+[10:43:46] [   LOG   ] [MATERIAL] Master Material has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Materials\BaseMaterial.json]!
+[10:43:46] [   LOG   ] [FBX] Mesh has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Meshes\SK_C_TGA_Bro.fbx]
+[10:43:46] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Textures\Albedo\T_TGA_Bro_C.dds]
+[10:43:46] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Textures\Normal\T_TGA_Bro_N.dds]
+[10:43:46] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Textures\Material\T_TGA_Bro_M.dds]
+[10:43:46] [   LOG   ] [MATERIAL] Material instance has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Materials\TGABroMaterial.json]!
+[10:43:46] [  ERROR  ] [FBX] Could not load mesh [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Animations\Idle\A_C_TGA_Bro_Idle_Breathing.fbx] : No mesh data found in file!
+[10:43:46] [   LOG   ] [FBX] Animation has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Animations\Idle\A_C_TGA_Bro_Idle_Breathing.fbx]
+[10:43:46] [  ERROR  ] [FBX] Could not load mesh [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Animations\Idle\A_C_TGA_Bro_Idle_Wave.fbx] : No mesh data found in file!
+[10:43:46] [   LOG   ] [FBX] Animation has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Animations\Idle\A_C_TGA_Bro_Idle_Wave.fbx]
+[10:43:46] [  ERROR  ] [FBX] Could not load mesh [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Animations\Locomotion\A_C_TGA_Bro_Run.fbx] : No mesh data found in file!
+[10:43:46] [   LOG   ] [FBX] Animation has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Animations\Locomotion\A_C_TGA_Bro_Run.fbx]
+[10:43:46] [  ERROR  ] [FBX] Could not load mesh [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Animations\Locomotion\A_C_TGA_Bro_Walk.fbx] : No mesh data found in file!
+[10:43:46] [   LOG   ] [FBX] Animation has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Animations\Locomotion\A_C_TGA_Bro_Walk.fbx]
+****************************************************************************************************
+Logging has started at 2026-09-16 10:48:38.
+****************************************************************************************************
+[10:48:38] [   LOG   ] [ModelViewer] ModelViewer starting...
+[10:48:38] [   LOG   ] [ModelViewer] Ready!
+[10:48:38] [   LOG   ] [ModelViewer] Initializing Graphics Engine...
+[10:48:38] [   LOG   ] [RHI] Initializing RHI...
+[10:48:38] [   LOG   ] [RHI] Selected adapter is NVIDIA GeForce RTX 4060
+[10:48:38] [   LOG   ] [RHI] RHI Started!
+[10:48:38] [   LOG   ] [FBX] Mesh has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Meshes\SM_Color_Checker.fbx]
+[10:48:38] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Textures\Albedo\T_Color_Checker_C.dds]
+[10:48:38] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Textures\Normal\T_Color_Checker_N.dds]
+[10:48:38] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Textures\Material\T_Color_Checker_M.dds]
+[10:48:38] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Textures\Albedo\T_Marble_Tiles_C.dds]
+[10:48:38] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Textures\Normal\T_Marble_Tiles_N.dds]
+[10:48:38] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Textures\Material\T_Marble_Tiles_M.dds]
+[10:48:39] [   LOG   ] [MATERIAL] Master Material has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Materials\BaseMaterial.json]!
+[10:48:39] [   LOG   ] [MATERIAL] Material instance has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Materials\SMColorChecker.json]!
+[10:48:39] [   LOG   ] [FBX] Mesh has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Meshes\SM_Chest.fbx]
+[10:48:39] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Textures\Albedo\T_Chest_C.dds]
+[10:48:39] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Textures\Normal\T_Chest_N.dds]
+[10:48:39] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Textures\Material\T_Chest_M.dds]
+[10:48:39] [   LOG   ] [MATERIAL] Master Material has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Materials\ChestMaterial.json]!
+[10:48:39] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Textures\Albedo\T_Marble_Tiles_C.dds]
+[10:48:39] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Textures\Normal\T_Marble_Tiles_N.dds]
+[10:48:39] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Textures\Material\T_Marble_Tiles_M.dds]
+[10:48:40] [   LOG   ] [MATERIAL] Master Material has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Materials\BaseMaterial.json]!
+[10:48:40] [   LOG   ] [FBX] Mesh has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Meshes\SK_C_TGA_Bro.fbx]
+[10:48:40] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Textures\Albedo\T_TGA_Bro_C.dds]
+[10:48:40] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Textures\Normal\T_TGA_Bro_N.dds]
+[10:48:40] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Textures\Material\T_TGA_Bro_M.dds]
+[10:48:40] [   LOG   ] [MATERIAL] Material instance has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Materials\TGABroMaterial.json]!
+[10:48:40] [  ERROR  ] [FBX] Could not load mesh [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Animations\Idle\A_C_TGA_Bro_Idle_Breathing.fbx] : No mesh data found in file!
+[10:48:40] [   LOG   ] [FBX] Animation has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Animations\Idle\A_C_TGA_Bro_Idle_Breathing.fbx]
+[10:48:40] [  ERROR  ] [FBX] Could not load mesh [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Animations\Idle\A_C_TGA_Bro_Idle_Wave.fbx] : No mesh data found in file!
+[10:48:40] [   LOG   ] [FBX] Animation has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Animations\Idle\A_C_TGA_Bro_Idle_Wave.fbx]
+[10:48:40] [  ERROR  ] [FBX] Could not load mesh [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Animations\Locomotion\A_C_TGA_Bro_Run.fbx] : No mesh data found in file!
+[10:48:40] [   LOG   ] [FBX] Animation has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Animations\Locomotion\A_C_TGA_Bro_Run.fbx]
+[10:48:40] [  ERROR  ] [FBX] Could not load mesh [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Animations\Locomotion\A_C_TGA_Bro_Walk.fbx] : No mesh data found in file!
+[10:48:40] [   LOG   ] [FBX] Animation has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Animations\Locomotion\A_C_TGA_Bro_Walk.fbx]
+****************************************************************************************************
+Logging has started at 2026-09-16 11:10:03.
+****************************************************************************************************
+[11:10:03] [   LOG   ] [ModelViewer] ModelViewer starting...
+[11:10:03] [   LOG   ] [ModelViewer] Ready!
+[11:10:03] [   LOG   ] [ModelViewer] Initializing Graphics Engine...
+[11:10:04] [   LOG   ] [RHI] Initializing RHI...
+[11:10:04] [   LOG   ] [RHI] Selected adapter is NVIDIA GeForce RTX 4060
+[11:10:04] [   LOG   ] [RHI] RHI Started!
+[11:10:04] [   LOG   ] [FBX] Mesh has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Meshes\SM_Color_Checker.fbx]
+[11:10:04] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Textures\Albedo\T_Color_Checker_C.dds]
+[11:10:04] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Textures\Normal\T_Color_Checker_N.dds]
+[11:10:04] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Textures\Material\T_Color_Checker_M.dds]
+[11:10:04] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Textures\Albedo\T_Marble_Tiles_C.dds]
+[11:10:04] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Textures\Normal\T_Marble_Tiles_N.dds]
+[11:10:04] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Textures\Material\T_Marble_Tiles_M.dds]
+[11:10:04] [   LOG   ] [MATERIAL] Master Material has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Materials\BaseMaterial.json]!
+[11:10:04] [   LOG   ] [MATERIAL] Material instance has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Materials\SMColorChecker.json]!
+[11:10:05] [   LOG   ] [FBX] Mesh has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Meshes\SM_Chest.fbx]
+[11:10:05] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Textures\Albedo\T_Chest_C.dds]
+[11:10:05] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Textures\Normal\T_Chest_N.dds]
+[11:10:05] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Textures\Material\T_Chest_M.dds]
+[11:10:05] [   LOG   ] [MATERIAL] Master Material has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Materials\ChestMaterial.json]!
+[11:10:05] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Textures\Albedo\T_Marble_Tiles_C.dds]
+[11:10:05] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Textures\Normal\T_Marble_Tiles_N.dds]
+[11:10:05] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Textures\Material\T_Marble_Tiles_M.dds]
+[11:10:05] [   LOG   ] [MATERIAL] Master Material has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Materials\BaseMaterial.json]!
+[11:10:05] [   LOG   ] [FBX] Mesh has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Meshes\SK_C_TGA_Bro.fbx]
+[11:10:05] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Textures\Albedo\T_TGA_Bro_C.dds]
+[11:10:05] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Textures\Normal\T_TGA_Bro_N.dds]
+[11:10:05] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Textures\Material\T_TGA_Bro_M.dds]
+[11:10:05] [   LOG   ] [MATERIAL] Material instance has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Materials\TGABroMaterial.json]!
+[11:10:05] [  ERROR  ] [FBX] Could not load mesh [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Animations\Idle\A_C_TGA_Bro_Idle_Breathing.fbx] : No mesh data found in file!
+[11:10:05] [   LOG   ] [FBX] Animation has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Animations\Idle\A_C_TGA_Bro_Idle_Breathing.fbx]
+[11:10:05] [  ERROR  ] [FBX] Could not load mesh [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Animations\Idle\A_C_TGA_Bro_Idle_Wave.fbx] : No mesh data found in file!
+[11:10:06] [   LOG   ] [FBX] Animation has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Animations\Idle\A_C_TGA_Bro_Idle_Wave.fbx]
+[11:10:06] [  ERROR  ] [FBX] Could not load mesh [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Animations\Locomotion\A_C_TGA_Bro_Run.fbx] : No mesh data found in file!
+[11:10:06] [   LOG   ] [FBX] Animation has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Animations\Locomotion\A_C_TGA_Bro_Run.fbx]
+[11:10:06] [  ERROR  ] [FBX] Could not load mesh [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Animations\Locomotion\A_C_TGA_Bro_Walk.fbx] : No mesh data found in file!
+[11:10:06] [   LOG   ] [FBX] Animation has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Animations\Locomotion\A_C_TGA_Bro_Walk.fbx]
+****************************************************************************************************
+Logging has started at 2026-09-16 11:15:14.
+****************************************************************************************************
+[11:15:14] [   LOG   ] [RHI] Initializing RHI...
+[11:15:14] [   LOG   ] [RHI] Selected adapter is NVIDIA GeForce RTX 4060
+[11:15:14] [   LOG   ] [RHI] RHI Started!
+[11:15:14] [   LOG   ] [FBX] Mesh has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Meshes\SM_Color_Checker.fbx]
+[11:15:14] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Textures\Albedo\T_Color_Checker_C.dds]
+[11:15:14] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Textures\Normal\T_Color_Checker_N.dds]
+[11:15:14] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Textures\Material\T_Color_Checker_M.dds]
+[11:15:14] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Textures\Albedo\T_Marble_Tiles_C.dds]
+[11:15:14] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Textures\Normal\T_Marble_Tiles_N.dds]
+[11:15:14] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Textures\Material\T_Marble_Tiles_M.dds]
+[11:15:15] [   LOG   ] [MATERIAL] Master Material has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Materials\BaseMaterial.json]!
+[11:15:15] [   LOG   ] [MATERIAL] Material instance has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Materials\SMColorChecker.json]!
+[11:15:15] [   LOG   ] [FBX] Mesh has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Meshes\SM_Chest.fbx]
+[11:15:15] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Textures\Albedo\T_Chest_C.dds]
+[11:15:15] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Textures\Normal\T_Chest_N.dds]
+[11:15:15] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Textures\Material\T_Chest_M.dds]
+[11:15:15] [   LOG   ] [MATERIAL] Master Material has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Materials\ChestMaterial.json]!
+[11:15:15] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Textures\Albedo\T_Marble_Tiles_C.dds]
+[11:15:15] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Textures\Normal\T_Marble_Tiles_N.dds]
+[11:15:15] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Textures\Material\T_Marble_Tiles_M.dds]
+[11:15:15] [   LOG   ] [MATERIAL] Master Material has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Materials\BaseMaterial.json]!
+[11:15:15] [   LOG   ] [FBX] Mesh has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Meshes\SK_C_TGA_Bro.fbx]
+[11:15:15] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Textures\Albedo\T_TGA_Bro_C.dds]
+[11:15:15] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Textures\Normal\T_TGA_Bro_N.dds]
+[11:15:15] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Textures\Material\T_TGA_Bro_M.dds]
+[11:15:15] [   LOG   ] [MATERIAL] Material instance has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Materials\TGABroMaterial.json]!
+[11:15:16] [  ERROR  ] [FBX] Could not load mesh [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Animations\Idle\A_C_TGA_Bro_Idle_Breathing.fbx] : No mesh data found in file!
+[11:15:16] [   LOG   ] [FBX] Animation has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Animations\Idle\A_C_TGA_Bro_Idle_Breathing.fbx]
+[11:15:16] [  ERROR  ] [FBX] Could not load mesh [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Animations\Idle\A_C_TGA_Bro_Idle_Wave.fbx] : No mesh data found in file!
+[11:15:16] [   LOG   ] [FBX] Animation has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Animations\Idle\A_C_TGA_Bro_Idle_Wave.fbx]
+[11:15:16] [  ERROR  ] [FBX] Could not load mesh [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Animations\Locomotion\A_C_TGA_Bro_Run.fbx] : No mesh data found in file!
+[11:15:16] [   LOG   ] [FBX] Animation has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Animations\Locomotion\A_C_TGA_Bro_Run.fbx]
+[11:15:16] [  ERROR  ] [FBX] Could not load mesh [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Animations\Locomotion\A_C_TGA_Bro_Walk.fbx] : No mesh data found in file!
+[11:15:16] [   LOG   ] [FBX] Animation has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Animations\Locomotion\A_C_TGA_Bro_Walk.fbx]
+****************************************************************************************************
+Logging has started at 2026-09-16 17:38:27.
+****************************************************************************************************
+[17:38:27] [   LOG   ] [ModelViewer] ModelViewer starting...
+[17:38:27] [   LOG   ] [ModelViewer] FMOD initialized successfully.
+[17:38:27] [   LOG   ] [ModelViewer] Ready!
+[17:38:27] [   LOG   ] [ModelViewer] Initializing Graphics Engine...
+[17:38:27] [   LOG   ] [RHI] Initializing RHI...
+[17:38:27] [   LOG   ] [RHI] Selected adapter is NVIDIA GeForce RTX 4060
+[17:38:27] [   LOG   ] [RHI] RHI Started!
+[17:38:28] [   LOG   ] [FBX] Mesh has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Meshes\SM_Color_Checker.fbx]
+[17:38:28] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Albedo\T_Color_Checker_C.dds]
+[17:38:28] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Normal\T_Color_Checker_N.dds]
+[17:38:28] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Material\T_Color_Checker_M.dds]
+[17:38:28] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Albedo\T_Marble_Tiles_C.dds]
+[17:38:28] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Normal\T_Marble_Tiles_N.dds]
+[17:38:28] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Material\T_Marble_Tiles_M.dds]
+[17:38:28] [   LOG   ] [MATERIAL] Master Material has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Materials\BaseMaterial.json]!
+[17:38:28] [   LOG   ] [MATERIAL] Material instance has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Materials\SMColorChecker.json]!
+[17:38:28] [   LOG   ] [FBX] Mesh has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Meshes\SM_Chest.fbx]
+[17:38:28] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Albedo\T_Chest_C.dds]
+[17:38:28] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Normal\T_Chest_N.dds]
+[17:38:28] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Material\T_Chest_M.dds]
+[17:38:29] [   LOG   ] [MATERIAL] Master Material has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Materials\ChestMaterial.json]!
+[17:38:29] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Albedo\T_Marble_Tiles_C.dds]
+[17:38:29] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Normal\T_Marble_Tiles_N.dds]
+[17:38:29] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Material\T_Marble_Tiles_M.dds]
+[17:38:29] [   LOG   ] [MATERIAL] Master Material has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Materials\BaseMaterial.json]!
+[17:38:29] [   LOG   ] [FBX] Mesh has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Meshes\SK_C_TGA_Bro.fbx]
+[17:38:29] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Albedo\T_TGA_Bro_C.dds]
+[17:38:29] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Normal\T_TGA_Bro_N.dds]
+[17:38:29] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Material\T_TGA_Bro_M.dds]
+[17:38:29] [   LOG   ] [MATERIAL] Material instance has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Materials\TGABroMaterial.json]!
+[17:38:29] [  ERROR  ] [FBX] Could not load mesh [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Animations\Idle\A_C_TGA_Bro_Idle_Breathing.fbx] : No mesh data found in file!
+[17:38:29] [   LOG   ] [FBX] Animation has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Animations\Idle\A_C_TGA_Bro_Idle_Breathing.fbx]
+[17:38:29] [  ERROR  ] [FBX] Could not load mesh [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Animations\Idle\A_C_TGA_Bro_Idle_Wave.fbx] : No mesh data found in file!
+[17:38:29] [   LOG   ] [FBX] Animation has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Animations\Idle\A_C_TGA_Bro_Idle_Wave.fbx]
+[17:38:29] [  ERROR  ] [FBX] Could not load mesh [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Animations\Locomotion\A_C_TGA_Bro_Run.fbx] : No mesh data found in file!
+[17:38:29] [   LOG   ] [FBX] Animation has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Animations\Locomotion\A_C_TGA_Bro_Run.fbx]
+[17:38:29] [  ERROR  ] [FBX] Could not load mesh [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Animations\Locomotion\A_C_TGA_Bro_Walk.fbx] : No mesh data found in file!
+[17:38:29] [   LOG   ] [FBX] Animation has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Animations\Locomotion\A_C_TGA_Bro_Walk.fbx]
+[17:38:39] [   LOG   ] [ModelViewer] FMOD shut down.
+****************************************************************************************************
+Logging has started at 2026-09-16 17:38:59.
+****************************************************************************************************
+[17:38:59] [   LOG   ] [ModelViewer] ModelViewer starting...
+[17:38:59] [   LOG   ] [ModelViewer] FMOD initialized successfully.
+[17:38:59] [   LOG   ] [ModelViewer] Ready!
+[17:38:59] [   LOG   ] [ModelViewer] Initializing Graphics Engine...
+[17:38:59] [   LOG   ] [RHI] Initializing RHI...
+[17:38:59] [   LOG   ] [RHI] Selected adapter is NVIDIA GeForce RTX 4060
+[17:38:59] [   LOG   ] [RHI] RHI Started!
+[17:39:00] [   LOG   ] [FBX] Mesh has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Meshes\SM_Color_Checker.fbx]
+[17:39:00] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Albedo\T_Color_Checker_C.dds]
+[17:39:00] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Normal\T_Color_Checker_N.dds]
+[17:39:00] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Material\T_Color_Checker_M.dds]
+[17:39:00] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Albedo\T_Marble_Tiles_C.dds]
+[17:39:00] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Normal\T_Marble_Tiles_N.dds]
+[17:39:00] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Material\T_Marble_Tiles_M.dds]
+[17:39:00] [   LOG   ] [MATERIAL] Master Material has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Materials\BaseMaterial.json]!
+[17:39:00] [   LOG   ] [MATERIAL] Material instance has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Materials\SMColorChecker.json]!
+[17:39:00] [   LOG   ] [FBX] Mesh has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Meshes\SM_Chest.fbx]
+[17:39:00] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Albedo\T_Chest_C.dds]
+[17:39:00] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Normal\T_Chest_N.dds]
+[17:39:00] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Material\T_Chest_M.dds]
+[17:39:01] [   LOG   ] [MATERIAL] Master Material has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Materials\ChestMaterial.json]!
+[17:39:01] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Albedo\T_Marble_Tiles_C.dds]
+[17:39:01] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Normal\T_Marble_Tiles_N.dds]
+[17:39:01] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Material\T_Marble_Tiles_M.dds]
+[17:39:01] [   LOG   ] [MATERIAL] Master Material has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Materials\BaseMaterial.json]!
+[17:39:01] [   LOG   ] [FBX] Mesh has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Meshes\SK_C_TGA_Bro.fbx]
+[17:39:01] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Albedo\T_TGA_Bro_C.dds]
+[17:39:01] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Normal\T_TGA_Bro_N.dds]
+[17:39:01] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Material\T_TGA_Bro_M.dds]
+[17:39:01] [   LOG   ] [MATERIAL] Material instance has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Materials\TGABroMaterial.json]!
+[17:39:01] [  ERROR  ] [FBX] Could not load mesh [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Animations\Idle\A_C_TGA_Bro_Idle_Breathing.fbx] : No mesh data found in file!
+[17:39:01] [   LOG   ] [FBX] Animation has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Animations\Idle\A_C_TGA_Bro_Idle_Breathing.fbx]
+[17:39:01] [  ERROR  ] [FBX] Could not load mesh [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Animations\Idle\A_C_TGA_Bro_Idle_Wave.fbx] : No mesh data found in file!
+[17:39:01] [   LOG   ] [FBX] Animation has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Animations\Idle\A_C_TGA_Bro_Idle_Wave.fbx]
+[17:39:01] [  ERROR  ] [FBX] Could not load mesh [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Animations\Locomotion\A_C_TGA_Bro_Run.fbx] : No mesh data found in file!
+[17:39:01] [   LOG   ] [FBX] Animation has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Animations\Locomotion\A_C_TGA_Bro_Run.fbx]
+[17:39:01] [  ERROR  ] [FBX] Could not load mesh [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Animations\Locomotion\A_C_TGA_Bro_Walk.fbx] : No mesh data found in file!
+[17:39:01] [   LOG   ] [FBX] Animation has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Animations\Locomotion\A_C_TGA_Bro_Walk.fbx]
+****************************************************************************************************
+Logging has started at 2026-09-16 17:41:17.
+****************************************************************************************************
+[17:41:17] [   LOG   ] [ModelViewer] ModelViewer starting...
+[17:41:17] [   LOG   ] [ModelViewer] FMOD initialized successfully.
+[17:41:17] [   LOG   ] [ModelViewer] Ready!
+[17:41:17] [   LOG   ] [ModelViewer] Initializing Graphics Engine...
+[17:41:17] [   LOG   ] [RHI] Initializing RHI...
+[17:41:17] [   LOG   ] [RHI] Selected adapter is NVIDIA GeForce RTX 4060
+[17:41:17] [   LOG   ] [RHI] RHI Started!
+[17:41:18] [   LOG   ] [FBX] Mesh has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Meshes\SM_Color_Checker.fbx]
+[17:41:18] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Albedo\T_Color_Checker_C.dds]
+[17:41:18] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Normal\T_Color_Checker_N.dds]
+[17:41:18] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Material\T_Color_Checker_M.dds]
+[17:41:18] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Albedo\T_Marble_Tiles_C.dds]
+[17:41:18] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Normal\T_Marble_Tiles_N.dds]
+[17:41:18] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Material\T_Marble_Tiles_M.dds]
+[17:41:18] [   LOG   ] [MATERIAL] Master Material has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Materials\BaseMaterial.json]!
+[17:41:18] [   LOG   ] [MATERIAL] Material instance has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Materials\SMColorChecker.json]!
+[17:41:18] [   LOG   ] [FBX] Mesh has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Meshes\SM_Chest.fbx]
+[17:41:18] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Albedo\T_Chest_C.dds]
+[17:41:18] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Normal\T_Chest_N.dds]
+[17:41:18] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Material\T_Chest_M.dds]
+[17:41:18] [   LOG   ] [MATERIAL] Master Material has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Materials\ChestMaterial.json]!
+[17:41:18] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Albedo\T_Marble_Tiles_C.dds]
+[17:41:18] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Normal\T_Marble_Tiles_N.dds]
+[17:41:18] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Material\T_Marble_Tiles_M.dds]
+[17:41:19] [   LOG   ] [MATERIAL] Master Material has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Materials\BaseMaterial.json]!
+[17:41:19] [   LOG   ] [FBX] Mesh has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Meshes\SK_C_TGA_Bro.fbx]
+[17:41:19] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Albedo\T_TGA_Bro_C.dds]
+[17:41:19] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Normal\T_TGA_Bro_N.dds]
+[17:41:19] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Material\T_TGA_Bro_M.dds]
+[17:41:19] [   LOG   ] [MATERIAL] Material instance has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Materials\TGABroMaterial.json]!
+[17:41:19] [  ERROR  ] [FBX] Could not load mesh [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Animations\Idle\A_C_TGA_Bro_Idle_Breathing.fbx] : No mesh data found in file!
+[17:41:19] [   LOG   ] [FBX] Animation has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Animations\Idle\A_C_TGA_Bro_Idle_Breathing.fbx]
+[17:41:19] [  ERROR  ] [FBX] Could not load mesh [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Animations\Idle\A_C_TGA_Bro_Idle_Wave.fbx] : No mesh data found in file!
+[17:41:19] [   LOG   ] [FBX] Animation has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Animations\Idle\A_C_TGA_Bro_Idle_Wave.fbx]
+[17:41:19] [  ERROR  ] [FBX] Could not load mesh [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Animations\Locomotion\A_C_TGA_Bro_Run.fbx] : No mesh data found in file!
+[17:41:19] [   LOG   ] [FBX] Animation has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Animations\Locomotion\A_C_TGA_Bro_Run.fbx]
+[17:41:19] [  ERROR  ] [FBX] Could not load mesh [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Animations\Locomotion\A_C_TGA_Bro_Walk.fbx] : No mesh data found in file!
+[17:41:19] [   LOG   ] [FBX] Animation has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Animations\Locomotion\A_C_TGA_Bro_Walk.fbx]
+****************************************************************************************************
+Logging has started at 2026-09-16 17:43:59.
+****************************************************************************************************
+[17:43:59] [   LOG   ] [ModelViewer] ModelViewer starting...
+[17:43:59] [   LOG   ] [ModelViewer] FMOD initialized successfully.
+[17:43:59] [   LOG   ] [ModelViewer] Ready!
+[17:43:59] [   LOG   ] [ModelViewer] Initializing Graphics Engine...
+[17:43:59] [   LOG   ] [RHI] Initializing RHI...
+[17:43:59] [   LOG   ] [RHI] Selected adapter is NVIDIA GeForce RTX 4060
+[17:43:59] [   LOG   ] [RHI] RHI Started!
+[17:43:59] [   LOG   ] [FBX] Mesh has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Meshes\SM_Color_Checker.fbx]
+[17:43:59] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Albedo\T_Color_Checker_C.dds]
+[17:43:59] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Normal\T_Color_Checker_N.dds]
+[17:43:59] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Material\T_Color_Checker_M.dds]
+[17:43:59] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Albedo\T_Marble_Tiles_C.dds]
+[17:43:59] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Normal\T_Marble_Tiles_N.dds]
+[17:43:59] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Material\T_Marble_Tiles_M.dds]
+[17:44:00] [   LOG   ] [MATERIAL] Master Material has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Materials\BaseMaterial.json]!
+[17:44:00] [   LOG   ] [MATERIAL] Material instance has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Materials\SMColorChecker.json]!
+[17:44:00] [   LOG   ] [FBX] Mesh has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Meshes\SM_Chest.fbx]
+[17:44:00] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Albedo\T_Chest_C.dds]
+[17:44:00] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Normal\T_Chest_N.dds]
+[17:44:00] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Material\T_Chest_M.dds]
+[17:44:00] [   LOG   ] [MATERIAL] Master Material has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Materials\ChestMaterial.json]!
+[17:44:00] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Albedo\T_Marble_Tiles_C.dds]
+[17:44:00] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Normal\T_Marble_Tiles_N.dds]
+[17:44:00] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Material\T_Marble_Tiles_M.dds]
+[17:44:00] [   LOG   ] [MATERIAL] Master Material has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Materials\BaseMaterial.json]!
+[17:44:00] [   LOG   ] [FBX] Mesh has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Meshes\SK_C_TGA_Bro.fbx]
+[17:44:00] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Albedo\T_TGA_Bro_C.dds]
+[17:44:00] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Normal\T_TGA_Bro_N.dds]
+[17:44:00] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Material\T_TGA_Bro_M.dds]
+[17:44:00] [   LOG   ] [MATERIAL] Material instance has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Materials\TGABroMaterial.json]!
+[17:44:00] [  ERROR  ] [FBX] Could not load mesh [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Animations\Idle\A_C_TGA_Bro_Idle_Breathing.fbx] : No mesh data found in file!
+[17:44:01] [   LOG   ] [FBX] Animation has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Animations\Idle\A_C_TGA_Bro_Idle_Breathing.fbx]
+[17:44:01] [  ERROR  ] [FBX] Could not load mesh [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Animations\Idle\A_C_TGA_Bro_Idle_Wave.fbx] : No mesh data found in file!
+[17:44:01] [   LOG   ] [FBX] Animation has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Animations\Idle\A_C_TGA_Bro_Idle_Wave.fbx]
+[17:44:01] [  ERROR  ] [FBX] Could not load mesh [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Animations\Locomotion\A_C_TGA_Bro_Run.fbx] : No mesh data found in file!
+[17:44:01] [   LOG   ] [FBX] Animation has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Animations\Locomotion\A_C_TGA_Bro_Run.fbx]
+[17:44:01] [  ERROR  ] [FBX] Could not load mesh [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Animations\Locomotion\A_C_TGA_Bro_Walk.fbx] : No mesh data found in file!
+[17:44:01] [   LOG   ] [FBX] Animation has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Animations\Locomotion\A_C_TGA_Bro_Walk.fbx]
+[17:44:03] [   LOG   ] [ModelViewer] FMOD shut down.
+****************************************************************************************************
+Logging has started at 2026-09-16 18:06:34.
+****************************************************************************************************
+[18:06:34] [   LOG   ] [ModelViewer] ModelViewer starting...
+[18:06:34] [   LOG   ] [ModelViewer] FMOD initialized successfully.
+[18:06:34] [   LOG   ] [ModelViewer] Ready!
+[18:06:34] [   LOG   ] [ModelViewer] Initializing Graphics Engine...
+[18:06:34] [   LOG   ] [RHI] Initializing RHI...
+[18:06:34] [   LOG   ] [RHI] Selected adapter is NVIDIA GeForce RTX 4060
+[18:06:35] [   LOG   ] [RHI] RHI Started!
+[18:06:35] [   LOG   ] [FBX] Mesh has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Meshes\SM_Color_Checker.fbx]
+[18:06:35] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Albedo\T_Color_Checker_C.dds]
+[18:06:35] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Normal\T_Color_Checker_N.dds]
+[18:06:35] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Material\T_Color_Checker_M.dds]
+[18:06:35] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Albedo\T_Marble_Tiles_C.dds]
+[18:06:35] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Normal\T_Marble_Tiles_N.dds]
+[18:06:35] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Material\T_Marble_Tiles_M.dds]
+[18:06:36] [   LOG   ] [MATERIAL] Master Material has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Materials\BaseMaterial.json]!
+[18:06:36] [   LOG   ] [MATERIAL] Material instance has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Materials\SMColorChecker.json]!
+[18:06:36] [   LOG   ] [FBX] Mesh has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Meshes\SM_Chest.fbx]
+[18:06:36] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Albedo\T_Chest_C.dds]
+[18:06:36] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Normal\T_Chest_N.dds]
+[18:06:36] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Material\T_Chest_M.dds]
+[18:06:36] [   LOG   ] [MATERIAL] Master Material has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Materials\ChestMaterial.json]!
+[18:06:36] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Albedo\T_Marble_Tiles_C.dds]
+[18:06:36] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Normal\T_Marble_Tiles_N.dds]
+[18:06:36] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Material\T_Marble_Tiles_M.dds]
+[18:06:36] [   LOG   ] [MATERIAL] Master Material has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Materials\BaseMaterial.json]!
+[18:06:36] [   LOG   ] [FBX] Mesh has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Meshes\SK_C_TGA_Bro.fbx]
+[18:06:36] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Albedo\T_TGA_Bro_C.dds]
+[18:06:36] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Normal\T_TGA_Bro_N.dds]
+[18:06:36] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Material\T_TGA_Bro_M.dds]
+[18:06:36] [   LOG   ] [MATERIAL] Material instance has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Materials\TGABroMaterial.json]!
+[18:06:36] [  ERROR  ] [FBX] Could not load mesh [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Animations\Idle\A_C_TGA_Bro_Idle_Breathing.fbx] : No mesh data found in file!
+[18:06:37] [   LOG   ] [FBX] Animation has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Animations\Idle\A_C_TGA_Bro_Idle_Breathing.fbx]
+[18:06:37] [  ERROR  ] [FBX] Could not load mesh [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Animations\Idle\A_C_TGA_Bro_Idle_Wave.fbx] : No mesh data found in file!
+[18:06:37] [   LOG   ] [FBX] Animation has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Animations\Idle\A_C_TGA_Bro_Idle_Wave.fbx]
+[18:06:37] [  ERROR  ] [FBX] Could not load mesh [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Animations\Locomotion\A_C_TGA_Bro_Run.fbx] : No mesh data found in file!
+[18:06:37] [   LOG   ] [FBX] Animation has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Animations\Locomotion\A_C_TGA_Bro_Run.fbx]
+[18:06:37] [  ERROR  ] [FBX] Could not load mesh [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Animations\Locomotion\A_C_TGA_Bro_Walk.fbx] : No mesh data found in file!
+[18:06:37] [   LOG   ] [FBX] Animation has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Animations\Locomotion\A_C_TGA_Bro_Walk.fbx]
+[18:06:38] [   LOG   ] [ModelViewer] FMOD shut down.
+****************************************************************************************************
+Logging has started at 2026-09-16 18:09:59.
+****************************************************************************************************
+[18:09:59] [   LOG   ] [ModelViewer] ModelViewer starting...
+[18:09:59] [   LOG   ] [ModelViewer] FMOD initialized successfully.
+[18:09:59] [   LOG   ] [ModelViewer] Ready!
+[18:09:59] [   LOG   ] [ModelViewer] Initializing Graphics Engine...
+[18:09:59] [   LOG   ] [RHI] Initializing RHI...
+[18:09:59] [   LOG   ] [RHI] Selected adapter is NVIDIA GeForce RTX 4060
+[18:09:59] [   LOG   ] [RHI] RHI Started!
+[18:10:00] [   LOG   ] [FBX] Mesh has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Meshes\SM_Color_Checker.fbx]
+[18:10:00] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Albedo\T_Color_Checker_C.dds]
+[18:10:00] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Normal\T_Color_Checker_N.dds]
+[18:10:00] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Material\T_Color_Checker_M.dds]
+[18:10:00] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Albedo\T_Marble_Tiles_C.dds]
+[18:10:00] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Normal\T_Marble_Tiles_N.dds]
+[18:10:00] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Material\T_Marble_Tiles_M.dds]
+[18:10:00] [   LOG   ] [MATERIAL] Master Material has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Materials\BaseMaterial.json]!
+[18:10:00] [   LOG   ] [MATERIAL] Material instance has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Materials\SMColorChecker.json]!
+[18:10:00] [   LOG   ] [FBX] Mesh has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Meshes\SM_Chest.fbx]
+[18:10:00] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Albedo\T_Chest_C.dds]
+[18:10:00] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Normal\T_Chest_N.dds]
+[18:10:00] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Material\T_Chest_M.dds]
+[18:10:00] [   LOG   ] [MATERIAL] Master Material has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Materials\ChestMaterial.json]!
+[18:10:00] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Albedo\T_Marble_Tiles_C.dds]
+[18:10:00] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Normal\T_Marble_Tiles_N.dds]
+[18:10:00] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Material\T_Marble_Tiles_M.dds]
+[18:10:01] [   LOG   ] [MATERIAL] Master Material has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Materials\BaseMaterial.json]!
+[18:10:01] [   LOG   ] [FBX] Mesh has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Meshes\SK_C_TGA_Bro.fbx]
+[18:10:01] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Albedo\T_TGA_Bro_C.dds]
+[18:10:01] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Normal\T_TGA_Bro_N.dds]
+[18:10:01] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Material\T_TGA_Bro_M.dds]
+[18:10:01] [   LOG   ] [MATERIAL] Material instance has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Materials\TGABroMaterial.json]!
+[18:10:01] [  ERROR  ] [FBX] Could not load mesh [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Animations\Idle\A_C_TGA_Bro_Idle_Breathing.fbx] : No mesh data found in file!
+[18:10:01] [   LOG   ] [FBX] Animation has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Animations\Idle\A_C_TGA_Bro_Idle_Breathing.fbx]
+[18:10:01] [  ERROR  ] [FBX] Could not load mesh [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Animations\Idle\A_C_TGA_Bro_Idle_Wave.fbx] : No mesh data found in file!
+[18:10:01] [   LOG   ] [FBX] Animation has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Animations\Idle\A_C_TGA_Bro_Idle_Wave.fbx]
+[18:10:01] [  ERROR  ] [FBX] Could not load mesh [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Animations\Locomotion\A_C_TGA_Bro_Run.fbx] : No mesh data found in file!
+[18:10:01] [   LOG   ] [FBX] Animation has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Animations\Locomotion\A_C_TGA_Bro_Run.fbx]
+[18:10:01] [  ERROR  ] [FBX] Could not load mesh [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Animations\Locomotion\A_C_TGA_Bro_Walk.fbx] : No mesh data found in file!
+[18:10:01] [   LOG   ] [FBX] Animation has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Animations\Locomotion\A_C_TGA_Bro_Walk.fbx]
+[18:10:02] [   LOG   ] [ModelViewer] FMOD shut down.
+****************************************************************************************************
+Logging has started at 2026-09-16 18:10:52.
+****************************************************************************************************
+[18:10:52] [   LOG   ] [ModelViewer] ModelViewer starting...
+[18:10:52] [   LOG   ] [ModelViewer] FMOD initialized successfully.
+[18:10:52] [   LOG   ] [ModelViewer] Ready!
+[18:10:52] [   LOG   ] [ModelViewer] Initializing Graphics Engine...
+[18:10:52] [   LOG   ] [RHI] Initializing RHI...
+[18:10:52] [   LOG   ] [RHI] Selected adapter is NVIDIA GeForce RTX 4060
+[18:10:52] [   LOG   ] [RHI] RHI Started!
+[18:10:53] [   LOG   ] [FBX] Mesh has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Meshes\SM_Color_Checker.fbx]
+[18:10:53] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Albedo\T_Color_Checker_C.dds]
+[18:10:53] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Normal\T_Color_Checker_N.dds]
+[18:10:53] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Material\T_Color_Checker_M.dds]
+[18:10:53] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Albedo\T_Marble_Tiles_C.dds]
+[18:10:53] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Normal\T_Marble_Tiles_N.dds]
+[18:10:53] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Material\T_Marble_Tiles_M.dds]
+[18:10:53] [   LOG   ] [MATERIAL] Master Material has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Materials\BaseMaterial.json]!
+[18:10:53] [   LOG   ] [MATERIAL] Material instance has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Materials\SMColorChecker.json]!
+[18:10:53] [   LOG   ] [FBX] Mesh has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Meshes\SM_Chest.fbx]
+[18:10:53] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Albedo\T_Chest_C.dds]
+[18:10:53] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Normal\T_Chest_N.dds]
+[18:10:53] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Material\T_Chest_M.dds]
+[18:10:54] [   LOG   ] [MATERIAL] Master Material has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Materials\ChestMaterial.json]!
+[18:10:54] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Albedo\T_Marble_Tiles_C.dds]
+[18:10:54] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Normal\T_Marble_Tiles_N.dds]
+[18:10:54] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Material\T_Marble_Tiles_M.dds]
+[18:10:54] [   LOG   ] [MATERIAL] Master Material has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Materials\BaseMaterial.json]!
+[18:10:54] [   LOG   ] [FBX] Mesh has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Meshes\SK_C_TGA_Bro.fbx]
+[18:10:54] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Albedo\T_TGA_Bro_C.dds]
+[18:10:54] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Normal\T_TGA_Bro_N.dds]
+[18:10:54] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Material\T_TGA_Bro_M.dds]
+[18:10:54] [   LOG   ] [MATERIAL] Material instance has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Materials\TGABroMaterial.json]!
+[18:10:54] [  ERROR  ] [FBX] Could not load mesh [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Animations\Idle\A_C_TGA_Bro_Idle_Breathing.fbx] : No mesh data found in file!
+[18:10:54] [   LOG   ] [FBX] Animation has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Animations\Idle\A_C_TGA_Bro_Idle_Breathing.fbx]
+[18:10:54] [  ERROR  ] [FBX] Could not load mesh [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Animations\Idle\A_C_TGA_Bro_Idle_Wave.fbx] : No mesh data found in file!
+[18:10:54] [   LOG   ] [FBX] Animation has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Animations\Idle\A_C_TGA_Bro_Idle_Wave.fbx]
+[18:10:54] [  ERROR  ] [FBX] Could not load mesh [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Animations\Locomotion\A_C_TGA_Bro_Run.fbx] : No mesh data found in file!
+[18:10:54] [   LOG   ] [FBX] Animation has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Animations\Locomotion\A_C_TGA_Bro_Run.fbx]
+[18:10:54] [  ERROR  ] [FBX] Could not load mesh [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Animations\Locomotion\A_C_TGA_Bro_Walk.fbx] : No mesh data found in file!
+[18:10:54] [   LOG   ] [FBX] Animation has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Animations\Locomotion\A_C_TGA_Bro_Walk.fbx]
+[18:10:56] [   LOG   ] [ModelViewer] FMOD shut down.
+****************************************************************************************************
+Logging has started at 2026-09-16 18:13:11.
+****************************************************************************************************
+[18:13:11] [   LOG   ] [ModelViewer] ModelViewer starting...
+[18:13:11] [   LOG   ] [ModelViewer] FMOD initialized successfully.
+[18:13:11] [   LOG   ] [ModelViewer] Ready!
+[18:13:11] [   LOG   ] [ModelViewer] Initializing Graphics Engine...
+[18:13:11] [   LOG   ] [RHI] Initializing RHI...
+[18:13:11] [   LOG   ] [RHI] Selected adapter is NVIDIA GeForce RTX 4060
+[18:13:11] [   LOG   ] [RHI] RHI Started!
+[18:13:12] [   LOG   ] [FBX] Mesh has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Meshes\SM_Color_Checker.fbx]
+[18:13:12] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Albedo\T_Color_Checker_C.dds]
+[18:13:12] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Normal\T_Color_Checker_N.dds]
+[18:13:12] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Material\T_Color_Checker_M.dds]
+[18:13:12] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Albedo\T_Marble_Tiles_C.dds]
+[18:13:12] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Normal\T_Marble_Tiles_N.dds]
+[18:13:12] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Material\T_Marble_Tiles_M.dds]
+[18:13:12] [   LOG   ] [MATERIAL] Master Material has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Materials\BaseMaterial.json]!
+[18:13:12] [   LOG   ] [MATERIAL] Material instance has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Materials\SMColorChecker.json]!
+[18:13:12] [   LOG   ] [FBX] Mesh has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Meshes\SM_Chest.fbx]
+[18:13:12] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Albedo\T_Chest_C.dds]
+[18:13:12] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Normal\T_Chest_N.dds]
+[18:13:12] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Material\T_Chest_M.dds]
+[18:13:12] [   LOG   ] [MATERIAL] Master Material has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Materials\ChestMaterial.json]!
+[18:13:12] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Albedo\T_Marble_Tiles_C.dds]
+[18:13:12] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Normal\T_Marble_Tiles_N.dds]
+[18:13:12] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Material\T_Marble_Tiles_M.dds]
+[18:13:13] [   LOG   ] [MATERIAL] Master Material has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Materials\BaseMaterial.json]!
+[18:13:13] [   LOG   ] [FBX] Mesh has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Meshes\SK_C_TGA_Bro.fbx]
+[18:13:13] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Albedo\T_TGA_Bro_C.dds]
+[18:13:13] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Normal\T_TGA_Bro_N.dds]
+[18:13:13] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Textures\Material\T_TGA_Bro_M.dds]
+[18:13:13] [   LOG   ] [MATERIAL] Material instance has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Materials\TGABroMaterial.json]!
+[18:13:13] [  ERROR  ] [FBX] Could not load mesh [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Animations\Idle\A_C_TGA_Bro_Idle_Breathing.fbx] : No mesh data found in file!
+[18:13:13] [   LOG   ] [FBX] Animation has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Animations\Idle\A_C_TGA_Bro_Idle_Breathing.fbx]
+[18:13:13] [  ERROR  ] [FBX] Could not load mesh [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Animations\Idle\A_C_TGA_Bro_Idle_Wave.fbx] : No mesh data found in file!
+[18:13:13] [   LOG   ] [FBX] Animation has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Animations\Idle\A_C_TGA_Bro_Idle_Wave.fbx]
+[18:13:13] [  ERROR  ] [FBX] Could not load mesh [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Animations\Locomotion\A_C_TGA_Bro_Run.fbx] : No mesh data found in file!
+[18:13:13] [   LOG   ] [FBX] Animation has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Animations\Locomotion\A_C_TGA_Bro_Run.fbx]
+[18:13:13] [  ERROR  ] [FBX] Could not load mesh [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Animations\Locomotion\A_C_TGA_Bro_Walk.fbx] : No mesh data found in file!
+[18:13:13] [   LOG   ] [FBX] Animation has loaded [C:\Users\SimonArvid.Fredriks\Perforce\simonarvid.fredriks_TGA-SP55_Mainline_9073\Content\Animations\Locomotion\A_C_TGA_Bro_Walk.fbx]
+[18:13:23] [   LOG   ] [ModelViewer] FMOD shut down.
+****************************************************************************************************
+Logging has started at 2026-09-16 18:15:18.
+****************************************************************************************************
+[18:15:18] [   LOG   ] [ModelViewer] ModelViewer starting...
+[18:15:18] [   LOG   ] [ModelViewer] FMOD initialized successfully.
+[18:15:18] [   LOG   ] [ModelViewer] Ready!
+[18:15:18] [   LOG   ] [ModelViewer] Initializing Graphics Engine...
+[18:15:18] [   LOG   ] [RHI] Initializing RHI...
+[18:15:18] [   LOG   ] [RHI] Selected adapter is NVIDIA GeForce RTX 4060
+[18:15:18] [   LOG   ] [RHI] RHI Started!
+[18:15:19] [   LOG   ] [FBX] Mesh has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Meshes\SM_Color_Checker.fbx]
+[18:15:19] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Textures\Albedo\T_Color_Checker_C.dds]
+[18:15:19] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Textures\Normal\T_Color_Checker_N.dds]
+[18:15:19] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Textures\Material\T_Color_Checker_M.dds]
+[18:15:19] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Textures\Albedo\T_Marble_Tiles_C.dds]
+[18:15:19] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Textures\Normal\T_Marble_Tiles_N.dds]
+[18:15:19] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Textures\Material\T_Marble_Tiles_M.dds]
+[18:15:19] [   LOG   ] [MATERIAL] Master Material has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Materials\BaseMaterial.json]!
+[18:15:19] [   LOG   ] [MATERIAL] Material instance has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Materials\SMColorChecker.json]!
+[18:15:19] [   LOG   ] [FBX] Mesh has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Meshes\SM_Chest.fbx]
+[18:15:19] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Textures\Albedo\T_Chest_C.dds]
+[18:15:19] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Textures\Normal\T_Chest_N.dds]
+[18:15:19] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Textures\Material\T_Chest_M.dds]
+[18:15:19] [   LOG   ] [MATERIAL] Master Material has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Materials\ChestMaterial.json]!
+[18:15:19] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Textures\Albedo\T_Marble_Tiles_C.dds]
+[18:15:19] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Textures\Normal\T_Marble_Tiles_N.dds]
+[18:15:19] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Textures\Material\T_Marble_Tiles_M.dds]
+[18:15:20] [   LOG   ] [MATERIAL] Master Material has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Materials\BaseMaterial.json]!
+[18:15:20] [   LOG   ] [FBX] Mesh has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Meshes\SK_C_TGA_Bro.fbx]
+[18:15:20] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Textures\Albedo\T_TGA_Bro_C.dds]
+[18:15:20] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Textures\Normal\T_TGA_Bro_N.dds]
+[18:15:20] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Textures\Material\T_TGA_Bro_M.dds]
+[18:15:20] [   LOG   ] [MATERIAL] Material instance has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Materials\TGABroMaterial.json]!
+[18:15:20] [  ERROR  ] [FBX] Could not load mesh [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Animations\Idle\A_C_TGA_Bro_Idle_Breathing.fbx] : No mesh data found in file!
+[18:15:20] [   LOG   ] [FBX] Animation has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Animations\Idle\A_C_TGA_Bro_Idle_Breathing.fbx]
+[18:15:20] [  ERROR  ] [FBX] Could not load mesh [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Animations\Idle\A_C_TGA_Bro_Idle_Wave.fbx] : No mesh data found in file!
+[18:15:20] [   LOG   ] [FBX] Animation has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Animations\Idle\A_C_TGA_Bro_Idle_Wave.fbx]
+[18:15:20] [  ERROR  ] [FBX] Could not load mesh [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Animations\Locomotion\A_C_TGA_Bro_Run.fbx] : No mesh data found in file!
+[18:15:20] [   LOG   ] [FBX] Animation has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Animations\Locomotion\A_C_TGA_Bro_Run.fbx]
+[18:15:20] [  ERROR  ] [FBX] Could not load mesh [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Animations\Locomotion\A_C_TGA_Bro_Walk.fbx] : No mesh data found in file!
+[18:15:20] [   LOG   ] [FBX] Animation has loaded [C:\Users\Gustav.ekstrom1\Perforce\Gustav.ekstrom1_TGA-SP63_Mainline_1726\Content\Animations\Locomotion\A_C_TGA_Bro_Walk.fbx]
+[18:15:26] [   LOG   ] [ModelViewer] FMOD shut down.
+****************************************************************************************************
+Logging has started at 2026-09-16 18:17:09.
+****************************************************************************************************
+[18:17:09] [   LOG   ] [ModelViewer] ModelViewer starting...
+[18:17:09] [   LOG   ] [ModelViewer] FMOD initialized successfully.
+[18:17:09] [   LOG   ] [ModelViewer] Ready!
+[18:17:09] [   LOG   ] [ModelViewer] Initializing Graphics Engine...
+[18:17:09] [   LOG   ] [RHI] Initializing RHI...
+[18:17:09] [   LOG   ] [RHI] Selected adapter is NVIDIA GeForce RTX 4060
+[18:17:09] [   LOG   ] [RHI] RHI Started!
+[18:17:10] [   LOG   ] [FBX] Mesh has loaded [C:\Users\Gustav.ekstrom1\Documents\GitHub\TGP\Content\Meshes\SM_Color_Checker.fbx]
+[18:17:10] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\Gustav.ekstrom1\Documents\GitHub\TGP\Content\Textures\Albedo\T_Color_Checker_C.dds]
+[18:17:10] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\Gustav.ekstrom1\Documents\GitHub\TGP\Content\Textures\Normal\T_Color_Checker_N.dds]
+[18:17:10] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\Gustav.ekstrom1\Documents\GitHub\TGP\Content\Textures\Material\T_Color_Checker_M.dds]
+[18:17:10] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\Gustav.ekstrom1\Documents\GitHub\TGP\Content\Textures\Albedo\T_Marble_Tiles_C.dds]
+[18:17:10] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\Gustav.ekstrom1\Documents\GitHub\TGP\Content\Textures\Normal\T_Marble_Tiles_N.dds]
+[18:17:10] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\Gustav.ekstrom1\Documents\GitHub\TGP\Content\Textures\Material\T_Marble_Tiles_M.dds]
+[18:17:10] [   LOG   ] [MATERIAL] Master Material has loaded [C:\Users\Gustav.ekstrom1\Documents\GitHub\TGP\Content\Materials\BaseMaterial.json]!
+[18:17:10] [   LOG   ] [MATERIAL] Material instance has loaded [C:\Users\Gustav.ekstrom1\Documents\GitHub\TGP\Content\Materials\SMColorChecker.json]!
+[18:17:10] [   LOG   ] [FBX] Mesh has loaded [C:\Users\Gustav.ekstrom1\Documents\GitHub\TGP\Content\Meshes\SM_Chest.fbx]
+[18:17:10] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\Gustav.ekstrom1\Documents\GitHub\TGP\Content\Textures\Albedo\T_Chest_C.dds]
+[18:17:10] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\Gustav.ekstrom1\Documents\GitHub\TGP\Content\Textures\Normal\T_Chest_N.dds]
+[18:17:10] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\Gustav.ekstrom1\Documents\GitHub\TGP\Content\Textures\Material\T_Chest_M.dds]
+[18:17:10] [   LOG   ] [MATERIAL] Master Material has loaded [C:\Users\Gustav.ekstrom1\Documents\GitHub\TGP\Content\Materials\ChestMaterial.json]!
+[18:17:10] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\Gustav.ekstrom1\Documents\GitHub\TGP\Content\Textures\Albedo\T_Marble_Tiles_C.dds]
+[18:17:10] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\Gustav.ekstrom1\Documents\GitHub\TGP\Content\Textures\Normal\T_Marble_Tiles_N.dds]
+[18:17:10] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\Gustav.ekstrom1\Documents\GitHub\TGP\Content\Textures\Material\T_Marble_Tiles_M.dds]
+[18:17:11] [   LOG   ] [MATERIAL] Master Material has loaded [C:\Users\Gustav.ekstrom1\Documents\GitHub\TGP\Content\Materials\BaseMaterial.json]!
+[18:17:11] [   LOG   ] [FBX] Mesh has loaded [C:\Users\Gustav.ekstrom1\Documents\GitHub\TGP\Content\Meshes\SK_C_TGA_Bro.fbx]
+[18:17:11] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\Gustav.ekstrom1\Documents\GitHub\TGP\Content\Textures\Albedo\T_TGA_Bro_C.dds]
+[18:17:11] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\Gustav.ekstrom1\Documents\GitHub\TGP\Content\Textures\Normal\T_TGA_Bro_N.dds]
+[18:17:11] [   LOG   ] [TEXTURE] Texture has loaded [C:\Users\Gustav.ekstrom1\Documents\GitHub\TGP\Content\Textures\Material\T_TGA_Bro_M.dds]
+[18:17:11] [   LOG   ] [MATERIAL] Material instance has loaded [C:\Users\Gustav.ekstrom1\Documents\GitHub\TGP\Content\Materials\TGABroMaterial.json]!
+[18:17:11] [  ERROR  ] [FBX] Could not load mesh [C:\Users\Gustav.ekstrom1\Documents\GitHub\TGP\Content\Animations\Idle\A_C_TGA_Bro_Idle_Breathing.fbx] : No mesh data found in file!
+[18:17:11] [   LOG   ] [FBX] Animation has loaded [C:\Users\Gustav.ekstrom1\Documents\GitHub\TGP\Content\Animations\Idle\A_C_TGA_Bro_Idle_Breathing.fbx]
+[18:17:11] [  ERROR  ] [FBX] Could not load mesh [C:\Users\Gustav.ekstrom1\Documents\GitHub\TGP\Content\Animations\Idle\A_C_TGA_Bro_Idle_Wave.fbx] : No mesh data found in file!
+[18:17:11] [   LOG   ] [FBX] Animation has loaded [C:\Users\Gustav.ekstrom1\Documents\GitHub\TGP\Content\Animations\Idle\A_C_TGA_Bro_Idle_Wave.fbx]
+[18:17:11] [  ERROR  ] [FBX] Could not load mesh [C:\Users\Gustav.ekstrom1\Documents\GitHub\TGP\Content\Animations\Locomotion\A_C_TGA_Bro_Run.fbx] : No mesh data found in file!
+[18:17:11] [   LOG   ] [FBX] Animation has loaded [C:\Users\Gustav.ekstrom1\Documents\GitHub\TGP\Content\Animations\Locomotion\A_C_TGA_Bro_Run.fbx]
+[18:17:11] [  ERROR  ] [FBX] Could not load mesh [C:\Users\Gustav.ekstrom1\Documents\GitHub\TGP\Content\Animations\Locomotion\A_C_TGA_Bro_Walk.fbx] : No mesh data found in file!
+[18:17:11] [   LOG   ] [FBX] Animation has loaded [C:\Users\Gustav.ekstrom1\Documents\GitHub\TGP\Content\Animations\Locomotion\A_C_TGA_Bro_Walk.fbx]
+[18:17:16] [   LOG   ] [ModelViewer] FMOD shut down.

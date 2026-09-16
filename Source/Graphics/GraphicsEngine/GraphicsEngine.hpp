@@ -192,6 +192,9 @@ private:
 
 	std::unique_ptr<PipelineStateObject> myShadowPSO;
 	std::unique_ptr<PipelineStateObject> myGBufferPSO;
+	std::unique_ptr<PipelineStateObject> myDefferedDirPSO;
+	std::unique_ptr<PipelineStateObject> myDefferedSpotPSO;
+	std::unique_ptr<PipelineStateObject> myDefferedPointPSO;
 
 	// First Index = Near Cascade ... last index = Far Cascade
 	std::array<ShadowCascade, NUM_CASCADES> myCascades;

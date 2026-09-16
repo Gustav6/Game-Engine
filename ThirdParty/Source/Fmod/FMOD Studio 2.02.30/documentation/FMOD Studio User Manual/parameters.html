@@ -1,0 +1,123 @@
+<html>
+<head>
+<title>Parameters</title>
+<link rel="stylesheet" href="style/docs.css">
+<link rel="stylesheet" href="style/code_highlight.css">
+<script type="text/javascript" src="scripts/language-selector.js"></script></head>
+<body>
+<div class="docs-body">
+<div class="manual-toc">
+<p>FMOD Studio User Manual 2.02</p>
+<ul>
+<li><a href="welcome-to-fmod-studio.html">Welcome to FMOD Studio</a></li>
+<li><a href="fmod-studio-concepts.html">FMOD Studio Concepts</a></li>
+<li><a href="organizing-the-project.html">Organizing the Project</a></li>
+<li><a href="authoring-events.html">Authoring Events</a></li>
+<li><a href="working-with-instruments.html">Working with Instruments</a></li>
+<li><a href="managing-assets.html">Managing Assets</a></li>
+<li class="manual-current-chapter manual-active-chapter"><a href="parameters.html">Parameters</a><ul>
+<li><a href="#uses-of-parameters">Uses of Parameters</a><ul>
+<li><a href="#parameter-sheets">Parameter Sheets</a></li>
+<li><a href="#automation-curves">Automation Curves</a></li>
+<li><a href="#parameter-trigger-conditions">Parameter Trigger Conditions</a></li>
+</ul>
+</li>
+<li><a href="#parameter-type">Parameter Type</a><ul>
+<li><a href="#timeline-parameters">Timeline Parameters</a></li>
+<li><a href="#user-parameters">User Parameters</a></li>
+<li><a href="#built-in-parameters">Built-in Parameters</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="getting-events-into-your-game.html">Getting Events into Your Game</a></li>
+<li><a href="mixing.html">Mixing</a></li>
+<li><a href="the-sandbox.html">The Sandbox</a></li>
+<li><a href="editing-during-live-update.html">Editing During Live Update</a></li>
+<li><a href="profiling.html">Profiling</a></li>
+<li><a href="dialogue-and-localization.html">Dialogue and Localization</a></li>
+<li><a href="using-source-control.html">Using Source Control</a></li>
+<li><a href="supporting-downloadable-and-user-generated-content.html">Supporting Downloadable and User-generated Content</a></li>
+<li><a href="advanced-topics.html">Advanced Topics</a></li>
+<li><a href="quick-start-tutorial.html">Quick Start Tutorial</a></li>
+<li><a href="effect-reference.html">Effect Reference</a></li>
+<li><a href="event-macro-controls-reference.html">Event Macros Drawer Reference</a></li>
+<li><a href="instrument-reference.html">Instrument Reference</a></li>
+<li><a href="keyboard-shortcut-reference.html">Keyboard Shortcut Reference</a></li>
+<li><a href="modulator-reference.html">Modulator Reference</a></li>
+<li><a href="parameters-reference.html">Parameters Reference</a></li>
+<li><a href="plugin-reference.html">Plug-in Reference</a></li>
+<li><a href="scripting-terminal-reference.html">Scripting</a></li>
+<li><a href="scripting-api-reference.html">Scripting API Reference</a></li>
+<li><a href="troubleshooting.html">Troubleshooting</a></li>
+<li><a href="glossary.html">Glossary</a></li>
+<li><a href="appendix-a-celeste.html">Appendix: Celeste Getting Started Guide</a></li>
+<li><a href="appendix-b-reaper-integration.html">Appendix: Reaper Integration</a></li>
+</ul>
+</div>
+<div class="manual-content studio">
+<h1>7. Parameters</h1>
+<p><a href="glossary.html#parameter">Parameters</a> are variables that allow you to control your <a href="glossary.html#fmod-studio">FMOD Studio</a> project.</p>
+<p>Parameters can be associated with specific <a href="glossary.html#event">events</a> and <a href="glossary.html#snapshot">snapshots</a>. <a href="glossary.html#global-parameter">Global parameters</a> can also be used in the <a href="glossary.html#mixer">mixer</a>, to control <a href="glossary.html#bus">bus</a> properties. Your game's code can then set the values of those parameters in order to dynamically control the behavior of the associated events, snapshots, and buses as your game runs.</p>
+<p>With the exception of <a href="glossary.html#timeline">timeline</a> parameters, every parameter in your project is based on a <a href="glossary.html#preset-parameter">preset parameter</a>. Preset parameters allow you to quickly add identical parameters to multiple events, and the parameters based on a single preset parameter all share the same modulators. You can view your project's preset parameters in the <a href="glossary.html#preset-browser-window">preset browser window</a>.</p>
+<p>A parameter is automatically added to an event if it is used by at least one <a href="glossary.html#effect">effect</a>, <span class="dead-link" href="glossary.html#automation-curve">automation curve</span class="dead-link">, <span class="dead-link" href="glossary.html#parameter-trigger-condition">parameter trigger condition</span class="dead-link">, or <a href="glossary.html#parameter-sheet">parameter sheet</a> in that event.</p>
+<p><img alt="Parameter Number Boxes" src="images/parameterDials.png" /></p>
+<p>When viewing an event in the editor, every parameter added to that event is represented by a <span class="dead-link" href="glossary.html#number-box">number box</span class="dead-link"> in the <span class="dead-link" href="glossary.html#transport-bar">transport bar</span class="dead-link">. The number boxes for parameters with sheets and parameters without sheets are separated by a vertical line, with parameters with sheets on the left and parameters without sheets on the right.</p>
+<p>Each number box indicates the value to which the corresponding parameter was most recently set. Under most circumstances, the current value of a parameter is equal to this value. When the current value of a parameter differs from the value to which it was most recently set, the current value is indicated by an orange dot on the number box.</p>
+<p><img alt="Number Box with Orange Dot" src="images/parameter-number-box-with-orange-dot.png" /></p>
+<p>You can set the value of a parameter by clicking and dragging its number box. Note that the values of a <a href="glossary.html#local-parameter">local parameter</a> may vary from one <a href="glossary.html#event-instance">instance</a> of an event to another. By contrast, <a href="glossary.html#global-parameter">global parameters</a> that reference the same global preset parameter all share the same values.</p>
+<p>Clicking on a parameter's name in the transport bar selects that parameter and causes its properties to appear in the <a href="glossary.html#deck">deck</a>.</p>
+<p><img alt="Parameter Deck" src="images/parameterDeck.png" /></p>
+<p>The deck allows you to set a parameter's current value, as well as the preset parameter's <span class="dead-link" href="glossary.html#velocity">velocity</span class="dead-link"> and <span class="dead-link" href="glossary.html#seek-speed">seek speed</span class="dead-link"> properties. Changing the velocity or seek speed of a preset parameter affects all the parameters based on that preset parameter. For more information about seek speed and velocity, see the <a href="parameters-reference.html">parameters reference</a> chapter.</p>
+<p>Preset parameters have additional settings that can be changed in the edit parameter dialog, which opens automatically whenever you create a new parameter. In addition, you can open it by right-clicking on the parameter's name in the <span class="dead-link" href="glossary.html#transport-bar">transport bar</span class="dead-link">, <a href="glossary.html#sheet-tab-bar">sheet tab bar</a>, or <a href="glossary.html#parameters-browser">parameters browser</a>, then selecting "Edit Parameter..." from the context menu.</p>
+<p><img alt="Edit Parameter Dialog" src="images/editParameterDialog.png" /></p>
+<p>The edit parameter dialog allows you to change a preset parameter's type, name, range, and initial value, as well as a number of other settings. Changes made in this dialog affect every parameter based on the preset parameter. For detailed information about the edit parameter dialog, see the <a href="parameters-reference.html">parameters reference</a> chapter.</p>
+<h2 id="uses-of-parameters"><a href="#uses-of-parameters">7.1 Uses of Parameters</a></h2>
+<p><a href="glossary.html#parameter">Parameters</a> may be used to change the behavior of playing <a href="glossary.html#event-instance">event instances</a> in a number of different ways.</p>
+<h3 id="parameter-sheets"><a href="#parameter-sheets">7.1.1 Parameter Sheets</a></h3>
+<p>Parameters with <a href="glossary.html#parameter-sheet">sheets</a> are displayed as tabs in the <a href="glossary.html#sheet-tab-bar">sheet tab bar</a>.</p>
+<p><img alt="Sheet Tab Bar" src="images/sheet-tab-bar.png" /></p>
+<p>Clicking on a parameter's tab causes that parameter's sheet to appear in the editor. Each parameter sheet has a gray <a href="glossary.html#cursor">cursor</a> and a white <a href="glossary.html#playback-position">playback position</a>. The cursor represents the value to which the parameter was most recently set, while the playback position represents the current value of the parameter. These values usually match unless the parameter is subject to <span class="dead-link" href="glossary.html#seek-speed">seek speed</span class="dead-link">, <span class="dead-link" href="glossary.html#velocity">velocity</span class="dead-link">, or <a href="glossary.html#modulator">modulation</a>, or is a <a href="glossary.html#timeline-parameter">timeline parameter</a>.</p>
+<p><img alt="Parameter Ruler with Cursor and Playback Position" src="images/parameterCursorAndPlayback.png" /></p>
+<p>The playback positions of parameters with parameter sheets can trigger and untrigger any <a href="glossary.html#instrument">instruments</a> they pass over. Triggering an instrument either causes it to produce audio output, starts a <a href="glossary.html#snapshot">snapshot</a> instance, or issues a <a href="glossary.html#command-instrument">command</a>; untriggering an instrument causes it to stop producing audio output, stops the associated snapshot instance, or makes it possible to trigger the instrument again in future. Each instrument belongs to a specific parameter, and appears on that parameter's sheet. For more information about instruments, see the <a href="working-with-instruments.html">working with instruments</a> chapter.</p>
+<h3 id="automation-curves"><a href="#automation-curves">7.1.2 Automation Curves</a></h3>
+<p><a href="glossary.html#automation">Automation</a> is a way of making a property change its value depending on the value of a <a href="glossary.html#parameter">parameter</a>. Nearly any property of an event, effect, track, or bus can be automated.</p>
+<p><img alt="Automation" src="images/automation.png" /></p>
+<p>An <span class="dead-link" href="glossary.html#automation-curve">automation curve</span class="dead-link"> is a line graph that indicates the value of the automated property for every possible value of the automating parameter.</p>
+<p>A parameter may itself be automated. <a href="glossary.html#global-parameter">Global parameters</a> may only be automated on other global parameters.</p>
+<p>For more information about automation, see the <a href="authoring-events.html#automation-and-modulation">automation and modulation</a> section of the <a href="authoring-events.html">authoring events</a> chapter.</p>
+<h3 id="parameter-trigger-conditions"><a href="#parameter-trigger-conditions">7.1.3 Parameter Trigger Conditions</a></h3>
+<p>Parameters may be used for <a href="glossary.html#parameter-condition">parameter trigger conditions</a> by instruments and <a href="glossary.html#logic-marker">logic markers</a>. Each parameter trigger condition specifies a parameter and a range of possible values for that parameter; for an instrument to trigger, the specified parameter's value must be within the specified range. When an instrument or logic marker has multiple parameter conditions, all of the parameter conditions must be met for the instrument or logic marker to trigger.</p>
+<p><img alt="Parameter Trigger Conditions" src="images/parameter_trigger_condition.png" /></p>
+<p>For more information about instruments and logic markers, see the <a href="authoring-events.html#instruments">instruments</a> and <a href="authoring-events.html#timeline-logic">timeline logic</a> sections of the <a href="authoring-events.html">authoring events</a> chapter.</p>
+<h2 id="parameter-type"><a href="#parameter-type">7.2 Parameter Type</a></h2>
+<p>Whenever you create a new <a href="glossary.html#parameter">parameter</a>, you must specify the <span class="dead-link" href="glossary.html#parameter-type">parameter's type</span class="dead-link">. Parameters can be <a href="glossary.html#timeline">timeline parameters</a>, <a href="glossary.html#user-parameter">user parameters</a>, or <a href="glossary.html#built-in-parameter">built-in parameters</a>.</p>
+<p>Changing the type of an existing preset parameter alters the settings that appear in the edit parameter dialog for that preset parameter, and may also cause other changes. Built-in parameters other than distance parameters have fixed ranges, so making a parameter into a built-in parameter usually changes its range, and prompts you to choose whether instruments and automation on that parameter are to be trimmed or rescaled. Making a parameter a labeled or discrete parameter forces instruments, automation, and <a href="glossary.html#trigger-condition">trigger conditions</a> based on that parameter to trigger or change at integer values or labels. Changing the type of a labeled user parameter erases its labels.</p>
+<p>For more information about specific types of parameter, see the <a href="parameters-reference.html">parameters reference</a> chapter.</p>
+<h3 id="timeline-parameters"><a href="#timeline-parameters">7.2.1 Timeline Parameters</a></h3>
+<p>Timeline parameters are parameters that automatically advance when an <a href="glossary.html#event-instance">event instance</a> is playing. Each timeline parameter has a minimum value of 0 and a maximum value based on the rightmost <a href="glossary.html#logic-marker">logic marker</a> or <a href="glossary.html#instrument">instrument</a> in the <a href="glossary.html#event">event</a>. Every newly created event contains a timeline parameter by default.</p>
+<h3 id="user-parameters"><a href="#user-parameters">7.2.2 User Parameters</a></h3>
+<p>User parameters are parameters that can be customized to represent any variable in your game project. The values of user parameters may be updated from your game's code by using the <a href="https://fmod.com/docs/2.02/api/studio-guide.html#setting-parameters">FMOD Studio API</a>, and can also be controlled by automation and adjusted by <a href="glossary.html#modulator">modulators</a>. There are three different types of user parameter:</p>
+<ul>
+<li><a href="glossary.html#continuous-user-parameter"><strong>Continuous</strong> user parameters</a> use floating point (decimal) numbers. Each continuous parameter has a minimum and maximum value, and can be set to any floating point value within that range. Continuous parameters are most commonly used for variables that can change in very fine or arbitrary gradations.</li>
+<li><a href="glossary.html#discrete-user-parameter"><strong>Discrete</strong> user parameters</a> use integer (whole) numbers. Each discrete parameter has a minimum and maximum value, and can be set to any integer value within that range. Discrete parameters are most commonly used for variables that increase and decrease in increments of fixed size.</li>
+<li><a href="glossary.html#labeled-user-parameter"><strong>Labeled</strong> user parameters</a> use strings (labels). Each labeled parameter has a predefined list of labels as possible values, and can be set to any of those labels. Labeled parameters are commonly used for variables whose possible values don't have any obvious order or sequence.</li>
+</ul>
+<p><img alt="Labeled Parameter" src="images/labeledParameter.png" /></p>
+<h3 id="built-in-parameters"><a href="#built-in-parameters">7.2.3 Built-in Parameters</a></h3>
+<p><a href="glossary.html#built-in-parameter">Built-in parameters</a> use floating point (decimal) numbers, and are automatically updated as the positions of the event instances they're attached to change relative to the positions of the <a href="glossary.html#listener">listeners</a>. Adjusting the <a href="glossary.html#3d-preview">3D preview</a> automatically updates the values of built-in parameters. There are several kinds of built-in parameter:</p>
+<ul>
+<li><span class="dead-link" href="glossary.html#distance-built-in-parameter"><strong>Distance</strong> built-in parameters</span class="dead-link"> track the distance between the listener and the event instance in game distance units.</li>
+<li><span class="dead-link" href="glossary.html#distance-normalized-built-in-parameter"><strong>Distance (Normalized)</strong> built-in parameters</span class="dead-link"> track the distance between the listener and the event instance as a fraction of the difference between the event's minimum and maximum distance. This allows anything automated or triggered by a distance (normalized) parameter to respond to an event's minimum and maximum distance properties changing as your game is played.</li>
+<li><span class="dead-link" href="glossary.html#direction-built-in-parameter"><strong>Direction</strong> built-in parameters</span class="dead-link"> track which way the listener is facing relative to the event instance.</li>
+<li><span class="dead-link" href="glossary.html#elevation-built-in-parameter"><strong>Elevation</strong> built-in parameters</span class="dead-link"> track whether the event instance is above or below the listener.</li>
+<li><span class="dead-link" href="glossary.html#event-cone-angle-built-in-parameter"><strong>Event cone angle</strong> built-in parameters</span class="dead-link"> track which way the event instance is facing relative to the listener.</li>
+<li><span class="dead-link" href="glossary.html#event-orientation-built-in-parameter"><strong>Event orientation</strong> built-in parameters</span class="dead-link"> track which way the event instance is facing relative to way the listener is facing.</li>
+<li><span class="dead-link" href="glossary.html#speed-built-in-parameter"><strong>Speed</strong> built-in parameters</span class="dead-link"> track how quickly the event instance is moving relative to the listener.</li>
+</ul></div>
+
+<p class="manual-footer">FMOD Studio User Manual 2.02.30 (2025-08-05). &copy; 2025 Firelight Technologies Pty Ltd.</p>
+</body>
+</html>
+
+</div>

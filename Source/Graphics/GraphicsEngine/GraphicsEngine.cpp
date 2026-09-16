@@ -36,6 +36,9 @@
 #include "BRDF_LUT_PS.h"
 #include "GBuffer_PS.h"
 #include "Surface_VS.h"
+#include "Deferred_DirLight_PS.h"
+#include "Deferred_SpotLight_PS.h"
+#include "Deferred_PointLight_PS.h"
 
 /*
 * GraphicsEngine handles rendering of a scene.
@@ -98,7 +101,7 @@ void GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const Scene& 
 {
 	inoutCommandList.BeginEvent("Reset Pipeline");
 	{
-		//inoutCommandList.ClearRenderTargets(myGBuffer->GetTextures(), GBuffer::NUM_GBUFFER_TARGETS);
+		inoutCommandList.ClearRenderTargets(myGBuffer->GetTextures(), GBuffer::NUM_GBUFFER_TARGETS);
 		inoutCommandList.ClearRenderTarget(*myBackBuffer);
 		inoutCommandList.ClearDepthStencil(*myDepthBuffer);
 	}
@@ -201,8 +204,6 @@ void GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const Scene& 
 
 	inoutCommandList.BeginEvent("Main Pass");
 	{
-		inoutCommandList.SetRenderTarget(myBackBuffer.get(), myDepthBuffer.get());
-
 		{
 			FrameBuffer frameBuffer;
 			frameBuffer.View = aScene.SceneCamera.Transform.GetFastInverse();
@@ -213,14 +214,84 @@ void GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const Scene& 
 			UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::FrameBuffer, frameBuffer, 0, PipelineStage_VertexShader | PipelineStage_PixelShader);
 		}
 
+		inoutCommandList.BeginEvent("Deffered Render");
+
+		inoutCommandList.BeginEvent("Object GBuffer Render");
+		inoutCommandList.SetRenderTargets(myGBuffer->GetTextures(), GBuffer::NUM_GBUFFER_TARGETS, myDepthBuffer.get());
+		RenderDrawCalls(inoutCommandList, opaqueItems, DrawCallFlag_BindTextures | DrawCallFlag_BindMaterial, myGBufferPSO.get());
+		inoutCommandList.EndEvent();
+
+		inoutCommandList.BeginEvent("Light Fullscren Render");
+
+		inoutCommandList.SetRenderTarget(myBackBuffer.get(), nullptr);
+
+		for (unsigned int i = 0; i < aScene.SceneLights.size(); i++)
+		{
+			if (aScene.SceneLights[i].LightData == nullptr)
+			{
+				continue;
+			}
+
+			std::vector<const Texture*> gBufferTextures;
+			gBufferTextures.reserve(GBuffer::NUM_GBUFFER_TARGETS);
+
+			for (size_t t = 0; t < GBuffer::NUM_GBUFFER_TARGETS; t++)
+			{
+				gBufferTextures.emplace_back(&myGBuffer->GetTextures()[t]);
+			}
+
+			inoutCommandList.SetShaderResources(gBufferTextures.data(), gBufferTextures.size(), 0, PipelineStage_PixelShader);
+
+			LightBuffer lightBuffer;
+			lightBuffer.Lights[0] = *aScene.SceneLights[i].LightData;
+			UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::LightBuffer, lightBuffer, 3, PipelineStage_PixelShader);
+
+			switch (lightBuffer.Lights[0].Type)
+			{
+				case LightType::Directional:
+				{
+					inoutCommandList.BeginEvent("Directional Light");
+					std::vector<const Texture*> dirLightShadowMaps;
+					dirLightShadowMaps.reserve(NUM_CASCADES);
+
+					for (size_t c = 0; c < NUM_CASCADES; c++)
+					{
+						dirLightShadowMaps.emplace_back(myCascades[c].ShadowMap.get());
+					}
+
+					inoutCommandList.SetShaderResources(dirLightShadowMaps.data(), dirLightShadowMaps.size(), 100, PipelineStage_PixelShader);
+					inoutCommandList.SetPipelineStateObject(*myDefferedDirPSO);
+					inoutCommandList.Draw(4);
+					inoutCommandList.EndEvent();
+					break;
+				}
+				case LightType::Spot:
+				{
+					inoutCommandList.BeginEvent("Spot Light");
+					inoutCommandList.SetPipelineStateObject(*myDefferedSpotPSO);
+					inoutCommandList.Draw(4);
+					inoutCommandList.EndEvent();
+					break;
+				}
+				case LightType::Point:
+				{
+					inoutCommandList.BeginEvent("Point Light");
+					std::vector<const Texture*> pointLightShadowCubes;
+					inoutCommandList.SetPipelineStateObject(*myDefferedPointPSO);
+					inoutCommandList.Draw(4);
+					inoutCommandList.EndEvent();
+					break;
+				}
+			}
+		}
+		inoutCommandList.EndEvent();
+		inoutCommandList.EndEvent();
+
+		inoutCommandList.BeginEvent("Alpha Render");
+		inoutCommandList.SetRenderTarget(myBackBuffer.get(), myDepthBuffer.get());
 		UploadSceneLightingData(inoutCommandList, aScene.SceneLights);
-
-		//inoutCommandList.SetRenderTargets(myGBuffer->GetTextures(), GBuffer::NUM_GBUFFER_TARGETS, myDepthBuffer.get());
-		RenderDrawCalls(inoutCommandList, opaqueItems, DrawCallFlag_BindTextures | DrawCallFlag_BindMaterial);
-		//RenderDrawCalls(inoutCommandList, opaqueItems, DrawCallFlag_BindTextures | DrawCallFlag_BindMaterial, myGBufferPSO.get());
-
-		//inoutCommandList.SetRenderTarget(myBackBuffer.get(), myDepthBuffer.get());
 		RenderDrawCalls(inoutCommandList, alphaItems, DrawCallFlag_BindTextures | DrawCallFlag_BindMaterial);
+		inoutCommandList.EndEvent();
 	}
 	inoutCommandList.EndEvent();
 }
@@ -739,6 +810,7 @@ void GraphicsEngine::UploadSceneLightingData(GraphicsCommandList& inoutCommandLi
 	lightBuffer.NumLights = static_cast<unsigned int>(std::min(aLights.size(), static_cast<size_t>(MAX_LIGHTS)));
 
 	std::vector<const Texture*> dirLightShadowMaps;
+	dirLightShadowMaps.reserve(NUM_CASCADES);
 	std::vector<const Texture*> spotLightShadowMaps;
 	std::vector<const Texture*> pointLightShadowCubes;
 
@@ -1063,6 +1135,23 @@ bool GraphicsEngine::InitializeRenderResources()
 		mySamplers.emplace_back(std::move(sampler));
 	}
 
+	// Trilinear Clamp
+	{
+		SamplerDescription samplerDesc;
+		samplerDesc.Name = "TrilinearClamp";
+		samplerDesc.AddressMode = SamplerAddressMode::Clamp;
+		samplerDesc.FilterMode = SamplerFilterMode::Trilinear;
+
+		std::unique_ptr<Sampler> sampler = std::make_unique<Sampler>();
+
+		if (!myRHI.CreateSampler(samplerDesc, *sampler))
+		{
+			return false;
+		}
+
+		mySamplers.emplace_back(std::move(sampler));
+	}
+
 	// Shadow PSO
 	{
 		PipelineStateDescription shadowPSODesc = {};
@@ -1145,6 +1234,66 @@ bool GraphicsEngine::InitializeRenderResources()
 		initCommandList.FinishCommandList();
 
 		myRHI.ExecuteCommandList(initCommandList);
+	}
+
+	// Deffered Dir Light PSO
+	{
+		PipelineStateDescription deferredDirLightDesc;
+		deferredDirLightDesc.Name = "DeferredDirLight";
+		deferredDirLightDesc.VertexShader.ByteCode = INTERNAL_FullTexture_VS_ByteCode;
+		deferredDirLightDesc.VertexShader.ByteCodeSize = sizeof(INTERNAL_FullTexture_VS_ByteCode);
+		deferredDirLightDesc.PixelShader.ByteCode = INTERNAL_Deferred_DirLight_PS_ByteCode;
+		deferredDirLightDesc.PixelShader.ByteCodeSize = sizeof(INTERNAL_Deferred_DirLight_PS_ByteCode);
+		deferredDirLightDesc.BlendMode = BlendMode::Additive; 
+		deferredDirLightDesc.Topology = Topology::TriangleStrip;
+
+		myDefferedDirPSO = std::make_unique<PipelineStateObject>();
+
+		if (!myRHI.CreatePipelineStateObject(deferredDirLightDesc, *myDefferedDirPSO))
+		{
+			GELOG(Error, "Failed to create deferred directional light pipeline state object!");
+			return false;
+		}
+	}
+
+	// Deffered Spot Light PSO
+	{
+		PipelineStateDescription deferredSpotLightDesc;
+		deferredSpotLightDesc.Name = "DeferredSpotLight";
+		deferredSpotLightDesc.VertexShader.ByteCode = INTERNAL_FullTexture_VS_ByteCode;
+		deferredSpotLightDesc.VertexShader.ByteCodeSize = sizeof(INTERNAL_FullTexture_VS_ByteCode);
+		deferredSpotLightDesc.PixelShader.ByteCode = INTERNAL_Deferred_SpotLight_PS_ByteCode;
+		deferredSpotLightDesc.PixelShader.ByteCodeSize = sizeof(INTERNAL_Deferred_SpotLight_PS_ByteCode);
+		deferredSpotLightDesc.BlendMode = BlendMode::Additive;
+		deferredSpotLightDesc.Topology = Topology::TriangleStrip;
+
+		myDefferedSpotPSO = std::make_unique<PipelineStateObject>();
+
+		if (!myRHI.CreatePipelineStateObject(deferredSpotLightDesc, *myDefferedSpotPSO))
+		{
+			GELOG(Error, "Failed to create deferred spot light pipeline state object!");
+			return false;
+		}
+	}
+
+	// Deffered Point Light PSO
+	{
+		PipelineStateDescription deferredPointLightDesc;
+		deferredPointLightDesc.Name = "DeferredPointLight";
+		deferredPointLightDesc.VertexShader.ByteCode = INTERNAL_FullTexture_VS_ByteCode;
+		deferredPointLightDesc.VertexShader.ByteCodeSize = sizeof(INTERNAL_FullTexture_VS_ByteCode);
+		deferredPointLightDesc.PixelShader.ByteCode = INTERNAL_Deferred_PointLight_PS_ByteCode;
+		deferredPointLightDesc.PixelShader.ByteCodeSize = sizeof(INTERNAL_Deferred_PointLight_PS_ByteCode);
+		deferredPointLightDesc.BlendMode = BlendMode::Additive;
+		deferredPointLightDesc.Topology = Topology::TriangleStrip;
+
+		myDefferedPointPSO = std::make_unique<PipelineStateObject>();
+
+		if (!myRHI.CreatePipelineStateObject(deferredPointLightDesc, *myDefferedPointPSO))
+		{
+			GELOG(Error, "Failed to create deferred point light pipeline state object!");
+			return false;
+		}
 	}
 
 	return true;

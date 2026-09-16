@@ -209,6 +209,15 @@
     <FxCompile Include="Shaders\Material\BRDF_LUT_PS.hlsl">
       <Filter>Shaders\Material</Filter>
     </FxCompile>
+    <FxCompile Include="Shaders\Material\Deferred_DirLight_PS.hlsl">
+      <Filter>Shaders\Material</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Material\Deferred_PointLight_PS.hlsl">
+      <Filter>Shaders\Material</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Material\Deferred_SpotLight_PS.hlsl">
+      <Filter>Shaders\Material</Filter>
+    </FxCompile>
     <FxCompile Include="Shaders\Material\FullTexture_VS.hlsl">
       <Filter>Shaders\Material</Filter>
     </FxCompile>

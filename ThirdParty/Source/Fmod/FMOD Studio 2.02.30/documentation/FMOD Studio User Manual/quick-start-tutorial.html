@@ -1,0 +1,220 @@
+<html>
+<head>
+<title>Quick Start Tutorial</title>
+<link rel="stylesheet" href="style/docs.css">
+<link rel="stylesheet" href="style/code_highlight.css">
+<script type="text/javascript" src="scripts/language-selector.js"></script></head>
+<body>
+<div class="docs-body">
+<div class="manual-toc">
+<p>FMOD Studio User Manual 2.02</p>
+<ul>
+<li><a href="welcome-to-fmod-studio.html">Welcome to FMOD Studio</a></li>
+<li><a href="fmod-studio-concepts.html">FMOD Studio Concepts</a></li>
+<li><a href="organizing-the-project.html">Organizing the Project</a></li>
+<li><a href="authoring-events.html">Authoring Events</a></li>
+<li><a href="working-with-instruments.html">Working with Instruments</a></li>
+<li><a href="managing-assets.html">Managing Assets</a></li>
+<li><a href="parameters.html">Parameters</a></li>
+<li><a href="getting-events-into-your-game.html">Getting Events into Your Game</a></li>
+<li><a href="mixing.html">Mixing</a></li>
+<li><a href="the-sandbox.html">The Sandbox</a></li>
+<li><a href="editing-during-live-update.html">Editing During Live Update</a></li>
+<li><a href="profiling.html">Profiling</a></li>
+<li><a href="dialogue-and-localization.html">Dialogue and Localization</a></li>
+<li><a href="using-source-control.html">Using Source Control</a></li>
+<li><a href="supporting-downloadable-and-user-generated-content.html">Supporting Downloadable and User-generated Content</a></li>
+<li><a href="advanced-topics.html">Advanced Topics</a></li>
+<li class="manual-current-chapter manual-active-chapter"><a href="quick-start-tutorial.html">Quick Start Tutorial</a><ul></ul>
+</li>
+<li><a href="effect-reference.html">Effect Reference</a></li>
+<li><a href="event-macro-controls-reference.html">Event Macros Drawer Reference</a></li>
+<li><a href="instrument-reference.html">Instrument Reference</a></li>
+<li><a href="keyboard-shortcut-reference.html">Keyboard Shortcut Reference</a></li>
+<li><a href="modulator-reference.html">Modulator Reference</a></li>
+<li><a href="parameters-reference.html">Parameters Reference</a></li>
+<li><a href="plugin-reference.html">Plug-in Reference</a></li>
+<li><a href="scripting-terminal-reference.html">Scripting</a></li>
+<li><a href="scripting-api-reference.html">Scripting API Reference</a></li>
+<li><a href="troubleshooting.html">Troubleshooting</a></li>
+<li><a href="glossary.html">Glossary</a></li>
+<li><a href="appendix-a-celeste.html">Appendix: Celeste Getting Started Guide</a></li>
+<li><a href="appendix-b-reaper-integration.html">Appendix: Reaper Integration</a></li>
+</ul>
+</div>
+<div class="manual-content studio">
+<h1>17. Quick Start Tutorial</h1>
+<p>This tutorial covers the entire workflow of making content in <a href="glossary.html#fmod-studio">FMOD Studio</a>, starting with creating a new project, and ending with built banks ready to be used in your game.</p>
+<p>It should take under 30 minutes to complete.</p>
+<p>There's a lot more to learn about FMOD Studio than this tutorial can cover. There are links throughout it to more detailed information, and if you get to the end and still want to learn more, the best place to start is the <a href="fmod-studio-concepts.html">FMOD Studio concepts</a> chapter.</p>
+<ol>
+<li>
+<p>Launch FMOD Studio.</p>
+<p>The <span class="dead-link" href="glossary.html#welcome-dialog">welcome dialog</span class="dead-link"> appears.</p>
+<p><img alt="The Welcome Dialog" src="images/welcome-dialog.png" /></p>
+</li>
+<li>
+<p>For the purposes of this tutorial, we need a new, blank project, so click the new project button.</p>
+<p>The welcome dialog disappears, and the <a href="glossary.html#event-editor-window">event editor window</a> displays a new, blank <span class="dead-link" href="glossary.html#fmod-studio-project">project</span class="dead-link">.</p>
+<p><img alt="The Event Editor Window" src="images/blankEventEditorWindow.png" /></p>
+<p>Normally, each game you make will require just one FMOD Studio project. You could start editing this project immediately, but it would be a good idea to save it somewhere first.</p>
+</li>
+<li>
+<p>Open the File menu and select 'Save.'</p>
+<p>An operating system-specific file picker dialog appears, prompting you to specify a name for the project and the location in which it is to be saved.</p>
+</li>
+<li>
+<p>Pick a project name and location that you'll remember, then click the "Save" button.</p>
+<p>Your new FMOD Studio project is saved and can be loaded at any time in future.</p>
+<p>Now it's time to start creating content. The basic unit of content in FMOD Studio is the <a href="glossary.html#event">event</a>. Events can be created and organized in the <a href="glossary.html#events-browser">events browser</a>, located on the left side of the event editor window.</p>
+<p><img alt="The Events Browser" src="images/eventsBrowser.png" /></p>
+</li>
+<li>
+<p>Right-click on the events browser and select "New Event" from the <a href="glossary.html#context-menu">context menu</a>. Choose a name for the event and hit the 'Enter' key to confirm.</p>
+<p>A new event is created and displayed in the <a href="glossary.html#editor">editor</a>, overview, and the <a href="glossary.html#deck">deck</a>.<br />
+<img alt="A New, Empty Event" src="images/empty-editor-window.png" /></p>
+<p>For more information about the event editor window, see the <a href="authoring-events.html#anatomy-of-the-event-editor">anatomy of the event editor</a> section of the <a href="authoring-events.html">authoring events</a> chapter.</p>
+<p>Your new event is empty and wouldn't produce any sound if we played it. To make it produce audible output, we first have to import some <a href="glossary.html#audio-file">audio files</a>.</p>
+</li>
+<li>
+<p>Click on the assets tab located at the top of the events browser.</p>
+<p>The <a href="glossary.html#assets-browser">assets browser</a> appears.</p>
+<p><img alt="Assets Browser" src="images/empty-assets-browser.png" /></p>
+<p>The assets browser displays all the audio files that have been imported into the project. No audio files have been imported yet, so the browser is empty.</p>
+</li>
+<li>
+<p>Select "File &gt; Import Assets..."</p>
+<p>An operating system-specific file picker dialog appears, prompting you to navigate to and select one or more files.</p>
+</li>
+<li>
+<p>Navigate to the folder containing the example assets (which you can download from the learning resources section of our <a href="https://www.fmod.com/download#learningresources">download page</a>). Select "one.ogg", "two.ogg", and "three.ogg", then press the open button.</p>
+<p>The <a href="https://fmod.com/docs/2.02/studio/glossary.html#audio-bin-window">Audio Bin Window</a> appears, we don't need it right now so you can go ahead and close it.<br />
+<img alt="Audio Bin Window" src="images/audio-bin-window.png" /></p>
+<p>The assets are copied into your project's <a href="glossary.html#assets-folder">assets folder</a> and will appear in the assets browser.</p>
+<p>For more information about audio assets, see the <a href="managing-assets.html">managing assets</a> chapter.</p>
+</li>
+<li>
+<p>Back in the events browser, select your new event. In the editor, right-click and select "Add Timeline Sheet" from the context menu.<br />
+<img alt="Empty Editor Window" src="images/empty-event.png" /></p>
+</li>
+<li>
+<p>Right-click on the head of the <a href="glossary.html#master-track">Master Track</a> and select 'Add <a href="glossary.html#audio-track">Audio Track</a>' from the context menu. <br />
+<img alt="New Audio Track" src="images/new-audio-track.png" /></p>
+</li>
+<li>
+<p>Right-click on the "Audio 1" track and select "Add Multi Instrument" from the context menu. <br />
+<img alt="Add Multi Instrument" src="images/add-multi-instrument.png" /><br />
+    A green box appears on the audio track. This is a <a href="glossary.html#multi-instrument">multi instrument</a>.<br />
+<img alt="Empty Multi Instrument" src="images/empty-multi-instrument.png" /><br />
+    The multi instrument's properties and playlist appear in the deck.</p>
+<p><img alt="Multi Instrument Deck" src="images/multi-instrument-deck.png" /></p>
+<p>A multi instrument is a commonly used type of instrument that has a <a href="glossary.html#playlist">playlist</a> of assets and <a href="glossary.html#instrument">instruments</a> that it can play.</p>
+</li>
+<li>
+<p>Click on the assets tab to view the assets browser. Click on the topmost asset in the assets browser, then hold down the shift key and click on the bottommost asset to multi-select all three assets.</p>
+</li>
+<li>
+<p>Click and drag the multi-selection of audio assets from the assets browser onto the instrument's playlist.</p>
+<p>The assets are added to the playlist, and their <span class="dead-link" href="glossary.html#waveform-graphic">waveform graphics</span class="dead-link"> appear on the instrument in the editor.</p>
+<p><img alt="Multi Instrument Deck with Three Audio Files" src="images/multi-instrument-one-two-three.png" /></p>
+<p>Multi instruments produce audible output based on their playlist contents when triggered. We can test this behavior by auditioning the event.</p>
+<p>If there is a gap between the instrument and the left edge of the timeline, the instrument won't play immediately when the event starts. For the purpose of this tutorial, we want it to start immediately, so we'll fix that in the next step.</p>
+</li>
+<li>
+<p>Click and drag the multi instrument left to the beginning of the timeline.</p>
+<p><img alt="Empty Multi Instrument" src="images/moved-multi-instrument.png" /></p>
+</li>
+<li>
+<p>Click on the play button in the <span class="dead-link" href="glossary.html#transport-bar">transport bar</span class="dead-link">.</p>
+<p><img alt="Transport Controls" src="images/transport-controls.png" /></p>
+<p>As the <a href="glossary.html#timeline">timeline</a> <a href="glossary.html#playback-position">playback position</a> crosses the <a href="glossary.html#trigger-region">trigger region</a>, the instrument is triggered and randomly selects one of the assets in its playlist to play.</p>
+</li>
+<li>
+<p>Click on the stop button in the transport bar to stop the audition. If you want to hear the event again (and hear it play one of the other assets in its playlist), click play to audition the event again.</p>
+<p>For more information about instruments, see the <a href="working-with-instruments.html">working with instruments</a> chapter.</p>
+<p>Currently, there is no way for a game to influence the event while it's playing. Let's change that.</p>
+<p><a href="glossary.html#parameter">Parameters</a> allow a game to change to an ongoing event's behavior in a variety of ways. If you use the event editor to add parameter-based behavior to an event, your game's code can alter the behavior of that event by updating the values of its parameters.</p>
+<p>In order to add parameter-based behavior to our event, we must first add a <a href="glossary.html#preset-parameter">preset parameter</a> to the project.</p>
+</li>
+<li>
+<p>Select "Window &gt; Preset Browser".</p>
+<p>The <a href="glossary.html#preset-browser-window">preset browser window</a> appears, displaying the <a href="glossary.html#parameters-browser">parameters browser</a>. This window allows you to create and organize preset parameters and <a href="glossary.html#preset-effect">preset effects</a>.</p>
+<p>For now, we'll be creating a new preset parameter for your project.</p>
+</li>
+<li>
+<p>Right-click on an empty part of the parameters browser, then click on the "New Parameter" menu item that appears in the select parameter context menu.</p>
+<p>The add parameter dialog appears.</p>
+<p><img alt="Add Parameter Dialog" src="images/add-parameter-dialog.png" /></p>
+</li>
+<li>
+<p>The default settings are fine, so click on the OK button.</p>
+<p>The add parameter window disappears, and a parameter named "Parameter 1" appears in the parameters browser.</p>
+<p>For more information about parameters and preset parameters, see the <a href="parameters.html">parameters</a> and <a href="parameters-reference.html">parameters reference</a> chapters.</p>
+<p>Now that the preset parameter has been created, we no longer need the presets browser to be open.</p>
+</li>
+<li>
+<p>Click on the preset browser window's close button to close it.</p>
+<p>For the purposes of this tutorial, we will be making the event's <span class="dead-link" href="glossary.html#pitch">pitch</span class="dead-link"> depend on the value of a parameter.</p>
+</li>
+<li>
+<p>Click on the master track's head in order to select the event master track.</p>
+<p><img alt="Master Track Head" src="images/master-track-head-highlighted.png" /></p>
+<p>The track's <a href="glossary.html#signal-chain">signal chain</a> appears in the deck. In addition, the event's <span class="dead-link" href="glossary.html#macros-drawer">macros drawer</span class="dead-link"> appears at the right end of the deck.</p>
+</li>
+<li>
+<p>Right-click on the pitch <span class="dead-link" href="glossary.html#number-box">number box</span class="dead-link"> and select "Add Automation" from the context menu.<br />
+<img alt="Add Automation To Pitch" src="images/add-automation-to-pitch.png" /></p>
+<p>An <span class="dead-link" href="glossary.html#automation-and-modulation-drawer">automation and modulation drawer</span class="dead-link"> appears to the right of the macros drawer, with a <span class="dead-link" href="glossary.html#deck-panel-section">section</span class="dead-link"> labeled "Automation: Pitch."</p>
+</li>
+<li>
+<p>Click on the pitch <a href="glossary.html#automation">automation</a> section's add curve button, select "Browse" from the context menu, and then select the "Parameter 1" parameter from the select parameter pop-up.</p>
+<p>A dashed red line appears in the pitch automation section. This is the <span class="dead-link" href="glossary.html#automation-curve">automation curve</span class="dead-link">, a line graph showing the value of the automated property at every possible value of the parameter. Currently the automation curve is perfectly horizontal, which means the property's value is the same at every possible parameter value.</p>
+<p><img alt="Automation: Pitch with Dashed Curve" src="images/macro-pitch-automation-section-with-empty-curve.png" /></p>
+</li>
+<li>
+<p>Click on the red line.</p>
+<p>The automation curve becomes a solid line, and an <span class="dead-link" href="glossary.html#automation-point">automation point</span class="dead-link"> appears at the point you clicked.</p>
+<p><img alt="Automation: Pitch with One Point" src="images/macro-pitch-automation-section-with-one-point.png" /></p>
+<p>Automation points determine the value of the automated properties at specific points along the automated parameter, and so define the shape of their automation curves.</p>
+</li>
+<li>
+<p>Click on a different part of the automation curve to add a second automation point.</p>
+</li>
+<li>
+<p>Click and drag the new automation point up or down to change its value.</p>
+<p><img alt="Automation: Pitch with Automation Points" src="images/macro-pitch-automation-section-with-automation-points.png" /></p>
+<p>This automation curve ensures that the pitch of the event changes depending on the value of the parameter.</p>
+</li>
+<li>
+<p>Click on the play button in the transport bar.</p>
+<p>The event auditions at the pitch set by the automation for Parameter 1's default value of 0.</p>
+</li>
+<li>
+<p>Once the event has finished playing, click and hold the mouse button on the Parameter 1 parameter's number box in the transport bar, and drag the mouse cursor up until the parameter reaches its maximum value of 1.</p>
+</li>
+<li>
+<p>Click on the play button in the transport bar.</p>
+<p>The event pitch affects the speed of the timeline playback position and the pitch of the event's output, so you'll notice that the event sounds different now that the value of the parameter has been changed.</p>
+<p>For more information about automation, see the <a href="authoring-events.html#automation">automation</a> section of the <a href="authoring-events.html">authoring events</a> chapter.</p>
+<p>In order to hear this event in a game, it is necessary to <span class="dead-link" href="glossary.html#assign">assign</span class="dead-link"> it to a <a href="glossary.html#bank">bank</a>, and then <a href="glossary.html#build">build</a> that bank. Building converts your project into a format which the FMOD Studio API can use.</p>
+</li>
+<li>
+<p>From the top of the asset browser, select the event tab. Right-click on your event and select "Assign to Bank &gt; Browse &gt; Master" from the context menu.</p>
+<p>Now that the event is assigned to that bank, it will be included in that bank whenever we build it.</p>
+</li>
+<li>
+<p>Select "File &gt; Build..."</p>
+<p>FMOD Studio builds your project's bank files.</p>
+</li>
+<li>
+<p>Open Finder or Explorer and navigate to the location in which you saved this FMOD Studio project.</p>
+<p>Inside the <span class="dead-link" href="glossary.html#fmod-studio-project-folder">FMOD Studio project folder</span class="dead-link">, you'll find a subfolder named "Build". This folder contains another subfolder, named "Desktop", which contains the files "Master.bank" and "Master.strings.bank". These files are the project's built banks, and your game will need them to play the event you created.</p>
+</li>
+</ol>
+<p>For information on how to play content from built bank files in your game, see the <a href="https://fmod.com/docs/2.02/api/studio-guide.html">Studio API Guide</a> chapter of the <a href="https://fmod.com/docs/2.02/api">FMOD Engine User Manual</a>.</p></div>
+
+<p class="manual-footer">FMOD Studio User Manual 2.02.30 (2025-08-05). &copy; 2025 Firelight Technologies Pty Ltd.</p>
+</body>
+</html>
+
+</div>

@@ -6,6 +6,9 @@
 #include "MaterialHelpers.h"
 #include "GraphicsEngine/RHI/PipelineStateObject.h"
 
+#pragma warning(push)
+#pragma warning(disable : 4324)
+
 struct MaterialDescription
 {
 	std::string Name;
@@ -118,3 +121,5 @@ private:
 
 	std::vector<bool> myOverriddenParameters;
 };
+
+#pragma warning(pop)

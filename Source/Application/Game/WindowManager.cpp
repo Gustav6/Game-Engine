@@ -2,6 +2,8 @@
 
 void WindowManager::SetResolution(unsigned int aWidth, unsigned int aHeight)
 {
+    aWidth;
+    aHeight;
 }
 
 unsigned int WindowManager::GetWidth() const

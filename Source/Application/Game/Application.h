@@ -7,6 +7,8 @@
 
 #include "AssetHandling/AssetRegistry.h"
 #include "WindowManager.h"
+#include <memory>
+#include "Audio/FmodAudioSystem.h"
 
 #if _DEBUG
 DECLARE_LOG_CATEGORY_WITH_NAME(LogModelViewer, ModelViewer, Verbose);
@@ -16,12 +18,16 @@ DECLARE_LOG_CATEGORY_WITH_NAME(LogModelViewer, ModelViewer, Warning);
 
 #define MVLOG(Verbosity, Message, ...) LOG(LogModelViewer, Verbosity, Message, ##__VA_ARGS__)
 
+class FmodAudioSystem;
+
 struct ApplicationData
 {
 	CommonUtilities::Input InputManager;
 	CommonUtilities::Timer TimeManager;
 	AssetRegistry AssetRegistry;
 	WindowManager WindowManager;
+
+    std::unique_ptr<FmodAudioSystem> AudioSystem;
 };
 
 inline ApplicationData Application;

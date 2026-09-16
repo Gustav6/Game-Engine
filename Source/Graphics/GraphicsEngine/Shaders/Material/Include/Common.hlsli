@@ -3,6 +3,15 @@
 
 static const float PI = 3.14159265358979323846f;
 
+struct GBufferOutput
+{
+    float4 AlbedoTexture : SV_TARGET0;
+    float4 NormalTexture : SV_TARGET1;
+    float4 MaterialTexture : SV_TARGET2;
+    float4 Emission : SV_TARGET3;
+    float4 WorldPosition : SV_TARGET4;
+};
+
 struct VStoPS
 {
     float4 Position : SV_POSITION;

@@ -1,0 +1,89 @@
+<html>
+<head>
+<title>The Sandbox</title>
+<link rel="stylesheet" href="style/docs.css">
+<link rel="stylesheet" href="style/code_highlight.css">
+<script type="text/javascript" src="scripts/language-selector.js"></script></head>
+<body>
+<div class="docs-body">
+<div class="manual-toc">
+<p>FMOD Studio User Manual 2.02</p>
+<ul>
+<li><a href="welcome-to-fmod-studio.html">Welcome to FMOD Studio</a></li>
+<li><a href="fmod-studio-concepts.html">FMOD Studio Concepts</a></li>
+<li><a href="organizing-the-project.html">Organizing the Project</a></li>
+<li><a href="authoring-events.html">Authoring Events</a></li>
+<li><a href="working-with-instruments.html">Working with Instruments</a></li>
+<li><a href="managing-assets.html">Managing Assets</a></li>
+<li><a href="parameters.html">Parameters</a></li>
+<li><a href="getting-events-into-your-game.html">Getting Events into Your Game</a></li>
+<li><a href="mixing.html">Mixing</a></li>
+<li class="manual-current-chapter manual-active-chapter"><a href="the-sandbox.html">The Sandbox</a><ul>
+<li><a href="#scenes">Scenes</a></li>
+<li><a href="#auditioning-events-and-snapshots">Auditioning Events and Snapshots</a><ul>
+<li><a href="#the-scene-list">The Scene List</a></li>
+<li><a href="#the-parameters-list">The Parameters List</a></li>
+</ul>
+</li>
+<li><a href="#profiling-the-sandbox">Profiling the Sandbox</a></li>
+</ul>
+</li>
+<li><a href="editing-during-live-update.html">Editing During Live Update</a></li>
+<li><a href="profiling.html">Profiling</a></li>
+<li><a href="dialogue-and-localization.html">Dialogue and Localization</a></li>
+<li><a href="using-source-control.html">Using Source Control</a></li>
+<li><a href="supporting-downloadable-and-user-generated-content.html">Supporting Downloadable and User-generated Content</a></li>
+<li><a href="advanced-topics.html">Advanced Topics</a></li>
+<li><a href="quick-start-tutorial.html">Quick Start Tutorial</a></li>
+<li><a href="effect-reference.html">Effect Reference</a></li>
+<li><a href="event-macro-controls-reference.html">Event Macros Drawer Reference</a></li>
+<li><a href="instrument-reference.html">Instrument Reference</a></li>
+<li><a href="keyboard-shortcut-reference.html">Keyboard Shortcut Reference</a></li>
+<li><a href="modulator-reference.html">Modulator Reference</a></li>
+<li><a href="parameters-reference.html">Parameters Reference</a></li>
+<li><a href="plugin-reference.html">Plug-in Reference</a></li>
+<li><a href="scripting-terminal-reference.html">Scripting</a></li>
+<li><a href="scripting-api-reference.html">Scripting API Reference</a></li>
+<li><a href="troubleshooting.html">Troubleshooting</a></li>
+<li><a href="glossary.html">Glossary</a></li>
+<li><a href="appendix-a-celeste.html">Appendix: Celeste Getting Started Guide</a></li>
+<li><a href="appendix-b-reaper-integration.html">Appendix: Reaper Integration</a></li>
+</ul>
+</div>
+<div class="manual-content studio">
+<h1>10. The Sandbox</h1>
+<p><a href="glossary.html#fmod-studio">FMOD Studio</a>'s <a href="glossary.html#sandbox-window">sandbox window</a> lets you audition <a href="glossary.html#event">events</a> in complex 3D environments. This means you can audition what your events would sound like playing in a game and use that audition to <span class="dead-link" href="glossary.html#mixing">mix</span class="dead-link"> your project, even if your game is not yet ready to play FMOD Studio events.</p>
+<p>In the sandbox, you can create complex three-dimensional <a href="glossary.html#scene">scenes</a> containing multiple <a href="glossary.html#event-instance">event instances</a>, <a href="glossary.html#snapshot-instance">snapshot instances</a> and <a href="glossary.html#listener">listeners</a>. Once you have created a scene, you can play any or all of the event and snapshot instances it contains, and move the instances and listeners within the scene, to hear how they sound in combination.</p>
+<h2 id="scenes"><a href="#scenes">10.1 Scenes</a></h2>
+<p>A scene is a virtual 3D environment used in the <span class="dead-link" href="glossary.html#sandbox">sandbox</span class="dead-link">. Each scene represents a different virtual 3D space.</p>
+<p><img alt="The Scenes Browser" src="images/scenes-browser.png" /></p>
+<p>In order to <a href="glossary.html#audition">audition</a> <a href="glossary.html#event">events</a> in the sandbox, you must first select a scene in which to audition instances of those events. To select a scene, click on it in the <a href="glossary.html#scenes-browser">scenes browser</a>. This causes the selected scene to be displayed in the current tab of the sandbox window's <a href="glossary.html#editor">editor</a>.</p>
+<p>You can create a new scene by right-clicking in the scenes browser and selecting "New Scene" from the <a href="glossary.html#context-menu">context menu</a>.</p>
+<p>Scenes can be organized into folders in the same manner as events.</p>
+<h2 id="auditioning-events-and-snapshots"><a href="#auditioning-events-and-snapshots">10.2 Auditioning Events and Snapshots</a></h2>
+<p>The sandbox window's <a href="glossary.html#editor">editor</a> represents a top-down view of the <a href="glossary.html#scene">scene</a> currently selected in the <a href="glossary.html#scenes-browser">scenes browser</a>.</p>
+<p><img alt="The Sandbox Window Editor" src="images/sandbox-window-editor.png" /></p>
+<p>You can add <a href="glossary.html#event-instance">instances</a> of <a href="glossary.html#event">events</a> and <a href="glossary.html#snapshot">snapshots</a> to this scene by dragging them from the <a href="glossary.html#events-browser">events browser</a> and <a href="glossary.html#snapshots-browser">snapshots browser</a>. In addition, you can add <a href="glossary.html#listener">listeners</a> to the scene by right-clicking in the editor and selecting "Add Listener" from the <a href="glossary.html#context-menu">context menu</a>. By adding instances and listeners to a scene, you can create a virtual 3D environment filled with sounds, similar to the 3D environments that might appear in your game.</p>
+<p>The event instances, snapshot instances, and listeners in a scene can be selected by clicking on them in the editor. You can select multiple listeners or instances by holding down the "Shift" or "Ctrl" key and clicking on each item you want to add to the multi-selection. The properties of selected items are displayed in the transport bar, and the max distance property of each selected event instance is displayed as a light gray circle surrounding that instance.</p>
+<p>The instances and listeners in a scene can be moved around by clicking and dragging them in the editor. It is not possible to click and drag multiple items at the same time.</p>
+<p>Instances of <a href="glossary.html#3d-event">3D events</a> and <a href="glossary.html#3d-snapshot">snapshots</a> in a scene exhibit their 3D behavior when auditioned, using their positions relative to the listeners in the scene to calculate their <span class="dead-link" href="glossary.html#3d-attributes">3D attributes</span class="dead-link">. If no listeners are present in the scene, <a href="glossary.html#fmod-studio">FMOD Studio</a> assumes that there's one listener in the scene, at position 0,0,0.</p>
+<p>Event and snapshot instances dragged into a scene begin playing immediately. In addition, you can stop, pause, and play instances by selecting them in the editor then using the controls in the transport bar, or play and stop them by using their toggle playback buttons in the <span class="dead-link" href="glossary.html#overview-pane">overview pane</span class="dead-link">.</p>
+<h3 id="the-scene-list"><a href="#the-scene-list">10.2.1 The Scene List</a></h3>
+<p>The sandbox window's overview pane contains a list of all the event and snapshot instances in the current scene.</p>
+<p><img alt="The Scene List" src="images/scene-list.png" /></p>
+<p>Clicking the number or toggle playback button on an instance in the list begins auditioning that instance. If multiple instances are selected, all other instances in the multiselection will also be affected.</p>
+<p>You can also audition an instance by pressing the key corresponding to the instance.</p>
+<p>Clicking on the open in new window icon of an instance in the list opens that instance in an event editor or mixer window.</p>
+<h3 id="the-parameters-list"><a href="#the-parameters-list">10.2.2 The Parameters List</a></h3>
+<p>If the currently selected event or snapshot instance uses <a href="glossary.html#user-parameter">user parameters</a> or <a href="glossary.html#built-in parameter">built-in parameters</a>, those <a href="glossary.html#parameter">parameters</a> appear in the overview pane alongside their values. Similarly, if a listener is selected, and there are any <a href="glossary.html#global-parameter">global parameters</a> in your project, those parameters appear in the overview pane.</p>
+<p><img alt="Parameters in the Sandbox Window's Overview Pane" src="images/parameters-in-the-sandbox-overview.png" /></p>
+<p>You can adjust the value of any parameter displayed in the overview pane (other than a built-in parameter) by clicking and dragging its <span class="dead-link" href="glossary.html#number-box">number box</span class="dead-link">, or by clicking on the triangle on its number box and entering a new value.</p>
+<h2 id="profiling-the-sandbox"><a href="#profiling-the-sandbox">10.3 Profiling the Sandbox</a></h2>
+<p>It is possible to record a <span class="dead-link" href="glossary.html#profiler-session">profiler session</span class="dead-link"> of <a href="glossary.html#audition">auditioning</a> event and snapshot instances in the sandbox window. A recorded profiler session can be played back with and without changes to its content, allowing you to make changes to your <a href="glossary.html#fmod-studio">FMOD Studio</a> project's content and hear those changes in the profiler session without having to re-record the scene.</p>
+<p>For information about recording and using profiler sessions, see the <a href="profiling.html">Profiling</a> chapter.</p></div>
+
+<p class="manual-footer">FMOD Studio User Manual 2.02.30 (2025-08-05). &copy; 2025 Firelight Technologies Pty Ltd.</p>
+</body>
+</html>
+
+</div>

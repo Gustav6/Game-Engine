@@ -1,0 +1,654 @@
+<html>
+<head>
+<title>Advanced Topics</title>
+<link rel="stylesheet" href="style/docs.css">
+<link rel="stylesheet" href="style/code_highlight.css">
+<script type="text/javascript" src="scripts/language-selector.js"></script></head>
+<body>
+<div class="docs-body">
+<div class="manual-toc">
+<p>FMOD Studio User Manual 2.02</p>
+<ul>
+<li><a href="welcome-to-fmod-studio.html">Welcome to FMOD Studio</a></li>
+<li><a href="fmod-studio-concepts.html">FMOD Studio Concepts</a></li>
+<li><a href="organizing-the-project.html">Organizing the Project</a></li>
+<li><a href="authoring-events.html">Authoring Events</a></li>
+<li><a href="working-with-instruments.html">Working with Instruments</a></li>
+<li><a href="managing-assets.html">Managing Assets</a></li>
+<li><a href="parameters.html">Parameters</a></li>
+<li><a href="getting-events-into-your-game.html">Getting Events into Your Game</a></li>
+<li><a href="mixing.html">Mixing</a></li>
+<li><a href="the-sandbox.html">The Sandbox</a></li>
+<li><a href="editing-during-live-update.html">Editing During Live Update</a></li>
+<li><a href="profiling.html">Profiling</a></li>
+<li><a href="dialogue-and-localization.html">Dialogue and Localization</a></li>
+<li><a href="using-source-control.html">Using Source Control</a></li>
+<li><a href="supporting-downloadable-and-user-generated-content.html">Supporting Downloadable and User-generated Content</a></li>
+<li class="manual-current-chapter manual-active-chapter"><a href="advanced-topics.html">Advanced Topics</a><ul>
+<li><a href="#automating-parameters">Automating Parameters</a></li>
+<li><a href="#spatialization-options">Spatialization Options</a><ul>
+<li><a href="#the-fmod-spatializer-effect">The FMOD Spatializer Effect</a></li>
+<li><a href="#the-fmod-object-spatializer-effect">The FMOD Object Spatializer Effect</a></li>
+<li><a href="#the-resonance-audio-source-effect">The Resonance Audio Source Effect</a></li>
+</ul>
+</li>
+<li><a href="#auditioning-object-spatialization-and-height-panning">Auditioning Object Spatialization and Height Panning</a></li>
+<li><a href="#the-assets-folder">The Assets Folder</a><ul>
+<li><a href="#using-an-external-assets-folder">Using an External Assets Folder</a></li>
+</ul>
+</li>
+<li><a href="#stealing-and-virtualization">Stealing and Virtualization</a><ul>
+<li><a href="#stealing">Stealing</a></li>
+<li><a href="#virtualization">Virtualization</a><ul>
+<li><a href="#how-audibility-is-calculated">How audibility is calculated</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#special-contents-of-the-master-bank">Special Contents of the Master Bank</a></li>
+<li><a href="#automation-curve-combination">Automation Curve Combination</a></li>
+<li><a href="#event-state">Event State</a><ul>
+<li><a href="#state-and-fmod_studio_playback_state">State and FMOD_STUDIO_PLAYBACK_STATE</a></li>
+</ul>
+</li>
+<li><a href="#effect-chains">Effect Chains</a></li>
+<li><a href="#custom-window-layouts">Custom Window Layouts</a></li>
+<li><a href="#guids-and-paths">GUIDs and Paths</a><ul>
+<li><a href="#guids">GUIDs</a></li>
+<li><a href="#paths">Paths</a></li>
+<li><a href="#using-guids-and-paths">Using GUIDs and Paths</a></li>
+</ul>
+</li>
+<li><a href="#user-properties">User Properties</a></li>
+<li><a href="#fmod-studio-command-line-tool">FMOD Studio Command Line Tool</a><ul>
+<li><a href="#examples">Examples</a></li>
+</ul>
+</li>
+<li><a href="#migrating-fmod-studio-projects">Migrating FMOD Studio Projects</a><ul>
+<li><a href="#working-with-teams">Working with Teams</a></li>
+</ul>
+</li>
+<li><a href="#migrating-fmod-designer-projects">Migrating FMOD Designer Projects</a><ul>
+<li><a href="#unsupported-features">Unsupported Features</a><ul>
+<li><a href="#music">Music</a></li>
+<li><a href="#effects">Effects</a></li>
+<li><a href="#event-properties">Event Properties</a></li>
+<li><a href="#layer-properties">Layer Properties</a></li>
+<li><a href="#sound-def-properties">Sound Def Properties</a></li>
+<li><a href="#parameter-properties">Parameter Properties</a></li>
+<li><a href="#sustain-points">Sustain Points</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#setting-up-different-audio-configurations-for-your-game">Setting Up Different Audio Configurations for your Game</a><ul>
+<li><a href="#supporting-multiple-speaker-configurations">Supporting Multiple Speaker Configurations</a></li>
+<li><a href="#platform-exclusion">Platform Exclusion</a></li>
+<li><a href="#separating-metadata-and-assets-in-built-banks">Separating Metadata and Assets in Built Banks</a></li>
+</ul>
+</li>
+<li><a href="#bank-encryption">Bank Encryption</a></li>
+<li><a href="#anonymous-usage-data">Anonymous Usage Data</a></li>
+</ul>
+</li>
+<li><a href="quick-start-tutorial.html">Quick Start Tutorial</a></li>
+<li><a href="effect-reference.html">Effect Reference</a></li>
+<li><a href="event-macro-controls-reference.html">Event Macros Drawer Reference</a></li>
+<li><a href="instrument-reference.html">Instrument Reference</a></li>
+<li><a href="keyboard-shortcut-reference.html">Keyboard Shortcut Reference</a></li>
+<li><a href="modulator-reference.html">Modulator Reference</a></li>
+<li><a href="parameters-reference.html">Parameters Reference</a></li>
+<li><a href="plugin-reference.html">Plug-in Reference</a></li>
+<li><a href="scripting-terminal-reference.html">Scripting</a></li>
+<li><a href="scripting-api-reference.html">Scripting API Reference</a></li>
+<li><a href="troubleshooting.html">Troubleshooting</a></li>
+<li><a href="glossary.html">Glossary</a></li>
+<li><a href="appendix-a-celeste.html">Appendix: Celeste Getting Started Guide</a></li>
+<li><a href="appendix-b-reaper-integration.html">Appendix: Reaper Integration</a></li>
+</ul>
+</div>
+<div class="manual-content studio">
+<h1>16. Advanced Topics</h1>
+<h2 id="automating-parameters"><a href="#automating-parameters">16.1 Automating Parameters</a></h2>
+<p>There are three ways in which one <a href="glossary.html#parameter">parameter</a> may be controlled by another parameter.</p>
+<ul>
+<li>
+<p><strong>Linked Parameters</strong> - If a parameter is present in both a <a href="glossary.html#referenced-event">referenced event</a> and in its <a href="glossary.html#parent-event">parent event</a>, each instance of the parent <a href="glossary.html#event">event</a> shares its parameter value with each instance of the referenced event that it spawns. Linked parameters can be overridden by <a href="glossary.html#automation">automating</a> the event instrument's parameter property.<br />
+ User parameters that are exposed recursively via event instruments are implicitly added to the parent events of any referenced events in which the parameter is present. For more information about recursively exposed user parameters, see the <a href="parameters-reference.html#user-parameters">User Parameters</a> section of the <a href="parameters-reference.html">Parameters Reference</a> chapter.</p>
+</li>
+<li>
+<p><strong>Automated event instrument parameter properties</strong> - If an event has a parameter, a knob for that parameter appears in the deck of any <a href="glossary.html#event-instrument">event instrument</a> that references that event. Like most other instrument properties, this parameter property can be automated in the event that contains the <a href="glossary.html#instrument">instrument</a>. Automating a parameter property overrides the linked parameter behavior described above.<br />
+ Automating a parameter in this fashion sets the <a href="glossary.html#base-property-value">base value</a> of the parameter in the referenced event instance to the <a href="glossary.html#final-property-value">final value</a> of the parameter in the parent event instance. Because of this, a parameter whose set and final value are different (whether due to seek speed, modulation, or for any other reason) may have a final value in the referenced event instance that differs from its final value in the parent event.</p>
+</li>
+<li>
+<p><strong>Parameters automating parameters</strong> - The value of a <a href="glossary.html#preset-parameter">preset parameter</a> can be automated on another parameter. <a href="glossary.html#global-parameter">Global preset parameters</a> can only be automated on other global parameters.<br />
+ Any parameter based on a preset parameter is automated the same way as the preset parameter; when this occurs, the parameter and the parameter it is automated on appear in the same event.</p>
+</li>
+</ul>
+<h2 id="spatialization-options"><a href="#spatialization-options">16.2 Spatialization Options</a></h2>
+<p>Processing audio to seem as if it comes from a variable position in 3D space is called "spatialization." Spatialization helps create an immersive and realistic sounding world by making the audible positions of objects in your game better match what the player sees on their screen. It also allows your game to communicate information about the distance and direction of in-game objects to the player.</p>
+<p>In <a href="glossary.html#fmod-studio">FMOD Studio</a>, spatialization is usually achieved through the use of <a href="glossary.html#effect">effects</a>: The FMOD spatializer effect, the FMOD object spatializer effect, and third-party plug-in effects such as the Resonance Audio source effect. Adding one of these effects to an <a href="glossary.html#track">event track</a> spatializes the <a href="glossary.html#signal">signal</a> routed through that track, so it is common to add a single such effect to an <a href="glossary.html#event">event's</a> <a href="glossary.html#master-track">master track</a> to ensure that event's output is spatialized.</p>
+<p>Because spatialization causes the output of the event to change depending on the event instance's position relative to the listener, adding a spatializing effect to an event makes that event <a href="glossary.html#3d-event">3D</a>.</p>
+<p>Some forms of spatialization can produce sound in surround 7.1.4 channel format, or require platform-specific object spatialization technologies to work. For information on auditioning object spatialized audio and 7.1.4 format sound in FMOD Studio, see the <a href="advanced-topics.html#auditioning-object-spatialization-and-height-panning">Auditioning Object Spatialization and Height Panning</a> section of this chapter.</p>
+<h3 id="the-fmod-spatializer-effect"><a href="#the-fmod-spatializer-effect">16.2.1 The FMOD Spatializer Effect</a></h3>
+<p>The FMOD spatializer effect is the default solution for spatialization, and suits the vast majority of events and games. It spatializes the signal passing through it by panning it according to the angle from the listener's direction of facing to the event instance, and it attenuates the signal according to the distance between the event instance and the listener.</p>
+<p>By default, the FMOD spatializer effect uses the min and max distance of the event to calculate the amount of attenuation to apply at any given distance. You can override this behaviour and specify a different min and max distance for the effect in the effect's distance override drawer.</p>
+<p><img alt="Distance Override Drawer Collapsed" src="images/spatializer_distance_override_collapsed.png" title="The distance override drawer, collapsed." /> <img alt="Distance Override Drawer Expanded" src="images/spatializer_distance_override_expanded.png" title="The distance override drawer, expanded." /></p>
+<p>In addition, the spatializer effect <span class="dead-link" href="glossary.html#up-mix">up-mixes</span class="dead-link"> or <span class="dead-link" href="glossary.html#down-mix">down-mixes</span class="dead-link"> its input signal to your target platform's <span class="dead-link" href="glossary.html#surround-speaker-mode">surround speaker mode</span class="dead-link">, so as to ensure consistent submixes throughout your project.</p>
+<p>Unlike most other spatializing effects, the FMOD spatializer effect does not interrupt the <a href="authoring-events.html#signal-chains">signal chain</a> of the track. The output of a spatializer effect is passed to the next effect or <a href="glossary.html#panner">panner</a> in the track's signal chain.</p>
+<p><img alt="Spatializer Effect Diagram" src="images/spatializer_effect_diagram.svg" /></p>
+<p>The panning applied to a signal by an FMOD spatializer effect makes it easy to distinguish the direction of event instances to the left or right of the listener, but is less effective at making event instances sound distinctly as if they're ahead of or behind the listener, and completely incapable of making sounds seem to come from above or below. Despite this, it is suitable for the vast majority of events and games.</p>
+<h3 id="the-fmod-object-spatializer-effect"><a href="#the-fmod-object-spatializer-effect">16.2.2 The FMOD Object Spatializer Effect</a></h3>
+<p>The FMOD object spatializer effect is designed to work with platform-specific <a href="glossary.html#object-spatialization">object spatialization</a> technologies such as Dolby Atmos, DTS:X, Sony 3D Audio, and Windows Sonic. It functions by routing the signal and the event's 3D positional information directly to an object mixer, instead of through the tracks and buses into which the event would normally be routed. As a result, the signal does not encounter any effects or <a href="glossary.html#send">sends</a> "downstream" of the object spatializer.</p>
+<p><img alt="Object Spatializer Effect Diagram" src="images/object_spatializer_effect_diagram.svg" /></p>
+<p>Because it is designed to take full advantage of platform-specific object spatialization technologies, the object spatializer can potentially spatialize audio more accurately than the spatializer effect does. However, as most platforms only support a limited number of object spatializers, it is best to use the object spatializer effect only in events that need highly accurate spatialization, and to use the spatializer effect in all other events.</p>
+<p>Unlike the FMOD spatializer effect, the object spatializer does not automatically up-mix the signal to your project's surround speaker mode. Instead, the output format depends entirely on the technology used. For example, an FMOD object spatializer effect can be used to spatialize content in surround 7.1.4 format, if that format is supported by the target platform's technology.</p>
+<p>When running on a platform that does not feature specialized object spatialization technologies, an FMOD object spatializer effect instead functions as an FMOD spatializer effect, but still routes its signal directly to the <a href="glossary.html#mixer">mixer</a> instead of through the normal routing path the event would otherwise follow.</p>
+<p>For information about auditioning events that use the FMOD object spatializer effect, see the <a href="#auditioning-object-spatialization-and-height-panning">Auditioning Object Spatialization and Height Panning</a> section of this chapter.</p>
+<h3 id="the-resonance-audio-source-effect"><a href="#the-resonance-audio-source-effect">16.2.3 The Resonance Audio Source Effect</a></h3>
+<p>The Resonance Audio source effect is a third-party plug-in that functions in a manner similar to the FMOD object spatializer effect: It functions by routing the signal and the event's 3D positional information directly to a Resonance listener effect in your project's mixer instead of through the normal routing path the event would otherwise follow. As a result, the signal does not encounter any effects or sends "downstream" of the Resonance Audio source.</p>
+<p>Unlike the FMOD spatializer effect, the Resonance Audio source does not automatically up-mix the signal to your project's surround speaker mode. Instead, its output format is binaural stereo at the listener's position.</p>
+<p><img alt="Spatializer Effect Diagram" src="images/resonance_audio_source_effect_diagram.svg" /></p>
+<p>A Resonance Audio source effect requires there to be at least one Resonance Audio listener effect in your project's mixer. This effect is usually placed in the signal chain of the project's <a href="glossary.html#master-bus">master bus</a>, or in the signal chain of a <a href="glossary.html#group-bus">group bus</a> that routes into the master bus. Having more than one Resonance Audio listener effect in a project is not recommended, as it can result in choppy or distorted playback.</p>
+<h2 id="auditioning-object-spatialization-and-height-panning"><a href="#auditioning-object-spatialization-and-height-panning">16.3 Auditioning Object Spatialization and Height Panning</a></h2>
+<p>While events spatialized using the FMOD spatializer effect can be auditioned in <a href="glossary.html#fmod-studio">FMOD Studio</a> without needing to make any special preparations, events spatialized using the FMOD object spatializer effect can only be auditioned if an <a href="glossary.html#object-spatialization">object spatialization</a> technology is present and correctly configured on the machine running FMOD Studio. If you attempt to audition events designed to make use of object spatialization in FMOD Studio without first configuring your project and machine to audition content of that type, the audition will reflect the behavior of FMOD's spatializer effect instead of that object spatialization technology.</p>
+<p>Similarly, while content in most common channel formats can be auditioned in FMOD Studio without needing to make any special preparations, content in 7.1.4 format can only be auditioned if an appropriate technology is present and correctly configured on the machine running FMOD Studio. If you attempt to audition content in 7.1.4 channel format without first configuring your project and machine to play content of that type, the output will be <span class="dead-link" href="glossary.html#down-mix">down-mixed</span class="dead-link"> to a different surround or stereo format.</p>
+<p>This means that if you want to audition object spatialized events or 7.1.4 channel format sound in FMOD Studio, certain requirements must be met:</p>
+<ul>
+<li>Your project must contain content in 7.1.4 channel format, or which produces output in a format designed for object spatialization.<ul>
+<li><a href="glossary.html#audio-file">Audio assets</a> in 7.1.4 format naturally produce output in that format if used in instruments, and it is also possible to create 7.1.4 content using the output panner of tracks and buses set to 7.1.4 output, the FMOD channel mix effect, and certain plug-in effects. 7.1.4 format can be used by technologies such as Dolby Atmos and Windows Sonic.</li>
+<li>Events that contain FMOD object spatializer effects can be spatialized by a variety of object spatialization technologies, including DTS:X, Sony 3D Audio, and Windows Sonic.</li>
+</ul>
+</li>
+<li>If your project's content is in 7.1.4 channel format and is routed into the project's master bus, the master bus's output format must be set to surround 7.1.4. To change your project's master bus output format, first navigate to the mixer window and select the master bus by clicking on it in the overview pane; then, in the deck, right-click on the output meters and select a new output format from the context menu.<br />
+<img alt="Setting Master Bus Output Format to Surround 7.1.4" src="images/set-master-bus-output-to-7-1-4.png" /></li>
+<li>You must be running FMOD Studio on Windows. This is because, while FMOD Studio can be used to create content for a variety of object spatialization technologies, Windows Sonic is the only such technology that supports auditioning events inside FMOD Studio, and Windows Sonic is not currently available on other operating systems.</li>
+<li>FMOD Studio's output device must be set to Windows Sonic. You can set the output device in the audio tab of FMOD Studio's preferences dialog.<br />
+<img alt="Setting Output Device to Windows Sonic" src="images/set-output-device-to-windows-sonic.png" /></li>
+<li>Your machine must be configured to enable Windows Sonic. To enable Windows Sonic on Windows:<ol>
+<li>Ensure that you are running Windows 10 Creators Update or later.</li>
+<li>Open the control panel, and click on the sound icon. (If the sound icon does not appear, click on the hardware and sound category.)</li>
+<li>In the playback tab of the sound window, right-click on your default audio device to open the context menu, then select "properties."</li>
+<li>In the spatial sound tab of the properties window for your default audio device, open the spatial sound format dropdown menu and select "Windows Sonic" or "Windows Sonic for Headphones."</li>
+<li>Click the OK button or the apply button to confirm the change.</li>
+</ol>
+</li>
+</ul>
+<p>Different object spatialization technologies spatialize sound in different ways. Accordingly, while auditioning with Windows Sonic allows you to hear the effects of spatialization in FMOD Studio, it may not sound identical to auditioning in your game if your game uses a different object sptialization technology.</p>
+<h2 id="the-assets-folder"><a href="#the-assets-folder">16.4 The Assets Folder</a></h2>
+<p>Your <a href="glossary.html#fmod-studio">FMOD Studio</a> project's <a href="glossary.html#assets-folder">assets folder</a> contains <a href="glossary.html#audio-file">audio files</a> and other files used in its <a href="glossary.html#event">events</a>. The contents of the assets folder are displayed in the <a href="glossary.html#assets-browser">assets browser</a>.</p>
+<p>Whenever you import a file into your project, that file is automatically copied into your project's assets folder. Imported files can be used in <a href="glossary.html#instrument">instruments</a>, and are included as sample data in your project's <a href="glossary.html#bank">banks</a> when you build the project.</p>
+<p>It is possible to play files not imported into your project at runtime by using <a href="glossary.html#programmer-instrument">programmer instruments</a>. For information about programmer instruments, see the <a href="dialogue-and-localization.html">Dialogue and Localization</a> chapter.</p>
+<p>If your team is using source control, and the "Enable source control integration for assets" checkbox in the source control tab of the <span class="dead-link" href="glossary.html#preferences-dialog">preferences dialog</span class="dead-link"> is not checked, changes made to files in your project's assets folder are not automatically synced between members of your team when you <a href="using-source-control.html#syncing-your-project">sync your project</a>.</p>
+<p><img alt="The Enable Source Control Integration for Assets, Built Banks, and Profiler Sessions Checkboxes" src="images/perforceAssetAndBankInclusionCheckboxes.png" /></p>
+<p>For more information about using assets folders with source control, see the <a href="using-source-control.html">Using Source Control</a> chapter.</p>
+<h3 id="using-an-external-assets-folder"><a href="#using-an-external-assets-folder">16.4.1 Using an External Assets Folder</a></h3>
+<p>By default, your project's assets folder is the <code>Assets</code> subdirectory of your FMOD Studio project folder. You can change your assets folder by specifying a different relative or absolute path in the assets tab of the <span class="dead-link" href="glossary.html#preferences-dialog">preferences dialog</span class="dead-link">.</p>
+<p><img alt="The Assets Folder property" src="images/assets-folder-property.png" /></p>
+<p>Changing your assets folder to an external directory allows you to store your audio assets separately to your FMOD Studio project. This may be useful if your team stores its audio assets on a shared network drive.</p>
+<p>However, if your FMOD Studio project is moved to a different machine but the external assets folder is not moved with it, or if your project's assets folder uses a relative path and the project is moved to a different directory without also moving its assets folder, your project will no longer have access to the assets in that folder. Assets lost in this manner are marked as "#missing" in the assets browser.</p>
+<p>Setting your project's assets folder to a network drive may result in poor performance and errors, depending on your network's available bandwidth and latency.</p>
+<p>It is not safe to set your project's assets folder to a path that contains files used in other projects. Working on an FMOD Studio project frequently results in changes to the project's asset files, potentially making those files inaccessible to other projects. Conversely, changes made to those files by other projects may make those files inaccessible to your FMOD Studio project. In addition, keeping files not needed by an FMOD Studio project in that project's assets folder can result in slower performance.</p>
+<p>If your team is using source control, each member may set their asset directory to a different path. If your team's reason for using external asset folders is to reduce the size of the project on disk or in your source control repository, make sure that every member of your team uses an external assets folder. If one user stores files in the project folder's <code>Assets</code> subdirectory, those files are automatically added to the repository whenever the project is <a href="using-source-control.html#syncing-your-project">synced</a>, and so contribute to the project's size even if all other users' assets folders are in different locations.</p>
+<p>For more information about using assets folders with source control, see the <a href="using-source-control.html">Using Source Control</a> chapter.</p>
+<h2 id="stealing-and-virtualization"><a href="#stealing-and-virtualization">16.5 Stealing and Virtualization</a></h2>
+<p>The virtual voice system limits and controls the number of <a href="glossary.html#event-instance">event instances</a> played at the same time. Instance limits can be set on individual events and on mixer buses.</p>
+<p>Limiting the number of event instances in play at one time provides a less cluttered listening experience for the player and allows you to keep the audible focus on important game items or events. It also gives the added benefit of resource management, putting less strain on the player's machine.</p>
+<p>Each event and <a href="glossary.html#group-bus">group bus</a> has a stealing property that determines which event instances should be stopped or <span class="dead-link" href="glossary.html#virtualize">virtualized</span class="dead-link"> when the number of playing instances would otherwise exceed its <span class="dead-link" href="glossary.html#max-instances">max instances</span class="dead-link"> property.</p>
+<h3 id="stealing"><a href="#stealing">16.5.1 Stealing</a></h3>
+<p>Whenever playing a new event <a href="glossary.html#event-instance">event instance</a> would cause the number of simultaneous instances to exceed an event or bus's max instances property, FMOD follows the stealing behavior associated with that event or bus. Stealing an event instance either stops it, prevents it from playing, or virtualizes it.</p>
+<p>A bus or event's stealing behavior can be set to one of the following:</p>
+<ul>
+<li><strong>Oldest</strong>: Stop the event instance that was started the longest time ago.</li>
+<li><strong>Quietest</strong>: Stop the event instance that is the least audible, taking distance attenuation into consideration.</li>
+<li><strong>Furthest</strong>: Stop the event instance that is the furthest away from the listener, regardless of its volume.</li>
+<li><strong>None</strong>: No stealing occurs, therefore no new event instances can be played until an existing event instance stops.</li>
+<li><strong>Virtualize</strong>: (Event Only) The quietest event instance is virtualized, meaning it continues to play but produces no output until an existing event instance stops or it is no longer the quietest event instance to the listener.</li>
+</ul>
+<h3 id="virtualization"><a href="#virtualization">16.5.2 Virtualization</a></h3>
+<p>A virtualized <a href="glossary.html#event-instance">event instance</a> is an event instance that is playing but produces no audio. When an event is no longer virtual and starts producing audio again, it is known as becoming "real". Virtualization always steals the quietest event instance.</p>
+<p>Unlike other stealing behaviors, virtualization does not stop any existing event instances. The master track of a virtualized event instance is muted but the <a href="glossary.html#playback-position">playback position</a> continues advancing. The event becomes real when it is no longer the quietest event instance in play. Because the playback position is still advancing through the event, when it becomes real it is as if the event was never muted, giving the illusion of simply being out of earshot. All behaviors within the virtualized event instance, such as <a href="glossary.html#parameter">parameters</a>, <a href="glossary.html#automation">automation</a>, <span class="dead-link" href="glossary.html#condition">conditions</span class="dead-link"> being met, and <a href="glossary.html#instrument">instruments</a> <a href="glossary.html#trigger">triggering</a> perform as normal.</p>
+<p>It is important to note that <a href="glossary.html#fmod-studio">FMOD Studio</a> events create <a href="https://fmod.com/docs/2.02/api/core-guide.html#voices-channels-virtual-voices-play-thousands-of-sounds-at-once">FMOD Core API Channels</a> in order to play audio. Each single instrument and programmer instrument playing counts as a Channel, and each <span class="dead-link" href="glossary.html#playlist-entry">playlist entry</span class="dead-link"> playing in multi instruments, scatterer instruments, and the relevant contents of an event instrument count as a Channel. These Channels also have the ability to go virtual or real, which can cause parts of the event to go silent if the maximum voice limit has been reached. You can avoid situations like this by allocating <span class="dead-link" href="glossary.html#priority">priorities</span class="dead-link"> to each event as needed. Also note that a <a href="glossary.html#referenced-event">referenced event</a> does not inherit its <a href="glossary.html#parent-event">parent event</a>'s priority and needs to have its priority set to match the parent to avoid the aforementioned partial virtualization.</p>
+<p>If the <a href="glossary.html#fmod-engine">FMOD Engine</a> is initialized with the <code>FMOD_INIT_VOL0_BECOMES_VIRTUAL</code> flag, Channels automatically go virtual when their audibility drops below <a href="https://fmod.com/docs/2.02/api/core-api-system.html#fmod_advancedsettings_vol0virtualvol">vol0virtualvol</a>.</p>
+<p>For more information on the virtualization, see the <a href="https://fmod.com/docs/2.02/api/white-papers-virtual-voices.html">virtual voice system</a> section of the <a href="https://fmod.com/docs/2.02/api">FMOD Engine User Manual</a>.</p>
+<h4 id="how-audibility-is-calculated"><a href="#how-audibility-is-calculated">How audibility is calculated</a></h4>
+<p>Virtualization and quietest stealing behaviors steal the least audible <a href="glossary.html#event-instance">event instances</a>.</p>
+<p>The audibility of an event is calculated based on the accumulated gain being applied to the event's master track, as well any alterations applied to gain by fades, <a href="glossary.html#automation">automation</a>, and <a href="glossary.html#modulator">modulation</a>. This includes:</p>
+<ul>
+<li>Gain applied by <a href="glossary.html#effect">effects</a>.</li>
+<li>The event's <a href="glossary.html#master-track">master track</a> volume set in FMOD Studio.</li>
+<li>Attenuation applied by <a href="glossary.html#spatializer-effect">spatializer effects</a>.</li>
+<li>The volume level of <a href="glossary.html#send">sends</a>, which are counted as gain for the purposes of the audibility calculation.</li>
+<li>The event instance's volume set via <a href="https://fmod.com/docs/2.02/api/studio-api-eventinstance.html#studio_eventinstance_setvolume">Studio::EventInstance::setVolume</a>.</li>
+</ul>
+<p>Audibility is only calculated using the event's master track; the calculation does not include any gain applied to non-master <a href="glossary.html#audio-track">audio tracks</a> or <a href="glossary.html#return-track">return tracks</a>.</p>
+<h2 id="special-contents-of-the-master-bank"><a href="#special-contents-of-the-master-bank">16.6 Special Contents of the Master Bank</a></h2>
+<p>In order for the <a href="glossary.html#fmod-engine">FMOD Engine</a> to play events, at least one <a href="glossary.html#master-bank">master bank</a> needs to be loaded at all times in your game's code.</p>
+<p>Master banks contain the <a href="glossary.html#mixer">global mixer</a> for your <a href="glossary.html#fmod-studio">FMOD Studio</a> project. The global mixer includes all of the <a href="glossary.html#group-bus">group buses</a>, <a href="glossary.html#return-bus">return buses</a>, <a href="glossary.html#vca">VCAs</a>, and <a href="glossary.html#snapshot">snapshots</a> for the given project. </p>
+<p>Most importantly, master banks contain the <a href="glossary.html#master-bus">master bus</a> for the project. Since the master bus will output to the machine's speakers, anything that does not go through the global mixer will not be output to the speakers. Due to this, the master bank must be loaded at all times in order for all events to be audible.</p>
+<p>Master banks can also have events assigned to them. In this case, the master bank also contains those events and their referenced sample data. Your game code can access these events <a href="getting-events-into-your-game.html">the same way as any other bank</a>.</p>
+<h2 id="automation-curve-combination"><a href="#automation-curve-combination">16.7 Automation Curve Combination</a></h2>
+<p>As mentioned in the <a href="authoring-events.html#automation">Authoring Events</a> chapter, when a <span class="dead-link" href="glossary.html#property">property</span class="dead-link"> is <a href="glossary.html#automation">automated</a> on multiple <a href="glossary.html#parameter">parameters</a>, the values assigned to that property by each <span class="dead-link" href="glossary.html#automation-curve">automation curve</span class="dead-link"> are combined to determine the value to which the property is set.</p>
+<p>The exact method by which the values are combined depends on the property being automated, as shown in the following table.</p>
+<table>
+<thead>
+<tr>
+<th><em>Property Type</em></th>
+<th><em>Combination Method</em></th>
+<th><em>Examples</em></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Properties measured in percentages</td>
+<td>Curve values are  multiplied to produce the combined value</td>
+<td>Snapshot's intensity macro control <br /><br />Snapshot instrument's Intensity</td>
+</tr>
+<tr>
+<td></td>
+<td>The lowest curve value is used as the combined value</td>
+<td>Compressor effect's Threshold<br /><br />Lowpass effect's Cutoff<br /><br />Reverb effect's High Cut</td>
+</tr>
+<tr>
+<td>Properties measured in dB that go as low as -&infin; dB</td>
+<td>If any curve value is -&infin;, the combined value is -&infin;; otherwise, curve values are summed to create the combined value</td>
+<td>Track fader's Volume<br /><br />Bus fader's volume<br />Compressor effect's Gain<br /><br />Multiband Eq effect's Gain <br/><br />Parametric Eq effect's Gain</td>
+</tr>
+<tr>
+<td>Track panner properties other than height, extent, and LFE<br /><br />Spatializer effect's pan override drawer's properties other than extent</td>
+<td>Curve values are summed to create the combined value</td>
+<td>Track panner's Direction<br /><br />Track panner's Axis<br /><br />Track panner's Stereo Separation<br /><br />Track panner's Height</td>
+</tr>
+<tr>
+<td>Compressor effect's Ratio<br /><br />Chorus effect's Depth<br /><br />Chorus effect's Mix<br /><br />Delay effect's Feedback<br /><br />Highpass effect's Cutoff<br /><br />Highpass effect's Resonance<br /><br />Highpass Simple effect's Cutoff<br /><br />Lowpass effect's Cutoff<br /><br />Lowpass effect's Resonance<br /><br />Lowpass Simple effect's Cutoff<br /><br />Spatializer effect's pan override drawer's Extent<br /><br />Spatializer effect's pan override drawer's Mix<br /><br />Any instrument's Start Offset<br /><br />Scatterer instrument's Spawn Total<br /><br />Scatterer instrument's Spawn Rate<br /><br />Track panner's Extent</td>
+<td>The highest curve value is used as the combined value</td>
+<td></td>
+</tr>
+<tr>
+<td>Other properties</td>
+<td>Curve values are averaged to create the combined value</td>
+<td>Compressor effect's Ratio<br /><br />Chorus effect's Depth<br /><br />Chorus effect's Mix</td>
+</tr>
+</tbody>
+</table>
+<h2 id="event-state"><a href="#event-state">16.8 Event State</a></h2>
+<p>The state of an <a href="glossary.html#event-instance">event instance</a> is what that instance is currently doing: Whether it is currently playing, paused, stopping, or stopped. The state of an event instance influences how and when it is loaded into memory, the amount of memory it consumes, and the number of <span class="dead-link" href="glossary.html#voice">voices</span class="dead-link"> it requires. As such, a detailed understanding of event states can help you improve your game's performance.</p>
+<p>Each event state is associated with certain behaviors.</p>
+<p>A <strong>playing</strong> event instance outputs to the <a href="glossary.html#mixer">mixer</a>. Its <a href="glossary.html#timeline">timeline</a> playback position automatically advances until it encounters a <a href="glossary.html#sustain-point">sustain point</a>. If one of its <a href="glossary.html#parameter">parameters</a> is set to a new value, that parameter's <a href="glossary.html#playback-position">playback position</a> changes to the new value at a rate defined by that parameter's <span class="dead-link" href="glossary.html#seek-speed">seek speed</span class="dead-link">. If any of its parameters have <span class="dead-link" href="glossary.html#velocity">velocity</span class="dead-link">, the playback positions of those parameters automatically advance.</p>
+<p>A playing event instance can be made to enter the paused, stopping, or stopped event states. A playing instance of a non-persistent event automatically enters the stopped event state if there is no content to the right of its timeline playback position and no <a href="glossary.html#instrument">instruments</a> in that event instance are currently producing output.</p>
+<p>A <strong>paused</strong> event instance does not produce output, but continues to consume system resources as if it were playing. The playback positions of its timeline and parameters do not automatically advance. If one of its parameter values is changed, that parameter's playback position is updated when the event instance is next unpaused. An event instance that was paused while stopping resumes stopping when unpaused.</p>
+<p>A paused event instance can be unpaused, which causes it to enter the event state it was in prior to being paused. Immediately stopping a paused event instance causes it to enter the stopped event state.</p>
+<p>A <strong>stopping</strong> event instance behaves identically to a playing event instance, except that the release periods of <a href="glossary.html#ahdsr-modulator">AHDSR modulators</a> on the event's properties are applied to those properties, and that the event instance automatically enters the stopped event state once all of those release periods are completed and the tails from all its reverb and delay effects have played out.</p>
+<p>Stopping an event instance does not automatically untrigger the instruments in that event instance. This is to allow you to create content that continues playing or begins playing while an event instance is stopping.</p>
+<p>A stopping event instance can be made to enter the paused or stopped event states. A stopping event instance automatically enters the stopped event state once the release periods of all AHDSR modulators on the event's properties are completed.</p>
+<p>A <strong>stopped</strong> event instance does not produce output. Its playback positions do not automatically advance. If its parameter values are changed, the playback positions of those parameters instantly move to their new positions.</p>
+<p>A stopped event instance can be made to enter the playing event state.</p>
+<h3 id="state-and-fmod_studio_playback_state"><a href="#state-and-fmod_studio_playback_state">16.8.1 State and FMOD_STUDIO_PLAYBACK_STATE</a></h3>
+<p>The event states used for the purposes of sound design in <a href="glossary.html#fmod-studio">FMOD Studio</a> differ slightly from the "playback states" used by <a href="https://fmod.com/docs/2.02/api/studio-api-common.html#fmod_studio_playback_state">FMOD_STUDIO_PLAYBACK_STATE</a> in the <a href="https://fmod.com/docs/2.02/api">Studio API</a>. To convert from FMOD Studio event states to Studio API playback states, see below.</p>
+<table>
+<thead>
+<tr>
+<th>FMOD Studio event state</th>
+<th>Equivalent FMOD_STUDIO_PLAYBACK_STATEs</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Playing</td>
+<td><code>FMOD_STUDIO_PLAYBACK_PLAYING</code></td>
+<td>An event instance that is currently playing is in the <code>FMOD_STUDIO_PLAYBACK_PLAYING</code> playback state.</td>
+</tr>
+<tr>
+<td>Paused</td>
+<td><code>FMOD_STUDIO_PLAYBACK_PLAYING</code><br /><code>FMOD_STUDIO_PLAYBACK_SUSTAINING</code><br /><code>FMOD_STUDIO_PLAYBACK_STOPPING</code></td>
+<td>Pausing event instances is handled via <a href="https://fmod.com/docs/2.02/api/studio-api-eventinstance.html#studio_eventinstance_getpaused">Studio::EventInstance::getPaused</a> and <a href="https://fmod.com/docs/2.02/api/studio-api-eventinstance.html#studio_eventinstance_setpaused">Studio::EventInstance::setPaused</a>, rather than <code>FMOD_STUDIO_PLAYBACK_STATE</code>. As such, an event instance that is paused has the same <code>FMOD_STUDIO_PLAYBACK_STATE</code> it had when unpaused.</td>
+</tr>
+<tr>
+<td>Stopping</td>
+<td><code>FMOD_STUDIO_PLAYBACK_STOPPING</code></td>
+<td>An event instance that has been told to stop, but which is in the process of playing out its AHDSR modulator release periods before it stops completely, is in the <code>FMOD_STUDIO_PLAYBACK_STOPPING</code> playback state.</td>
+</tr>
+<tr>
+<td>Stopped</td>
+<td><code>FMOD_STUDIO_PLAYBACK_STOPPED</code></td>
+<td>Events that are currently stopped are in the <code>FMOD_STUDIO_PLAYBACK_STOPPED</code> playback state.</td>
+</tr>
+</tbody>
+</table>
+<p>To convert from Studio API playback states to FMOD Studio event states, see below.</p>
+<table>
+<thead>
+<tr>
+<th>FMOD_STUDIO_PLAYBACK_STATE</th>
+<th>Equivalent FMOD Studio event state</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FMOD_STUDIO_PLAYBACK_PLAYING</code></td>
+<td>Playing<br />Paused</td>
+<td>Pausing an event instance does not change its <code>FMOD_STUDIO_PLAYBACK_STATE</code>, so an event instance in the <code>FMOD_STUDIO_PLAYBACK_PLAYING</code> state is in that state even if it is also paused.</td>
+</tr>
+<tr>
+<td><code>FMOD_STUDIO_PLAYBACK_SUSTAINING</code></td>
+<td>Playing<br />Paused</td>
+<td>Sustain points change an event instance's <code>FMOD_STUDIO_PLAYBACK_STATE</code>, but not its event state in FMOD Studio. Pausing an event instance does not change its <code>FMOD_STUDIO_PLAYBACK_STATE</code>, so an event instance in the <code>FMOD_STUDIO_PLAYBACK_SUSTAINING</code> state is in that state even if it is also paused.</td>
+</tr>
+<tr>
+<td><code>FMOD_STUDIO_PLAYBACK_STOPPED</code></td>
+<td>Stopped</td>
+<td></td>
+</tr>
+<tr>
+<td><code>FMOD_STUDIO_PLAYBACK_STARTING</code></td>
+<td>N/A</td>
+<td>There is no FMOD Studio event state equivalent to the FMOD Studio API's <code>FMOD_STUDIO_PLAYBACK_STARTING</code> playback state.</td>
+</tr>
+<tr>
+<td><code>FMOD_STUDIO_PLAYBACK_STOPPING</code></td>
+<td>Stopping<br />Paused</td>
+<td>Pausing an event instance does not change its <code>FMOD_STUDIO_PLAYBACK_STATE</code>, so an event instance in the <code>FMOD_STUDIO_PLAYBACK_STOPPING</code> state is in that state even if it is also paused.</td>
+</tr>
+</tbody>
+</table>
+<p>For more specific information about <code>FMOD_STUDIO_PLAYBACK_STATE</code> and playback states in the FMOD Studio API, see <a href="https://fmod.com/docs/2.02/api/studio-api-common.html#fmod_studio_playback_state">FMOD_STUDIO_PLAYBACK_STATE</a> in the <a href="https://fmod.com/docs/2.02/api">FMOD Engine User Manual</a>.</p>
+<h2 id="effect-chains"><a href="#effect-chains">16.9 Effect Chains</a></h2>
+<p>An effect chain is a special type of <a href="glossary.html#preset-effect">preset effect</a> that contains its own <a href="glossary.html#signal-chain">signal chain</a> of other <a href="glossary.html#effect">effects</a>, <a href="glossary.html#send">sends</a>, and <span class="dead-link" href="glossary.html#sidechain">sidechains</span class="dead-link">. Putting a frequently-used series of effects into an effect chain makes it easier to use that series in multiple places throughout your <span class="dead-link" href="glossary.html#fmod-studio-project">project</span class="dead-link">.</p>
+<p><img alt="Empty Effect Chain" src="images/empty-effect-chain.png" /></p>
+<p>You can add an effect chain to your project by right-clicking on the <a href="glossary.html#effects-browser">effects browser</a> and selecting "New Preset &gt; New Effect Chain" from the <a href="glossary.html#context-menu">context menu</a>. In addition, you can convert an existing preset effect into an effect chain containing that effect by right-clicking on the preset effect in the effects browser and selecting "Wrap in Effect Chain" from the context menu. You can also create a new effect chain by selecting a <a href="glossary.html#track">track</a> in the <a href="glossary.html#event-editor-window">event editor window</a>, right-clicking on the <a href="glossary.html#deck">deck</a>, and selecting "Add Effect Chain" from the context menu.</p>
+<p><img alt="New Effect Chain Context Menu Command" src="images/new-effect-chain-command.png" /></p>
+<p>All instances of an effect chain have the same effects, sends, and sidechains, with the same <span class="dead-link" href="glossary.html#property">property</span class="dead-link"> settings, including any <a href="glossary.html#automation">automation</a> and <a href="glossary.html#modulator">modulators</a>. Because the properties of effects and sends in an effect chain can be subject to automation and modulation, it is possible for different instances of an effect chain to have different current property values. If an effect chain makes use of <a href="glossary.html#user-parameter">user parameters</a> or <a href="glossary.html#built-in-parameter">built-in parameters</a> (for example, for automation), those parameters are automatically added to every event that contains an instance of that effect chain.</p>
+<p>You can add effects, sends, and sidechains to an effect chain by right-clicking on the effect chain in the deck and selecting "Insert Effect," "Insert Send," or "Insert Sidechain" from the context menu. In addition, if viewing the deck of a track that contains an effect chain in the event editor window, you can click and drag effects, sends, and sidechains from elsewhere in the signal chain onto an effect chain to add them to that effect chain. Preset effects, sends to return tracks in events, and other effect chains cannot be added to effect chains.</p>
+<p><img alt="Effect Chain With Contents" src="images/effect-chain-with-gain-and-delay.png" /></p>
+<p>You can remove effects, sends, and sidechains from an effect chain by right-clicking on them and selecting "Delete" from the context menu. In addition, if viewing the deck of a track that contains an effect chain in the event editor window, you can click and drag an effect, send, or sidechain from inside the effect chain to a position elsewhere in the deck to remove it from that effect chain. Alternatively, if there is only one effect in an effect chain, you can remove the effect chain from the preset effect by right-clicking on the preset effect in the effects browser and selecting "Unwrap Effect Chain" from the context menu.</p>
+<p>You can change the order of effects, sends, and sidechains in an effect chain by clicking and dragging them to new positions.</p>
+<p>Editing any effect chain anywhere in your project affects every instance of that effect chain throughout your project. If you want to make changes to the contents of an effect chain without affecting other instances of that effect chain elsewhere in your project, right-click on the effect chain and select "Detach from preset." This replaces that instance of the effect chain with a series of effects, sends, and sidechains identical to the effects, sends, and sidechains in that effect chain, but which are not linked to the preset effect. </p>
+<h2 id="custom-window-layouts"><a href="#custom-window-layouts">16.10 Custom Window Layouts</a></h2>
+<p>By default, whenever you load a saved <span class="dead-link" href="glossary.html#fmod-studio-project">project</span class="dead-link">, <a href="glossary.html#fmod-studio">FMOD Studio</a> automatically reopens the same collection of windows that was open when you closed that project. Similarly, whenever you're working on an FMOD Studio project and re-open a window that you previously closed while working on that project, FMOD Studio automatically restores that window to the same size and position on your screen that it had prior to being closed. These features allow you to customize your workspace to suit your preferred workflow.</p>
+<p>You can change or disable these behaviors with the "When opening a project" and "Window management" settings in the interface tab of the <span class="dead-link" href="glossary.html#preferences-dialog">preferences dialog</span class="dead-link">.</p>
+<p><img alt="Custom Window Layout Properties" src="images/custom-window-layout-properties.png" title="When opening a project' and 'Window management." /></p>
+<p>Window layout information is stored locally, and is not submitted to your source control repository. This means that when you're collaborating with other people on the same FMOD Studio project, each of you can have a different custom window layout.</p>
+<h2 id="guids-and-paths"><a href="#guids-and-paths">16.11 GUIDs and Paths</a></h2>
+<p>In order to access items within your <a href="glossary.html#fmod-studio">FMOD Studio</a> project in game code, you need to identify those items either by name and path, or by GUID.</p>
+<p>Items within your project that use GUIDs and paths will be referred to as "objects" in this section.</p>
+<p>Some of these objects can have their GUID or path copied to the clipboard. Objects within your project that you can copy GUIDs and paths from include:</p>
+<blockquote>
+<ul>
+<li><a href="glossary.html#event">Events</a></li>
+<li><a href="glossary.html#bank">Banks</a></li>
+<li><a href="glossary.html#group-bus">Group buses</a></li>
+<li><a href="glossary.html#return-bus">Return buses</a></li>
+<li><a href="glossary.html#vca">VCAs</a></li>
+<li><a href="glossary.html#snapshot">Snapshots</a></li>
+</ul>
+</blockquote>
+<p>To find the GUID or path of an object in your project, right click on it and select "Copy GUID" or "Copy Path" then paste it into the text editor of your choice. You can also drag and drop it onto a <a href="glossary.html#browser-search-bar">browser search bar</a> or onto a text editor to automatically paste its GUID and path.</p>
+<h3 id="guids"><a href="#guids">16.11.1 GUIDs</a></h3>
+<p>All objects within your FMOD Studio project contain identifiers known as <span class="dead-link" href="glossary.html#guid">GUIDs</span class="dead-link">. A GUID is a "Globally Unique Identifier." Each GUID is a unique series of characters and numerals associated with an object within your FMOD Studio project, which may be used to identify that object. This means an object created in the same location multiple times has a completely different GUID each time. For example, if the event "Situation_Oriental" at <code>event:/Music/Complex/Situation_Oriental</code> is deleted and replaced by another event with the same name, both events have the same path but they have two different GUIDs.</p>
+<p>Note that not all objects within your project that have GUIDs will have the "Copy GUID" option within their context menu.</p>
+<p>As well as the previously mentioned "Copy GUID" option in the context menu, you can also find the GUID of an object using <a class="apilink" href="scripting-api-reference-project-managedobject.html#managedobjectid">ManagedObject.id</a> in script.</p>
+<p>The FMOD Studio API can only identify an event by name and path if the <span class="dead-link" href="glossary.html#strings-bank">strings.bank</span class="dead-link"> file is loaded. If your game does not load the <code>strings.bank</code> file, you need to use GUIDs to access your events.</p>
+<h3 id="paths"><a href="#paths">16.11.2 Paths</a></h3>
+<p>A path is the unique location of an object within your FMOD Studio project.</p>
+<p>Paths are the most common method of accessing an event in game code.</p>
+<p>Paths include the hierarchical structure, such as folders, snapshot groups, or group buses, as well as the name of the object you are referencing, such as the bus name, event name, etc. For example, the event path for the "Situation_Oriental" event in the examples project is <code>event:/Music/Complex/Situation_Oriental</code>.</p>
+<p>Unlike with GUIDs, a path is not uniquely created for each instance of an object in your project. For example, if you deleted the above "Situation_Oriental" event, then created a new one with the same name, any game code referencing <code>event:/Music/Complex/Situation_Oriental</code> will still work, accessing the newly created event.</p>
+<p>Using paths in your game code rather than GUIDs makes it easier to understand which object is being accessed. Note that in order to use paths in your game code, you will need to load the <span class="dead-link" href="glossary.html#strings-bank">strings.bank</span class="dead-link"> file.</p>
+<h3 id="using-guids-and-paths"><a href="#using-guids-and-paths">16.11.3 Using GUIDs and Paths</a></h3>
+<p>In your game code, you can use GUIDs and paths to get events, buses, and other such objects.</p>
+<div class="highlight language-cpp"><pre><span></span>    <span class="c1">// Retrieving an event via the path</span>
+    <span class="n">FMOD</span><span class="o">::</span><span class="n">Studio</span><span class="o">::</span><span class="n">EventDescription</span><span class="o">*</span> <span class="n">explosionDescription</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+    <span class="n">ERRCHECK</span><span class="p">(</span> <span class="n">system</span><span class="o">-&gt;</span><span class="n">getEvent</span><span class="p">(</span><span class="s">&quot;event:/Explosions/Single Explosion&quot;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">explosionDescription</span><span class="p">)</span> <span class="p">);</span>
+
+    <span class="c1">// You can also use getEvent() to retrieve snapshots</span>
+    <span class="n">FMOD</span><span class="o">::</span><span class="n">Studio</span><span class="o">::</span><span class="n">EventDescription</span><span class="o">*</span> <span class="n">snapshotDescription</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+    <span class="n">ERRCHECK</span><span class="p">(</span><span class="n">system</span><span class="o">-&gt;</span><span class="n">getEvent</span><span class="p">(</span><span class="s">&quot;snapshot:/IngamePause&quot;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">snapshotDescription</span><span class="p">));</span>
+
+    <span class="c1">// Retrieving a bus via its GUID</span>
+    <span class="n">FMOD</span><span class="o">::</span><span class="n">Studio</span><span class="o">::</span><span class="n">Bus</span><span class="o">*</span> <span class="n">sfxBus</span><span class="p">;</span>
+    <span class="n">ERRCHECK</span><span class="p">(</span> <span class="n">system</span><span class="o">-&gt;</span><span class="n">getBus</span><span class="p">(</span><span class="s">&quot;{d320eb98-3d4a-4cd9-a001-fdb4e071c58e}&quot;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">sfxBus</span><span class="p">));</span>
+</pre></div>
+
+<p>For more information on using GUIDs and paths when dealing with events in game code, please see the <a href="https://fmod.com/docs/2.02/api/studio-api-system.html#studio_system_getevent">Studio::System::getEvent</a> and <a href="https://fmod.com/docs/2.02/api/studio-api-system.html#studio_system_geteventbyid">Studio::System::getEventByID</a> sections of the <a href="https://fmod.com/docs/2.02/api">FMOD Engine User Manual</a>.</p>
+<p>When using FMOD Studio <a href="scripting-terminal-reference.html">scripting</a>, you can view the GUID of any object by using <a class="apilink" href="scripting-api-reference-project-managedobject.html#managedobjectid">ManagedObject.id</a>. An object can be looked up by GUID or path using <a class="apilink" href="scripting-api-reference-project.html#projectlookup">project.lookup</a>.</p>
+<div class="highlight language-js"><pre><span></span>    <span class="kd">var</span> <span class="nx">myEvent</span> <span class="o">=</span> <span class="nx">studio</span><span class="p">.</span><span class="nx">project</span><span class="p">.</span><span class="nx">lookup</span><span class="p">(</span><span class="s2">&quot;%GUID%&quot;</span><span class="p">);</span> <span class="c1">// Replace %GUID% with the GUID of your event.</span>
+</pre></div>
+
+<h2 id="user-properties"><a href="#user-properties">16.12 User Properties</a></h2>
+<p><a href="glossary.html#event">Events</a> can have <a href="glossary.html#user-property">user properties</a>. User properties are variables defined by you or other users of <a href="glossary.html#fmod-studio">FMOD Studio</a>, and which can be checked by your game's code. User properties are most commonly used to mark events for special treatment by your game.</p>
+<p>Each user property has a name and a value. The name of a user property is always a string of letters and/or numbers, while the value of a user property may be either a string or a floating point number. If the value of a user property is a number, FMOD Studio automatically sets the type of the user property to floating point. Similarly, if the value of the user property contains any non-numeric characters, FMOD Studio automatically sets the type of the user property to string.</p>
+<p><img alt="User Properties" src="images/user-properties.png" /></p>
+<p>To add a user property to an event, first select the event in the <a href="glossary.html#event-editor-window">event editor window's</a> <a href="glossary.html#events-browser">events browser</a> to see its user properties in the <span class="dead-link" href="glossary.html#overview-pane">overview pane</span class="dead-link">. Click on the last user property to prepare it for text entry, type a name for the property, press 'Enter,' then type a value for the property.</p>
+<p>You can edit an existing user property by clicking on its name or value, then typing a new name or value.</p>
+<p>Once an event with user properties has been built into a bank, your game's code can use <a href="https://fmod.com/docs/2.02/api/studio-api-eventdescription.html#studio_eventdescription_getuserproperty">Studio::EventDescription::getUserProperty</a>, <a href="https://fmod.com/docs/2.02/api/studio-api-eventdescription.html#studio_eventdescription_getuserpropertybyindex">Studio::EventDescription::getUserPropertyByIndex</a>, and <a href="https://fmod.com/docs/2.02/api/studio-api-eventdescription.html#studio_eventdescription_getuserpropertycount">Studio::EventDescription::getUserPropertyCount</a> to check the user properties of an event.</p>
+<p>User properties cannot be <a href="glossary.html#automation">automated</a> or <a href="glossary.html#modulator">modulated</a>, and cannot be changed at run time. Each of the user properties assigned to an event must have a unique name.</p>
+<h2 id="fmod-studio-command-line-tool"><a href="#fmod-studio-command-line-tool">16.13 FMOD Studio Command Line Tool</a></h2>
+<p><a href="glossary.html#fmod-studio">FMOD Studio</a> comes with a command line tool. It can be found in the following locations:</p>
+<ul>
+<li><strong>Windows:</strong> <code>C:\Program Files\FMOD SoundSystem\FMOD Studio</code></li>
+<li><strong>Mac:</strong> <code>%app_bundle%/Contents/MacOS</code> - The <code>%app_bundle%</code> is the "FMOD Studio.app" file in the installation folder.</li>
+</ul>
+<p>On a 64 bit Windows OS with a 32 bit installation of FMOD Studio, this path will be <code>C:\Program Files (x86)\FMOD SoundSystem\FMOD Studio</code>.</p>
+<p>In order to navigate into the app bundle on a Mac, run <code>cd FMOD\ Studio.app/</code> when in the installation folder.</p>
+<p>Open the command prompt in Windows, or the Terminal on Mac, and navigate to the folder FMOD Studio is installed in. Once in the correct directory, you can run the FMOD Studio command line tool. On both operating systems simply run <code>fmodstudio</code> followed by one or several options and the the path to a project .fspro file.</p>
+<p>The following options are valid:</p>
+<ul>
+<li><strong><code>-build</code></strong> - Build mode for command line tool. If <code>-banks</code> or <code>-platforms</code> is not specified, builds all banks to all platforms set in the <a href="glossary.html#built-banks-output-directory">preferences dialog</a>.<ul>
+<li><strong><code>-banks %bank_names%</code></strong> - Comma-separated list of <a href="glossary.html#bank">banks</a> to build. Must be in build mode. (Optional)</li>
+<li><strong><code>-platforms %platform_names%</code></strong> - Comma-separated list of <span class="dead-link" href="glossary.html#platform">platforms</span class="dead-link"> to build. Must be in build mode. (Optional)</li>
+<li><strong><code>-export-guids</code></strong> - Exports event <span class="dead-link" href="glossary.html#guid">GUIDs</span class="dead-link"> and mixer <span class="dead-link" href="glossary.html#guid">GUIDs</span class="dead-link"> to text files. Must be in build mode. (Optional)</li>
+<li><strong><code>-shared-audio-source-dir %path%</code></strong> - Overrides the project's <a href="glossary.html#assets-folder">assets folder path</a> with the specified path. Must be in build mode. (Optional)</li>
+<li><strong><code>-ignore-warnings</code></strong> - Continue building if warnings are detected. Must be in build mode. (Optional)</li>
+</ul>
+</li>
+<li><strong><code>-diagnostic</code></strong> - Runs validation check on the project for potential corruptions and errors</li>
+<li><strong><code>-script %path_to_script_file%</code></strong> - Javascript file path to run. The file path can be relative to the working directory or an absolute file path. For more information, see the chapter on FMOD Studio's <a href="scripting-terminal-reference.html">Scripting API</a>.</li>
+<li><strong><code>-help</code></strong> - Displays usage information for command line tool.</li>
+<li><strong><code>%path_to_project%</code></strong> - Path to a project .fspro file. The file path can be relative to the working directory or an absolute file path. Must be last in the command.</li>
+</ul>
+<h3 id="examples"><a href="#examples">16.13.1 Examples</a></h3>
+<div class="highlight language-bash"><pre><span></span>fmodstudio -build foobar.fspro <span class="c1"># Builds all banks for all platforms for the project &quot;Foobar&quot;</span>
+
+fmodstudio -build -banks <span class="s2">&quot;Master, SFX, Music&quot;</span> foobar.fspro <span class="c1"># Only builds the banks &quot;Master&quot;, &quot;SFX&quot;, and &quot;Music&quot; for all platforms for the project &quot;Foobar&quot;</span>
+
+fmodstudio -build -banks <span class="s2">&quot;Master&quot;</span> -platforms <span class="s2">&quot;Desktop&quot;</span> foobar.fspro <span class="c1"># Only builds the &quot;Master&quot; for the desktop platform for the project &quot;Foobar&quot;</span>
+
+fmodstudio -build -platforms <span class="s2">&quot;Desktop, XboxOne, PS4&quot;</span> foobar.fspro <span class="c1"># Builds all banks for only desktop, Xbox One, and PS4 for the project &quot;Foobar&quot;</span>
+
+fmodstudio -build -banks <span class="s2">&quot;Master, Dialog&quot;</span> -ignore-warnings foobar.fspro <span class="c1"># Only builds the banks &quot;Master&quot; and &quot;Dialog&quot;, ignoring all warnings for the project &quot;Foobar&quot;</span>
+
+fmodstudio -build -banks <span class="s2">&quot;Master, Dialog&quot;</span> -export-guids foobar.fspro <span class="c1"># Only builds the banks &quot;Master&quot; and &quot;Dialog&quot;, exporting the GUIDs for both text file for the project &quot;Foobar&quot;</span>
+
+fmodstudio -build -shared-audio-source-dir <span class="s2">&quot;C:/audio assets&quot;</span> foobar.fspro <span class="c1"># Builds all banks to all platforms using a custom assets folder for the project &quot;Foobar&quot;</span>
+
+fmodstudio -script foo.js foobar.fspro <span class="c1"># Runs the script &quot;foo.js&quot; in the project &quot;Foobar&quot;</span>
+
+fmodstudio -diagnostic foobar.fspro <span class="c1"># Runs diagnostics against the project &quot;Foobar&quot;</span>
+</pre></div>
+
+<h2 id="migrating-fmod-studio-projects"><a href="#migrating-fmod-studio-projects">16.14 Migrating FMOD Studio Projects</a></h2>
+<p>Moving projects between <a href="glossary.html#version">major versions</a> of <a href="glossary.html#fmod-studio">FMOD Studio</a> usually requires a project migration. When opening a project created using an earlier version, you will be prompted to migrate it.</p>
+<p><img alt="Project migration dialog" src="images/projectMigrationDialog.png" /></p>
+<p>This process may take a considerable amount of time, depending on the size of your project and the version. While the migration process is non-destructive, meaning nothing is overwritten until the project is saved, it is highly recommended to make a backup of the project prior to starting the migration process.</p>
+<div class="admonition warning">
+<p>Once you have migrated and saved, you will not be able to load the project using earlier versions of Studio.</p>
+</div>
+<p>If you migrate your project to a new version of FMOD Studio, you may need to update the version of the FMOD Engine used by your game. <a href="glossary.html#version">FMOD version numbers</a> are split into three parts, in the format: <em>productVersion.majorVersion.minorVersion</em>. The built <a href="glossary.html#bank">bank</a> files produced by a version of FMOD Studio are compatible with any version of the <a href="glossary.html#fmod-engine">FMOD Engine</a> with the same major and product version numbers. For example, a bank built in FMOD Studio version 2.00.03 is compatible with FMOD Engine versions 2.00.03, 2.00.00, and 2.00.10, but not with versions 1.10.14, 1.00.03, and 2.01.03.</p>
+<h3 id="working-with-teams"><a href="#working-with-teams">16.14.1 Working with Teams</a></h3>
+<p>If there are multiple users working on your project, you should appoint one person to manage the migration. Before migrating, all users should commit their outstanding changes to the version control server. If instead you are using a shared drive or cloud storage, you should ensure that the version of your project on the drive or cloud storage includes all users' outstanding changes. Once all changes are committed, the migration manager should retrieve the project and perform the migration. After the project has been migrated and saved, the migration manager should commit the updated version of the project to the version control server. For other forms of project sharing that do not keep track of the file changes (e.g. a shared drive or cloud storage), the project directory should be replaced with the newly migrated one such that any obsolete files are removed.</p>
+<p>﻿</p>
+<h2 id="migrating-fmod-designer-projects"><a href="#migrating-fmod-designer-projects">16.15 Migrating FMOD Designer Projects</a></h2>
+<p><a href="glossary.html#fmod-studio">FMOD Studio</a> supports migrating FMOD Designer projects to the FMOD Studio project format. The migration process can be started by using the "File &gt; Open..." dialog and selecting an FMOD Designer project or an FMOD Designer workspace.</p>
+<p>For titles consisting of multiple FMOD Designer projects, the projects should first be added to an FMOD Designer workspace which can be migrated as a whole. Migrating an FMOD Designer workspace ensures common categories in the associated FMOD Designer projects are consolidated and the events are assigned accordingly.</p>
+<p><img alt="FMOD Designer project migration dialog" src="images/projectMigrationDialogDesigner.png" /></p>
+<h3 id="unsupported-features"><a href="#unsupported-features">16.15.1 Unsupported Features</a></h3>
+<p>Most elements of an FMOD Designer project are migrated to FMOD Studio in some form. However, there are some features that are currently not supported and as such will not be preserved or migrated across.</p>
+<h4 id="music"><a href="#music">Music</a></h4>
+<p>The music system in FMOD Designer is currently not supported by the migration process.</p>
+<h4 id="effects"><a href="#effects">Effects</a></h4>
+<p>The following effects are currently not supported or only partially supported by FMOD Studio. As such, the effect and any of its related envelopes may not be migrated across.</p>
+<ul>
+<li><strong>3D Pan Level</strong>: FMOD Studio currently does not support per track panning. The envelope of the layer first from the top will be migrated to the master track and the rest would be ignored.</li>
+<li><strong>Pan</strong>: Not supported.</li>
+<li><strong>Surround Pan</strong>: Not supported.</li>
+<li><strong>3D Speaker Spread</strong>: Not supported.</li>
+<li><strong>Speaker Level</strong>: Not supported.</li>
+<li><strong>Spawn Intensity</strong>: Partially supported. Range is clamped to between [0 - 5] as part of the migration, which translates to [0% - 500%] in FMOD Studio.</li>
+<li><strong>FMOD IT Lowpass</strong>: Not supported.</li>
+<li><strong>FMOD Delay</strong>: Not supported.</li>
+<li><strong>FMOD Normalize</strong>: Not supported.</li>
+<li><strong>FMOD Chorus</strong>: Not supported.</li>
+<li><strong>SFX Reverb</strong>: Not supported.</li>
+</ul>
+<h4 id="event-properties"><a href="#event-properties">Event Properties</a></h4>
+<ul>
+<li><strong>Spawn Intensity Randomization</strong>: Not supported.</li>
+<li><strong>Priority</strong>: Not supported.</li>
+<li><strong>Max Playbacks</strong>:<ul>
+<li>[1 - 64]: Migrated and value is preserved.</li>
+<li>[65 - ∞]: Migrated to ∞.</li>
+</ul>
+</li>
+<li><strong>Max Playbacks Behavior</strong>: <ul>
+<li>Steal newest: Not supported and migrated as just fail.</li>
+<li>Just fail if quietest: Not supported and migrated as just fail.</li>
+</ul>
+</li>
+<li><strong>3D Position</strong>: <ul>
+<li>Head relative: Not supported.</li>
+</ul>
+</li>
+<li><strong>3D Min Position Randomization</strong>: Not supported.</li>
+<li><strong>3D Max Position Randomization</strong>: Not supported.</li>
+<li><strong>3D Speaker Spread</strong>: Not supported.</li>
+<li><strong>Use Template</strong>: Not supported.</li>
+</ul>
+<h4 id="layer-properties"><a href="#layer-properties">Layer Properties</a></h4>
+<ul>
+<li><strong>Priority</strong>: Not supported.</li>
+</ul>
+<h4 id="sound-def-properties"><a href="#sound-def-properties">Sound Def Properties</a></h4>
+<p>The following properties of a sound def are currently not supported or partially supported. For more information about play mode behavior in FMOD Studio, refer to the description of a <a href="glossary.html#multi-instrument">multi instrument</a>.</p>
+<ul>
+<li><strong>Play Mode</strong>:<ul>
+<li>Sequential Event Restart: Migrated and behavior is preserved.</li>
+<li>Sequential: Not supported and migrated as sequential event restart.</li>
+<li>Random: Migrated and behavior is preserved.</li>
+<li>Random No Repeat: Migrated and behavior is preserved if all items in list have equal weighting.</li>
+<li>Shuffle: Migrated and behavior is preserved if all items in list have equal weighting.</li>
+<li>Programmer Selected: Not supported and migrated as sequential event restart.</li>
+<li>Shuffle Global: Not supported and migrated as random.</li>
+<li>Sequential Global: Not supported and migrated as sequential event restart.</li>
+</ul>
+</li>
+<li><strong>Pitch Randomization Behavior</strong>:<ul>
+<li>Randomize When Event Starts: Not supported.</li>
+</ul>
+</li>
+<li><strong>Play Count</strong>:<ul>
+<li>[0 - 32]: Migrated and value is preserved.</li>
+<li>[32 - ∞]: Migrated as a capped value of 32.</li>
+</ul>
+</li>
+<li><strong>3D Min Position Randomization</strong>: Not supported.</li>
+<li><strong>3D Max Position Randomization</strong>: Not supported.</li>
+</ul>
+<h4 id="parameter-properties"><a href="#parameter-properties">Parameter Properties</a></h4>
+<ul>
+<li>
+<p><strong>Loop Behavior</strong>:</p>
+<ul>
+<li>Oneshot and stop event: Not supported.</li>
+<li>Loop: Not supported.</li>
+</ul>
+</li>
+<li>
+<p><strong>Special behaviors</strong>:</p>
+<ul>
+<li>Keyoff on silence: Not supported.</li>
+</ul>
+</li>
+</ul>
+<h4 id="sustain-points"><a href="#sustain-points">Sustain Points</a></h4>
+<p>FMOD Studio currently only supports <a href="glossary.html#sustain-point">sustain points</a> on the <a href="glossary.html#timeline">timeline</a>, and so any FMOD Designer parameter with sustain points will be migrated to a timeline. The migration process also requires the parameter with sustain points to have non-zero velocity. If an FMOD Designer event contains multiple parameters with sustain points, the sustain points for the first parameter from the top will be migrated across and the rest of the sustain points will be ignored.</p>
+<h2 id="setting-up-different-audio-configurations-for-your-game"><a href="#setting-up-different-audio-configurations-for-your-game">16.16 Setting Up Different Audio Configurations for your Game</a></h2>
+<p>It is common in games to allow players to select the type of audio configuration they wish to use. This allows for a more specialized mix based on how the player is listening to the game. For example, if a setup lacks a subwoofer it might require a bass boost, or a mobile phone speaker might benefit from collapsing the mix down to mono. Creating custom audio configurations not only allows for output-specific mixing for the best audio experience but can also be used to customize resource costs on a per-configuration basis.</p>
+<p>It is possible to set up these configurations by utilizing <a href="glossary.html#fmod-studio">FMOD Studio</a>'s ability to build content for multiple platforms, exclude content from certain <span class="dead-link" href="glossary.html#platform">platforms</span class="dead-link">, and separate the project's <a href="glossary.html#metadata">metadata</a> from its <a href="glossary.html#audio-file">assets</a> when building <a href="glossary.html#bank">banks</a>.</p>
+<h3 id="supporting-multiple-speaker-configurations"><a href="#supporting-multiple-speaker-configurations">16.16.1 Supporting Multiple Speaker Configurations</a></h3>
+<p>The build platform list in the <span class="dead-link" href="glossary.html#preferences-dialog">preferences dialog</span class="dead-link"> can have multiples of the same platform. Each duplicate of a platform can represent a different hardware configuration for that platform. For example, in the build tab of the preferences dialog, you can have this setup:</p>
+<ul>
+<li>PC Headphones (Desktop) - Stereo surround speaker mode</li>
+<li>PC Surround Sound (Desktop) - Surround 7.1 surround speaker mode</li>
+<li>PC TV Speakers (Desktop) - Stereo surround speaker mode</li>
+<li>Xbox Headphones (Xbox One) - Stereo surround speaker mode</li>
+<li>Xbox Surround Sound (Xbox One) - Surround 7.1 surround speaker mode</li>
+<li>Xbox TV Speakers (Xbox One) - Stereo surround speaker mode</li>
+</ul>
+<p><img alt="Example project platforms list" src="images/audio-output-configurations.png" /></p>
+<h3 id="platform-exclusion"><a href="#platform-exclusion">16.16.2 Platform Exclusion</a></h3>
+<p>By utilizing the <a href="glossary.html#platform-exclusion">platform exclusion</a> features on certain effects or tracks, it is possible to apply output configuration specific mixing to those platforms. For example, a multiband EQ can be used on the <a href="glossary.html#master-bank">master bus</a> to boost the bass for TV speakers, whilst a channel mix effect can be included on the headphones to reduce the amount of LFE signal.</p>
+<p>Right click on an audio track or an effect and select "Include on...". From this sub-menu you can choose which platforms to include or exclude it from. Audio tracks and effects that have exclusion properties set will display a plus and minus icon on them.</p>
+<p><img alt="Excluded track with excluded effect" src="images/excluded-track-and-effect.png" /></p>
+<p>Certain effects alter the channel format of a <a href="glossary.html#signal">signal</a> at their positions in the signal chain. Excluding these effects from platforms prevents them from altering the signal on that platform, but does not prevent them from changing the channel format of the signal. For example, if a platform's surround speaker mode is set to surround 5.1, a spatializer effect will automatically <span class="dead-link" href="glossary.html#up-mix">up-mix</span class="dead-link"> the signal to surround 5.1 format on that platform, even if those spatializer effects are excluded from that platform. Effects that can alter the channel format include the FMOD Convolution Reverb, FMOD Channel Mix, FMOD Panner, FMOD Spatializer, FMOD Transceiver, and Resonance Audio Soundfield effects.</p>
+<p>At the bottom right corner of every FMOD Studio window is the platform dropdown menu. By changing the platform from this dropdown menu you can hear how that output configuration sounds in the game.</p>
+<h3 id="separating-metadata-and-assets-in-built-banks"><a href="#separating-metadata-and-assets-in-built-banks">16.16.3 Separating Metadata and Assets in Built Banks</a></h3>
+<p>By default, FMOD Studio bundles both the asset and metadata into the same bank file each time you build banks for a platform. When using multiples of the same platform, having the duplicates of your assets can take up unnecessary space. By separating the metadata and the assets, one set of asset banks can be shared between platforms. To separate the metadata and assets, enable the "Build metadata and assets to separate banks" option in the build tab of the <span class="dead-link" href="glossary.html#preferences-dialog">preferences dialog</span class="dead-link">.</p>
+<p>With this option enabled, two of every bank for each platform is built - one for the metadata and one for the assets. Since the assets are identical between output configurations only one set of <code>assets.bank</code> files are required for the target platform in your game project.</p>
+<p>For example, you could move the asset banks to be used by multiple platforms into folders separate to the platform-specific metadata banks, producing a folder structure like this:</p>
+<div class="highlight language-text"><pre><span></span>├─PC Asset Banks
+│      Master.assets.bank
+│      Music.assets.bank
+│      SFX.assets.bank
+│
+├─PC Headphones
+│      Master.bank
+│      Master.strings.bank
+│      Music.bank
+│      SFX.bank
+│
+├─PC TV Speakers
+│      Master.bank
+│      Master.strings.bank
+│      Music.bank
+│      SFX.bank
+│
+├─Xbox Assets
+│      Master.assets.bank
+│      Music.assets.bank
+│      SFX.assets.bank
+│
+├─Xbox Headphones
+│      Master.bank
+│      Master.strings.bank
+│      Music.bank
+│      SFX.bank
+│
+└─Xbox TV Speakers
+       Master.bank
+       Master.strings.bank
+       Music.bank
+       SFX.bank
+</pre></div>
+
+<p>Using the above example, you could load the <code>assets.bank</code> files once, and then load the necessary metadata <code>.bank</code> file for the output configuration of choice. To swap output configurations, you could unload the currently loaded metadata <code>.bank</code> file(s) and load the metadata <code>.bank</code> required, leaving the <code>assets.bank</code> file(s) alone.</p>
+<p>This setup allows your game to have one set of asset data per platform, and several different mixes that can be loaded in based on the users needs.</p>
+<p>Note that unloading a master metadata bank removes the mixer currently loaded, and stops and releases any <a href="glossary.html#event">event</a> that is currently playing. Because of this, it is recommended that you prevent switching the audio configuration during gameplay and to limit it to an options menu.</p>
+<h2 id="bank-encryption"><a href="#bank-encryption">16.17 Bank Encryption</a></h2>
+<p>Built <a href="glossary.html#bank">banks</a> are not designed to be "decompressed" or "decompiled," and do not include sufficient data to reverse the build process and recreate the <a href="glossary.html#fmod-studio">FMOD Studio</a> project from which the bank was built. Still, someone with sufficient programming knowledge and familiarity with the <a href="glossary.html#fmod-engine">FMOD Engine</a> could theoretically create a program that reads <span class="dead-link" href="glossary.html#sample-data">sample data</span class="dead-link"> from your game's bank files. Such a program could be used to obtain audio spoilers for your game, or to create illegal copies of your game's copyrighted audio content.</p>
+<p>You can prevent this by setting a <span class="dead-link" href="glossary.html#bank-encryption-key">bank encryption key</span class="dead-link"> for your FMOD Studio project in the build tab of the <span class="dead-link" href="glossary.html#preferences-dialog">preferences dialog</span class="dead-link">. A bank encryption key may contain any number, type, and combination of characters, including spaces and symbols as well as alphanumeric characters.</p>
+<p><img alt="The Bank Encryption Key" src="images/bank-encryption-key.png" /></p>
+<p>If your project has a bank encryption key, its bank files are encrypted using that key when you build the project. An encrypted bank file can only be loaded by a game project whose <a href="https://fmod.com/docs/2.02/api/studio-api-system.html#fmod_studio_advancedsettings">FMOD_STUDIO_ADVANCEDSETTINGS</a> struct includes the correct encryption key as its <code>encryptionkey</code> member. For example, if you set your FMOD Studio project's bank encryption key to "Password 1234", your banks could only be loaded by a game whose <code>FMOD_STUDIO_ADVANCEDSETTINGS</code> struct's <code>encryptionkey</code> member was also "Password 1234".</p>
+<p>Note that bank encryption is a deterrent that increases the difficulty of reading data from your banks. It can not stop players from playing your game and recording the audio.</p>
+<h2 id="anonymous-usage-data"><a href="#anonymous-usage-data">16.18 Anonymous Usage Data</a></h2>
+<p>By default, <a href="glossary.html#fmod-studio">FMOD Studio</a> automatically collects data about which of its features you use and sends it to <a href="https://www.fmod.com/">Firelight Technologies</a>, the developers of FMOD Studio.</p>
+<p>FMOD Studio doesn't collect any data that could be used to identify you or your game, and doesn't collect details that could be used to reproduce your project. For example, whenever you rename an <a href="glossary.html#event">event</a>, FMOD Studio records that you renamed an event, but does not record the event's new or old name. Similarly, whenever you click and drag an <span class="dead-link" href="glossary.html#automation-point">automation point</span class="dead-link"> to a new location, FMOD Studio records that you dragged an automation point, but not where you moved it to or from.</p>
+<p>The data collected from all of FMOD Studio's users is aggregated to reveal how frequently each of FMOD Studio's features is used. We use this information to help determine which new features and improvements we'll develop for future versions of FMOD Studio.</p>
+<p>If you want to opt out of sending anonymous usage data, you can do so by selecting "Help &gt; Welcome" to open the <span class="dead-link" href="glossary.html#welcome-dialog">welcome dialog</span class="dead-link">, then unchecking the "Allow collection of anonymous usage data" checkbox at the bottom of the dialog. Opting out of collecting anonymous usage data does not prevent FMOD Studio from sending log files and crash dumps to Firelight Technologies from the <span class="dead-link" href="glossary.html#contact-support-dialog">contact support dialog</span class="dead-link"> and <span class="dead-link" href="glossary.html#crash-reporter-dialog">crash reporter dialog</span class="dead-link">.</p></div>
+
+<p class="manual-footer">FMOD Studio User Manual 2.02.30 (2025-08-05). &copy; 2025 Firelight Technologies Pty Ltd.</p>
+</body>
+</html>
+
+</div>
