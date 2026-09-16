@@ -109,8 +109,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         MVLOG(Error, "Exception caught!\n{}", message);
         return -1;
     }
-
-    return 0;
 }
 
 LRESULT CALLBACK WinProc(_In_ HWND hWnd, _In_ UINT uMsg, _In_ WPARAM wParam, _In_ LPARAM lParam)

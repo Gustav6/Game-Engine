@@ -13,17 +13,20 @@ project "Game"
 
     filter {}
 
-    -- Fix: Use Premake tokens so Visual Studio can resolve paths natively for tracking
     targetdir ("%{wks.location}/Bin/%{cfg.buildcfg}/")
     objdir    ("%{wks.location}/Intermediate/%{prj.name}/%{cfg.buildcfg}/")
 
+    vsprops {
+        DisableFastUpToDateCheck = "true"
+    }
+    
     externalincludedirs { "%{prj.location}", "$(VC_IncludePath)", "$(WindowsSDK_IncludePath)" }
 
     includedirs {
         "%{wks.location}/Source/Utilities",
         "%{wks.location}/Source/Graphics",
+        "%{wks.location}/Source/GameFramework",
         "%{wks.location}/ThirdParty/Source",
-        "%{wks.location}/ThirdParty/Source/fmod",
         "%{wks.location}/Source/Graphics/GraphicsEngine/Shaders/Material"
     }
 
@@ -33,10 +36,7 @@ project "Game"
         "%{prj.location}/**.hpp",
         "%{prj.location}/**.inl",
         "%{prj.location}/**.cc",
-        "%{prj.location}/**.hlsli",
-        
-        "%{wks.location}/ThirdParty/Source/yyjson/yyjson.c", 
-        "%{wks.location}/ThirdParty/Source/tracy/TracyClient.cpp" 
+        "%{prj.location}/**.hlsli"
     }
 
     libdirs {
@@ -46,6 +46,7 @@ project "Game"
     links {
         "Logger",
         "GraphicsEngine",
+        "Framework",
         "CommonUtilities",
         "d3d11",
         "dxguid",
@@ -55,8 +56,16 @@ project "Game"
         "fmod_vc",
         "fmodstudio_vc"
     }
-    
+
+    dependson {
+        "CommonUtilities",
+        "Logger",
+        "GraphicsEngine",
+        "Framework"
+    }
+
     postbuildmessage "Copying Materials and DLLs"
+    
     postbuildcommands {
         'set "CONTENTROOT=$(SolutionDir)Content"',
         'set "SHADERSRC=$(ProjectDir)Materials"',

@@ -7,13 +7,12 @@
 #include <array>
 
 #include "CommonUtilities/Math/Matrix4x4.hpp"
-
-#include "RHI/RenderHardwareInterface.h"
+#include "Objects/Buffer.h"
 
 #include "Materials/Material.h"
 
-#include "Objects/Camera.h"
-
+class RenderHardwareInterface;
+class Camera;
 struct RHIShaderReflectionInfo;
 class PipelineStateObject;
 class Mesh;
@@ -47,7 +46,7 @@ struct DrawCall
 struct SceneCamera
 {
 	CommonUtilities::Matrix4x4f Transform;
-	Camera RenderCamera;
+	const Camera* RenderCamera = nullptr;
 };
 
 struct SceneLight
@@ -166,7 +165,7 @@ private:
 	bool InitializeBuiltinAssets();
 	bool InitializeRenderResources();
 
-	RenderHardwareInterface myRHI;
+	std::unique_ptr<RenderHardwareInterface> myRHI;
 
 	std::filesystem::path myShaderRoot;
 
@@ -199,5 +198,5 @@ private:
 	// First Index = Near Cascade ... last index = Far Cascade
 	std::array<ShadowCascade, NUM_CASCADES> myCascades;
 
-	RenderPass myCurrentRenderPass;
+	RenderPass myCurrentRenderPass = RenderPass::sRGB;
 };

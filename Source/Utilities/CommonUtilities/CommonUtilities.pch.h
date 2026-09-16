@@ -23,4 +23,4 @@
 #include <cmath>
 #include <initializer_list>
 
-#endif //PCH_H
+#endif PCH_H

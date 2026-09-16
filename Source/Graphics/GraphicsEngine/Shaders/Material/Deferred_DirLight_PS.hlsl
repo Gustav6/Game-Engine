@@ -21,7 +21,6 @@ float4 main(FullTextureVertex aInput) : SV_TARGET
         discard;
     }
     
-    
     const float4 normalPixel = GBufferNormal.Sample(TrilinearClamp, aInput.UV);
     const float4 materialPixel = GBufferMaterial.Sample(TrilinearClamp, aInput.UV);
     const float4 worldPositionPixel = GBufferWorldPosition.Sample(TrilinearClamp, aInput.UV);

@@ -37,10 +37,15 @@ filter "configurations:Retail"
 
 filter {} 
 
-group "Dependencies"
-    include "Source/Graphics/GraphicsEngine/premake5.lua"
+group "Utilities"
     include "Source/Utilities/CommonUtilities/premake5.lua"
     include "Source/Utilities/Logger/premake5.lua"
 
-group "Game"
+group "GameFramework"
+    include "Source/GameFramework/premake5.lua"
+
+group "Engine"
+    include "Source/Graphics/GraphicsEngine/premake5.lua"
+  
+group "Application"
     include "Source/Application/Game/premake5.lua"

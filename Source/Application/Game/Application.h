@@ -1,14 +1,15 @@
 ﻿#pragma once
 
-#include "Logger/Logger.h"
+#include <memory>
 
 #include "CommonUtilities/Input/Input.h"
 #include "CommonUtilities/Time/Timer.h"
 
-#include "AssetHandling/AssetRegistry.h"
 #include "WindowManager.h"
-#include <memory>
 #include "Audio/FmodAudioSystem.h"
+
+#include "Logger/Logger.h"
+#include "Ensure.h"
 
 #if _DEBUG
 DECLARE_LOG_CATEGORY_WITH_NAME(LogModelViewer, ModelViewer, Verbose);
@@ -24,7 +25,6 @@ struct ApplicationData
 {
 	CommonUtilities::Input InputManager;
 	CommonUtilities::Timer TimeManager;
-	AssetRegistry AssetRegistry;
 	WindowManager WindowManager;
 
     std::unique_ptr<FmodAudioSystem> AudioSystem;

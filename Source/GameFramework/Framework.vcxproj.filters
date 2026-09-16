@@ -1,0 +1,176 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="AssetPipeline">
+      <UniqueIdentifier>{1B7D7B4E-873D-F784-5078-4002BCF73B61}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="AssetPipeline\AssetRegistry">
+      <UniqueIdentifier>{033E0EF5-6F4B-3CDB-F831-38C6643E0892}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="AssetPipeline\Assets">
+      <UniqueIdentifier>{9D97F0A7-8926-7A71-3245-8E6C1EB38A17}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="AssetPipeline\Assets\Base">
+      <UniqueIdentifier>{473E99CA-B300-CD54-FCB0-5BE168B2A532}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="AssetPipeline\Assets\Types">
+      <UniqueIdentifier>{01DD131F-EDEC-BFEF-56A6-240E42D5AE88}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GamePipeline">
+      <UniqueIdentifier>{75A1B295-6104-423A-0A8A-7AF0F6CB0DBD}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GamePipeline\Components">
+      <UniqueIdentifier>{6A93922C-D6CA-DAC3-DFD4-3EE74B8B01BD}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GamePipeline\Components\Base">
+      <UniqueIdentifier>{34A2E1B8-205D-D164-C914-4AAFB5AE1BF5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GamePipeline\Components\Light">
+      <UniqueIdentifier>{910ECFD5-FD26-B6FF-C6D3-459932AB4A99}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GamePipeline\Components\Rendering">
+      <UniqueIdentifier>{37297D47-A397-D2C6-EC80-8DC6582EC862}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GamePipeline\Components\Transform">
+      <UniqueIdentifier>{B537635F-21A6-B8DE-6A8F-73DED63CAE7A}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GamePipeline\World">
+      <UniqueIdentifier>{ECBFCC95-D8A3-8DEB-4104-883E2D07786D}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="JsonWrapper">
+      <UniqueIdentifier>{20314589-8CE6-BD7E-15DB-B755818FB482}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty">
+      <UniqueIdentifier>{107145F9-FC28-8746-6530-60A251072237}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty\Source">
+      <UniqueIdentifier>{10AD61F8-7CC3-5F8E-C53A-EBAF31903016}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty\Source\tracy">
+      <UniqueIdentifier>{22F6E85D-8E2D-31F5-9737-951803EE57EE}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty\Source\yyjson">
+      <UniqueIdentifier>{AB633527-9788-84A7-C0D3-6937AC5783C5}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="AssetPipeline\AssetRegistry\AssetRegistry.h">
+      <Filter>AssetPipeline\AssetRegistry</Filter>
+    </ClInclude>
+    <ClInclude Include="AssetPipeline\Assets\Base\Asset.h">
+      <Filter>AssetPipeline\Assets\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="AssetPipeline\Assets\Types\AnimationAsset.h">
+      <Filter>AssetPipeline\Assets\Types</Filter>
+    </ClInclude>
+    <ClInclude Include="AssetPipeline\Assets\Types\MaterialAsset.h">
+      <Filter>AssetPipeline\Assets\Types</Filter>
+    </ClInclude>
+    <ClInclude Include="AssetPipeline\Assets\Types\MeshAsset.h">
+      <Filter>AssetPipeline\Assets\Types</Filter>
+    </ClInclude>
+    <ClInclude Include="AssetPipeline\Assets\Types\TextureAsset.h">
+      <Filter>AssetPipeline\Assets\Types</Filter>
+    </ClInclude>
+    <ClInclude Include="AssetPipeline\Assets\Types\UnrealSceneAsset.h">
+      <Filter>AssetPipeline\Assets\Types</Filter>
+    </ClInclude>
+    <ClInclude Include="GameFramework.pch.h" />
+    <ClInclude Include="GamePipeline\Components\Base\Component.h">
+      <Filter>GamePipeline\Components\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="GamePipeline\Components\Light\DirectionlLightComponent.h">
+      <Filter>GamePipeline\Components\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="GamePipeline\Components\Light\LightComponent.h">
+      <Filter>GamePipeline\Components\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="GamePipeline\Components\Light\PointLightComponent.h">
+      <Filter>GamePipeline\Components\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="GamePipeline\Components\Light\SpotLightComponent.h">
+      <Filter>GamePipeline\Components\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="GamePipeline\Components\Rendering\AnimationComponent.h">
+      <Filter>GamePipeline\Components\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="GamePipeline\Components\Rendering\MeshComponent.h">
+      <Filter>GamePipeline\Components\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="GamePipeline\Components\Transform\Transform.h">
+      <Filter>GamePipeline\Components\Transform</Filter>
+    </ClInclude>
+    <ClInclude Include="GamePipeline\World\Actor.hpp">
+      <Filter>GamePipeline\World</Filter>
+    </ClInclude>
+    <ClInclude Include="GamePipeline\World\GameWorld.h">
+      <Filter>GamePipeline\World</Filter>
+    </ClInclude>
+    <ClInclude Include="JsonWrapper\JsonWrapper.h">
+      <Filter>JsonWrapper</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\ThirdParty\Source\tracy\TracyClient.cpp">
+      <Filter>ThirdParty\Source\tracy</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ThirdParty\Source\yyjson\yyjson.c">
+      <Filter>ThirdParty\Source\yyjson</Filter>
+    </ClCompile>
+    <ClCompile Include="AssetPipeline\AssetRegistry\AssetRegistry.cpp">
+      <Filter>AssetPipeline\AssetRegistry</Filter>
+    </ClCompile>
+    <ClCompile Include="AssetPipeline\Assets\Base\Asset.cpp">
+      <Filter>AssetPipeline\Assets\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="AssetPipeline\Assets\Types\AnimationAsset.cpp">
+      <Filter>AssetPipeline\Assets\Types</Filter>
+    </ClCompile>
+    <ClCompile Include="AssetPipeline\Assets\Types\MaterialAsset.cpp">
+      <Filter>AssetPipeline\Assets\Types</Filter>
+    </ClCompile>
+    <ClCompile Include="AssetPipeline\Assets\Types\MeshAsset.cpp">
+      <Filter>AssetPipeline\Assets\Types</Filter>
+    </ClCompile>
+    <ClCompile Include="AssetPipeline\Assets\Types\TextureAsset.cpp">
+      <Filter>AssetPipeline\Assets\Types</Filter>
+    </ClCompile>
+    <ClCompile Include="AssetPipeline\Assets\Types\UnrealSceneAsset.cpp">
+      <Filter>AssetPipeline\Assets\Types</Filter>
+    </ClCompile>
+    <ClCompile Include="GameFramework.pch.cpp" />
+    <ClCompile Include="GamePipeline\Components\Base\Component.cpp">
+      <Filter>GamePipeline\Components\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="GamePipeline\Components\Light\DirectionlLightComponent.cpp">
+      <Filter>GamePipeline\Components\Light</Filter>
+    </ClCompile>
+    <ClCompile Include="GamePipeline\Components\Light\LightComponent.cpp">
+      <Filter>GamePipeline\Components\Light</Filter>
+    </ClCompile>
+    <ClCompile Include="GamePipeline\Components\Light\PointLightComponent.cpp">
+      <Filter>GamePipeline\Components\Light</Filter>
+    </ClCompile>
+    <ClCompile Include="GamePipeline\Components\Light\SpotLightComponent.cpp">
+      <Filter>GamePipeline\Components\Light</Filter>
+    </ClCompile>
+    <ClCompile Include="GamePipeline\Components\Rendering\AnimationComponent.cpp">
+      <Filter>GamePipeline\Components\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="GamePipeline\Components\Rendering\MeshComponent.cpp">
+      <Filter>GamePipeline\Components\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="GamePipeline\Components\Transform\Transform.cpp">
+      <Filter>GamePipeline\Components\Transform</Filter>
+    </ClCompile>
+    <ClCompile Include="GamePipeline\World\Actor.cpp">
+      <Filter>GamePipeline\World</Filter>
+    </ClCompile>
+    <ClCompile Include="GamePipeline\World\GameWorld.cpp">
+      <Filter>GamePipeline\World</Filter>
+    </ClCompile>
+    <ClCompile Include="JsonWrapper\JsonWrapper.cpp">
+      <Filter>JsonWrapper</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

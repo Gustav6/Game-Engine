@@ -20,6 +20,15 @@
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>Game</RootNamespace>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Globals">
+    <DisableFastUpToDateCheck>true</DisableFastUpToDateCheck>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Globals">
+    <DisableFastUpToDateCheck>true</DisableFastUpToDateCheck>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Retail|x64'" Label="Globals">
+    <DisableFastUpToDateCheck>true</DisableFastUpToDateCheck>
+  </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -80,10 +89,10 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>Level4</WarningLevel>
       <TreatWarningAsError>true</TreatWarningAsError>
       <PreprocessorDefinitions>_DEBUG;TRACY_ENABLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\..\Utilities;..\..\Graphics;..\..\..\ThirdParty\Source;..\..\..\ThirdParty\Source\fmod;..\..\Graphics\GraphicsEngine\Shaders\Material;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\Utilities;..\..\Graphics;..\..\GameFramework;..\..\..\ThirdParty\Source;..\..\Graphics\GraphicsEngine\Shaders\Material;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <MinimalRebuild>false</MinimalRebuild>
@@ -118,7 +127,7 @@ IF EXIST "$(SolutionDir)ThirdParty\Dll" ( xcopy /E /I /R /Y /D "$(SolutionDir)Th
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level4</WarningLevel>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <AdditionalIncludeDirectories>..\..\Utilities;..\..\Graphics;..\..\..\ThirdParty\Source;..\..\..\ThirdParty\Source\fmod;..\..\Graphics\GraphicsEngine\Shaders\Material;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\Utilities;..\..\Graphics;..\..\GameFramework;..\..\..\ThirdParty\Source;..\..\Graphics\GraphicsEngine\Shaders\Material;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -159,7 +168,7 @@ IF EXIST "$(SolutionDir)ThirdParty\Dll" ( xcopy /E /I /R /Y /D "$(SolutionDir)Th
       <WarningLevel>Level4</WarningLevel>
       <TreatWarningAsError>true</TreatWarningAsError>
       <PreprocessorDefinitions>_RETAIL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\..\Utilities;..\..\Graphics;..\..\..\ThirdParty\Source;..\..\..\ThirdParty\Source\fmod;..\..\Graphics\GraphicsEngine\Shaders\Material;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\Utilities;..\..\Graphics;..\..\GameFramework;..\..\..\ThirdParty\Source;..\..\Graphics\GraphicsEngine\Shaders\Material;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -194,56 +203,18 @@ IF EXIST "$(SolutionDir)ThirdParty\Dll" ( xcopy /E /I /R /Y /D "$(SolutionDir)Th
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
-    <ClInclude Include="AssetHandling\AssetRegistry.h" />
-    <ClInclude Include="AssetHandling\Assets\Base\Asset.h" />
-    <ClInclude Include="AssetHandling\Assets\Types\AnimationAsset.h" />
-    <ClInclude Include="AssetHandling\Assets\Types\MaterialAsset.h" />
-    <ClInclude Include="AssetHandling\Assets\Types\MeshAsset.h" />
-    <ClInclude Include="AssetHandling\Assets\Types\TextureAsset.h" />
-    <ClInclude Include="AssetHandling\Assets\Types\UnrealSceneAsset.h" />
     <ClInclude Include="Audio\FmodAudioSystem.h" />
+    <ClInclude Include="Camera\GameCamera.h" />
     <ClInclude Include="Game.h" />
-    <ClInclude Include="Game\Camera\GameCamera.h" />
-    <ClInclude Include="Game\Components\Component.h" />
-    <ClInclude Include="Game\Components\Light\DirectionlLightComponent.h" />
-    <ClInclude Include="Game\Components\Light\LightComponent.h" />
-    <ClInclude Include="Game\Components\Light\PointLightComponent.h" />
-    <ClInclude Include="Game\Components\Light\SpotLightComponent.h" />
-    <ClInclude Include="Game\Components\Rendering\AnimationComponent.h" />
-    <ClInclude Include="Game\Components\Rendering\MeshComponent.h" />
-    <ClInclude Include="Game\Components\Transform.h" />
-    <ClInclude Include="Game\World\Actor.hpp" />
-    <ClInclude Include="Game\World\GameWorld.h" />
-    <ClInclude Include="Json\JsonWrapper.h" />
     <ClInclude Include="WindowManager.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\ThirdParty\Source\tracy\TracyClient.cpp" />
-    <ClCompile Include="..\..\..\ThirdParty\Source\yyjson\yyjson.c" />
     <ClCompile Include="Application.cpp" />
-    <ClCompile Include="AssetHandling\AssetRegistry.cpp" />
-    <ClCompile Include="AssetHandling\Assets\Base\Asset.cpp" />
-    <ClCompile Include="AssetHandling\Assets\Types\AnimationAsset.cpp" />
-    <ClCompile Include="AssetHandling\Assets\Types\MaterialAsset.cpp" />
-    <ClCompile Include="AssetHandling\Assets\Types\MeshAsset.cpp" />
-    <ClCompile Include="AssetHandling\Assets\Types\TextureAsset.cpp" />
-    <ClCompile Include="AssetHandling\Assets\Types\UnrealSceneAsset.cpp" />
     <ClCompile Include="Audio\FmodAudioSystem.cpp" />
+    <ClCompile Include="Camera\GameCamera.cpp" />
     <ClCompile Include="Game.cpp" />
-    <ClCompile Include="Game\Camera\GameCamera.cpp" />
-    <ClCompile Include="Game\Components\Component.cpp" />
-    <ClCompile Include="Game\Components\Light\DirectionlLightComponent.cpp" />
-    <ClCompile Include="Game\Components\Light\LightComponent.cpp" />
-    <ClCompile Include="Game\Components\Light\PointLightComponent.cpp" />
-    <ClCompile Include="Game\Components\Light\SpotLightComponent.cpp" />
-    <ClCompile Include="Game\Components\Rendering\AnimationComponent.cpp" />
-    <ClCompile Include="Game\Components\Rendering\MeshComponent.cpp" />
-    <ClCompile Include="Game\Components\Transform.cpp" />
-    <ClCompile Include="Game\World\Actor.cpp" />
-    <ClCompile Include="Game\World\GameWorld.cpp" />
-    <ClCompile Include="Json\JsonWrapper.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="WindowManager.cpp" />
   </ItemGroup>
@@ -257,6 +228,9 @@ IF EXIST "$(SolutionDir)ThirdParty\Dll" ( xcopy /E /I /R /Y /D "$(SolutionDir)Th
     </ProjectReference>
     <ProjectReference Include="..\..\Graphics\GraphicsEngine\GraphicsEngine.vcxproj">
       <Project>{AC8E76BE-985C-6AC4-81F0-DAEA6D5D4629}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\GameFramework\Framework.vcxproj">
+      <Project>{1362EE31-7FCC-A2A8-C80A-544E34B480FD}</Project>
     </ProjectReference>
     <ProjectReference Include="..\..\Utilities\CommonUtilities\CommonUtilities.vcxproj">
       <Project>{AA29E689-16B5-534E-1FC6-D6428BD0AF4E}</Project>

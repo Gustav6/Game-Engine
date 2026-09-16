@@ -46,9 +46,8 @@
 
 #include <memory>
 
-#include "Game/Camera/GameCamera.h"
-#include "Game/World/Actor.hpp"
-#include "Game/World/GameWorld.h"
+#include "Camera/GameCamera.h"
+#include "GamePipeline/World/GameWorld.h"
 
 struct Scene;
 class GraphicsCommandList;

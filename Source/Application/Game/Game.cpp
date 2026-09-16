@@ -9,23 +9,27 @@
 
 #include "Application.h"
 
-#include "AssetHandling/Assets/Types/MeshAsset.h"
-#include "AssetHandling/Assets/Types/AnimationAsset.h"
-#include "AssetHandling/Assets/Types/MaterialAsset.h"
-#include "AssetHandling/Assets/Types/TextureAsset.h"
-#include "AssetHandling/Assets/Types/UnrealSceneAsset.h"
+#include "AssetPipeline/AssetRegistry/AssetRegistry.h"
 
-#include "Game/Components/Rendering/MeshComponent.h"
-#include "Game/Components/Rendering/AnimationComponent.h"
-#include "Game/Components/Light/DirectionlLightComponent.h"
-#include "Game/Components/Light/PointLightComponent.h"
-#include "Game/Components/Light/SpotLightComponent.h"
+#include "AssetPipeline/Assets/Types/MeshAsset.h"
+#include "AssetPipeline/Assets/Types/AnimationAsset.h"
+#include "AssetPipeline/Assets/Types/MaterialAsset.h"
+#include "AssetPipeline/Assets/Types/TextureAsset.h"
+#include "AssetPipeline/Assets/Types/UnrealSceneAsset.h"
+
+#include "GamePipeline/Components/Rendering/MeshComponent.h"
+#include "GamePipeline/Components/Rendering/AnimationComponent.h"
+#include "GamePipeline/Components/Light/DirectionlLightComponent.h"
+#include "GamePipeline/Components/Light/PointLightComponent.h"
+#include "GamePipeline/Components/Light/SpotLightComponent.h"
+#include "GamePipeline/World/Actor.hpp"
 
 #include "GraphicsEngine/GraphicsEngine.hpp"
 #include "GraphicsEngine/Objects/Texture.h"
+#include "GraphicsEngine/Objects/Camera.h"
 #include "GraphicsEngine/RHI/GraphicsCommandList.h"
 
-#include "tracy/core/Tracy.hpp"
+#include <tracy/core/Tracy.hpp>
 #include <Audio/FmodAudioSystem.h>
 
 Game::Game() = default;
@@ -44,13 +48,13 @@ bool Game::Initialize(SIZE aWindowSize, WNDPROC aWindowProcess, LPCWSTR aWindowT
         MVLOG(Error, "Failed to initialize audio system.");
     }
 
-    Application.AssetRegistry.RegisterAssetType<MeshAsset>({ ".fbx" });
-    Application.AssetRegistry.RegisterAssetType<AnimationAsset>({ ".fbx" });
-    Application.AssetRegistry.RegisterAssetType<MaterialAsset>({ ".json" });
-    Application.AssetRegistry.RegisterAssetType<TextureAsset>({ ".dds" });
-    Application.AssetRegistry.RegisterAssetType<UnrealSceneAsset>({ ".json" });
+    AssetRegistry::Get().RegisterAssetType<MeshAsset>({ ".fbx" });
+    AssetRegistry::Get().RegisterAssetType<AnimationAsset>({ ".fbx" });
+    AssetRegistry::Get().RegisterAssetType<MaterialAsset>({ ".json" });
+    AssetRegistry::Get().RegisterAssetType<TextureAsset>({ ".dds" });
+    AssetRegistry::Get().RegisterAssetType<UnrealSceneAsset>({ ".json" });
 
-    if (!Application.AssetRegistry.Initialize(workingDirectory))
+    if (!AssetRegistry::Get().Initialize(workingDirectory))
     {
         return false;
     }
@@ -169,7 +173,7 @@ int Game::Run()
     }
 
     // Cleanup
-    Application.AssetRegistry.UnInitialize();
+    AssetRegistry::Get().UnInitialize();
 
     if (Application.AudioSystem)
     {
@@ -192,8 +196,8 @@ void Game::LoadScene()
 
         MeshComponent* meshComponent = object->AddComponent<MeshComponent>();
 
-        meshComponent->SetMesh(Application.AssetRegistry.GetAsset<MeshAsset>("SM_Color_Checker"));
-        meshComponent->SetMaterial(0, Application.AssetRegistry.GetAsset<MaterialAsset>("SMColorChecker"));
+        meshComponent->SetMesh(AssetRegistry::Get().GetAsset<MeshAsset>("SM_Color_Checker"));
+        meshComponent->SetMaterial(0, AssetRegistry::Get().GetAsset<MaterialAsset>("SMColorChecker"));
 
         object->GetTransform().Translate({ -400, 40, 0 });
         object->GetTransform().Rotate(CommonUtilities::Vector3f{ -90, 0, 0 });
@@ -206,8 +210,8 @@ void Game::LoadScene()
 
         MeshComponent* meshComponent = object->AddComponent<MeshComponent>();
 
-        meshComponent->SetMesh(Application.AssetRegistry.GetAsset<MeshAsset>("SM_Chest"));
-        meshComponent->SetMaterial(0, Application.AssetRegistry.GetAsset<MaterialAsset>("ChestMaterial"));
+        meshComponent->SetMesh(AssetRegistry::Get().GetAsset<MeshAsset>("SM_Chest"));
+        meshComponent->SetMaterial(0, AssetRegistry::Get().GetAsset<MaterialAsset>("ChestMaterial"));
 		
         object->GetTransform().Rotate(CommonUtilities::Vector3f{ 0, -180, 0 });
         object->GetTransform().Translate({ 200, 0, 400 });
@@ -220,8 +224,8 @@ void Game::LoadScene()
 
         MeshComponent* meshComponent = object->AddComponent<MeshComponent>();
 
-        meshComponent->SetMesh(Application.AssetRegistry.GetAsset<MeshAsset>("Unit_Plane"));
-        meshComponent->SetMaterial(0, Application.AssetRegistry.GetAsset<MaterialAsset>("BaseMaterial"));
+        meshComponent->SetMesh(AssetRegistry::Get().GetAsset<MeshAsset>("Unit_Plane"));
+        meshComponent->SetMaterial(0, AssetRegistry::Get().GetAsset<MaterialAsset>("BaseMaterial"));
 
         object->GetTransform().SetScale({ 2000, 2000, 2000 });
 
@@ -233,8 +237,8 @@ void Game::LoadScene()
 
         MeshComponent* meshComponent = object->AddComponent<MeshComponent>();
 
-        meshComponent->SetMesh(Application.AssetRegistry.GetAsset<MeshAsset>("Unit_Cube"));
-        meshComponent->SetMaterial(0, Application.AssetRegistry.GetAsset<MaterialAsset>("BaseMaterial"));
+        meshComponent->SetMesh(AssetRegistry::Get().GetAsset<MeshAsset>("Unit_Cube"));
+        meshComponent->SetMaterial(0, AssetRegistry::Get().GetAsset<MaterialAsset>("BaseMaterial"));
 
         object->GetTransform().Translate({ 0, 50, 0 });
         object->GetTransform().SetScale({ 100, 100, 100 });
@@ -247,8 +251,8 @@ void Game::LoadScene()
 
         MeshComponent* meshComponent = object->AddComponent<MeshComponent>();
 
-        meshComponent->SetMesh(Application.AssetRegistry.GetAsset<MeshAsset>("Unit_Cube"));
-        meshComponent->SetMaterial(0, Application.AssetRegistry.GetAsset<MaterialAsset>("BaseMaterial"));
+        meshComponent->SetMesh(AssetRegistry::Get().GetAsset<MeshAsset>("Unit_Cube"));
+        meshComponent->SetMaterial(0, AssetRegistry::Get().GetAsset<MaterialAsset>("BaseMaterial"));
 
         object->GetTransform().SetEulerRotation({ 45.0f, 180.0f, 45.0f });
         object->GetTransform().Translate({ -200, 100, 400 });
@@ -264,29 +268,29 @@ void Game::LoadScene()
 
         MeshComponent* meshComponent = object->AddComponent<MeshComponent>();
 
-        meshComponent->SetMesh(Application.AssetRegistry.GetAsset<MeshAsset>("SK_C_TGA_Bro"));
-        meshComponent->SetMaterial(0, Application.AssetRegistry.GetAsset<MaterialAsset>("TGABroMaterial"));
+        meshComponent->SetMesh(AssetRegistry::Get().GetAsset<MeshAsset>("SK_C_TGA_Bro"));
+        meshComponent->SetMaterial(0, AssetRegistry::Get().GetAsset<MaterialAsset>("TGABroMaterial"));
 
         AnimationComponent* animationComponent = object->AddComponent<AnimationComponent>(meshComponent->GetSkeleton());
 
         AnimationEntry breathingAnimation =
         {
-            .AnimationAsset = Application.AssetRegistry.GetAsset<AnimationAsset>("A_C_TGA_Bro_Idle_Breathing"),
+            .AnimationAsset = AssetRegistry::Get().GetAsset<AnimationAsset>("A_C_TGA_Bro_Idle_Breathing"),
             .ShouldLoop = true
         };
         AnimationEntry waveAnimation =
         {
-            .AnimationAsset = Application.AssetRegistry.GetAsset<AnimationAsset>("A_C_TGA_Bro_Idle_Wave"),
+            .AnimationAsset = AssetRegistry::Get().GetAsset<AnimationAsset>("A_C_TGA_Bro_Idle_Wave"),
             .ShouldLoop = true
         };
         AnimationEntry runAnimation =
         {
-            .AnimationAsset = Application.AssetRegistry.GetAsset<AnimationAsset>("A_C_TGA_Bro_Run"),
+            .AnimationAsset = AssetRegistry::Get().GetAsset<AnimationAsset>("A_C_TGA_Bro_Run"),
             .ShouldLoop = true
         };
         AnimationEntry walkAnimation =
         {
-            .AnimationAsset = Application.AssetRegistry.GetAsset<AnimationAsset>("A_C_TGA_Bro_Walk"),
+            .AnimationAsset = AssetRegistry::Get().GetAsset<AnimationAsset>("A_C_TGA_Bro_Walk"),
             .ShouldLoop = true
         };
 
@@ -578,6 +582,6 @@ void Game::BuildSceneForRender()
     myScene->SceneCamera = 
 	{ 
 		.Transform = myGameCamera.GetTransform().GetWorldMatrix(), 
-		.RenderCamera = myGameCamera.GetCamera()
+		.RenderCamera = &myGameCamera.GetCamera()
 	};
 }

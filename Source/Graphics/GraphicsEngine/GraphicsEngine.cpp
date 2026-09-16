@@ -13,6 +13,7 @@
 #include "Objects/Shader.h"
 #include "Objects/Sampler.h"
 #include "Objects/Gbuffer.h"
+#include "Objects/Camera.h"
 
 #include "ConstantBuffers/FrameBuffer.h"
 #include "ConstantBuffers/ObjectBuffer.h"
@@ -23,6 +24,7 @@
 #include "RHI/GraphicsCommandList.h"
 #include "RHI/RHIShaderReflectionInfo.h"
 #include "RHI/PipelineStateObject.h"
+#include "RHI/RenderHardwareInterface.h"
 
 #include "Materials/Material.h"
 #include "Materials/MaterialHelpers.h"
@@ -70,14 +72,13 @@ bool GraphicsEngine::Initialize(HWND aWindowHandle, const std::filesystem::path&
 		return false;
 	}
 
-	myCurrentRenderPass = RenderPass::sRGB;
-
 	myShaderRoot = aShaderRoot;
 
+	myRHI = std::make_unique<RenderHardwareInterface>();
 	myBackBuffer = std::make_unique<Texture>();
 	myDepthBuffer = std::make_unique<Texture>();
 
-	if (!myRHI.Initialize(aWindowHandle, true, *myBackBuffer, *myDepthBuffer))
+	if (!myRHI->Initialize(aWindowHandle, true, *myBackBuffer, *myDepthBuffer))
 	{
 		return false;
 	}
@@ -207,7 +208,7 @@ void GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const Scene& 
 		{
 			FrameBuffer frameBuffer;
 			frameBuffer.View = aScene.SceneCamera.Transform.GetFastInverse();
-			frameBuffer.Projection = aScene.SceneCamera.RenderCamera.GetProjection();
+			frameBuffer.Projection = aScene.SceneCamera.RenderCamera->GetProjection();
 			frameBuffer.CameraPosition = aScene.SceneCamera.Transform.GetTranslation();
 			frameBuffer.TypeOfRenderPass = static_cast<unsigned int>(myCurrentRenderPass);
 
@@ -298,7 +299,7 @@ void GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const Scene& 
 
 void GraphicsEngine::Present() const
 {
-	myRHI.Present();
+	myRHI->Present();
 }
 
 void GraphicsEngine::CycleToNextRenderPass()
@@ -320,17 +321,17 @@ bool GraphicsEngine::CreateConstantBuffer(ConstantBuffer aBufferID, std::string_
 
 CommonUtilities::Vector2ui GraphicsEngine::GetClientSize() const
 {
-	return myRHI.GetClientSize();
+	return myRHI->GetClientSize();
 }
 
 bool GraphicsEngine::CreateCommandList(std::string_view aName, GraphicsCommandList& outCommandList) const
 {
-	return myRHI.CreateCommandList(aName, outCommandList);
+	return myRHI->CreateCommandList(aName, outCommandList);
 }
 
 void GraphicsEngine::ExecuteCommandList(const GraphicsCommandList& aCommandList) const
 {
-	myRHI.ExecuteCommandList(aCommandList);
+	myRHI->ExecuteCommandList(aCommandList);
 }
 
 bool GraphicsEngine::CreateMaterial(const MaterialDescription& aDescription, Material& outMaterial) const
@@ -379,7 +380,7 @@ bool GraphicsEngine::CreateMaterial(const MaterialDescription& aDescription, Mat
 
 		MaterialShaderIncludeHandler handler(shaderRoot, shaderProgramPath, materialProgramPath);
 
-		if (!myRHI.CompileShader(ShaderType::VertexShader, shaderProgramPath, &handler, true, materialVS))
+		if (!myRHI->CompileShader(ShaderType::VertexShader, shaderProgramPath, &handler, true, materialVS))
 		{
 			return false;
 		}
@@ -402,7 +403,7 @@ bool GraphicsEngine::CreateMaterial(const MaterialDescription& aDescription, Mat
 
 		MaterialShaderIncludeHandler handler(shaderRoot, shaderProgramPath, materialProgramPath);
 
-		if (!myRHI.CompileShader(ShaderType::PixelShader, shaderProgramPath, &handler, true, materialPS))
+		if (!myRHI->CompileShader(ShaderType::PixelShader, shaderProgramPath, &handler, true, materialPS))
 		{
 			return false;
 		}
@@ -478,7 +479,7 @@ bool GraphicsEngine::CreateMaterial(const MaterialDescription& aDescription, Mat
 
 	PipelineStateObject matPSO;
 
-	if (!myRHI.CreatePipelineStateObject(matPSODesc, matPSO))
+	if (!myRHI->CreatePipelineStateObject(matPSODesc, matPSO))
 	{
 		return false;
 	}
@@ -495,12 +496,12 @@ bool GraphicsEngine::CreateMaterial(const MaterialDescription& aDescription, Mat
 
 bool GraphicsEngine::CreateShadowMap(std::string_view aName, unsigned int aWidth, unsigned int aHeight, Texture& outShadowMap, bool aCube) const
 {
-	return myRHI.CreateDepthStencil(aName, aWidth, aHeight, outShadowMap, aCube);
+	return myRHI->CreateDepthStencil(aName, aWidth, aHeight, outShadowMap, aCube);
 }
 
 bool GraphicsEngine::CreateTexture(std::string_view aName, unsigned aWidth, unsigned aHeight, unsigned aNumMips, ResourceFormat aFormat, ResourceBindFlags aBindFlags, Texture& outTexture) const
 {
-	return myRHI.CreateTexture(aName, aWidth, aHeight, aNumMips, aFormat, aBindFlags, outTexture);
+	return myRHI->CreateTexture(aName, aWidth, aHeight, aNumMips, aFormat, aBindFlags, outTexture);
 }
 
 bool GraphicsEngine::LoadTexture(const std::filesystem::path& aPath, Texture& outTexture) const
@@ -526,7 +527,7 @@ bool GraphicsEngine::LoadTexture(const std::filesystem::path& aPath, Texture& ou
 	file.read(reinterpret_cast<char*>(fileData.data()), size);
 	file.close();
 
-	return myRHI.CreateTexture(aPath.stem().string(), fileData.data(), fileData.size(), outTexture);
+	return myRHI->CreateTexture(aPath.stem().string(), fileData.data(), fileData.size(), outTexture);
 }
 
 void GraphicsEngine::SetEnvironmentTexture(std::unique_ptr<Texture> aEnvironmentTexture)
@@ -543,7 +544,7 @@ bool GraphicsEngine::CreateConstantBufferInternal(ConstantBuffer aBufferID, std:
 {
 	Buffer buffer;
 
-	if (!myRHI.CreateConstantBuffer(aName, aBufferSize, buffer))
+	if (!myRHI->CreateConstantBuffer(aName, aBufferSize, buffer))
 	{
 		return false;
 	}
@@ -577,7 +578,7 @@ bool GraphicsEngine::PrepareMeshForRendering(const Mesh& aMesh) const
 {
 	if (!aMesh.myVertexBuffer.IsValid())
 	{
-		if (!myRHI.CreateVertexBuffer(aMesh.myName, aMesh.myVertices, aMesh.myVertexBuffer))
+		if (!myRHI->CreateVertexBuffer(aMesh.myName, aMesh.myVertices, aMesh.myVertexBuffer))
 		{
 			GELOG(Warning, "Could not prepare mesh {}! Vertex Buffer could not be created!", aMesh.myName);
 			return false;
@@ -586,7 +587,7 @@ bool GraphicsEngine::PrepareMeshForRendering(const Mesh& aMesh) const
 
 	if (!aMesh.myIndexBuffer.IsValid())
 	{
-		if (!myRHI.CreateIndexBuffer(aMesh.myName, aMesh.myIndices, aMesh.myIndexBuffer))
+		if (!myRHI->CreateIndexBuffer(aMesh.myName, aMesh.myIndices, aMesh.myIndexBuffer))
 		{
 			GELOG(Warning, "Could not prepare mesh {}! Index Buffer could not be created!", aMesh.myName);
 			return false;
@@ -632,10 +633,15 @@ void GraphicsEngine::RenderShadowMaps(GraphicsCommandList& inoutCommandList, con
 				static float cameraNear = 0.0f;
 				static float cameraFar = 0.0f;
 
-				if (cameraNear != aSceneCamera.RenderCamera.GetNearPlane() || cameraFar != aSceneCamera.RenderCamera.GetFarPlane())
+				float cameraNearPlane = aSceneCamera.RenderCamera->GetNearPlane();
+				float cameraFarPlane = aSceneCamera.RenderCamera->GetFarPlane();
+				float cameraFov = aSceneCamera.RenderCamera->GetFovInDegrees();
+				float cameraAspectRatio = aSceneCamera.RenderCamera->GetAspectRatio();
+
+				if (cameraNear != cameraNearPlane || cameraFar != cameraFarPlane)
 				{
-					cameraNear = aSceneCamera.RenderCamera.GetNearPlane();
-					cameraFar = aSceneCamera.RenderCamera.GetFarPlane();
+					cameraNear = cameraNearPlane;
+					cameraFar = cameraFarPlane;
 					BuildShadowCascades({4096, 2048, 2048, 2048 }, cameraNear, cameraFar);
 				}
 
@@ -646,17 +652,17 @@ void GraphicsEngine::RenderShadowMaps(GraphicsCommandList& inoutCommandList, con
 				for (size_t c = 0; c < NUM_CASCADES; c++ )
 				{
 					CommonUtilities::Frustum<float> frustum = CommonUtilities::Frustum<float>(
-						aSceneCamera.RenderCamera.GetFovInDegrees(),
+						cameraFov,
 						myCascades[c].NearPlane,
 						myCascades[c].FarPlane,
-						aSceneCamera.RenderCamera.GetAspectRatio()
+						cameraAspectRatio
 					);
 
 					CommonUtilities::Matrix4x4f projection = CommonUtilities::Matrix4x4f::CreatePerspectiveProjection(
-						aSceneCamera.RenderCamera.GetFovInDegrees(),
+						cameraFov,
 						myCascades[c].NearPlane,
 						myCascades[c].FarPlane,
-						aSceneCamera.RenderCamera.GetAspectRatio()
+						cameraAspectRatio
 					);
 
 					CommonUtilities::Matrix4x4f invViewProjection = (cameraView * projection).GetGeneralInverse();
@@ -1026,7 +1032,7 @@ bool GraphicsEngine::InitializeBuiltinAssets()
 	{
 		myDefaultAlbedoTexture = std::make_shared<Texture>();
 
-		if (!myRHI.CreateTexture("Default Albedo", BuiltIn_Default_C_ByteCode, sizeof(BuiltIn_Default_C_ByteCode), *myDefaultAlbedoTexture))
+		if (!myRHI->CreateTexture("Default Albedo", BuiltIn_Default_C_ByteCode, sizeof(BuiltIn_Default_C_ByteCode), *myDefaultAlbedoTexture))
 		{
 			GELOG(Error, "Failed to create default albedo texture!");
 			return false;
@@ -1039,7 +1045,7 @@ bool GraphicsEngine::InitializeBuiltinAssets()
 	{
 		myDefaultNormalTexture = std::make_shared<Texture>();
 
-		if (!myRHI.CreateTexture("Default Normal", BuiltIn_Default_N_ByteCode, sizeof(BuiltIn_Default_N_ByteCode), *myDefaultNormalTexture))
+		if (!myRHI->CreateTexture("Default Normal", BuiltIn_Default_N_ByteCode, sizeof(BuiltIn_Default_N_ByteCode), *myDefaultNormalTexture))
 		{
 			GELOG(Error, "Failed to create default normal texture!");
 			return false;
@@ -1090,7 +1096,7 @@ bool GraphicsEngine::InitializeRenderResources()
 
 		std::unique_ptr<Sampler> sampler = std::make_unique<Sampler>();
 
-		if (!myRHI.CreateSampler(samplerDesc, *sampler))
+		if (!myRHI->CreateSampler(samplerDesc, *sampler))
 		{
 			return false;
 		}
@@ -1109,7 +1115,7 @@ bool GraphicsEngine::InitializeRenderResources()
 
 		std::unique_ptr<Sampler> sampler = std::make_unique<Sampler>();
 
-		if (!myRHI.CreateSampler(samplerDesc, *sampler))
+		if (!myRHI->CreateSampler(samplerDesc, *sampler))
 		{
 			return false;
 		}
@@ -1127,7 +1133,7 @@ bool GraphicsEngine::InitializeRenderResources()
 
 		std::unique_ptr<Sampler> sampler = std::make_unique<Sampler>();
 
-		if (!myRHI.CreateSampler(samplerDesc, *sampler))
+		if (!myRHI->CreateSampler(samplerDesc, *sampler))
 		{
 			return false;
 		}
@@ -1144,7 +1150,7 @@ bool GraphicsEngine::InitializeRenderResources()
 
 		std::unique_ptr<Sampler> sampler = std::make_unique<Sampler>();
 
-		if (!myRHI.CreateSampler(samplerDesc, *sampler))
+		if (!myRHI->CreateSampler(samplerDesc, *sampler))
 		{
 			return false;
 		}
@@ -1162,7 +1168,7 @@ bool GraphicsEngine::InitializeRenderResources()
 
 		myShadowPSO = std::make_unique<PipelineStateObject>();
 
-		if (!myRHI.CreatePipelineStateObject(shadowPSODesc, *myShadowPSO))
+		if (!myRHI->CreatePipelineStateObject(shadowPSODesc, *myShadowPSO))
 		{
 			GELOG(Error, "Failed to create Shadow pipeline state object!");
 			return false;
@@ -1181,7 +1187,7 @@ bool GraphicsEngine::InitializeRenderResources()
 
 		myGBufferPSO = std::make_unique<PipelineStateObject>();
 
-		if (!myRHI.CreatePipelineStateObject(gBufferPSODesc, *myGBufferPSO))
+		if (!myRHI->CreatePipelineStateObject(gBufferPSODesc, *myGBufferPSO))
 		{
 			GELOG(Error, "Failed to create GBuffer pipeline state object!");
 			return false;
@@ -1189,9 +1195,9 @@ bool GraphicsEngine::InitializeRenderResources()
 
 		myGBuffer = std::make_unique<GBuffer>();
 
-		CommonUtilities::Vector2ui renderSize = myRHI.GetClientSize();
+		CommonUtilities::Vector2ui renderSize = myRHI->GetClientSize();
 
-		myRHI.CreateGBuffer("GBuffer", renderSize.x, renderSize.y, *myGBuffer);
+		myRHI->CreateGBuffer("GBuffer", renderSize.x, renderSize.y, *myGBuffer);
 	}
 
 	// LUT Texture
@@ -1206,7 +1212,7 @@ bool GraphicsEngine::InitializeRenderResources()
 
 		PipelineStateObject lutPSO;
 
-		if (!myRHI.CreatePipelineStateObject(lutPSODesc, lutPSO))
+		if (!myRHI->CreatePipelineStateObject(lutPSODesc, lutPSO))
 		{
 			GELOG(Error, "Failed to create LUT pipeline state object!");
 			return false;
@@ -1214,7 +1220,7 @@ bool GraphicsEngine::InitializeRenderResources()
 
 		myLUTTexture = std::make_unique<Texture>();
 
-		if (!myRHI.CreateTexture("BRDF_LUT", 512, 512, 1, ResourceFormat::R16G16_FLOAT, ResourceBindFlag_ShaderResource | ResourceBindFlag_RenderTarget, *myLUTTexture))
+		if (!myRHI->CreateTexture("BRDF_LUT", 512, 512, 1, ResourceFormat::R16G16_FLOAT, ResourceBindFlag_ShaderResource | ResourceBindFlag_RenderTarget, *myLUTTexture))
 		{
 			GELOG(Error, "Failed to create BRDF LUT texture!");
 			return false;
@@ -1222,7 +1228,7 @@ bool GraphicsEngine::InitializeRenderResources()
 
 		GraphicsCommandList initCommandList;
 
-		if (!myRHI.CreateCommandList("LUT Init", initCommandList))
+		if (!myRHI->CreateCommandList("LUT Init", initCommandList))
 		{
 			GELOG(Error, "Failed to create LUT init command list!");
 			return false;
@@ -1233,7 +1239,7 @@ bool GraphicsEngine::InitializeRenderResources()
 		initCommandList.Draw(4);
 		initCommandList.FinishCommandList();
 
-		myRHI.ExecuteCommandList(initCommandList);
+		myRHI->ExecuteCommandList(initCommandList);
 	}
 
 	// Deffered Dir Light PSO
@@ -1249,7 +1255,7 @@ bool GraphicsEngine::InitializeRenderResources()
 
 		myDefferedDirPSO = std::make_unique<PipelineStateObject>();
 
-		if (!myRHI.CreatePipelineStateObject(deferredDirLightDesc, *myDefferedDirPSO))
+		if (!myRHI->CreatePipelineStateObject(deferredDirLightDesc, *myDefferedDirPSO))
 		{
 			GELOG(Error, "Failed to create deferred directional light pipeline state object!");
 			return false;
@@ -1269,7 +1275,7 @@ bool GraphicsEngine::InitializeRenderResources()
 
 		myDefferedSpotPSO = std::make_unique<PipelineStateObject>();
 
-		if (!myRHI.CreatePipelineStateObject(deferredSpotLightDesc, *myDefferedSpotPSO))
+		if (!myRHI->CreatePipelineStateObject(deferredSpotLightDesc, *myDefferedSpotPSO))
 		{
 			GELOG(Error, "Failed to create deferred spot light pipeline state object!");
 			return false;
@@ -1289,7 +1295,7 @@ bool GraphicsEngine::InitializeRenderResources()
 
 		myDefferedPointPSO = std::make_unique<PipelineStateObject>();
 
-		if (!myRHI.CreatePipelineStateObject(deferredPointLightDesc, *myDefferedPointPSO))
+		if (!myRHI->CreatePipelineStateObject(deferredPointLightDesc, *myDefferedPointPSO))
 		{
 			GELOG(Error, "Failed to create deferred point light pipeline state object!");
 			return false;

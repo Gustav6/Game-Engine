@@ -26,7 +26,7 @@ float4 main(FullTextureVertex aInput) : SV_TARGET
     
     Light light = LB_Lights[0];
     
-    float3 radiance = (0, 0, 0);
+    float3 radiance = float3(0, 0, 0);
     
     float occlusion = materialPixel.r;
     float roughness = materialPixel.g;

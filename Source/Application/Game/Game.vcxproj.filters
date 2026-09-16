@@ -1,194 +1,38 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="AssetHandling">
-      <UniqueIdentifier>{4A86DE7F-B646-5AB6-7F81-A333EB009F92}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="AssetHandling\Assets">
-      <UniqueIdentifier>{EC9585BC-D824-0F86-8143-23816DB11F2C}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="AssetHandling\Assets\Base">
-      <UniqueIdentifier>{F6854412-6248-789C-ABF8-062917FA507A}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="AssetHandling\Assets\Types">
-      <UniqueIdentifier>{901A285C-7C2A-D42C-E5E3-384BD112C3C5}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Audio">
       <UniqueIdentifier>{9718D90C-032D-01BE-CCAE-A41D3882FDEE}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Game">
-      <UniqueIdentifier>{7FA9857C-6BE0-860D-14CD-6C1000E3020F}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\Camera">
-      <UniqueIdentifier>{17B96904-836E-E2F9-0C63-DCD07817D9FD}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\Components">
-      <UniqueIdentifier>{3441F2CD-A0CC-5F92-A9DD-E28615E8BB92}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\Components\Light">
-      <UniqueIdentifier>{DB6BF09A-47D8-AB95-10CC-43F37CF7CDFD}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\Components\Rendering">
-      <UniqueIdentifier>{811B404D-EDDD-73D7-368E-0264A28F4CB5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\World">
-      <UniqueIdentifier>{76278CE2-62DF-CD2F-CBE6-A68BB7BD6820}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Json">
-      <UniqueIdentifier>{7F9B877C-6BD2-880D-14BF-6E1000D5040F}</UniqueIdentifier>
+    <Filter Include="Camera">
+      <UniqueIdentifier>{CE7141AB-BA13-6C81-A3CE-7FD58F0FF3D1}</UniqueIdentifier>
     </Filter>
     <Filter Include="Materials">
       <UniqueIdentifier>{67E8C255-D352-77CC-1C91-2872883A5521}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ThirdParty">
-      <UniqueIdentifier>{107145F9-FC28-8746-6530-60A251072237}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ThirdParty\Source">
-      <UniqueIdentifier>{10AD61F8-7CC3-5F8E-C53A-EBAF31903016}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ThirdParty\Source\tracy">
-      <UniqueIdentifier>{22F6E85D-8E2D-31F5-9737-951803EE57EE}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ThirdParty\Source\yyjson">
-      <UniqueIdentifier>{AB633527-9788-84A7-C0D3-6937AC5783C5}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
-    <ClInclude Include="AssetHandling\AssetRegistry.h">
-      <Filter>AssetHandling</Filter>
-    </ClInclude>
-    <ClInclude Include="AssetHandling\Assets\Base\Asset.h">
-      <Filter>AssetHandling\Assets\Base</Filter>
-    </ClInclude>
-    <ClInclude Include="AssetHandling\Assets\Types\AnimationAsset.h">
-      <Filter>AssetHandling\Assets\Types</Filter>
-    </ClInclude>
-    <ClInclude Include="AssetHandling\Assets\Types\MaterialAsset.h">
-      <Filter>AssetHandling\Assets\Types</Filter>
-    </ClInclude>
-    <ClInclude Include="AssetHandling\Assets\Types\MeshAsset.h">
-      <Filter>AssetHandling\Assets\Types</Filter>
-    </ClInclude>
-    <ClInclude Include="AssetHandling\Assets\Types\TextureAsset.h">
-      <Filter>AssetHandling\Assets\Types</Filter>
-    </ClInclude>
-    <ClInclude Include="AssetHandling\Assets\Types\UnrealSceneAsset.h">
-      <Filter>AssetHandling\Assets\Types</Filter>
-    </ClInclude>
     <ClInclude Include="Audio\FmodAudioSystem.h">
       <Filter>Audio</Filter>
     </ClInclude>
+    <ClInclude Include="Camera\GameCamera.h">
+      <Filter>Camera</Filter>
+    </ClInclude>
     <ClInclude Include="Game.h" />
-    <ClInclude Include="Game\Camera\GameCamera.h">
-      <Filter>Game\Camera</Filter>
-    </ClInclude>
-    <ClInclude Include="Game\Components\Component.h">
-      <Filter>Game\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="Game\Components\Light\DirectionlLightComponent.h">
-      <Filter>Game\Components\Light</Filter>
-    </ClInclude>
-    <ClInclude Include="Game\Components\Light\LightComponent.h">
-      <Filter>Game\Components\Light</Filter>
-    </ClInclude>
-    <ClInclude Include="Game\Components\Light\PointLightComponent.h">
-      <Filter>Game\Components\Light</Filter>
-    </ClInclude>
-    <ClInclude Include="Game\Components\Light\SpotLightComponent.h">
-      <Filter>Game\Components\Light</Filter>
-    </ClInclude>
-    <ClInclude Include="Game\Components\Rendering\AnimationComponent.h">
-      <Filter>Game\Components\Rendering</Filter>
-    </ClInclude>
-    <ClInclude Include="Game\Components\Rendering\MeshComponent.h">
-      <Filter>Game\Components\Rendering</Filter>
-    </ClInclude>
-    <ClInclude Include="Game\Components\Transform.h">
-      <Filter>Game\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="Game\World\Actor.hpp">
-      <Filter>Game\World</Filter>
-    </ClInclude>
-    <ClInclude Include="Game\World\GameWorld.h">
-      <Filter>Game\World</Filter>
-    </ClInclude>
-    <ClInclude Include="Json\JsonWrapper.h">
-      <Filter>Json</Filter>
-    </ClInclude>
     <ClInclude Include="WindowManager.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\ThirdParty\Source\tracy\TracyClient.cpp">
-      <Filter>ThirdParty\Source\tracy</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\ThirdParty\Source\yyjson\yyjson.c">
-      <Filter>ThirdParty\Source\yyjson</Filter>
-    </ClCompile>
     <ClCompile Include="Application.cpp" />
-    <ClCompile Include="AssetHandling\AssetRegistry.cpp">
-      <Filter>AssetHandling</Filter>
-    </ClCompile>
-    <ClCompile Include="AssetHandling\Assets\Base\Asset.cpp">
-      <Filter>AssetHandling\Assets\Base</Filter>
-    </ClCompile>
-    <ClCompile Include="AssetHandling\Assets\Types\AnimationAsset.cpp">
-      <Filter>AssetHandling\Assets\Types</Filter>
-    </ClCompile>
-    <ClCompile Include="AssetHandling\Assets\Types\MaterialAsset.cpp">
-      <Filter>AssetHandling\Assets\Types</Filter>
-    </ClCompile>
-    <ClCompile Include="AssetHandling\Assets\Types\MeshAsset.cpp">
-      <Filter>AssetHandling\Assets\Types</Filter>
-    </ClCompile>
-    <ClCompile Include="AssetHandling\Assets\Types\TextureAsset.cpp">
-      <Filter>AssetHandling\Assets\Types</Filter>
-    </ClCompile>
-    <ClCompile Include="AssetHandling\Assets\Types\UnrealSceneAsset.cpp">
-      <Filter>AssetHandling\Assets\Types</Filter>
-    </ClCompile>
     <ClCompile Include="Audio\FmodAudioSystem.cpp">
       <Filter>Audio</Filter>
     </ClCompile>
+    <ClCompile Include="Camera\GameCamera.cpp">
+      <Filter>Camera</Filter>
+    </ClCompile>
     <ClCompile Include="Game.cpp" />
-    <ClCompile Include="Game\Camera\GameCamera.cpp">
-      <Filter>Game\Camera</Filter>
-    </ClCompile>
-    <ClCompile Include="Game\Components\Component.cpp">
-      <Filter>Game\Components</Filter>
-    </ClCompile>
-    <ClCompile Include="Game\Components\Light\DirectionlLightComponent.cpp">
-      <Filter>Game\Components\Light</Filter>
-    </ClCompile>
-    <ClCompile Include="Game\Components\Light\LightComponent.cpp">
-      <Filter>Game\Components\Light</Filter>
-    </ClCompile>
-    <ClCompile Include="Game\Components\Light\PointLightComponent.cpp">
-      <Filter>Game\Components\Light</Filter>
-    </ClCompile>
-    <ClCompile Include="Game\Components\Light\SpotLightComponent.cpp">
-      <Filter>Game\Components\Light</Filter>
-    </ClCompile>
-    <ClCompile Include="Game\Components\Rendering\AnimationComponent.cpp">
-      <Filter>Game\Components\Rendering</Filter>
-    </ClCompile>
-    <ClCompile Include="Game\Components\Rendering\MeshComponent.cpp">
-      <Filter>Game\Components\Rendering</Filter>
-    </ClCompile>
-    <ClCompile Include="Game\Components\Transform.cpp">
-      <Filter>Game\Components</Filter>
-    </ClCompile>
-    <ClCompile Include="Game\World\Actor.cpp">
-      <Filter>Game\World</Filter>
-    </ClCompile>
-    <ClCompile Include="Game\World\GameWorld.cpp">
-      <Filter>Game\World</Filter>
-    </ClCompile>
-    <ClCompile Include="Json\JsonWrapper.cpp">
-      <Filter>Json</Filter>
-    </ClCompile>
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="WindowManager.cpp" />
   </ItemGroup>
