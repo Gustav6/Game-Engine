@@ -222,7 +222,7 @@ void GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const Scene& 
 		RenderDrawCalls(inoutCommandList, opaqueItems, DrawCallFlag_BindTextures | DrawCallFlag_BindMaterial);
 		inoutCommandList.EndEvent();
 
-		inoutCommandList.BeginEvent("Light Fullscren Render");
+		inoutCommandList.BeginEvent("Light Fullscreen Render");
 
 		inoutCommandList.SetRenderTarget(myBackBuffer.get(), nullptr);
 
@@ -308,6 +308,7 @@ void GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const Scene& 
 
 					inoutCommandList.SetPipelineStateObject(*myDefferedSpotPSO);
 					inoutCommandList.Draw(4);
+
 					inoutCommandList.EndEvent();
 					break;
 				}
@@ -321,6 +322,7 @@ void GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const Scene& 
 
 					inoutCommandList.SetPipelineStateObject(*myDefferedPointPSO);
 					inoutCommandList.Draw(4);
+
 					inoutCommandList.EndEvent();
 					break;
 				}
@@ -343,13 +345,17 @@ void GraphicsEngine::Present() const
 	myRHI->Present();
 }
 
-void GraphicsEngine::CycleToNextRenderPass()
+void GraphicsEngine::CycleToNextRenderPass(int aDirection)
 {
-	int nextRenderPass = static_cast<int>(myCurrentRenderPass) + 1;
+	int nextRenderPass = static_cast<int>(myCurrentRenderPass) + aDirection;
 
-	if (nextRenderPass == static_cast<int>(RenderPass::MAX)) 
+	if (nextRenderPass >= static_cast<int>(RenderPass::MAX)) 
 	{
 		nextRenderPass = 0;
+	}
+	else if (nextRenderPass < 0)
+	{
+		nextRenderPass = static_cast<int>(RenderPass::MAX) - 1;
 	}
 
 	myCurrentRenderPass = static_cast<RenderPass>(nextRenderPass);

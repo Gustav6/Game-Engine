@@ -191,7 +191,5 @@ bool MeshAsset::Load(const std::filesystem::path& aPath)
 
     myMesh->Initialize(aPath.filename().string(), std::move(elements), std::move(meshVertices), std::move(meshIndices), std::move(skeleton), std::move(boundingSphere));
 
-    LOG(FBXLog, Verbose, "Mesh has loaded [{}]", aPath.string());
-
     return true;
 }

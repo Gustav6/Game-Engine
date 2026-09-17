@@ -22,6 +22,7 @@ class Texture;
 class Sampler;
 struct InternalRenderItem;
 class GBuffer;
+class GraphicsCommandList;
 
 enum class ConstantBuffer : uint8_t
 {
@@ -75,7 +76,7 @@ public:
 	void Render(GraphicsCommandList& inoutCommandList, const Scene& aScene);
 	void Present() const;
 
-	void CycleToNextRenderPass();
+	void CycleToNextRenderPass(int aDirection);
 
 	template<class T>
 	bool CreateConstantBuffer(ConstantBuffer aBufferID, std::string_view aName)

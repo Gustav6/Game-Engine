@@ -102,7 +102,5 @@ bool AnimationAsset::Load(const std::filesystem::path& aPath)
     memcpy_s(&myAnimation->Duration, sizeof(float), &tgaAnimation->Duration, sizeof(float));
     memcpy_s(&myAnimation->FramesPerSecond, sizeof(float), &tgaAnimation->FramesPerSecond, sizeof(float));
 
-    LOG(FBXLog, Verbose, "Animation has loaded [{}]", aPath.string());
-
     return true;
 }

@@ -30,7 +30,5 @@ bool TextureAsset::Load(const std::filesystem::path& aPath)
         return false;
     }
 
-    LOG(TextureLog, Verbose, "Texture has loaded [{}]", aPath.string());
-
     return true;
 }

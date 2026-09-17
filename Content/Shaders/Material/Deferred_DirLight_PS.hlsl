@@ -21,6 +21,11 @@ float4 main(FullTextureVertex aInput) : SV_TARGET
         discard;
     }
     
+    if (FB_TypeOfRenderPass != 0)
+    {
+        return albedoPixel;
+    }
+    
     const float4 normalPixel = GBufferNormal.Sample(TrilinearClamp, aInput.UV);
     const float4 materialPixel = GBufferMaterial.Sample(TrilinearClamp, aInput.UV);
     const float4 worldPositionPixel = GBufferWorldPosition.Sample(TrilinearClamp, aInput.UV);
@@ -28,33 +33,6 @@ float4 main(FullTextureVertex aInput) : SV_TARGET
     float occlusion = materialPixel.r;
     float roughness = materialPixel.g;
     float metalness = materialPixel.b;
-    
-    //switch (FB_TypeOfRenderPass)
-    //{
-    //    case 0: // sRGB pass do nothing!
-    //        break;
-    //    case 1: // Rougness pass
-    //        return float4(roughness, roughness, roughness, 1.0f);
-    //        break;
-    //    case 2: // Metalness pass
-    //        return float4(metalness, metalness, metalness, 1.0f);
-    //        break;
-    //    case 3: // Ambient Occlusion texture pass
-    //        return float4(occlusion, occlusion, occlusion, 1.0f);
-    //        break;
-    //    case 4: // Ambient Occlusion screen space pass
-    //        return float4(1.0f, 1.0f, 1.0f, 1.0f); // TODO : FIX
-    //        break;
-    //    case 5: // Normals tangent space pass
-    //        return float4(1.0f, 1.0f, 1.0f, 1.0f); // TODO : FIX
-    //        break;
-    //    case 6: // Normals world space pass
-    //        return float4(normalPixel.xyz, 1.0f);
-    //        break;
-    //    case 7: // Shadows pass
-    //        return float4(1.0f, 1.0f, 1.0f, 1.0f); // TODO : FIX
-    //        break;
-    //}
     
     // This is used later in the course: 
     // const float4 vertexNormalPixel = GBufferVertexNormal.Sample ( TrilinearClamp , input.UV ); 

@@ -7,15 +7,14 @@
 #include "GraphicsEngine/Objects/Mesh.h"
 #include "GraphicsEngine/Objects/Skeleton.h"
 
-#include "Logger/Logger.h"
-
+#include "ensure.h"
 #include "tgafbx/Importer.h"
 
 #include "AssetPipeline/Assets/Types/MeshAsset.h"
 
-DECLARE_LOG_CATEGORY_WITH_NAME(ASSETLog, ASSETREGISTRY, Verbose);
+DECLARE_LOG_CATEGORY_WITH_NAME(LogAssetRegistry, ASSETREGISTRY, Verbose);
 
-DEFINE_LOG_CATEGORY(ASSETLog);
+DEFINE_LOG_CATEGORY(LogAssetRegistry);
 
 AssetRegistry& AssetRegistry::Get()
 {
@@ -40,7 +39,7 @@ bool AssetRegistry::Initialize(std::filesystem::path aWorkingDirectory)
 
     if (!std::filesystem::exists(myWorkingDirectory))
     {
-        LOG(ASSETLog, Fatal, "Content root dir is not a valid path! Provided root was {}.", aWorkingDirectory.string());
+        LOG(LogAssetRegistry, Fatal, "Content root dir is not a valid path! Provided root was {}.", aWorkingDirectory.string());
         return false;
     }
 
@@ -78,21 +77,50 @@ const std::filesystem::path& AssetRegistry::GetWorkingDirectory()
     return myWorkingDirectory;
 }
 
-void AssetRegistry::RegisterAssetTypeInternal(const std::vector<std::string>& aExtensionList, const MakeAssetFunction& aMakeAssetFunction)
+void AssetRegistry::RegisterAssetTypeInternal(const std::vector<std::string>& aExtensionList, std::type_index aTypeIndex)
 {
-	for (const auto& extension : aExtensionList)
-	{
-		std::string lowerCaseFileExtension = extension;
-		std::ranges::transform(lowerCaseFileExtension, lowerCaseFileExtension.begin(), tolower);
+    for (const auto& extension : aExtensionList)
+    {
+        std::string lowerCaseFileExtension = extension;
+        std::ranges::transform(lowerCaseFileExtension, lowerCaseFileExtension.begin(), tolower);
 
-		if (!myFileExtensionToAssetTypeMap.contains(lowerCaseFileExtension))
-		{
-			std::vector<MakeAssetFunction> functions;
-			myFileExtensionToAssetTypeMap.emplace(lowerCaseFileExtension, functions);
-		}
+        myFileExtensionToAssetTypeMap[lowerCaseFileExtension].insert(aTypeIndex);
+    }
+}
 
-		myFileExtensionToAssetTypeMap.at(lowerCaseFileExtension).emplace_back(aMakeAssetFunction);
-	}
+std::string_view AssetRegistry::RemoveTypePrefix(std::string_view aTypeName)
+{
+    for (std::string_view prefix : { "class ", "struct " })
+    {
+        if (aTypeName.starts_with(prefix))
+        {
+            return aTypeName.substr(prefix.size());
+        }
+    }
+
+    return aTypeName;
+}
+
+void AssetRegistry::InternalLogMessage(LogVerbosity::Type aVerbosity, std::string_view aMessage) const
+{
+    switch (aVerbosity)
+    {
+        case LogVerbosity::Fatal:
+            LOG(LogAssetRegistry, Fatal, "{}", aMessage);
+            break;
+        case LogVerbosity::Error:
+            LOG(LogAssetRegistry, Error, "{}", aMessage);
+            break;
+        case LogVerbosity::Warning:
+            LOG(LogAssetRegistry, Warning, "{}", aMessage);
+            break;
+        case LogVerbosity::Log:
+            LOG(LogAssetRegistry, Log, "{}", aMessage);
+            break;
+        case LogVerbosity::Verbose:
+            LOG(LogAssetRegistry, Verbose, "{}", aMessage);
+            break;
+    }
 }
 
 void AssetRegistry::InitUnitCube()

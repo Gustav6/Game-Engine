@@ -97,6 +97,7 @@ float4 main(VStoPS aPixel) : SV_TARGET
                 
                 float shadowFactor = CalculatePointLightShadowFactor(
                     light, 
+                    light.ShadowIndex,
                     parameters.WorldPosition.xyz
                 );
                 
@@ -114,7 +115,8 @@ float4 main(VStoPS aPixel) : SV_TARGET
                 );
                 
                 float shadowFactor = CalculateSpotLightShadowFactor(
-                    light, 
+                    light,
+                    light.ShadowIndex,
                     parameters.WorldPosition,
                     parameters.Normal
                 );

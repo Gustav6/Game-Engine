@@ -9,15 +9,19 @@
 #include <vector>
 #include <filesystem>
 #include <ranges>
+#include <typeindex>
+#include <set>
+#include <algorithm>
 
-#include "ensure.h"
+#include "Logger/Logger.h"
 #include "AssetPipeline/Assets/Base/Asset.h"
 
 class AssetRegistry
 {
-public:
-	using MakeAssetFunction = std::function<std::shared_ptr<Asset>()>;
+private:
+	std::string_view RemoveTypePrefix(std::string_view aTypeName);
 
+public:
 	static AssetRegistry& Get();
 
 	AssetRegistry();
@@ -35,45 +39,57 @@ public:
 		std::string lowerName(aAssetName);
 		std::ranges::transform(lowerName, lowerName.begin(), tolower);
 
-		ensure(myAssets.contains(lowerName));
-		AssetInformation& assetInformation = myAssets.at(lowerName);
-
-		if (assetInformation.Asset.expired())
+		if (!myAssets.contains(lowerName))
 		{
-			const std::string extension = assetInformation.Path.extension().string();
-
-			if (myFileExtensionToAssetTypeMap.contains(extension))
-			{
-				const std::vector<MakeAssetFunction>& loaders = myFileExtensionToAssetTypeMap.at(extension);
-
-				for (const auto& loader : loaders)
-				{
-					std::shared_ptr<Asset> asset = loader();
-
-					if (asset->Load(assetInformation.Path))
-					{
-						asset->myName = assetInformation.Path.stem().string();
-						assetInformation.Asset = asset;
-
-						return std::dynamic_pointer_cast<AssetType>(asset);
-					}
-				}
-			}
+			std::string errorMessage = std::format("Asset [{}] of type [{}] is not contained within the content folder!", aAssetName, RemoveTypePrefix(typeid(AssetType).name()));
+			InternalLogMessage(LogVerbosity::Type::Error, errorMessage);
+			return nullptr;
 		}
 
-		return std::dynamic_pointer_cast<AssetType>(assetInformation.Asset.lock());
+		AssetInformation& assetInformation = myAssets.at(lowerName);
+
+		if (!assetInformation.Asset.expired())
+		{
+			return std::dynamic_pointer_cast<AssetType>(assetInformation.Asset.lock());
+		}
+
+		std::string extension = assetInformation.Path.extension().string();
+		auto extensionEntry = myFileExtensionToAssetTypeMap.find(extension);
+
+		if (extensionEntry == myFileExtensionToAssetTypeMap.end() || !extensionEntry->second.contains(std::type_index(typeid(AssetType))))
+		{
+			std::string errorMessage = std::format("Asset [{}] (extension {}) was never registered for type {}!", aAssetName, extension, RemoveTypePrefix(typeid(AssetType).name()));
+			InternalLogMessage(LogVerbosity::Type::Error, errorMessage);
+			return nullptr;
+		}
+
+		std::shared_ptr<AssetType> asset = std::make_shared<AssetType>();
+
+		if (!asset->Load(assetInformation.Path))
+		{
+			return nullptr;
+		}
+
+		asset->myName = assetInformation.Path.stem().string();
+		assetInformation.Asset = asset;
+
+		std::string loadMessage = std::format("Type [{}], Asset Name [{}], Extension [{}], Loaded successfully!", RemoveTypePrefix(typeid(AssetType).name()), aAssetName, extension);
+		InternalLogMessage(LogVerbosity::Type::Verbose, loadMessage);
+
+		return asset;
 	}
 
 	template<typename AssetClass>
 	requires std::is_base_of_v<Asset, AssetClass>
 	void RegisterAssetType(const std::vector<std::string>& aExtensionList)
 	{
-		MakeAssetFunction function = []() { return std::make_shared<AssetClass>(); };
-		RegisterAssetTypeInternal(aExtensionList, function);
+		RegisterAssetTypeInternal(aExtensionList, std::type_index(typeid(AssetClass)));
 	}
 
 private:
-	void RegisterAssetTypeInternal(const std::vector<std::string>& aExtensionList, const MakeAssetFunction& aMakeAssetFunction);
+	void RegisterAssetTypeInternal(const std::vector<std::string>& aExtensionList, std::type_index aTypeIndex);
+
+	void InternalLogMessage(LogVerbosity::Type aVerbosity, std::string_view aMessage) const;
 
 	// TODO: Not implemented
 	void InitUnitAxes();
@@ -86,11 +102,11 @@ private:
 		std::weak_ptr<Asset> Asset;
 	};
 
-	// Just holds assets alive aslong as the registry is not destroyed
+	// Just holds assets alive as long as the registry is not destroyed
 	std::unordered_map<std::string, std::shared_ptr<Asset>> myPersistentAssets;
 
 	std::unordered_map<std::string, AssetInformation> myAssets;
-	std::unordered_map<std::string, std::vector<MakeAssetFunction>> myFileExtensionToAssetTypeMap;
+	std::unordered_map<std::string, std::set<std::type_index>> myFileExtensionToAssetTypeMap;
 
 	std::filesystem::path myWorkingDirectory;
 };

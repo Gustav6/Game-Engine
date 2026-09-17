@@ -464,9 +464,13 @@ void Game::UpdateScene(float aDeltaTime)
         mySpotLightObject->SetEnabled(!mySpotLightObject->GetIsEnabled());
     }
 
+    if (Application.InputManager.IsKeyPressed(KeyCode::F5))
+    {
+        GraphicsEngine::Get().CycleToNextRenderPass(-1);
+    }
 	if (Application.InputManager.IsKeyPressed(KeyCode::F6))
 	{
-		GraphicsEngine::Get().CycleToNextRenderPass();
+		GraphicsEngine::Get().CycleToNextRenderPass(1);
 	}
 
     if (Application.InputManager.IsKeyReleased(KeyCode::Escape))

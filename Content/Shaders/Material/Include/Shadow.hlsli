@@ -124,7 +124,7 @@ float CalculateDirectionalLightShadowFactor(uint aCascadeIndex, float4 aPixelWor
     return shadowFactor / 16;
 }
 
-float CalculatePointLightShadowFactor(in Light aPointLight, float3 aPixelWorldPosition)
+float CalculatePointLightShadowFactor(in Light aPointLight, uint aShadowIndex, float3 aPixelWorldPosition)
 {
     const float near = 1.0f;
     const float far = aPointLight.Radius;
@@ -140,12 +140,12 @@ float CalculatePointLightShadowFactor(in Light aPointLight, float3 aPixelWorldPo
     
     float D = (fRange * Z + v) / Z;
     
-    float shadowFactor = SamplePointLightShadow(aPointLight.ShadowIndex, toLightDir, D);
+    float shadowFactor = SamplePointLightShadow(aShadowIndex, toLightDir, D);
     
     return shadowFactor;
 }
 
-float CalculateSpotLightShadowFactor(in Light aSpotLight, float4 aPixelWorldPosition, float3 aNormal)
+float CalculateSpotLightShadowFactor(in Light aSpotLight, uint aShadowIndex, float4 aPixelWorldPosition, float3 aNormal)
 {
     float4 lightSpacePosition = mul(aSpotLight.LightViewProjectionTexture, aPixelWorldPosition);
     float3 convertedPosition = lightSpacePosition.xyz / lightSpacePosition.w;
@@ -159,7 +159,7 @@ float CalculateSpotLightShadowFactor(in Light aSpotLight, float4 aPixelWorldPosi
     for (int i = 0; i < 16; ++i)
     {
         float2 offset = poissonDisk16[i] * shadowTexelSize;
-        shadowFactor += SampleSpotLightShadow(aSpotLight.ShadowIndex, shadowUV + offset, P);
+        shadowFactor += SampleSpotLightShadow(aShadowIndex, shadowUV + offset, P);
     }
 
     return shadowFactor / 16;
