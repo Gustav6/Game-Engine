@@ -219,20 +219,15 @@ void GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const Scene& 
 
 		inoutCommandList.BeginEvent("Object GBuffer Render");
 		inoutCommandList.SetRenderTargets(myGBuffer->GetTextures(), GBuffer::NUM_GBUFFER_TARGETS, myDepthBuffer.get());
-		RenderDrawCalls(inoutCommandList, opaqueItems, DrawCallFlag_BindTextures | DrawCallFlag_BindMaterial, myGBufferPSO.get());
+		RenderDrawCalls(inoutCommandList, opaqueItems, DrawCallFlag_BindTextures | DrawCallFlag_BindMaterial);
 		inoutCommandList.EndEvent();
 
 		inoutCommandList.BeginEvent("Light Fullscren Render");
 
 		inoutCommandList.SetRenderTarget(myBackBuffer.get(), nullptr);
 
-		for (unsigned int i = 0; i < aScene.SceneLights.size(); i++)
+		// GBuffer set resources
 		{
-			if (aScene.SceneLights[i].LightData == nullptr)
-			{
-				continue;
-			}
-
 			std::vector<const Texture*> gBufferTextures;
 			gBufferTextures.reserve(GBuffer::NUM_GBUFFER_TARGETS);
 
@@ -242,33 +237,75 @@ void GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const Scene& 
 			}
 
 			inoutCommandList.SetShaderResources(gBufferTextures.data(), gBufferTextures.size(), 0, PipelineStage_PixelShader);
+		}
 
-			LightBuffer lightBuffer;
-			lightBuffer.Lights[0] = *aScene.SceneLights[i].LightData;
-			UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::LightBuffer, lightBuffer, 3, PipelineStage_PixelShader);
+		// Directional Light Deffered Render
+		{
+			int directioalLightIndex = -1;
 
-			switch (lightBuffer.Lights[0].Type)
+			for (size_t l = 0; l < aScene.SceneLights.size(); l++)
 			{
-				case LightType::Directional:
+				if (aScene.SceneLights[l].LightData == nullptr)
 				{
-					inoutCommandList.BeginEvent("Directional Light");
-					std::vector<const Texture*> dirLightShadowMaps;
-					dirLightShadowMaps.reserve(NUM_CASCADES);
+					continue;
+				}
 
-					for (size_t c = 0; c < NUM_CASCADES; c++)
-					{
-						dirLightShadowMaps.emplace_back(myCascades[c].ShadowMap.get());
-					}
-
-					inoutCommandList.SetShaderResources(dirLightShadowMaps.data(), dirLightShadowMaps.size(), 100, PipelineStage_PixelShader);
-					inoutCommandList.SetPipelineStateObject(*myDefferedDirPSO);
-					inoutCommandList.Draw(4);
-					inoutCommandList.EndEvent();
+				if (aScene.SceneLights[l].LightData->Type == LightType::Directional)
+				{
+					directioalLightIndex = static_cast<int>(l);
 					break;
 				}
+			}
+
+			if (directioalLightIndex != -1)
+			{
+				LightBuffer lightBuffer;
+				lightBuffer.Lights[0] = *aScene.SceneLights[static_cast<size_t>(directioalLightIndex)].LightData;
+				UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::LightBuffer, lightBuffer, 3, PipelineStage_PixelShader);
+
+				inoutCommandList.BeginEvent("Directional Light");
+				std::vector<const Texture*> dirLightShadowMaps;
+				dirLightShadowMaps.reserve(NUM_CASCADES);
+
+				for (size_t c = 0; c < NUM_CASCADES; c++)
+				{
+					dirLightShadowMaps.emplace_back(myCascades[c].ShadowMap.get());
+				}
+
+				inoutCommandList.SetShaderResources(dirLightShadowMaps.data(), dirLightShadowMaps.size(), 100, PipelineStage_PixelShader);
+				inoutCommandList.SetPipelineStateObject(*myDefferedDirPSO);
+				inoutCommandList.Draw(4);
+				inoutCommandList.EndEvent();
+			}
+		}
+
+		// Point & Spot Light Deffered Render
+		for (unsigned int l = 0; l < aScene.SceneLights.size(); l++)
+		{
+			if (aScene.SceneLights[l].LightData == nullptr)
+			{
+				continue;
+			}
+
+			if (aScene.SceneLights[l].LightData->Type == LightType::Directional)
+			{
+				continue;
+			}
+
+			LightBuffer lightBuffer;
+			lightBuffer.Lights[0] = *aScene.SceneLights[l].LightData;
+			UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::LightBuffer, lightBuffer, 3, PipelineStage_PixelShader);
+
+			switch (aScene.SceneLights[l].LightData->Type)
+			{
 				case LightType::Spot:
 				{
 					inoutCommandList.BeginEvent("Spot Light");
+
+					const Texture* shadowMap = aScene.SceneLights[l].ShadowMap;
+
+					inoutCommandList.SetShaderResource(shadowMap, 104, PipelineStage_PixelShader);
+
 					inoutCommandList.SetPipelineStateObject(*myDefferedSpotPSO);
 					inoutCommandList.Draw(4);
 					inoutCommandList.EndEvent();
@@ -277,7 +314,11 @@ void GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const Scene& 
 				case LightType::Point:
 				{
 					inoutCommandList.BeginEvent("Point Light");
-					std::vector<const Texture*> pointLightShadowCubes;
+
+					const Texture* shadowMap = aScene.SceneLights[l].ShadowMap;
+
+					inoutCommandList.SetShaderResource(shadowMap, 112, PipelineStage_PixelShader);
+
 					inoutCommandList.SetPipelineStateObject(*myDefferedPointPSO);
 					inoutCommandList.Draw(4);
 					inoutCommandList.EndEvent();
@@ -387,7 +428,27 @@ bool GraphicsEngine::CreateMaterial(const MaterialDescription& aDescription, Mat
 	}
 
 	{
-		const std::filesystem::path& shaderProgramPath = myMaterialShadingModelShaders.at(aDescription.ShadingModel);
+		std::filesystem::path shaderProgramPath;
+
+		switch (aDescription.BlendMode)
+		{
+			case MaterialBlendMode::Opaque:
+			{
+				shaderProgramPath = myShaderRoot / "Material" / "GBuffer_PS.hlsl";
+				break;
+			}
+			case MaterialBlendMode::Alpha:
+			{
+				shaderProgramPath = myMaterialShadingModelShaders.at(aDescription.ShadingModel);
+				break;
+			}
+			default:
+			{
+				// TODO: Log error
+				break;
+			}
+		}
+
 		const std::filesystem::path shaderRoot = myShaderRoot / "Material" / "Include";
 
 		std::filesystem::path materialProgramPath;
@@ -875,7 +936,7 @@ void GraphicsEngine::UploadSceneLightingData(GraphicsCommandList& inoutCommandLi
 	UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::LightBuffer, lightBuffer, 3, PipelineStage_PixelShader);
 }
 
-void GraphicsEngine::RenderDrawCalls(GraphicsCommandList& inoutCommandList, const std::vector<InternalRenderItem>& aRenderItems, DrawCallFlags someFlags, const PipelineStateObject* aOverridePSO)
+void GraphicsEngine::RenderDrawCalls(GraphicsCommandList& inoutCommandList, const std::vector<InternalRenderItem>& aRenderItems, DrawCallFlags someFlags)
 {
 	for (const auto& renderItem : aRenderItems)
 	{
@@ -888,7 +949,7 @@ void GraphicsEngine::RenderDrawCalls(GraphicsCommandList& inoutCommandList, cons
 		const DrawCall& drawCall = *renderItem.DrawCall;
 		const Mesh& mesh = *drawCall.Mesh;
 		const Mesh::Element& element = renderItem.DrawCall->Mesh->myElements[renderItem.ElementIndex];
-		const MaterialInterface& material = *renderItem.DrawCall->Materials[renderItem.MaterialIndex];
+		const MaterialInterface* material = renderItem.DrawCall->Materials[renderItem.MaterialIndex];;
 
 		if (!PrepareMeshForRendering(mesh))
 		{
@@ -916,14 +977,14 @@ void GraphicsEngine::RenderDrawCalls(GraphicsCommandList& inoutCommandList, cons
 
 		if (HasDrawCallFlag(someFlags, DrawCallFlag_BindMaterial))
 		{
-			if (material.HasParameters())
+			if (material->HasParameters())
 			{
-				if (material.IsMaterialDataDirty())
+				if (material->IsMaterialDataDirty())
 				{
-					material.RefreshMaterialData();
+					material->RefreshMaterialData();
 				}
 
-				UpdateAndSetConstantBufferInternal(inoutCommandList, ConstantBuffer::MaterialBuffer, material.GetParameterDataBlock(), Material::MATERIAL_BUFFER_SIZE, 5, PipelineStage_VertexShader | PipelineStage_PixelShader);
+				UpdateAndSetConstantBufferInternal(inoutCommandList, ConstantBuffer::MaterialBuffer, material->GetParameterDataBlock(), Material::MATERIAL_BUFFER_SIZE, 5, PipelineStage_VertexShader | PipelineStage_PixelShader);
 			}
 
 			if (HasDrawCallFlag(someFlags, DrawCallFlag_BindTextures))
@@ -932,7 +993,7 @@ void GraphicsEngine::RenderDrawCalls(GraphicsCommandList& inoutCommandList, cons
 
 				for (size_t t = 0; t < Material::MAX_MATERIAL_TEXTURE_COUNT; t++)
 				{
-					const std::shared_ptr<Texture>& texture = material.GetTexture(static_cast<unsigned int>(t));
+					const std::shared_ptr<Texture>& texture = material->GetTexture(static_cast<unsigned int>(t));
 
 					if (texture != nullptr)
 					{
@@ -943,14 +1004,7 @@ void GraphicsEngine::RenderDrawCalls(GraphicsCommandList& inoutCommandList, cons
 				inoutCommandList.SetShaderResources(textures.data(), textures.size(), 0, PipelineStage_VertexShader | PipelineStage_PixelShader);
 			}
 
-			if (aOverridePSO != nullptr)
-			{
-				inoutCommandList.SetPipelineStateObject(*aOverridePSO);
-			}
-			else
-			{
-				inoutCommandList.SetPipelineStateObject(material.GetPSO());
-			}
+			inoutCommandList.SetPipelineStateObject(material->GetPSO());
 		}
 			
 		inoutCommandList.DrawIndexed(element.NumIndices, element.IndexOffset);

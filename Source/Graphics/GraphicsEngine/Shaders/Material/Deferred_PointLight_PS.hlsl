@@ -11,6 +11,11 @@ Texture2D GBufferWorldPosition : register(t4);
 
 float4 main(FullTextureVertex aInput) : SV_TARGET
 {
+    if (FB_TypeOfRenderPass != 0)
+    {
+        discard;
+    }
+    
     const float4 albedoPixel = GBufferAlbedo.Sample(TrilinearClamp, aInput.UV);
     
     // If this is 0 we've read Infinity from the GBuffer. We cannot light Infinity so discard.
@@ -48,6 +53,7 @@ float4 main(FullTextureVertex aInput) : SV_TARGET
                 
     float shadowFactor = CalculatePointLightShadowFactor(
         light,
+        0,
         worldPositionPixel.xyz
     );
                 

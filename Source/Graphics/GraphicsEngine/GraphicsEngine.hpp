@@ -123,7 +123,7 @@ private:
 	{
 		DrawCallFlag_None = 0,
 		DrawCallFlag_BindTextures = 1 << 0,
-		DrawCallFlag_BindMaterial = 1 << 1,
+		DrawCallFlag_BindMaterial = 1 << 1
 	};
 
 	typedef int DrawCallFlags;
@@ -153,7 +153,7 @@ private:
 	void RenderShadowMaps(GraphicsCommandList& inoutCommandList, const std::vector<SceneLight>& SceneLights, const SceneCamera& aSceneCamera, std::vector<InternalRenderItem>& aShadowItems);
 	
 	void UploadSceneLightingData(GraphicsCommandList& inoutCommandList, const std::vector<SceneLight>& aLights);
-	void RenderDrawCalls(GraphicsCommandList& inoutCommandList, const std::vector<InternalRenderItem>& aRenderItems, DrawCallFlags someFlags, const PipelineStateObject* aOverridePSO = nullptr);
+	void RenderDrawCalls(GraphicsCommandList& inoutCommandList, const std::vector<InternalRenderItem>& aRenderItems, DrawCallFlags someFlags);
 
 	void RegisterMaterialShaders();
 

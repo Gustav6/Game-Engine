@@ -8,6 +8,33 @@ Texture2D MaterialTexture : register(t2);
 
 GBufferOutput main(VStoPS aPixel)
 {
+    //switch (FB_TypeOfRenderPass)
+    //{
+    //    case 0: // sRGB pass do nothing!
+    //        break;
+    //    case 1: // Rougness pass
+    //        return float4(roughness, roughness, roughness, 1.0f);
+    //        break;
+    //    case 2: // Metalness pass
+    //        return float4(metalness, metalness, metalness, 1.0f);
+    //        break;
+    //    case 3: // Ambient Occlusion texture pass
+    //        return float4(occlusion, occlusion, occlusion, 1.0f);
+    //        break;
+    //    case 4: // Ambient Occlusion screen space pass
+    //        return float4(1.0f, 1.0f, 1.0f, 1.0f); // TODO : FIX
+    //        break;
+    //    case 5: // Normals tangent space pass
+    //        return float4(1.0f, 1.0f, 1.0f, 1.0f); // TODO : FIX
+    //        break;
+    //    case 6: // Normals world space pass
+    //        return float4(normalPixel.xyz, 1.0f);
+    //        break;
+    //    case 7: // Shadows pass
+    //        return float4(1.0f, 1.0f, 1.0f, 1.0f); // TODO : FIX
+    //        break;
+    //}
+    
     const float4 albedoMap = AlbedoTexture.Sample(TrilinearWrap, aPixel.UV0);
     const float2 normalMap = NormalTexture.Sample(TrilinearWrap, aPixel.UV0).rg;
     const float3 materialMap = MaterialTexture.Sample(TrilinearWrap, aPixel.UV0).rgb;
@@ -32,6 +59,8 @@ GBufferOutput main(VStoPS aPixel)
     parameters.Occlusion = materialMap.r;
     parameters.Roughness = materialMap.g;
     parameters.Metalness = materialMap.b;
+    
+    Material_Pixel(parameters);
     
     GBufferOutput result;
     
