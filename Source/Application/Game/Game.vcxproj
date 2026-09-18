@@ -202,8 +202,8 @@ IF EXIST "$(SolutionDir)ThirdParty\Dll" ( xcopy /E /I /R /Y /D "$(SolutionDir)Th
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Actors\Player.h" />
     <ClInclude Include="Application.h" />
-    <ClInclude Include="Audio\FmodAudioSystem.h" />
     <ClInclude Include="Camera\GameCamera.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="WindowManager.h" />
@@ -211,8 +211,8 @@ IF EXIST "$(SolutionDir)ThirdParty\Dll" ( xcopy /E /I /R /Y /D "$(SolutionDir)Th
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Actors\Player.cpp" />
     <ClCompile Include="Application.cpp" />
-    <ClCompile Include="Audio\FmodAudioSystem.cpp" />
     <ClCompile Include="Camera\GameCamera.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Main.cpp" />

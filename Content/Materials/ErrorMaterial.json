@@ -1,0 +1,13 @@
+{
+  "Name": "BaseMaterial",
+  "Settings": {
+    "MaterialDomain": 1,
+    "ShadingModel": 1,
+    "BlendMode": 1
+  },
+  "Textures": {
+    "AlbedoTexture": "T_MISSING_C",
+    "NormalTexture": "T_MISSING_N",
+    "MaterialTexture": "T_MISSING_M"
+  }
+}

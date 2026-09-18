@@ -14,6 +14,7 @@
 #include "Objects/Sampler.h"
 #include "Objects/Gbuffer.h"
 #include "Objects/Camera.h"
+#include "Objects/Font.h"
 
 #include "ConstantBuffers/FrameBuffer.h"
 #include "ConstantBuffers/ObjectBuffer.h"
@@ -41,6 +42,9 @@
 #include "Deferred_DirLight_PS.h"
 #include "Deferred_SpotLight_PS.h"
 #include "Deferred_PointLight_PS.h"
+#include "Deferred_Ambient_PS.h"
+
+#include "CommonUtilities/Json/JsonWrapper.h"
 
 /*
 * GraphicsEngine handles rendering of a scene.
@@ -203,139 +207,173 @@ void GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const Scene& 
 	}
 	inoutCommandList.EndEvent();
 
+	FrameBuffer frameBuffer;
+	frameBuffer.View = aScene.SceneCamera.Transform.GetFastInverse();
+	frameBuffer.Projection = aScene.SceneCamera.RenderCamera->GetProjection();
+	frameBuffer.CameraPosition = aScene.SceneCamera.Transform.GetTranslation();
+	frameBuffer.TypeOfRenderPass = static_cast<unsigned int>(myCurrentRenderPass);
+
+	UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::FrameBuffer, frameBuffer, 0, PipelineStage_VertexShader | PipelineStage_PixelShader);
+
 	inoutCommandList.BeginEvent("Main Pass");
 	{
-		{
-			FrameBuffer frameBuffer;
-			frameBuffer.View = aScene.SceneCamera.Transform.GetFastInverse();
-			frameBuffer.Projection = aScene.SceneCamera.RenderCamera->GetProjection();
-			frameBuffer.CameraPosition = aScene.SceneCamera.Transform.GetTranslation();
-			frameBuffer.TypeOfRenderPass = static_cast<unsigned int>(myCurrentRenderPass);
-
-			UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::FrameBuffer, frameBuffer, 0, PipelineStage_VertexShader | PipelineStage_PixelShader);
-		}
-
 		inoutCommandList.BeginEvent("Deffered Render");
-
-		inoutCommandList.BeginEvent("Object GBuffer Render");
-		inoutCommandList.SetRenderTargets(myGBuffer->GetTextures(), GBuffer::NUM_GBUFFER_TARGETS, myDepthBuffer.get());
-		RenderDrawCalls(inoutCommandList, opaqueItems, DrawCallFlag_BindTextures | DrawCallFlag_BindMaterial);
-		inoutCommandList.EndEvent();
-
-		inoutCommandList.BeginEvent("Light Fullscreen Render");
-
-		inoutCommandList.SetRenderTarget(myBackBuffer.get(), nullptr);
-
-		// GBuffer set resources
 		{
-			std::vector<const Texture*> gBufferTextures;
-			gBufferTextures.reserve(GBuffer::NUM_GBUFFER_TARGETS);
-
-			for (size_t t = 0; t < GBuffer::NUM_GBUFFER_TARGETS; t++)
+			inoutCommandList.BeginEvent("Object GBuffer Render");
 			{
-				gBufferTextures.emplace_back(&myGBuffer->GetTextures()[t]);
+				inoutCommandList.SetRenderTargets(myGBuffer->GetTextures(), GBuffer::NUM_GBUFFER_TARGETS, myDepthBuffer.get());
+				RenderDrawCalls(inoutCommandList, opaqueItems, DrawCallFlag_BindTextures | DrawCallFlag_BindMaterial);
 			}
+			inoutCommandList.EndEvent();
 
-			inoutCommandList.SetShaderResources(gBufferTextures.data(), gBufferTextures.size(), 0, PipelineStage_PixelShader);
-		}
-
-		// Directional Light Deffered Render
-		{
-			int directioalLightIndex = -1;
-
-			for (size_t l = 0; l < aScene.SceneLights.size(); l++)
+			inoutCommandList.BeginEvent("Light Fullscreen Render");
 			{
-				if (aScene.SceneLights[l].LightData == nullptr)
+				inoutCommandList.SetRenderTarget(myBackBuffer.get(), nullptr);
+
+				// GBuffer set resources
 				{
-					continue;
+					std::vector<const Texture*> gBufferTextures;
+					gBufferTextures.reserve(GBuffer::NUM_GBUFFER_TARGETS);
+
+					for (size_t t = 0; t < GBuffer::NUM_GBUFFER_TARGETS; t++)
+					{
+						gBufferTextures.emplace_back(&myGBuffer->GetTextures()[t]);
+					}
+
+					inoutCommandList.SetShaderResources(gBufferTextures.data(), gBufferTextures.size(), 0, PipelineStage_PixelShader);
 				}
 
-				if (aScene.SceneLights[l].LightData->Type == LightType::Directional)
-				{
-					directioalLightIndex = static_cast<int>(l);
-					break;
-				}
-			}
 
-			if (directioalLightIndex != -1)
-			{
-				LightBuffer lightBuffer;
-				lightBuffer.Lights[0] = *aScene.SceneLights[static_cast<size_t>(directioalLightIndex)].LightData;
-				UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::LightBuffer, lightBuffer, 3, PipelineStage_PixelShader);
-
-				inoutCommandList.BeginEvent("Directional Light");
-				std::vector<const Texture*> dirLightShadowMaps;
-				dirLightShadowMaps.reserve(NUM_CASCADES);
-
-				for (size_t c = 0; c < NUM_CASCADES; c++)
-				{
-					dirLightShadowMaps.emplace_back(myCascades[c].ShadowMap.get());
-				}
-
-				inoutCommandList.SetShaderResources(dirLightShadowMaps.data(), dirLightShadowMaps.size(), 100, PipelineStage_PixelShader);
-				inoutCommandList.SetPipelineStateObject(*myDefferedDirPSO);
+				inoutCommandList.BeginEvent("Ambient Light");
+				inoutCommandList.SetPipelineStateObject(*myDeferredAmbientPSO);
 				inoutCommandList.Draw(4);
 				inoutCommandList.EndEvent();
-			}
-		}
 
-		// Point & Spot Light Deffered Render
-		for (unsigned int l = 0; l < aScene.SceneLights.size(); l++)
-		{
-			if (aScene.SceneLights[l].LightData == nullptr)
-			{
-				continue;
-			}
-
-			if (aScene.SceneLights[l].LightData->Type == LightType::Directional)
-			{
-				continue;
-			}
-
-			LightBuffer lightBuffer;
-			lightBuffer.Lights[0] = *aScene.SceneLights[l].LightData;
-			UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::LightBuffer, lightBuffer, 3, PipelineStage_PixelShader);
-
-			switch (aScene.SceneLights[l].LightData->Type)
-			{
-				case LightType::Spot:
+				if (myCurrentRenderPass == RenderPass::sRGB)
 				{
-					inoutCommandList.BeginEvent("Spot Light");
+					for (unsigned int l = 0; l < aScene.SceneLights.size(); l++)
+					{
+						if (aScene.SceneLights[l].LightData == nullptr)
+						{
+							continue;
+						}
 
-					const Texture* shadowMap = aScene.SceneLights[l].ShadowMap;
+						LightBuffer lightBuffer;
+						lightBuffer.Lights[0] = *aScene.SceneLights[l].LightData;
+						UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::LightBuffer, lightBuffer, 3, PipelineStage_PixelShader);
 
-					inoutCommandList.SetShaderResource(shadowMap, 104, PipelineStage_PixelShader);
+						switch (aScene.SceneLights[l].LightData->Type)
+						{
+						case LightType::Directional:
+						{
+							inoutCommandList.BeginEvent("Directional Light");
+							std::vector<const Texture*> dirLightShadowMaps;
+							dirLightShadowMaps.reserve(NUM_CASCADES);
 
-					inoutCommandList.SetPipelineStateObject(*myDefferedSpotPSO);
-					inoutCommandList.Draw(4);
+							for (size_t c = 0; c < NUM_CASCADES; c++)
+							{
+								dirLightShadowMaps.emplace_back(myCascades[c].ShadowMap.get());
+							}
 
-					inoutCommandList.EndEvent();
-					break;
-				}
-				case LightType::Point:
-				{
-					inoutCommandList.BeginEvent("Point Light");
+							inoutCommandList.SetShaderResources(dirLightShadowMaps.data(), dirLightShadowMaps.size(), 100, PipelineStage_PixelShader);
+							inoutCommandList.SetPipelineStateObject(*myDeferredDirPSO);
+							inoutCommandList.Draw(4);
+							inoutCommandList.EndEvent();
+							break;
+						}
+						case LightType::Spot:
+						{
+							inoutCommandList.BeginEvent("Spot Light");
 
-					const Texture* shadowMap = aScene.SceneLights[l].ShadowMap;
+							const Texture* shadowMap = aScene.SceneLights[l].ShadowMap;
 
-					inoutCommandList.SetShaderResource(shadowMap, 112, PipelineStage_PixelShader);
+							inoutCommandList.SetShaderResource(shadowMap, 104, PipelineStage_PixelShader);
 
-					inoutCommandList.SetPipelineStateObject(*myDefferedPointPSO);
-					inoutCommandList.Draw(4);
+							inoutCommandList.SetPipelineStateObject(*myDeferredSpotPSO);
+							inoutCommandList.Draw(4);
 
-					inoutCommandList.EndEvent();
-					break;
+							inoutCommandList.EndEvent();
+							break;
+						}
+						case LightType::Point:
+						{
+							inoutCommandList.BeginEvent("Point Light");
+
+							const Texture* shadowMap = aScene.SceneLights[l].ShadowMap;
+
+							inoutCommandList.SetShaderResource(shadowMap, 112, PipelineStage_PixelShader);
+
+							inoutCommandList.SetPipelineStateObject(*myDeferredPointPSO);
+							inoutCommandList.Draw(4);
+
+							inoutCommandList.EndEvent();
+							break;
+						}
+						}
+					}
 				}
 			}
+			inoutCommandList.EndEvent();
 		}
-		inoutCommandList.EndEvent();
 		inoutCommandList.EndEvent();
 
 		inoutCommandList.BeginEvent("Alpha Render");
-		inoutCommandList.SetRenderTarget(myBackBuffer.get(), myDepthBuffer.get());
-		UploadSceneLightingData(inoutCommandList, aScene.SceneLights);
-		RenderDrawCalls(inoutCommandList, alphaItems, DrawCallFlag_BindTextures | DrawCallFlag_BindMaterial);
+		{
+			inoutCommandList.SetRenderTarget(myBackBuffer.get(), myDepthBuffer.get());
+			UploadSceneLightingData(inoutCommandList, aScene.SceneLights);
+			RenderDrawCalls(inoutCommandList, alphaItems, DrawCallFlag_BindTextures | DrawCallFlag_BindMaterial);
+		}
 		inoutCommandList.EndEvent();
+	}
+	inoutCommandList.EndEvent();
+
+	inoutCommandList.BeginEvent("Render Screenspace Objects");
+	{
+		/*inoutCommandList.SetRenderTarget(myBackBuffer.get(), nullptr);
+
+		UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::FrameBuffer, frameBuffer, 0, PipelineStage_VertexShader | PipelineStage_PixelShader);
+
+		const CommonUtilities::Vector2ui windowSize = myRHI->GetClientSize();
+
+		CommonUtilities::Matrix4x4f scale;
+		scale.SetScaling({ 2.0f / static_cast<float>(windowSize.x), -2.0f / static_cast<float>(windowSize.y), 1.0f });
+
+		CommonUtilities::Matrix4x4f translation;
+		translation.SetTranslation({ -1.0f, 1.0f, 0.0f });
+
+		const CommonUtilities::Matrix4x4f pixelToNDC = scale * translation;*/
+
+		/*if (text->myIsDirty)
+		{
+			text->RebuildGeometry();
+			std::string vertexBufferName = std::format("{}_VX", text->myName);
+			myRHI->CreateVertexBuffer(vertexBufferName, text->myVertices, text->myVertexBuffer);
+			std::string indexBufferName = std::format("{}_PX", text->myName);
+			myRHI->CreateIndexBuffer(indexBufferName, text->myIndices, text->myIndexBuffer);
+			text->myIsDirty = false;
+		}*/
+
+		/*ObjectBuffer objectBuffer;
+		objectBuffer.World text->GetTextRenderMatrix* pixelToNDC;
+		objectBuffer.WorldInvT = objectBuffer.World.GetFastInverse().GetTranspose();*/
+
+		//UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::ObjectBuffer, objectBuffer, 1, PipelineStage_VertexShader | PipelineStage_PixelShader);
+	
+		//inoutCommandList.SetPipelineStateObject(text->myFontMaterial->myPSO);
+
+		/*if (material->HasParameters())
+		{
+			if (material->IsMaterialDataDirty())
+			{
+				material->RefreshMaterialData();
+			}
+
+			UpdateAndSetConstantBufferInternal(inoutCommandList, ConstantBuffer::MaterialBuffer, material->GetParameterDataBlock(), Material::MATERIAL_BUFFER_SIZE, 5, PipelineStage_VertexShader | PipelineStage_PixelShader);
+		}*/
+
+		// Set texture here
+		// Set index and vertex buffer here
+		//inoutCommandList.DrawIndexed(static_cast<unsigned int>(text->myIndices.size()), 0);
 	}
 	inoutCommandList.EndEvent();
 }
@@ -569,6 +607,43 @@ bool GraphicsEngine::CreateShadowMap(std::string_view aName, unsigned int aWidth
 bool GraphicsEngine::CreateTexture(std::string_view aName, unsigned aWidth, unsigned aHeight, unsigned aNumMips, ResourceFormat aFormat, ResourceBindFlags aBindFlags, Texture& outTexture) const
 {
 	return myRHI->CreateTexture(aName, aWidth, aHeight, aNumMips, aFormat, aBindFlags, outTexture);
+}
+
+bool GraphicsEngine::CreateFontAsset(const std::filesystem::path& aFontPath, const std::filesystem::path& aFontAtlasPath, Font& outFont) const
+{
+	JsonData fontData = Json::Read(aFontPath);
+
+	ensure(fontData.IsValid());
+
+	//JsonData atlasSettings = fontData.GetObjectValue("Atlas");
+	//float width = static_cast<float>(atlasSettings.GetUnsigned("Width"));
+	//float height = static_cast<float>(atlasSettings.GetUnsigned("Height"));
+
+	//JsonData metricsSettings = fontData.GetObjectValue("Metrics");
+	//float lineHeight = metricsSettings.GetFloat("LineHeight");
+	//float ascender = metricsSettings.GetFloat("Ascender");
+	//float descender = metricsSettings.GetFloat("Descender");
+
+	//outFont.myLineHeight = lineHeight;
+	//outFont.myAscender = ascender;
+	//outFont.myDescender = descender;
+
+	////for (const auto& glyph : ...)
+	//{
+	//	Font::Glyph g;
+
+	//	//g.UniCode = glyph...
+	//	//g.Advance = glyph...
+
+	//	/*if (glyph...)
+	//	{
+
+	//	}*/
+
+	//	outFont.myGlyphs.emplace(static_cast<char>(g.UniCode), std::move(g));
+	//}
+
+	return LoadTexture(aFontAtlasPath, outFont.myAtlas);
 }
 
 bool GraphicsEngine::LoadTexture(const std::filesystem::path& aPath, Texture& outTexture) const
@@ -1302,6 +1377,26 @@ bool GraphicsEngine::InitializeRenderResources()
 		myRHI->ExecuteCommandList(initCommandList);
 	}
 
+	// Deffered Ambient light
+	{
+		PipelineStateDescription deferredDirLightDesc;
+		deferredDirLightDesc.Name = "DeferredAmbientLight";
+		deferredDirLightDesc.VertexShader.ByteCode = INTERNAL_FullTexture_VS_ByteCode;
+		deferredDirLightDesc.VertexShader.ByteCodeSize = sizeof(INTERNAL_FullTexture_VS_ByteCode);
+		deferredDirLightDesc.PixelShader.ByteCode = INTERNAL_Deferred_Ambient_PS_ByteCode;
+		deferredDirLightDesc.PixelShader.ByteCodeSize = sizeof(INTERNAL_Deferred_Ambient_PS_ByteCode);
+		deferredDirLightDesc.BlendMode = BlendMode::Additive;
+		deferredDirLightDesc.Topology = Topology::TriangleStrip;
+
+		myDeferredAmbientPSO = std::make_unique<PipelineStateObject>();
+
+		if (!myRHI->CreatePipelineStateObject(deferredDirLightDesc, *myDeferredAmbientPSO))
+		{
+			GELOG(Error, "Failed to create deferred ambient light pipeline state object!");
+			return false;
+		}
+	}
+
 	// Deffered Dir Light PSO
 	{
 		PipelineStateDescription deferredDirLightDesc;
@@ -1313,9 +1408,9 @@ bool GraphicsEngine::InitializeRenderResources()
 		deferredDirLightDesc.BlendMode = BlendMode::Additive; 
 		deferredDirLightDesc.Topology = Topology::TriangleStrip;
 
-		myDefferedDirPSO = std::make_unique<PipelineStateObject>();
+		myDeferredDirPSO = std::make_unique<PipelineStateObject>();
 
-		if (!myRHI->CreatePipelineStateObject(deferredDirLightDesc, *myDefferedDirPSO))
+		if (!myRHI->CreatePipelineStateObject(deferredDirLightDesc, *myDeferredDirPSO))
 		{
 			GELOG(Error, "Failed to create deferred directional light pipeline state object!");
 			return false;
@@ -1333,9 +1428,9 @@ bool GraphicsEngine::InitializeRenderResources()
 		deferredSpotLightDesc.BlendMode = BlendMode::Additive;
 		deferredSpotLightDesc.Topology = Topology::TriangleStrip;
 
-		myDefferedSpotPSO = std::make_unique<PipelineStateObject>();
+		myDeferredSpotPSO = std::make_unique<PipelineStateObject>();
 
-		if (!myRHI->CreatePipelineStateObject(deferredSpotLightDesc, *myDefferedSpotPSO))
+		if (!myRHI->CreatePipelineStateObject(deferredSpotLightDesc, *myDeferredSpotPSO))
 		{
 			GELOG(Error, "Failed to create deferred spot light pipeline state object!");
 			return false;
@@ -1353,9 +1448,9 @@ bool GraphicsEngine::InitializeRenderResources()
 		deferredPointLightDesc.BlendMode = BlendMode::Additive;
 		deferredPointLightDesc.Topology = Topology::TriangleStrip;
 
-		myDefferedPointPSO = std::make_unique<PipelineStateObject>();
+		myDeferredPointPSO = std::make_unique<PipelineStateObject>();
 
-		if (!myRHI->CreatePipelineStateObject(deferredPointLightDesc, *myDefferedPointPSO))
+		if (!myRHI->CreatePipelineStateObject(deferredPointLightDesc, *myDeferredPointPSO))
 		{
 			GELOG(Error, "Failed to create deferred point light pipeline state object!");
 			return false;

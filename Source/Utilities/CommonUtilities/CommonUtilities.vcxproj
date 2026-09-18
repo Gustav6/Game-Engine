@@ -86,8 +86,9 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <WarningLevel>Level4</WarningLevel>
+      <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_DEBUG;TRACY_ENABLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..;..\..\..\ThirdParty\Source;..\..\..\ThirdParty\Source\yyjson\yyjson.c;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <MinimalRebuild>false</MinimalRebuild>
@@ -106,8 +107,9 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <WarningLevel>Level4</WarningLevel>
+      <WarningLevel>Level3</WarningLevel>
       <TreatWarningAsError>true</TreatWarningAsError>
+      <AdditionalIncludeDirectories>..;..\..\..\ThirdParty\Source;..\..\..\ThirdParty\Source\yyjson\yyjson.c;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -131,9 +133,10 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Retail|x64'">
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <WarningLevel>Level4</WarningLevel>
+      <WarningLevel>Level3</WarningLevel>
       <TreatWarningAsError>true</TreatWarningAsError>
       <PreprocessorDefinitions>_RETAIL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..;..\..\..\ThirdParty\Source;..\..\..\ThirdParty\Source\yyjson\yyjson.c;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -171,22 +174,33 @@
     <ClInclude Include="DataStructures\Queue.hpp" />
     <ClInclude Include="DataStructures\Stack.hpp" />
     <ClInclude Include="Input\Input.h" />
+    <ClInclude Include="Json\JsonWrapper.h" />
     <ClInclude Include="Math\MathUtils.hpp" />
+    <ClInclude Include="Math\Matrix.hpp" />
     <ClInclude Include="Math\Matrix3x3.hpp" />
     <ClInclude Include="Math\Matrix4x4.hpp" />
     <ClInclude Include="Math\Quaternion.hpp" />
+    <ClInclude Include="Math\Vector.hpp" />
     <ClInclude Include="Math\Vector2.hpp" />
     <ClInclude Include="Math\Vector3.hpp" />
     <ClInclude Include="Math\Vector4.hpp" />
+    <ClInclude Include="Rectangle.hpp" />
     <ClInclude Include="Time\Timer.h" />
     <ClInclude Include="Utility\Alias.h" />
     <ClInclude Include="Utility\Random.hpp" />
     <ClInclude Include="Utility\Sort.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\ThirdParty\Source\yyjson\yyjson.c" />
     <ClCompile Include="CommonUtilities.pch.cpp" />
     <ClCompile Include="Input\Input.cpp" />
+    <ClCompile Include="Json\JsonWrapper.cpp" />
     <ClCompile Include="Time\Timer.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Logger\Logger.vcxproj">
+      <Project>{25F339C1-1195-6497-FA4F-78EBE690EBE7}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

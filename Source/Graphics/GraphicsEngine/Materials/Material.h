@@ -1,5 +1,7 @@
 #pragma once
 
+#include <filesystem>
+
 #include "Ensure.h"
 
 #include "MaterialInterface.h"

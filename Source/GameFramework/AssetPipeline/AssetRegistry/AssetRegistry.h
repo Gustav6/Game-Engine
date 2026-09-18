@@ -41,7 +41,7 @@ public:
 
 		if (!myAssets.contains(lowerName))
 		{
-			std::string errorMessage = std::format("Asset [{}] of type [{}] is not contained within the content folder!", aAssetName, RemoveTypePrefix(typeid(AssetType).name()));
+			std::string errorMessage = std::format("Type [{}], Asset Name [{}], Is not contained within the content folder!", RemoveTypePrefix(typeid(AssetType).name()), aAssetName);
 			InternalLogMessage(LogVerbosity::Type::Error, errorMessage);
 			return nullptr;
 		}
@@ -58,7 +58,7 @@ public:
 
 		if (extensionEntry == myFileExtensionToAssetTypeMap.end() || !extensionEntry->second.contains(std::type_index(typeid(AssetType))))
 		{
-			std::string errorMessage = std::format("Asset [{}] (extension {}) was never registered for type {}!", aAssetName, extension, RemoveTypePrefix(typeid(AssetType).name()));
+			std::string errorMessage = std::format("Asset Name [{}], Extension [{}], Was never registered for type {}!", aAssetName, extension, RemoveTypePrefix(typeid(AssetType).name()));
 			InternalLogMessage(LogVerbosity::Type::Error, errorMessage);
 			return nullptr;
 		}

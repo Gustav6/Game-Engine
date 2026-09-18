@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="AudioFile" id="{7ada996d-8d83-4315-a1cd-5bc4d0c843ec}">
+		<property name="assetPath">
+			<value>arunangshubanerjee-live-football-match-stadium-crowd-cheering-563439.mp3</value>
+		</property>
+		<property name="isStreaming">
+			<value>true</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>48</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>17.495999999999999</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{ad4f36c2-c2b5-4616-af75-28e1eed5b955}</destination>
+		</relationship>
+	</object>
+</objects>

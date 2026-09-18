@@ -3,6 +3,12 @@
 
 #include "Actor.hpp"
 
+GameWorld& GameWorld::Get()
+{
+	static GameWorld myInstance;
+	return myInstance;
+}
+
 void GameWorld::Update(float aDeltaTime)
 {
 	for (auto& actor : myActors)

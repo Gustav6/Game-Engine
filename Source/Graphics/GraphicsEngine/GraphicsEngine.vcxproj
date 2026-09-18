@@ -214,6 +214,7 @@ xcopy /E /I /R /Y /D "%SHADERSRC%" "%SHADERDEST%"</Command>
     <ClInclude Include="Objects\Animation.h" />
     <ClInclude Include="Objects\Buffer.h" />
     <ClInclude Include="Objects\Camera.h" />
+    <ClInclude Include="Objects\Font.h" />
     <ClInclude Include="Objects\GBuffer.h" />
     <ClInclude Include="Objects\Light.h" />
     <ClInclude Include="Objects\Mesh.h" />
@@ -221,6 +222,7 @@ xcopy /E /I /R /Y /D "%SHADERSRC%" "%SHADERDEST%"</Command>
     <ClInclude Include="Objects\Shader.h" />
     <ClInclude Include="Objects\Skeleton.h" />
     <ClInclude Include="Objects\Sprite.h" />
+    <ClInclude Include="Objects\Text.h" />
     <ClInclude Include="Objects\Texture.h" />
     <ClInclude Include="Objects\Vertex.h" />
     <ClInclude Include="RHI\GraphicsCommandList.h" />
@@ -246,6 +248,7 @@ xcopy /E /I /R /Y /D "%SHADERSRC%" "%SHADERDEST%"</Command>
     <ClCompile Include="Objects\Animation.cpp" />
     <ClCompile Include="Objects\Buffer.cpp" />
     <ClCompile Include="Objects\Camera.cpp" />
+    <ClCompile Include="Objects\Font.cpp" />
     <ClCompile Include="Objects\GBuffer.cpp" />
     <ClCompile Include="Objects\Light.cpp" />
     <ClCompile Include="Objects\Mesh.cpp" />
@@ -253,6 +256,7 @@ xcopy /E /I /R /Y /D "%SHADERSRC%" "%SHADERDEST%"</Command>
     <ClCompile Include="Objects\Shader.cpp" />
     <ClCompile Include="Objects\Skeleton.cpp" />
     <ClCompile Include="Objects\Sprite.cpp" />
+    <ClCompile Include="Objects\Text.cpp" />
     <ClCompile Include="Objects\Texture.cpp" />
     <ClCompile Include="Objects\Vertex.cpp" />
     <ClCompile Include="RHI\GraphicsCommandList.cpp" />
@@ -262,6 +266,14 @@ xcopy /E /I /R /Y /D "%SHADERSRC%" "%SHADERDEST%"</Command>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Shaders\Material\BRDF_LUT_PS.hlsl">
+      <ShaderType>Pixel</ShaderType>
+      <VariableName>INTERNAL_%(Filename)_ByteCode</VariableName>
+      <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">../../..\Intermediate\GraphicsEngine\Debug\PrecompiledShaders\%(Filename).h</HeaderFileOutput>
+      <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../../..\Intermediate\GraphicsEngine\Release\PrecompiledShaders\%(Filename).h</HeaderFileOutput>
+      <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Retail|x64'">../../..\Intermediate\GraphicsEngine\Retail\PrecompiledShaders\%(Filename).h</HeaderFileOutput>
+      <ObjectFileOutput></ObjectFileOutput>
+    </FxCompile>
+    <FxCompile Include="Shaders\Material\Deferred_Ambient_PS.hlsl">
       <ShaderType>Pixel</ShaderType>
       <VariableName>INTERNAL_%(Filename)_ByteCode</VariableName>
       <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">../../..\Intermediate\GraphicsEngine\Debug\PrecompiledShaders\%(Filename).h</HeaderFileOutput>

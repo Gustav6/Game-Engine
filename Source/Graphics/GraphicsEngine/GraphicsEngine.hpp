@@ -23,6 +23,7 @@ class Sampler;
 struct InternalRenderItem;
 class GBuffer;
 class GraphicsCommandList;
+class Font;
 
 enum class ConstantBuffer : uint8_t
 {
@@ -100,6 +101,7 @@ public:
 	bool CreateMaterial(const MaterialDescription& aDescription, Material& outMaterial) const;
 	bool CreateShadowMap(std::string_view aName, unsigned int aWidth, unsigned int aHeight, Texture& outShadowMap, bool aCube) const;
 	bool CreateTexture(std::string_view aName, unsigned aWidth, unsigned aHeight, unsigned aNumMips, ResourceFormat aFormat, ResourceBindFlags aBindFlags, Texture& outTexture) const;
+	bool CreateFontAsset(const std::filesystem::path& aFontPath, const std::filesystem::path& aFontAtlasPath, Font& outFont) const;
 
 	bool LoadTexture(const std::filesystem::path& aPath, Texture& outTexture) const;
 
@@ -192,9 +194,10 @@ private:
 
 	std::unique_ptr<PipelineStateObject> myShadowPSO;
 	std::unique_ptr<PipelineStateObject> myGBufferPSO;
-	std::unique_ptr<PipelineStateObject> myDefferedDirPSO;
-	std::unique_ptr<PipelineStateObject> myDefferedSpotPSO;
-	std::unique_ptr<PipelineStateObject> myDefferedPointPSO;
+	std::unique_ptr<PipelineStateObject> myDeferredAmbientPSO;
+	std::unique_ptr<PipelineStateObject> myDeferredDirPSO;
+	std::unique_ptr<PipelineStateObject> myDeferredSpotPSO;
+	std::unique_ptr<PipelineStateObject> myDeferredPointPSO;
 
 	// First Index = Near Cascade ... last index = Far Cascade
 	std::array<ShadowCascade, NUM_CASCADES> myCascades;

@@ -14,14 +14,12 @@ filter { "platforms:x64" }
 -- For Debug configuration, we want to set the _DEBUG #define flag and turn on symbol generation.
 filter "configurations:Debug"
     multiprocessorcompile "On"
-    warnings "Extra"
     defines { "_DEBUG", "TRACY_ENABLE" }
     symbols "On"
 
 -- Generate symbols in release mode so we can debug the release build if needed.
 filter "configurations:Release"
     multiprocessorcompile "On"
-    warnings "Extra"
     fatalwarnings { "All" }
     optimize "On"
     symbols "On"
@@ -29,7 +27,6 @@ filter "configurations:Release"
 -- Settings to use for retail build used for shipping the game.
 filter "configurations:Retail"
     multiprocessorcompile "On"
-    warnings "Extra"
     fatalwarnings { "All" }
     defines { "_RETAIL" }
     optimize "On"

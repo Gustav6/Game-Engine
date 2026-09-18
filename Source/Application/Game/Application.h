@@ -6,7 +6,6 @@
 #include "CommonUtilities/Time/Timer.h"
 
 #include "WindowManager.h"
-#include "Audio/FmodAudioSystem.h"
 
 #include "Logger/Logger.h"
 #include "Ensure.h"
@@ -19,15 +18,11 @@ DECLARE_LOG_CATEGORY_WITH_NAME(LogModelViewer, ModelViewer, Warning);
 
 #define MVLOG(Verbosity, Message, ...) LOG(LogModelViewer, Verbosity, Message, ##__VA_ARGS__)
 
-class FmodAudioSystem;
-
 struct ApplicationData
 {
 	CommonUtilities::Input InputManager;
 	CommonUtilities::Timer TimeManager;
 	WindowManager WindowManager;
-
-    std::unique_ptr<FmodAudioSystem> AudioSystem;
 };
 
 inline ApplicationData Application;

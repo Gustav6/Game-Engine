@@ -3,15 +3,8 @@ project "GraphicsEngine"
     language "C++"
     cppdialect "C++20"
 
+    warnings "Extra"
     fatalwarnings { "All" }
-
-    filter "configurations:Release"
-        warnings "Extra"
-
-    filter "configurations:Retail"
-        warnings "Extra"
-
-    filter {}
     
     targetdir ("%{wks.location}/Lib/%{cfg.buildcfg}/")
     objdir    ("%{wks.location}/Intermediate/%{prj.name}/%{cfg.buildcfg}/")

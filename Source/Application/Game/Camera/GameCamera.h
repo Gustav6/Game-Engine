@@ -6,19 +6,48 @@
 
 #include "GamePipeline/World/Actor.hpp"
 
+
+
 class Camera;
+
+enum class Mode
+{
+	FreeLook,
+	LookAt,
+	LookAtLocked,
+};
 
 class GameCamera : public Actor
 {
 public:
-	GameCamera();
-	GameCamera(float aHorizontalFov, float aNearPlane, float aFarPlane, CommonUtilities::Vector2ui aResolution);
+
+	static GameCamera& GetInstance();
+
+	void Init(float aHorizontalFov, float aNearPlane, float aFarPlane, CommonUtilities::Vector2ui aResolution);
 
 	// TODO : Make this run on transform dirty
+	void Update(float aDeltaTime, Transform& aPlyerTransform);
+
 	void UpdateFrustum();
+
+
+	void UpdateMovment(float aDeltaTime);
+	void UpdateLockAt(Transform& aPlyerTransform, float aDeltaTime);
+	void UpdateLockAtLocked(Transform& aPlyerTransform, float aDeltaTime);
+	void UpdateFreeLock(float aDeltaTime);
+	Mode GetMode() const;
+
 
 	const Camera& GetCamera() const;
 
 private:
+	GameCamera() = default;
+	GameCamera(float aHorizontalFov, float aNearPlane, float aFarPlane, CommonUtilities::Vector2ui aResolution);
 	std::unique_ptr<Camera> myCamera;
+
+	Mode myMode;
+
+
+
+	float myCamerasMoveSpeed;
 };

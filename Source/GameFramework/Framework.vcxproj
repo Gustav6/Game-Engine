@@ -87,6 +87,7 @@
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level4</WarningLevel>
+      <TreatWarningAsError>true</TreatWarningAsError>
       <PreprocessorDefinitions>_DEBUG;TRACY_ENABLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>..\Utilities;..\Graphics;..\..\ThirdParty\Source;..\..\ThirdParty\Source\yyjson\yyjson.c;..\..\ThirdParty\Source\tracy\TracyClient.cpp;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
@@ -163,6 +164,7 @@
     <ClInclude Include="AssetPipeline\Assets\Types\MeshAsset.h" />
     <ClInclude Include="AssetPipeline\Assets\Types\TextureAsset.h" />
     <ClInclude Include="AssetPipeline\Assets\Types\UnrealSceneAsset.h" />
+    <ClInclude Include="AudioPipeline\FmodAudioSystem.h" />
     <ClInclude Include="GameFramework.pch.h" />
     <ClInclude Include="GamePipeline\Components\Base\Component.h" />
     <ClInclude Include="GamePipeline\Components\Light\DirectionlLightComponent.h" />
@@ -174,11 +176,9 @@
     <ClInclude Include="GamePipeline\Components\Transform\Transform.h" />
     <ClInclude Include="GamePipeline\World\Actor.hpp" />
     <ClInclude Include="GamePipeline\World\GameWorld.h" />
-    <ClInclude Include="JsonWrapper\JsonWrapper.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\ThirdParty\Source\tracy\TracyClient.cpp" />
-    <ClCompile Include="..\..\ThirdParty\Source\yyjson\yyjson.c" />
     <ClCompile Include="AssetPipeline\AssetRegistry\AssetRegistry.cpp" />
     <ClCompile Include="AssetPipeline\Assets\Base\Asset.cpp" />
     <ClCompile Include="AssetPipeline\Assets\Types\AnimationAsset.cpp" />
@@ -186,6 +186,7 @@
     <ClCompile Include="AssetPipeline\Assets\Types\MeshAsset.cpp" />
     <ClCompile Include="AssetPipeline\Assets\Types\TextureAsset.cpp" />
     <ClCompile Include="AssetPipeline\Assets\Types\UnrealSceneAsset.cpp" />
+    <ClCompile Include="AudioPipeline\FmodAudioSystem.cpp" />
     <ClCompile Include="GameFramework.pch.cpp" />
     <ClCompile Include="GamePipeline\Components\Base\Component.cpp" />
     <ClCompile Include="GamePipeline\Components\Light\DirectionlLightComponent.cpp" />
@@ -197,7 +198,6 @@
     <ClCompile Include="GamePipeline\Components\Transform\Transform.cpp" />
     <ClCompile Include="GamePipeline\World\Actor.cpp" />
     <ClCompile Include="GamePipeline\World\GameWorld.cpp" />
-    <ClCompile Include="JsonWrapper\JsonWrapper.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Utilities\CommonUtilities\CommonUtilities.vcxproj">

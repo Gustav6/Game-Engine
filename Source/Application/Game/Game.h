@@ -47,7 +47,6 @@
 #include <memory>
 
 #include "Camera/GameCamera.h"
-#include "GamePipeline/World/GameWorld.h"
 
 struct Scene;
 class GraphicsCommandList;
@@ -73,12 +72,11 @@ private:
 	std::unique_ptr<GraphicsCommandList> myGraphicsCommandList;
 	std::unique_ptr<Scene> myScene;
 
-	GameWorld myGameWorld;
-	GameCamera myGameCamera;
+
 
 	// TODO: TEMP
 
-	float myCamerasMoveSpeed = 400;
+	Actor* myPlayer = nullptr;
 
 	Actor* myAnimatedObject = nullptr;
 

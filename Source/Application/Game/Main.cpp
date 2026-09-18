@@ -113,6 +113,19 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 LRESULT CALLBACK WinProc(_In_ HWND hWnd, _In_ UINT uMsg, _In_ WPARAM wParam, _In_ LPARAM lParam)
 {
+
+    switch (uMsg)
+    {
+    case WM_KILLFOCUS:
+        Application.InputManager.ReleaseMouse();
+        Application.InputManager.ShowMouse();
+        break;
+
+    case WM_DESTROY:
+        PostQuitMessage(0);
+        return 0;
+    }
+
     if (uMsg == WM_DESTROY || uMsg == WM_CLOSE)
     {
         PostQuitMessage(0);

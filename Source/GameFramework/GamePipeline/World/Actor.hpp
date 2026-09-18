@@ -9,6 +9,8 @@
 
 class Actor
 {
+	friend class UnrealSceneAsset;
+
 public:
 	Actor();
 	virtual ~Actor();

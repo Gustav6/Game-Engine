@@ -58,7 +58,7 @@ GBufferOutput main(VStoPS aPixel)
             result.AlbedoTexture = float4(normalMap, 0.0f, 1.0f);
             break;
         case 6: // Normals world space pass
-            result.AlbedoTexture = float4(normal * 0.5f + 0.5f, 1.0f);
+            result.AlbedoTexture = float4(normal, 1.0f);
             break;
         case 7: // Shadows pass
             result.AlbedoTexture = float4(1.0f, 1.0f, 1.0f, 1.0f); // TODO : FIX

@@ -3,8 +3,8 @@ project "Framework"
     language "C++"
     cppdialect "C++20"
 
-    -- warnings "Extra"
-    -- fatalwarnings { "All" }
+    warnings "Extra"
+    fatalwarnings { "All" }
 
     targetdir ("%{wks.location}/Lib/%{cfg.buildcfg}/")
     objdir    ("%{wks.location}/Intermediate/%{prj.name}/%{cfg.buildcfg}/")
@@ -31,7 +31,6 @@ project "Framework"
         "%{prj.location}/**.inl",
         "%{prj.location}/**.cc",
         
-        "%{wks.location}/ThirdParty/Source/yyjson/yyjson.c", 
         "%{wks.location}/ThirdParty/Source/tracy/TracyClient.cpp" 
     }
 

@@ -10,8 +10,20 @@
     <Filter Include="Input">
       <UniqueIdentifier>{953A660D-014F-8EBE-CAD0-311E36A48AEF}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Json">
+      <UniqueIdentifier>{7F9B877C-6BD2-880D-14BF-6E1000D5040F}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Math">
       <UniqueIdentifier>{AFF4887C-9B2B-8A0D-4418-7010302E060F}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty">
+      <UniqueIdentifier>{107145F9-FC28-8746-6530-60A251072237}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty\Source">
+      <UniqueIdentifier>{10AD61F8-7CC3-5F8E-C53A-EBAF31903016}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty\Source\yyjson">
+      <UniqueIdentifier>{AB633527-9788-84A7-C0D3-6937AC5783C5}</UniqueIdentifier>
     </Filter>
     <Filter Include="Time">
       <UniqueIdentifier>{74EC8C7C-6023-8E0D-0910-7410F5250A0F}</UniqueIdentifier>
@@ -73,7 +85,13 @@
     <ClInclude Include="Input\Input.h">
       <Filter>Input</Filter>
     </ClInclude>
+    <ClInclude Include="Json\JsonWrapper.h">
+      <Filter>Json</Filter>
+    </ClInclude>
     <ClInclude Include="Math\MathUtils.hpp">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Matrix.hpp">
       <Filter>Math</Filter>
     </ClInclude>
     <ClInclude Include="Math\Matrix3x3.hpp">
@@ -85,6 +103,9 @@
     <ClInclude Include="Math\Quaternion.hpp">
       <Filter>Math</Filter>
     </ClInclude>
+    <ClInclude Include="Math\Vector.hpp">
+      <Filter>Math</Filter>
+    </ClInclude>
     <ClInclude Include="Math\Vector2.hpp">
       <Filter>Math</Filter>
     </ClInclude>
@@ -94,6 +115,7 @@
     <ClInclude Include="Math\Vector4.hpp">
       <Filter>Math</Filter>
     </ClInclude>
+    <ClInclude Include="Rectangle.hpp" />
     <ClInclude Include="Time\Timer.h">
       <Filter>Time</Filter>
     </ClInclude>
@@ -108,9 +130,15 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\ThirdParty\Source\yyjson\yyjson.c">
+      <Filter>ThirdParty\Source\yyjson</Filter>
+    </ClCompile>
     <ClCompile Include="CommonUtilities.pch.cpp" />
     <ClCompile Include="Input\Input.cpp">
       <Filter>Input</Filter>
+    </ClCompile>
+    <ClCompile Include="Json\JsonWrapper.cpp">
+      <Filter>Json</Filter>
     </ClCompile>
     <ClCompile Include="Time\Timer.cpp">
       <Filter>Time</Filter>

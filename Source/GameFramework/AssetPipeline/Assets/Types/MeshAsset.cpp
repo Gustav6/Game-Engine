@@ -21,9 +21,9 @@
 
 #include "Logger/Logger.h"
 
-DECLARE_LOG_CATEGORY_WITH_NAME(FBXLog, FBX, Verbose);
+DECLARE_LOG_CATEGORY_WITH_NAME(MeshLog, FBX, Verbose);
 
-DEFINE_LOG_CATEGORY(FBXLog);
+DEFINE_LOG_CATEGORY(MeshLog);
 
 MeshAsset::MeshAsset()
 {
@@ -52,27 +52,27 @@ bool MeshAsset::Load(const std::filesystem::path& aPath)
         {
             case TGA::FBX::FbxImportResult::InternalError:
             {
-                LOG(FBXLog, Error, "Could not load mesh [{}] : Internal FBX importer error!", pathString);
+                LOG(MeshLog, Error, "Could not load mesh [{}] : Internal FBX importer error!", pathString);
                 break;
             }
             case TGA::FBX::FbxImportResult::NotInitialized:
             {
-                LOG(FBXLog, Error, "Could not load mesh [{}] : FBX importer is not initialized!", pathString);
+                LOG(MeshLog, Error, "Could not load mesh [{}] : FBX importer is not initialized!", pathString);
                 break;
             }
             case TGA::FBX::FbxImportResult::FileNotFound:
             {
-                LOG(FBXLog, Error, "Could not load mesh [{}] : File was not found!", pathString);
+                LOG(MeshLog, Error, "Could not load mesh [{}] : File was not found!", pathString);
                 break;
             }
             case TGA::FBX::FbxImportResult::NoMeshData:
             {
-                LOG(FBXLog, Error, "Could not load mesh [{}] : No mesh data found in file!", pathString);
+                LOG(MeshLog, Error, "Could not load mesh [{}] : No mesh data found in file!", pathString);
                 break;
             }
             default:
             {
-                LOG(FBXLog, Error, "Could not load mesh [{}] : Unknown error!", pathString);
+                LOG(MeshLog, Error, "Could not load mesh [{}] : Unknown error!", pathString);
                 break;
             }
         }
@@ -88,37 +88,37 @@ bool MeshAsset::Load(const std::filesystem::path& aPath)
         {
             case TGA::FBX::FbxImportWarning::TooManySkinWeights:
             {
-                LOG(FBXLog, Warning, "Mesh [{}] : Vertices had too many skin weights and were truncated!", pathString);
+                LOG(MeshLog, Warning, "Mesh [{}] : Vertices had too many skin weights and were truncated!", pathString);
                 break;
             }
             case TGA::FBX::FbxImportWarning::MissingSkinWeights:
             {
-                LOG(FBXLog, Warning, "Mesh [{}] : Vertices are missing skin weights!", pathString);
+                LOG(MeshLog, Warning, "Mesh [{}] : Vertices are missing skin weights!", pathString);
                 break;
             }
             case TGA::FBX::FbxImportWarning::NoUVCoordinates:
             {
-                LOG(FBXLog, Warning, "Mesh [{}] : Surfaces have no UV coordinates!", pathString);
+                LOG(MeshLog, Warning, "Mesh [{}] : Surfaces have no UV coordinates!", pathString);
                 break;
             }
             case TGA::FBX::FbxImportWarning::GenerateNormalsFailed:
             {
-                LOG(FBXLog, Warning, "Mesh [{}] : Failed to generate normal's for surfaces!", pathString);
+                LOG(MeshLog, Warning, "Mesh [{}] : Failed to generate normal's for surfaces!", pathString);
                 break;
             }
             case TGA::FBX::FbxImportWarning::CannotTriangulate:
             {
-                LOG(FBXLog, Warning, "Mesh [{}] : Could not triangulate polygons!", pathString);
+                LOG(MeshLog, Warning, "Mesh [{}] : Could not triangulate polygons!", pathString);
                 break;
             }
             case TGA::FBX::FbxImportWarning::DuplicateBoneNames:
             {
-                LOG(FBXLog, Warning, "Mesh [{}] : Duplicate bone names detected!", pathString);
+                LOG(MeshLog, Warning, "Mesh [{}] : Duplicate bone names detected!", pathString);
                 break;
             }
             default:
             {
-                LOG(FBXLog, Warning, "Mesh [{}] : Unknown warning!", pathString);
+                LOG(MeshLog, Warning, "Mesh [{}] : Unknown warning!", pathString);
                 break;
             }
         }

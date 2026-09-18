@@ -16,6 +16,9 @@
     <Filter Include="AssetPipeline\Assets\Types">
       <UniqueIdentifier>{01DD131F-EDEC-BFEF-56A6-240E42D5AE88}</UniqueIdentifier>
     </Filter>
+    <Filter Include="AudioPipeline">
+      <UniqueIdentifier>{8DA8AFA9-F968-2BE0-C2A3-745D2E2370BC}</UniqueIdentifier>
+    </Filter>
     <Filter Include="GamePipeline">
       <UniqueIdentifier>{75A1B295-6104-423A-0A8A-7AF0F6CB0DBD}</UniqueIdentifier>
     </Filter>
@@ -37,9 +40,6 @@
     <Filter Include="GamePipeline\World">
       <UniqueIdentifier>{ECBFCC95-D8A3-8DEB-4104-883E2D07786D}</UniqueIdentifier>
     </Filter>
-    <Filter Include="JsonWrapper">
-      <UniqueIdentifier>{20314589-8CE6-BD7E-15DB-B755818FB482}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ThirdParty">
       <UniqueIdentifier>{107145F9-FC28-8746-6530-60A251072237}</UniqueIdentifier>
     </Filter>
@@ -48,9 +48,6 @@
     </Filter>
     <Filter Include="ThirdParty\Source\tracy">
       <UniqueIdentifier>{22F6E85D-8E2D-31F5-9737-951803EE57EE}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ThirdParty\Source\yyjson">
-      <UniqueIdentifier>{AB633527-9788-84A7-C0D3-6937AC5783C5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -74,6 +71,9 @@
     </ClInclude>
     <ClInclude Include="AssetPipeline\Assets\Types\UnrealSceneAsset.h">
       <Filter>AssetPipeline\Assets\Types</Filter>
+    </ClInclude>
+    <ClInclude Include="AudioPipeline\FmodAudioSystem.h">
+      <Filter>AudioPipeline</Filter>
     </ClInclude>
     <ClInclude Include="GameFramework.pch.h" />
     <ClInclude Include="GamePipeline\Components\Base\Component.h">
@@ -106,16 +106,10 @@
     <ClInclude Include="GamePipeline\World\GameWorld.h">
       <Filter>GamePipeline\World</Filter>
     </ClInclude>
-    <ClInclude Include="JsonWrapper\JsonWrapper.h">
-      <Filter>JsonWrapper</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\ThirdParty\Source\tracy\TracyClient.cpp">
       <Filter>ThirdParty\Source\tracy</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\ThirdParty\Source\yyjson\yyjson.c">
-      <Filter>ThirdParty\Source\yyjson</Filter>
     </ClCompile>
     <ClCompile Include="AssetPipeline\AssetRegistry\AssetRegistry.cpp">
       <Filter>AssetPipeline\AssetRegistry</Filter>
@@ -137,6 +131,9 @@
     </ClCompile>
     <ClCompile Include="AssetPipeline\Assets\Types\UnrealSceneAsset.cpp">
       <Filter>AssetPipeline\Assets\Types</Filter>
+    </ClCompile>
+    <ClCompile Include="AudioPipeline\FmodAudioSystem.cpp">
+      <Filter>AudioPipeline</Filter>
     </ClCompile>
     <ClCompile Include="GameFramework.pch.cpp" />
     <ClCompile Include="GamePipeline\Components\Base\Component.cpp">
@@ -168,9 +165,6 @@
     </ClCompile>
     <ClCompile Include="GamePipeline\World\GameWorld.cpp">
       <Filter>GamePipeline\World</Filter>
-    </ClCompile>
-    <ClCompile Include="JsonWrapper\JsonWrapper.cpp">
-      <Filter>JsonWrapper</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

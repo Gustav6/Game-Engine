@@ -21,11 +21,6 @@ float4 main(FullTextureVertex aInput) : SV_TARGET
         discard;
     }
     
-    if (FB_TypeOfRenderPass != 0)
-    {
-        return albedoPixel;
-    }
-    
     const float4 normalPixel = GBufferNormal.Sample(TrilinearClamp, aInput.UV);
     const float4 materialPixel = GBufferMaterial.Sample(TrilinearClamp, aInput.UV);
     const float4 worldPositionPixel = GBufferWorldPosition.Sample(TrilinearClamp, aInput.UV);
@@ -45,9 +40,7 @@ float4 main(FullTextureVertex aInput) : SV_TARGET
     
     Light light = LB_Lights[0];
     
-    float3 radiance = CalculateAmbientContribution(
-        normalPixel.xyz, pixelView, specularColor, diffuseColor, envNumMips, roughness, occlusion);
-    
+    float3 radiance = float3(0, 0, 0);
     float pixelDistance = length(worldPositionPixel.xyz - FB_CameraPosition);
 
     uint cascadeIndex;

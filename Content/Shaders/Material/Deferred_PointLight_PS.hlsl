@@ -20,11 +20,6 @@ float4 main(FullTextureVertex aInput) : SV_TARGET
         discard;
     }
     
-    if (FB_TypeOfRenderPass != 0)
-    {
-        return albedoPixel;
-    }
-    
     const float4 normalPixel = GBufferNormal.Sample(TrilinearClamp, aInput.UV);
     const float4 materialPixel = GBufferMaterial.Sample(TrilinearClamp, aInput.UV);
     const float4 worldPositionPixel = GBufferWorldPosition.Sample(TrilinearClamp, aInput.UV);

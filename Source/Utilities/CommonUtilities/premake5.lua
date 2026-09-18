@@ -15,10 +15,23 @@ project "CommonUtilities"
     
     externalincludedirs { "%{prj.location}", "$(VC_IncludePath)", "$(WindowsSDK_IncludePath)" }
 
+    includedirs {
+        "%{wks.location}/Source/Utilities",
+        "%{wks.location}/ThirdParty/Source",
+        
+        "%{wks.location}/ThirdParty/Source/yyjson/yyjson.c"
+    }
+    
     files { 
         "%{prj.location}/**.h", 
         "%{prj.location}/**.cpp", 
         "%{prj.location}/**.hpp", 
         "%{prj.location}/**.inl", 
-        "%{prj.location}/**.cc"
+        "%{prj.location}/**.cc",
+
+        "%{wks.location}/ThirdParty/Source/yyjson/yyjson.c"
+    }
+    
+    links {
+        "Logger"
     }

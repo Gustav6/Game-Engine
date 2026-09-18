@@ -23,6 +23,7 @@
 #include "GamePipeline/Components/Light/PointLightComponent.h"
 #include "GamePipeline/Components/Light/SpotLightComponent.h"
 #include "GamePipeline/World/Actor.hpp"
+#include "GamePipeline/World/GameWorld.h"
 
 #include "GraphicsEngine/GraphicsEngine.hpp"
 #include "GraphicsEngine/Objects/Texture.h"
@@ -30,562 +31,543 @@
 #include "GraphicsEngine/RHI/GraphicsCommandList.h"
 
 #include <tracy/core/Tracy.hpp>
-#include <Audio/FmodAudioSystem.h>
+#include <AudioPipeline/FmodAudioSystem.h>
 
 Game::Game() = default;
 Game::~Game() = default;
 
 bool Game::Initialize(SIZE aWindowSize, WNDPROC aWindowProcess, LPCWSTR aWindowTitle)
 {
-    myScene = std::make_unique<Scene>();
+	myScene = std::make_unique<Scene>();
 
-    std::filesystem::path workingDirectory = GetExecutableDirectory().parent_path().parent_path() / "Content";
+	std::filesystem::path workingDirectory = GetExecutableDirectory().parent_path().parent_path() / "Content";
 
-    Application.AudioSystem = std::make_unique<FmodAudioSystem>();
+	if (!FmodAudioSystem::Get().Initialize())
+	{
+		MVLOG(Error, "Failed to initialize audio system.");
+		return false;
+	}
 
-    if (!Application.AudioSystem->Initialize()) 
-    {
-        MVLOG(Error, "Failed to initialize audio system.");
-    }
+	FmodAudioSystem::Get().LoadBank((workingDirectory / "Audio" / "Master.bank").string());
+	FmodAudioSystem::Get().LoadBank((workingDirectory / "Audio" / "Master.strings.bank").string());
+	FmodAudioSystem::Get().LoadBank((workingDirectory / "Audio" / "SFX.bank").string());
 
-    AssetRegistry::Get().RegisterAssetType<MeshAsset>({ ".fbx" });
-    AssetRegistry::Get().RegisterAssetType<AnimationAsset>({ ".fbx" });
-    AssetRegistry::Get().RegisterAssetType<MaterialAsset>({ ".json" });
-    AssetRegistry::Get().RegisterAssetType<TextureAsset>({ ".dds" });
-    AssetRegistry::Get().RegisterAssetType<UnrealSceneAsset>({ ".json" });
+	AssetRegistry::Get().RegisterAssetType<MeshAsset>({ ".fbx" });
+	AssetRegistry::Get().RegisterAssetType<AnimationAsset>({ ".fbx" });
+	AssetRegistry::Get().RegisterAssetType<MaterialAsset>({ ".json" });
+	AssetRegistry::Get().RegisterAssetType<TextureAsset>({ ".dds" });
+	AssetRegistry::Get().RegisterAssetType<UnrealSceneAsset>({ ".json" });
 
-    if (!AssetRegistry::Get().Initialize(workingDirectory))
-    {
-        return false;
-    }
+	if (!AssetRegistry::Get().Initialize(workingDirectory))
+	{
+		return false;
+	}
 
-    Application.InputManager.SetWindowHandle(myMainWindowHandle);
+	Application.InputManager.SetWindowHandle(myMainWindowHandle);
 
 	constexpr LPCWSTR windowClassName = L"ModelViewerMainWindow";
 
-    // First we create our Window Class
-    WNDCLASS windowClass = {};
-    windowClass.style = CS_VREDRAW | CS_HREDRAW | CS_OWNDC;
-    windowClass.lpfnWndProc = aWindowProcess;
-    windowClass.hCursor = LoadCursor(nullptr, IDC_ARROW);
-    windowClass.lpszClassName = windowClassName;
-    RegisterClass(&windowClass);
+	// First we create our Window Class
+	WNDCLASS windowClass = {};
+	windowClass.style = CS_VREDRAW | CS_HREDRAW | CS_OWNDC;
+	windowClass.lpfnWndProc = aWindowProcess;
+	windowClass.hCursor = LoadCursor(nullptr, IDC_ARROW);
+	windowClass.lpszClassName = windowClassName;
+	RegisterClass(&windowClass);
 
-    // Put the window in the middle of the screen regardless of resolution.
-    LONG posX = (GetSystemMetrics(SM_CXSCREEN) - aWindowSize.cx) / 2;
+
+#if _DEBUG
+	// Put the window in the middle of the screen regardless of resolution.
+	LONG posX = (GetSystemMetrics(SM_CXSCREEN) - aWindowSize.cx) / 2;
 	posX = std::max<LONG>(posX, 0);
 
 	LONG posY = (GetSystemMetrics(SM_CYSCREEN) - aWindowSize.cy) / 2;
 	posY = std::max<LONG>(posY, 0);
 
+
+
 	// Then we use the class to create our window
-    myMainWindowHandle = CreateWindow(
-        windowClassName,                                // Classname
-        aWindowTitle,                                   // Window Title
-        WS_OVERLAPPEDWINDOW | WS_POPUP,                 // Flags
-        posX,
-        posY,
-        aWindowSize.cx,
-        aWindowSize.cy,
-        nullptr, nullptr, nullptr,
-        nullptr
-    );
+	myMainWindowHandle = CreateWindow(
+		windowClassName,                                // Classname
+		aWindowTitle,                                   // Window Title
+		WS_OVERLAPPEDWINDOW | WS_POPUP,                 // Flags
+		posX,
+		posY,
+		aWindowSize.cx,
+		aWindowSize.cy,
+		nullptr, nullptr, nullptr,
+		nullptr
+	);
+#else
 
-    MVLOG(Log, "Ready!");
+	aWindowSize;
 
-    // Graphics Init
+	MONITORINFO monitorInfo = {};
+	monitorInfo.cbSize = sizeof(MONITORINFO);
+
+	HMONITOR monitor = MonitorFromPoint({ 0, 0 }, MONITOR_DEFAULTTOPRIMARY);
+	GetMonitorInfo(monitor, &monitorInfo);
+
+	const RECT& monitorRect = monitorInfo.rcMonitor;
+
+	const LONG posX = monitorRect.left;
+	const LONG posY = monitorRect.top;
+	const LONG width = monitorRect.right - monitorRect.left;
+	const LONG height = monitorRect.bottom - monitorRect.top;
+
+	// Then we use the class to create our window
+	myMainWindowHandle = CreateWindow(
+		windowClassName,                                // Classname
+		aWindowTitle,                                   // Window Title
+		/*WS_THICKFRAME |*/ WS_POPUP,                 // Flags
+		posX,
+		posY,
+		width,
+		height,
+		nullptr, nullptr, nullptr,
+		nullptr
+	);
+#endif
+
+
+	
+
+	MVLOG(Log, "Ready!");
+
+	// Graphics Init
 	{
-        MVLOG(Log, "Initializing Graphics Engine...");
+		MVLOG(Log, "Initializing Graphics Engine...");
 
 		GraphicsEngine& GE = GraphicsEngine::Get();
 
-	    if(!GE.Initialize(myMainWindowHandle, workingDirectory / "Shaders"))
-	    {
-            return false;
-        }
+		if (!GE.Initialize(myMainWindowHandle, workingDirectory / "Shaders"))
+		{
+			return false;
+		}
 
 		std::unique_ptr<Texture> environmentTexture = std::make_unique<Texture>();
 
 		GE.LoadTexture(workingDirectory / "Textures" / "Environment Map" / "T_Shipyard.dds", *environmentTexture);
-        GE.SetEnvironmentTexture(std::move(environmentTexture));
+		GE.SetEnvironmentTexture(std::move(environmentTexture));
 
 		myGraphicsCommandList = std::make_unique<GraphicsCommandList>();
 
-        GE.CreateCommandList("ModelViewer", *myGraphicsCommandList);
+		GE.CreateCommandList("ModelViewer", *myGraphicsCommandList);
 	}
 
-    LoadScene();
+	LoadScene();
 
-    // Show our program window and give it focus.
-    ShowWindow(myMainWindowHandle, SW_SHOW);
-    SetForegroundWindow(myMainWindowHandle);
+	// Show our program window and give it focus.
+	ShowWindow(myMainWindowHandle, SW_SHOW);
+	SetForegroundWindow(myMainWindowHandle);
 
-    return true;
+	return true;
 }
 
 int Game::Run()
 {
-    MSG msg;
-    ZeroMemory(&msg, sizeof(MSG));
+	MSG msg;
+	ZeroMemory(&msg, sizeof(MSG));
 
-    myIsRunning = true;
+	myIsRunning = true;
 
-    while (myIsRunning)
-    {
-        while (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
-        {
-            TranslateMessage(&msg);
-            DispatchMessage(&msg);
+	while (myIsRunning)
+	{
+		while (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
+		{
+			TranslateMessage(&msg);
+			DispatchMessage(&msg);
 
-            Application.InputManager.UpdateEvents(msg.message, msg.wParam, msg.lParam);
+			Application.InputManager.UpdateEvents(msg.message, msg.wParam, msg.lParam);
 
-            switch (msg.message)
-            {
-                case WM_QUIT:
-                {
-                    myIsRunning = false;
-                    break;
-                }
-            }
-        }
+			switch (msg.message)
+			{
+			case WM_QUIT:
+			{
+				myIsRunning = false;
+				break;
+			}
+			}
+		}
 
-        Application.TimeManager.Update();
-        Application.InputManager.UpdateInput();
+		Application.TimeManager.Update();
+		Application.InputManager.UpdateInput();
 
-        UpdateScene(Application.TimeManager.GetDeltaTime());
+		UpdateScene(Application.TimeManager.GetDeltaTime());
 
-        Application.AudioSystem->Update();
-        BuildSceneForRender();
+		//Application.AudioSystem->Update();
+		FmodAudioSystem::Get().Update();
+		BuildSceneForRender();
 
 		// Render to graphics engine and present to screen
-        {
-            GraphicsEngine& GE = GraphicsEngine::Get();
+		{
+			GraphicsEngine& GE = GraphicsEngine::Get();
 
-            myGraphicsCommandList->ResetCommandList();
+			myGraphicsCommandList->ResetCommandList();
 
-            GE.Render(*myGraphicsCommandList, *myScene);
+			GE.Render(*myGraphicsCommandList, *myScene);
 
-            myGraphicsCommandList->FinishCommandList();
+			myGraphicsCommandList->FinishCommandList();
 
-            GE.ExecuteCommandList(*myGraphicsCommandList);
-            GE.Present();
-        }
-    }
+			GE.ExecuteCommandList(*myGraphicsCommandList);
+			GE.Present();
+		}
+	}
 
-    // Cleanup
-    AssetRegistry::Get().UnInitialize();
+	// Cleanup
+	AssetRegistry::Get().UnInitialize();
 
-    if (Application.AudioSystem)
-    {
-        Application.AudioSystem->Shutdown();
-        Application.AudioSystem.reset();
-    }
+	/*if (Application.AudioSystem)
+	{
+		Application.AudioSystem->Shutdown();
+		Application.AudioSystem.reset();
+	}*/
 
-    return 0;
+	FmodAudioSystem::Get().Shutdown();
+
+	return 0;
 }
 
 void Game::LoadScene()
 {
-    {
-        myGameCamera = GameCamera(90.0f, 1.0f, 10000.0f, GraphicsEngine::Get().GetClientSize());
-        myGameCamera.GetTransform().SetPosition({ 0, 100, -200 });
-    }
+	{
+		GameCamera& gameCamera = GameCamera::GetInstance();
+		gameCamera.Init(90.0f, 1.0f, 10000.0f, GraphicsEngine::Get().GetClientSize());
 
-    {
-        std::unique_ptr<Actor> object = std::make_unique<Actor>();
+		/*myGameCamera = GameCamera(90.0f, 1.0f, 10000.0f, GraphicsEngine::Get().GetClientSize());
+		myGameCamera.GetTransform().SetPosition({ 0, 100, -200 });*/
+	}
 
-        MeshComponent* meshComponent = object->AddComponent<MeshComponent>();
+	//auto UnrealScene = AssetRegistry::Get().GetAsset<UnrealSceneAsset>("LVL_DioramaBlockout_Level");
 
-        meshComponent->SetMesh(AssetRegistry::Get().GetAsset<MeshAsset>("SM_Color_Checker"));
-        meshComponent->SetMaterial(0, AssetRegistry::Get().GetAsset<MaterialAsset>("SMColorChecker"));
+	//Test sound, not to be remain
+	FmodAudioSystem::Get().PlayEvent("event:/Test");
 
-        object->GetTransform().Translate({ -400, 40, 0 });
-        object->GetTransform().Rotate(CommonUtilities::Vector3f{ -90, 0, 0 });
+	//myPlayer = new Actor;
+	//myPlayer->GetTransform().SetPosition({ 0,0,0 });
 
-        myGameWorld.AddActor(std::move(object));
-    }
+	{
+	    std::unique_ptr<Actor> object = std::make_unique<Actor>();
 
-    {
-        std::unique_ptr<Actor> object = std::make_unique<Actor>();
+	    MeshComponent* meshComponent = object->AddComponent<MeshComponent>();
 
-        MeshComponent* meshComponent = object->AddComponent<MeshComponent>();
+	    meshComponent->SetMesh(AssetRegistry::Get().GetAsset<MeshAsset>("SM_Color_Checker"));
+	    meshComponent->SetMaterial(0, AssetRegistry::Get().GetAsset<MaterialAsset>("SMColorChecker"));
 
-        meshComponent->SetMesh(AssetRegistry::Get().GetAsset<MeshAsset>("SM_Chest"));
-        meshComponent->SetMaterial(0, AssetRegistry::Get().GetAsset<MaterialAsset>("ChestMaterial"));
-		
-        object->GetTransform().Rotate(CommonUtilities::Vector3f{ 0, -180, 0 });
-        object->GetTransform().Translate({ 200, 0, 400 });
+	    object->GetTransform().Translate({ -400, 40, 0 });
+	    object->GetTransform().Rotate(CommonUtilities::Vector3f{ -90, 0, 0 });
 
-        myGameWorld.AddActor(std::move(object));
-    }
+		GameWorld::Get().AddActor(std::move(object));
+	}
 
-    {
-        std::unique_ptr<Actor> object = std::make_unique<Actor>();
+	{
+	    std::unique_ptr<Actor> object = std::make_unique<Actor>();
 
-        MeshComponent* meshComponent = object->AddComponent<MeshComponent>();
+	    MeshComponent* meshComponent = object->AddComponent<MeshComponent>();
 
-        meshComponent->SetMesh(AssetRegistry::Get().GetAsset<MeshAsset>("Unit_Plane"));
-        meshComponent->SetMaterial(0, AssetRegistry::Get().GetAsset<MaterialAsset>("BaseMaterial"));
+	    meshComponent->SetMesh(AssetRegistry::Get().GetAsset<MeshAsset>("SM_Chest"));
+	    meshComponent->SetMaterial(0, AssetRegistry::Get().GetAsset<MaterialAsset>("ChestMaterial"));
 
-        object->GetTransform().SetScale({ 2000, 2000, 2000 });
+	    object->GetTransform().Rotate(CommonUtilities::Vector3f{ 0, -180, 0 });
+	    object->GetTransform().Translate({ 200, 0, 400 });
 
-        myGameWorld.AddActor(std::move(object));
-    }
+		GameWorld::Get().AddActor(std::move(object));
+	}
 
-    {
-        std::unique_ptr<Actor> object = std::make_unique<Actor>();
+	{
+	    std::unique_ptr<Actor> object = std::make_unique<Actor>();
 
-        MeshComponent* meshComponent = object->AddComponent<MeshComponent>();
+	    MeshComponent* meshComponent = object->AddComponent<MeshComponent>();
 
-        meshComponent->SetMesh(AssetRegistry::Get().GetAsset<MeshAsset>("Unit_Cube"));
-        meshComponent->SetMaterial(0, AssetRegistry::Get().GetAsset<MaterialAsset>("BaseMaterial"));
+	    meshComponent->SetMesh(AssetRegistry::Get().GetAsset<MeshAsset>("Unit_Plane"));
+	    meshComponent->SetMaterial(0, AssetRegistry::Get().GetAsset<MaterialAsset>("BaseMaterial"));
 
-        object->GetTransform().Translate({ 0, 50, 0 });
-        object->GetTransform().SetScale({ 100, 100, 100 });
+	    object->GetTransform().SetScale({ 2000, 2000, 2000 });
 
-        myGameWorld.AddActor(std::move(object));
-    }
+		GameWorld::Get().AddActor(std::move(object));
+	}
 
-    {
-        std::unique_ptr<Actor> object = std::make_unique<Actor>();
+	{
+	    std::unique_ptr<Actor> object = std::make_unique<Actor>();
 
-        MeshComponent* meshComponent = object->AddComponent<MeshComponent>();
+	    MeshComponent* meshComponent = object->AddComponent<MeshComponent>();
 
-        meshComponent->SetMesh(AssetRegistry::Get().GetAsset<MeshAsset>("Unit_Cube"));
-        meshComponent->SetMaterial(0, AssetRegistry::Get().GetAsset<MaterialAsset>("BaseMaterial"));
+	    meshComponent->SetMesh(AssetRegistry::Get().GetAsset<MeshAsset>("Unit_Cube"));
+	    meshComponent->SetMaterial(0, AssetRegistry::Get().GetAsset<MaterialAsset>("BaseMaterial"));
 
-        object->GetTransform().SetEulerRotation({ 45.0f, 180.0f, 45.0f });
-        object->GetTransform().Translate({ -200, 100, 400 });
-        object->GetTransform().SetScale({ 100, 100, 100 });
+	    object->GetTransform().Translate({ 0, 50, 0 });
+	    object->GetTransform().SetScale({ 100, 100, 100 });
 
-        myGameWorld.AddActor(std::move(object));
-    }
+		GameWorld::Get().AddActor(std::move(object));
+	}
 
-    {
-        std::unique_ptr<Actor> object = std::make_unique<Actor>();
+	{
+	    std::unique_ptr<Actor> object = std::make_unique<Actor>();
 
-        object->GetTransform().Translate({ 200, 0, 0 });
+	    MeshComponent* meshComponent = object->AddComponent<MeshComponent>();
 
-        MeshComponent* meshComponent = object->AddComponent<MeshComponent>();
+	    meshComponent->SetMesh(AssetRegistry::Get().GetAsset<MeshAsset>("Unit_Cube"));
+	    meshComponent->SetMaterial(0, AssetRegistry::Get().GetAsset<MaterialAsset>("BaseMaterial"));
 
-        meshComponent->SetMesh(AssetRegistry::Get().GetAsset<MeshAsset>("SK_C_TGA_Bro"));
-        meshComponent->SetMaterial(0, AssetRegistry::Get().GetAsset<MaterialAsset>("TGABroMaterial"));
+	    object->GetTransform().SetEulerRotation({ 45.0f, 180.0f, 45.0f });
+	    object->GetTransform().Translate({ -200, 100, 400 });
+	    object->GetTransform().SetScale({ 100, 100, 100 });
 
-        AnimationComponent* animationComponent = object->AddComponent<AnimationComponent>(meshComponent->GetSkeleton());
+		GameWorld::Get().AddActor(std::move(object));
+	}
 
-        AnimationEntry breathingAnimation =
-        {
-            .AnimationAsset = AssetRegistry::Get().GetAsset<AnimationAsset>("A_C_TGA_Bro_Idle_Breathing"),
-            .ShouldLoop = true
-        };
-        AnimationEntry waveAnimation =
-        {
-            .AnimationAsset = AssetRegistry::Get().GetAsset<AnimationAsset>("A_C_TGA_Bro_Idle_Wave"),
-            .ShouldLoop = true
-        };
-        AnimationEntry runAnimation =
-        {
-            .AnimationAsset = AssetRegistry::Get().GetAsset<AnimationAsset>("A_C_TGA_Bro_Run"),
-            .ShouldLoop = true
-        };
-        AnimationEntry walkAnimation =
-        {
-            .AnimationAsset = AssetRegistry::Get().GetAsset<AnimationAsset>("A_C_TGA_Bro_Walk"),
-            .ShouldLoop = true
-        };
+	{
+	    std::unique_ptr<Actor> object = std::make_unique<Actor>();
 
-        animationComponent->AddAnimation("Breathing", breathingAnimation);
-        animationComponent->AddAnimation("Wave", waveAnimation);
-        animationComponent->AddAnimation("Run", runAnimation);
-        animationComponent->AddAnimation("Walk", walkAnimation);
-        
-        myAnimatedObject = myGameWorld.AddActor(std::move(object));
-    }
+	    object->GetTransform().Translate({ 200, 0, 0 });
 
-    {
-        std::unique_ptr<Actor> object = std::make_unique<Actor>();
+	    MeshComponent* meshComponent = object->AddComponent<MeshComponent>();
 
-        DirectionalLightComponent* directionalLight = object->AddComponent<DirectionalLightComponent>();
+	    meshComponent->SetMesh(AssetRegistry::Get().GetAsset<MeshAsset>("SK_C_TGA_Bro"));
+	    meshComponent->SetMaterial(0, AssetRegistry::Get().GetAsset<MaterialAsset>("TGABroMaterial"));
 
-        directionalLight->SetColor({ 1.0f, 0.95f, 0.85f });
-        directionalLight->SetIntensity(1.0f);
-        directionalLight->SetDirection({ 0.0f, -0.75f, 1.0f });
+	    AnimationComponent* animationComponent = object->AddComponent<AnimationComponent>(meshComponent->GetSkeleton());
 
-        myDirectionLightObject = myGameWorld.AddActor(std::move(object));
-    }
+	    AnimationEntry breathingAnimation =
+	    {
+	        .AnimationAsset = AssetRegistry::Get().GetAsset<AnimationAsset>("A_C_TGA_Bro_Idle_Breathing"),
+	        .ShouldLoop = true
+	    };
+	    AnimationEntry waveAnimation =
+	    {
+	        .AnimationAsset = AssetRegistry::Get().GetAsset<AnimationAsset>("A_C_TGA_Bro_Idle_Wave"),
+	        .ShouldLoop = true
+	    };
+	    AnimationEntry runAnimation =
+	    {
+	        .AnimationAsset = AssetRegistry::Get().GetAsset<AnimationAsset>("A_C_TGA_Bro_Run"),
+	        .ShouldLoop = true
+	    };
+	    AnimationEntry walkAnimation =
+	    {
+	        .AnimationAsset = AssetRegistry::Get().GetAsset<AnimationAsset>("A_C_TGA_Bro_Walk"),
+	        .ShouldLoop = true
+	    };
 
-    {
-        std::unique_ptr<Actor> object = std::make_unique<Actor>();
+	    animationComponent->AddAnimation("Breathing", breathingAnimation);
+	    animationComponent->AddAnimation("Wave", waveAnimation);
+	    animationComponent->AddAnimation("Run", runAnimation);
+	    animationComponent->AddAnimation("Walk", walkAnimation);
+	    
+	    myAnimatedObject = GameWorld::Get().AddActor(std::move(object));
+	}
 
-        object->SetEnabled(false);
+	{
+	    std::unique_ptr<Actor> object = std::make_unique<Actor>();
 
-        PointLightComponent* pointLight = object->AddComponent<PointLightComponent>();
-        pointLight->SetPosition({ -200.0f, 150.0f, 0.0f });
-        pointLight->SetColor({ 0.0f, 0.0f, 1.0f });
-        pointLight->SetIntensity(75000.0f);
-        pointLight->SetRadius(900.0f);
-        pointLight->SetShadowMapSize({ 512, 512 });
+	    DirectionalLightComponent* directionalLight = object->AddComponent<DirectionalLightComponent>();
 
-        myPointLightObject = myGameWorld.AddActor(std::move(object));
-    }
+	    directionalLight->SetColor({ 1.0f, 0.95f, 0.85f });
+	    directionalLight->SetIntensity(1.0f);
+	    directionalLight->SetDirection({ 0.0f, -0.75f, 1.0f });
 
-    {
-        std::unique_ptr<Actor> object = std::make_unique<Actor>();
+	    myDirectionLightObject = GameWorld::Get().AddActor(std::move(object));
+	}
 
-        object->SetEnabled(false);
+	{
+	    std::unique_ptr<Actor> object = std::make_unique<Actor>();
 
-        SpotLightComponent* spotLight = object->AddComponent<SpotLightComponent>();
-        spotLight->SetPosition({ 0.0f, 50.0f, -300.0f });
-        spotLight->SetColor({ 0.0f, 1.0f, 0.0f });
-        spotLight->SetIntensity(50000.0f);
-        spotLight->SetRadius(1000.0f);
-        spotLight->SetDirection({ 0.0f, 0.0f, 1.0f });
-        spotLight->SetCone(0.0f, 0.7f);
-        spotLight->SetShadowMapSize({ 512, 512 });
+	    object->SetEnabled(false);
 
-        mySpotLightObject = myGameWorld.AddActor(std::move(object));
-    }
+	    PointLightComponent* pointLight = object->AddComponent<PointLightComponent>();
+	    pointLight->SetPosition({ -200.0f, 150.0f, 0.0f });
+	    pointLight->SetColor({ 0.0f, 0.0f, 1.0f });
+	    pointLight->SetIntensity(75000.0f);
+	    pointLight->SetRadius(900.0f);
+	    pointLight->SetShadowMapSize({ 512, 512 });
+
+	    myPointLightObject = GameWorld::Get().AddActor(std::move(object));
+	}
+
+	{
+	    std::unique_ptr<Actor> object = std::make_unique<Actor>();
+
+	    object->SetEnabled(false);
+
+	    SpotLightComponent* spotLight = object->AddComponent<SpotLightComponent>();
+	    spotLight->SetPosition({ 0.0f, 50.0f, -300.0f });
+	    spotLight->SetColor({ 0.0f, 1.0f, 0.0f });
+	    spotLight->SetIntensity(50000.0f);
+	    spotLight->SetRadius(1000.0f);
+	    spotLight->SetDirection({ 0.0f, 0.0f, 1.0f });
+	    spotLight->SetCone(0.0f, 0.7f);
+	    spotLight->SetShadowMapSize({ 512, 512 });
+
+	    mySpotLightObject = GameWorld::Get().AddActor(std::move(object));
+	}
 }
 
 void Game::UpdateScene(float aDeltaTime)
 {
-    ZoneScopedN("Update Game");
+	ZoneScopedN("Update Game");
 
-    myGameWorld.Update(aDeltaTime);
+	GameWorld::Get().Update(aDeltaTime);
 
-    // Camera controls
-    {
-        if (Application.InputManager.IsKeyDown(KeyCode::W))
-        {
-            CommonUtilities::Vector3f delta = myGameCamera.GetTransform().GetForward() * myCamerasMoveSpeed * aDeltaTime;
+	GameCamera::GetInstance().Update(aDeltaTime, myPlayer->GetTransform());
 
-            myGameCamera.GetTransform().Translate(delta);
-            myGameCamera.UpdateFrustum();
-        }
-        if (Application.InputManager.IsKeyDown(KeyCode::A))
-        {
-            CommonUtilities::Vector3f delta = -myGameCamera.GetTransform().GetRight() * myCamerasMoveSpeed * aDeltaTime;
+	// Camera controls
+	{
+		
 
-            myGameCamera.GetTransform().Translate(delta);
-            myGameCamera.UpdateFrustum();
-        }
-        if (Application.InputManager.IsKeyDown(KeyCode::S))
-        {
-            CommonUtilities::Vector3f delta = -myGameCamera.GetTransform().GetForward() * myCamerasMoveSpeed * aDeltaTime;
+		
+	}
 
-            myGameCamera.GetTransform().Translate(delta);
-            myGameCamera.UpdateFrustum();
-        }
-        if (Application.InputManager.IsKeyDown(KeyCode::D))
-        {
-            CommonUtilities::Vector3f delta = myGameCamera.GetTransform().GetRight() * myCamerasMoveSpeed * aDeltaTime;
+	// TODO: TEMP
+	if (Application.InputManager.IsKeyPressed(KeyCode::D1))
+	{
+		myAnimatedObject->GetComponent<AnimationComponent>()->PlayAnimation("Wave", true, JointGroup::RightArm);
+		myAnimatedObject->GetComponent<AnimationComponent>()->PlayAnimation("Walk", false);
+	}
+	if (Application.InputManager.IsKeyPressed(KeyCode::D2))
+	{
+		myAnimatedObject->GetComponent<AnimationComponent>()->PlayAnimation("Run", true);
+	}
+	if (Application.InputManager.IsKeyPressed(KeyCode::D3))
+	{
+		myAnimatedObject->GetComponent<AnimationComponent>()->PlayAnimation("Breathing", true);
+	}
+	if (Application.InputManager.IsKeyPressed(KeyCode::D4))
+	{
+		myDirectionLightObject->SetEnabled(!myDirectionLightObject->GetIsEnabled());
+	}
+	if (Application.InputManager.IsKeyPressed(KeyCode::D5))
+	{
+		myPointLightObject->SetEnabled(!myPointLightObject->GetIsEnabled());
+	}
+	if (Application.InputManager.IsKeyPressed(KeyCode::D6))
+	{
+		mySpotLightObject->SetEnabled(!mySpotLightObject->GetIsEnabled());
+	}
 
-            myGameCamera.GetTransform().Translate(delta);
-            myGameCamera.UpdateFrustum();
-        }
-
-        if (Application.InputManager.IsKeyDown(KeyCode::Space))
-        {
-            CommonUtilities::Vector3f delta = myGameCamera.GetTransform().GetUp() * myCamerasMoveSpeed * aDeltaTime;
-
-            myGameCamera.GetTransform().Translate(delta);
-            myGameCamera.UpdateFrustum();
-        }
-        if (Application.InputManager.IsKeyDown(KeyCode::Control))
-        {
-            CommonUtilities::Vector3f delta = -myGameCamera.GetTransform().GetUp() * myCamerasMoveSpeed * aDeltaTime;
-
-            myGameCamera.GetTransform().Translate(delta);
-            myGameCamera.UpdateFrustum();
-        }
-
-        if (Application.InputManager.IsKeyDown(KeyCode::RMB))
-        {
-            const float sensitivity = 0.2f;
-
-            CommonUtilities::Vector2f mouseDelta = Application.InputManager.GetMousePositionDelta();
-
-            float yaw = mouseDelta.x * sensitivity;
-            float pitch = mouseDelta.y * sensitivity;
-
-            CommonUtilities::Quaternion<float> pitchQuat({ 1, 0, 0 }, pitch);
-            CommonUtilities::Quaternion<float> yawQuat({ 0, 1, 0 }, yaw);
-
-            myGameCamera.GetTransform().Rotate(pitchQuat, false);
-            myGameCamera.GetTransform().Rotate(yawQuat, true);
-            myGameCamera.UpdateFrustum();
-        }
-
-		if (Application.InputManager.GetScrollWheelDelta() > 0) 
-		{
-			myCamerasMoveSpeed *= 1.05f;
-		}
-		else if (Application.InputManager.GetScrollWheelDelta() < 0) 
-		{
-			myCamerasMoveSpeed *= 0.95f;
-		}
-
-        if (Application.InputManager.IsKeyPressed(KeyCode::RMB))
-        {
-            Application.InputManager.CaptureMouse();
-            Application.InputManager.HideMouse();
-        }
-        else if (Application.InputManager.IsKeyReleased(KeyCode::RMB))
-        {
-            Application.InputManager.ReleaseMouse();
-            Application.InputManager.ShowMouse();
-        }
-    }
-
-    // TODO: TEMP
-    if (Application.InputManager.IsKeyPressed(KeyCode::D1))
-    {
-        myAnimatedObject->GetComponent<AnimationComponent>()->PlayAnimation("Wave", true, JointGroup::RightArm);
-        myAnimatedObject->GetComponent<AnimationComponent>()->PlayAnimation("Walk", false);
-    }
-    if (Application.InputManager.IsKeyPressed(KeyCode::D2))
-    {
-        myAnimatedObject->GetComponent<AnimationComponent>()->PlayAnimation("Run", true);
-    }
-    if (Application.InputManager.IsKeyPressed(KeyCode::D3))
-    {
-        myAnimatedObject->GetComponent<AnimationComponent>()->PlayAnimation("Breathing", true);
-    }
-    if (Application.InputManager.IsKeyPressed(KeyCode::D4))
-    {
-        myDirectionLightObject->SetEnabled(!myDirectionLightObject->GetIsEnabled());
-    }
-    if (Application.InputManager.IsKeyPressed(KeyCode::D5))
-    {
-        myPointLightObject->SetEnabled(!myPointLightObject->GetIsEnabled());
-    }
-    if (Application.InputManager.IsKeyPressed(KeyCode::D6))
-    {
-        mySpotLightObject->SetEnabled(!mySpotLightObject->GetIsEnabled());
-    }
-
-    if (Application.InputManager.IsKeyPressed(KeyCode::F5))
-    {
-        GraphicsEngine::Get().CycleToNextRenderPass(-1);
-    }
+	if (Application.InputManager.IsKeyPressed(KeyCode::F5))
+	{
+		GraphicsEngine::Get().CycleToNextRenderPass(-1);
+	}
 	if (Application.InputManager.IsKeyPressed(KeyCode::F6))
 	{
 		GraphicsEngine::Get().CycleToNextRenderPass(1);
 	}
 
-    if (Application.InputManager.IsKeyReleased(KeyCode::Escape))
-    {
-        PostQuitMessage(0);
-    }
+	if (Application.InputManager.IsKeyReleased(KeyCode::Escape))
+	{
+		PostQuitMessage(0);
+	}
 }
 
 void Game::BuildSceneForRender()
 {
-    ZoneScopedN("Render Scene");
+	ZoneScopedN("Render Scene");
 
-    if (myScene == nullptr)
-    {
-        return;
-    }
+	if (myScene == nullptr)
+	{
+		return;
+	}
 
-    myScene->SceneLights.clear();
-    myScene->DrawCalls.clear();
+	myScene->SceneLights.clear();
+	myScene->DrawCalls.clear();
 
-    for (auto& actor : myGameWorld.GetActors())
-    {
-        if (!actor->GetIsEnabled())
-        {
-            continue;
-        }
+	for (auto& actor : GameWorld::Get().GetActors())
+	{
+		if (!actor->GetIsEnabled())
+		{
+			continue;
+		}
 
-        {
-            MeshComponent* meshComponent = actor.get()->GetComponent<MeshComponent>();
+		{
+			MeshComponent* meshComponent = actor.get()->GetComponent<MeshComponent>();
 
-            if (meshComponent != nullptr)
-            {
-                DrawCall drawCall = 
-                {
-                    .Mesh = &meshComponent->GetMesh(),
-                    .Transform = actor->GetTransform().GetWorldMatrix()
-                };
+			if (meshComponent != nullptr)
+			{
+				DrawCall drawCall =
+				{
+					.Mesh = &meshComponent->GetMesh(),
+					.Transform = actor->GetTransform().GetWorldMatrix()
+				};
 
-                const auto& materialAssets = meshComponent->GetMaterialAssetList();
+				const auto& materialAssets = meshComponent->GetMaterialAssetList();
 
-                for (size_t i = 0; i < materialAssets.size(); i++)
-                {
-                    drawCall.Materials[i] = materialAssets[i]->GetMaterial().get();
-                }
+				for (size_t i = 0; i < materialAssets.size(); i++)
+				{
+					drawCall.Materials[i] = materialAssets[i]->GetMaterial().get();
+				}
 
-                AnimationComponent* animationComponent = actor.get()->GetComponent<AnimationComponent>();
+				AnimationComponent* animationComponent = actor.get()->GetComponent<AnimationComponent>();
 
-                if (animationComponent != nullptr)
-                {
-                    drawCall.HasSkinning = true;
-                    drawCall.JointTransforms = animationComponent->GetJointTransforms();
-                }
+				if (animationComponent != nullptr)
+				{
+					drawCall.HasSkinning = true;
+					drawCall.JointTransforms = animationComponent->GetJointTransforms();
+				}
 
-                myScene->DrawCalls.emplace_back(std::move(drawCall));
-            }
-        }
+				myScene->DrawCalls.emplace_back(std::move(drawCall));
+			}
+		}
 
-        {
-            DirectionalLightComponent* directionalLight = actor.get()->GetComponent<DirectionalLightComponent>();
+		{
+			DirectionalLightComponent* directionalLight = actor.get()->GetComponent<DirectionalLightComponent>();
 
-            if (directionalLight != nullptr)
-            {
-                directionalLight->UpdateLightViewProjection();
+			if (directionalLight != nullptr)
+			{
+				directionalLight->UpdateLightViewProjection();
 
-                SceneLight light = 
-                {
-                    .LightData = directionalLight->GetData(),
-                    .Transform = directionalLight->GetTransform(),
-                    .Projection = directionalLight->GetProjection()
-                };
+				SceneLight light =
+				{
+					.LightData = directionalLight->GetData(),
+					.Transform = directionalLight->GetTransform(),
+					.Projection = directionalLight->GetProjection()
+				};
 
-                myScene->SceneLights.emplace_back(light);
-            }
-        }
+				myScene->SceneLights.emplace_back(light);
+			}
+		}
 
-        {
-            PointLightComponent* pointLight = actor.get()->GetComponent<PointLightComponent>();
+		{
+			PointLightComponent* pointLight = actor.get()->GetComponent<PointLightComponent>();
 
-            if (pointLight != nullptr)
-            {
-                SceneLight light =
-                {
-                    .LightData = pointLight->GetData(),
-                    .ShadowMap = pointLight->GetShadowMap(),
-                    .Transform = pointLight->GetTransform(),
-                    .Projection = pointLight->GetProjection()
-                };
+			if (pointLight != nullptr)
+			{
+				SceneLight light =
+				{
+					.LightData = pointLight->GetData(),
+					.ShadowMap = pointLight->GetShadowMap(),
+					.Transform = pointLight->GetTransform(),
+					.Projection = pointLight->GetProjection()
+				};
 
-                myScene->SceneLights.emplace_back(light);
-            }
-        }
+				myScene->SceneLights.emplace_back(light);
+			}
+		}
 
-        {
-            SpotLightComponent* spotLight = actor.get()->GetComponent<SpotLightComponent>();
+		{
+			SpotLightComponent* spotLight = actor.get()->GetComponent<SpotLightComponent>();
 
-            if (spotLight != nullptr)
-            {
-                spotLight->UpdateLightViewProjection();
+			if (spotLight != nullptr)
+			{
+				spotLight->UpdateLightViewProjection();
 
-                SceneLight light =
-                {
-                    .LightData = spotLight->GetData(),
-                    .ShadowMap = spotLight->GetShadowMap(),
-                    .Transform = spotLight->GetTransform(),
-                    .Projection = spotLight->GetProjection()
-                };
+				SceneLight light =
+				{
+					.LightData = spotLight->GetData(),
+					.ShadowMap = spotLight->GetShadowMap(),
+					.Transform = spotLight->GetTransform(),
+					.Projection = spotLight->GetProjection()
+				};
 
-                myScene->SceneLights.emplace_back(light);
-            }
-        }
-    }
+				myScene->SceneLights.emplace_back(light);
+			}
+		}
+	}
 
-    myScene->SceneCamera = 
-	{ 
-		.Transform = myGameCamera.GetTransform().GetWorldMatrix(), 
-		.RenderCamera = &myGameCamera.GetCamera()
+	GameCamera& gameCamera = GameCamera::GetInstance();
+
+	myScene->SceneCamera =
+	{
+		.Transform = gameCamera.GetTransform().GetWorldMatrix(),
+		.RenderCamera = &gameCamera.GetCamera()
 	};
 }

@@ -8,6 +8,8 @@ class Actor;
 class GameWorld
 {
 public:
+    static GameWorld& Get();
+
     void Update(float aDeltaTime);
 
     Actor* AddActor(std::unique_ptr<Actor> aActor);
