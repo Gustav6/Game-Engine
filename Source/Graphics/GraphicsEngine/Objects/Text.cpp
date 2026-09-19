@@ -5,6 +5,9 @@
 Text::Text(std::string_view aName)
 {
 	myName = aName;
+	myIsDirty = true;
+	mySize = 12.0f;
+	myZOrder = 0.0f;
 }
 
 Text::~Text() = default;
@@ -28,6 +31,7 @@ void Text::SetFontMaterial(std::shared_ptr<Material> aMaterial)
 void Text::SetSize(float aPointSize)
 {
 	mySize = aPointSize;
+	myIsDirty = true;
 }
 
 void Text::SetZOrder(float aOrder)
@@ -38,11 +42,13 @@ void Text::SetZOrder(float aOrder)
 void Text::SetColor(const CommonUtilities::Vector4f& aColor)
 {
 	myColor = aColor;
+	myIsDirty = true;
 }
 
 void Text::SetPosition(const CommonUtilities::Vector2f& aPosition)
 {
 	myPosition = aPosition;
+	myIsDirty = true;
 }
 
 const CommonUtilities::Matrix4x4f& Text::GetRenderMatrix() const
@@ -102,24 +108,22 @@ bool Text::RebuildGeometry()
 			Vertex v1, v2, v3, v4;
 
 			v1.Position = CommonUtilities::Vector4f(glyph->PlaneBounds.Left, glyph->PlaneBounds.Top, 0, 1) + cursor + lineOffset;
-			v1.UV0 = { glyph->PlaneBounds.Left, 1- glyph->PlaneBounds.Top };
+			v1.UV0 = { glyph->AtlasBounds.Left, 1 - glyph->AtlasBounds.Top };
 			v1.Color = color;
-			v1.BoneIDs.x = 0;
 
 			v2.Position = CommonUtilities::Vector4f(glyph->PlaneBounds.Right, glyph->PlaneBounds.Top, 0, 1) + cursor + lineOffset;
-			v2.UV0 = { glyph->PlaneBounds.Right, 1 - glyph->PlaneBounds.Top };
+			v2.UV0 = { glyph->AtlasBounds.Right, 1 - glyph->AtlasBounds.Top };
 			v2.Color = color;
-			v2.BoneIDs.x = 0;
 
 			v3.Position = CommonUtilities::Vector4f(glyph->PlaneBounds.Right, glyph->PlaneBounds.Bottom, 0, 1) + cursor + lineOffset;
-			v3.UV0 = { glyph->PlaneBounds.Right, 1 - glyph->PlaneBounds.Bottom };
+			v3.UV0 = { glyph->AtlasBounds.Right, 1 - glyph->AtlasBounds.Bottom };
 			v3.Color = color;
-			v3.BoneIDs.x = 0;
 
 			v4.Position = CommonUtilities::Vector4f(glyph->PlaneBounds.Left, glyph->PlaneBounds.Bottom, 0, 1) + cursor + lineOffset;
-			v4.UV0 = { glyph->PlaneBounds.Left, 1 - glyph->PlaneBounds.Bottom };
+			v4.UV0 = { glyph->AtlasBounds.Left, 1 - glyph->AtlasBounds.Bottom };
 			v4.Color = color;
-			v4.BoneIDs.x = 0;
+
+			// Text bounds check
 
 			myVertices.emplace_back(v1);
 			myVertices.emplace_back(v2);
@@ -151,7 +155,7 @@ void Text::RebuildTextRenderMatrix()
 	scaling.SetScaling({ fontPixelHeight, -fontPixelHeight, 1.0f });
 
 	CommonUtilities::Matrix4x4f translation;
-	scaling.SetTranslation({ myPosition.x, myPosition.y, 0.0f });
+	translation.SetTranslation({ myPosition.x, myPosition.y, 0.0f });
 
 	myTextRenderMatrix = scaling * translation;
 }

@@ -140,7 +140,7 @@ bool Game::Initialize(SIZE aWindowSize, WNDPROC aWindowProcess, LPCWSTR aWindowT
 
 		GraphicsEngine& GE = GraphicsEngine::Get();
 
-		if (!GE.Initialize(myMainWindowHandle, workingDirectory / "Shaders"))
+		if (!GE.Initialize(myMainWindowHandle, workingDirectory))
 		{
 			return false;
 		}
@@ -241,7 +241,7 @@ void Game::LoadScene()
 	//auto UnrealScene = AssetRegistry::Get().GetAsset<UnrealSceneAsset>("LVL_DioramaBlockout_Level");
 
 	//Test sound, not to be remain
-	FmodAudioSystem::Get().PlayEvent("event:/Test");
+	//FmodAudioSystem::Get().PlayEvent("event:/Test");
 
 	//myPlayer = new Actor;
 	//myPlayer->GetTransform().SetPosition({ 0,0,0 });

@@ -2,5 +2,12 @@
 
 const Font::Glyph* Font::GetGlyph(char aGlyph) const
 {
-	return &myGlyphs.at(aGlyph);
+	auto iterator = myGlyphs.find(aGlyph);
+
+	if (iterator == myGlyphs.end())
+	{
+		return nullptr;
+	}
+
+	return &iterator->second;
 }

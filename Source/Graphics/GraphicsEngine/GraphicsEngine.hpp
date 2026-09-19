@@ -24,6 +24,7 @@ struct InternalRenderItem;
 class GBuffer;
 class GraphicsCommandList;
 class Font;
+class Text;
 
 enum class ConstantBuffer : uint8_t
 {
@@ -171,6 +172,7 @@ private:
 	std::unique_ptr<RenderHardwareInterface> myRHI;
 
 	std::filesystem::path myShaderRoot;
+	std::filesystem::path myContentRoot;
 
 	std::unique_ptr<Texture> myBackBuffer;
 	std::unique_ptr<Texture> myDepthBuffer;
@@ -183,9 +185,14 @@ private:
 	std::vector<std::unique_ptr<Sampler>> mySamplers;
 
 	std::unique_ptr<Material> myDefaultMaterial;
+	std::shared_ptr<Material> myDefaultFontMaterial;
 
 	std::shared_ptr<Texture> myDefaultAlbedoTexture;
 	std::shared_ptr<Texture> myDefaultNormalTexture;
+
+	std::shared_ptr<Font> myDefaultFont;
+
+	std::unique_ptr<Text> myText;
 
 	std::unique_ptr<Texture> myEnvironmentCubemap;
 	std::unique_ptr<Texture> myLUTTexture;

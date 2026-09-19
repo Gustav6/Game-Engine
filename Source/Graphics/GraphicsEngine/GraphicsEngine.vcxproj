@@ -305,6 +305,22 @@ xcopy /E /I /R /Y /D "%SHADERSRC%" "%SHADERDEST%"</Command>
       <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Retail|x64'">../../..\Intermediate\GraphicsEngine\Retail\PrecompiledShaders\%(Filename).h</HeaderFileOutput>
       <ObjectFileOutput></ObjectFileOutput>
     </FxCompile>
+    <FxCompile Include="Shaders\Material\FontMaterial_PS.hlsl">
+      <ShaderType>Pixel</ShaderType>
+      <VariableName>INTERNAL_%(Filename)_ByteCode</VariableName>
+      <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">../../..\Intermediate\GraphicsEngine\Debug\PrecompiledShaders\%(Filename).h</HeaderFileOutput>
+      <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../../..\Intermediate\GraphicsEngine\Release\PrecompiledShaders\%(Filename).h</HeaderFileOutput>
+      <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Retail|x64'">../../..\Intermediate\GraphicsEngine\Retail\PrecompiledShaders\%(Filename).h</HeaderFileOutput>
+      <ObjectFileOutput></ObjectFileOutput>
+    </FxCompile>
+    <FxCompile Include="Shaders\Material\FontMaterial_VS.hlsl">
+      <ShaderType>Vertex</ShaderType>
+      <VariableName>INTERNAL_%(Filename)_ByteCode</VariableName>
+      <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">../../..\Intermediate\GraphicsEngine\Debug\PrecompiledShaders\%(Filename).h</HeaderFileOutput>
+      <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../../..\Intermediate\GraphicsEngine\Release\PrecompiledShaders\%(Filename).h</HeaderFileOutput>
+      <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Retail|x64'">../../..\Intermediate\GraphicsEngine\Retail\PrecompiledShaders\%(Filename).h</HeaderFileOutput>
+      <ObjectFileOutput></ObjectFileOutput>
+    </FxCompile>
     <FxCompile Include="Shaders\Material\FullTexture_VS.hlsl">
       <ShaderType>Vertex</ShaderType>
       <VariableName>INTERNAL_%(Filename)_ByteCode</VariableName>

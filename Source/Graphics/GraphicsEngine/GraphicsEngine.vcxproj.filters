@@ -233,6 +233,12 @@
     <FxCompile Include="Shaders\Material\Deferred_SpotLight_PS.hlsl">
       <Filter>Shaders\Material</Filter>
     </FxCompile>
+    <FxCompile Include="Shaders\Material\FontMaterial_PS.hlsl">
+      <Filter>Shaders\Material</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Material\FontMaterial_VS.hlsl">
+      <Filter>Shaders\Material</Filter>
+    </FxCompile>
     <FxCompile Include="Shaders\Material\FullTexture_VS.hlsl">
       <Filter>Shaders\Material</Filter>
     </FxCompile>

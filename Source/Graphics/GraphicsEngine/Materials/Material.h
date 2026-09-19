@@ -19,6 +19,9 @@ struct MaterialDescription
 	ShadingModel ShadingModel = ShadingModel::None;
 	MaterialBlendMode BlendMode = MaterialBlendMode::None;
 
+	std::filesystem::path VertexShader = "";
+	std::filesystem::path PixelShader = "";
+
 	std::filesystem::path MaterialShaderCode;
 };
 

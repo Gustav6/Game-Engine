@@ -15,6 +15,7 @@
 #include "Objects/Gbuffer.h"
 #include "Objects/Camera.h"
 #include "Objects/Font.h"
+#include "Objects/Text.h"
 
 #include "ConstantBuffers/FrameBuffer.h"
 #include "ConstantBuffers/ObjectBuffer.h"
@@ -68,15 +69,23 @@ GraphicsEngine& GraphicsEngine::Get()
 	return myInstance;
 }
 
-bool GraphicsEngine::Initialize(HWND aWindowHandle, const std::filesystem::path& aShaderRoot)
+bool GraphicsEngine::Initialize(HWND aWindowHandle, const std::filesystem::path& aContentRoot)
 {
-	if (!std::filesystem::exists(aShaderRoot))
+	myContentRoot = aContentRoot;
+
+	if (!std::filesystem::exists(myContentRoot))
 	{
-		GELOG(Fatal, "Shader root dir is not a valid path! Provided root was {}.", aShaderRoot.string());
+		GELOG(Fatal, "Content root dir is not a valid path! Provided root was {}.", myContentRoot.string());
 		return false;
 	}
 
-	myShaderRoot = aShaderRoot;
+	myShaderRoot = aContentRoot / "Shaders";
+	
+	if (!std::filesystem::exists(myShaderRoot))
+	{
+		GELOG(Fatal, "Shader root dir is not a valid path! Provided root was {}.", myShaderRoot.string());
+		return false;
+	}
 
 	myRHI = std::make_unique<RenderHardwareInterface>();
 	myBackBuffer = std::make_unique<Texture>();
@@ -327,9 +336,9 @@ void GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const Scene& 
 	}
 	inoutCommandList.EndEvent();
 
-	inoutCommandList.BeginEvent("Render Screenspace Objects");
+	inoutCommandList.BeginEvent("Render Screen space Objects");
 	{
-		/*inoutCommandList.SetRenderTarget(myBackBuffer.get(), nullptr);
+		inoutCommandList.SetRenderTarget(myBackBuffer.get(), nullptr);
 
 		UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::FrameBuffer, frameBuffer, 0, PipelineStage_VertexShader | PipelineStage_PixelShader);
 
@@ -341,25 +350,28 @@ void GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const Scene& 
 		CommonUtilities::Matrix4x4f translation;
 		translation.SetTranslation({ -1.0f, 1.0f, 0.0f });
 
-		const CommonUtilities::Matrix4x4f pixelToNDC = scale * translation;*/
+		const CommonUtilities::Matrix4x4f pixelToNDC = scale * translation;
 
-		/*if (text->myIsDirty)
+		if (myText->myIsDirty)
 		{
-			text->RebuildGeometry();
-			std::string vertexBufferName = std::format("{}_VX", text->myName);
-			myRHI->CreateVertexBuffer(vertexBufferName, text->myVertices, text->myVertexBuffer);
-			std::string indexBufferName = std::format("{}_PX", text->myName);
-			myRHI->CreateIndexBuffer(indexBufferName, text->myIndices, text->myIndexBuffer);
-			text->myIsDirty = false;
-		}*/
+			myText->RebuildGeometry();
+			myText->RebuildTextRenderMatrix();
+			std::string vertexBufferName = std::format("{}_VX", myText->myName);
+			myRHI->CreateVertexBuffer(vertexBufferName, myText->myVertices, myText->myVertexBuffer);
+			std::string indexBufferName = std::format("{}_PX", myText->myName);
+			myRHI->CreateIndexBuffer(indexBufferName, myText->myIndices, myText->myIndexBuffer);
+			myText->myIsDirty = false;
+		}
 
-		/*ObjectBuffer objectBuffer;
-		objectBuffer.World text->GetTextRenderMatrix* pixelToNDC;
-		objectBuffer.WorldInvT = objectBuffer.World.GetFastInverse().GetTranspose();*/
+		ObjectBuffer objectBuffer;
+		objectBuffer.World = myText->GetRenderMatrix() * pixelToNDC;
+		objectBuffer.WorldInvT = objectBuffer.World.GetFastInverse().GetTranspose();
 
-		//UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::ObjectBuffer, objectBuffer, 1, PipelineStage_VertexShader | PipelineStage_PixelShader);
-	
-		//inoutCommandList.SetPipelineStateObject(text->myFontMaterial->myPSO);
+		UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::ObjectBuffer, objectBuffer, 1, PipelineStage_VertexShader | PipelineStage_PixelShader);
+
+		inoutCommandList.SetShaderResource(&myDefaultFont->myAtlas, 0, PipelineStage_PixelShader);
+
+		inoutCommandList.SetPipelineStateObject(myText->myFontMaterial->myPSO);
 
 		/*if (material->HasParameters())
 		{
@@ -371,9 +383,9 @@ void GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const Scene& 
 			UpdateAndSetConstantBufferInternal(inoutCommandList, ConstantBuffer::MaterialBuffer, material->GetParameterDataBlock(), Material::MATERIAL_BUFFER_SIZE, 5, PipelineStage_VertexShader | PipelineStage_PixelShader);
 		}*/
 
-		// Set texture here
-		// Set index and vertex buffer here
-		//inoutCommandList.DrawIndexed(static_cast<unsigned int>(text->myIndices.size()), 0);
+		inoutCommandList.SetVertexBuffer(&myText->myVertexBuffer);
+		inoutCommandList.SetIndexBuffer(&myText->myIndexBuffer);
+		inoutCommandList.DrawIndexed(static_cast<unsigned int>(myText->myIndices.size()), 0);
 	}
 	inoutCommandList.EndEvent();
 }
@@ -449,9 +461,18 @@ bool GraphicsEngine::CreateMaterial(const MaterialDescription& aDescription, Mat
 	}
 
 	{
-		const std::filesystem::path& shaderProgramPath = myMaterialDomainShaders.at(aDescription.Domain);
-		const std::filesystem::path shaderRoot = myShaderRoot / "Material" / "Include";
+		std::filesystem::path shaderProgramPath;
 
+		if (!aDescription.VertexShader.empty())
+		{
+			shaderProgramPath = aDescription.VertexShader;
+		}
+		else
+		{
+			shaderProgramPath = myMaterialDomainShaders.at(aDescription.Domain);
+		}
+
+		const std::filesystem::path shaderRoot = myShaderRoot / "Material" / "Include";
 		std::filesystem::path materialProgramPath;
 
 		if (aDescription.MaterialShaderCode.empty())
@@ -474,27 +495,33 @@ bool GraphicsEngine::CreateMaterial(const MaterialDescription& aDescription, Mat
 	{
 		std::filesystem::path shaderProgramPath;
 
-		switch (aDescription.BlendMode)
+		if (!aDescription.PixelShader.empty())
 		{
-			case MaterialBlendMode::Opaque:
+			shaderProgramPath = aDescription.PixelShader;
+		}
+		else
+		{
+			switch (aDescription.BlendMode)
 			{
-				shaderProgramPath = myShaderRoot / "Material" / "GBuffer_PS.hlsl";
-				break;
-			}
-			case MaterialBlendMode::Alpha:
-			{
-				shaderProgramPath = myMaterialShadingModelShaders.at(aDescription.ShadingModel);
-				break;
-			}
-			default:
-			{
-				// TODO: Log error
-				break;
+				case MaterialBlendMode::Opaque:
+				{
+					shaderProgramPath = myShaderRoot / "Material" / "GBuffer_PS.hlsl";
+					break;
+				}
+				case MaterialBlendMode::Alpha:
+				{
+					shaderProgramPath = myMaterialShadingModelShaders.at(aDescription.ShadingModel);
+					break;
+				}
+				default:
+				{
+					// TODO: Log error
+					break;
+				}
 			}
 		}
 
 		const std::filesystem::path shaderRoot = myShaderRoot / "Material" / "Include";
-
 		std::filesystem::path materialProgramPath;
 
 		if (aDescription.MaterialShaderCode.empty())
@@ -613,35 +640,72 @@ bool GraphicsEngine::CreateFontAsset(const std::filesystem::path& aFontPath, con
 {
 	JsonData fontData = Json::Read(aFontPath);
 
-	ensure(fontData.IsValid());
+	if (!fontData.IsValid())
+	{
+		GELOG(Error, "Failed to read font JSON [{}]!", aFontPath.string());
+		return false;
+	}
 
-	//JsonData atlasSettings = fontData.GetObjectValue("Atlas");
-	//float width = static_cast<float>(atlasSettings.GetUnsigned("Width"));
-	//float height = static_cast<float>(atlasSettings.GetUnsigned("Height"));
+	JsonData atlasSettings = fontData.GetObjectValue("atlas");
 
-	//JsonData metricsSettings = fontData.GetObjectValue("Metrics");
-	//float lineHeight = metricsSettings.GetFloat("LineHeight");
-	//float ascender = metricsSettings.GetFloat("Ascender");
-	//float descender = metricsSettings.GetFloat("Descender");
+	if (!atlasSettings.IsValid())
+	{
+		GELOG(Error, "Font JSON is missing [atlas]!");
+		return false;
+	}
 
-	//outFont.myLineHeight = lineHeight;
-	//outFont.myAscender = ascender;
-	//outFont.myDescender = descender;
+	float width = static_cast<float>(atlasSettings.GetUnsigned("width"));
+	float height = static_cast<float>(atlasSettings.GetUnsigned("height"));
 
-	////for (const auto& glyph : ...)
-	//{
-	//	Font::Glyph g;
+	JsonData metricsSettings = fontData.GetObjectValue("metrics");
 
-	//	//g.UniCode = glyph...
-	//	//g.Advance = glyph...
+	if (!metricsSettings.IsValid())
+	{
+		GELOG(Error, "Font JSON is missing [metrics]!");
+		return false;
+	}
 
-	//	/*if (glyph...)
-	//	{
+	outFont.myLineHeight = metricsSettings.GetFloat("lineHeight");
+	outFont.myAscender = metricsSettings.GetFloat("ascender");
+	outFont.myDescender = metricsSettings.GetFloat("descender");
 
-	//	}*/
+	const std::vector<JsonData> glyphs = fontData.GetObjectValueArray("glyphs");
 
-	//	outFont.myGlyphs.emplace(static_cast<char>(g.UniCode), std::move(g));
-	//}
+	if (glyphs.empty())
+	{
+		GELOG(Error, "Font JSON contains no glyphs [{}]!", aFontPath.string());
+		return false;
+	}
+
+	for (const JsonData& glyphData : glyphs)
+	{
+		Font::Glyph glyph = {};
+
+		glyph.UniCode = glyphData.GetUnsigned("unicode");
+		glyph.Advance = glyphData.GetFloat("advance");
+
+		if (glyphData.HasKey("planeBounds"))
+		{
+			JsonData planeBounds = glyphData.GetObjectValue("planeBounds");
+
+			glyph.PlaneBounds.Left = planeBounds.GetFloat("left");
+			glyph.PlaneBounds.Bottom = planeBounds.GetFloat("bottom");
+			glyph.PlaneBounds.Right = planeBounds.GetFloat("right");
+			glyph.PlaneBounds.Top = planeBounds.GetFloat("top");
+		}
+
+		if (glyphData.HasKey("atlasBounds"))
+		{
+			JsonData atlasBounds = glyphData.GetObjectValue("atlasBounds");
+
+			glyph.AtlasBounds.Left = atlasBounds.GetFloat("left") / width;
+			glyph.AtlasBounds.Bottom = atlasBounds.GetFloat("bottom") / height;
+			glyph.AtlasBounds.Right = atlasBounds.GetFloat("right") / width;
+			glyph.AtlasBounds.Top = atlasBounds.GetFloat("top") / height;
+		}
+
+		outFont.myGlyphs.emplace(static_cast<char>(glyph.UniCode), std::move(glyph));
+	}
 
 	return LoadTexture(aFontAtlasPath, outFont.myAtlas);
 }
@@ -1187,6 +1251,48 @@ bool GraphicsEngine::InitializeBuiltinAssets()
 		}
 
 		myDefaultMaterial->SetTexture(1, myDefaultNormalTexture);
+	}
+
+	// Font
+	{
+		myDefaultFont = std::make_shared<Font>();
+
+		// Command - msdf-atlas-gen -varfont "FONTNAME.ttf?wght=400" -type msdf -size 64 -imageout FONTNAME.png -json FONTNAME.json -potr -pxrange 6
+		// NOTE: msdf-atlas-gen can't output DDS, so convert the PNG afterwards.
+		// Convert to DDS:      texconv FONTNAME.png -f R8G8B8A8_UNORM -m 1 -y
+
+		std::filesystem::path defaultFontRoot = myContentRoot / "Fonts" / "CascadiaCode";
+
+		if (!CreateFontAsset(defaultFontRoot / "cascadiacode.json", defaultFontRoot / "cascadiacode.dds", *myDefaultFont))
+		{
+			GELOG(Error, "Failed to create default font asset!");
+			return false;
+		}
+
+		myDefaultFontMaterial = std::make_shared<Material>();
+
+		MaterialDescription fontMaterialDesc;
+		fontMaterialDesc.Name = "FontMaterial";
+		fontMaterialDesc.Domain = MaterialDomain::Surface;
+		fontMaterialDesc.ShadingModel = ShadingModel::Unlit;
+		fontMaterialDesc.BlendMode = MaterialBlendMode::Alpha;
+		fontMaterialDesc.PixelShader = myShaderRoot / "Material" / "FontMaterial_PS.hlsl";
+		fontMaterialDesc.VertexShader = myShaderRoot / "Material" / "FontMaterial_VS.hlsl";
+
+		if (!CreateMaterial(fontMaterialDesc, *myDefaultFontMaterial))
+		{
+			GELOG(Error, "Failed to create font material!");
+			return false;
+		}
+
+		myText = std::make_unique<Text>("Text Test");
+
+		myText->SetFont(myDefaultFont);
+		myText->SetSize(36);
+		myText->SetPosition({ 100, 50 });
+		myText->SetColor({ 0, 1, 0, 1 });
+		myText->SetText("Shrek");
+		myText->SetFontMaterial(myDefaultFontMaterial);
 	}
 
 	return true;
