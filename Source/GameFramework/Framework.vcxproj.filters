@@ -66,6 +66,9 @@
     <ClInclude Include="AssetPipeline\Assets\Types\MeshAsset.h">
       <Filter>AssetPipeline\Assets\Types</Filter>
     </ClInclude>
+    <ClInclude Include="AssetPipeline\Assets\Types\TextAsset.h">
+      <Filter>AssetPipeline\Assets\Types</Filter>
+    </ClInclude>
     <ClInclude Include="AssetPipeline\Assets\Types\TextureAsset.h">
       <Filter>AssetPipeline\Assets\Types</Filter>
     </ClInclude>
@@ -124,6 +127,9 @@
       <Filter>AssetPipeline\Assets\Types</Filter>
     </ClCompile>
     <ClCompile Include="AssetPipeline\Assets\Types\MeshAsset.cpp">
+      <Filter>AssetPipeline\Assets\Types</Filter>
+    </ClCompile>
+    <ClCompile Include="AssetPipeline\Assets\Types\TextAsset.cpp">
       <Filter>AssetPipeline\Assets\Types</Filter>
     </ClCompile>
     <ClCompile Include="AssetPipeline\Assets\Types\TextureAsset.cpp">

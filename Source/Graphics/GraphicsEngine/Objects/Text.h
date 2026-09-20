@@ -1,17 +1,19 @@
 #pragma once
 
 #include <string_view>
+#include <string>
 #include <memory>
+#include <vector>
 
 #include "Buffer.h"
-#include "Font.h"
-#include "Materials/Material.h"
 
 #include "CommonUtilities/Math/Vector2.hpp"
 #include "CommonUtilities/Math/Vector4.hpp"
 #include "CommonUtilities/Math/Matrix4x4.hpp"
 
 struct Vertex;
+class Font;
+class Material;
 
 class Text
 {
