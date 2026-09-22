@@ -11,7 +11,6 @@ class MeshAsset;
 class MaterialAsset;
 struct Skeleton;
 class Mesh;
-class MaterialInterface;
 
 class MeshComponent : public Component
 {

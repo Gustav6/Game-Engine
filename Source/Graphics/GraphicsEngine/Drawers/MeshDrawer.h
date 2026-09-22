@@ -1,0 +1,29 @@
+#pragma once
+
+#include <vector>
+
+#include <GraphicsEngine/Materials/Material.h>
+
+class Mesh;
+
+struct MeshDrawCall
+{
+    bool HasSkinning = false;
+    const Mesh* Mesh = nullptr;
+    const MaterialInterface* Materials[Material::MAX_MATERIAL_TEXTURE_COUNT] = {};
+    CommonUtilities::Matrix4x4f Transform;
+    const CommonUtilities::Matrix4x4f* JointTransforms = nullptr;
+};
+
+class MeshDrawer
+{
+    friend class GraphicsEngine;
+
+public:
+	static MeshDrawer& Get();
+
+    void Submit(const MeshDrawCall& aDrawCall);
+
+private:
+    std::vector<MeshDrawCall> myDrawCalls;
+};

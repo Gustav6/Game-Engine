@@ -16,9 +16,11 @@
 #include "AssetPipeline/Assets/Types/MaterialAsset.h"
 #include "AssetPipeline/Assets/Types/TextureAsset.h"
 #include "AssetPipeline/Assets/Types/UnrealSceneAsset.h"
+#include "AssetPipeline/Assets/Types/FontAsset.h"
 
 #include "GamePipeline/Components/Rendering/MeshComponent.h"
 #include "GamePipeline/Components/Rendering/AnimationComponent.h"
+#include "GamePipeline/Components/Rendering/TextComponent.h"
 #include "GamePipeline/Components/Light/DirectionlLightComponent.h"
 #include "GamePipeline/Components/Light/PointLightComponent.h"
 #include "GamePipeline/Components/Light/SpotLightComponent.h"
@@ -38,8 +40,6 @@ Game::~Game() = default;
 
 bool Game::Initialize(SIZE aWindowSize, WNDPROC aWindowProcess, LPCWSTR aWindowTitle)
 {
-	myScene = std::make_unique<Scene>();
-
 	std::filesystem::path workingDirectory = GetExecutableDirectory().parent_path().parent_path() / "Content";
 
 	if (!FmodAudioSystem::Get().Initialize())
@@ -48,15 +48,12 @@ bool Game::Initialize(SIZE aWindowSize, WNDPROC aWindowProcess, LPCWSTR aWindowT
 		return false;
 	}
 
-	FmodAudioSystem::Get().LoadBank((workingDirectory / "Audio" / "Master.bank").string());
-	FmodAudioSystem::Get().LoadBank((workingDirectory / "Audio" / "Master.strings.bank").string());
-	FmodAudioSystem::Get().LoadBank((workingDirectory / "Audio" / "SFX.bank").string());
-
 	AssetRegistry::Get().RegisterAssetType<MeshAsset>({ ".fbx" });
 	AssetRegistry::Get().RegisterAssetType<AnimationAsset>({ ".fbx" });
 	AssetRegistry::Get().RegisterAssetType<MaterialAsset>({ ".json" });
 	AssetRegistry::Get().RegisterAssetType<TextureAsset>({ ".dds" });
 	AssetRegistry::Get().RegisterAssetType<UnrealSceneAsset>({ ".json" });
+	AssetRegistry::Get().RegisterAssetType<FontAsset>({ ".ttf" });
 
 	if (!AssetRegistry::Get().Initialize(workingDirectory))
 	{
@@ -129,9 +126,6 @@ bool Game::Initialize(SIZE aWindowSize, WNDPROC aWindowProcess, LPCWSTR aWindowT
 	);
 #endif
 
-
-	
-
 	MVLOG(Log, "Ready!");
 
 	// Graphics Init
@@ -193,19 +187,29 @@ int Game::Run()
 		Application.TimeManager.Update();
 		Application.InputManager.UpdateInput();
 
-		UpdateScene(Application.TimeManager.GetDeltaTime());
+		Update(Application.TimeManager.GetDeltaTime());
 
 		//Application.AudioSystem->Update();
 		FmodAudioSystem::Get().Update();
-		BuildSceneForRender();
 
 		// Render to graphics engine and present to screen
 		{
 			GraphicsEngine& GE = GraphicsEngine::Get();
 
+			GE.BeginFrame();
+			Render();
+
 			myGraphicsCommandList->ResetCommandList();
 
-			GE.Render(*myGraphicsCommandList, *myScene);
+			GameCamera& gameCamera = GameCamera::GetInstance();
+
+			SceneCamera camera =
+			{
+				.Transform = gameCamera.GetTransform().GetWorldMatrix(),
+				.RenderCamera = &gameCamera.GetRenderCamera()
+			};
+
+			GE.Render(*myGraphicsCommandList, camera);
 
 			myGraphicsCommandList->FinishCommandList();
 
@@ -217,12 +221,6 @@ int Game::Run()
 	// Cleanup
 	AssetRegistry::Get().UnInitialize();
 
-	/*if (Application.AudioSystem)
-	{
-		Application.AudioSystem->Shutdown();
-		Application.AudioSystem.reset();
-	}*/
-
 	FmodAudioSystem::Get().Shutdown();
 
 	return 0;
@@ -233,18 +231,7 @@ void Game::LoadScene()
 	{
 		GameCamera& gameCamera = GameCamera::GetInstance();
 		gameCamera.Init(90.0f, 1.0f, 10000.0f, GraphicsEngine::Get().GetClientSize());
-
-		/*myGameCamera = GameCamera(90.0f, 1.0f, 10000.0f, GraphicsEngine::Get().GetClientSize());
-		myGameCamera.GetTransform().SetPosition({ 0, 100, -200 });*/
 	}
-
-	//auto UnrealScene = AssetRegistry::Get().GetAsset<UnrealSceneAsset>("LVL_DioramaBlockout_Level");
-
-	//Test sound, not to be remain
-	//FmodAudioSystem::Get().PlayEvent("event:/Test");
-
-	//myPlayer = new Actor;
-	//myPlayer->GetTransform().SetPosition({ 0,0,0 });
 
 	{
 	    std::unique_ptr<Actor> object = std::make_unique<Actor>();
@@ -376,8 +363,8 @@ void Game::LoadScene()
 
 	    PointLightComponent* pointLight = object->AddComponent<PointLightComponent>();
 	    pointLight->SetPosition({ -200.0f, 150.0f, 0.0f });
-	    pointLight->SetColor({ 0.0f, 0.0f, 1.0f });
-	    pointLight->SetIntensity(75000.0f);
+		pointLight->SetColor({ 1.0f, 0.95f, 0.85f });
+	    pointLight->SetIntensity(750000.0f);
 	    pointLight->SetRadius(900.0f);
 	    pointLight->SetShadowMapSize({ 512, 512 });
 
@@ -390,9 +377,9 @@ void Game::LoadScene()
 	    object->SetEnabled(false);
 
 	    SpotLightComponent* spotLight = object->AddComponent<SpotLightComponent>();
-	    spotLight->SetPosition({ 0.0f, 50.0f, -300.0f });
-	    spotLight->SetColor({ 0.0f, 1.0f, 0.0f });
-	    spotLight->SetIntensity(50000.0f);
+	    spotLight->SetPosition({ 0.0f, 50.0f, -200.0f });
+		spotLight->SetColor({ 1.0f, 0.95f, 0.85f });
+	    spotLight->SetIntensity(1000000.0f);
 	    spotLight->SetRadius(1000.0f);
 	    spotLight->SetDirection({ 0.0f, 0.0f, 1.0f });
 	    spotLight->SetCone(0.0f, 0.7f);
@@ -400,9 +387,18 @@ void Game::LoadScene()
 
 	    mySpotLightObject = GameWorld::Get().AddActor(std::move(object));
 	}
+
+	{
+		std::unique_ptr<Actor> object = std::make_unique<Actor>();
+
+		TextComponent* text = object->AddComponent<TextComponent>();
+		text->SetText("Shrek");
+
+		GameWorld::Get().AddActor(std::move(object));
+	}
 }
 
-void Game::UpdateScene(float aDeltaTime)
+void Game::Update(float aDeltaTime)
 {
 	ZoneScopedN("Update Game");
 
@@ -459,115 +455,7 @@ void Game::UpdateScene(float aDeltaTime)
 	}
 }
 
-void Game::BuildSceneForRender()
+void Game::Render()
 {
-	ZoneScopedN("Render Scene");
-
-	if (myScene == nullptr)
-	{
-		return;
-	}
-
-	myScene->SceneLights.clear();
-	myScene->DrawCalls.clear();
-
-	for (auto& actor : GameWorld::Get().GetActors())
-	{
-		if (!actor->GetIsEnabled())
-		{
-			continue;
-		}
-
-		{
-			MeshComponent* meshComponent = actor.get()->GetComponent<MeshComponent>();
-
-			if (meshComponent != nullptr)
-			{
-				DrawCall drawCall =
-				{
-					.Mesh = &meshComponent->GetMesh(),
-					.Transform = actor->GetTransform().GetWorldMatrix()
-				};
-
-				const auto& materialAssets = meshComponent->GetMaterialAssetList();
-
-				for (size_t i = 0; i < materialAssets.size(); i++)
-				{
-					drawCall.Materials[i] = materialAssets[i]->GetMaterial().get();
-				}
-
-				AnimationComponent* animationComponent = actor.get()->GetComponent<AnimationComponent>();
-
-				if (animationComponent != nullptr)
-				{
-					drawCall.HasSkinning = true;
-					drawCall.JointTransforms = animationComponent->GetJointTransforms();
-				}
-
-				myScene->DrawCalls.emplace_back(std::move(drawCall));
-			}
-		}
-
-		{
-			DirectionalLightComponent* directionalLight = actor.get()->GetComponent<DirectionalLightComponent>();
-
-			if (directionalLight != nullptr)
-			{
-				directionalLight->UpdateLightViewProjection();
-
-				SceneLight light =
-				{
-					.LightData = directionalLight->GetData(),
-					.Transform = directionalLight->GetTransform(),
-					.Projection = directionalLight->GetProjection()
-				};
-
-				myScene->SceneLights.emplace_back(light);
-			}
-		}
-
-		{
-			PointLightComponent* pointLight = actor.get()->GetComponent<PointLightComponent>();
-
-			if (pointLight != nullptr)
-			{
-				SceneLight light =
-				{
-					.LightData = pointLight->GetData(),
-					.ShadowMap = pointLight->GetShadowMap(),
-					.Transform = pointLight->GetTransform(),
-					.Projection = pointLight->GetProjection()
-				};
-
-				myScene->SceneLights.emplace_back(light);
-			}
-		}
-
-		{
-			SpotLightComponent* spotLight = actor.get()->GetComponent<SpotLightComponent>();
-
-			if (spotLight != nullptr)
-			{
-				spotLight->UpdateLightViewProjection();
-
-				SceneLight light =
-				{
-					.LightData = spotLight->GetData(),
-					.ShadowMap = spotLight->GetShadowMap(),
-					.Transform = spotLight->GetTransform(),
-					.Projection = spotLight->GetProjection()
-				};
-
-				myScene->SceneLights.emplace_back(light);
-			}
-		}
-	}
-
-	GameCamera& gameCamera = GameCamera::GetInstance();
-
-	myScene->SceneCamera =
-	{
-		.Transform = gameCamera.GetTransform().GetWorldMatrix(),
-		.RenderCamera = &gameCamera.GetCamera()
-	};
+	GameWorld::Get().Render();
 }

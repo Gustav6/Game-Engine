@@ -22,6 +22,19 @@ void GameWorld::Update(float aDeltaTime)
 	}
 }
 
+void GameWorld::Render()
+{
+	for (auto& actor : myActors)
+	{
+		if (!actor->GetIsEnabled())
+		{
+			continue;
+		}
+
+		actor->Render();
+	}
+}
+
 Actor* GameWorld::AddActor(std::unique_ptr<Actor> aActor)
 {
 	Actor* rawPointer = aActor.get();

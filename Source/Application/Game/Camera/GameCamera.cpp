@@ -267,7 +267,7 @@ Mode GameCamera::GetMode() const
 	return myMode;
 }
 
-const Camera& GameCamera::GetCamera() const
+const Camera& GameCamera::GetRenderCamera() const
 {
 	return *myCamera;
 }

@@ -4,6 +4,9 @@
     <Filter Include="ConstantBuffers">
       <UniqueIdentifier>{3CBE0720-A849-75E4-B15A-F8D81D65D1E4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Drawers">
+      <UniqueIdentifier>{1D1F4287-89FE-C022-9216-4CF9FE742784}</UniqueIdentifier>
+    </Filter>
     <Filter Include="InterOp">
       <UniqueIdentifier>{E6D11E00-52B1-9D9B-5BC9-2872C72704FD}</UniqueIdentifier>
     </Filter>
@@ -50,6 +53,18 @@
     </ClInclude>
     <ClInclude Include="ConstantBuffers\ObjectBuffer.h">
       <Filter>ConstantBuffers</Filter>
+    </ClInclude>
+    <ClInclude Include="Drawers\LightDrawer.h">
+      <Filter>Drawers</Filter>
+    </ClInclude>
+    <ClInclude Include="Drawers\MeshDrawer.h">
+      <Filter>Drawers</Filter>
+    </ClInclude>
+    <ClInclude Include="Drawers\SpriteDrawer.h">
+      <Filter>Drawers</Filter>
+    </ClInclude>
+    <ClInclude Include="Drawers\TextDrawer.h">
+      <Filter>Drawers</Filter>
     </ClInclude>
     <ClInclude Include="GraphicsEngine.hpp" />
     <ClInclude Include="GraphicsEngine.pch.h" />
@@ -147,6 +162,18 @@
     </ClCompile>
     <ClCompile Include="ConstantBuffers\ObjectBuffer.cpp">
       <Filter>ConstantBuffers</Filter>
+    </ClCompile>
+    <ClCompile Include="Drawers\LightDrawer.cpp">
+      <Filter>Drawers</Filter>
+    </ClCompile>
+    <ClCompile Include="Drawers\MeshDrawer.cpp">
+      <Filter>Drawers</Filter>
+    </ClCompile>
+    <ClCompile Include="Drawers\SpriteDrawer.cpp">
+      <Filter>Drawers</Filter>
+    </ClCompile>
+    <ClCompile Include="Drawers\TextDrawer.cpp">
+      <Filter>Drawers</Filter>
     </ClCompile>
     <ClCompile Include="GraphicsEngine.cpp" />
     <ClCompile Include="GraphicsEngine.pch.cpp" />

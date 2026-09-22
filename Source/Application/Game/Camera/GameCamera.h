@@ -38,7 +38,7 @@ public:
 	Mode GetMode() const;
 
 
-	const Camera& GetCamera() const;
+	const Camera& GetRenderCamera() const;
 
 private:
 	GameCamera() = default;

@@ -4,19 +4,22 @@
 
 #include "../Base/Asset.h"
 
-class Text;
+class Font;
+class Texture;
 
-class TextAsset : public Asset
+class FontAsset : public Asset
 {
 	friend class AssetRegistry;
 
 public:
-	TextAsset();
-	~TextAsset() override;
+	FontAsset();
+	~FontAsset() override;
+
+	const std::shared_ptr<Font>& GetFont() const;
 
 protected:
 	bool Load(const std::filesystem::path& aPath) override;
 
 private:
-	std::unique_ptr<Text> myText;
+	std::shared_ptr<Font> myFont;
 };

@@ -48,7 +48,7 @@
 
 #include "Camera/GameCamera.h"
 
-struct Scene;
+struct RenderScene;
 class GraphicsCommandList;
 
 class Game
@@ -62,17 +62,14 @@ public:
 
 private:
 	void LoadScene();
-	void UpdateScene(float aDeltaTime);
-	void BuildSceneForRender();
+	void Update(float aDeltaTime);
+	void Render();
 
 	bool myIsRunning = false;
 
 	HWND myMainWindowHandle = nullptr;
 
 	std::unique_ptr<GraphicsCommandList> myGraphicsCommandList;
-	std::unique_ptr<Scene> myScene;
-
-
 
 	// TODO: TEMP
 

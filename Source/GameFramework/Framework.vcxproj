@@ -160,9 +160,9 @@
     <ClInclude Include="AssetPipeline\AssetRegistry\AssetRegistry.h" />
     <ClInclude Include="AssetPipeline\Assets\Base\Asset.h" />
     <ClInclude Include="AssetPipeline\Assets\Types\AnimationAsset.h" />
+    <ClInclude Include="AssetPipeline\Assets\Types\FontAsset.h" />
     <ClInclude Include="AssetPipeline\Assets\Types\MaterialAsset.h" />
     <ClInclude Include="AssetPipeline\Assets\Types\MeshAsset.h" />
-    <ClInclude Include="AssetPipeline\Assets\Types\TextAsset.h" />
     <ClInclude Include="AssetPipeline\Assets\Types\TextureAsset.h" />
     <ClInclude Include="AssetPipeline\Assets\Types\UnrealSceneAsset.h" />
     <ClInclude Include="AudioPipeline\FmodAudioSystem.h" />
@@ -174,6 +174,7 @@
     <ClInclude Include="GamePipeline\Components\Light\SpotLightComponent.h" />
     <ClInclude Include="GamePipeline\Components\Rendering\AnimationComponent.h" />
     <ClInclude Include="GamePipeline\Components\Rendering\MeshComponent.h" />
+    <ClInclude Include="GamePipeline\Components\Rendering\TextComponent.h" />
     <ClInclude Include="GamePipeline\Components\Transform\Transform.h" />
     <ClInclude Include="GamePipeline\World\Actor.hpp" />
     <ClInclude Include="GamePipeline\World\GameWorld.h" />
@@ -183,9 +184,9 @@
     <ClCompile Include="AssetPipeline\AssetRegistry\AssetRegistry.cpp" />
     <ClCompile Include="AssetPipeline\Assets\Base\Asset.cpp" />
     <ClCompile Include="AssetPipeline\Assets\Types\AnimationAsset.cpp" />
+    <ClCompile Include="AssetPipeline\Assets\Types\FontAsset.cpp" />
     <ClCompile Include="AssetPipeline\Assets\Types\MaterialAsset.cpp" />
     <ClCompile Include="AssetPipeline\Assets\Types\MeshAsset.cpp" />
-    <ClCompile Include="AssetPipeline\Assets\Types\TextAsset.cpp" />
     <ClCompile Include="AssetPipeline\Assets\Types\TextureAsset.cpp" />
     <ClCompile Include="AssetPipeline\Assets\Types\UnrealSceneAsset.cpp" />
     <ClCompile Include="AudioPipeline\FmodAudioSystem.cpp" />
@@ -197,6 +198,7 @@
     <ClCompile Include="GamePipeline\Components\Light\SpotLightComponent.cpp" />
     <ClCompile Include="GamePipeline\Components\Rendering\AnimationComponent.cpp" />
     <ClCompile Include="GamePipeline\Components\Rendering\MeshComponent.cpp" />
+    <ClCompile Include="GamePipeline\Components\Rendering\TextComponent.cpp" />
     <ClCompile Include="GamePipeline\Components\Transform\Transform.cpp" />
     <ClCompile Include="GamePipeline\World\Actor.cpp" />
     <ClCompile Include="GamePipeline\World\GameWorld.cpp" />

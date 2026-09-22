@@ -10,6 +10,7 @@ Text::Text(std::string_view aName)
 	myIsDirty = true;
 	mySize = 12.0f;
 	myZOrder = 0.0f;
+	myColor = { 1.0f, 1.0f, 1.0f, 1.0f };
 }
 
 Text::~Text() = default;

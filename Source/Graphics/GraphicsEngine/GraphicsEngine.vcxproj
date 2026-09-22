@@ -204,6 +204,10 @@ xcopy /E /I /R /Y /D "%SHADERSRC%" "%SHADERDEST%"</Command>
     <ClInclude Include="ConstantBuffers\FrameBuffer.h" />
     <ClInclude Include="ConstantBuffers\LightBuffer.h" />
     <ClInclude Include="ConstantBuffers\ObjectBuffer.h" />
+    <ClInclude Include="Drawers\LightDrawer.h" />
+    <ClInclude Include="Drawers\MeshDrawer.h" />
+    <ClInclude Include="Drawers\SpriteDrawer.h" />
+    <ClInclude Include="Drawers\TextDrawer.h" />
     <ClInclude Include="GraphicsEngine.hpp" />
     <ClInclude Include="GraphicsEngine.pch.h" />
     <ClInclude Include="InterOp\DDSTextureLoader11.h" />
@@ -239,6 +243,10 @@ xcopy /E /I /R /Y /D "%SHADERSRC%" "%SHADERDEST%"</Command>
     <ClCompile Include="ConstantBuffers\FrameBuffer.cpp" />
     <ClCompile Include="ConstantBuffers\LightBuffer.cpp" />
     <ClCompile Include="ConstantBuffers\ObjectBuffer.cpp" />
+    <ClCompile Include="Drawers\LightDrawer.cpp" />
+    <ClCompile Include="Drawers\MeshDrawer.cpp" />
+    <ClCompile Include="Drawers\SpriteDrawer.cpp" />
+    <ClCompile Include="Drawers\TextDrawer.cpp" />
     <ClCompile Include="GraphicsEngine.cpp" />
     <ClCompile Include="GraphicsEngine.pch.cpp" />
     <ClCompile Include="InterOp\DDSTextureLoader11.cpp" />

@@ -48,6 +48,7 @@ public:
 	}
 
 	virtual void Update(float aDeltaTime);
+	void Render();
 
 	Transform& GetTransform();
 

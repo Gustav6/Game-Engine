@@ -60,13 +60,13 @@
     <ClInclude Include="AssetPipeline\Assets\Types\AnimationAsset.h">
       <Filter>AssetPipeline\Assets\Types</Filter>
     </ClInclude>
+    <ClInclude Include="AssetPipeline\Assets\Types\FontAsset.h">
+      <Filter>AssetPipeline\Assets\Types</Filter>
+    </ClInclude>
     <ClInclude Include="AssetPipeline\Assets\Types\MaterialAsset.h">
       <Filter>AssetPipeline\Assets\Types</Filter>
     </ClInclude>
     <ClInclude Include="AssetPipeline\Assets\Types\MeshAsset.h">
-      <Filter>AssetPipeline\Assets\Types</Filter>
-    </ClInclude>
-    <ClInclude Include="AssetPipeline\Assets\Types\TextAsset.h">
       <Filter>AssetPipeline\Assets\Types</Filter>
     </ClInclude>
     <ClInclude Include="AssetPipeline\Assets\Types\TextureAsset.h">
@@ -100,6 +100,9 @@
     <ClInclude Include="GamePipeline\Components\Rendering\MeshComponent.h">
       <Filter>GamePipeline\Components\Rendering</Filter>
     </ClInclude>
+    <ClInclude Include="GamePipeline\Components\Rendering\TextComponent.h">
+      <Filter>GamePipeline\Components\Rendering</Filter>
+    </ClInclude>
     <ClInclude Include="GamePipeline\Components\Transform\Transform.h">
       <Filter>GamePipeline\Components\Transform</Filter>
     </ClInclude>
@@ -123,13 +126,13 @@
     <ClCompile Include="AssetPipeline\Assets\Types\AnimationAsset.cpp">
       <Filter>AssetPipeline\Assets\Types</Filter>
     </ClCompile>
+    <ClCompile Include="AssetPipeline\Assets\Types\FontAsset.cpp">
+      <Filter>AssetPipeline\Assets\Types</Filter>
+    </ClCompile>
     <ClCompile Include="AssetPipeline\Assets\Types\MaterialAsset.cpp">
       <Filter>AssetPipeline\Assets\Types</Filter>
     </ClCompile>
     <ClCompile Include="AssetPipeline\Assets\Types\MeshAsset.cpp">
-      <Filter>AssetPipeline\Assets\Types</Filter>
-    </ClCompile>
-    <ClCompile Include="AssetPipeline\Assets\Types\TextAsset.cpp">
       <Filter>AssetPipeline\Assets\Types</Filter>
     </ClCompile>
     <ClCompile Include="AssetPipeline\Assets\Types\TextureAsset.cpp">
@@ -161,6 +164,9 @@
       <Filter>GamePipeline\Components\Rendering</Filter>
     </ClCompile>
     <ClCompile Include="GamePipeline\Components\Rendering\MeshComponent.cpp">
+      <Filter>GamePipeline\Components\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="GamePipeline\Components\Rendering\TextComponent.cpp">
       <Filter>GamePipeline\Components\Rendering</Filter>
     </ClCompile>
     <ClCompile Include="GamePipeline\Components\Transform\Transform.cpp">

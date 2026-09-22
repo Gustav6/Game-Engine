@@ -1,5 +1,11 @@
 #pragma once
 
+/*
+* GraphicsEngine handles rendering of a scene.
+* Handles culling using whatever cameras it's told to use.
+* Renders onto a user-provided render target and depth.
+*/
+
 #include <filesystem>	
 #include <unordered_map>
 #include <vector>
@@ -12,19 +18,18 @@
 #include "Materials/Material.h"
 
 class RenderHardwareInterface;
-class Camera;
 struct RHIShaderReflectionInfo;
 class PipelineStateObject;
-class Mesh;
-struct Light;
 class Shader;
 class Texture;
 class Sampler;
-struct InternalRenderItem;
+struct InternalMeshRenderItem;
 class GBuffer;
 class GraphicsCommandList;
 class Font;
 class Text;
+class Mesh;
+class Camera;
 
 enum class ConstantBuffer : uint8_t
 {
@@ -37,34 +42,10 @@ enum class ConstantBuffer : uint8_t
 	MAX
 };
 
-struct DrawCall
-{
-	bool HasSkinning = false;
-	const Mesh* Mesh = nullptr;
-	const MaterialInterface* Materials[Material::MAX_MATERIAL_TEXTURE_COUNT] = {};
-	const CommonUtilities::Matrix4x4f Transform;
-	const CommonUtilities::Matrix4x4f* JointTransforms = nullptr;
-};
-
 struct SceneCamera
 {
 	CommonUtilities::Matrix4x4f Transform;
 	const Camera* RenderCamera = nullptr;
-};
-
-struct SceneLight
-{
-	const Light* LightData = nullptr;
-	const Texture* ShadowMap = nullptr;
-	const CommonUtilities::Matrix4x4f Transform;
-	const CommonUtilities::Matrix4x4f Projection;
-};
-
-struct Scene
-{
-	std::vector<DrawCall> DrawCalls;
-	std::vector<SceneLight> SceneLights;
-	SceneCamera SceneCamera;
 };
 
 class GraphicsEngine
@@ -75,7 +56,8 @@ public:
 	static GraphicsEngine& Get();
 
 	bool Initialize(HWND aWindowHandle, const std::filesystem::path& aShaderRoot);
-	void Render(GraphicsCommandList& inoutCommandList, const Scene& aScene);
+	void BeginFrame();
+	void Render(GraphicsCommandList& inoutCommandList, const SceneCamera& aCamera);
 	void Present() const;
 
 	void CycleToNextRenderPass(int aDirection);
@@ -154,10 +136,10 @@ private:
 
 	void CreateMaterialTextureSlots(const RHIShaderReflectionInfo& aShaderInfo, Material& inoutMaterial) const;
 
-	void RenderShadowMaps(GraphicsCommandList& inoutCommandList, const std::vector<SceneLight>& SceneLights, const SceneCamera& aSceneCamera, std::vector<InternalRenderItem>& aShadowItems);
+	void RenderShadowMaps(GraphicsCommandList& inoutCommandList, const SceneCamera& aCamera, std::vector<InternalMeshRenderItem>& aShadowItems);
 	
-	void UploadSceneLightingData(GraphicsCommandList& inoutCommandList, const std::vector<SceneLight>& aLights);
-	void RenderDrawCalls(GraphicsCommandList& inoutCommandList, const std::vector<InternalRenderItem>& aRenderItems, DrawCallFlags someFlags);
+	void UploadSceneLightingData(GraphicsCommandList& inoutCommandList);
+	void RenderDrawCalls(GraphicsCommandList& inoutCommandList, const std::vector<InternalMeshRenderItem>& aRenderItems, DrawCallFlags someFlags);
 
 	void RegisterMaterialShaders();
 
@@ -189,10 +171,6 @@ private:
 
 	std::shared_ptr<Texture> myDefaultAlbedoTexture;
 	std::shared_ptr<Texture> myDefaultNormalTexture;
-
-	std::shared_ptr<Font> myDefaultFont;
-
-	std::unique_ptr<Text> myText;
 
 	std::unique_ptr<Texture> myEnvironmentCubemap;
 	std::unique_ptr<Texture> myLUTTexture;

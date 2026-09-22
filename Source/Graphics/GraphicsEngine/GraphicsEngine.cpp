@@ -45,17 +45,15 @@
 #include "Deferred_PointLight_PS.h"
 #include "Deferred_Ambient_PS.h"
 
+#include "Drawers/MeshDrawer.h"
+#include "Drawers/LightDrawer.h"
+#include "Drawers/TextDrawer.h"
+
 #include "CommonUtilities/Json/JsonWrapper.h"
 
-/*
-* GraphicsEngine handles rendering of a scene.
-* Handles culling using whatever cameras it's told to use.
-* Renders onto a user-provided render target and depth.
-*/
-
-struct InternalRenderItem
+struct InternalMeshRenderItem
 {
-    const DrawCall* DrawCall;
+    const MeshDrawCall* DrawCall;
     unsigned int ElementIndex;
 	unsigned int MaterialIndex;
 };
@@ -111,7 +109,14 @@ bool GraphicsEngine::Initialize(HWND aWindowHandle, const std::filesystem::path&
 	return true;
 }
 
-void GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const Scene& aScene)
+void GraphicsEngine::BeginFrame()
+{
+	MeshDrawer::Get().myDrawCalls.clear();
+	LightDrawer::Get().mySceneLights.clear();
+	TextDrawer::Get().myDrawCalls.clear();
+}
+
+void GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const SceneCamera& aCamera)
 {
 	inoutCommandList.BeginEvent("Reset Pipeline");
 	{
@@ -121,11 +126,11 @@ void GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const Scene& 
 	}
 	inoutCommandList.EndEvent();
 
-	std::vector<InternalRenderItem> opaqueItems;
-	std::vector<InternalRenderItem> alphaItems;
-	std::vector<InternalRenderItem> shadowItems;
+	std::vector<InternalMeshRenderItem> opaqueItems;
+	std::vector<InternalMeshRenderItem> alphaItems;
+	std::vector<InternalMeshRenderItem> shadowItems;
 
-	for (const auto& drawCall : aScene.DrawCalls)
+	for (const auto& drawCall : MeshDrawer::Get().myDrawCalls)
 	{
 		for (unsigned int e = 0; e < drawCall.Mesh->myElements.size(); e++)
 		{
@@ -138,7 +143,7 @@ void GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const Scene& 
 				material = myDefaultMaterial.get();
 			}
 
-			InternalRenderItem item =
+			InternalMeshRenderItem item =
 			{
 				.DrawCall = &drawCall,
 				.ElementIndex = e,
@@ -168,11 +173,11 @@ void GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const Scene& 
 		}
 	}
 
-	CommonUtilities::Vector3f cameraPosition = aScene.SceneCamera.Transform.GetTranslation();
+	CommonUtilities::Vector3f cameraPosition = aCamera.Transform.GetTranslation();
 
 	// Front to Back
 	std::sort(opaqueItems.begin(), opaqueItems.end(),
-		[&](const InternalRenderItem& A, const InternalRenderItem& B) -> bool
+		[&](const InternalMeshRenderItem& A, const InternalMeshRenderItem& B) -> bool
 		{
 			float distanceToA = (A.DrawCall->Transform.GetTranslation() - cameraPosition).LengthSqr();
 			float distanceToB = (B.DrawCall->Transform.GetTranslation() - cameraPosition).LengthSqr();
@@ -182,7 +187,7 @@ void GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const Scene& 
 
 	// Back to Front
 	std::sort(alphaItems.begin(), alphaItems.end(),
-		[&](const InternalRenderItem& A, const InternalRenderItem& B) -> bool
+		[&](const InternalMeshRenderItem& A, const InternalMeshRenderItem& B) -> bool
 		{
 			float distanceToA = (A.DrawCall->Transform.GetTranslation() - cameraPosition).LengthSqr();
 			float distanceToB = (B.DrawCall->Transform.GetTranslation() - cameraPosition).LengthSqr();
@@ -210,16 +215,16 @@ void GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const Scene& 
 	{
 		inoutCommandList.SetOverridePipelineState(*myShadowPSO, PipelineStage_None);
 
-		RenderShadowMaps(inoutCommandList, aScene.SceneLights, aScene.SceneCamera, shadowItems);
+		RenderShadowMaps(inoutCommandList, aCamera, shadowItems);
 
 		inoutCommandList.ClearOverridePipelineState();
 	}
 	inoutCommandList.EndEvent();
 
 	FrameBuffer frameBuffer;
-	frameBuffer.View = aScene.SceneCamera.Transform.GetFastInverse();
-	frameBuffer.Projection = aScene.SceneCamera.RenderCamera->GetProjection();
-	frameBuffer.CameraPosition = aScene.SceneCamera.Transform.GetTranslation();
+	frameBuffer.View = aCamera.Transform.GetFastInverse();
+	frameBuffer.Projection = aCamera.RenderCamera->GetProjection();
+	frameBuffer.CameraPosition = aCamera.Transform.GetTranslation();
 	frameBuffer.TypeOfRenderPass = static_cast<unsigned int>(myCurrentRenderPass);
 
 	UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::FrameBuffer, frameBuffer, 0, PipelineStage_VertexShader | PipelineStage_PixelShader);
@@ -260,18 +265,18 @@ void GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const Scene& 
 
 				if (myCurrentRenderPass == RenderPass::sRGB)
 				{
-					for (unsigned int l = 0; l < aScene.SceneLights.size(); l++)
+					for (unsigned int l = 0; l < LightDrawer::Get().mySceneLights.size(); l++)
 					{
-						if (aScene.SceneLights[l].LightData == nullptr)
+						if (LightDrawer::Get().mySceneLights[l].LightData == nullptr)
 						{
 							continue;
 						}
 
 						LightBuffer lightBuffer;
-						lightBuffer.Lights[0] = *aScene.SceneLights[l].LightData;
+						lightBuffer.Lights[0] = *LightDrawer::Get().mySceneLights[l].LightData;
 						UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::LightBuffer, lightBuffer, 3, PipelineStage_PixelShader);
 
-						switch (aScene.SceneLights[l].LightData->Type)
+						switch (LightDrawer::Get().mySceneLights[l].LightData->Type)
 						{
 						case LightType::Directional:
 						{
@@ -294,7 +299,7 @@ void GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const Scene& 
 						{
 							inoutCommandList.BeginEvent("Spot Light");
 
-							const Texture* shadowMap = aScene.SceneLights[l].ShadowMap;
+							const Texture* shadowMap = LightDrawer::Get().mySceneLights[l].ShadowMap;
 
 							inoutCommandList.SetShaderResource(shadowMap, 104, PipelineStage_PixelShader);
 
@@ -308,7 +313,7 @@ void GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const Scene& 
 						{
 							inoutCommandList.BeginEvent("Point Light");
 
-							const Texture* shadowMap = aScene.SceneLights[l].ShadowMap;
+							const Texture* shadowMap = LightDrawer::Get().mySceneLights[l].ShadowMap;
 
 							inoutCommandList.SetShaderResource(shadowMap, 112, PipelineStage_PixelShader);
 
@@ -329,7 +334,7 @@ void GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const Scene& 
 		inoutCommandList.BeginEvent("Alpha Render");
 		{
 			inoutCommandList.SetRenderTarget(myBackBuffer.get(), myDepthBuffer.get());
-			UploadSceneLightingData(inoutCommandList, aScene.SceneLights);
+			UploadSceneLightingData(inoutCommandList);
 			RenderDrawCalls(inoutCommandList, alphaItems, DrawCallFlag_BindTextures | DrawCallFlag_BindMaterial);
 		}
 		inoutCommandList.EndEvent();
@@ -352,40 +357,56 @@ void GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const Scene& 
 
 		const CommonUtilities::Matrix4x4f pixelToNDC = scale * translation;
 
-		if (myText->myIsDirty)
+		for (auto& drawCall : TextDrawer::Get().myDrawCalls)
 		{
-			myText->RebuildGeometry();
-			myText->RebuildTextRenderMatrix();
-			std::string vertexBufferName = std::format("{}_VX", myText->myName);
-			myRHI->CreateVertexBuffer(vertexBufferName, myText->myVertices, myText->myVertexBuffer);
-			std::string indexBufferName = std::format("{}_PX", myText->myName);
-			myRHI->CreateIndexBuffer(indexBufferName, myText->myIndices, myText->myIndexBuffer);
-			myText->myIsDirty = false;
-		}
-
-		ObjectBuffer objectBuffer;
-		objectBuffer.World = myText->GetRenderMatrix() * pixelToNDC;
-		objectBuffer.WorldInvT = objectBuffer.World.GetFastInverse().GetTranspose();
-
-		UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::ObjectBuffer, objectBuffer, 1, PipelineStage_VertexShader | PipelineStage_PixelShader);
-
-		inoutCommandList.SetShaderResource(&myDefaultFont->myAtlas, 0, PipelineStage_PixelShader);
-
-		inoutCommandList.SetPipelineStateObject(myText->myFontMaterial->myPSO);
-
-		/*if (material->HasParameters())
-		{
-			if (material->IsMaterialDataDirty())
+			if (drawCall.Text->myFont == nullptr)
 			{
-				material->RefreshMaterialData();
+				GELOG(Error, "Text had no valid font!");
+				continue;
 			}
 
-			UpdateAndSetConstantBufferInternal(inoutCommandList, ConstantBuffer::MaterialBuffer, material->GetParameterDataBlock(), Material::MATERIAL_BUFFER_SIZE, 5, PipelineStage_VertexShader | PipelineStage_PixelShader);
-		}*/
+			if (drawCall.Text->myIsDirty)
+			{
+				drawCall.Text->RebuildGeometry();
+				drawCall.Text->RebuildTextRenderMatrix();
+				std::string vertexBufferName = std::format("{}_VX", drawCall.Text->myName);
+				myRHI->CreateVertexBuffer(vertexBufferName, drawCall.Text->myVertices, drawCall.Text->myVertexBuffer);
+				std::string indexBufferName = std::format("{}_PX", drawCall.Text->myName);
+				myRHI->CreateIndexBuffer(indexBufferName, drawCall.Text->myIndices, drawCall.Text->myIndexBuffer);
+				drawCall.Text->myIsDirty = false;
+			}
 
-		inoutCommandList.SetVertexBuffer(&myText->myVertexBuffer);
-		inoutCommandList.SetIndexBuffer(&myText->myIndexBuffer);
-		inoutCommandList.DrawIndexed(static_cast<unsigned int>(myText->myIndices.size()), 0);
+			ObjectBuffer objectBuffer;
+			objectBuffer.World = drawCall.Text->GetRenderMatrix() * pixelToNDC;
+			objectBuffer.WorldInvT = objectBuffer.World.GetFastInverse().GetTranspose();
+
+			UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::ObjectBuffer, objectBuffer, 1, PipelineStage_VertexShader | PipelineStage_PixelShader);
+
+			inoutCommandList.SetShaderResource(&drawCall.Text->myFont->myAtlas, 0, PipelineStage_PixelShader);
+
+			const MaterialInterface* material = drawCall.Text->myFontMaterial.get();
+
+			if (material == nullptr)
+			{
+				material = myDefaultFontMaterial.get();
+			}
+
+			if (material->HasParameters())
+			{
+				if (material->IsMaterialDataDirty())
+				{
+					material->RefreshMaterialData();
+				}
+
+				UpdateAndSetConstantBufferInternal(inoutCommandList, ConstantBuffer::MaterialBuffer, material->GetParameterDataBlock(), Material::MATERIAL_BUFFER_SIZE, 5, PipelineStage_VertexShader | PipelineStage_PixelShader);
+			}
+
+			inoutCommandList.SetPipelineStateObject(material->GetPSO());
+
+			inoutCommandList.SetVertexBuffer(&drawCall.Text->myVertexBuffer);
+			inoutCommandList.SetIndexBuffer(&drawCall.Text->myIndexBuffer);
+			inoutCommandList.DrawIndexed(static_cast<unsigned int>(drawCall.Text->myIndices.size()), 0);
+		}
 	}
 	inoutCommandList.EndEvent();
 }
@@ -825,9 +846,9 @@ void GraphicsEngine::CreateMaterialTextureSlots(const RHIShaderReflectionInfo& a
 	}
 }
 
-void GraphicsEngine::RenderShadowMaps(GraphicsCommandList& inoutCommandList, const std::vector<SceneLight>& SceneLights, const SceneCamera& aSceneCamera, std::vector<InternalRenderItem>& aShadowItems)
+void GraphicsEngine::RenderShadowMaps(GraphicsCommandList& inoutCommandList, const SceneCamera& aCamera, std::vector<InternalMeshRenderItem>& aShadowItems)
 {
-	for (const auto& light : SceneLights)
+	for (const auto& light : LightDrawer::Get().mySceneLights)
 	{
 		switch (light.LightData->Type)
 		{
@@ -839,10 +860,10 @@ void GraphicsEngine::RenderShadowMaps(GraphicsCommandList& inoutCommandList, con
 				static float cameraNear = 0.0f;
 				static float cameraFar = 0.0f;
 
-				float cameraNearPlane = aSceneCamera.RenderCamera->GetNearPlane();
-				float cameraFarPlane = aSceneCamera.RenderCamera->GetFarPlane();
-				float cameraFov = aSceneCamera.RenderCamera->GetFovInDegrees();
-				float cameraAspectRatio = aSceneCamera.RenderCamera->GetAspectRatio();
+				float cameraNearPlane = aCamera.RenderCamera->GetNearPlane();
+				float cameraFarPlane = aCamera.RenderCamera->GetFarPlane();
+				float cameraFov = aCamera.RenderCamera->GetFovInDegrees();
+				float cameraAspectRatio = aCamera.RenderCamera->GetAspectRatio();
 
 				if (cameraNear != cameraNearPlane || cameraFar != cameraFarPlane)
 				{
@@ -853,7 +874,7 @@ void GraphicsEngine::RenderShadowMaps(GraphicsCommandList& inoutCommandList, con
 
 				CommonUtilities::Matrix4x4f lightViewProjectionTextures[NUM_CASCADES];
 
-				CommonUtilities::Matrix4x4f cameraView = aSceneCamera.Transform.GetFastInverse();
+				CommonUtilities::Matrix4x4f cameraView = aCamera.Transform.GetFastInverse();
 
 				for (size_t c = 0; c < NUM_CASCADES; c++ )
 				{
@@ -951,7 +972,7 @@ void GraphicsEngine::RenderShadowMaps(GraphicsCommandList& inoutCommandList, con
 					myCascades[2].ShadowMap->GetViewport().Width,
 					myCascades[3].ShadowMap->GetViewport().Width
 				};
-				cascadeBuffer.CameraPosition = aSceneCamera.Transform.GetTranslation();
+				cascadeBuffer.CameraPosition = aCamera.Transform.GetTranslation();
 				memcpy_s(cascadeBuffer.LightViewProjectionTextures, sizeof(CommonUtilities::Matrix4x4f) * NUM_CASCADES, lightViewProjectionTextures, sizeof(lightViewProjectionTextures));
 
 				UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::CascadeBuffer, cascadeBuffer, 4, PipelineStage_PixelShader);
@@ -1016,10 +1037,10 @@ void GraphicsEngine::RenderShadowMaps(GraphicsCommandList& inoutCommandList, con
 	}
 }
 
-void GraphicsEngine::UploadSceneLightingData(GraphicsCommandList& inoutCommandList, const std::vector<SceneLight>& aLights)
+void GraphicsEngine::UploadSceneLightingData(GraphicsCommandList& inoutCommandList)
 {
 	LightBuffer lightBuffer;
-	lightBuffer.NumLights = static_cast<unsigned int>(std::min(aLights.size(), static_cast<size_t>(MAX_LIGHTS)));
+	lightBuffer.NumLights = static_cast<unsigned int>(std::min(LightDrawer::Get().mySceneLights.size(), static_cast<size_t>(MAX_LIGHTS)));
 
 	std::vector<const Texture*> dirLightShadowMaps;
 	dirLightShadowMaps.reserve(NUM_CASCADES);
@@ -1031,14 +1052,14 @@ void GraphicsEngine::UploadSceneLightingData(GraphicsCommandList& inoutCommandLi
 
 	for (unsigned int i = 0; i < lightBuffer.NumLights; i++)
 	{
-		if (aLights[i].LightData == nullptr)
+		if (LightDrawer::Get().mySceneLights[i].LightData == nullptr)
 		{
 			continue;
 		}
 
-		lightBuffer.Lights[i] = *aLights[i].LightData;
+		lightBuffer.Lights[i] = *LightDrawer::Get().mySceneLights[i].LightData;
 
-		switch (aLights[i].LightData->Type)
+		switch (LightDrawer::Get().mySceneLights[i].LightData->Type)
 		{
 			case LightType::Directional:
 			{
@@ -1051,23 +1072,23 @@ void GraphicsEngine::UploadSceneLightingData(GraphicsCommandList& inoutCommandLi
 			}
 			case LightType::Spot:
 			{
-				if (aLights[i].ShadowMap == nullptr)
+				if (LightDrawer::Get().mySceneLights[i].ShadowMap == nullptr)
 				{
 					continue;
 				}
 
-				spotLightShadowMaps.emplace_back(aLights[i].ShadowMap);
+				spotLightShadowMaps.emplace_back(LightDrawer::Get().mySceneLights[i].ShadowMap);
 				lightBuffer.Lights[i].ShadowIndex = spotShadowIndex++;
 				break;
 			}
 			case LightType::Point:
 			{
-				if (aLights[i].ShadowMap == nullptr)
+				if (LightDrawer::Get().mySceneLights[i].ShadowMap == nullptr)
 				{
 					continue;
 				}
 
-				pointLightShadowCubes.emplace_back(aLights[i].ShadowMap);
+				pointLightShadowCubes.emplace_back(LightDrawer::Get().mySceneLights[i].ShadowMap);
 				lightBuffer.Lights[i].ShadowIndex = pointShadowIndex++;
 				break;
 			}
@@ -1081,7 +1102,7 @@ void GraphicsEngine::UploadSceneLightingData(GraphicsCommandList& inoutCommandLi
 	UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::LightBuffer, lightBuffer, 3, PipelineStage_PixelShader);
 }
 
-void GraphicsEngine::RenderDrawCalls(GraphicsCommandList& inoutCommandList, const std::vector<InternalRenderItem>& aRenderItems, DrawCallFlags someFlags)
+void GraphicsEngine::RenderDrawCalls(GraphicsCommandList& inoutCommandList, const std::vector<InternalMeshRenderItem>& aRenderItems, DrawCallFlags someFlags)
 {
 	for (const auto& renderItem : aRenderItems)
 	{
@@ -1091,14 +1112,19 @@ void GraphicsEngine::RenderDrawCalls(GraphicsCommandList& inoutCommandList, cons
 			continue;
 		}
 
-		const DrawCall& drawCall = *renderItem.DrawCall;
+		const MeshDrawCall& drawCall = *renderItem.DrawCall;
 		const Mesh& mesh = *drawCall.Mesh;
 		const Mesh::Element& element = renderItem.DrawCall->Mesh->myElements[renderItem.ElementIndex];
-		const MaterialInterface* material = renderItem.DrawCall->Materials[renderItem.MaterialIndex];;
+		const MaterialInterface* material = renderItem.DrawCall->Materials[renderItem.MaterialIndex];
 
 		if (!PrepareMeshForRendering(mesh))
 		{
 			continue;
+		}
+
+		if (material == nullptr)
+		{
+			material = myDefaultMaterial.get();
 		}
 
 		inoutCommandList.BeginEvent(mesh.GetName());
@@ -1255,19 +1281,17 @@ bool GraphicsEngine::InitializeBuiltinAssets()
 
 	// Font
 	{
-		myDefaultFont = std::make_shared<Font>();
-
 		// Command - msdf-atlas-gen -varfont "FONTNAME.ttf?wght=400" -type msdf -size 64 -imageout FONTNAME.png -json FONTNAME.json -potr -pxrange 6
 		// NOTE: msdf-atlas-gen can't output DDS, so convert the PNG afterwards.
 		// Convert to DDS:      texconv FONTNAME.png -f R8G8B8A8_UNORM -m 1 -y
 
-		std::filesystem::path defaultFontRoot = myContentRoot / "Fonts" / "CascadiaCode";
+		/*std::filesystem::path defaultFontRoot = myContentRoot / "Fonts" / "CascadiaCode";
 
 		if (!CreateFontAsset(defaultFontRoot / "cascadiacode.json", defaultFontRoot / "cascadiacode.dds", *myDefaultFont))
 		{
 			GELOG(Error, "Failed to create default font asset!");
 			return false;
-		}
+		}*/
 
 		myDefaultFontMaterial = std::make_shared<Material>();
 
@@ -1285,14 +1309,14 @@ bool GraphicsEngine::InitializeBuiltinAssets()
 			return false;
 		}
 
-		myText = std::make_unique<Text>("Text Test");
+		/*myText = std::make_unique<Text>("Text Test");
 
 		myText->SetFont(myDefaultFont);
 		myText->SetSize(36);
 		myText->SetPosition({ 100, 50 });
 		myText->SetColor({ 0, 1, 0, 1 });
 		myText->SetText("Shrek");
-		myText->SetFontMaterial(myDefaultFontMaterial);
+		myText->SetFontMaterial(myDefaultFontMaterial);*/
 	}
 
 	return true;
