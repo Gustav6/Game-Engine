@@ -13,6 +13,7 @@ struct Vertex;
 class Mesh
 {
 	friend class GraphicsEngine;
+	friend class DrawCallSubmitter;
 
 public:
 	struct Element

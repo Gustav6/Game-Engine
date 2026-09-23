@@ -18,6 +18,7 @@ class Material;
 class Text
 {
 	friend class GraphicsEngine;
+	friend class ScreenSpaceRenderPass;
 
 public:
 	Text(std::string_view aName);

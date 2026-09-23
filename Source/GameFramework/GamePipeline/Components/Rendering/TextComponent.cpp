@@ -14,7 +14,7 @@ void TextComponent::SetFont(const std::shared_ptr<FontAsset>& aFontAsset)
 	myText->SetFont(aFontAsset->GetFont());
 }
 
-const Text& TextComponent::GetText()
+Text& TextComponent::GetText()
 {
 	return *myText;
 }

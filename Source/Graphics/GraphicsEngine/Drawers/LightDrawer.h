@@ -18,6 +18,9 @@ struct SceneLight
 class LightDrawer
 {
     friend class GraphicsEngine;
+    friend class OpaqueRenderPass;
+    friend class AlphaRenderPass;
+    friend class ShadowRenderPass;
 
 public:
     static LightDrawer& Get();

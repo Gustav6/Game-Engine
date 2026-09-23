@@ -1,0 +1,289 @@
+#include "GraphicsEngine.pch.h"
+#include "ShadowRenderPass.h"
+
+#include <CommonUtilities/Collision/Frustum.hpp>
+
+#include "Shared/DrawCallSubmitter.h"
+#include "Shared/SceneCamera.h"
+#include "Shared/RenderContext.h"
+
+#include "GraphicsEngine/GraphicsEngine.hpp"
+
+#include "GraphicsEngine/RHI/RenderHardwareInterface.h"
+
+#include "GraphicsEngine/ConstantBuffers/FrameBuffer.h"
+#include "GraphicsEngine/ConstantBuffers/CascadeBuffer.h"
+
+#include "GraphicsEngine/Objects/Light.h"
+#include "GraphicsEngine/Objects/Texture.h"
+#include "GraphicsEngine/Objects/Camera.h"
+
+#include "GraphicsEngine/RHI/GraphicsCommandList.h"
+
+#include "GraphicsEngine/Drawers/LightDrawer.h"
+
+#include "ShadowCube_GS.h"
+
+bool ShadowRenderPass::Initialize(RenderHardwareInterface& aRHI)
+{
+	// Shadow PSO
+	{
+		PipelineStateDescription shadowPSODesc = {};
+		shadowPSODesc.Name = "ShadowPSO";
+		shadowPSODesc.RasterizerState = RasterizerState::FillSolidCullFront;
+		shadowPSODesc.GeometryShader.ByteCode = INTERNAL_ShadowCube_GS_ByteCode;
+		shadowPSODesc.GeometryShader.ByteCodeSize = sizeof(INTERNAL_ShadowCube_GS_ByteCode);
+
+		myShadowPSO = std::make_unique<PipelineStateObject>();
+
+		if (!aRHI.CreatePipelineStateObject(shadowPSODesc, *myShadowPSO))
+		{
+			GELOG(Error, "Failed to create Shadow pipeline state object!");
+			return false;
+		}
+	}
+
+	return true;
+}
+
+void ShadowRenderPass::Execute(
+	GraphicsEngine& aGraphicsEngine,
+	GraphicsCommandList& inoutCommandList,
+	const std::vector<RenderItem>& aItems,
+	RenderContext& aContext)
+{
+	inoutCommandList.BeginEvent("Shadow Pass");
+
+	inoutCommandList.SetOverridePipelineState(*myShadowPSO, PipelineStage_None);
+
+	for (const auto& light : LightDrawer::Get().mySceneLights)
+	{
+		switch (light.LightData->Type)
+		{
+			case LightType::Directional:
+			{
+				// TODO: Blend between cascades
+				// https://learn.microsoft.com/en-us/windows/win32/dxtecharts/cascaded-shadow-maps
+
+				static float cameraNear = 0.0f;
+				static float cameraFar = 0.0f;
+
+				float cameraNearPlane = aContext.Camera->RenderCamera->GetNearPlane();
+				float cameraFarPlane = aContext.Camera->RenderCamera->GetFarPlane();
+				float cameraFov = aContext.Camera->RenderCamera->GetFovInDegrees();
+				float cameraAspectRatio = aContext.Camera->RenderCamera->GetAspectRatio();
+
+				if (cameraNear != cameraNearPlane || cameraFar != cameraFarPlane)
+				{
+					cameraNear = cameraNearPlane;
+					cameraFar = cameraFarPlane;
+					BuildShadowCascades(aGraphicsEngine, { 4096, 2048, 2048, 2048 }, cameraNear, cameraFar);
+				}
+
+				CommonUtilities::Matrix4x4f lightViewProjectionTextures[NUM_CASCADES];
+
+				CommonUtilities::Matrix4x4f cameraView = aContext.Camera->Transform.GetFastInverse();
+
+				for (size_t c = 0; c < NUM_CASCADES; c++)
+				{
+					CommonUtilities::Frustum<float> frustum = CommonUtilities::Frustum<float>(
+						cameraFov,
+						myCascades[c].NearPlane,
+						myCascades[c].FarPlane,
+						cameraAspectRatio
+					);
+
+					CommonUtilities::Matrix4x4f projection = CommonUtilities::Matrix4x4f::CreatePerspectiveProjection(
+						cameraFov,
+						myCascades[c].NearPlane,
+						myCascades[c].FarPlane,
+						cameraAspectRatio
+					);
+
+					CommonUtilities::Matrix4x4f invViewProjection = (cameraView * projection).GetGeneralInverse();
+
+					std::vector<CommonUtilities::Vector4f> corners = frustum.GetCornersInWorldSpace(invViewProjection);
+
+					CommonUtilities::Vector4f center;
+
+					for (auto& corner : corners)
+					{
+						center += corner;
+					}
+
+					center = center / 8.0f;
+
+					float radius = 0.0f;
+
+					for (const auto& corner : corners)
+					{
+						float distance = (CommonUtilities::Vector3f(corner.x, corner.y, corner.z) - center.ToXYZ()).Length();
+						radius = std::max(radius, distance);
+					}
+
+					radius = std::ceil(radius);
+
+					float texelsPerUnit = myCascades[c].ShadowMap->GetViewport().Width / (radius * 2.0f);
+
+					CommonUtilities::Vector3f eye = center.ToXYZ() - light.Transform.GetForward().GetNormalized() * radius;
+
+					CommonUtilities::Matrix4x4f directionLightTransform = light.Transform;
+					directionLightTransform.SetTranslation(eye);
+					CommonUtilities::Matrix4x4f lightView = directionLightTransform.GetFastInverse();
+
+					CommonUtilities::Vector4f shadowOrigin = (CommonUtilities::Vector4f(0, 0, 0, 1) * lightView) * texelsPerUnit;
+					CommonUtilities::Vector4f rounded = { std::round(shadowOrigin.x), std::round(shadowOrigin.y), shadowOrigin.z, shadowOrigin.w };
+					CommonUtilities::Vector4f offset = (rounded - shadowOrigin) / texelsPerUnit;
+
+					lightView(4, 1) += offset.x;
+					lightView(4, 2) += offset.y;
+
+					float orthoNear = -radius * 4.0f;
+					float orthoFar = radius * 4.0f;
+
+					CommonUtilities::Matrix4x4f orthoProjection =
+						CommonUtilities::Matrix4x4f::CreateOrthographicProjection(orthoNear, orthoFar, -radius, radius, -radius, radius);
+
+					lightViewProjectionTextures[c] = lightView * orthoProjection * CommonUtilities::Matrix4x4f::CreateNDCToTextureSpace();
+
+					{
+						FrameBuffer frameBuffer;
+						frameBuffer.Projection = orthoProjection;
+						frameBuffer.View = lightView;
+
+						inoutCommandList.BeginEvent(std::format("Cascade Shadow Pass {}", (c + 1)));
+
+						inoutCommandList.ClearDepthStencil(*myCascades[c].ShadowMap);
+						inoutCommandList.SetRenderTarget(nullptr, myCascades[c].ShadowMap.get());
+
+						inoutCommandList.ChangeActiveOverrides(PipelineStage_Rasterizer | PipelineStage_PixelShader);
+						aGraphicsEngine.UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::FrameBuffer, frameBuffer, 0, PipelineStage_VertexShader);
+
+						DrawCallSubmitter::RenderDrawCalls(aGraphicsEngine, inoutCommandList, aItems, aContext, DrawCallFlag_BindMaterial);
+
+						inoutCommandList.EndEvent();
+					}
+				}
+
+				CascadeBuffer cascadeBuffer;
+				cascadeBuffer.FarPlanes =
+				{
+					myCascades[0].FarPlane,
+					myCascades[1].FarPlane,
+					myCascades[2].FarPlane,
+					myCascades[3].FarPlane
+				};
+				cascadeBuffer.ShadowMapSizes =
+				{
+					myCascades[0].ShadowMap->GetViewport().Width,
+					myCascades[1].ShadowMap->GetViewport().Width,
+					myCascades[2].ShadowMap->GetViewport().Width,
+					myCascades[3].ShadowMap->GetViewport().Width
+				};
+				cascadeBuffer.CameraPosition = aContext.Camera->Transform.GetTranslation();
+				memcpy_s(cascadeBuffer.LightViewProjectionTextures, sizeof(CommonUtilities::Matrix4x4f) * NUM_CASCADES, lightViewProjectionTextures, sizeof(lightViewProjectionTextures));
+
+				aGraphicsEngine.UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::CascadeBuffer, cascadeBuffer, 4, PipelineStage_PixelShader);
+
+				break;
+			}
+			case LightType::Spot:
+			{
+				if (light.ShadowMap == nullptr)
+				{
+					continue;
+				}
+
+				FrameBuffer frameBuffer;
+				frameBuffer.Projection = light.Projection;
+				frameBuffer.View = light.Transform.GetFastInverse();
+				frameBuffer.CameraPosition = light.Transform.GetTranslation();
+
+				inoutCommandList.BeginEvent("Spot Light Shadow Pass");
+
+				inoutCommandList.ClearDepthStencil(*light.ShadowMap);
+				inoutCommandList.SetRenderTarget(nullptr, light.ShadowMap);
+
+				inoutCommandList.ChangeActiveOverrides(PipelineStage_Rasterizer | PipelineStage_PixelShader);
+
+				aGraphicsEngine.UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::FrameBuffer, frameBuffer, 0, PipelineStage_VertexShader);
+
+				DrawCallSubmitter::RenderDrawCalls(aGraphicsEngine, inoutCommandList, aItems, aContext, DrawCallFlag_BindMaterial);
+
+				inoutCommandList.EndEvent();
+
+				break;
+			}
+			case LightType::Point:
+			{
+				if (light.ShadowMap == nullptr)
+				{
+					continue;
+				}
+
+				FrameBuffer frameBuffer;
+				frameBuffer.Projection = light.Projection;
+				frameBuffer.View = light.Transform.GetFastInverse();
+				frameBuffer.CameraPosition = light.Transform.GetTranslation();
+
+				inoutCommandList.BeginEvent("Point Light Shadow Pass");
+
+				inoutCommandList.ClearDepthStencil(*light.ShadowMap);
+				inoutCommandList.SetRenderTarget(nullptr, light.ShadowMap);
+
+				inoutCommandList.ChangeActiveOverrides(PipelineStage_GeometryShader | PipelineStage_Rasterizer | PipelineStage_PixelShader);
+
+				aGraphicsEngine.UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::FrameBuffer, frameBuffer, 0, PipelineStage_VertexShader | PipelineStage_GeometryShader);
+
+				DrawCallSubmitter::RenderDrawCalls(aGraphicsEngine, inoutCommandList, aItems, aContext, DrawCallFlag_BindMaterial);
+
+				inoutCommandList.EndEvent();
+
+				break;
+			}
+		}
+	}
+
+	inoutCommandList.ClearOverridePipelineState();
+
+	inoutCommandList.EndEvent();
+}
+
+std::array<ShadowCascade, ShadowRenderPass::NUM_CASCADES>& ShadowRenderPass::GetCascades()
+{
+	return myCascades;
+}
+
+void ShadowRenderPass::BuildShadowCascades(GraphicsEngine& aGraphicsEngine, const std::array<int, ShadowRenderPass::NUM_CASCADES>& aCascadeSizes, float aCameraNear, float aCameraFar)
+{
+	assert(aCameraNear > 0.0f);
+	assert(aCameraFar > aCameraNear);
+
+	// Range from 0 to 1 to balance distributions
+	float lambda = 0.55f;
+
+	std::array<float, NUM_CASCADES + 1> splits = {};
+	splits[0] = aCameraNear;
+
+	for (int c = 1; c <= NUM_CASCADES; c++)
+	{
+		float cascadeRatio = static_cast<float>(c) / static_cast<float>(NUM_CASCADES);
+
+		float linearSplit = aCameraNear + cascadeRatio * (aCameraFar - aCameraNear);
+		float logSplit = aCameraNear * std::pow((aCameraFar / aCameraNear), cascadeRatio);
+
+		splits[c] = lambda * logSplit + (1.0f - lambda) * linearSplit;
+	}
+
+	for (size_t c = 0; c < NUM_CASCADES; c++)
+	{
+		myCascades[c].NearPlane = splits[c];
+		myCascades[c].FarPlane = splits[c + 1];
+
+		std::string name = std::format("Shadow Cascade {}", (c + 1));
+
+		myCascades[c].ShadowMap = std::make_unique<Texture>();
+
+		aGraphicsEngine.CreateShadowMap(name, aCascadeSizes[c], aCascadeSizes[c], *myCascades[c].ShadowMap, false);
+	}
+}

@@ -64,10 +64,12 @@ void Actor::Render()
 
 	if (textComponent != nullptr)
 	{
-		/*TextDrawCall drawCall = 
+		TextDrawCall drawCall = 
 		{
-			.Text = textComponent->GetText()
-		};*/
+			.Text = &textComponent->GetText()
+		};
+
+		TextDrawer::Get().Submit(drawCall);
 	}
 
 	DirectionalLightComponent* directionalLight = GetComponent<DirectionalLightComponent>();

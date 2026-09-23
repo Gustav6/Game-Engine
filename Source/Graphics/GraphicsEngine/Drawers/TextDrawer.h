@@ -14,6 +14,7 @@ struct TextDrawCall
 class TextDrawer
 {
 	friend class GraphicsEngine;
+	friend class ScreenSpaceRenderPass;
 
 public:
 	static TextDrawer& Get();

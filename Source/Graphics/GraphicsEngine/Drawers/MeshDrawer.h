@@ -2,7 +2,9 @@
 
 #include <vector>
 
-#include <GraphicsEngine/Materials/Material.h>
+#include "CommonUtilities/Math/Matrix4x4.hpp"
+
+#include "GraphicsEngine/Materials/Material.h"
 
 class Mesh;
 

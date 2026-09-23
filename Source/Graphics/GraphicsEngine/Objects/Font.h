@@ -8,6 +8,7 @@
 class Font 
 {
 	friend class GraphicsEngine;
+	friend class ScreenSpaceRenderPass;
 
 public:
 	struct Glyph 

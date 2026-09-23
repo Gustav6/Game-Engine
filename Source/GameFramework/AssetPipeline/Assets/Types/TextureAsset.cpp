@@ -25,7 +25,7 @@ bool TextureAsset::Load(const std::filesystem::path& aPath)
 
     myTexture = std::make_shared<Texture>();
 
-    if (!GraphicsEngine::Get().LoadTexture(aPath, *myTexture))
+    if (!GraphicsEngine::Get().CreateTexture(aPath, *myTexture))
     {
         return false;
     }

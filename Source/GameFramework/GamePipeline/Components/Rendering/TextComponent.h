@@ -21,7 +21,7 @@ public:
 
 	void SetFont(const std::shared_ptr<FontAsset>& aFontAsset);
 
-	const Text& GetText();
+	Text& GetText();
 
 	void SetText(std::string_view aText);
 	void SetSize(float aPointSize);

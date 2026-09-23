@@ -53,7 +53,7 @@ bool Game::Initialize(SIZE aWindowSize, WNDPROC aWindowProcess, LPCWSTR aWindowT
 	AssetRegistry::Get().RegisterAssetType<MaterialAsset>({ ".json" });
 	AssetRegistry::Get().RegisterAssetType<TextureAsset>({ ".dds" });
 	AssetRegistry::Get().RegisterAssetType<UnrealSceneAsset>({ ".json" });
-	AssetRegistry::Get().RegisterAssetType<FontAsset>({ ".ttf" });
+	AssetRegistry::Get().RegisterAssetType<FontAsset>({ ".json" });
 
 	if (!AssetRegistry::Get().Initialize(workingDirectory))
 	{
@@ -141,7 +141,7 @@ bool Game::Initialize(SIZE aWindowSize, WNDPROC aWindowProcess, LPCWSTR aWindowT
 
 		std::unique_ptr<Texture> environmentTexture = std::make_unique<Texture>();
 
-		GE.LoadTexture(workingDirectory / "Textures" / "Environment Map" / "T_Shipyard.dds", *environmentTexture);
+		GE.CreateTexture(workingDirectory / "Textures" / "Environment Map" / "T_Shipyard.dds", *environmentTexture);
 		GE.SetEnvironmentTexture(std::move(environmentTexture));
 
 		myGraphicsCommandList = std::make_unique<GraphicsCommandList>();
@@ -392,7 +392,9 @@ void Game::LoadScene()
 		std::unique_ptr<Actor> object = std::make_unique<Actor>();
 
 		TextComponent* text = object->AddComponent<TextComponent>();
-		text->SetText("Shrek");
+		text->SetFont(AssetRegistry::Get().GetAsset<FontAsset>("CascadiaCode_M"));
+		text->SetText("SHREK");
+		text->SetSize(36);
 
 		GameWorld::Get().AddActor(std::move(object));
 	}

@@ -17,6 +17,8 @@
 #include "Objects/Font.h"
 #include "Objects/Text.h"
 
+#include <Assets/BuiltinAssets.h>
+
 #include "ConstantBuffers/FrameBuffer.h"
 #include "ConstantBuffers/ObjectBuffer.h"
 #include "ConstantBuffers/AnimationBuffer.h"
@@ -32,31 +34,22 @@
 #include "Materials/MaterialHelpers.h"
 #include "Materials/MaterialShaderIncludeHandler.h"
 
-#include "Textures/Albedo/Default_C.h"
-#include "Textures/Normal/Default_N.h"
+#include "RenderPasses/AlphaRenderPass.h"
+#include "RenderPasses/OpaqueRenderPass.h"
+#include "RenderPasses/ShadowRenderPass.h"
+#include "RenderPasses/ScreenSpaceRenderPass.h"
+#include "RenderPasses/Shared/RenderItem.h"
+#include "RenderPasses/Shared/FrameTargets.h"
+#include "RenderPasses/Shared/RenderContext.h"
 
-#include "ShadowCube_GS.h"
 #include "FullTexture_VS.h"
 #include "BRDF_LUT_PS.h"
-#include "GBuffer_PS.h"
-#include "Surface_VS.h"
-#include "Deferred_DirLight_PS.h"
-#include "Deferred_SpotLight_PS.h"
-#include "Deferred_PointLight_PS.h"
-#include "Deferred_Ambient_PS.h"
 
 #include "Drawers/MeshDrawer.h"
 #include "Drawers/LightDrawer.h"
 #include "Drawers/TextDrawer.h"
 
 #include "CommonUtilities/Json/JsonWrapper.h"
-
-struct InternalMeshRenderItem
-{
-    const MeshDrawCall* DrawCall;
-    unsigned int ElementIndex;
-	unsigned int MaterialIndex;
-};
 
 GraphicsEngine::GraphicsEngine() = default;
 GraphicsEngine::~GraphicsEngine() = default;
@@ -94,9 +87,16 @@ bool GraphicsEngine::Initialize(HWND aWindowHandle, const std::filesystem::path&
 		return false;
 	}
 
-	RegisterMaterialShaders();
+	{
+		myMaterialDomainShaders.emplace(MaterialDomain::Surface, myShaderRoot / "Material" / "Surface_VS.hlsl");
 
-	if (!InitializeBuiltinAssets())
+		myMaterialShadingModelShaders.emplace(ShadingModel::Unlit, myShaderRoot / "Material" / "Unlit_PS.hlsl");
+		myMaterialShadingModelShaders.emplace(ShadingModel::Lit, myShaderRoot / "Material" / "PBL_PS.hlsl");
+	}
+
+	myBuiltinAssets = std::make_unique<BuiltinAssets>();
+
+	if (!myBuiltinAssets->Initialize(*this, *myRHI, myShaderRoot))
 	{
 		return false;
 	};
@@ -105,6 +105,17 @@ bool GraphicsEngine::Initialize(HWND aWindowHandle, const std::filesystem::path&
 	{
 		return false;
 	};
+
+	// Init passes
+	{
+		myAlphaRenderPass = std::make_unique<AlphaRenderPass>();
+		myOpaqueRenderPass = std::make_unique<OpaqueRenderPass>();
+		myScreenSpaceRenderPass = std::make_unique<ScreenSpaceRenderPass>();
+		myShadowRenderPass = std::make_unique<ShadowRenderPass>();
+
+		myOpaqueRenderPass->Initialize(*myRHI);
+		myShadowRenderPass->Initialize(*myRHI);
+	}
 
 	return true;
 }
@@ -118,17 +129,18 @@ void GraphicsEngine::BeginFrame()
 
 void GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const SceneCamera& aCamera)
 {
-	inoutCommandList.BeginEvent("Reset Pipeline");
 	{
-		inoutCommandList.ClearRenderTargets(myGBuffer->GetTextures(), GBuffer::NUM_GBUFFER_TARGETS);
+		inoutCommandList.BeginEvent("Reset Render Targets");
+
 		inoutCommandList.ClearRenderTarget(*myBackBuffer);
 		inoutCommandList.ClearDepthStencil(*myDepthBuffer);
-	}
-	inoutCommandList.EndEvent();
 
-	std::vector<InternalMeshRenderItem> opaqueItems;
-	std::vector<InternalMeshRenderItem> alphaItems;
-	std::vector<InternalMeshRenderItem> shadowItems;
+		inoutCommandList.EndEvent();
+	}
+
+	std::vector<RenderItem> opaqueItems;
+	std::vector<RenderItem> alphaItems;
+	std::vector<RenderItem> shadowItems;
 
 	for (const auto& drawCall : MeshDrawer::Get().myDrawCalls)
 	{
@@ -138,17 +150,19 @@ void GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const SceneCa
 
 			const MaterialInterface* material = drawCall.Materials[materialIndex];
 
-			if (material == nullptr)
-			{
-				material = myDefaultMaterial.get();
-			}
-
-			InternalMeshRenderItem item =
+			RenderItem item =
 			{
 				.DrawCall = &drawCall,
 				.ElementIndex = e,
 				.MaterialIndex = materialIndex
 			};
+
+			if (material == nullptr)
+			{
+				opaqueItems.push_back(item);
+				shadowItems.push_back(item);
+				continue;
+			}
 
 			switch (material->GetBlendMode())
 			{
@@ -177,7 +191,7 @@ void GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const SceneCa
 
 	// Front to Back
 	std::sort(opaqueItems.begin(), opaqueItems.end(),
-		[&](const InternalMeshRenderItem& A, const InternalMeshRenderItem& B) -> bool
+		[&](const RenderItem& A, const RenderItem& B) -> bool
 		{
 			float distanceToA = (A.DrawCall->Transform.GetTranslation() - cameraPosition).LengthSqr();
 			float distanceToB = (B.DrawCall->Transform.GetTranslation() - cameraPosition).LengthSqr();
@@ -187,7 +201,7 @@ void GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const SceneCa
 
 	// Back to Front
 	std::sort(alphaItems.begin(), alphaItems.end(),
-		[&](const InternalMeshRenderItem& A, const InternalMeshRenderItem& B) -> bool
+		[&](const RenderItem& A, const RenderItem& B) -> bool
 		{
 			float distanceToA = (A.DrawCall->Transform.GetTranslation() - cameraPosition).LengthSqr();
 			float distanceToB = (B.DrawCall->Transform.GetTranslation() - cameraPosition).LengthSqr();
@@ -211,202 +225,28 @@ void GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const SceneCa
 		inoutCommandList.SetShaderResource(myLUTTexture.get(), 99, PipelineStage_PixelShader);
 	}
 
-	inoutCommandList.BeginEvent("Shadow Pass");
+	RenderContext context =
 	{
-		inoutCommandList.SetOverridePipelineState(*myShadowPSO, PipelineStage_None);
+		.RHI = myRHI.get(),
+		.BuiltinAssets = myBuiltinAssets.get(),
+		.Camera = &aCamera,
+		.Mode = myDebugRenderMode,
+		.CascadeShadows = myShadowRenderPass->GetCascades()
+	};
 
-		RenderShadowMaps(inoutCommandList, aCamera, shadowItems);
-
-		inoutCommandList.ClearOverridePipelineState();
-	}
-	inoutCommandList.EndEvent();
-
-	FrameBuffer frameBuffer;
-	frameBuffer.View = aCamera.Transform.GetFastInverse();
-	frameBuffer.Projection = aCamera.RenderCamera->GetProjection();
-	frameBuffer.CameraPosition = aCamera.Transform.GetTranslation();
-	frameBuffer.TypeOfRenderPass = static_cast<unsigned int>(myCurrentRenderPass);
-
-	UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::FrameBuffer, frameBuffer, 0, PipelineStage_VertexShader | PipelineStage_PixelShader);
+	myShadowRenderPass->Execute(*this, inoutCommandList, shadowItems, context);
 
 	inoutCommandList.BeginEvent("Main Pass");
 	{
-		inoutCommandList.BeginEvent("Deffered Render");
+		FrameTargets targets =
 		{
-			inoutCommandList.BeginEvent("Object GBuffer Render");
-			{
-				inoutCommandList.SetRenderTargets(myGBuffer->GetTextures(), GBuffer::NUM_GBUFFER_TARGETS, myDepthBuffer.get());
-				RenderDrawCalls(inoutCommandList, opaqueItems, DrawCallFlag_BindTextures | DrawCallFlag_BindMaterial);
-			}
-			inoutCommandList.EndEvent();
+			.BackBuffer = myBackBuffer.get(),
+			.DepthBuffer = myDepthBuffer.get()
+		};
 
-			inoutCommandList.BeginEvent("Light Fullscreen Render");
-			{
-				inoutCommandList.SetRenderTarget(myBackBuffer.get(), nullptr);
-
-				// GBuffer set resources
-				{
-					std::vector<const Texture*> gBufferTextures;
-					gBufferTextures.reserve(GBuffer::NUM_GBUFFER_TARGETS);
-
-					for (size_t t = 0; t < GBuffer::NUM_GBUFFER_TARGETS; t++)
-					{
-						gBufferTextures.emplace_back(&myGBuffer->GetTextures()[t]);
-					}
-
-					inoutCommandList.SetShaderResources(gBufferTextures.data(), gBufferTextures.size(), 0, PipelineStage_PixelShader);
-				}
-
-
-				inoutCommandList.BeginEvent("Ambient Light");
-				inoutCommandList.SetPipelineStateObject(*myDeferredAmbientPSO);
-				inoutCommandList.Draw(4);
-				inoutCommandList.EndEvent();
-
-				if (myCurrentRenderPass == RenderPass::sRGB)
-				{
-					for (unsigned int l = 0; l < LightDrawer::Get().mySceneLights.size(); l++)
-					{
-						if (LightDrawer::Get().mySceneLights[l].LightData == nullptr)
-						{
-							continue;
-						}
-
-						LightBuffer lightBuffer;
-						lightBuffer.Lights[0] = *LightDrawer::Get().mySceneLights[l].LightData;
-						UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::LightBuffer, lightBuffer, 3, PipelineStage_PixelShader);
-
-						switch (LightDrawer::Get().mySceneLights[l].LightData->Type)
-						{
-						case LightType::Directional:
-						{
-							inoutCommandList.BeginEvent("Directional Light");
-							std::vector<const Texture*> dirLightShadowMaps;
-							dirLightShadowMaps.reserve(NUM_CASCADES);
-
-							for (size_t c = 0; c < NUM_CASCADES; c++)
-							{
-								dirLightShadowMaps.emplace_back(myCascades[c].ShadowMap.get());
-							}
-
-							inoutCommandList.SetShaderResources(dirLightShadowMaps.data(), dirLightShadowMaps.size(), 100, PipelineStage_PixelShader);
-							inoutCommandList.SetPipelineStateObject(*myDeferredDirPSO);
-							inoutCommandList.Draw(4);
-							inoutCommandList.EndEvent();
-							break;
-						}
-						case LightType::Spot:
-						{
-							inoutCommandList.BeginEvent("Spot Light");
-
-							const Texture* shadowMap = LightDrawer::Get().mySceneLights[l].ShadowMap;
-
-							inoutCommandList.SetShaderResource(shadowMap, 104, PipelineStage_PixelShader);
-
-							inoutCommandList.SetPipelineStateObject(*myDeferredSpotPSO);
-							inoutCommandList.Draw(4);
-
-							inoutCommandList.EndEvent();
-							break;
-						}
-						case LightType::Point:
-						{
-							inoutCommandList.BeginEvent("Point Light");
-
-							const Texture* shadowMap = LightDrawer::Get().mySceneLights[l].ShadowMap;
-
-							inoutCommandList.SetShaderResource(shadowMap, 112, PipelineStage_PixelShader);
-
-							inoutCommandList.SetPipelineStateObject(*myDeferredPointPSO);
-							inoutCommandList.Draw(4);
-
-							inoutCommandList.EndEvent();
-							break;
-						}
-						}
-					}
-				}
-			}
-			inoutCommandList.EndEvent();
-		}
-		inoutCommandList.EndEvent();
-
-		inoutCommandList.BeginEvent("Alpha Render");
-		{
-			inoutCommandList.SetRenderTarget(myBackBuffer.get(), myDepthBuffer.get());
-			UploadSceneLightingData(inoutCommandList);
-			RenderDrawCalls(inoutCommandList, alphaItems, DrawCallFlag_BindTextures | DrawCallFlag_BindMaterial);
-		}
-		inoutCommandList.EndEvent();
-	}
-	inoutCommandList.EndEvent();
-
-	inoutCommandList.BeginEvent("Render Screen space Objects");
-	{
-		inoutCommandList.SetRenderTarget(myBackBuffer.get(), nullptr);
-
-		UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::FrameBuffer, frameBuffer, 0, PipelineStage_VertexShader | PipelineStage_PixelShader);
-
-		const CommonUtilities::Vector2ui windowSize = myRHI->GetClientSize();
-
-		CommonUtilities::Matrix4x4f scale;
-		scale.SetScaling({ 2.0f / static_cast<float>(windowSize.x), -2.0f / static_cast<float>(windowSize.y), 1.0f });
-
-		CommonUtilities::Matrix4x4f translation;
-		translation.SetTranslation({ -1.0f, 1.0f, 0.0f });
-
-		const CommonUtilities::Matrix4x4f pixelToNDC = scale * translation;
-
-		for (auto& drawCall : TextDrawer::Get().myDrawCalls)
-		{
-			if (drawCall.Text->myFont == nullptr)
-			{
-				GELOG(Error, "Text had no valid font!");
-				continue;
-			}
-
-			if (drawCall.Text->myIsDirty)
-			{
-				drawCall.Text->RebuildGeometry();
-				drawCall.Text->RebuildTextRenderMatrix();
-				std::string vertexBufferName = std::format("{}_VX", drawCall.Text->myName);
-				myRHI->CreateVertexBuffer(vertexBufferName, drawCall.Text->myVertices, drawCall.Text->myVertexBuffer);
-				std::string indexBufferName = std::format("{}_PX", drawCall.Text->myName);
-				myRHI->CreateIndexBuffer(indexBufferName, drawCall.Text->myIndices, drawCall.Text->myIndexBuffer);
-				drawCall.Text->myIsDirty = false;
-			}
-
-			ObjectBuffer objectBuffer;
-			objectBuffer.World = drawCall.Text->GetRenderMatrix() * pixelToNDC;
-			objectBuffer.WorldInvT = objectBuffer.World.GetFastInverse().GetTranspose();
-
-			UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::ObjectBuffer, objectBuffer, 1, PipelineStage_VertexShader | PipelineStage_PixelShader);
-
-			inoutCommandList.SetShaderResource(&drawCall.Text->myFont->myAtlas, 0, PipelineStage_PixelShader);
-
-			const MaterialInterface* material = drawCall.Text->myFontMaterial.get();
-
-			if (material == nullptr)
-			{
-				material = myDefaultFontMaterial.get();
-			}
-
-			if (material->HasParameters())
-			{
-				if (material->IsMaterialDataDirty())
-				{
-					material->RefreshMaterialData();
-				}
-
-				UpdateAndSetConstantBufferInternal(inoutCommandList, ConstantBuffer::MaterialBuffer, material->GetParameterDataBlock(), Material::MATERIAL_BUFFER_SIZE, 5, PipelineStage_VertexShader | PipelineStage_PixelShader);
-			}
-
-			inoutCommandList.SetPipelineStateObject(material->GetPSO());
-
-			inoutCommandList.SetVertexBuffer(&drawCall.Text->myVertexBuffer);
-			inoutCommandList.SetIndexBuffer(&drawCall.Text->myIndexBuffer);
-			inoutCommandList.DrawIndexed(static_cast<unsigned int>(drawCall.Text->myIndices.size()), 0);
-		}
+		myOpaqueRenderPass->Execute(*this, inoutCommandList, opaqueItems, targets, context);
+		myAlphaRenderPass->Execute(*this, inoutCommandList, alphaItems, targets, context);
+		myScreenSpaceRenderPass->Execute(*this, inoutCommandList, targets, context);
 	}
 	inoutCommandList.EndEvent();
 }
@@ -418,23 +258,32 @@ void GraphicsEngine::Present() const
 
 void GraphicsEngine::CycleToNextRenderPass(int aDirection)
 {
-	int nextRenderPass = static_cast<int>(myCurrentRenderPass) + aDirection;
+	int nextDebugRenderMode = static_cast<int>(myDebugRenderMode) + aDirection;
 
-	if (nextRenderPass >= static_cast<int>(RenderPass::MAX)) 
+	if (nextDebugRenderMode >= static_cast<int>(DebugRenderMode::MAX))
 	{
-		nextRenderPass = 0;
+		nextDebugRenderMode = 0;
 	}
-	else if (nextRenderPass < 0)
+	else if (nextDebugRenderMode < 0)
 	{
-		nextRenderPass = static_cast<int>(RenderPass::MAX) - 1;
+		nextDebugRenderMode = static_cast<int>(DebugRenderMode::MAX) - 1;
 	}
 
-	myCurrentRenderPass = static_cast<RenderPass>(nextRenderPass);
+	myDebugRenderMode = static_cast<DebugRenderMode>(nextDebugRenderMode);
 }
 
 bool GraphicsEngine::CreateConstantBuffer(ConstantBuffer aBufferID, std::string_view aName, size_t aBufferSize)
 {
-	return CreateConstantBufferInternal(aBufferID, aName, aBufferSize);
+	Buffer buffer;
+
+	if (!myRHI->CreateConstantBuffer(aName, aBufferSize, buffer))
+	{
+		return false;
+	}
+
+	myConstantBuffers.emplace(aBufferID, std::move(buffer));
+
+	return true;
 }
 
 CommonUtilities::Vector2ui GraphicsEngine::GetClientSize() const
@@ -728,10 +577,10 @@ bool GraphicsEngine::CreateFontAsset(const std::filesystem::path& aFontPath, con
 		outFont.myGlyphs.emplace(static_cast<char>(glyph.UniCode), std::move(glyph));
 	}
 
-	return LoadTexture(aFontAtlasPath, outFont.myAtlas);
+	return CreateTexture(aFontAtlasPath, outFont.myAtlas);
 }
 
-bool GraphicsEngine::LoadTexture(const std::filesystem::path& aPath, Texture& outTexture) const
+bool GraphicsEngine::CreateTexture(const std::filesystem::path& aPath, Texture& outTexture) const
 {
 	if (!std::filesystem::exists(aPath))
 	{
@@ -762,26 +611,7 @@ void GraphicsEngine::SetEnvironmentTexture(std::unique_ptr<Texture> aEnvironment
 	myEnvironmentCubemap = std::move(aEnvironmentTexture);
 }
 
-bool GraphicsEngine::HasDrawCallFlag(DrawCallFlags aFlags, DrawCallFlag_ aFlag)
-{
-	return (aFlags & aFlag) != 0;
-}
-
-bool GraphicsEngine::CreateConstantBufferInternal(ConstantBuffer aBufferID, std::string_view aName, size_t aBufferSize)
-{
-	Buffer buffer;
-
-	if (!myRHI->CreateConstantBuffer(aName, aBufferSize, buffer))
-	{
-		return false;
-	}
-
-	myConstantBuffers.emplace(aBufferID, std::move(buffer));
-
-	return true;
-}
-
-bool GraphicsEngine::UpdateAndSetConstantBufferInternal(GraphicsCommandList& inoutCommandList, ConstantBuffer aBufferID, const void* aData, size_t aDataSize, unsigned aSlot, PipelineStages aStages)
+bool GraphicsEngine::UpdateAndSetConstantBuffer(GraphicsCommandList& inoutCommandList, ConstantBuffer aBufferID, const void* aData, size_t aDataSize, unsigned aSlot, PipelineStages aStages)
 {
 	if (!myConstantBuffers.contains(aBufferID))
 	{
@@ -797,29 +627,6 @@ bool GraphicsEngine::UpdateAndSetConstantBufferInternal(GraphicsCommandList& ino
 	}
 
 	inoutCommandList.SetConstantBuffer(&buffer, aSlot, aStages);
-
-	return true;
-}
-
-bool GraphicsEngine::PrepareMeshForRendering(const Mesh& aMesh) const
-{
-	if (!aMesh.myVertexBuffer.IsValid())
-	{
-		if (!myRHI->CreateVertexBuffer(aMesh.myName, aMesh.myVertices, aMesh.myVertexBuffer))
-		{
-			GELOG(Warning, "Could not prepare mesh {}! Vertex Buffer could not be created!", aMesh.myName);
-			return false;
-		}
-	}
-
-	if (!aMesh.myIndexBuffer.IsValid())
-	{
-		if (!myRHI->CreateIndexBuffer(aMesh.myName, aMesh.myIndices, aMesh.myIndexBuffer))
-		{
-			GELOG(Warning, "Could not prepare mesh {}! Index Buffer could not be created!", aMesh.myName);
-			return false;
-		}
-	}
 
 	return true;
 }
@@ -844,482 +651,6 @@ void GraphicsEngine::CreateMaterialTextureSlots(const RHIShaderReflectionInfo& a
 
 		inoutMaterial.myTexturesSlotNameToIndex.emplace(lowerName, shaderTextureSlot.BindPoint);
 	}
-}
-
-void GraphicsEngine::RenderShadowMaps(GraphicsCommandList& inoutCommandList, const SceneCamera& aCamera, std::vector<InternalMeshRenderItem>& aShadowItems)
-{
-	for (const auto& light : LightDrawer::Get().mySceneLights)
-	{
-		switch (light.LightData->Type)
-		{
-			case LightType::Directional:
-			{
-				// TODO: Blend between cascades
-				// https://learn.microsoft.com/en-us/windows/win32/dxtecharts/cascaded-shadow-maps
-
-				static float cameraNear = 0.0f;
-				static float cameraFar = 0.0f;
-
-				float cameraNearPlane = aCamera.RenderCamera->GetNearPlane();
-				float cameraFarPlane = aCamera.RenderCamera->GetFarPlane();
-				float cameraFov = aCamera.RenderCamera->GetFovInDegrees();
-				float cameraAspectRatio = aCamera.RenderCamera->GetAspectRatio();
-
-				if (cameraNear != cameraNearPlane || cameraFar != cameraFarPlane)
-				{
-					cameraNear = cameraNearPlane;
-					cameraFar = cameraFarPlane;
-					BuildShadowCascades({4096, 2048, 2048, 2048 }, cameraNear, cameraFar);
-				}
-
-				CommonUtilities::Matrix4x4f lightViewProjectionTextures[NUM_CASCADES];
-
-				CommonUtilities::Matrix4x4f cameraView = aCamera.Transform.GetFastInverse();
-
-				for (size_t c = 0; c < NUM_CASCADES; c++ )
-				{
-					CommonUtilities::Frustum<float> frustum = CommonUtilities::Frustum<float>(
-						cameraFov,
-						myCascades[c].NearPlane,
-						myCascades[c].FarPlane,
-						cameraAspectRatio
-					);
-
-					CommonUtilities::Matrix4x4f projection = CommonUtilities::Matrix4x4f::CreatePerspectiveProjection(
-						cameraFov,
-						myCascades[c].NearPlane,
-						myCascades[c].FarPlane,
-						cameraAspectRatio
-					);
-
-					CommonUtilities::Matrix4x4f invViewProjection = (cameraView * projection).GetGeneralInverse();
-					
-					std::vector<CommonUtilities::Vector4f> corners = frustum.GetCornersInWorldSpace(invViewProjection);
-
-					CommonUtilities::Vector4f center;
-
-					for (auto& corner : corners)
-					{
-						center += corner;
-					}
-
-					center = center / 8.0f;
-
-					float radius = 0.0f;
-
-					for (const auto& corner : corners)
-					{
-						float distance = (CommonUtilities::Vector3f(corner.x, corner.y, corner.z) - center.ToXYZ()).Length();
-						radius = std::max(radius, distance);
-					}
-
-					radius = std::ceil(radius);
-
-					float texelsPerUnit = myCascades[c].ShadowMap->GetViewport().Width / (radius * 2.0f);
-
-					CommonUtilities::Vector3f eye = center.ToXYZ() - light.Transform.GetForward().GetNormalized() * radius;
-
-					CommonUtilities::Matrix4x4f directionLightTransform = light.Transform;
-					directionLightTransform.SetTranslation(eye);
-					CommonUtilities::Matrix4x4f lightView = directionLightTransform.GetFastInverse();
-
-					CommonUtilities::Vector4f shadowOrigin = (CommonUtilities::Vector4f(0, 0, 0, 1) * lightView) * texelsPerUnit;
-					CommonUtilities::Vector4f rounded = { std::round(shadowOrigin.x), std::round(shadowOrigin.y), shadowOrigin.z, shadowOrigin.w };
-					CommonUtilities::Vector4f offset = (rounded - shadowOrigin) / texelsPerUnit;
-					
-					lightView(4, 1) += offset.x;
-					lightView(4, 2) += offset.y;
-
-					float orthoNear = -radius * 4.0f;
-					float orthoFar = radius * 4.0f;
-
-					CommonUtilities::Matrix4x4f orthoProjection =
-						CommonUtilities::Matrix4x4f::CreateOrthographicProjection(orthoNear, orthoFar, -radius, radius, -radius, radius);
-
-					lightViewProjectionTextures[c] = lightView * orthoProjection * CommonUtilities::Matrix4x4f::CreateNDCToTextureSpace();
-
-					{
-						FrameBuffer frameBuffer;
-						frameBuffer.Projection = orthoProjection;
-						frameBuffer.View = lightView;
-
-						inoutCommandList.BeginEvent(std::format("Cascade Shadow Pass {}", (c + 1)));
-
-						inoutCommandList.ClearDepthStencil(*myCascades[c].ShadowMap);
-						inoutCommandList.SetRenderTarget(nullptr, myCascades[c].ShadowMap.get());
-
-						inoutCommandList.ChangeActiveOverrides(PipelineStage_Rasterizer | PipelineStage_PixelShader);
-						UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::FrameBuffer, frameBuffer, 0, PipelineStage_VertexShader);
-
-						RenderDrawCalls(inoutCommandList, aShadowItems, DrawCallFlag_BindMaterial);
-
-						inoutCommandList.EndEvent();
-					}
-				}
-
-				CascadeBuffer cascadeBuffer;
-				cascadeBuffer.FarPlanes = 
-				{ 
-					myCascades[0].FarPlane,
-					myCascades[1].FarPlane, 
-					myCascades[2].FarPlane, 
-					myCascades[3].FarPlane 
-				};
-				cascadeBuffer.ShadowMapSizes = 
-				{ 
-					myCascades[0].ShadowMap->GetViewport().Width,
-					myCascades[1].ShadowMap->GetViewport().Width,
-					myCascades[2].ShadowMap->GetViewport().Width,
-					myCascades[3].ShadowMap->GetViewport().Width
-				};
-				cascadeBuffer.CameraPosition = aCamera.Transform.GetTranslation();
-				memcpy_s(cascadeBuffer.LightViewProjectionTextures, sizeof(CommonUtilities::Matrix4x4f) * NUM_CASCADES, lightViewProjectionTextures, sizeof(lightViewProjectionTextures));
-
-				UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::CascadeBuffer, cascadeBuffer, 4, PipelineStage_PixelShader);
-				
-				break;
-			}
-			case LightType::Spot:
-			{
-				if (light.ShadowMap == nullptr)
-				{
-					continue;
-				}
-
-				FrameBuffer frameBuffer;
-				frameBuffer.Projection = light.Projection;
-				frameBuffer.View = light.Transform.GetFastInverse();
-				frameBuffer.CameraPosition = light.Transform.GetTranslation();
-
-				inoutCommandList.BeginEvent("Spot Light Shadow Pass");
-
-				inoutCommandList.ClearDepthStencil(*light.ShadowMap);
-				inoutCommandList.SetRenderTarget(nullptr, light.ShadowMap);
-
-				inoutCommandList.ChangeActiveOverrides(PipelineStage_Rasterizer | PipelineStage_PixelShader);
-
-				UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::FrameBuffer, frameBuffer, 0, PipelineStage_VertexShader);
-
-				RenderDrawCalls(inoutCommandList, aShadowItems, DrawCallFlag_BindMaterial);
-
-				inoutCommandList.EndEvent();
-
-				break;
-			}
-			case LightType::Point:
-			{
-				if (light.ShadowMap == nullptr)
-				{
-					continue;
-				}
-
-				FrameBuffer frameBuffer;
-				frameBuffer.Projection = light.Projection;
-				frameBuffer.View = light.Transform.GetFastInverse();
-				frameBuffer.CameraPosition = light.Transform.GetTranslation();
-
-				inoutCommandList.BeginEvent("Point Light Shadow Pass");
-
-				inoutCommandList.ClearDepthStencil(*light.ShadowMap);
-				inoutCommandList.SetRenderTarget(nullptr, light.ShadowMap);
-
-				inoutCommandList.ChangeActiveOverrides(PipelineStage_GeometryShader | PipelineStage_Rasterizer | PipelineStage_PixelShader);
-
-				UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::FrameBuffer, frameBuffer, 0, PipelineStage_VertexShader | PipelineStage_GeometryShader);
-
-				RenderDrawCalls(inoutCommandList, aShadowItems, DrawCallFlag_BindMaterial);
-
-				inoutCommandList.EndEvent();
-
-				break;
-			}
-		}
-	}
-}
-
-void GraphicsEngine::UploadSceneLightingData(GraphicsCommandList& inoutCommandList)
-{
-	LightBuffer lightBuffer;
-	lightBuffer.NumLights = static_cast<unsigned int>(std::min(LightDrawer::Get().mySceneLights.size(), static_cast<size_t>(MAX_LIGHTS)));
-
-	std::vector<const Texture*> dirLightShadowMaps;
-	dirLightShadowMaps.reserve(NUM_CASCADES);
-	std::vector<const Texture*> spotLightShadowMaps;
-	std::vector<const Texture*> pointLightShadowCubes;
-
-	unsigned int spotShadowIndex = 0;
-	unsigned int pointShadowIndex = 0;
-
-	for (unsigned int i = 0; i < lightBuffer.NumLights; i++)
-	{
-		if (LightDrawer::Get().mySceneLights[i].LightData == nullptr)
-		{
-			continue;
-		}
-
-		lightBuffer.Lights[i] = *LightDrawer::Get().mySceneLights[i].LightData;
-
-		switch (LightDrawer::Get().mySceneLights[i].LightData->Type)
-		{
-			case LightType::Directional:
-			{
-				for (size_t c = 0; c < NUM_CASCADES; c++)
-				{
-					dirLightShadowMaps.emplace_back(myCascades[c].ShadowMap.get());
-				}
-
-				break;
-			}
-			case LightType::Spot:
-			{
-				if (LightDrawer::Get().mySceneLights[i].ShadowMap == nullptr)
-				{
-					continue;
-				}
-
-				spotLightShadowMaps.emplace_back(LightDrawer::Get().mySceneLights[i].ShadowMap);
-				lightBuffer.Lights[i].ShadowIndex = spotShadowIndex++;
-				break;
-			}
-			case LightType::Point:
-			{
-				if (LightDrawer::Get().mySceneLights[i].ShadowMap == nullptr)
-				{
-					continue;
-				}
-
-				pointLightShadowCubes.emplace_back(LightDrawer::Get().mySceneLights[i].ShadowMap);
-				lightBuffer.Lights[i].ShadowIndex = pointShadowIndex++;
-				break;
-			}
-		}
-	}
-
-	inoutCommandList.SetShaderResources(dirLightShadowMaps.data(), dirLightShadowMaps.size(), 100, PipelineStage_PixelShader);
-	inoutCommandList.SetShaderResources(spotLightShadowMaps.data(), spotLightShadowMaps.size(), 104, PipelineStage_PixelShader);
-	inoutCommandList.SetShaderResources(pointLightShadowCubes.data(), pointLightShadowCubes.size(), 112, PipelineStage_PixelShader);
-
-	UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::LightBuffer, lightBuffer, 3, PipelineStage_PixelShader);
-}
-
-void GraphicsEngine::RenderDrawCalls(GraphicsCommandList& inoutCommandList, const std::vector<InternalMeshRenderItem>& aRenderItems, DrawCallFlags someFlags)
-{
-	for (const auto& renderItem : aRenderItems)
-	{
-		if (renderItem.DrawCall == nullptr)
-		{
-			GELOG(Error, "Tried to render a draw call with a null mesh!");
-			continue;
-		}
-
-		const MeshDrawCall& drawCall = *renderItem.DrawCall;
-		const Mesh& mesh = *drawCall.Mesh;
-		const Mesh::Element& element = renderItem.DrawCall->Mesh->myElements[renderItem.ElementIndex];
-		const MaterialInterface* material = renderItem.DrawCall->Materials[renderItem.MaterialIndex];
-
-		if (!PrepareMeshForRendering(mesh))
-		{
-			continue;
-		}
-
-		if (material == nullptr)
-		{
-			material = myDefaultMaterial.get();
-		}
-
-		inoutCommandList.BeginEvent(mesh.GetName());
-
-		inoutCommandList.SetVertexBuffer(&mesh.myVertexBuffer);
-		inoutCommandList.SetIndexBuffer(&mesh.myIndexBuffer);
-
-		ObjectBuffer objectBuffer;
-		objectBuffer.World = drawCall.Transform;
-		objectBuffer.WorldInvT = (drawCall.Transform.GetInverse()).GetTranspose();
-		objectBuffer.HasSkinning = drawCall.HasSkinning;
-
-		UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::ObjectBuffer, objectBuffer, 1, PipelineStage_VertexShader);
-
-		if (drawCall.HasSkinning)
-		{
-			AnimationBuffer animationBuffer;
-			memcpy(animationBuffer.JointTransforms, drawCall.JointTransforms, 128 * sizeof(CommonUtilities::Matrix4x4f));
-			UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::AnimationBuffer, animationBuffer, 2, PipelineStage_VertexShader);
-		}
-
-		if (HasDrawCallFlag(someFlags, DrawCallFlag_BindMaterial))
-		{
-			if (material->HasParameters())
-			{
-				if (material->IsMaterialDataDirty())
-				{
-					material->RefreshMaterialData();
-				}
-
-				UpdateAndSetConstantBufferInternal(inoutCommandList, ConstantBuffer::MaterialBuffer, material->GetParameterDataBlock(), Material::MATERIAL_BUFFER_SIZE, 5, PipelineStage_VertexShader | PipelineStage_PixelShader);
-			}
-
-			if (HasDrawCallFlag(someFlags, DrawCallFlag_BindTextures))
-			{
-				std::vector<const Texture*> textures(Material::MAX_MATERIAL_TEXTURE_COUNT);
-
-				for (size_t t = 0; t < Material::MAX_MATERIAL_TEXTURE_COUNT; t++)
-				{
-					const std::shared_ptr<Texture>& texture = material->GetTexture(static_cast<unsigned int>(t));
-
-					if (texture != nullptr)
-					{
-						textures[t] = texture.get();
-					}
-				}
-
-				inoutCommandList.SetShaderResources(textures.data(), textures.size(), 0, PipelineStage_VertexShader | PipelineStage_PixelShader);
-			}
-
-			inoutCommandList.SetPipelineStateObject(material->GetPSO());
-		}
-			
-		inoutCommandList.DrawIndexed(element.NumIndices, element.IndexOffset);
-
-		// Ends event for the draw call!
-		inoutCommandList.EndEvent();
-	}
-}
-
-void GraphicsEngine::RegisterMaterialShaders()
-{
-	// Domain
-	{
-		myMaterialDomainShaders.emplace(MaterialDomain::Surface, myShaderRoot / "Material" / "Surface_VS.hlsl");
-	}
-
-	// Shading Model
-	{
-		myMaterialShadingModelShaders.emplace(ShadingModel::Unlit, myShaderRoot / "Material" / "Unlit_PS.hlsl");
-		myMaterialShadingModelShaders.emplace(ShadingModel::Lit, myShaderRoot / "Material" / "PBL_PS.hlsl");
-	}
-}
-
-void GraphicsEngine::BuildShadowCascades(const std::array<int, NUM_CASCADES>& aCascadeSizes, float aCameraNear, float aCameraFar)
-{
-	assert(aCameraNear > 0.0f);
-	assert(aCameraFar > aCameraNear);
-
-	// Range from 0 to 1 to balance distributions
-    float lambda = 0.55f;
-
-    std::array<float, NUM_CASCADES + 1> splits = {};
-	splits[0] = aCameraNear;
-
-    for (int c = 1; c <= NUM_CASCADES; c++)
-    {
-		float cascadeRatio = static_cast<float>(c) / static_cast<float>(NUM_CASCADES);
-
-		float linearSplit = aCameraNear + cascadeRatio * (aCameraFar - aCameraNear);
-        float logSplit = aCameraNear * std::pow((aCameraFar / aCameraNear), cascadeRatio);
-
-        splits[c] = lambda * logSplit + (1.0f - lambda) * linearSplit;
-    }
-
-	for (size_t c = 0; c < NUM_CASCADES; c++)
-	{
-		myCascades[c].NearPlane = splits[c];
-		myCascades[c].FarPlane = splits[c + 1];
-
-		std::string name = std::format("Shadow Cascade {}", (c + 1));
-
-		myCascades[c].ShadowMap = std::make_unique<Texture>();
-
-		CreateShadowMap(name, aCascadeSizes[c], aCascadeSizes[c], *myCascades[c].ShadowMap, false);
-	}
-}
-
-bool GraphicsEngine::InitializeBuiltinAssets()
-{
-	// Material
-	{
-		myDefaultMaterial = std::make_unique<Material>();
-
-		MaterialDescription defaultMatDesc;
-		defaultMatDesc.Name = "Default";
-		defaultMatDesc.BlendMode = MaterialBlendMode::Opaque;
-		defaultMatDesc.Domain = MaterialDomain::Surface;
-		defaultMatDesc.ShadingModel = ShadingModel::Unlit;
-		defaultMatDesc.MaterialShaderCode = myShaderRoot / "Material" / "Include" / "Material.hlsli";
-
-		if (!CreateMaterial(defaultMatDesc, *myDefaultMaterial))
-		{
-			GELOG(Error, "Failed to create default material!");
-			return false;
-		}
-	}
-
-	// Albedo Texture
-	{
-		myDefaultAlbedoTexture = std::make_shared<Texture>();
-
-		if (!myRHI->CreateTexture("Default Albedo", BuiltIn_Default_C_ByteCode, sizeof(BuiltIn_Default_C_ByteCode), *myDefaultAlbedoTexture))
-		{
-			GELOG(Error, "Failed to create default albedo texture!");
-			return false;
-		}
-
-		myDefaultMaterial->SetTexture(0, myDefaultAlbedoTexture);
-	}
-
-	// Normal Texture
-	{
-		myDefaultNormalTexture = std::make_shared<Texture>();
-
-		if (!myRHI->CreateTexture("Default Normal", BuiltIn_Default_N_ByteCode, sizeof(BuiltIn_Default_N_ByteCode), *myDefaultNormalTexture))
-		{
-			GELOG(Error, "Failed to create default normal texture!");
-			return false;
-		}
-
-		myDefaultMaterial->SetTexture(1, myDefaultNormalTexture);
-	}
-
-	// Font
-	{
-		// Command - msdf-atlas-gen -varfont "FONTNAME.ttf?wght=400" -type msdf -size 64 -imageout FONTNAME.png -json FONTNAME.json -potr -pxrange 6
-		// NOTE: msdf-atlas-gen can't output DDS, so convert the PNG afterwards.
-		// Convert to DDS:      texconv FONTNAME.png -f R8G8B8A8_UNORM -m 1 -y
-
-		/*std::filesystem::path defaultFontRoot = myContentRoot / "Fonts" / "CascadiaCode";
-
-		if (!CreateFontAsset(defaultFontRoot / "cascadiacode.json", defaultFontRoot / "cascadiacode.dds", *myDefaultFont))
-		{
-			GELOG(Error, "Failed to create default font asset!");
-			return false;
-		}*/
-
-		myDefaultFontMaterial = std::make_shared<Material>();
-
-		MaterialDescription fontMaterialDesc;
-		fontMaterialDesc.Name = "FontMaterial";
-		fontMaterialDesc.Domain = MaterialDomain::Surface;
-		fontMaterialDesc.ShadingModel = ShadingModel::Unlit;
-		fontMaterialDesc.BlendMode = MaterialBlendMode::Alpha;
-		fontMaterialDesc.PixelShader = myShaderRoot / "Material" / "FontMaterial_PS.hlsl";
-		fontMaterialDesc.VertexShader = myShaderRoot / "Material" / "FontMaterial_VS.hlsl";
-
-		if (!CreateMaterial(fontMaterialDesc, *myDefaultFontMaterial))
-		{
-			GELOG(Error, "Failed to create font material!");
-			return false;
-		}
-
-		/*myText = std::make_unique<Text>("Text Test");
-
-		myText->SetFont(myDefaultFont);
-		myText->SetSize(36);
-		myText->SetPosition({ 100, 50 });
-		myText->SetColor({ 0, 1, 0, 1 });
-		myText->SetText("Shrek");
-		myText->SetFontMaterial(myDefaultFontMaterial);*/
-	}
-
-	return true;
 }
 
 bool GraphicsEngine::InitializeRenderResources()
@@ -1423,48 +754,6 @@ bool GraphicsEngine::InitializeRenderResources()
 		mySamplers.emplace_back(std::move(sampler));
 	}
 
-	// Shadow PSO
-	{
-		PipelineStateDescription shadowPSODesc = {};
-		shadowPSODesc.Name = "ShadowPSO";
-		shadowPSODesc.RasterizerState = RasterizerState::FillSolidCullFront;
-		shadowPSODesc.GeometryShader.ByteCode = INTERNAL_ShadowCube_GS_ByteCode;
-		shadowPSODesc.GeometryShader.ByteCodeSize = sizeof(INTERNAL_ShadowCube_GS_ByteCode);
-
-		myShadowPSO = std::make_unique<PipelineStateObject>();
-
-		if (!myRHI->CreatePipelineStateObject(shadowPSODesc, *myShadowPSO))
-		{
-			GELOG(Error, "Failed to create Shadow pipeline state object!");
-			return false;
-		}
-	}
-
-	// GBuffer & Gbuffer PSO
-	{
-		PipelineStateDescription gBufferPSODesc = {};
-		gBufferPSODesc.Name = "GBufferPSO";
-		gBufferPSODesc.BlendMode = BlendMode::Opaque;
-		gBufferPSODesc.VertexShader.ByteCode = INTERNAL_Surface_VS_ByteCode;
-		gBufferPSODesc.VertexShader.ByteCodeSize = sizeof(INTERNAL_Surface_VS_ByteCode);
-		gBufferPSODesc.PixelShader.ByteCode = INTERNAL_GBuffer_PS_ByteCode;
-		gBufferPSODesc.PixelShader.ByteCodeSize = sizeof(INTERNAL_GBuffer_PS_ByteCode);
-
-		myGBufferPSO = std::make_unique<PipelineStateObject>();
-
-		if (!myRHI->CreatePipelineStateObject(gBufferPSODesc, *myGBufferPSO))
-		{
-			GELOG(Error, "Failed to create GBuffer pipeline state object!");
-			return false;
-		}
-
-		myGBuffer = std::make_unique<GBuffer>();
-
-		CommonUtilities::Vector2ui renderSize = myRHI->GetClientSize();
-
-		myRHI->CreateGBuffer("GBuffer", renderSize.x, renderSize.y, *myGBuffer);
-	}
-
 	// LUT Texture
 	{
 		PipelineStateDescription lutPSODesc = {};
@@ -1505,86 +794,6 @@ bool GraphicsEngine::InitializeRenderResources()
 		initCommandList.FinishCommandList();
 
 		myRHI->ExecuteCommandList(initCommandList);
-	}
-
-	// Deffered Ambient light
-	{
-		PipelineStateDescription deferredDirLightDesc;
-		deferredDirLightDesc.Name = "DeferredAmbientLight";
-		deferredDirLightDesc.VertexShader.ByteCode = INTERNAL_FullTexture_VS_ByteCode;
-		deferredDirLightDesc.VertexShader.ByteCodeSize = sizeof(INTERNAL_FullTexture_VS_ByteCode);
-		deferredDirLightDesc.PixelShader.ByteCode = INTERNAL_Deferred_Ambient_PS_ByteCode;
-		deferredDirLightDesc.PixelShader.ByteCodeSize = sizeof(INTERNAL_Deferred_Ambient_PS_ByteCode);
-		deferredDirLightDesc.BlendMode = BlendMode::Additive;
-		deferredDirLightDesc.Topology = Topology::TriangleStrip;
-
-		myDeferredAmbientPSO = std::make_unique<PipelineStateObject>();
-
-		if (!myRHI->CreatePipelineStateObject(deferredDirLightDesc, *myDeferredAmbientPSO))
-		{
-			GELOG(Error, "Failed to create deferred ambient light pipeline state object!");
-			return false;
-		}
-	}
-
-	// Deffered Dir Light PSO
-	{
-		PipelineStateDescription deferredDirLightDesc;
-		deferredDirLightDesc.Name = "DeferredDirLight";
-		deferredDirLightDesc.VertexShader.ByteCode = INTERNAL_FullTexture_VS_ByteCode;
-		deferredDirLightDesc.VertexShader.ByteCodeSize = sizeof(INTERNAL_FullTexture_VS_ByteCode);
-		deferredDirLightDesc.PixelShader.ByteCode = INTERNAL_Deferred_DirLight_PS_ByteCode;
-		deferredDirLightDesc.PixelShader.ByteCodeSize = sizeof(INTERNAL_Deferred_DirLight_PS_ByteCode);
-		deferredDirLightDesc.BlendMode = BlendMode::Additive; 
-		deferredDirLightDesc.Topology = Topology::TriangleStrip;
-
-		myDeferredDirPSO = std::make_unique<PipelineStateObject>();
-
-		if (!myRHI->CreatePipelineStateObject(deferredDirLightDesc, *myDeferredDirPSO))
-		{
-			GELOG(Error, "Failed to create deferred directional light pipeline state object!");
-			return false;
-		}
-	}
-
-	// Deffered Spot Light PSO
-	{
-		PipelineStateDescription deferredSpotLightDesc;
-		deferredSpotLightDesc.Name = "DeferredSpotLight";
-		deferredSpotLightDesc.VertexShader.ByteCode = INTERNAL_FullTexture_VS_ByteCode;
-		deferredSpotLightDesc.VertexShader.ByteCodeSize = sizeof(INTERNAL_FullTexture_VS_ByteCode);
-		deferredSpotLightDesc.PixelShader.ByteCode = INTERNAL_Deferred_SpotLight_PS_ByteCode;
-		deferredSpotLightDesc.PixelShader.ByteCodeSize = sizeof(INTERNAL_Deferred_SpotLight_PS_ByteCode);
-		deferredSpotLightDesc.BlendMode = BlendMode::Additive;
-		deferredSpotLightDesc.Topology = Topology::TriangleStrip;
-
-		myDeferredSpotPSO = std::make_unique<PipelineStateObject>();
-
-		if (!myRHI->CreatePipelineStateObject(deferredSpotLightDesc, *myDeferredSpotPSO))
-		{
-			GELOG(Error, "Failed to create deferred spot light pipeline state object!");
-			return false;
-		}
-	}
-
-	// Deffered Point Light PSO
-	{
-		PipelineStateDescription deferredPointLightDesc;
-		deferredPointLightDesc.Name = "DeferredPointLight";
-		deferredPointLightDesc.VertexShader.ByteCode = INTERNAL_FullTexture_VS_ByteCode;
-		deferredPointLightDesc.VertexShader.ByteCodeSize = sizeof(INTERNAL_FullTexture_VS_ByteCode);
-		deferredPointLightDesc.PixelShader.ByteCode = INTERNAL_Deferred_PointLight_PS_ByteCode;
-		deferredPointLightDesc.PixelShader.ByteCodeSize = sizeof(INTERNAL_Deferred_PointLight_PS_ByteCode);
-		deferredPointLightDesc.BlendMode = BlendMode::Additive;
-		deferredPointLightDesc.Topology = Topology::TriangleStrip;
-
-		myDeferredPointPSO = std::make_unique<PipelineStateObject>();
-
-		if (!myRHI->CreatePipelineStateObject(deferredPointLightDesc, *myDeferredPointPSO))
-		{
-			GELOG(Error, "Failed to create deferred point light pipeline state object!");
-			return false;
-		}
 	}
 
 	return true;

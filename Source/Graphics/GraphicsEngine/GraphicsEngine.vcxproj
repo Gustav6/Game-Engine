@@ -199,11 +199,13 @@ xcopy /E /I /R /Y /D "%SHADERSRC%" "%SHADERDEST%"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Assets\BuiltinAssets.h" />
     <ClInclude Include="ConstantBuffers\AnimationBuffer.h" />
     <ClInclude Include="ConstantBuffers\CascadeBuffer.h" />
     <ClInclude Include="ConstantBuffers\FrameBuffer.h" />
     <ClInclude Include="ConstantBuffers\LightBuffer.h" />
     <ClInclude Include="ConstantBuffers\ObjectBuffer.h" />
+    <ClInclude Include="DebugRenderMode.h" />
     <ClInclude Include="Drawers\LightDrawer.h" />
     <ClInclude Include="Drawers\MeshDrawer.h" />
     <ClInclude Include="Drawers\SpriteDrawer.h" />
@@ -229,15 +231,25 @@ xcopy /E /I /R /Y /D "%SHADERSRC%" "%SHADERDEST%"</Command>
     <ClInclude Include="Objects\Text.h" />
     <ClInclude Include="Objects\Texture.h" />
     <ClInclude Include="Objects\Vertex.h" />
+    <ClInclude Include="RenderPasses\Shared\RenderContext.h" />
     <ClInclude Include="RHI\GraphicsCommandList.h" />
     <ClInclude Include="RHI\PipelineStateObject.h" />
     <ClInclude Include="RHI\RHIShaderReflectionInfo.h" />
     <ClInclude Include="RHI\RHIStructs.h" />
     <ClInclude Include="RHI\RenderHardwareInterface.h" />
+    <ClInclude Include="RenderPasses\AlphaRenderPass.h" />
+    <ClInclude Include="RenderPasses\OpaqueRenderPass.h" />
+    <ClInclude Include="RenderPasses\ScreenSpaceRenderPass.h" />
+    <ClInclude Include="RenderPasses\ShadowRenderPass.h" />
+    <ClInclude Include="RenderPasses\Shared\DrawCallSubmitter.h" />
+    <ClInclude Include="RenderPasses\Shared\FrameTargets.h" />
+    <ClInclude Include="RenderPasses\Shared\RenderItem.h" />
+    <ClInclude Include="RenderPasses\Shared\SceneCamera.h" />
     <ClInclude Include="Textures\Albedo\Default_C.h" />
     <ClInclude Include="Textures\Normal\Default_N.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Assets\BuiltinAssets.cpp" />
     <ClCompile Include="ConstantBuffers\AnimationBuffer.cpp" />
     <ClCompile Include="ConstantBuffers\CascadeBuffer.cpp" />
     <ClCompile Include="ConstantBuffers\FrameBuffer.cpp" />
@@ -271,6 +283,11 @@ xcopy /E /I /R /Y /D "%SHADERSRC%" "%SHADERDEST%"</Command>
     <ClCompile Include="RHI\PipelineStateObject.cpp" />
     <ClCompile Include="RHI\RHIShaderReflectionInfo.cpp" />
     <ClCompile Include="RHI\RenderHardwareInterface.cpp" />
+    <ClCompile Include="RenderPasses\AlphaRenderPass.cpp" />
+    <ClCompile Include="RenderPasses\OpaqueRenderPass.cpp" />
+    <ClCompile Include="RenderPasses\ScreenSpaceRenderPass.cpp" />
+    <ClCompile Include="RenderPasses\ShadowRenderPass.cpp" />
+    <ClCompile Include="RenderPasses\Shared\DrawCallSubmitter.cpp" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Shaders\Material\BRDF_LUT_PS.hlsl">
@@ -279,7 +296,8 @@ xcopy /E /I /R /Y /D "%SHADERSRC%" "%SHADERDEST%"</Command>
       <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">../../..\Intermediate\GraphicsEngine\Debug\PrecompiledShaders\%(Filename).h</HeaderFileOutput>
       <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../../..\Intermediate\GraphicsEngine\Release\PrecompiledShaders\%(Filename).h</HeaderFileOutput>
       <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Retail|x64'">../../..\Intermediate\GraphicsEngine\Retail\PrecompiledShaders\%(Filename).h</HeaderFileOutput>
-      <ObjectFileOutput></ObjectFileOutput>
+      <ObjectFileOutput>
+      </ObjectFileOutput>
     </FxCompile>
     <FxCompile Include="Shaders\Material\Deferred_Ambient_PS.hlsl">
       <ShaderType>Pixel</ShaderType>
@@ -287,7 +305,8 @@ xcopy /E /I /R /Y /D "%SHADERSRC%" "%SHADERDEST%"</Command>
       <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">../../..\Intermediate\GraphicsEngine\Debug\PrecompiledShaders\%(Filename).h</HeaderFileOutput>
       <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../../..\Intermediate\GraphicsEngine\Release\PrecompiledShaders\%(Filename).h</HeaderFileOutput>
       <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Retail|x64'">../../..\Intermediate\GraphicsEngine\Retail\PrecompiledShaders\%(Filename).h</HeaderFileOutput>
-      <ObjectFileOutput></ObjectFileOutput>
+      <ObjectFileOutput>
+      </ObjectFileOutput>
     </FxCompile>
     <FxCompile Include="Shaders\Material\Deferred_DirLight_PS.hlsl">
       <ShaderType>Pixel</ShaderType>
@@ -295,7 +314,8 @@ xcopy /E /I /R /Y /D "%SHADERSRC%" "%SHADERDEST%"</Command>
       <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">../../..\Intermediate\GraphicsEngine\Debug\PrecompiledShaders\%(Filename).h</HeaderFileOutput>
       <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../../..\Intermediate\GraphicsEngine\Release\PrecompiledShaders\%(Filename).h</HeaderFileOutput>
       <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Retail|x64'">../../..\Intermediate\GraphicsEngine\Retail\PrecompiledShaders\%(Filename).h</HeaderFileOutput>
-      <ObjectFileOutput></ObjectFileOutput>
+      <ObjectFileOutput>
+      </ObjectFileOutput>
     </FxCompile>
     <FxCompile Include="Shaders\Material\Deferred_PointLight_PS.hlsl">
       <ShaderType>Pixel</ShaderType>
@@ -303,7 +323,8 @@ xcopy /E /I /R /Y /D "%SHADERSRC%" "%SHADERDEST%"</Command>
       <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">../../..\Intermediate\GraphicsEngine\Debug\PrecompiledShaders\%(Filename).h</HeaderFileOutput>
       <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../../..\Intermediate\GraphicsEngine\Release\PrecompiledShaders\%(Filename).h</HeaderFileOutput>
       <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Retail|x64'">../../..\Intermediate\GraphicsEngine\Retail\PrecompiledShaders\%(Filename).h</HeaderFileOutput>
-      <ObjectFileOutput></ObjectFileOutput>
+      <ObjectFileOutput>
+      </ObjectFileOutput>
     </FxCompile>
     <FxCompile Include="Shaders\Material\Deferred_SpotLight_PS.hlsl">
       <ShaderType>Pixel</ShaderType>
@@ -311,7 +332,8 @@ xcopy /E /I /R /Y /D "%SHADERSRC%" "%SHADERDEST%"</Command>
       <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">../../..\Intermediate\GraphicsEngine\Debug\PrecompiledShaders\%(Filename).h</HeaderFileOutput>
       <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../../..\Intermediate\GraphicsEngine\Release\PrecompiledShaders\%(Filename).h</HeaderFileOutput>
       <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Retail|x64'">../../..\Intermediate\GraphicsEngine\Retail\PrecompiledShaders\%(Filename).h</HeaderFileOutput>
-      <ObjectFileOutput></ObjectFileOutput>
+      <ObjectFileOutput>
+      </ObjectFileOutput>
     </FxCompile>
     <FxCompile Include="Shaders\Material\FontMaterial_PS.hlsl">
       <ShaderType>Pixel</ShaderType>
@@ -319,7 +341,8 @@ xcopy /E /I /R /Y /D "%SHADERSRC%" "%SHADERDEST%"</Command>
       <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">../../..\Intermediate\GraphicsEngine\Debug\PrecompiledShaders\%(Filename).h</HeaderFileOutput>
       <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../../..\Intermediate\GraphicsEngine\Release\PrecompiledShaders\%(Filename).h</HeaderFileOutput>
       <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Retail|x64'">../../..\Intermediate\GraphicsEngine\Retail\PrecompiledShaders\%(Filename).h</HeaderFileOutput>
-      <ObjectFileOutput></ObjectFileOutput>
+      <ObjectFileOutput>
+      </ObjectFileOutput>
     </FxCompile>
     <FxCompile Include="Shaders\Material\FontMaterial_VS.hlsl">
       <ShaderType>Vertex</ShaderType>
@@ -327,7 +350,8 @@ xcopy /E /I /R /Y /D "%SHADERSRC%" "%SHADERDEST%"</Command>
       <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">../../..\Intermediate\GraphicsEngine\Debug\PrecompiledShaders\%(Filename).h</HeaderFileOutput>
       <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../../..\Intermediate\GraphicsEngine\Release\PrecompiledShaders\%(Filename).h</HeaderFileOutput>
       <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Retail|x64'">../../..\Intermediate\GraphicsEngine\Retail\PrecompiledShaders\%(Filename).h</HeaderFileOutput>
-      <ObjectFileOutput></ObjectFileOutput>
+      <ObjectFileOutput>
+      </ObjectFileOutput>
     </FxCompile>
     <FxCompile Include="Shaders\Material\FullTexture_VS.hlsl">
       <ShaderType>Vertex</ShaderType>
@@ -335,7 +359,8 @@ xcopy /E /I /R /Y /D "%SHADERSRC%" "%SHADERDEST%"</Command>
       <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">../../..\Intermediate\GraphicsEngine\Debug\PrecompiledShaders\%(Filename).h</HeaderFileOutput>
       <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../../..\Intermediate\GraphicsEngine\Release\PrecompiledShaders\%(Filename).h</HeaderFileOutput>
       <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Retail|x64'">../../..\Intermediate\GraphicsEngine\Retail\PrecompiledShaders\%(Filename).h</HeaderFileOutput>
-      <ObjectFileOutput></ObjectFileOutput>
+      <ObjectFileOutput>
+      </ObjectFileOutput>
     </FxCompile>
     <FxCompile Include="Shaders\Material\GBuffer_PS.hlsl">
       <ShaderType>Pixel</ShaderType>
@@ -343,7 +368,8 @@ xcopy /E /I /R /Y /D "%SHADERSRC%" "%SHADERDEST%"</Command>
       <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">../../..\Intermediate\GraphicsEngine\Debug\PrecompiledShaders\%(Filename).h</HeaderFileOutput>
       <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../../..\Intermediate\GraphicsEngine\Release\PrecompiledShaders\%(Filename).h</HeaderFileOutput>
       <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Retail|x64'">../../..\Intermediate\GraphicsEngine\Retail\PrecompiledShaders\%(Filename).h</HeaderFileOutput>
-      <ObjectFileOutput></ObjectFileOutput>
+      <ObjectFileOutput>
+      </ObjectFileOutput>
     </FxCompile>
     <FxCompile Include="Shaders\Material\Lambert_PS.hlsl">
       <ShaderType>Pixel</ShaderType>
@@ -351,7 +377,8 @@ xcopy /E /I /R /Y /D "%SHADERSRC%" "%SHADERDEST%"</Command>
       <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">../../..\Intermediate\GraphicsEngine\Debug\PrecompiledShaders\%(Filename).h</HeaderFileOutput>
       <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../../..\Intermediate\GraphicsEngine\Release\PrecompiledShaders\%(Filename).h</HeaderFileOutput>
       <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Retail|x64'">../../..\Intermediate\GraphicsEngine\Retail\PrecompiledShaders\%(Filename).h</HeaderFileOutput>
-      <ObjectFileOutput></ObjectFileOutput>
+      <ObjectFileOutput>
+      </ObjectFileOutput>
     </FxCompile>
     <FxCompile Include="Shaders\Material\PBL_PS.hlsl">
       <ShaderType>Pixel</ShaderType>
@@ -359,7 +386,8 @@ xcopy /E /I /R /Y /D "%SHADERSRC%" "%SHADERDEST%"</Command>
       <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">../../..\Intermediate\GraphicsEngine\Debug\PrecompiledShaders\%(Filename).h</HeaderFileOutput>
       <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../../..\Intermediate\GraphicsEngine\Release\PrecompiledShaders\%(Filename).h</HeaderFileOutput>
       <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Retail|x64'">../../..\Intermediate\GraphicsEngine\Retail\PrecompiledShaders\%(Filename).h</HeaderFileOutput>
-      <ObjectFileOutput></ObjectFileOutput>
+      <ObjectFileOutput>
+      </ObjectFileOutput>
     </FxCompile>
     <FxCompile Include="Shaders\Material\ShadowCube_GS.hlsl">
       <ShaderType>Geometry</ShaderType>
@@ -367,7 +395,8 @@ xcopy /E /I /R /Y /D "%SHADERSRC%" "%SHADERDEST%"</Command>
       <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">../../..\Intermediate\GraphicsEngine\Debug\PrecompiledShaders\%(Filename).h</HeaderFileOutput>
       <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../../..\Intermediate\GraphicsEngine\Release\PrecompiledShaders\%(Filename).h</HeaderFileOutput>
       <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Retail|x64'">../../..\Intermediate\GraphicsEngine\Retail\PrecompiledShaders\%(Filename).h</HeaderFileOutput>
-      <ObjectFileOutput></ObjectFileOutput>
+      <ObjectFileOutput>
+      </ObjectFileOutput>
     </FxCompile>
     <FxCompile Include="Shaders\Material\Surface_VS.hlsl">
       <ShaderType>Vertex</ShaderType>
@@ -375,7 +404,8 @@ xcopy /E /I /R /Y /D "%SHADERSRC%" "%SHADERDEST%"</Command>
       <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">../../..\Intermediate\GraphicsEngine\Debug\PrecompiledShaders\%(Filename).h</HeaderFileOutput>
       <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../../..\Intermediate\GraphicsEngine\Release\PrecompiledShaders\%(Filename).h</HeaderFileOutput>
       <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Retail|x64'">../../..\Intermediate\GraphicsEngine\Retail\PrecompiledShaders\%(Filename).h</HeaderFileOutput>
-      <ObjectFileOutput></ObjectFileOutput>
+      <ObjectFileOutput>
+      </ObjectFileOutput>
     </FxCompile>
     <FxCompile Include="Shaders\Material\Unlit_PS.hlsl">
       <ShaderType>Pixel</ShaderType>
@@ -383,7 +413,8 @@ xcopy /E /I /R /Y /D "%SHADERSRC%" "%SHADERDEST%"</Command>
       <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">../../..\Intermediate\GraphicsEngine\Debug\PrecompiledShaders\%(Filename).h</HeaderFileOutput>
       <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../../..\Intermediate\GraphicsEngine\Release\PrecompiledShaders\%(Filename).h</HeaderFileOutput>
       <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Retail|x64'">../../..\Intermediate\GraphicsEngine\Retail\PrecompiledShaders\%(Filename).h</HeaderFileOutput>
-      <ObjectFileOutput></ObjectFileOutput>
+      <ObjectFileOutput>
+      </ObjectFileOutput>
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
