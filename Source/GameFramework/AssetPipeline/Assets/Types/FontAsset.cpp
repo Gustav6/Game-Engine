@@ -3,8 +3,8 @@
 #include <utility>
 #include <memory>
 
-#include "GraphicsEngine/Objects/Font.h"
-#include "GraphicsEngine/Objects/Texture.h"
+#include "GraphicsEngine/Objects/Text/Font.h"
+
 #include "GraphicsEngine/GraphicsEngine.hpp"
 
 #include <tracy/core/Tracy.hpp>

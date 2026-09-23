@@ -1,32 +1,62 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Assets">
-      <UniqueIdentifier>{3824E0A7-24C6-0A7E-0D81-1ED2F9C191CE}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ConstantBuffers">
       <UniqueIdentifier>{3CBE0720-A849-75E4-B15A-F8D81D65D1E4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ConstantBuffers\Manager">
+      <UniqueIdentifier>{6676AC51-D2AD-F4E8-DBB7-580C476E1BE2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core">
+      <UniqueIdentifier>{2EB4837C-1AEB-840D-C3D7-6A10AFED000F}</UniqueIdentifier>
     </Filter>
     <Filter Include="Drawers">
       <UniqueIdentifier>{1D1F4287-89FE-C022-9216-4CF9FE742784}</UniqueIdentifier>
     </Filter>
-    <Filter Include="InterOp">
-      <UniqueIdentifier>{E6D11E00-52B1-9D9B-5BC9-2872C72704FD}</UniqueIdentifier>
+    <Filter Include="InternalOperations">
+      <UniqueIdentifier>{E6796B3A-D25D-2C90-3BBE-26E327C11612}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="InternalPasses">
+      <UniqueIdentifier>{F1CBCF72-DD99-C378-C62D-349FB29A9FDD}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="InternalPasses\Shared">
+      <UniqueIdentifier>{F73DD5DC-63AA-90D7-2C9E-283598C9B23F}</UniqueIdentifier>
     </Filter>
     <Filter Include="Materials">
       <UniqueIdentifier>{67E8C255-D352-77CC-1C91-2872883A5521}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Materials\Compilation">
+      <UniqueIdentifier>{353E9848-A1AA-5343-6A9E-EBA0D6C975AB}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Objects">
       <UniqueIdentifier>{CF2649B1-3B06-C84C-441E-5323B07C2EAE}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Objects\GPU">
+      <UniqueIdentifier>{CAF428EC-36AA-A1E1-BF9E-9BB82B5398E5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Objects\Mesh">
+      <UniqueIdentifier>{EB354B71-D798-DA15-801E-13CC6C60A698}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Objects\Scene">
+      <UniqueIdentifier>{2C331D9B-98F3-98D1-612E-E24ECDADDDAD}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Objects\Text">
+      <UniqueIdentifier>{430D4F71-2F70-DE15-D8F5-16CCC437AA98}</UniqueIdentifier>
     </Filter>
     <Filter Include="RHI">
       <UniqueIdentifier>{4819880B-B422-887C-3D9E-9E7CA9A6937C}</UniqueIdentifier>
     </Filter>
-    <Filter Include="RenderPasses">
-      <UniqueIdentifier>{F4BC7120-E01F-01C5-89A5-397B75E7CC47}</UniqueIdentifier>
+    <Filter Include="Resources">
+      <UniqueIdentifier>{000BCD17-6C75-818E-B5B3-3234215D5FE3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="RenderPasses\Shared">
-      <UniqueIdentifier>{9A8D8389-06EF-6097-8F5C-A749FBBC9756}</UniqueIdentifier>
+    <Filter Include="Resources\Textures">
+      <UniqueIdentifier>{D33C360A-BF20-F75F-2881-F1B21484E1E1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources\Textures\Albedo">
+      <UniqueIdentifier>{4978079B-B53A-3B25-FEEA-C9B16AEC1303}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources\Textures\Normal">
+      <UniqueIdentifier>{ABB999B9-177C-CD43-602C-5CD0CC2DA621}</UniqueIdentifier>
     </Filter>
     <Filter Include="Shaders">
       <UniqueIdentifier>{EFAC8DF2-5B8C-0C8E-64A4-9764D00273EF}</UniqueIdentifier>
@@ -37,20 +67,8 @@
     <Filter Include="Shaders\Material\Include">
       <UniqueIdentifier>{C0849754-ACA9-E6D4-D5F4-CB64C178E5F2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Textures">
-      <UniqueIdentifier>{A95C6780-9529-C28B-BE42-B033AA6EF719}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Textures\Albedo">
-      <UniqueIdentifier>{5FABE787-CB36-554C-D447-D8404052B14C}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Textures\Normal">
-      <UniqueIdentifier>{C1EC79A6-2D78-E76A-3689-6A5FA293436B}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Assets\BuiltinAssets.h">
-      <Filter>Assets</Filter>
-    </ClInclude>
     <ClInclude Include="ConstantBuffers\AnimationBuffer.h">
       <Filter>ConstantBuffers</Filter>
     </ClInclude>
@@ -63,10 +81,30 @@
     <ClInclude Include="ConstantBuffers\LightBuffer.h">
       <Filter>ConstantBuffers</Filter>
     </ClInclude>
+    <ClInclude Include="ConstantBuffers\Manager\ConstantBufferManager.h">
+      <Filter>ConstantBuffers\Manager</Filter>
+    </ClInclude>
     <ClInclude Include="ConstantBuffers\ObjectBuffer.h">
       <Filter>ConstantBuffers</Filter>
     </ClInclude>
-    <ClInclude Include="DebugRenderMode.h" />
+    <ClInclude Include="Core\ConstantBufferID.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\DebugRenderMode.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\FrameTargets.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\RenderContext.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\RenderItem.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\SceneCamera.h">
+      <Filter>Core</Filter>
+    </ClInclude>
     <ClInclude Include="Drawers\LightDrawer.h">
       <Filter>Drawers</Filter>
     </ClInclude>
@@ -81,8 +119,29 @@
     </ClInclude>
     <ClInclude Include="GraphicsEngine.hpp" />
     <ClInclude Include="GraphicsEngine.pch.h" />
-    <ClInclude Include="InterOp\DDSTextureLoader11.h">
-      <Filter>InterOp</Filter>
+    <ClInclude Include="InternalOperations\DDSTextureLoader11.h">
+      <Filter>InternalOperations</Filter>
+    </ClInclude>
+    <ClInclude Include="InternalPasses\DeferredRenderPass.h">
+      <Filter>InternalPasses</Filter>
+    </ClInclude>
+    <ClInclude Include="InternalPasses\ForwardRenderPass.h">
+      <Filter>InternalPasses</Filter>
+    </ClInclude>
+    <ClInclude Include="InternalPasses\ScreenSpaceRenderPass.h">
+      <Filter>InternalPasses</Filter>
+    </ClInclude>
+    <ClInclude Include="InternalPasses\ShadowRenderPass.h">
+      <Filter>InternalPasses</Filter>
+    </ClInclude>
+    <ClInclude Include="InternalPasses\Shared\DrawCallSubmitter.h">
+      <Filter>InternalPasses\Shared</Filter>
+    </ClInclude>
+    <ClInclude Include="Materials\Compilation\MaterialFactory.h">
+      <Filter>Materials\Compilation</Filter>
+    </ClInclude>
+    <ClInclude Include="Materials\Compilation\MaterialShaderRegistry.h">
+      <Filter>Materials\Compilation</Filter>
     </ClInclude>
     <ClInclude Include="Materials\Material.h">
       <Filter>Materials</Filter>
@@ -96,47 +155,47 @@
     <ClInclude Include="Materials\MaterialShaderIncludeHandler.h">
       <Filter>Materials</Filter>
     </ClInclude>
-    <ClInclude Include="Objects\Animation.h">
-      <Filter>Objects</Filter>
+    <ClInclude Include="Objects\GPU\Buffer.h">
+      <Filter>Objects\GPU</Filter>
     </ClInclude>
-    <ClInclude Include="Objects\Buffer.h">
-      <Filter>Objects</Filter>
+    <ClInclude Include="Objects\GPU\GBuffer.h">
+      <Filter>Objects\GPU</Filter>
     </ClInclude>
-    <ClInclude Include="Objects\Camera.h">
-      <Filter>Objects</Filter>
+    <ClInclude Include="Objects\GPU\Sampler.h">
+      <Filter>Objects\GPU</Filter>
     </ClInclude>
-    <ClInclude Include="Objects\Font.h">
-      <Filter>Objects</Filter>
+    <ClInclude Include="Objects\GPU\Shader.h">
+      <Filter>Objects\GPU</Filter>
     </ClInclude>
-    <ClInclude Include="Objects\GBuffer.h">
-      <Filter>Objects</Filter>
+    <ClInclude Include="Objects\GPU\Texture.h">
+      <Filter>Objects\GPU</Filter>
     </ClInclude>
-    <ClInclude Include="Objects\Light.h">
-      <Filter>Objects</Filter>
+    <ClInclude Include="Objects\GPU\Vertex.h">
+      <Filter>Objects\GPU</Filter>
     </ClInclude>
-    <ClInclude Include="Objects\Mesh.h">
-      <Filter>Objects</Filter>
+    <ClInclude Include="Objects\Mesh\Animation.h">
+      <Filter>Objects\Mesh</Filter>
     </ClInclude>
-    <ClInclude Include="Objects\Sampler.h">
-      <Filter>Objects</Filter>
+    <ClInclude Include="Objects\Mesh\Mesh.h">
+      <Filter>Objects\Mesh</Filter>
     </ClInclude>
-    <ClInclude Include="Objects\Shader.h">
-      <Filter>Objects</Filter>
+    <ClInclude Include="Objects\Mesh\Skeleton.h">
+      <Filter>Objects\Mesh</Filter>
     </ClInclude>
-    <ClInclude Include="Objects\Skeleton.h">
-      <Filter>Objects</Filter>
+    <ClInclude Include="Objects\Scene\Camera.h">
+      <Filter>Objects\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\Scene\Light.h">
+      <Filter>Objects\Scene</Filter>
     </ClInclude>
     <ClInclude Include="Objects\Sprite.h">
       <Filter>Objects</Filter>
     </ClInclude>
-    <ClInclude Include="Objects\Text.h">
-      <Filter>Objects</Filter>
+    <ClInclude Include="Objects\Text\Font.h">
+      <Filter>Objects\Text</Filter>
     </ClInclude>
-    <ClInclude Include="Objects\Texture.h">
-      <Filter>Objects</Filter>
-    </ClInclude>
-    <ClInclude Include="Objects\Vertex.h">
-      <Filter>Objects</Filter>
+    <ClInclude Include="Objects\Text\Text.h">
+      <Filter>Objects\Text</Filter>
     </ClInclude>
     <ClInclude Include="RHI\GraphicsCommandList.h">
       <Filter>RHI</Filter>
@@ -153,44 +212,20 @@
     <ClInclude Include="RHI\RenderHardwareInterface.h">
       <Filter>RHI</Filter>
     </ClInclude>
-    <ClInclude Include="RenderPasses\AlphaRenderPass.h">
-      <Filter>RenderPasses</Filter>
+    <ClInclude Include="Resources\BuiltinAssets.h">
+      <Filter>Resources</Filter>
     </ClInclude>
-    <ClInclude Include="RenderPasses\OpaqueRenderPass.h">
-      <Filter>RenderPasses</Filter>
+    <ClInclude Include="Resources\GraphicsResourceFactory.h">
+      <Filter>Resources</Filter>
     </ClInclude>
-    <ClInclude Include="RenderPasses\ScreenSpaceRenderPass.h">
-      <Filter>RenderPasses</Filter>
+    <ClInclude Include="Resources\Textures\Albedo\Default_C.h">
+      <Filter>Resources\Textures\Albedo</Filter>
     </ClInclude>
-    <ClInclude Include="RenderPasses\ShadowRenderPass.h">
-      <Filter>RenderPasses</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderPasses\Shared\DrawCallSubmitter.h">
-      <Filter>RenderPasses\Shared</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderPasses\Shared\FrameTargets.h">
-      <Filter>RenderPasses\Shared</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderPasses\Shared\RenderItem.h">
-      <Filter>RenderPasses\Shared</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderPasses\Shared\SceneCamera.h">
-      <Filter>RenderPasses\Shared</Filter>
-    </ClInclude>
-    <ClInclude Include="Textures\Albedo\Default_C.h">
-      <Filter>Textures\Albedo</Filter>
-    </ClInclude>
-    <ClInclude Include="Textures\Normal\Default_N.h">
-      <Filter>Textures\Normal</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderPasses\Shared\RenderContext.h">
-      <Filter>RenderPasses\Shared</Filter>
+    <ClInclude Include="Resources\Textures\Normal\Default_N.h">
+      <Filter>Resources\Textures\Normal</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Assets\BuiltinAssets.cpp">
-      <Filter>Assets</Filter>
-    </ClCompile>
     <ClCompile Include="ConstantBuffers\AnimationBuffer.cpp">
       <Filter>ConstantBuffers</Filter>
     </ClCompile>
@@ -202,6 +237,9 @@
     </ClCompile>
     <ClCompile Include="ConstantBuffers\LightBuffer.cpp">
       <Filter>ConstantBuffers</Filter>
+    </ClCompile>
+    <ClCompile Include="ConstantBuffers\Manager\ConstantBufferManager.cpp">
+      <Filter>ConstantBuffers\Manager</Filter>
     </ClCompile>
     <ClCompile Include="ConstantBuffers\ObjectBuffer.cpp">
       <Filter>ConstantBuffers</Filter>
@@ -220,8 +258,29 @@
     </ClCompile>
     <ClCompile Include="GraphicsEngine.cpp" />
     <ClCompile Include="GraphicsEngine.pch.cpp" />
-    <ClCompile Include="InterOp\DDSTextureLoader11.cpp">
-      <Filter>InterOp</Filter>
+    <ClCompile Include="InternalOperations\DDSTextureLoader11.cpp">
+      <Filter>InternalOperations</Filter>
+    </ClCompile>
+    <ClCompile Include="InternalPasses\DeferredRenderPass.cpp">
+      <Filter>InternalPasses</Filter>
+    </ClCompile>
+    <ClCompile Include="InternalPasses\ForwardRenderPass.cpp">
+      <Filter>InternalPasses</Filter>
+    </ClCompile>
+    <ClCompile Include="InternalPasses\ScreenSpaceRenderPass.cpp">
+      <Filter>InternalPasses</Filter>
+    </ClCompile>
+    <ClCompile Include="InternalPasses\ShadowRenderPass.cpp">
+      <Filter>InternalPasses</Filter>
+    </ClCompile>
+    <ClCompile Include="InternalPasses\Shared\DrawCallSubmitter.cpp">
+      <Filter>InternalPasses\Shared</Filter>
+    </ClCompile>
+    <ClCompile Include="Materials\Compilation\MaterialFactory.cpp">
+      <Filter>Materials\Compilation</Filter>
+    </ClCompile>
+    <ClCompile Include="Materials\Compilation\MaterialShaderRegistry.cpp">
+      <Filter>Materials\Compilation</Filter>
     </ClCompile>
     <ClCompile Include="Materials\Material.cpp">
       <Filter>Materials</Filter>
@@ -232,47 +291,47 @@
     <ClCompile Include="Materials\MaterialShaderIncludeHandler.cpp">
       <Filter>Materials</Filter>
     </ClCompile>
-    <ClCompile Include="Objects\Animation.cpp">
-      <Filter>Objects</Filter>
+    <ClCompile Include="Objects\GPU\Buffer.cpp">
+      <Filter>Objects\GPU</Filter>
     </ClCompile>
-    <ClCompile Include="Objects\Buffer.cpp">
-      <Filter>Objects</Filter>
+    <ClCompile Include="Objects\GPU\GBuffer.cpp">
+      <Filter>Objects\GPU</Filter>
     </ClCompile>
-    <ClCompile Include="Objects\Camera.cpp">
-      <Filter>Objects</Filter>
+    <ClCompile Include="Objects\GPU\Sampler.cpp">
+      <Filter>Objects\GPU</Filter>
     </ClCompile>
-    <ClCompile Include="Objects\Font.cpp">
-      <Filter>Objects</Filter>
+    <ClCompile Include="Objects\GPU\Shader.cpp">
+      <Filter>Objects\GPU</Filter>
     </ClCompile>
-    <ClCompile Include="Objects\GBuffer.cpp">
-      <Filter>Objects</Filter>
+    <ClCompile Include="Objects\GPU\Texture.cpp">
+      <Filter>Objects\GPU</Filter>
     </ClCompile>
-    <ClCompile Include="Objects\Light.cpp">
-      <Filter>Objects</Filter>
+    <ClCompile Include="Objects\GPU\Vertex.cpp">
+      <Filter>Objects\GPU</Filter>
     </ClCompile>
-    <ClCompile Include="Objects\Mesh.cpp">
-      <Filter>Objects</Filter>
+    <ClCompile Include="Objects\Mesh\Animation.cpp">
+      <Filter>Objects\Mesh</Filter>
     </ClCompile>
-    <ClCompile Include="Objects\Sampler.cpp">
-      <Filter>Objects</Filter>
+    <ClCompile Include="Objects\Mesh\Mesh.cpp">
+      <Filter>Objects\Mesh</Filter>
     </ClCompile>
-    <ClCompile Include="Objects\Shader.cpp">
-      <Filter>Objects</Filter>
+    <ClCompile Include="Objects\Mesh\Skeleton.cpp">
+      <Filter>Objects\Mesh</Filter>
     </ClCompile>
-    <ClCompile Include="Objects\Skeleton.cpp">
-      <Filter>Objects</Filter>
+    <ClCompile Include="Objects\Scene\Camera.cpp">
+      <Filter>Objects\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\Scene\Light.cpp">
+      <Filter>Objects\Scene</Filter>
     </ClCompile>
     <ClCompile Include="Objects\Sprite.cpp">
       <Filter>Objects</Filter>
     </ClCompile>
-    <ClCompile Include="Objects\Text.cpp">
-      <Filter>Objects</Filter>
+    <ClCompile Include="Objects\Text\Font.cpp">
+      <Filter>Objects\Text</Filter>
     </ClCompile>
-    <ClCompile Include="Objects\Texture.cpp">
-      <Filter>Objects</Filter>
-    </ClCompile>
-    <ClCompile Include="Objects\Vertex.cpp">
-      <Filter>Objects</Filter>
+    <ClCompile Include="Objects\Text\Text.cpp">
+      <Filter>Objects\Text</Filter>
     </ClCompile>
     <ClCompile Include="RHI\GraphicsCommandList.cpp">
       <Filter>RHI</Filter>
@@ -286,20 +345,11 @@
     <ClCompile Include="RHI\RenderHardwareInterface.cpp">
       <Filter>RHI</Filter>
     </ClCompile>
-    <ClCompile Include="RenderPasses\AlphaRenderPass.cpp">
-      <Filter>RenderPasses</Filter>
+    <ClCompile Include="Resources\BuiltinAssets.cpp">
+      <Filter>Resources</Filter>
     </ClCompile>
-    <ClCompile Include="RenderPasses\OpaqueRenderPass.cpp">
-      <Filter>RenderPasses</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderPasses\ScreenSpaceRenderPass.cpp">
-      <Filter>RenderPasses</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderPasses\ShadowRenderPass.cpp">
-      <Filter>RenderPasses</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderPasses\Shared\DrawCallSubmitter.cpp">
-      <Filter>RenderPasses\Shared</Filter>
+    <ClCompile Include="Resources\GraphicsResourceFactory.cpp">
+      <Filter>Resources</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

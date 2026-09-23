@@ -1,6 +1,6 @@
 #include "GameCamera.h"
 
-#include "GraphicsEngine/Objects/Camera.h"
+#include "GraphicsEngine/Objects/Scene/Camera.h"
 
 #include "Application.h"
 

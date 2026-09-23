@@ -1,22 +1,26 @@
 #include "GraphicsEngine.pch.h"
 #include "ShadowRenderPass.h"
 
-#include <CommonUtilities/Collision/Frustum.hpp>
+#include "CommonUtilities/Collision/Frustum.hpp"
 
 #include "Shared/DrawCallSubmitter.h"
-#include "Shared/SceneCamera.h"
-#include "Shared/RenderContext.h"
 
-#include "GraphicsEngine/GraphicsEngine.hpp"
+#include "Resources/GraphicsResourceFactory.h"
+
+#include "GraphicsEngine/Core/SceneCamera.h"
+#include "GraphicsEngine/Core/RenderContext.h"
 
 #include "GraphicsEngine/RHI/RenderHardwareInterface.h"
 
 #include "GraphicsEngine/ConstantBuffers/FrameBuffer.h"
 #include "GraphicsEngine/ConstantBuffers/CascadeBuffer.h"
 
-#include "GraphicsEngine/Objects/Light.h"
-#include "GraphicsEngine/Objects/Texture.h"
-#include "GraphicsEngine/Objects/Camera.h"
+#include "GraphicsEngine/ConstantBuffers/Manager/ConstantBufferManager.h"
+
+#include "GraphicsEngine/Objects/GPU/Texture.h"
+
+#include "GraphicsEngine/Objects/Scene/Light.h"
+#include "GraphicsEngine/Objects/Scene/Camera.h"
 
 #include "GraphicsEngine/RHI/GraphicsCommandList.h"
 
@@ -47,7 +51,6 @@ bool ShadowRenderPass::Initialize(RenderHardwareInterface& aRHI)
 }
 
 void ShadowRenderPass::Execute(
-	GraphicsEngine& aGraphicsEngine,
 	GraphicsCommandList& inoutCommandList,
 	const std::vector<RenderItem>& aItems,
 	RenderContext& aContext)
@@ -77,7 +80,7 @@ void ShadowRenderPass::Execute(
 				{
 					cameraNear = cameraNearPlane;
 					cameraFar = cameraFarPlane;
-					BuildShadowCascades(aGraphicsEngine, { 4096, 2048, 2048, 2048 }, cameraNear, cameraFar);
+					BuildShadowCascades(aContext, { 4096, 2048, 2048, 2048 }, cameraNear, cameraFar);
 				}
 
 				CommonUtilities::Matrix4x4f lightViewProjectionTextures[NUM_CASCADES];
@@ -157,9 +160,9 @@ void ShadowRenderPass::Execute(
 						inoutCommandList.SetRenderTarget(nullptr, myCascades[c].ShadowMap.get());
 
 						inoutCommandList.ChangeActiveOverrides(PipelineStage_Rasterizer | PipelineStage_PixelShader);
-						aGraphicsEngine.UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::FrameBuffer, frameBuffer, 0, PipelineStage_VertexShader);
+						aContext.ConstantBuffers->UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::FrameBuffer, frameBuffer, 0, PipelineStage_VertexShader);
 
-						DrawCallSubmitter::RenderDrawCalls(aGraphicsEngine, inoutCommandList, aItems, aContext, DrawCallFlag_BindMaterial);
+						DrawCallSubmitter::RenderDrawCalls(inoutCommandList, aItems, aContext, DrawCallFlag_BindMaterial);
 
 						inoutCommandList.EndEvent();
 					}
@@ -183,7 +186,7 @@ void ShadowRenderPass::Execute(
 				cascadeBuffer.CameraPosition = aContext.Camera->Transform.GetTranslation();
 				memcpy_s(cascadeBuffer.LightViewProjectionTextures, sizeof(CommonUtilities::Matrix4x4f) * NUM_CASCADES, lightViewProjectionTextures, sizeof(lightViewProjectionTextures));
 
-				aGraphicsEngine.UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::CascadeBuffer, cascadeBuffer, 4, PipelineStage_PixelShader);
+				aContext.ConstantBuffers->UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::CascadeBuffer, cascadeBuffer, 4, PipelineStage_PixelShader);
 
 				break;
 			}
@@ -206,9 +209,9 @@ void ShadowRenderPass::Execute(
 
 				inoutCommandList.ChangeActiveOverrides(PipelineStage_Rasterizer | PipelineStage_PixelShader);
 
-				aGraphicsEngine.UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::FrameBuffer, frameBuffer, 0, PipelineStage_VertexShader);
+				aContext.ConstantBuffers->UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::FrameBuffer, frameBuffer, 0, PipelineStage_VertexShader);
 
-				DrawCallSubmitter::RenderDrawCalls(aGraphicsEngine, inoutCommandList, aItems, aContext, DrawCallFlag_BindMaterial);
+				DrawCallSubmitter::RenderDrawCalls(inoutCommandList, aItems, aContext, DrawCallFlag_BindMaterial);
 
 				inoutCommandList.EndEvent();
 
@@ -233,9 +236,9 @@ void ShadowRenderPass::Execute(
 
 				inoutCommandList.ChangeActiveOverrides(PipelineStage_GeometryShader | PipelineStage_Rasterizer | PipelineStage_PixelShader);
 
-				aGraphicsEngine.UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::FrameBuffer, frameBuffer, 0, PipelineStage_VertexShader | PipelineStage_GeometryShader);
+				aContext.ConstantBuffers->UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::FrameBuffer, frameBuffer, 0, PipelineStage_VertexShader | PipelineStage_GeometryShader);
 
-				DrawCallSubmitter::RenderDrawCalls(aGraphicsEngine, inoutCommandList, aItems, aContext, DrawCallFlag_BindMaterial);
+				DrawCallSubmitter::RenderDrawCalls(inoutCommandList, aItems, aContext, DrawCallFlag_BindMaterial);
 
 				inoutCommandList.EndEvent();
 
@@ -249,12 +252,17 @@ void ShadowRenderPass::Execute(
 	inoutCommandList.EndEvent();
 }
 
-std::array<ShadowCascade, ShadowRenderPass::NUM_CASCADES>& ShadowRenderPass::GetCascades()
+const std::array<ShadowCascade, ShadowRenderPass::NUM_CASCADES>& ShadowRenderPass::GetCascades()
 {
 	return myCascades;
 }
 
-void ShadowRenderPass::BuildShadowCascades(GraphicsEngine& aGraphicsEngine, const std::array<int, ShadowRenderPass::NUM_CASCADES>& aCascadeSizes, float aCameraNear, float aCameraFar)
+void ShadowRenderPass::BuildShadowCascades(
+	RenderContext& aContext, 
+	const std::array<int, 
+	ShadowRenderPass::NUM_CASCADES>& aCascadeSizes, 
+	float aCameraNear, 
+	float aCameraFar)
 {
 	assert(aCameraNear > 0.0f);
 	assert(aCameraFar > aCameraNear);
@@ -284,6 +292,6 @@ void ShadowRenderPass::BuildShadowCascades(GraphicsEngine& aGraphicsEngine, cons
 
 		myCascades[c].ShadowMap = std::make_unique<Texture>();
 
-		aGraphicsEngine.CreateShadowMap(name, aCascadeSizes[c], aCascadeSizes[c], *myCascades[c].ShadowMap, false);
+		GraphicsResourceFactory::CreateShadowMap(*aContext.RHI, name, aCascadeSizes[c], aCascadeSizes[c], *myCascades[c].ShadowMap, false);
 	}
 }

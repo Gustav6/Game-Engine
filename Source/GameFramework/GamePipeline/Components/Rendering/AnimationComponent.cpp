@@ -1,8 +1,8 @@
 #include "GameFramework.pch.h"
 #include "AnimationComponent.h"
 
-#include "GraphicsEngine/Objects/Skeleton.h"
-#include "GraphicsEngine/Objects/Animation.h"
+#include "GraphicsEngine/Objects/Mesh/Skeleton.h"
+#include "GraphicsEngine/Objects/Mesh/Animation.h"
 
 #include <CommonUtilities/Math/MathUtils.hpp>
 #include <CommonUtilities/Math/Quaternion.hpp>

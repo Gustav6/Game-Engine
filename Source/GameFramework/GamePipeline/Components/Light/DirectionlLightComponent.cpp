@@ -1,7 +1,7 @@
 #include "GameFramework.pch.h"
 #include "DirectionlLightComponent.h"
 
-#include "GraphicsEngine/Objects/Light.h"
+#include "GraphicsEngine/Objects/Scene/Light.h"
 
 #include "GamePipeline/Components/Transform/Transform.h"
 #include "GamePipeline/World/Actor.hpp"

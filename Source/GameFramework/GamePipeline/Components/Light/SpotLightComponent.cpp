@@ -6,7 +6,7 @@
 #include "CommonUtilities/Math/Vector4.hpp"
 #include "CommonUtilities/Math/MathUtils.hpp"
 
-#include "GraphicsEngine/Objects/Light.h"
+#include "GraphicsEngine/Objects/Scene/Light.h"
 
 SpotLightComponent::SpotLightComponent(Actor* aOwner)
 	: LightComponent(aOwner)

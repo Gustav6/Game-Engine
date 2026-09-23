@@ -3,7 +3,7 @@
 #include <unordered_map>
 
 #include "CommonUtilities/Rectangle.hpp"
-#include "Texture.h"
+#include "../GPU/Texture.h"
 
 class Font 
 {

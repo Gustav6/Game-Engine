@@ -4,7 +4,6 @@
 #include <filesystem>
 
 class GraphicsCommandList;
-class GraphicsEngine;
 class Texture;
 class PipelineStateObject;
 class RenderHardwareInterface;
@@ -27,13 +26,12 @@ public:
 	bool Initialize(RenderHardwareInterface& aRHI);
 
     void Execute(
-		GraphicsEngine& aGraphicsEngine,
 		GraphicsCommandList& inoutCommandList,
 		const std::vector<RenderItem>& aItems,
 		RenderContext& aContext
     );
 
-	std::array<ShadowCascade, NUM_CASCADES>& GetCascades();
+	const std::array<ShadowCascade, NUM_CASCADES>& GetCascades();
 
 private:
 	/**
@@ -41,7 +39,7 @@ private:
 	 * @param aCascadeSizes Sizes will apply in order from closest to furthest away.
 	 */
 	void BuildShadowCascades(
-		GraphicsEngine& aGraphicsEngine, 
+		RenderContext& aContext,
 		const std::array<int, NUM_CASCADES>& aCascadeSizes, 
 		float aCameraNear, 
 		float aCameraFar

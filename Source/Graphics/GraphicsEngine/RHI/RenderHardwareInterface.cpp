@@ -4,17 +4,17 @@
 #include <d3dcompiler.h>
 
 #include "StringHelpers.h"
-#include "GraphicsEngine/Objects/Buffer.h"
-#include "GraphicsEngine/Objects/Texture.h"
-#include "GraphicsEngine/Objects/Vertex.h"
-#include "GraphicsEngine/Objects/Shader.h"
-#include "GraphicsEngine/Objects/Sampler.h"
-#include "GraphicsEngine/Objects/GBuffer.h"
+#include "GraphicsEngine/Objects/GPU/Buffer.h"
+#include "GraphicsEngine/Objects/GPU/Texture.h"
+#include "GraphicsEngine/Objects/GPU/Vertex.h"
+#include "GraphicsEngine/Objects/GPU/Shader.h"
+#include "GraphicsEngine/Objects/GPU/Sampler.h"
+#include "GraphicsEngine/Objects/GPU/GBuffer.h"
 
 #include "PipelineStateObject.h"
 #include "GraphicsCommandList.h"
 
-#include "GraphicsEngine/InterOp/DDSTextureLoader11.h"
+#include "GraphicsEngine/InternalOperations/DDSTextureLoader11.h"
 
 using namespace Microsoft::WRL;
 

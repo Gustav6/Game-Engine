@@ -3,9 +3,10 @@
 
 #include <cctype>
 
-#include "GraphicsEngine/Objects/Vertex.h"
-#include "GraphicsEngine/Objects/Mesh.h"
-#include "GraphicsEngine/Objects/Skeleton.h"
+#include "GraphicsEngine/Objects/GPU/Vertex.h"
+
+#include "GraphicsEngine/Objects/Mesh/Mesh.h"
+#include "GraphicsEngine/Objects/Mesh/Skeleton.h"
 
 #include "ensure.h"
 #include "tgafbx/Importer.h"

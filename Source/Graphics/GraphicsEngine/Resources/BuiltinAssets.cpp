@@ -3,7 +3,7 @@
 
 #include "GraphicsEngine/GraphicsEngine.hpp"
 
-#include "GraphicsEngine/Objects/Texture.h"
+#include "GraphicsEngine/Objects/GPU/Texture.h"
 
 #include "GraphicsEngine/RHI/RenderHardwareInterface.h"
 

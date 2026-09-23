@@ -5,7 +5,7 @@
 
 #include "CommonUtilities/Collision/Sphere.hpp"
 
-#include "Buffer.h"
+#include "../GPU/Buffer.h"
 
 struct Skeleton;
 struct Vertex;

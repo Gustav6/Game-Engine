@@ -1,15 +1,17 @@
 #include "GraphicsEngine.pch.h"
 #include "DrawCallSubmitter.h"
 
-#include "RenderItem.h"
-#include "RenderContext.h"
+#include "GraphicsEngine/Core/RenderItem.h"
+#include "GraphicsEngine/Core/RenderContext.h"
 
-#include "Assets/BuiltinAssets.h"
+#include "GraphicsEngine/Resources/BuiltinAssets.h"
 
 #include "GraphicsEngine/ConstantBuffers/ObjectBuffer.h"
 #include "GraphicsEngine/ConstantBuffers/AnimationBuffer.h"
 
-#include "GraphicsEngine/Objects/Mesh.h"
+#include "GraphicsEngine/ConstantBuffers/Manager/ConstantBufferManager.h"
+
+#include "GraphicsEngine/Objects/Mesh/Mesh.h"
 
 #include "GraphicsEngine/Materials/MaterialInterface.h"
 
@@ -19,7 +21,6 @@
 #include "GraphicsEngine/Drawers/MeshDrawer.h"
 
 void DrawCallSubmitter::RenderDrawCalls(
-	GraphicsEngine& aGraphicsEngine,
 	GraphicsCommandList& inoutCommandList,
 	const std::vector<RenderItem>& aItems,
 	RenderContext& aContext,
@@ -58,13 +59,13 @@ void DrawCallSubmitter::RenderDrawCalls(
 		objectBuffer.WorldInvT = (drawCall.Transform.GetInverse()).GetTranspose();
 		objectBuffer.HasSkinning = drawCall.HasSkinning;
 
-		aGraphicsEngine.UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::ObjectBuffer, objectBuffer, 1, PipelineStage_VertexShader);
+		aContext.ConstantBuffers->UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::ObjectBuffer, objectBuffer, 1, PipelineStage_VertexShader);
 
 		if (drawCall.HasSkinning)
 		{
 			AnimationBuffer animationBuffer;
 			memcpy(animationBuffer.JointTransforms, drawCall.JointTransforms, 128 * sizeof(CommonUtilities::Matrix4x4f));
-			aGraphicsEngine.UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::AnimationBuffer, animationBuffer, 2, PipelineStage_VertexShader);
+			aContext.ConstantBuffers->UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::AnimationBuffer, animationBuffer, 2, PipelineStage_VertexShader);
 		}
 
 		if (HasDrawCallFlag(someFlags, DrawCallFlag_BindMaterial))
@@ -76,7 +77,7 @@ void DrawCallSubmitter::RenderDrawCalls(
 					material->RefreshMaterialData();
 				}
 
-				aGraphicsEngine.UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::MaterialBuffer, material->GetParameterDataBlock(), Material::MATERIAL_BUFFER_SIZE, 5, PipelineStage_VertexShader | PipelineStage_PixelShader);
+				aContext.ConstantBuffers->UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::MaterialBuffer, material->GetParameterDataBlock(), Material::MATERIAL_BUFFER_SIZE, 5, PipelineStage_VertexShader | PipelineStage_PixelShader);
 			}
 
 			if (HasDrawCallFlag(someFlags, DrawCallFlag_BindTextures))

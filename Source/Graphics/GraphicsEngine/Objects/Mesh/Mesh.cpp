@@ -1,7 +1,7 @@
 #include "GraphicsEngine.pch.h"
 #include "Mesh.h"
 
-#include "Vertex.h"
+#include "../GPU/Vertex.h"
 #include "Skeleton.h"
 
 Mesh::Mesh() = default;

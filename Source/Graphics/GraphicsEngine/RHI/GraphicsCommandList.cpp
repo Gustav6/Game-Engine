@@ -1,9 +1,9 @@
 #include "GraphicsEngine.pch.h"
 #include "GraphicsCommandList.h"
 
-#include "Objects/Sampler.h"
-#include "Objects/Texture.h"
-#include "Objects/Buffer.h"
+#include "Objects/GPU/Sampler.h"
+#include "Objects/GPU/Texture.h"
+#include "Objects/GPU/Buffer.h"
 
 #include "PipelineStateObject.h"
 

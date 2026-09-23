@@ -1,7 +1,7 @@
 #include "GameFramework.pch.h"
 #include "AnimationAsset.h"
 
-#include "GraphicsEngine/Objects/Animation.h"
+#include "GraphicsEngine/Objects/Mesh/Animation.h"
 
 #include <CommonUtilities/Math/Matrix4x4.hpp>
 

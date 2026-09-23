@@ -6,7 +6,7 @@
 #include <string_view>
 
 
-#include "GraphicsEngine/Objects/Text.h"
+#include "GraphicsEngine/Objects/Text/Text.h"
 
 #include <CommonUtilities/Math/Vector2.hpp>
 #include <CommonUtilities/Math/Vector4.hpp>

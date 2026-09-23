@@ -3,7 +3,7 @@
 
 #include "CommonUtilities/Math/Vector4.hpp"
 
-#include "GraphicsEngine/Objects/Light.h"
+#include "GraphicsEngine/Objects/Scene/Light.h"
 
 PointLightComponent::PointLightComponent(Actor* aOwner)
 	: LightComponent(aOwner)

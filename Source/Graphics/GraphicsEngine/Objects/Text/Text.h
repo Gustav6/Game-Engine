@@ -5,7 +5,7 @@
 #include <memory>
 #include <vector>
 
-#include "Buffer.h"
+#include "../GPU/Buffer.h"
 
 #include "CommonUtilities/Math/Vector2.hpp"
 #include "CommonUtilities/Math/Vector4.hpp"

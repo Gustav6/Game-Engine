@@ -4,9 +4,10 @@
 #include <utility>
 #include <memory>
 
-#include "GraphicsEngine/Objects/Vertex.h"
-#include "GraphicsEngine/Objects/Mesh.h"
-#include "GraphicsEngine/Objects/Skeleton.h"
+#include "GraphicsEngine/Objects/GPU/Vertex.h"
+
+#include "GraphicsEngine/Objects/Mesh/Mesh.h"
+#include "GraphicsEngine/Objects/Mesh/Skeleton.h"
 
 #include <CommonUtilities/Collision/Sphere.hpp>
 #include <CommonUtilities/Math/Vector2.hpp>

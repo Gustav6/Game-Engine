@@ -28,8 +28,9 @@
 #include "GamePipeline/World/GameWorld.h"
 
 #include "GraphicsEngine/GraphicsEngine.hpp"
-#include "GraphicsEngine/Objects/Texture.h"
-#include "GraphicsEngine/Objects/Camera.h"
+
+#include "GraphicsEngine/Objects/GPU/Texture.h"
+#include "GraphicsEngine/Objects/Scene/Camera.h"
 #include "GraphicsEngine/RHI/GraphicsCommandList.h"
 
 #include <tracy/core/Tracy.hpp>

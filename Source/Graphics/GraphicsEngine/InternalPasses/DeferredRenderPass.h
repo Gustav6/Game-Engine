@@ -4,7 +4,6 @@
 #include <filesystem>
 
 class GraphicsCommandList;
-class GraphicsEngine;
 class RenderHardwareInterface;
 class GBuffer;
 class PipelineStateObject;
@@ -13,13 +12,12 @@ struct RenderItem;
 struct RenderContext;
 struct FrameTargets;
 
-class OpaqueRenderPass
+class DeferredRenderPass
 {
 public:
     bool Initialize(RenderHardwareInterface& aRHI);
 
     void Execute(
-        GraphicsEngine& aGraphicsEngine,
         GraphicsCommandList& inoutCommandList,
         const std::vector<RenderItem>& aItems,
         FrameTargets& aFrameTargets,

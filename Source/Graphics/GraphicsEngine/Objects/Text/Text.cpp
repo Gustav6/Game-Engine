@@ -1,7 +1,7 @@
 #include "Text.h"
 
 #include "Font.h"
-#include "Vertex.h"
+#include "../GPU/Vertex.h"
 #include "Materials/Material.h"
 
 Text::Text(std::string_view aName)

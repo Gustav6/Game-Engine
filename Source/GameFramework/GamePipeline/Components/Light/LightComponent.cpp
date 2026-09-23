@@ -5,8 +5,9 @@
 
 #include "GraphicsEngine/GraphicsEngine.hpp"
 
-#include "GraphicsEngine/Objects/Light.h"
-#include "GraphicsEngine/Objects/Texture.h"
+#include "GraphicsEngine/Objects/Scene/Light.h"
+
+#include "GraphicsEngine/Objects/GPU/Texture.h"
 
 #include "ensure.h"
 

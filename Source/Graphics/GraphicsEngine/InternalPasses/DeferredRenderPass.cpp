@@ -1,24 +1,25 @@
 #include "GraphicsEngine.pch.h"
-#include "OpaqueRenderPass.h"
+#include "DeferredRenderPass.h"
 
 #include "ShadowRenderPass.h"
-#include "Shared/RenderItem.h"
-#include "Shared/FrameTargets.h"
 #include "Shared/DrawCallSubmitter.h"
-#include "Shared/SceneCamera.h"
-#include "Shared/RenderContext.h"
 
-#include "GraphicsEngine/GraphicsEngine.hpp"
-#include "GraphicsEngine/DebugRenderMode.h"
+#include "GraphicsEngine/Core/RenderItem.h"
+#include "GraphicsEngine/Core/FrameTargets.h"
+#include "GraphicsEngine/Core/SceneCamera.h"
+#include "GraphicsEngine/Core/RenderContext.h"
+#include "GraphicsEngine/Core/DebugRenderMode.h"
 
 #include "GraphicsEngine/RHI/RenderHardwareInterface.h"
 
 #include "GraphicsEngine/ConstantBuffers/LightBuffer.h"
 #include "GraphicsEngine/ConstantBuffers/FrameBuffer.h"
 
-#include "GraphicsEngine/Objects/Light.h"
-#include "GraphicsEngine/Objects/GBuffer.h"
-#include "GraphicsEngine/Objects/Camera.h"
+#include "GraphicsEngine/ConstantBuffers/Manager/ConstantBufferManager.h"
+
+#include "GraphicsEngine/Objects/GPU/GBuffer.h"
+#include "GraphicsEngine/Objects/Scene/Light.h"
+#include "GraphicsEngine/Objects/Scene/Camera.h"
 
 #include "GraphicsEngine/RHI/GraphicsCommandList.h"
 #include <GraphicsEngine/RHI/PipelineStateObject.h>
@@ -33,7 +34,7 @@
 #include "GBuffer_PS.h"
 #include "Surface_VS.h"
 
-bool OpaqueRenderPass::Initialize(RenderHardwareInterface& aRHI)
+bool DeferredRenderPass::Initialize(RenderHardwareInterface& aRHI)
 {
 	// GBuffer & Gbuffer PSO
 	{
@@ -143,8 +144,7 @@ bool OpaqueRenderPass::Initialize(RenderHardwareInterface& aRHI)
 	return true;
 }
 
-void OpaqueRenderPass::Execute(
-	GraphicsEngine& aGraphicsEngine,
+void DeferredRenderPass::Execute(
 	GraphicsCommandList& inoutCommandList,
 	const std::vector<RenderItem>& aItems,
 	FrameTargets& aFrameTargets,
@@ -152,7 +152,9 @@ void OpaqueRenderPass::Execute(
 {
 	inoutCommandList.BeginEvent("Deffered Render");
 
+	inoutCommandList.BeginEvent("Clear GBuffer");
 	inoutCommandList.ClearRenderTargets(myGBuffer->GetTextures(), GBuffer::NUM_GBUFFER_TARGETS);
+	inoutCommandList.EndEvent();
 
 	FrameBuffer frameBuffer;
 	frameBuffer.View = aContext.Camera->Transform.GetFastInverse();
@@ -160,13 +162,13 @@ void OpaqueRenderPass::Execute(
 	frameBuffer.CameraPosition = aContext.Camera->Transform.GetTranslation();
 	frameBuffer.TypeOfRenderPass = static_cast<unsigned int>(aContext.Mode);
 
-	aGraphicsEngine.UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::FrameBuffer, frameBuffer, 0, PipelineStage_VertexShader | PipelineStage_PixelShader);
+	aContext.ConstantBuffers->UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::FrameBuffer, frameBuffer, 0, PipelineStage_VertexShader | PipelineStage_PixelShader);
 
 	{
 		inoutCommandList.BeginEvent("Object GBuffer Render");
 
 		inoutCommandList.SetRenderTargets(myGBuffer->GetTextures(), GBuffer::NUM_GBUFFER_TARGETS, aFrameTargets.DepthBuffer);
-		DrawCallSubmitter::RenderDrawCalls(aGraphicsEngine, inoutCommandList, aItems, aContext, DrawCallFlag_BindTextures | DrawCallFlag_BindMaterial);
+		DrawCallSubmitter::RenderDrawCalls(inoutCommandList, aItems, aContext, DrawCallFlag_BindTextures | DrawCallFlag_BindMaterial);
 
 		inoutCommandList.EndEvent();
 	}
@@ -207,7 +209,7 @@ void OpaqueRenderPass::Execute(
 
 					LightBuffer lightBuffer;
 					lightBuffer.Lights[0] = *LightDrawer::Get().mySceneLights[l].LightData;
-					aGraphicsEngine.UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::LightBuffer, lightBuffer, 3, PipelineStage_PixelShader);
+					aContext.ConstantBuffers->UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::LightBuffer, lightBuffer, 3, PipelineStage_PixelShader);
 
 					switch (LightDrawer::Get().mySceneLights[l].LightData->Type)
 					{
@@ -217,9 +219,9 @@ void OpaqueRenderPass::Execute(
 						std::vector<const Texture*> dirLightShadowMaps;
 						dirLightShadowMaps.reserve(ShadowRenderPass::NUM_CASCADES);
 
-						for (size_t c = 0; c < aContext.CascadeShadows.size(); c++)
+						for (size_t c = 0; c < aContext.CascadeShadows->size(); c++)
 						{
-							dirLightShadowMaps.emplace_back(aContext.CascadeShadows[c].ShadowMap.get());
+							dirLightShadowMaps.emplace_back(aContext.CascadeShadows->at(c).ShadowMap.get());
 						}
 
 						inoutCommandList.SetShaderResources(dirLightShadowMaps.data(), dirLightShadowMaps.size(), 100, PipelineStage_PixelShader);

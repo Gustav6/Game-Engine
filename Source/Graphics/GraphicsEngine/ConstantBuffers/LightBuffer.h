@@ -2,7 +2,7 @@
 
 #include "CommonUtilities/Math/Vector3.hpp"
 
-#include "Objects/Light.h"
+#include "Objects/Scene/Light.h"
 
 static constexpr unsigned int MAX_LIGHTS = 8;
 

@@ -3,7 +3,6 @@
 #include <vector>
 
 class GraphicsCommandList;
-class GraphicsEngine;
 class Mesh;
 
 struct RenderItem;
@@ -22,7 +21,6 @@ class DrawCallSubmitter
 {
 public:
     static void RenderDrawCalls(
-        GraphicsEngine& aGraphicsEngine,
         GraphicsCommandList& inoutCommandList,
         const std::vector<RenderItem>& aItems,
         RenderContext& aContext,

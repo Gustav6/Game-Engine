@@ -8,7 +8,7 @@
 
 #include "GamePipeline/World/Actor.hpp"
 
-#include "GraphicsEngine/Objects/Mesh.h"
+#include "GraphicsEngine/Objects/Mesh/Mesh.h"
 
 MeshComponent::MeshComponent(Actor* aOwner)
 	: Component(aOwner)

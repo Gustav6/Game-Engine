@@ -1,39 +1,39 @@
 #include "GraphicsEngine.pch.h"
 #include "ScreenSpaceRenderPass.h"
 
-#include "Shared/FrameTargets.h"
-#include "Shared/SceneCamera.h"
-#include "Shared/RenderContext.h"
-
-#include "Assets/BuiltinAssets.h"
-
 #include "CommonUtilities/Math/Matrix4x4.hpp"
 #include "CommonUtilities/Math/Vector2.hpp"
 
-#include "RHI/RenderHardwareInterface.h"
+#include "GraphicsEngine/Core/FrameTargets.h"
+#include "GraphicsEngine/Core/SceneCamera.h"
+#include "GraphicsEngine/Core/RenderContext.h"
 
-#include "GraphicsEngine/GraphicsEngine.hpp"
+#include "GraphicsEngine/Resources/BuiltinAssets.h"
+
+#include "RHI/RenderHardwareInterface.h"
 
 #include "GraphicsEngine/Materials/MaterialInterface.h"
 
 #include "GraphicsEngine/ConstantBuffers/FrameBuffer.h"
 #include "GraphicsEngine/ConstantBuffers/ObjectBuffer.h"
 
-#include "GraphicsEngine/Objects/Text.h"
-#include "GraphicsEngine/Objects/Font.h"
-#include "GraphicsEngine/Objects/Camera.h"
+#include "GraphicsEngine/ConstantBuffers/Manager/ConstantBufferManager.h"
+
+#include "GraphicsEngine/Objects/Text/Text.h"
+#include "GraphicsEngine/Objects/Text/Font.h"
+
+#include "GraphicsEngine/Objects/Scene/Camera.h"
 
 #include "GraphicsEngine/RHI/GraphicsCommandList.h"
 
 #include "GraphicsEngine/Drawers/TextDrawer.h"
 
 void ScreenSpaceRenderPass::Execute(
-	GraphicsEngine& aGraphicsEngine,
 	GraphicsCommandList& inoutCommandList,
 	FrameTargets& aFrameTargets,
 	RenderContext& aContext)
 {
-	inoutCommandList.BeginEvent("Render Screen space Objects");
+	inoutCommandList.BeginEvent("Screen Space Render");
 
 	inoutCommandList.SetRenderTarget(aFrameTargets.BackBuffer, nullptr);
 
@@ -42,9 +42,9 @@ void ScreenSpaceRenderPass::Execute(
 	frameBuffer.Projection = aContext.Camera->RenderCamera->GetProjection();
 	frameBuffer.CameraPosition = aContext.Camera->Transform.GetTranslation();
 
-	aGraphicsEngine.UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::FrameBuffer, frameBuffer, 0, PipelineStage_VertexShader | PipelineStage_PixelShader);
+	aContext.ConstantBuffers->UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::FrameBuffer, frameBuffer, 0, PipelineStage_VertexShader | PipelineStage_PixelShader);
 
-	const CommonUtilities::Vector2ui windowSize = aGraphicsEngine.GetClientSize();
+	const CommonUtilities::Vector2ui windowSize = aContext.RHI->GetClientSize();
 
 	CommonUtilities::Matrix4x4f scale;
 	scale.SetScaling({ 2.0f / static_cast<float>(windowSize.x), -2.0f / static_cast<float>(windowSize.y), 1.0f });
@@ -79,7 +79,7 @@ void ScreenSpaceRenderPass::Execute(
 		objectBuffer.World = drawCall.Text->GetRenderMatrix() * pixelToNDC;
 		objectBuffer.WorldInvT = objectBuffer.World.GetFastInverse().GetTranspose();
 
-		aGraphicsEngine.UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::ObjectBuffer, objectBuffer, 1, PipelineStage_VertexShader | PipelineStage_PixelShader);
+		aContext.ConstantBuffers->UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::ObjectBuffer, objectBuffer, 1, PipelineStage_VertexShader | PipelineStage_PixelShader);
 
 		inoutCommandList.SetShaderResource(&drawCall.Text->myFont->myAtlas, 0, PipelineStage_PixelShader);
 
@@ -97,7 +97,7 @@ void ScreenSpaceRenderPass::Execute(
 				material->RefreshMaterialData();
 			}
 
-			aGraphicsEngine.UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::MaterialBuffer, material->GetParameterDataBlock(), Material::MATERIAL_BUFFER_SIZE, 5, PipelineStage_VertexShader | PipelineStage_PixelShader);
+			aContext.ConstantBuffers->UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::MaterialBuffer, material->GetParameterDataBlock(), Material::MATERIAL_BUFFER_SIZE, 5, PipelineStage_VertexShader | PipelineStage_PixelShader);
 		}
 
 		inoutCommandList.SetPipelineStateObject(material->GetPSO());

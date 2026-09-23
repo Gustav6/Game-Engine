@@ -28,6 +28,7 @@ struct MaterialDescription
 class Material : public MaterialInterface
 {
 	friend class GraphicsEngine;
+	friend class MaterialFactory;
 
 public:
 	std::string_view GetName() const override { return myName; }
