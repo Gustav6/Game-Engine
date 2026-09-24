@@ -154,7 +154,7 @@
 						1
 					],
 					"Mesh": "SM_NoCollision_Cube",
-					"ContentPath": "/Game/Static_Meshes/SM_NoCollision_Cube.SM_NoCollision_Cube",
+					"ContentPath": "/Game/Static_Meshes/Test/SM_NoCollision_Cube.SM_NoCollision_Cube",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor2",
@@ -197,9 +197,9 @@
 				0,
 				100,
 				0,
-				-3150,
-				-3150,
-				0,
+				-3150.0170759421426,
+				-3149.999732612227,
+				0.020014319666399074,
 				1
 			],
 			"Tags": [],
@@ -280,228 +280,6 @@
 			]
 		},
 		{
-			"Name": "SM_TheCube",
-			"Archetype": "StaticMeshActor",
-			"Transform": [
-				0.95755555824395411,
-				0.80348450692972906,
-				0,
-				0,
-				-2.5711504221751329,
-				3.064177786380653,
-				0,
-				0,
-				0,
-				-0,
-				0.10000000000000001,
-				0,
-				-75.980768051879238,
-				-297.82032528008057,
-				0,
-				1
-			],
-			"Tags": [],
-			"Components": [
-				{
-					"Name": "StaticMeshComponent0",
-					"TypeID": 1,
-					"Parent": "",
-					"Tags": [],
-					"Transform": [
-						1,
-						0,
-						0,
-						0,
-						0,
-						1,
-						0,
-						0,
-						0,
-						0,
-						1,
-						0,
-						0,
-						0,
-						0,
-						1
-					],
-					"Mesh": "SM_TheCube",
-					"ContentPath": "/Game/Static_Meshes/SM_TheCube.SM_TheCube",
-					"Materials": [
-						{
-							"Name": "MI_BlockoutColor3",
-							"Parent": "M_Instance",
-							"Parameters": [
-								{
-									"Name": "Color",
-									"Type": 1,
-									"Value": [
-										0.024438999593257904,
-										0.026041999459266663,
-										0.024007000029087067,
-										1
-									]
-								},
-								{
-									"Name": "Roughness",
-									"Type": 0,
-									"Value": 1
-								}
-							]
-						}
-					]
-				}
-			]
-		},
-		{
-			"Name": "SM_TheCube2",
-			"Archetype": "StaticMeshActor",
-			"Transform": [
-				0.93969262124831865,
-				0.34202014205520698,
-				0,
-				0,
-				-1.3680805682208279,
-				3.7587704849932746,
-				0,
-				0,
-				0,
-				-0,
-				0.10000000000000001,
-				0,
-				-326.60254379063838,
-				13.589838347852561,
-				0,
-				1
-			],
-			"Tags": [],
-			"Components": [
-				{
-					"Name": "StaticMeshComponent0",
-					"TypeID": 1,
-					"Parent": "",
-					"Tags": [],
-					"Transform": [
-						1,
-						0,
-						0,
-						0,
-						0,
-						1,
-						0,
-						0,
-						0,
-						0,
-						1,
-						0,
-						0,
-						0,
-						0,
-						1
-					],
-					"Mesh": "SM_TheCube",
-					"ContentPath": "/Game/Static_Meshes/SM_TheCube.SM_TheCube",
-					"Materials": [
-						{
-							"Name": "MI_BlockoutColor3",
-							"Parent": "M_Instance",
-							"Parameters": [
-								{
-									"Name": "Color",
-									"Type": 1,
-									"Value": [
-										0.024438999593257904,
-										0.026041999459266663,
-										0.024007000029087067,
-										1
-									]
-								},
-								{
-									"Name": "Roughness",
-									"Type": 0,
-									"Value": 1
-								}
-							]
-						}
-					]
-				}
-			]
-		},
-		{
-			"Name": "SM_TheCube3",
-			"Archetype": "StaticMeshActor",
-			"Transform": [
-				0.86602540648843074,
-				0.49999999531654843,
-				0,
-				0,
-				-1.9999999812661937,
-				3.464101625953723,
-				0,
-				0,
-				0,
-				-0,
-				0.10000000000000001,
-				0,
-				-455.98076257224102,
-				377.67949283545221,
-				0,
-				1
-			],
-			"Tags": [],
-			"Components": [
-				{
-					"Name": "StaticMeshComponent0",
-					"TypeID": 1,
-					"Parent": "",
-					"Tags": [],
-					"Transform": [
-						1,
-						0,
-						0,
-						0,
-						0,
-						1,
-						0,
-						0,
-						0,
-						0,
-						1,
-						0,
-						0,
-						0,
-						0,
-						1
-					],
-					"Mesh": "SM_TheCube",
-					"ContentPath": "/Game/Static_Meshes/SM_TheCube.SM_TheCube",
-					"Materials": [
-						{
-							"Name": "MI_BlockoutColor3",
-							"Parent": "M_Instance",
-							"Parameters": [
-								{
-									"Name": "Color",
-									"Type": 1,
-									"Value": [
-										0.024438999593257904,
-										0.026041999459266663,
-										0.024007000029087067,
-										1
-									]
-								},
-								{
-									"Name": "Roughness",
-									"Type": 0,
-									"Value": 1
-								}
-							]
-						}
-					]
-				}
-			]
-		},
-		{
 			"Name": "SM_TheCube4",
 			"Archetype": "StaticMeshActor",
 			"Transform": [
@@ -517,8 +295,8 @@
 				-0,
 				0.5,
 				0,
-				509.57078782270412,
-				-591.81314947633075,
+				471.98308302826047,
+				-605.49395531099447,
 				5.9663650065324987,
 				1
 			],
@@ -548,7 +326,7 @@
 						1
 					],
 					"Mesh": "SM_TheCube",
-					"ContentPath": "/Game/Static_Meshes/SM_TheCube.SM_TheCube",
+					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -622,7 +400,7 @@
 						1
 					],
 					"Mesh": "SM_TheCube",
-					"ContentPath": "/Game/Static_Meshes/SM_TheCube.SM_TheCube",
+					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -653,9 +431,9 @@
 			"Name": "SM_TheCube7",
 			"Archetype": "StaticMeshActor",
 			"Transform": [
-				0.38293571795669989,
-				0.32061823060721401,
-				0.023752602284509892,
+				0.76587143591339979,
+				0.64123646121442801,
+				0.047505204569019785,
 				0,
 				-0.62159428286648655,
 				0.75726087929924368,
@@ -665,9 +443,9 @@
 				0.12398290806451312,
 				0.97855339524638163,
 				0,
-				309.13311446025835,
-				-392.31039547563091,
-				-25.490214186441019,
+				356.14047648991692,
+				-375.42981918681113,
+				-23.176330185467894,
 				1
 			],
 			"Tags": [],
@@ -696,7 +474,7 @@
 						1
 					],
 					"Mesh": "SM_TheCube",
-					"ContentPath": "/Game/Static_Meshes/SM_TheCube.SM_TheCube",
+					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -731,17 +509,17 @@
 				-0.00032410867783717954,
 				-0.12015812867879501,
 				0,
-				0.00073761772969300316,
-				0.4999769343370597,
-				0.004745634941744974,
+				0.0014752354593860063,
+				0.99995386867411939,
+				0.009491269883489948,
 				0,
 				0.1201495094220708,
 				-0.009599764436006946,
 				0.99270939348250797,
 				0,
-				318.96933889733327,
-				-390.59355375147715,
-				-24.941448919962593,
+				365.97670092699184,
+				-373.71297746265736,
+				-22.627564918989467,
 				1
 			],
 			"Tags": [],
@@ -770,7 +548,7 @@
 						1
 					],
 					"Mesh": "SM_TheCube",
-					"ContentPath": "/Game/Static_Meshes/SM_TheCube.SM_TheCube",
+					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -805,17 +583,17 @@
 				-2.8231694565300138,
 				0.11588116407594423,
 				0,
-				0.47007362029658445,
-				0.16880576288819876,
-				0.023138840009731189,
+				0.9401472405931689,
+				0.33761152577639753,
+				0.046277680019462378,
 				0,
 				-0.056590849787480024,
 				0.020764121519870362,
 				0.99818151003604494,
 				0,
-				466.07905127833891,
-				-361.69344776733186,
-				-5.3119869123295125,
+				513.08641330799742,
+				-344.81287147851208,
+				-2.9981029113563946,
 				1
 			],
 			"Tags": [],
@@ -844,7 +622,7 @@
 						1
 					],
 					"Mesh": "SM_TheCube",
-					"ContentPath": "/Game/Static_Meshes/SM_TheCube.SM_TheCube",
+					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -879,17 +657,17 @@
 				1.7165438779596673,
 				0.046719270218700787,
 				0,
-				-0.38054495012017076,
-				0.32308653616848415,
-				-0.028295425154741385,
+				-0.76108990024034151,
+				0.6461730723369683,
+				-0.056590850309482771,
 				0,
 				-0.056590849787481558,
 				0.020764121519870379,
 				0.99818151003604483,
 				0,
-				472.91309343582805,
-				-826.40003002965159,
-				4.7422648167897847,
+				557.97495047750363,
+				-841.82810735767998,
+				9.8856913332370393,
 				1
 			],
 			"Tags": [],
@@ -918,81 +696,7 @@
 						1
 					],
 					"Mesh": "SM_TheCube",
-					"ContentPath": "/Game/Static_Meshes/SM_TheCube.SM_TheCube",
-					"Materials": [
-						{
-							"Name": "MI_BlockoutColor3",
-							"Parent": "M_Instance",
-							"Parameters": [
-								{
-									"Name": "Color",
-									"Type": 1,
-									"Value": [
-										0.024438999593257904,
-										0.026041999459266663,
-										0.024007000029087067,
-										1
-									]
-								},
-								{
-									"Name": "Roughness",
-									"Type": 0,
-									"Value": 1
-								}
-							]
-						}
-					]
-				}
-			]
-		},
-		{
-			"Name": "SM_TheCube11",
-			"Archetype": "StaticMeshActor",
-			"Transform": [
-				-0.4911048612132809,
-				0.089074055711847691,
-				-0.029695587074958295,
-				0,
-				-0.16651017490617334,
-				-0.97244433444552936,
-				-0.16317591138861653,
-				0,
-				-0.086824091261876526,
-				-0.1503837318361288,
-				0.9848077530033913,
-				0,
-				484.99530524718523,
-				-800.8266699666342,
-				4.8952773416585007,
-				1
-			],
-			"Tags": [],
-			"Components": [
-				{
-					"Name": "StaticMeshComponent0",
-					"TypeID": 1,
-					"Parent": "",
-					"Tags": [],
-					"Transform": [
-						1,
-						0,
-						0,
-						0,
-						0,
-						1,
-						0,
-						0,
-						0,
-						0,
-						1,
-						0,
-						0,
-						0,
-						0,
-						1
-					],
-					"Mesh": "SM_TheCube",
-					"ContentPath": "/Game/Static_Meshes/SM_TheCube.SM_TheCube",
+					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -1027,17 +731,17 @@
 				-0.0035878766376056265,
 				0.22661489822799472,
 				0,
-				0.00073761840412718907,
-				0.49997693433566992,
-				0.0047456349833405829,
+				0.0014752368082543781,
+				0.99995386867133984,
+				0.0094912699666811658,
 				0,
 				-0.22663849768741992,
 				-0.0089099758952634785,
 				0.97393819295452988,
 				0,
-				432.84993076703802,
-				-390.66586700748496,
-				-35.023458277915495,
+				479.85729279669658,
+				-373.78529071866518,
+				-32.709574276942369,
 				1
 			],
 			"Tags": [],
@@ -1066,7 +770,7 @@
 						1
 					],
 					"Mesh": "SM_TheCube",
-					"ContentPath": "/Game/Static_Meshes/SM_TheCube.SM_TheCube",
+					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -1111,7 +815,7 @@
 				0,
 				1002.9681348449783,
 				-1146.9073113764337,
-				210.66346361203986,
+				-789.33653638796011,
 				1
 			],
 			"Tags": [],
@@ -1140,7 +844,7 @@
 						1
 					],
 					"Mesh": "SM_TheCube",
-					"ContentPath": "/Game/Static_Meshes/SM_TheCube.SM_TheCube",
+					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -1185,7 +889,7 @@
 				0,
 				909.69030491260469,
 				-1044.7656609590267,
-				274.52259218733082,
+				-725.47740781266918,
 				1
 			],
 			"Tags": [],
@@ -1214,7 +918,7 @@
 						1
 					],
 					"Mesh": "SM_TheCube",
-					"ContentPath": "/Game/Static_Meshes/SM_TheCube.SM_TheCube",
+					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -1259,7 +963,7 @@
 				0,
 				650.23476674396534,
 				-1020.3874862044764,
-				144.58736521060709,
+				-855.41263478939288,
 				1
 			],
 			"Tags": [],
@@ -1288,7 +992,7 @@
 						1
 					],
 					"Mesh": "SM_TheCube",
-					"ContentPath": "/Game/Static_Meshes/SM_TheCube.SM_TheCube",
+					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -1333,7 +1037,7 @@
 				0,
 				886.467094828379,
 				-1023.2365467999487,
-				293.31644500000004,
+				-706.68355499999996,
 				1
 			],
 			"Tags": [],
@@ -1362,7 +1066,7 @@
 						1
 					],
 					"Mesh": "SM_TheCube",
-					"ContentPath": "/Game/Static_Meshes/SM_TheCube.SM_TheCube",
+					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -1407,7 +1111,7 @@
 				0,
 				868.73653649237849,
 				-1274.2890924696562,
-				216.51490272097371,
+				-783.48509727902626,
 				1
 			],
 			"Tags": [],
@@ -1436,7 +1140,7 @@
 						1
 					],
 					"Mesh": "SM_TheCube",
-					"ContentPath": "/Game/Static_Meshes/SM_TheCube.SM_TheCube",
+					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -1481,7 +1185,7 @@
 				0,
 				912.64638271503577,
 				-1115.7543861036179,
-				247.75654713665389,
+				-752.24345286334608,
 				1
 			],
 			"Tags": [],
@@ -1510,7 +1214,7 @@
 						1
 					],
 					"Mesh": "SM_TheCube",
-					"ContentPath": "/Game/Static_Meshes/SM_TheCube.SM_TheCube",
+					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -1555,7 +1259,7 @@
 				0,
 				912.64638298829027,
 				-1115.7543859931632,
-				367.75654700000052,
+				-632.24345299999948,
 				1
 			],
 			"Tags": [],
@@ -1584,7 +1288,7 @@
 						1
 					],
 					"Mesh": "SM_TheCube",
-					"ContentPath": "/Game/Static_Meshes/SM_TheCube.SM_TheCube",
+					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -1629,7 +1333,7 @@
 				0,
 				950.52750561914695,
 				-1044.7266392078795,
-				310.69347862688085,
+				-689.30652137311915,
 				1
 			],
 			"Tags": [],
@@ -1658,7 +1362,7 @@
 						1
 					],
 					"Mesh": "SM_TheCube",
-					"ContentPath": "/Game/Static_Meshes/SM_TheCube.SM_TheCube",
+					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -1703,7 +1407,7 @@
 				0,
 				878.03145294575165,
 				-1084.2224405096035,
-				512.00474640084724,
+				-487.99525359915276,
 				1
 			],
 			"Tags": [],
@@ -1732,7 +1436,7 @@
 						1
 					],
 					"Mesh": "SM_TheCube",
-					"ContentPath": "/Game/Static_Meshes/SM_TheCube.SM_TheCube",
+					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -1777,7 +1481,7 @@
 				0,
 				1015.1609841136431,
 				-1211.1580849526622,
-				287.00924471982955,
+				-712.99075528017045,
 				1
 			],
 			"Tags": [],
@@ -1806,7 +1510,7 @@
 						1
 					],
 					"Mesh": "SM_TheCube",
-					"ContentPath": "/Game/Static_Meshes/SM_TheCube.SM_TheCube",
+					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -1829,55 +1533,6 @@
 								}
 							]
 						}
-					]
-				}
-			]
-		},
-		{
-			"Name": "GroupActor0",
-			"Archetype": "GroupActor",
-			"Transform": [
-				0.5000000151149947,
-				0.86602539505779186,
-				5.5511151231257827e-17,
-				0,
-				-0.85286852335837371,
-				0.49240389139146801,
-				-0.17364817766693028,
-				0,
-				-0.15038373166506905,
-				0.086824091458156311,
-				0.98480775301220802,
-				0,
-				846.53509203624435,
-				-1082.8117550636039,
-				296.75119778149531,
-				1
-			],
-			"Tags": [],
-			"Components": [
-				{
-					"Name": "GroupComponent",
-					"TypeID": 0,
-					"Parent": "",
-					"Tags": [],
-					"Transform": [
-						1,
-						0,
-						0,
-						0,
-						0,
-						1,
-						0,
-						0,
-						0,
-						0,
-						1,
-						0,
-						0,
-						0,
-						0,
-						1
 					]
 				}
 			]
@@ -1900,7 +1555,7 @@
 				0,
 				597.12672953299193,
 				-3.6863325775808562,
-				171.43757035765483,
+				-828.56242964234514,
 				1
 			],
 			"Tags": [],
@@ -1929,7 +1584,7 @@
 						1
 					],
 					"Mesh": "SM_TheCube",
-					"ContentPath": "/Game/Static_Meshes/SM_TheCube.SM_TheCube",
+					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -1957,55 +1612,6 @@
 			]
 		},
 		{
-			"Name": "GroupActor_0",
-			"Archetype": "GroupActor",
-			"Transform": [
-				0.73279507625001139,
-				-0.61855908591590569,
-				-0.28354194302540026,
-				0,
-				0.65774170108002206,
-				0.75066419673348872,
-				0.062282569012728398,
-				0,
-				0.17431933594440713,
-				-0.23213771984179032,
-				0.95693513267230157,
-				0,
-				539.65843994390343,
-				81.206776584341696,
-				322.1653115638702,
-				1
-			],
-			"Tags": [],
-			"Components": [
-				{
-					"Name": "GroupComponent",
-					"TypeID": 0,
-					"Parent": "",
-					"Tags": [],
-					"Transform": [
-						1,
-						0,
-						0,
-						0,
-						0,
-						1,
-						0,
-						0,
-						0,
-						0,
-						1,
-						0,
-						0,
-						0,
-						0,
-						1
-					]
-				}
-			]
-		},
-		{
 			"Name": "SM_TheCube25",
 			"Archetype": "StaticMeshActor",
 			"Transform": [
@@ -2023,7 +1629,7 @@
 				0,
 				608.27258753263982,
 				77.730464889629161,
-				245.23364380925395,
+				-754.76635619074602,
 				1
 			],
 			"Tags": [],
@@ -2052,7 +1658,7 @@
 						1
 					],
 					"Mesh": "SM_TheCube",
-					"ContentPath": "/Game/Static_Meshes/SM_TheCube.SM_TheCube",
+					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -2097,7 +1703,7 @@
 				0,
 				608.27258753263982,
 				77.730464889629047,
-				265.23364380925443,
+				-734.76635619074557,
 				1
 			],
 			"Tags": [],
@@ -2126,7 +1732,7 @@
 						1
 					],
 					"Mesh": "SM_TheCube",
-					"ContentPath": "/Game/Static_Meshes/SM_TheCube.SM_TheCube",
+					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -2171,7 +1777,7 @@
 				0,
 				643.34414824959663,
 				42.233927719010694,
-				308.39299895730267,
+				-691.60700104269733,
 				1
 			],
 			"Tags": [],
@@ -2200,7 +1806,7 @@
 						1
 					],
 					"Mesh": "SM_TheCube",
-					"ContentPath": "/Game/Static_Meshes/SM_TheCube.SM_TheCube",
+					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -2245,7 +1851,7 @@
 				0,
 				608.27258753263936,
 				77.730464889629161,
-				305.23364380925398,
+				-694.76635619074602,
 				1
 			],
 			"Tags": [],
@@ -2274,7 +1880,7 @@
 						1
 					],
 					"Mesh": "SM_TheCube",
-					"ContentPath": "/Game/Static_Meshes/SM_TheCube.SM_TheCube",
+					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -2319,7 +1925,7 @@
 				0,
 				577.10972141356706,
 				-117.18182130286186,
-				257.0366429563943,
+				-742.9633570436057,
 				1
 			],
 			"Tags": [],
@@ -2348,7 +1954,7 @@
 						1
 					],
 					"Mesh": "SM_TheCube",
-					"ContentPath": "/Game/Static_Meshes/SM_TheCube.SM_TheCube",
+					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -2393,7 +1999,7 @@
 				0,
 				368.57320035422799,
 				-13.561103280331736,
-				206.49452961338065,
+				-793.50547038661932,
 				1
 			],
 			"Tags": [],
@@ -2422,7 +2028,7 @@
 						1
 					],
 					"Mesh": "SM_TheCube",
-					"ContentPath": "/Game/Static_Meshes/SM_TheCube.SM_TheCube",
+					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -2467,7 +2073,7 @@
 				0,
 				528.47865665845688,
 				292.88960765058391,
-				239.75876828642876,
+				-760.24123171357121,
 				1
 			],
 			"Tags": [],
@@ -2496,7 +2102,7 @@
 						1
 					],
 					"Mesh": "SM_TheCube",
-					"ContentPath": "/Game/Static_Meshes/SM_TheCube.SM_TheCube",
+					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -2541,7 +2147,7 @@
 				0,
 				597.68341627888094,
 				17.01985390196694,
-				402.42291667919801,
+				-597.57708332080199,
 				1
 			],
 			"Tags": [],
@@ -2570,7 +2176,7 @@
 						1
 					],
 					"Mesh": "SM_TheCube",
-					"ContentPath": "/Game/Static_Meshes/SM_TheCube.SM_TheCube",
+					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -2615,7 +2221,7 @@
 				0,
 				577.89601303847371,
 				26.957689394182921,
-				284.48353351018079,
+				-715.51646648981921,
 				1
 			],
 			"Tags": [],
@@ -2644,7 +2250,7 @@
 						1
 					],
 					"Mesh": "SM_TheCube",
-					"ContentPath": "/Game/Static_Meshes/SM_TheCube.SM_TheCube",
+					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -2689,7 +2295,7 @@
 				0,
 				619.5866138151307,
 				51.667019050762747,
-				548.43601113434454,
+				-451.56398886565546,
 				1
 			],
 			"Tags": [],
@@ -2718,7 +2324,7 @@
 						1
 					],
 					"Mesh": "SM_TheCube",
-					"ContentPath": "/Game/Static_Meshes/SM_TheCube.SM_TheCube",
+					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -2763,7 +2369,7 @@
 				0,
 				250.74715355804642,
 				20.611180607862789,
-				36.05604311137968,
+				-963.94395688862028,
 				1
 			],
 			"Tags": [],
@@ -2792,7 +2398,7 @@
 						1
 					],
 					"Mesh": "SM_TheCube",
-					"ContentPath": "/Game/Static_Meshes/SM_TheCube.SM_TheCube",
+					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -2823,21 +2429,21 @@
 			"Name": "SM_TheCube37",
 			"Archetype": "StaticMeshActor",
 			"Transform": [
-				-0.43375607801709737,
-				-0.24794757926974212,
-				-0.019433546189546683,
+				-0.64537991416092777,
+				-0.75963070827794932,
+				-0.080286695278696737,
 				0,
-				0.95370327893721296,
-				-1.7026791093417208,
-				0.4374173137356373,
+				1.4550550213464268,
+				-1.2866150085703465,
+				0.47690324445958232,
 				0,
-				-0.14154565718879303,
-				0.17119858174039554,
-				0.97501583194380481,
+				-0.23278420825148488,
+				0.095481107929907549,
+				0.96782998011903243,
 				0,
-				417.80311292795386,
-				-1254.6686095397486,
-				-42.854550367757696,
+				542.9196961772958,
+				-1334.3991554490412,
+				-55.614401998768791,
 				1
 			],
 			"Tags": [],
@@ -2866,81 +2472,7 @@
 						1
 					],
 					"Mesh": "SM_TheCube",
-					"ContentPath": "/Game/Static_Meshes/SM_TheCube.SM_TheCube",
-					"Materials": [
-						{
-							"Name": "MI_BlockoutColor3",
-							"Parent": "M_Instance",
-							"Parameters": [
-								{
-									"Name": "Color",
-									"Type": 1,
-									"Value": [
-										0.024438999593257904,
-										0.026041999459266663,
-										0.024007000029087067,
-										1
-									]
-								},
-								{
-									"Name": "Roughness",
-									"Type": 0,
-									"Value": 1
-								}
-							]
-						}
-					]
-				}
-			]
-		},
-		{
-			"Name": "SM_TheCube38",
-			"Archetype": "StaticMeshActor",
-			"Transform": [
-				-0.49110486084787763,
-				0.08907405858196156,
-				-0.029695584508878506,
-				0,
-				-0.22185240623171928,
-				-1.5091378818506229,
-				-0.857778738027826,
-				0,
-				-0.13853778864856769,
-				-0.47391002388533898,
-				0.86960713565227954,
-				0,
-				474.80057688928434,
-				-858.83742306688475,
-				-0.51201357227265731,
-				1
-			],
-			"Tags": [],
-			"Components": [
-				{
-					"Name": "StaticMeshComponent0",
-					"TypeID": 1,
-					"Parent": "",
-					"Tags": [],
-					"Transform": [
-						1,
-						0,
-						0,
-						0,
-						0,
-						1,
-						0,
-						0,
-						0,
-						0,
-						1,
-						0,
-						0,
-						0,
-						0,
-						1
-					],
-					"Mesh": "SM_TheCube",
-					"ContentPath": "/Game/Static_Meshes/SM_TheCube.SM_TheCube",
+					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -2971,21 +2503,21 @@
 			"Name": "SM_TheCube39",
 			"Archetype": "StaticMeshActor",
 			"Transform": [
-				-0.49110486084781968,
-				0.089074058582580454,
-				-0.029695584507980752,
+				-0.98091389359098091,
+				-0.16402544675023856,
+				-0.10442023835716069,
 				0,
-				-0.28142113591105389,
-				-1.3760300427877028,
-				0.52663409081467938,
+				0.17974041526911766,
+				-1.3992946607527057,
+				0.50957613318115147,
 				0,
-				0.0080632259142508489,
-				0.35598603601471973,
-				0.93445648724292263,
+				-0.15313208993733152,
+				0.32072118124996218,
+				0.93471305058239873,
 				0,
-				449.00867779071189,
-				-1166.5381071701879,
-				-92.993390275569226,
+				552.05686772151785,
+				-1238.7531358743345,
+				-103.22711856999844,
 				1
 			],
 			"Tags": [],
@@ -3014,7 +2546,7 @@
 						1
 					],
 					"Mesh": "SM_TheCube",
-					"ContentPath": "/Game/Static_Meshes/SM_TheCube.SM_TheCube",
+					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -3045,21 +2577,21 @@
 			"Name": "SM_TheCube40",
 			"Archetype": "StaticMeshActor",
 			"Transform": [
-				-0.43375607859217891,
-				-0.24794757855122684,
-				-0.019433542521089392,
+				-0.64537991604301226,
+				-0.75963070744829475,
+				-0.080286687999432782,
 				0,
-				0.9930108613931401,
-				-1.7171017268587692,
-				-0.25591226772839815,
+				1.5265382399946781,
+				-1.2743355605473732,
+				-0.21389221808744069,
 				0,
-				0.030083457682863673,
-				-0.13030122051228893,
-				0.99101795014361427,
+				0.030083457693599137,
+				-0.13030122057259103,
+				0.99101795013535976,
 				0,
-				497.17923605832459,
-				-1395.1988448404363,
-				-21.538024342548823,
+				664.26720436325024,
+				-1440.0979839073088,
+				-30.992254280357166,
 				1
 			],
 			"Tags": [],
@@ -3088,7 +2620,7 @@
 						1
 					],
 					"Mesh": "SM_TheCube",
-					"ContentPath": "/Game/Static_Meshes/SM_TheCube.SM_TheCube",
+					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -3133,7 +2665,7 @@
 				0,
 				-1062.7410433997088,
 				-341.36393125280381,
-				245.23364400000003,
+				-754.76635600000009,
 				1
 			],
 			"Tags": [],
@@ -3162,7 +2694,7 @@
 						1
 					],
 					"Mesh": "SM_TheCube",
-					"ContentPath": "/Game/Static_Meshes/SM_TheCube.SM_TheCube",
+					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -3207,7 +2739,7 @@
 				0,
 				-810.83061576596288,
 				-293.08263627372901,
-				186.49453,
+				-813.50547000000006,
 				1
 			],
 			"Tags": [],
@@ -3236,7 +2768,7 @@
 						1
 					],
 					"Mesh": "SM_TheCube",
-					"ContentPath": "/Game/Static_Meshes/SM_TheCube.SM_TheCube",
+					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -3281,7 +2813,7 @@
 				0,
 				-1083.5030331680043,
 				-320.26329538930867,
-				258.68224894278302,
+				-741.31775105721704,
 				1
 			],
 			"Tags": [],
@@ -3310,7 +2842,7 @@
 						1
 					],
 					"Mesh": "SM_TheCube",
-					"ContentPath": "/Game/Static_Meshes/SM_TheCube.SM_TheCube",
+					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -3355,7 +2887,7 @@
 				0,
 				-998.20545668686373,
 				-154.82417259252719,
-				237.03664300000003,
+				-762.96335700000009,
 				1
 			],
 			"Tags": [],
@@ -3384,7 +2916,7 @@
 						1
 					],
 					"Mesh": "SM_TheCube",
-					"ContentPath": "/Game/Static_Meshes/SM_TheCube.SM_TheCube",
+					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -3429,7 +2961,7 @@
 				0,
 				-992.91436262746129,
 				-317.63580138647552,
-				215.233644,
+				-784.76635600000009,
 				1
 			],
 			"Tags": [],
@@ -3458,7 +2990,7 @@
 						1
 					],
 					"Mesh": "SM_TheCube",
-					"ContentPath": "/Game/Static_Meshes/SM_TheCube.SM_TheCube",
+					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -3503,7 +3035,7 @@
 				0,
 				-991.52134299999989,
 				-557.11039200000005,
-				199.758768,
+				-800.24123199999985,
 				1
 			],
 			"Tags": [],
@@ -3532,7 +3064,7 @@
 						1
 					],
 					"Mesh": "SM_TheCube",
-					"ContentPath": "/Game/Static_Meshes/SM_TheCube.SM_TheCube",
+					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -3577,7 +3109,7 @@
 				0,
 				-777.62729654447435,
 				-119.08287827497118,
-				85.48521614615936,
+				-914.51478385384053,
 				1
 			],
 			"Tags": [],
@@ -3606,7 +3138,7 @@
 						1
 					],
 					"Mesh": "SM_TheCube",
-					"ContentPath": "/Game/Static_Meshes/SM_TheCube.SM_TheCube",
+					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -3651,7 +3183,7 @@
 				0,
 				933.76634300000001,
 				-971.34546,
-				293.31644499999999,
+				-706.68355500000007,
 				1
 			],
 			"Tags": [],
@@ -3680,7 +3212,7 @@
 						1
 					],
 					"Mesh": "SM_TheCube",
-					"ContentPath": "/Game/Static_Meshes/SM_TheCube.SM_TheCube",
+					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -3725,7 +3257,7 @@
 				0,
 				672.4676398997151,
 				-1183.6321629542042,
-				178.88662106695088,
+				-821.11337893304915,
 				1
 			],
 			"Tags": [],
@@ -3754,7 +3286,7 @@
 						1
 					],
 					"Mesh": "SM_TheCube",
-					"ContentPath": "/Game/Static_Meshes/SM_TheCube.SM_TheCube",
+					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -3799,7 +3331,7 @@
 				0,
 				843.76634300000001,
 				-1081.34546,
-				293.31644499999999,
+				-706.68355500000007,
 				1
 			],
 			"Tags": [],
@@ -3828,7 +3360,7 @@
 						1
 					],
 					"Mesh": "SM_TheCube",
-					"ContentPath": "/Game/Static_Meshes/SM_TheCube.SM_TheCube",
+					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -3871,8 +3403,8 @@
 				-0,
 				1,
 				0,
-				442.97659966254656,
-				-583.73762579667095,
+				405.38889486810291,
+				-597.41843163133467,
 				55.966461185300204,
 				1
 			],
@@ -3902,7 +3434,7 @@
 						1
 					],
 					"Mesh": "SM_TheCube",
-					"ContentPath": "/Game/Static_Meshes/SM_TheCube.SM_TheCube",
+					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -3945,8 +3477,8 @@
 				0.057508568206022584,
 				0.46984631085607553,
 				0,
-				437.91591387023169,
-				-585.54471830041382,
+				400.32820907578804,
+				-599.22552413507753,
 				162.20379003273825,
 				1
 			],
@@ -3976,7 +3508,7 @@
 						1
 					],
 					"Mesh": "SM_TheCube",
-					"ContentPath": "/Game/Static_Meshes/SM_TheCube.SM_TheCube",
+					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -4019,8 +3551,8 @@
 				-0.75358190822473881,
 				0.64278760554185788,
 				0,
-				423.93304854180673,
-				-591.04247032813953,
+				386.34534374736307,
+				-604.72327616280324,
 				129.53858494458592,
 				1
 			],
@@ -4050,7 +3582,7 @@
 						1
 					],
 					"Mesh": "SM_TheCube",
-					"ContentPath": "/Game/Static_Meshes/SM_TheCube.SM_TheCube",
+					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -4093,8 +3625,8 @@
 				0.58981374316969282,
 				0.64278760552862735,
 				0,
-				392.2152203795755,
-				-559.2735494360146,
+				354.62751558513185,
+				-572.95435527067832,
 				129.53858494471373,
 				1
 			],
@@ -4124,7 +3656,7 @@
 						1
 					],
 					"Mesh": "SM_TheCube",
-					"ContentPath": "/Game/Static_Meshes/SM_TheCube.SM_TheCube",
+					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -4169,7 +3701,7 @@
 				0,
 				-1046.1678317354574,
 				-335.74004353771988,
-				201.90074379607819,
+				-798.09925620392187,
 				1
 			],
 			"Tags": [],
@@ -4198,7 +3730,7 @@
 						1
 					],
 					"Mesh": "SM_TheCube",
-					"ContentPath": "/Game/Static_Meshes/SM_TheCube.SM_TheCube",
+					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -4243,7 +3775,7 @@
 				0,
 				-1009.9239759773611,
 				-430.67888535791269,
-				336.42710361388248,
+				-663.57289638611746,
 				1
 			],
 			"Tags": [],
@@ -4272,7 +3804,7 @@
 						1
 					],
 					"Mesh": "SM_TheCube",
-					"ContentPath": "/Game/Static_Meshes/SM_TheCube.SM_TheCube",
+					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -4317,7 +3849,7 @@
 				0,
 				-1009.567404966522,
 				-440.27996300950213,
-				267.52164916046758,
+				-732.47835083953237,
 				1
 			],
 			"Tags": [],
@@ -4346,7 +3878,7 @@
 						1
 					],
 					"Mesh": "SM_TheCube",
-					"ContentPath": "/Game/Static_Meshes/SM_TheCube.SM_TheCube",
+					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -4391,7 +3923,7 @@
 				0,
 				-1008.7488739716114,
 				-401.42394036666479,
-				440.7221708685143,
+				-559.27782913148576,
 				1
 			],
 			"Tags": [],
@@ -4420,7 +3952,7 @@
 						1
 					],
 					"Mesh": "SM_TheCube",
-					"ContentPath": "/Game/Static_Meshes/SM_TheCube.SM_TheCube",
+					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -4465,7 +3997,7 @@
 				0,
 				-1110.8213834967564,
 				-464.98509267214172,
-				223.18716531768735,
+				-776.81283468231277,
 				1
 			],
 			"Tags": [],
@@ -4494,7 +4026,7 @@
 						1
 					],
 					"Mesh": "SM_TheCube",
-					"ContentPath": "/Game/Static_Meshes/SM_TheCube.SM_TheCube",
+					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -4539,7 +4071,7 @@
 				0,
 				-1002.87327,
 				-443.68633299999999,
-				171.43756999999999,
+				-828.56242999999995,
 				1
 			],
 			"Tags": [],
@@ -4568,7 +4100,7 @@
 						1
 					],
 					"Mesh": "SM_TheCube",
-					"ContentPath": "/Game/Static_Meshes/SM_TheCube.SM_TheCube",
+					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -4613,7 +4145,7 @@
 				0,
 				-821.521343,
 				-327.11039200000005,
-				199.758768,
+				-800.24123199999985,
 				1
 			],
 			"Tags": [],
@@ -4642,7 +4174,7 @@
 						1
 					],
 					"Mesh": "SM_TheCube",
-					"ContentPath": "/Game/Static_Meshes/SM_TheCube.SM_TheCube",
+					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -4716,7 +4248,7 @@
 						1
 					],
 					"Mesh": "SM_TheCube",
-					"ContentPath": "/Game/Static_Meshes/SM_TheCube.SM_TheCube",
+					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -4790,7 +4322,7 @@
 						1
 					],
 					"Mesh": "SM_TheCube",
-					"ContentPath": "/Game/Static_Meshes/SM_TheCube.SM_TheCube",
+					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -4864,451 +4396,7 @@
 						1
 					],
 					"Mesh": "SM_TheCube",
-					"ContentPath": "/Game/Static_Meshes/SM_TheCube.SM_TheCube",
-					"Materials": [
-						{
-							"Name": "MI_BlockoutColor3",
-							"Parent": "M_Instance",
-							"Parameters": [
-								{
-									"Name": "Color",
-									"Type": 1,
-									"Value": [
-										0.024438999593257904,
-										0.026041999459266663,
-										0.024007000029087067,
-										1
-									]
-								},
-								{
-									"Name": "Roughness",
-									"Type": 0,
-									"Value": 1
-								}
-							]
-						}
-					]
-				}
-			]
-		},
-		{
-			"Name": "SM_TheCube61",
-			"Archetype": "StaticMeshActor",
-			"Transform": [
-				0.093969261986108887,
-				0.034202014586658974,
-				0,
-				0,
-				-0.034202014586658974,
-				0.093969261986108887,
-				0,
-				0,
-				0,
-				-0,
-				2,
-				0,
-				370.10883404562071,
-				-780.01579743006971,
-				0,
-				1
-			],
-			"Tags": [],
-			"Components": [
-				{
-					"Name": "StaticMeshComponent0",
-					"TypeID": 1,
-					"Parent": "",
-					"Tags": [],
-					"Transform": [
-						1,
-						0,
-						0,
-						0,
-						0,
-						1,
-						0,
-						0,
-						0,
-						0,
-						1,
-						0,
-						0,
-						0,
-						0,
-						1
-					],
-					"Mesh": "SM_TheCube",
-					"ContentPath": "/Game/Static_Meshes/SM_TheCube.SM_TheCube",
-					"Materials": [
-						{
-							"Name": "MI_BlockoutColor3",
-							"Parent": "M_Instance",
-							"Parameters": [
-								{
-									"Name": "Color",
-									"Type": 1,
-									"Value": [
-										0.024438999593257904,
-										0.026041999459266663,
-										0.024007000029087067,
-										1
-									]
-								},
-								{
-									"Name": "Roughness",
-									"Type": 0,
-									"Value": 1
-								}
-							]
-						}
-					]
-				}
-			]
-		},
-		{
-			"Name": "SM_TheCube62",
-			"Archetype": "StaticMeshActor",
-			"Transform": [
-				0.093969262078590854,
-				0.034202014332566873,
-				0,
-				0,
-				-0.034202014332566873,
-				0.093969262078590854,
-				0,
-				0,
-				0,
-				-0,
-				2,
-				0,
-				250.40178422632491,
-				-451.12337986766687,
-				0,
-				1
-			],
-			"Tags": [],
-			"Components": [
-				{
-					"Name": "StaticMeshComponent0",
-					"TypeID": 1,
-					"Parent": "",
-					"Tags": [],
-					"Transform": [
-						1,
-						0,
-						0,
-						0,
-						0,
-						1,
-						0,
-						0,
-						0,
-						0,
-						1,
-						0,
-						0,
-						0,
-						0,
-						1
-					],
-					"Mesh": "SM_TheCube",
-					"ContentPath": "/Game/Static_Meshes/SM_TheCube.SM_TheCube",
-					"Materials": [
-						{
-							"Name": "MI_BlockoutColor3",
-							"Parent": "M_Instance",
-							"Parameters": [
-								{
-									"Name": "Color",
-									"Type": 1,
-									"Value": [
-										0.024438999593257904,
-										0.026041999459266663,
-										0.024007000029087067,
-										1
-									]
-								},
-								{
-									"Name": "Roughness",
-									"Type": 0,
-									"Value": 1
-								}
-							]
-						}
-					]
-				}
-			]
-		},
-		{
-			"Name": "SM_TheCube63",
-			"Archetype": "StaticMeshActor",
-			"Transform": [
-				0.093969262078590854,
-				0.034202014332566873,
-				0,
-				0,
-				-0.034202014332566873,
-				0.093969262078590854,
-				0,
-				0,
-				0,
-				-0,
-				2,
-				0,
-				370.108834,
-				-780.01579700000002,
-				0,
-				1
-			],
-			"Tags": [],
-			"Components": [
-				{
-					"Name": "StaticMeshComponent0",
-					"TypeID": 1,
-					"Parent": "",
-					"Tags": [],
-					"Transform": [
-						1,
-						0,
-						0,
-						0,
-						0,
-						1,
-						0,
-						0,
-						0,
-						0,
-						1,
-						0,
-						0,
-						0,
-						0,
-						1
-					],
-					"Mesh": "SM_TheCube",
-					"ContentPath": "/Game/Static_Meshes/SM_TheCube.SM_TheCube",
-					"Materials": [
-						{
-							"Name": "MI_BlockoutColor3",
-							"Parent": "M_Instance",
-							"Parameters": [
-								{
-									"Name": "Color",
-									"Type": 1,
-									"Value": [
-										0.024438999593257904,
-										0.026041999459266663,
-										0.024007000029087067,
-										1
-									]
-								},
-								{
-									"Name": "Roughness",
-									"Type": 0,
-									"Value": 1
-								}
-							]
-						}
-					]
-				}
-			]
-		},
-		{
-			"Name": "SM_TheCube64",
-			"Archetype": "StaticMeshActor",
-			"Transform": [
-				0.093969262078590854,
-				0.034202014332566873,
-				0,
-				0,
-				-0.034202014332566873,
-				0.093969262078590854,
-				0,
-				0,
-				0,
-				-0,
-				2,
-				0,
-				250.40178399999999,
-				-451.12338,
-				0,
-				1
-			],
-			"Tags": [],
-			"Components": [
-				{
-					"Name": "StaticMeshComponent0",
-					"TypeID": 1,
-					"Parent": "",
-					"Tags": [],
-					"Transform": [
-						1,
-						0,
-						0,
-						0,
-						0,
-						1,
-						0,
-						0,
-						0,
-						0,
-						1,
-						0,
-						0,
-						0,
-						0,
-						1
-					],
-					"Mesh": "SM_TheCube",
-					"ContentPath": "/Game/Static_Meshes/SM_TheCube.SM_TheCube",
-					"Materials": [
-						{
-							"Name": "MI_BlockoutColor3",
-							"Parent": "M_Instance",
-							"Parameters": [
-								{
-									"Name": "Color",
-									"Type": 1,
-									"Value": [
-										0.024438999593257904,
-										0.026041999459266663,
-										0.024007000029087067,
-										1
-									]
-								},
-								{
-									"Name": "Roughness",
-									"Type": 0,
-									"Value": 1
-								}
-							]
-						}
-					]
-				}
-			]
-		},
-		{
-			"Name": "SM_TheCube65",
-			"Archetype": "StaticMeshActor",
-			"Transform": [
-				0.093969262078590854,
-				0.034202014332566873,
-				0,
-				0,
-				-0.034202014332566873,
-				0.093969262078590854,
-				0,
-				0,
-				0,
-				-0,
-				2,
-				0,
-				493.09804185969205,
-				-650.11716440502062,
-				0,
-				1
-			],
-			"Tags": [],
-			"Components": [
-				{
-					"Name": "StaticMeshComponent0",
-					"TypeID": 1,
-					"Parent": "",
-					"Tags": [],
-					"Transform": [
-						1,
-						0,
-						0,
-						0,
-						0,
-						1,
-						0,
-						0,
-						0,
-						0,
-						1,
-						0,
-						0,
-						0,
-						0,
-						1
-					],
-					"Mesh": "SM_TheCube",
-					"ContentPath": "/Game/Static_Meshes/SM_TheCube.SM_TheCube",
-					"Materials": [
-						{
-							"Name": "MI_BlockoutColor3",
-							"Parent": "M_Instance",
-							"Parameters": [
-								{
-									"Name": "Color",
-									"Type": 1,
-									"Value": [
-										0.024438999593257904,
-										0.026041999459266663,
-										0.024007000029087067,
-										1
-									]
-								},
-								{
-									"Name": "Roughness",
-									"Type": 0,
-									"Value": 1
-								}
-							]
-						}
-					]
-				}
-			]
-		},
-		{
-			"Name": "SM_TheCube66",
-			"Archetype": "StaticMeshActor",
-			"Transform": [
-				0.064278761279360636,
-				0.076604444051183912,
-				0,
-				0,
-				-0.076604444051183912,
-				0.064278761279360636,
-				0,
-				0,
-				0,
-				-0,
-				2,
-				0,
-				432.10621158341041,
-				-432.95131246066774,
-				0,
-				1
-			],
-			"Tags": [],
-			"Components": [
-				{
-					"Name": "StaticMeshComponent0",
-					"TypeID": 1,
-					"Parent": "",
-					"Tags": [],
-					"Transform": [
-						1,
-						0,
-						0,
-						0,
-						0,
-						1,
-						0,
-						0,
-						0,
-						0,
-						1,
-						0,
-						0,
-						0,
-						0,
-						1
-					],
-					"Mesh": "SM_TheCube",
-					"ContentPath": "/Game/Static_Meshes/SM_TheCube.SM_TheCube",
+					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -5353,7 +4441,7 @@
 				0,
 				576.21995633178756,
 				-1117.5449286785824,
-				66.438561665592502,
+				-933.56143833440751,
 				1
 			],
 			"Tags": [],
@@ -5382,7 +4470,7 @@
 						1
 					],
 					"Mesh": "SM_TheCube",
-					"ContentPath": "/Game/Static_Meshes/SM_TheCube.SM_TheCube",
+					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -5427,7 +4515,7 @@
 				0,
 				706.68506831188802,
 				-950.65453941908152,
-				190.23433769721328,
+				-809.76566230278672,
 				1
 			],
 			"Tags": [],
@@ -5456,7 +4544,7 @@
 						1
 					],
 					"Mesh": "SM_TheCube",
-					"ContentPath": "/Game/Static_Meshes/SM_TheCube.SM_TheCube",
+					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -5501,7 +4589,7 @@
 				0,
 				947.41096426565059,
 				-1119.0985821854149,
-				319.77923583603507,
+				-680.22076416396499,
 				1
 			],
 			"Tags": [],
@@ -5530,7 +4618,7 @@
 						1
 					],
 					"Mesh": "SM_TheCube",
-					"ContentPath": "/Game/Static_Meshes/SM_TheCube.SM_TheCube",
+					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -5575,7 +4663,7 @@
 				0,
 				755.56308132952825,
 				-984.9943599018751,
-				199.04356399533037,
+				-800.95643600466963,
 				1
 			],
 			"Tags": [],
@@ -5604,7 +4692,7 @@
 						1
 					],
 					"Mesh": "SM_TheCube",
-					"ContentPath": "/Game/Static_Meshes/SM_TheCube.SM_TheCube",
+					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -5649,7 +4737,7 @@
 				0,
 				-1232.9904398959811,
 				-719.02280167159188,
-				215.233644,
+				-784.76635599999997,
 				1
 			],
 			"Tags": [],
@@ -5678,7 +4766,7 @@
 						1
 					],
 					"Mesh": "SM_TheCube",
-					"ContentPath": "/Game/Static_Meshes/SM_TheCube.SM_TheCube",
+					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -5723,7 +4811,7 @@
 				0,
 				-1304.6403715067738,
 				-823.20631162535767,
-				171.43756999999999,
+				-828.56242999999995,
 				1
 			],
 			"Tags": [],
@@ -5752,7 +4840,7 @@
 						1
 					],
 					"Mesh": "SM_TheCube",
-					"ContentPath": "/Game/Static_Meshes/SM_TheCube.SM_TheCube",
+					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -5797,7 +4885,7 @@
 				0,
 				-1304.2427381373666,
 				-808.41617821572697,
-				336.42710399999999,
+				-663.57289600000001,
 				1
 			],
 			"Tags": [],
@@ -5826,7 +4914,7 @@
 						1
 					],
 					"Mesh": "SM_TheCube",
-					"ContentPath": "/Game/Static_Meshes/SM_TheCube.SM_TheCube",
+					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -5871,7 +4959,7 @@
 				0,
 				-1308.7344775242179,
 				-816.90924120387967,
-				267.52164900000002,
+				-732.47835099999998,
 				1
 			],
 			"Tags": [],
@@ -5900,7 +4988,7 @@
 						1
 					],
 					"Mesh": "SM_TheCube",
-					"ContentPath": "/Game/Static_Meshes/SM_TheCube.SM_TheCube",
+					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -5945,7 +5033,7 @@
 				0,
 				-1288.5975976540833,
 				-783.6682035324975,
-				440.722171,
+				-559.277829,
 				1
 			],
 			"Tags": [],
@@ -5974,7 +5062,7 @@
 						1
 					],
 					"Mesh": "SM_TheCube",
-					"ContentPath": "/Game/Static_Meshes/SM_TheCube.SM_TheCube",
+					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -6019,7 +5107,7 @@
 				0,
 				-1305.3261837544301,
 				-704.65862562267728,
-				245.233644,
+				-754.76635599999997,
 				1
 			],
 			"Tags": [],
@@ -6048,7 +5136,7 @@
 						1
 					],
 					"Mesh": "SM_TheCube",
-					"ContentPath": "/Game/Static_Meshes/SM_TheCube.SM_TheCube",
+					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -6093,7 +5181,7 @@
 				0,
 				-1089.2970252829182,
 				-812.9245470024216,
-				199.758768,
+				-800.24123199999997,
 				1
 			],
 			"Tags": [],
@@ -6122,7 +5210,7 @@
 						1
 					],
 					"Mesh": "SM_TheCube",
-					"ContentPath": "/Game/Static_Meshes/SM_TheCube.SM_TheCube",
+					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -6167,7 +5255,7 @@
 				0,
 				-1063.0247063116835,
 				-788.80100915952289,
-				186.49453,
+				-813.50547000000006,
 				1
 			],
 			"Tags": [],
@@ -6196,7 +5284,7 @@
 						1
 					],
 					"Mesh": "SM_TheCube",
-					"ContentPath": "/Game/Static_Meshes/SM_TheCube.SM_TheCube",
+					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -6241,7 +5329,7 @@
 				0,
 				-1156.166848879034,
 				-575.37824816889884,
-				237.036643,
+				-762.96335699999997,
 				1
 			],
 			"Tags": [],
@@ -6270,7 +5358,7 @@
 						1
 					],
 					"Mesh": "SM_TheCube",
-					"ContentPath": "/Game/Static_Meshes/SM_TheCube.SM_TheCube",
+					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -6315,7 +5403,7 @@
 				0,
 				-1312.7562767599945,
 				-676.00394387094161,
-				258.68224900000001,
+				-741.31775100000004,
 				1
 			],
 			"Tags": [],
@@ -6344,7 +5432,7 @@
 						1
 					],
 					"Mesh": "SM_TheCube",
-					"ContentPath": "/Game/Static_Meshes/SM_TheCube.SM_TheCube",
+					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -6389,7 +5477,7 @@
 				0,
 				-1408.7755599435757,
 				-787.67752319920771,
-				223.18716499999999,
+				-776.81283499999995,
 				1
 			],
 			"Tags": [],
@@ -6418,7 +5506,7 @@
 						1
 					],
 					"Mesh": "SM_TheCube",
-					"ContentPath": "/Game/Static_Meshes/SM_TheCube.SM_TheCube",
+					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -6463,7 +5551,7 @@
 				0,
 				-1288.1614184784385,
 				-708.07480197342397,
-				201.900744,
+				-798.09925599999997,
 				1
 			],
 			"Tags": [],
@@ -6492,7 +5580,7 @@
 						1
 					],
 					"Mesh": "SM_TheCube",
-					"ContentPath": "/Game/Static_Meshes/SM_TheCube.SM_TheCube",
+					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -6537,7 +5625,7 @@
 				0,
 				-1351.5213429999999,
 				-927.11039200000005,
-				199.758768,
+				-800.24123199999997,
 				1
 			],
 			"Tags": [],
@@ -6566,7 +5654,7 @@
 						1
 					],
 					"Mesh": "SM_TheCube",
-					"ContentPath": "/Game/Static_Meshes/SM_TheCube.SM_TheCube",
+					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -6588,6 +5676,1936 @@
 									"Value": 1
 								}
 							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"Name": "SM_Cube",
+			"Archetype": "StaticMeshActor",
+			"Transform": [
+				1,
+				0,
+				0,
+				0,
+				0,
+				1,
+				0,
+				0,
+				0,
+				0,
+				5.25,
+				0,
+				100,
+				-4200,
+				0,
+				1
+			],
+			"Tags": [],
+			"Components": [
+				{
+					"Name": "StaticMeshComponent0",
+					"TypeID": 1,
+					"Parent": "",
+					"Tags": [],
+					"Transform": [
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1
+					],
+					"Mesh": "SM_Cube",
+					"ContentPath": "/Game/Static_Meshes/Test/SM_Cube.SM_Cube",
+					"Materials": [
+						{
+							"Name": "WorldGridMaterial",
+							"Parameters": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"Name": "SM_Cube2",
+			"Archetype": "StaticMeshActor",
+			"Transform": [
+				1,
+				0,
+				0,
+				0,
+				0,
+				1.2167964857923153e-08,
+				-1,
+				0,
+				-0,
+				2.75,
+				3.3461903359288669e-08,
+				0,
+				100,
+				-4200,
+				0,
+				1
+			],
+			"Tags": [],
+			"Components": [
+				{
+					"Name": "StaticMeshComponent0",
+					"TypeID": 1,
+					"Parent": "",
+					"Tags": [],
+					"Transform": [
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1
+					],
+					"Mesh": "SM_Cube",
+					"ContentPath": "/Game/Static_Meshes/Test/SM_Cube.SM_Cube",
+					"Materials": [
+						{
+							"Name": "WorldGridMaterial",
+							"Parameters": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"Name": "SM_Cube3",
+			"Archetype": "StaticMeshActor",
+			"Transform": [
+				1,
+				0,
+				0,
+				0,
+				0,
+				0.86602540316976817,
+				0.50000000106464049,
+				0,
+				0,
+				-2.6250000055893628,
+				4.5466333666412826,
+				0,
+				100,
+				-3930,
+				69.999996213128952,
+				1
+			],
+			"Tags": [],
+			"Components": [
+				{
+					"Name": "StaticMeshComponent0",
+					"TypeID": 1,
+					"Parent": "",
+					"Tags": [],
+					"Transform": [
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1
+					],
+					"Mesh": "SM_Cube",
+					"ContentPath": "/Game/Static_Meshes/Test/SM_Cube.SM_Cube",
+					"Materials": [
+						{
+							"Name": "WorldGridMaterial",
+							"Parameters": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"Name": "SM_Cube4",
+			"Archetype": "StaticMeshActor",
+			"Transform": [
+				0.25,
+				0,
+				0,
+				0,
+				0,
+				0.5,
+				0,
+				0,
+				0,
+				0,
+				5.25,
+				0,
+				100,
+				-4200.0000000063164,
+				525,
+				1
+			],
+			"Tags": [],
+			"Components": [
+				{
+					"Name": "StaticMeshComponent0",
+					"TypeID": 1,
+					"Parent": "",
+					"Tags": [],
+					"Transform": [
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1
+					],
+					"Mesh": "SM_Cube",
+					"ContentPath": "/Game/Static_Meshes/Test/SM_Cube.SM_Cube",
+					"Materials": [
+						{
+							"Name": "WorldGridMaterial",
+							"Parameters": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"Name": "SM_Cube5",
+			"Archetype": "StaticMeshActor",
+			"Transform": [
+				3.041991297747515e-09,
+				0.25,
+				0,
+				0,
+				-2.75,
+				3.3461904275222665e-08,
+				0,
+				0,
+				0,
+				-0,
+				0.5,
+				0,
+				100,
+				-4200,
+				525,
+				1
+			],
+			"Tags": [],
+			"Components": [
+				{
+					"Name": "StaticMeshComponent0",
+					"TypeID": 1,
+					"Parent": "",
+					"Tags": [],
+					"Transform": [
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1
+					],
+					"Mesh": "SM_Cube",
+					"ContentPath": "/Game/Static_Meshes/Test/SM_Cube.SM_Cube",
+					"Materials": [
+						{
+							"Name": "WorldGridMaterial",
+							"Parameters": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"Name": "SM_Cube6",
+			"Archetype": "StaticMeshActor",
+			"Transform": [
+				-1.6653345369377348e-16,
+				-2.7755575615628914e-17,
+				-0.25000000000000011,
+				0,
+				2.7500000000000013,
+				3.3461901527420679e-08,
+				-3.0531133177191805e-16,
+				0,
+				6.083982373450425e-09,
+				-0.50000000000000022,
+				-2.2204460492503131e-16,
+				0,
+				100,
+				-4200,
+				525,
+				1
+			],
+			"Tags": [],
+			"Components": [
+				{
+					"Name": "StaticMeshComponent0",
+					"TypeID": 1,
+					"Parent": "",
+					"Tags": [],
+					"Transform": [
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1
+					],
+					"Mesh": "SM_Cube",
+					"ContentPath": "/Game/Static_Meshes/Test/SM_Cube.SM_Cube",
+					"Materials": [
+						{
+							"Name": "WorldGridMaterial",
+							"Parameters": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"Name": "SM_Cube7",
+			"Archetype": "StaticMeshActor",
+			"Transform": [
+				-5.5511151231257827e-17,
+				0,
+				0.25000000000000006,
+				0,
+				-0,
+				2.75,
+				0,
+				0,
+				-0.50000000000000011,
+				-0,
+				-1.1102230246251565e-16,
+				0,
+				-20,
+				-4210,
+				525,
+				1
+			],
+			"Tags": [],
+			"Components": [
+				{
+					"Name": "StaticMeshComponent0",
+					"TypeID": 1,
+					"Parent": "",
+					"Tags": [],
+					"Transform": [
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1
+					],
+					"Mesh": "SM_Cube",
+					"ContentPath": "/Game/Static_Meshes/Test/SM_Cube.SM_Cube",
+					"Materials": [
+						{
+							"Name": "WorldGridMaterial",
+							"Parameters": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"Name": "SM_Cube9",
+			"Archetype": "StaticMeshActor",
+			"Transform": [
+				2.5,
+				0,
+				0,
+				0,
+				0,
+				-2.4999999999999991,
+				6.0839816824216277e-08,
+				0,
+				0,
+				-2.4335926729686511e-08,
+				-0.99999999999999956,
+				0,
+				-440,
+				-4870,
+				240,
+				1
+			],
+			"Tags": [],
+			"Components": [
+				{
+					"Name": "StaticMeshComponent0",
+					"TypeID": 1,
+					"Parent": "",
+					"Tags": [],
+					"Transform": [
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1
+					],
+					"Mesh": "SM_Cube",
+					"ContentPath": "/Game/Static_Meshes/Test/SM_Cube.SM_Cube",
+					"Materials": [
+						{
+							"Name": "WorldGridMaterial",
+							"Parameters": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"Name": "SM_Cube10",
+			"Archetype": "StaticMeshActor",
+			"Transform": [
+				2,
+				0,
+				0,
+				0,
+				0,
+				2,
+				0,
+				0,
+				0,
+				0,
+				1,
+				0,
+				-440,
+				-4870,
+				240,
+				1
+			],
+			"Tags": [],
+			"Components": [
+				{
+					"Name": "StaticMeshComponent0",
+					"TypeID": 1,
+					"Parent": "",
+					"Tags": [],
+					"Transform": [
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1
+					],
+					"Mesh": "SM_Cube",
+					"ContentPath": "/Game/Static_Meshes/Test/SM_Cube.SM_Cube",
+					"Materials": [
+						{
+							"Name": "WorldGridMaterial",
+							"Parameters": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"Name": "SM_Cube11",
+			"Archetype": "StaticMeshActor",
+			"Transform": [
+				1.5,
+				0,
+				0,
+				0,
+				0,
+				1.5,
+				0,
+				0,
+				0,
+				0,
+				1,
+				0,
+				-440,
+				-4870,
+				340,
+				1
+			],
+			"Tags": [],
+			"Components": [
+				{
+					"Name": "StaticMeshComponent0",
+					"TypeID": 1,
+					"Parent": "",
+					"Tags": [],
+					"Transform": [
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1
+					],
+					"Mesh": "SM_Cube",
+					"ContentPath": "/Game/Static_Meshes/Test/SM_Cube.SM_Cube",
+					"Materials": [
+						{
+							"Name": "WorldGridMaterial",
+							"Parameters": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"Name": "SM_Cube12",
+			"Archetype": "StaticMeshActor",
+			"Transform": [
+				1.2855752297299721,
+				-1.5088130052722311,
+				-0.26604443956998464,
+				0,
+				-1.5320888775474897,
+				-1.2660444451685642,
+				-0.22323784211708447,
+				0,
+				2.7963601184621822e-08,
+				0.26047228761098362,
+				-1.4772116257959449,
+				0,
+				-440,
+				-4870,
+				590,
+				1
+			],
+			"Tags": [],
+			"Components": [
+				{
+					"Name": "StaticMeshComponent0",
+					"TypeID": 1,
+					"Parent": "",
+					"Tags": [],
+					"Transform": [
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1
+					],
+					"Mesh": "SM_Cube",
+					"ContentPath": "/Game/Static_Meshes/Test/SM_Cube.SM_Cube",
+					"Materials": [
+						{
+							"Name": "WorldGridMaterial",
+							"Parameters": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"Name": "SM_Cube13",
+			"Archetype": "StaticMeshActor",
+			"Transform": [
+				2,
+				0,
+				0,
+				0,
+				0,
+				2,
+				0,
+				0,
+				0,
+				0,
+				1,
+				0,
+				-440,
+				-4870,
+				40,
+				1
+			],
+			"Tags": [],
+			"Components": [
+				{
+					"Name": "StaticMeshComponent0",
+					"TypeID": 1,
+					"Parent": "",
+					"Tags": [],
+					"Transform": [
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1
+					],
+					"Mesh": "SM_Cube",
+					"ContentPath": "/Game/Static_Meshes/Test/SM_Cube.SM_Cube",
+					"Materials": [
+						{
+							"Name": "WorldGridMaterial",
+							"Parameters": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"Name": "SM_Cube14",
+			"Archetype": "StaticMeshActor",
+			"Transform": [
+				1.5,
+				0,
+				0,
+				0,
+				0,
+				1.5,
+				0,
+				0,
+				0,
+				0,
+				3,
+				0,
+				-440,
+				-4870,
+				570,
+				1
+			],
+			"Tags": [],
+			"Components": [
+				{
+					"Name": "StaticMeshComponent0",
+					"TypeID": 1,
+					"Parent": "",
+					"Tags": [],
+					"Transform": [
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1
+					],
+					"Mesh": "SM_Cube",
+					"ContentPath": "/Game/Static_Meshes/Test/SM_Cube.SM_Cube",
+					"Materials": [
+						{
+							"Name": "WorldGridMaterial",
+							"Parameters": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"Name": "SM_E_CypressTree_Large_01",
+			"Archetype": "StaticMeshActor",
+			"Transform": [
+				0.93969262171072798,
+				-0.34202014078474779,
+				0,
+				0,
+				0.34202014078474779,
+				0.93969262171072798,
+				-0,
+				0,
+				0,
+				0,
+				1,
+				0,
+				965.7979859215252,
+				-1093.9692621710728,
+				132.02815410155745,
+				1
+			],
+			"Tags": [],
+			"Components": [
+				{
+					"Name": "StaticMeshComponent0",
+					"TypeID": 1,
+					"Parent": "",
+					"Tags": [],
+					"Transform": [
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1
+					],
+					"Mesh": "SM_E_CypressTree_Large_01",
+					"ContentPath": "/Game/Static_Meshes/Environment/SM_E_CypressTree_Large_01.SM_E_CypressTree_Large_01",
+					"Materials": [
+						{
+							"Name": "WorldGridMaterial",
+							"Parameters": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"Name": "GroupActor2",
+			"Archetype": "GroupActor",
+			"Transform": [
+				0.79875543511647096,
+				0.59917391480795223,
+				0.054592808002612708,
+				0,
+				0.37152725142986076,
+				-0.41983213317424162,
+				-0.82807516651529867,
+				0,
+				-0.47324122423650961,
+				0.68171225584412032,
+				-0.55795263590653565,
+				0,
+				778.29129210287817,
+				-1096.1696801729588,
+				-703.24880221850447,
+				1
+			],
+			"Tags": [],
+			"Components": [
+				{
+					"Name": "GroupComponent",
+					"TypeID": 0,
+					"Parent": "",
+					"Tags": [],
+					"Transform": [
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1
+					]
+				}
+			]
+		},
+		{
+			"Name": "GroupActor3",
+			"Archetype": "GroupActor",
+			"Transform": [
+				0.11636391229758813,
+				0.98625598046758578,
+				0.11729697739805733,
+				0,
+				0.42920789656381142,
+				0.056568478205215933,
+				-0.9014325203812068,
+				0,
+				-0.89567852572341378,
+				0.15523900368614574,
+				-0.41672632541329202,
+				0,
+				417.65437087223523,
+				72.130283363465736,
+				-707.90243516912903,
+				1
+			],
+			"Tags": [],
+			"Components": [
+				{
+					"Name": "GroupComponent",
+					"TypeID": 0,
+					"Parent": "",
+					"Tags": [],
+					"Transform": [
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1
+					]
+				}
+			]
+		},
+		{
+			"Name": "GroupActor5",
+			"Archetype": "GroupActor",
+			"Transform": [
+				0.68353963424233366,
+				0.72440990811497008,
+				-0.089464257917436729,
+				0,
+				-0.71495835157566978,
+				0.68917048467180608,
+				0.11780746398012765,
+				0,
+				0.14699702014686522,
+				-0.016562852474402236,
+				0.98899825479413928,
+				0,
+				-865.1047965880565,
+				-365.216790638303,
+				-783.85664945311009,
+				1
+			],
+			"Tags": [],
+			"Components": [
+				{
+					"Name": "GroupComponent",
+					"TypeID": 0,
+					"Parent": "",
+					"Tags": [],
+					"Transform": [
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1
+					]
+				}
+			]
+		},
+		{
+			"Name": "GroupActor6",
+			"Archetype": "GroupActor",
+			"Transform": [
+				-0.56093015991814088,
+				0.80066744160857839,
+				-0.21044952754088225,
+				0,
+				0.033854096779308618,
+				-0.23181069824052369,
+				-0.97217164138463563,
+				0,
+				-0.82717063283548953,
+				-0.552444972942295,
+				0.10292373897853579,
+				0,
+				-1210.4387770835556,
+				-818.39575778760513,
+				-736.37884108282924,
+				1
+			],
+			"Tags": [],
+			"Components": [
+				{
+					"Name": "GroupComponent",
+					"TypeID": 0,
+					"Parent": "",
+					"Tags": [],
+					"Transform": [
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1
+					]
+				}
+			]
+		},
+		{
+			"Name": "Pivot_Testcube",
+			"Archetype": "StaticMeshActor",
+			"Transform": [
+				1,
+				0,
+				0,
+				0,
+				0,
+				1,
+				0,
+				0,
+				0,
+				0,
+				1,
+				0,
+				-200,
+				-4500,
+				0,
+				1
+			],
+			"Tags": [],
+			"Components": [
+				{
+					"Name": "StaticMeshComponent0",
+					"TypeID": 1,
+					"Parent": "",
+					"Tags": [],
+					"Transform": [
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1
+					],
+					"Mesh": "Pivot_Testcube",
+					"ContentPath": "/Game/Static_Meshes/Test/Pivot_Testcube.Pivot_Testcube",
+					"Materials": [
+						{
+							"Name": "WorldGridMaterial",
+							"Parameters": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"Name": "SM_E_CypressTree_Large_2",
+			"Archetype": "StaticMeshActor",
+			"Transform": [
+				0.86602540581243281,
+				0.49999999648741117,
+				0,
+				0,
+				-0.49999999648741117,
+				0.86602540581243281,
+				0,
+				0,
+				0,
+				-0,
+				1,
+				0,
+				713.39746082379236,
+				-3.5898373237680374,
+				132.028154,
+				1
+			],
+			"Tags": [],
+			"Components": [
+				{
+					"Name": "StaticMeshComponent0",
+					"TypeID": 1,
+					"Parent": "",
+					"Tags": [],
+					"Transform": [
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1
+					],
+					"Mesh": "SM_E_CypressTree_Large_01",
+					"ContentPath": "/Game/Static_Meshes/Environment/SM_E_CypressTree_Large_01.SM_E_CypressTree_Large_01",
+					"Materials": [
+						{
+							"Name": "WorldGridMaterial",
+							"Parameters": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"Name": "SM_A_StoneShortEdge_Small_01",
+			"Archetype": "StaticMeshActor",
+			"Transform": [
+				-0.17364816435236641,
+				-0.98480775535992515,
+				0,
+				0,
+				0.98480775535992515,
+				-0.17364816435236641,
+				-0,
+				0,
+				0,
+				0,
+				1,
+				0,
+				558.69692517868236,
+				-931.00975475289442,
+				2.3138840009731183,
+				1
+			],
+			"Tags": [],
+			"Components": [
+				{
+					"Name": "StaticMeshComponent0",
+					"TypeID": 1,
+					"Parent": "",
+					"Tags": [],
+					"Transform": [
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1
+					],
+					"Mesh": "SM_A_StoneShortEdge_Small_01",
+					"ContentPath": "/Game/Static_Meshes/Architecture/SM_A_StoneShortEdge_Small_01.SM_A_StoneShortEdge_Small_01",
+					"Materials": [
+						{
+							"Name": "WorldGridMaterial",
+							"Parameters": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"Name": "StaticMeshActor",
+			"Archetype": "StaticMeshActor",
+			"Transform": [
+				1,
+				0,
+				0,
+				0,
+				0,
+				1,
+				0,
+				0,
+				0,
+				0,
+				1,
+				0,
+				500,
+				-500,
+				100,
+				1
+			],
+			"Tags": [],
+			"Components": []
+		},
+		{
+			"Name": "SM_A_StoneShortPillar_Small_01",
+			"Archetype": "StaticMeshActor",
+			"Transform": [
+				-0.17364816435236508,
+				-0.98480775535992526,
+				0,
+				0,
+				0.98480775535992526,
+				-0.17364816435236508,
+				-0,
+				0,
+				0,
+				0,
+				1,
+				0,
+				609.43249268979059,
+				-799.7005831935171,
+				2.3138840009731183,
+				1
+			],
+			"Tags": [],
+			"Components": [
+				{
+					"Name": "StaticMeshComponent0",
+					"TypeID": 1,
+					"Parent": "",
+					"Tags": [],
+					"Transform": [
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1
+					],
+					"Mesh": "SM_A_StoneShortPillar_Small_01",
+					"ContentPath": "/Game/Static_Meshes/Architecture/SM_A_StoneShortPillar_Small_01.SM_A_StoneShortPillar_Small_01",
+					"Materials": [
+						{
+							"Name": "WorldGridMaterial",
+							"Parameters": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"Name": "SM_P_WoodTorch_Medium_01",
+			"Archetype": "StaticMeshActor",
+			"Transform": [
+				1,
+				-9.9210481721134397e-16,
+				0,
+				0,
+				9.9210481721134397e-16,
+				1,
+				-0,
+				0,
+				0,
+				0,
+				1,
+				0,
+				220,
+				-440,
+				0,
+				1
+			],
+			"Tags": [],
+			"Components": [
+				{
+					"Name": "StaticMeshComponent0",
+					"TypeID": 1,
+					"Parent": "",
+					"Tags": [],
+					"Transform": [
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1
+					],
+					"Mesh": "SM_P_WoodTorch_Medium_01",
+					"ContentPath": "/Game/Static_Meshes/Props/SM_P_WoodTorch_Medium_01.SM_P_WoodTorch_Medium_01",
+					"Materials": [
+						{
+							"Name": "WorldGridMaterial",
+							"Parameters": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"Name": "SM_P_WoodTorch_Medium_2",
+			"Archetype": "StaticMeshActor",
+			"Transform": [
+				1,
+				0,
+				0,
+				0,
+				0,
+				1,
+				0,
+				0,
+				0,
+				0,
+				1,
+				0,
+				400,
+				-440,
+				0,
+				1
+			],
+			"Tags": [],
+			"Components": [
+				{
+					"Name": "StaticMeshComponent0",
+					"TypeID": 1,
+					"Parent": "",
+					"Tags": [],
+					"Transform": [
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1
+					],
+					"Mesh": "SM_P_WoodTorch_Medium_01",
+					"ContentPath": "/Game/Static_Meshes/Props/SM_P_WoodTorch_Medium_01.SM_P_WoodTorch_Medium_01",
+					"Materials": [
+						{
+							"Name": "WorldGridMaterial",
+							"Parameters": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"Name": "SM_P_WoodTorch_Medium_3",
+			"Archetype": "StaticMeshActor",
+			"Transform": [
+				1,
+				0,
+				0,
+				0,
+				0,
+				1,
+				0,
+				0,
+				0,
+				0,
+				1,
+				0,
+				500,
+				-660,
+				0,
+				1
+			],
+			"Tags": [],
+			"Components": [
+				{
+					"Name": "StaticMeshComponent0",
+					"TypeID": 1,
+					"Parent": "",
+					"Tags": [],
+					"Transform": [
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1
+					],
+					"Mesh": "SM_P_WoodTorch_Medium_01",
+					"ContentPath": "/Game/Static_Meshes/Props/SM_P_WoodTorch_Medium_01.SM_P_WoodTorch_Medium_01",
+					"Materials": [
+						{
+							"Name": "WorldGridMaterial",
+							"Parameters": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"Name": "SM_P_WoodTorch_Medium_4",
+			"Archetype": "StaticMeshActor",
+			"Transform": [
+				1,
+				0,
+				0,
+				0,
+				0,
+				1,
+				0,
+				0,
+				0,
+				0,
+				1,
+				0,
+				390,
+				-800,
+				0,
+				1
+			],
+			"Tags": [],
+			"Components": [
+				{
+					"Name": "StaticMeshComponent0",
+					"TypeID": 1,
+					"Parent": "",
+					"Tags": [],
+					"Transform": [
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1
+					],
+					"Mesh": "SM_P_WoodTorch_Medium_01",
+					"ContentPath": "/Game/Static_Meshes/Props/SM_P_WoodTorch_Medium_01.SM_P_WoodTorch_Medium_01",
+					"Materials": [
+						{
+							"Name": "WorldGridMaterial",
+							"Parameters": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"Name": "SM_E_Rock_Large_01",
+			"Archetype": "StaticMeshActor",
+			"Transform": [
+				-0.17364816435236641,
+				-0.98480775535992515,
+				0,
+				0,
+				0.98480775535992515,
+				-0.17364816435236641,
+				-0,
+				0,
+				0,
+				0,
+				1,
+				0,
+				-806.34102852921751,
+				-489.5766976046981,
+				10,
+				1
+			],
+			"Tags": [],
+			"Components": [
+				{
+					"Name": "StaticMeshComponent0",
+					"TypeID": 1,
+					"Parent": "",
+					"Tags": [],
+					"Transform": [
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1
+					],
+					"Mesh": "SM_E_Rock_Large_01",
+					"ContentPath": "/Game/Static_Meshes/Environment/SM_E_Rock_Large_01.SM_E_Rock_Large_01",
+					"Materials": [
+						{
+							"Name": "WorldGridMaterial",
+							"Parameters": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"Name": "SM_E_Rock_Large_2",
+			"Archetype": "StaticMeshActor",
+			"Transform": [
+				-0.64278759320947154,
+				-0.76604445694487888,
+				0,
+				0,
+				0.76604445694487888,
+				-0.64278759320947154,
+				-0,
+				0,
+				0,
+				0,
+				1,
+				0,
+				-1032.4372903587064,
+				-731.67297592963064,
+				10,
+				1
+			],
+			"Tags": [],
+			"Components": [
+				{
+					"Name": "StaticMeshComponent0",
+					"TypeID": 1,
+					"Parent": "",
+					"Tags": [],
+					"Transform": [
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1
+					],
+					"Mesh": "SM_E_Rock_Large_01",
+					"ContentPath": "/Game/Static_Meshes/Environment/SM_E_Rock_Large_01.SM_E_Rock_Large_01",
+					"Materials": [
+						{
+							"Name": "WorldGridMaterial",
+							"Parameters": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"Name": "SM_E_Rock_Large_3",
+			"Archetype": "StaticMeshActor",
+			"Transform": [
+				0.17364818819778838,
+				-0.98480775115533381,
+				0,
+				0,
+				0.98480775115533381,
+				0.17364818819778838,
+				-0,
+				0,
+				0,
+				0,
+				1,
+				0,
+				-1139.0537012861457,
+				-933.2491175556504,
+				10,
+				1
+			],
+			"Tags": [],
+			"Components": [
+				{
+					"Name": "StaticMeshComponent0",
+					"TypeID": 1,
+					"Parent": "",
+					"Tags": [],
+					"Transform": [
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1
+					],
+					"Mesh": "SM_E_Rock_Large_01",
+					"ContentPath": "/Game/Static_Meshes/Environment/SM_E_Rock_Large_01.SM_E_Rock_Large_01",
+					"Materials": [
+						{
+							"Name": "WorldGridMaterial",
+							"Parameters": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"Name": "SM_E_Rock_Large_4",
+			"Archetype": "StaticMeshActor",
+			"Transform": [
+				0.34202010278619044,
+				0.93969263554107085,
+				0,
+				0,
+				-0.93969263554107085,
+				0.34202010278619044,
+				0,
+				0,
+				0,
+				-0,
+				1,
+				0,
+				408.19497140918958,
+				249.34612902959168,
+				10,
+				1
+			],
+			"Tags": [],
+			"Components": [
+				{
+					"Name": "StaticMeshComponent0",
+					"TypeID": 1,
+					"Parent": "",
+					"Tags": [],
+					"Transform": [
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1
+					],
+					"Mesh": "SM_E_Rock_Large_01",
+					"ContentPath": "/Game/Static_Meshes/Environment/SM_E_Rock_Large_01.SM_E_Rock_Large_01",
+					"Materials": [
+						{
+							"Name": "WorldGridMaterial",
+							"Parameters": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"Name": "SM_A_BoardPath_Long_01",
+			"Archetype": "StaticMeshActor",
+			"Transform": [
+				0.76604444659516369,
+				0.64278760554378245,
+				0,
+				0,
+				-0.64278760554378245,
+				0.76604444659516369,
+				0,
+				0,
+				0,
+				-0,
+				1,
+				0,
+				-146.3671535144681,
+				-97.75864508861234,
+				0,
+				1
+			],
+			"Tags": [],
+			"Components": [
+				{
+					"Name": "StaticMeshComponent0",
+					"TypeID": 1,
+					"Parent": "",
+					"Tags": [],
+					"Transform": [
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1
+					],
+					"Mesh": "SM_A_BoardPath_Long_01",
+					"ContentPath": "/Game/Static_Meshes/Architecture/SM_A_BoardPath_Long_01.SM_A_BoardPath_Long_01",
+					"Materials": [
+						{
+							"Name": "WorldGridMaterial",
+							"Parameters": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"Name": "SM_A_BoardPath_Long_2",
+			"Archetype": "StaticMeshActor",
+			"Transform": [
+				-0.86602539161647485,
+				-0.50000002107553254,
+				0,
+				0,
+				0.50000002107553254,
+				-0.86602539161647485,
+				-0,
+				0,
+				0,
+				0,
+				1,
+				0,
+				-388.43680791736381,
+				239.26070977539914,
+				0,
+				1
+			],
+			"Tags": [],
+			"Components": [
+				{
+					"Name": "StaticMeshComponent0",
+					"TypeID": 1,
+					"Parent": "",
+					"Tags": [],
+					"Transform": [
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1
+					],
+					"Mesh": "SM_A_BoardPath_Long_01",
+					"ContentPath": "/Game/Static_Meshes/Architecture/SM_A_BoardPath_Long_01.SM_A_BoardPath_Long_01",
+					"Materials": [
+						{
+							"Name": "WorldGridMaterial",
+							"Parameters": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"Name": "SM_A_BoardPath_Long_3",
+			"Archetype": "StaticMeshActor",
+			"Transform": [
+				-0.76604443276926215,
+				-0.64278762202084994,
+				0,
+				0,
+				0.64278762202084994,
+				-0.76604443276926215,
+				-0,
+				0,
+				0,
+				0,
+				1,
+				0,
+				-619.79496289132703,
+				571.61904537396254,
+				0,
+				1
+			],
+			"Tags": [],
+			"Components": [
+				{
+					"Name": "StaticMeshComponent0",
+					"TypeID": 1,
+					"Parent": "",
+					"Tags": [],
+					"Transform": [
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1
+					],
+					"Mesh": "SM_A_BoardPath_Long_01",
+					"ContentPath": "/Game/Static_Meshes/Architecture/SM_A_BoardPath_Long_01.SM_A_BoardPath_Long_01",
+					"Materials": [
+						{
+							"Name": "WorldGridMaterial",
+							"Parameters": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"Name": "SM_MaterialBall_Test_01",
+			"Archetype": "StaticMeshActor",
+			"Transform": [
+				1,
+				0,
+				0,
+				0,
+				0,
+				1,
+				0,
+				0,
+				0,
+				0,
+				1,
+				0,
+				-60,
+				-970,
+				0,
+				1
+			],
+			"Tags": [],
+			"Components": [
+				{
+					"Name": "StaticMeshComponent0",
+					"TypeID": 1,
+					"Parent": "",
+					"Tags": [],
+					"Transform": [
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1
+					],
+					"Mesh": "SM_MaterialBall_Test_01",
+					"ContentPath": "/Game/Static_Meshes/Test/SM_MaterialBall_Test_01.SM_MaterialBall_Test_01",
+					"Materials": [
+						{
+							"Name": "WorldGridMaterial",
+							"Parameters": []
 						}
 					]
 				}

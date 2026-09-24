@@ -1,7 +1,6 @@
 #pragma once
 
 class Texture;
-class GBuffer;
 
 struct FrameTargets
 {

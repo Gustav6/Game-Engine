@@ -7,10 +7,13 @@
 #include <GraphicsEngine/Drawers/MeshDrawer.h>
 #include <GraphicsEngine/Drawers/LightDrawer.h>
 #include <GraphicsEngine/Drawers/TextDrawer.h>
+#include <GraphicsEngine/Drawers/SpriteDrawer.h>
 
 #include <GamePipeline/Components/Rendering/TextComponent.h>
 #include <GamePipeline/Components/Rendering/MeshComponent.h>
 #include <GamePipeline/Components/Rendering/AnimationComponent.h>
+#include <GamePipeline/Components/Rendering/SpriteComponent.h>
+
 #include <GamePipeline/Components/Light/DirectionlLightComponent.h>
 #include <GamePipeline/Components/Light/PointLightComponent.h>
 #include <GamePipeline/Components/Light/SpotLightComponent.h>
@@ -72,6 +75,19 @@ void Actor::Render()
 		TextDrawer::Get().Submit(drawCall);
 	}
 
+	SpriteComponent* spriteComponent = GetComponent<SpriteComponent>();
+
+	if (spriteComponent != nullptr)
+	{
+		SpriteDrawCall drawCall =
+		{
+			.SpriteInstance = &spriteComponent->GetSpriteInstance(),
+			.SpriteShared = &spriteComponent->GetSpriteShared()
+		};
+
+		SpriteDrawer::Get().Submit(drawCall);
+	}
+
 	DirectionalLightComponent* directionalLight = GetComponent<DirectionalLightComponent>();
 
 	if (directionalLight != nullptr)
@@ -125,6 +141,12 @@ Transform& Actor::GetTransform()
 {
 	return myTransform;
 }
+
+const Transform& Actor::GetTransform() const
+{
+	return myTransform;
+}
+
 
 void Actor::SetEnabled(bool aState)
 {

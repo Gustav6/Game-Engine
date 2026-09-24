@@ -4,6 +4,7 @@
 #include "Objects/GPU/Sampler.h"
 #include "Objects/GPU/Texture.h"
 #include "Objects/GPU/Buffer.h"
+#include "Objects/GPU/Vertex.h"
 
 #include "PipelineStateObject.h"
 
@@ -175,6 +176,49 @@ bool GraphicsCommandList::UpdateConstantBuffer(const Buffer& aConstantBuffer, co
 
 	memcpy_s(resource.pData, aConstantBuffer.mySize, aBufferData, aBufferDataSize);
 	myContext->Unmap(aConstantBuffer.myBuffer.Get(), 0);
+
+	return true;
+}
+
+bool GraphicsCommandList::UpdateVertexBuffer(const Buffer& aVertexBuffer, const std::vector<Vertex>& aVertices) const
+{
+	if (!aVertexBuffer.IsValid() )
+	{
+		LOG(CmdLog, Error, "Failed to update Vertex buffer! Buffer is either null!");
+		return false;
+	}
+
+	if (aVertices.empty())
+	{
+		LOG(CmdLog, Error, "Failed to update Vertex buffer {}! Data provided is larger than buffer capacity!", aVertexBuffer.myName);
+		return false;
+	}
+
+	if (aVertexBuffer.myType != BufferType::VertexBuffer)
+	{
+		LOG(CmdLog, Error, "Failed to update Vertex buffer! Buffer  invalid type!");
+		return false;
+	}
+
+	const size_t dataSize = sizeof(Vertex) * aVertices.size();
+
+	if (dataSize > aVertexBuffer.mySize)
+	{
+		return false;
+	}
+
+	D3D11_MAPPED_SUBRESOURCE mappedResource = {};
+
+	const HRESULT result = myContext->Map(aVertexBuffer.myBuffer.Get(),	0, D3D11_MAP_WRITE_DISCARD,	0, &mappedResource);
+
+	if (FAILED(result))
+	{
+		return false;
+	}
+
+	memcpy(mappedResource.pData, aVertices.data(), dataSize);
+
+	myContext->Unmap(aVertexBuffer.myBuffer.Get(), 0);
 
 	return true;
 }
@@ -380,6 +424,13 @@ void GraphicsCommandList::Draw(unsigned aNumVertices) const
 	ensure(!IsReadyForExecution());
 
 	myContext->Draw(aNumVertices, 0);
+}
+
+void GraphicsCommandList::DrawSpecificVertices(unsigned aNumVertices, unsigned aFirstVertexIndex) const
+{
+	ensure(!IsReadyForExecution());
+
+	myContext->Draw(aNumVertices, aFirstVertexIndex);
 }
 
 void GraphicsCommandList::DrawIndexed(unsigned aIndexCount, unsigned aIndexOffset) const

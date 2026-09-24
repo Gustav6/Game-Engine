@@ -105,6 +105,9 @@
     <ClInclude Include="Core\SceneCamera.h">
       <Filter>Core</Filter>
     </ClInclude>
+    <ClInclude Include="Core\SpriteRenderResources.h">
+      <Filter>Core</Filter>
+    </ClInclude>
     <ClInclude Include="Drawers\LightDrawer.h">
       <Filter>Drawers</Filter>
     </ClInclude>
@@ -387,6 +390,12 @@
       <Filter>Shaders\Material</Filter>
     </FxCompile>
     <FxCompile Include="Shaders\Material\ShadowCube_GS.hlsl">
+      <Filter>Shaders\Material</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Material\Sprite_PS.hlsl">
+      <Filter>Shaders\Material</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Material\Sprite_VS.hlsl">
       <Filter>Shaders\Material</Filter>
     </FxCompile>
     <FxCompile Include="Shaders\Material\Surface_VS.hlsl">

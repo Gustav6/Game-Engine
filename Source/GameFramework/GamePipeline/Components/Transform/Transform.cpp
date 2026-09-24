@@ -334,3 +334,43 @@ const CommonUtilities::Matrix4x4f& Transform::GetLocalMatrix() const
 
 	return myLocalMatrix;
 }
+
+void Transform::LookAt(const CommonUtilities::Vector3<float>& aTarget)
+{
+
+	CommonUtilities::Vector3f forward = aTarget - myLocalPosition;
+
+	if (forward.LengthSqr() < 0.0001f)
+	{
+		return;
+	}
+
+	forward.Normalize();
+
+	CommonUtilities::Vector3f worldUp = { 0.f, 1.f, 0.f };
+
+	if (CommonUtilities::Math::Abs(forward.Dot(worldUp)) > 0.999f)
+	{
+		worldUp = { 0.f, 0.f, 1.f };
+	}
+
+	CommonUtilities::Vector3f right = worldUp.Cross(forward);
+
+	if (right.LengthSqr() < 0.0001f)
+	{
+		return;
+	}
+
+	right.Normalize();
+
+	CommonUtilities::Vector3f up = forward.Cross(right);
+	up.Normalize();
+
+	CommonUtilities::Matrix3x3<float> rot;
+	rot(1, 1) = right.x;   rot(1, 2) = right.y;   rot(1, 3) = right.z;   
+	rot(2, 1) = up.x;      rot(2, 2) = up.y;      rot(2, 3) = up.z;      
+	rot(3, 1) = forward.x; rot(3, 2) = forward.y; rot(3, 3) = forward.z;
+
+	SetRotation(rot);
+
+}

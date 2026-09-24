@@ -69,6 +69,9 @@
     <ClInclude Include="AssetPipeline\Assets\Types\MeshAsset.h">
       <Filter>AssetPipeline\Assets\Types</Filter>
     </ClInclude>
+    <ClInclude Include="AssetPipeline\Assets\Types\SpriteAsset.h">
+      <Filter>AssetPipeline\Assets\Types</Filter>
+    </ClInclude>
     <ClInclude Include="AssetPipeline\Assets\Types\TextureAsset.h">
       <Filter>AssetPipeline\Assets\Types</Filter>
     </ClInclude>
@@ -98,6 +101,9 @@
       <Filter>GamePipeline\Components\Rendering</Filter>
     </ClInclude>
     <ClInclude Include="GamePipeline\Components\Rendering\MeshComponent.h">
+      <Filter>GamePipeline\Components\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="GamePipeline\Components\Rendering\SpriteComponent.h">
       <Filter>GamePipeline\Components\Rendering</Filter>
     </ClInclude>
     <ClInclude Include="GamePipeline\Components\Rendering\TextComponent.h">
@@ -135,6 +141,9 @@
     <ClCompile Include="AssetPipeline\Assets\Types\MeshAsset.cpp">
       <Filter>AssetPipeline\Assets\Types</Filter>
     </ClCompile>
+    <ClCompile Include="AssetPipeline\Assets\Types\SpriteAsset.cpp">
+      <Filter>AssetPipeline\Assets\Types</Filter>
+    </ClCompile>
     <ClCompile Include="AssetPipeline\Assets\Types\TextureAsset.cpp">
       <Filter>AssetPipeline\Assets\Types</Filter>
     </ClCompile>
@@ -164,6 +173,9 @@
       <Filter>GamePipeline\Components\Rendering</Filter>
     </ClCompile>
     <ClCompile Include="GamePipeline\Components\Rendering\MeshComponent.cpp">
+      <Filter>GamePipeline\Components\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="GamePipeline\Components\Rendering\SpriteComponent.cpp">
       <Filter>GamePipeline\Components\Rendering</Filter>
     </ClCompile>
     <ClCompile Include="GamePipeline\Components\Rendering\TextComponent.cpp">

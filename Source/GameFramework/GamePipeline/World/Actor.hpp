@@ -51,14 +51,17 @@ public:
 	void Render();
 
 	Transform& GetTransform();
+	const Transform& GetTransform() const;
+
+
 
 	void SetEnabled(bool aState);
 	bool GetIsEnabled() const;
-
+protected:
+	Transform myTransform;
 private:
 	bool myIsEnabled;
 
-	Transform myTransform;
 
 	std::unordered_map<std::type_index, std::unique_ptr<Component>> myComponentLookup;
 };

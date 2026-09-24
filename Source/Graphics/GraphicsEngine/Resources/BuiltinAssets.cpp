@@ -51,6 +51,25 @@ bool BuiltinAssets::Initialize(GraphicsEngine& aGraphicsEngine, RenderHardwareIn
 		}
 	}
 
+	// Sprite Material
+	{
+		myDefaultSpriteMaterial = std::make_unique<Material>();
+
+		MaterialDescription spriteMaterialDesc;
+		spriteMaterialDesc.Name = "SpriteMaterial";
+		spriteMaterialDesc.Domain = MaterialDomain::Surface;
+		spriteMaterialDesc.ShadingModel = ShadingModel::Unlit;
+		spriteMaterialDesc.BlendMode = MaterialBlendMode::Alpha;
+		spriteMaterialDesc.PixelShader = aShaderRoot / "Material" / "Sprite_PS.hlsl";
+		spriteMaterialDesc.VertexShader = aShaderRoot / "Material" / "Sprite_VS.hlsl";
+
+		if (!aGraphicsEngine.CreateMaterial(spriteMaterialDesc, *myDefaultSpriteMaterial))
+		{
+			GELOG(Error, "Failed to create sprite material!");
+			return false;
+		}
+	}
+
 	// Albedo Texture
 	{
 		myDefaultAlbedoTexture = std::make_shared<Texture>();
@@ -88,6 +107,11 @@ const Material& BuiltinAssets::GetDefaultMaterial() const
 const Material& BuiltinAssets::GetDefaultFontMaterial() const
 {
 	return *myDefaultFontMaterial;
+}
+
+const Material& BuiltinAssets::GetDefaultSpriteMaterial() const
+{
+	return *myDefaultSpriteMaterial;
 }
 
 const Texture& BuiltinAssets::GetDefaultAlbedoTexture() const

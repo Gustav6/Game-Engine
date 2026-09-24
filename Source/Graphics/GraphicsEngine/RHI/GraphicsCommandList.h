@@ -10,6 +10,7 @@ class Buffer;
 class Texture;
 class Sampler;
 class PipelineStateObject;
+struct Vertex;
 
 class GraphicsCommandList
 {
@@ -37,6 +38,7 @@ public:
 	void SetRenderTargets(const Texture* aTargetList, unsigned aNumTargets, const Texture* aDepthStencil) const;
 
 	bool UpdateConstantBuffer(const Buffer& aConstantBuffer, const void* aBufferData, size_t aBufferDataSize) const;
+	bool UpdateVertexBuffer(const Buffer& aVertexBuffer, const std::vector<Vertex>& aVertices) const;
 
 	void SetVertexBuffer(const Buffer* aBuffer) const;
 	void SetIndexBuffer(const Buffer* aBuffer) const;
@@ -49,6 +51,7 @@ public:
 	void SetShaderSamplers(const Sampler* const* aSamplerList, size_t aNumOfSamplers, unsigned int aStartSlot, PipelineStages aStages) const;
 
 	void Draw(unsigned aNumVertices) const;
+	void DrawSpecificVertices(unsigned aNumVertices, unsigned aFirstVertexIndex) const;
 	void DrawIndexed(unsigned aIndexCount, unsigned aIndexOffset) const;
 
 	void SetMarker(std::string_view aMarker) const;

@@ -58,6 +58,11 @@ bool UnrealSceneAsset::Load(const std::filesystem::path& aPath)
 
 			std::vector<float> matrix = jsonActor.GetFloatArray("Transform");
 
+
+			//Transform transform = UnrealToTGP(matrix);
+			//CommonUtilities::Vector3f asd = { 0.0f,90.0f * CommonUtilities::Math::DEG_TO_RAD<float>,0.0f };
+			//transform.Rotate(asd);
+
 			actor->myTransform = UnrealToTGP(matrix);
 
 			std::vector<JsonData> jsonComponents = jsonActor.GetObjectValueArray("Components");
@@ -100,6 +105,30 @@ bool UnrealSceneAsset::Load(const std::filesystem::path& aPath)
 				}
 				break;
 				case ComponentType::SkeletalMeshComponent:
+
+					//AnimationComponent* animationComponent = actor->AddComponent<AnimationComponent>(meshComponent->GetSkeleton());
+
+					//AnimationEntry breathingAnimation =
+					//{
+					//	.AnimationAsset = AssetRegistry::Get().GetAsset<AnimationAsset>("A_C_TGA_Bro_Idle_Breathing"),
+					//	.ShouldLoop = true
+					//};
+					//AnimationEntry waveAnimation =
+					//{
+					//	.AnimationAsset = AssetRegistry::Get().GetAsset<AnimationAsset>("A_C_TGA_Bro_Idle_Wave"),
+					//	.ShouldLoop = true
+					//};
+					//AnimationEntry runAnimation =
+					//{
+					//	.AnimationAsset = AssetRegistry::Get().GetAsset<AnimationAsset>("A_C_TGA_Bro_Run"),
+					//	.ShouldLoop = true
+					//};
+					//AnimationEntry walkAnimation =
+					//{
+					//	.AnimationAsset = AssetRegistry::Get().GetAsset<AnimationAsset>("A_C_TGA_Bro_Walk"),
+					//	.ShouldLoop = true
+					//};
+
 					break;
 				case ComponentType::PointLightComponent:
 				{
@@ -172,11 +201,51 @@ bool UnrealSceneAsset::Load(const std::filesystem::path& aPath)
 
 CommonUtilities::Matrix4x4f UnrealSceneAsset::UnrealToTGP(std::vector<float> someData)
 {
+
+	//TODO: remove when export works
+
+	//CommonUtilities::Matrix4x4f unrealMatrix = 
+	//{
+	//	someData[0], someData[1], someData[2], someData[3], 
+	//	someData[4], someData[5], someData[6], someData[7], 
+	//	someData[8], someData[9], someData[10], someData[11], 
+	//	someData[12], someData[13], someData[14], someData[15], 
+	//}; 
+
+	//CommonUtilities::Matrix3x3f unrealMatrixRotation = unrealMatrix;
+	//CommonUtilities::Matrix3x3f TGPMatrixRotation = unrealMatrix;
+	//CommonUtilities::Vector3f forwardRow = unrealMatrixRotation.GetRow(0);
+
+	//unrealMatrixRotation.SetRow(0, unrealMatrixRotation.GetRow(1));
+	//unrealMatrixRotation.SetRow(1, unrealMatrixRotation.GetRow(2));
+	//unrealMatrixRotation.SetRow(2, forwardRow);
+
+	//CommonUtilities::Vector3f forwardColumn = unrealMatrixRotation.GetColumn(0);
+
+	//unrealMatrixRotation.SetColumn(0, unrealMatrixRotation.GetColumn(1));
+	//unrealMatrixRotation.SetColumn(1, unrealMatrixRotation.GetColumn(2));
+	//unrealMatrixRotation.SetColumn(2, forwardColumn);
+
+
+	//CommonUtilities::Vector3f unrealPosition = unrealMatrix.GetRow(3);
+	//CommonUtilities::Vector3f position = { unrealPosition[1], unrealPosition[2], unrealPosition[0] }
+
+
+	////Normal PDF Swizzle
+	//CommonUtilities::Matrix4x4f matrix =
+	//{
+	//	someData[5], someData[6], someData[4], 0.0f,
+	//	someData[9], someData[10],someData[8], 0.0f,
+	//	someData[1], someData[2], someData[0], 0.0f,
+	//	someData[13],someData[14],someData[12],1.0f
+	//};
+
+	//Temp Working Swizzle
 	CommonUtilities::Matrix4x4f matrix =
 	{
-		someData[5], someData[6], someData[4], 0.0f,
+		-someData[1], -someData[2], -someData[0], 0.0f,
 		someData[9], someData[10],someData[8], 0.0f,
-		someData[1], someData[2], someData[0], 0.0f,
+		someData[5], someData[6], someData[4], 0.0f,
 		someData[13],someData[14],someData[12],1.0f
 	};
 

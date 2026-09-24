@@ -58,6 +58,7 @@
 #include "Drawers/MeshDrawer.h"
 #include "Drawers/LightDrawer.h"
 #include "Drawers/TextDrawer.h"
+#include "Drawers/SpriteDrawer.h"
 
 #include "CommonUtilities/Json/JsonWrapper.h"
 
@@ -119,7 +120,7 @@ bool GraphicsEngine::Initialize(HWND aWindowHandle, const std::filesystem::path&
 	{
 		myForwardRenderPass = std::make_unique<ForwardRenderPass>();
 		myDeferredRenderPass = std::make_unique<DeferredRenderPass>();
-		myScreenSpaceRenderPass = std::make_unique<ScreenSpaceRenderPass>();
+		myScreenSpaceRenderPass = std::make_unique<ScreenSpaceRenderPass>(*myRHI);
 		myShadowRenderPass = std::make_unique<ShadowRenderPass>();
 
 		myDeferredRenderPass->Initialize(*myRHI);
@@ -134,6 +135,7 @@ void GraphicsEngine::BeginFrame()
 	MeshDrawer::Get().myDrawCalls.clear();
 	LightDrawer::Get().mySceneLights.clear();
 	TextDrawer::Get().myDrawCalls.clear();
+	SpriteDrawer::Get().myDrawCalls.clear();
 }
 
 void GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const SceneCamera& aCamera)

@@ -19,14 +19,34 @@
 
 #include "GraphicsEngine/ConstantBuffers/Manager/ConstantBufferManager.h"
 
+#include "GraphicsEngine/Objects/GPU/Vertex.h"
+
 #include "GraphicsEngine/Objects/Text/Text.h"
 #include "GraphicsEngine/Objects/Text/Font.h"
+
+#include "GraphicsEngine/Objects/Sprite.h"
 
 #include "GraphicsEngine/Objects/Scene/Camera.h"
 
 #include "GraphicsEngine/RHI/GraphicsCommandList.h"
 
 #include "GraphicsEngine/Drawers/TextDrawer.h"
+#include "GraphicsEngine/Drawers/SpriteDrawer.h"
+
+ScreenSpaceRenderPass::ScreenSpaceRenderPass(RenderHardwareInterface& aRHI)
+{
+	constexpr float designWidth = 1920.0f;
+	constexpr float designHeight = 1080.0f;
+
+	mySpriteRenderResources.Projection = CommonUtilities::Matrix4x4f::Identity;
+
+	mySpriteRenderResources.Projection(1, 1) = 2.0f / designWidth;
+	mySpriteRenderResources.Projection(2, 2) = -2.0f / designHeight;
+	mySpriteRenderResources.Projection(4, 1) = -1.0f;
+	mySpriteRenderResources.Projection(4, 2) = 1.0f;
+
+	aRHI.CreateDynamicVertexBuffer("SpriteRenderer", 10000, mySpriteRenderResources.VertexBuffer);
+}
 
 void ScreenSpaceRenderPass::Execute(
 	GraphicsCommandList& inoutCommandList,
@@ -107,6 +127,100 @@ void ScreenSpaceRenderPass::Execute(
 		inoutCommandList.DrawIndexed(static_cast<unsigned int>(drawCall.Text->myIndices.size()), 0);
 
 		inoutCommandList.EndEvent();
+	}
+
+	mySpriteRenderResources.Vertices.clear();
+
+	frameBuffer.Projection = mySpriteRenderResources.Projection;
+	aContext.ConstantBuffers->UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::FrameBuffer, frameBuffer, 0, PipelineStage_VertexShader | PipelineStage_PixelShader);
+
+	const CommonUtilities::Vector2f parentSize =
+	{
+		1920.0f,
+		1080.0f
+	};
+
+	for (auto& drawCall : SpriteDrawer::Get().myDrawCalls)
+	{
+		if (drawCall.SpriteShared == nullptr || drawCall.SpriteInstance == nullptr)
+		{
+			GELOG(Error, "Sprite is not valid!");
+			continue;
+		}
+
+		const CommonUtilities::Vector2f position =
+		{
+			parentSize.x * drawCall.SpriteInstance->Anchor.x + drawCall.SpriteInstance->Position.x - drawCall.SpriteInstance->Size.x * drawCall.SpriteInstance->Pivot.x,
+			parentSize.y * drawCall.SpriteInstance->Anchor.y + drawCall.SpriteInstance->Position.y - drawCall.SpriteInstance->Size.y * drawCall.SpriteInstance->Pivot.y
+		};
+
+		const CommonUtilities::Vector2f size = drawCall.SpriteInstance->Size;
+
+		const float left = position.x;
+		const float top = position.y;
+		const float right = left + size.x;
+		const float bottom = top + size.y;
+
+		Vertex v0 =
+		{
+			.Position = { left,  top,    drawCall.SpriteInstance->Z, 1.0f },
+			.UV0 = { 0.0f, 0.0f }
+		};
+
+		Vertex v1 =
+		{
+			.Position = { right, top,    drawCall.SpriteInstance->Z, 1.0f },
+			.UV0 = { 1.0f, 0.0f }
+		};
+
+		Vertex v2 =
+		{
+			.Position = { left,  bottom, drawCall.SpriteInstance->Z, 1.0f },
+			.UV0 = { 0.0f, 1.0f }
+		};
+
+		Vertex v3 =
+		{
+			.Position = { right, bottom, drawCall.SpriteInstance->Z, 1.0f },
+			.UV0 = { 1.0f, 1.0f }
+		};
+
+		v0.Color = drawCall.SpriteInstance->Color;
+		v1.Color = drawCall.SpriteInstance->Color;
+		v2.Color = drawCall.SpriteInstance->Color;
+		v3.Color = drawCall.SpriteInstance->Color;
+
+		mySpriteRenderResources.Vertices.push_back(v0);
+		mySpriteRenderResources.Vertices.push_back(v1);
+		mySpriteRenderResources.Vertices.push_back(v2);
+		mySpriteRenderResources.Vertices.push_back(v1);
+		mySpriteRenderResources.Vertices.push_back(v3);
+		mySpriteRenderResources.Vertices.push_back(v2);
+
+		inoutCommandList.SetShaderResource(drawCall.SpriteShared->TextureResource.get(), 0, PipelineStage_PixelShader);
+
+		const MaterialInterface* material = nullptr;
+
+		if (material == nullptr)
+		{
+			material = &aContext.BuiltinAssets->GetDefaultSpriteMaterial();
+		}
+
+		if (material->HasParameters())
+		{
+			if (material->IsMaterialDataDirty())
+			{
+				material->RefreshMaterialData();
+			}
+
+			aContext.ConstantBuffers->UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::MaterialBuffer, material->GetParameterDataBlock(), Material::MATERIAL_BUFFER_SIZE, 5, PipelineStage_VertexShader | PipelineStage_PixelShader);
+		}
+
+		inoutCommandList.SetPipelineStateObject(material->GetPSO());
+
+		inoutCommandList.UpdateVertexBuffer(mySpriteRenderResources.VertexBuffer, mySpriteRenderResources.Vertices);
+		inoutCommandList.SetVertexBuffer(&mySpriteRenderResources.VertexBuffer);
+		inoutCommandList.DrawSpecificVertices(static_cast<unsigned int>(mySpriteRenderResources.Vertices.size()), 0);
 	}
 
 	inoutCommandList.EndEvent();

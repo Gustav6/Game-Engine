@@ -44,6 +44,8 @@ public:
 	CommonUtilities::Matrix4x4f GetWorldMatrix() const;
 	const CommonUtilities::Matrix4x4f& GetLocalMatrix() const;
 
+	void LookAt(const CommonUtilities::Vector3<float>& aTarget);
+
 private:
 	mutable bool myIsDirty;
 
