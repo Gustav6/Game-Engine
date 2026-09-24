@@ -1,4 +1,7 @@
+#include "GameFramework.pch.h"
 #include "SpriteAsset.h"
+
+#include <GraphicsEngine/GraphicsEngine.hpp>
 
 #include "GraphicsEngine/Objects/GPU/Texture.h"
 #include "GraphicsEngine/Objects/Sprite.h"
@@ -6,11 +9,6 @@
 #include <tracy/core/Tracy.hpp>
 
 #include "Logger/Logger.h"
-#include "tgafbx/Importer.h"
-#include "tgafbx/TgaFbxStructs.h"
-#include <GraphicsEngine/GraphicsEngine.hpp>
-#include "../../../../Application/Game/Application.h"
-
 
 DECLARE_LOG_CATEGORY_WITH_NAME(SpriteLog, SPRITE, Verbose);
 
@@ -18,27 +16,25 @@ DEFINE_LOG_CATEGORY(SpriteLog);
 
 SpriteAsset::SpriteAsset()
 {
-	mySpriteShared = std::make_unique<SpriteShared>();
+	myData = std::make_unique<SpriteSharedData>();
 }
 
 SpriteAsset::~SpriteAsset() = default;
 
-const SpriteShared& SpriteAsset::GetSprite() const
+const SpriteSharedData& SpriteAsset::GetData() const
 {
-	return *mySpriteShared;
+	return *myData;
 }
 
 bool SpriteAsset::Load(const std::filesystem::path& aPath)
 {
-	GraphicsEngine& GE = GraphicsEngine::Get();
-	
-	mySpriteShared->TextureResource = std::make_shared<Texture>();
-
-	if (!GE.CreateTexture(aPath, *mySpriteShared->TextureResource))
+	if (!GraphicsEngine::Get().CreateTexture(aPath, myData->Texture))
 	{
+		LOG(SpriteLog, Error, "Could not create a sprite texture for {}!", aPath.string());
 		return false;
 	}
 
+	myData->Name = aPath.stem().string();
 
 	return true;
 }

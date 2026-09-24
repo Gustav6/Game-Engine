@@ -6,7 +6,9 @@
 TextComponent::TextComponent(Actor* aOwner)
 	: Component(aOwner)
 {
-	myText = std::make_unique<Text>("Text");
+	// TODO: Set a better more clear name
+
+	myText = std::make_unique<Text>();
 }
 
 void TextComponent::SetFont(const std::shared_ptr<FontAsset>& aFontAsset)

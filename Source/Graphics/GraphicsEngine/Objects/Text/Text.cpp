@@ -4,9 +4,8 @@
 #include "../GPU/Vertex.h"
 #include "Materials/Material.h"
 
-Text::Text(std::string_view aName)
+Text::Text()
 {
-	myName = aName;
 	myIsDirty = true;
 	mySize = 12.0f;
 	myZOrder = 0.0f;
@@ -17,7 +16,7 @@ Text::~Text() = default;
 
 void Text::SetText(std::string_view aText)
 {
-	myTextString = aText;
+	myText = aText;
 	myIsDirty = true;
 }
 
@@ -64,13 +63,13 @@ bool Text::RebuildGeometry()
 	myVertices.clear();
 	myIndices.clear();
 
-	if (myTextString.empty())
+	if (myText.empty())
 	{
 		return true;
 	}
 
-	myVertices.reserve(myTextString.size() * 4 + 4);
-	myIndices.reserve(myTextString.size() * 4 + 4);
+	myVertices.reserve(myText.size() * 4 + 4);
+	myIndices.reserve(myText.size() * 4 + 4);
 
 	const CommonUtilities::Vector4f lineOffset = CommonUtilities::Vector4f(0, -myFont->GetLineHeight(), 0, 0);
 
@@ -80,9 +79,9 @@ bool Text::RebuildGeometry()
 
 	unsigned int row = 0;
 
-	for (size_t p = 0; p < myTextString.size(); p++)
+	for (size_t p = 0; p < myText.size(); p++)
 	{
-		const char c = myTextString[p];
+		const char c = myText[p];
 
 		switch (c)
 		{

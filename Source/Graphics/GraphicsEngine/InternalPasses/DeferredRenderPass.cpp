@@ -202,62 +202,57 @@ void DeferredRenderPass::Execute(
 			{
 				for (unsigned int l = 0; l < LightDrawer::Get().mySceneLights.size(); l++)
 				{
-					if (LightDrawer::Get().mySceneLights[l].LightData == nullptr)
-					{
-						continue;
-					}
-
 					LightBuffer lightBuffer;
 					lightBuffer.Lights[0] = *LightDrawer::Get().mySceneLights[l].LightData;
 					aContext.ConstantBuffers->UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::LightBuffer, lightBuffer, 3, PipelineStage_PixelShader);
 
 					switch (LightDrawer::Get().mySceneLights[l].LightData->Type)
 					{
-					case LightType::Directional:
-					{
-						inoutCommandList.BeginEvent("Directional Light");
-						std::vector<const Texture*> dirLightShadowMaps;
-						dirLightShadowMaps.reserve(ShadowRenderPass::NUM_CASCADES);
-
-						for (size_t c = 0; c < aContext.CascadeShadows->size(); c++)
+						case LightType::Directional:
 						{
-							dirLightShadowMaps.emplace_back(aContext.CascadeShadows->at(c).ShadowMap.get());
+							inoutCommandList.BeginEvent("Directional Light");
+							std::vector<const Texture*> dirLightShadowMaps;
+							dirLightShadowMaps.reserve(ShadowRenderPass::NUM_CASCADES);
+
+							for (size_t c = 0; c < aContext.CascadeShadows->size(); c++)
+							{
+								dirLightShadowMaps.emplace_back(aContext.CascadeShadows->at(c).ShadowMap.get());
+							}
+
+							inoutCommandList.SetShaderResources(dirLightShadowMaps.data(), dirLightShadowMaps.size(), 100, PipelineStage_PixelShader);
+							inoutCommandList.SetPipelineStateObject(*myDeferredDirPSO);
+							inoutCommandList.Draw(4);
+							inoutCommandList.EndEvent();
+							break;
 						}
+						case LightType::Spot:
+						{
+							inoutCommandList.BeginEvent("Spot Light");
 
-						inoutCommandList.SetShaderResources(dirLightShadowMaps.data(), dirLightShadowMaps.size(), 100, PipelineStage_PixelShader);
-						inoutCommandList.SetPipelineStateObject(*myDeferredDirPSO);
-						inoutCommandList.Draw(4);
-						inoutCommandList.EndEvent();
-						break;
-					}
-					case LightType::Spot:
-					{
-						inoutCommandList.BeginEvent("Spot Light");
+							const Texture* shadowMap = LightDrawer::Get().mySceneLights[l].ShadowMap;
 
-						const Texture* shadowMap = LightDrawer::Get().mySceneLights[l].ShadowMap;
+							inoutCommandList.SetShaderResource(shadowMap, 104, PipelineStage_PixelShader);
 
-						inoutCommandList.SetShaderResource(shadowMap, 104, PipelineStage_PixelShader);
+							inoutCommandList.SetPipelineStateObject(*myDeferredSpotPSO);
+							inoutCommandList.Draw(4);
 
-						inoutCommandList.SetPipelineStateObject(*myDeferredSpotPSO);
-						inoutCommandList.Draw(4);
+							inoutCommandList.EndEvent();
+							break;
+						}
+						case LightType::Point:
+						{
+							inoutCommandList.BeginEvent("Point Light");
 
-						inoutCommandList.EndEvent();
-						break;
-					}
-					case LightType::Point:
-					{
-						inoutCommandList.BeginEvent("Point Light");
+							const Texture* shadowMap = LightDrawer::Get().mySceneLights[l].ShadowMap;
 
-						const Texture* shadowMap = LightDrawer::Get().mySceneLights[l].ShadowMap;
+							inoutCommandList.SetShaderResource(shadowMap, 112, PipelineStage_PixelShader);
 
-						inoutCommandList.SetShaderResource(shadowMap, 112, PipelineStage_PixelShader);
+							inoutCommandList.SetPipelineStateObject(*myDeferredPointPSO);
+							inoutCommandList.Draw(4);
 
-						inoutCommandList.SetPipelineStateObject(*myDeferredPointPSO);
-						inoutCommandList.Draw(4);
-
-						inoutCommandList.EndEvent();
-						break;
-					}
+							inoutCommandList.EndEvent();
+							break;
+						}
 					}
 				}
 			}

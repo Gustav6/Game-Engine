@@ -19,10 +19,10 @@ class SpriteComponent : public Component
 public:
 	SpriteComponent(Actor* aOwner);
 
-	void SetSpriteAsset(const std::shared_ptr<SpriteAsset>& aSpriteAsset);
+	void SetSprite(const std::shared_ptr<SpriteAsset>& aSpriteAsset);
 
-	const SpriteInstance& GetSpriteInstance() const;
-	const SpriteShared& GetSpriteShared() const;
+	const SpriteInstanceData& GetInstanceData() const;
+	const SpriteSharedData& GetSharedData() const;
 
 	void SetSize(const CommonUtilities::Vector2f& aSize);
 	void SetPivot(const CommonUtilities::Vector2f& aPivot);
@@ -34,6 +34,6 @@ public:
 
 private:
 	std::shared_ptr<SpriteAsset> mySpriteAsset;
-	std::unique_ptr<SpriteInstance> mySpriteInstance;
+	SpriteInstanceData mySpriteInstance;
 };
 

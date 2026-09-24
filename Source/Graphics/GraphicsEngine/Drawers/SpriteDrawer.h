@@ -4,13 +4,13 @@
 
 struct SpriteBatch;
 
-struct SpriteInstance;
-struct SpriteShared;
+struct SpriteInstanceData;
+struct SpriteSharedData;
 
 struct SpriteDrawCall
 {
-	const SpriteInstance* SpriteInstance = nullptr;
-	const SpriteShared* SpriteShared = nullptr;
+	const SpriteInstanceData* SpriteInstanceData = nullptr;
+	const SpriteSharedData* SpriteSharedData = nullptr;
 };
 
 class SpriteDrawer

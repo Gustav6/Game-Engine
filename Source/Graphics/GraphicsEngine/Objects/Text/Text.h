@@ -18,10 +18,11 @@ class Material;
 class Text
 {
 	friend class GraphicsEngine;
+	friend class TextDrawer;
 	friend class ScreenSpaceRenderPass;
 
 public:
-	Text(std::string_view aName);
+	Text();
 	~Text();
 
 	void SetText(std::string_view aText);
@@ -46,8 +47,7 @@ private:
 	mutable Buffer myVertexBuffer;
 	mutable Buffer myIndexBuffer;
 
-	std::string myName;
-	std::string myTextString;
+	std::string myText;
 
 	CommonUtilities::Vector2f myPosition;
 	CommonUtilities::Vector4f myColor;

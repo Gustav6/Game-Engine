@@ -1,3 +1,4 @@
+#include "GraphicsEngine.pch.h"
 #include "SpriteDrawer.h"
 
 #include "GraphicsEngine/Objects/Sprite.h"
@@ -10,7 +11,13 @@ SpriteDrawer& SpriteDrawer::Get()
 
 void SpriteDrawer::Submit(const SpriteDrawCall& aDrawCall)
 {
-	if (!aDrawCall.SpriteInstance->IsVisible)
+	if (aDrawCall.SpriteSharedData == nullptr || aDrawCall.SpriteInstanceData == nullptr)
+	{
+		GELOG(Error, "Sprite was submitted with invalid data!");
+		return;
+	}
+
+	if (!aDrawCall.SpriteInstanceData->IsVisible)
 	{
 		return;
 	}

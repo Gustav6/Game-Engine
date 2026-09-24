@@ -15,11 +15,7 @@ DECLARE_LOG_CATEGORY_WITH_NAME(FontLog, FONT, Verbose);
 
 DEFINE_LOG_CATEGORY(FontLog);
 
-FontAsset::FontAsset()
-{
-    myFont = std::make_shared<Font>();
-}
-
+FontAsset::FontAsset() = default;
 FontAsset::~FontAsset() = default;
 
 const std::shared_ptr<Font>& FontAsset::GetFont() const
@@ -39,6 +35,8 @@ bool FontAsset::Load(const std::filesystem::path& aPath)
 	{
 		stem.erase(stem.size() - 2);
 	}
+
+	myFont = std::make_shared<Font>(stem);
 
 	std::filesystem::path atlasPath = aPath.parent_path() / (stem + "_A.dds");
 

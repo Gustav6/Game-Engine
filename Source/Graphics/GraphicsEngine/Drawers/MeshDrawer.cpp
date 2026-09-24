@@ -1,3 +1,4 @@
+#include "GraphicsEngine.pch.h"
 #include "MeshDrawer.h"
 
 MeshDrawer& MeshDrawer::Get()
@@ -8,5 +9,11 @@ MeshDrawer& MeshDrawer::Get()
 
 void MeshDrawer::Submit(const MeshDrawCall& aDrawCall)
 {
+	if (aDrawCall.Mesh == nullptr)
+	{
+		GELOG(Error, "Mesh was submitted with invalid data!");
+		return;
+	}
+
 	myDrawCalls.emplace_back(aDrawCall);
 }

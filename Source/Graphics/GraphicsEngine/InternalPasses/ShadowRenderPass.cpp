@@ -192,11 +192,6 @@ void ShadowRenderPass::Execute(
 			}
 			case LightType::Spot:
 			{
-				if (light.ShadowMap == nullptr)
-				{
-					continue;
-				}
-
 				FrameBuffer frameBuffer;
 				frameBuffer.Projection = light.Projection;
 				frameBuffer.View = light.Transform.GetFastInverse();
@@ -219,11 +214,6 @@ void ShadowRenderPass::Execute(
 			}
 			case LightType::Point:
 			{
-				if (light.ShadowMap == nullptr)
-				{
-					continue;
-				}
-
 				FrameBuffer frameBuffer;
 				frameBuffer.Projection = light.Projection;
 				frameBuffer.View = light.Transform.GetFastInverse();

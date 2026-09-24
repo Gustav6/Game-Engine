@@ -53,46 +53,41 @@ void ForwardRenderPass::Execute(
 
 	for (unsigned int i = 0; i < lightBuffer.NumLights; i++)
 	{
-		if (LightDrawer::Get().mySceneLights[i].LightData == nullptr)
-		{
-			continue;
-		}
-
 		lightBuffer.Lights[i] = *LightDrawer::Get().mySceneLights[i].LightData;
 
 		switch (LightDrawer::Get().mySceneLights[i].LightData->Type)
 		{
-		case LightType::Directional:
-		{
-			for (size_t c = 0; c < aContext.CascadeShadows->size(); c++)
+			case LightType::Directional:
 			{
-				dirLightShadowMaps.emplace_back(aContext.CascadeShadows->at(c).ShadowMap.get());
-			}
+				for (size_t c = 0; c < aContext.CascadeShadows->size(); c++)
+				{
+					dirLightShadowMaps.emplace_back(aContext.CascadeShadows->at(c).ShadowMap.get());
+				}
 
-			break;
-		}
-		case LightType::Spot:
-		{
-			if (LightDrawer::Get().mySceneLights[i].ShadowMap == nullptr)
+				break;
+			}
+			case LightType::Spot:
 			{
-				continue;
-			}
+				if (LightDrawer::Get().mySceneLights[i].ShadowMap == nullptr)
+				{
+					continue;
+				}
 
-			spotLightShadowMaps.emplace_back(LightDrawer::Get().mySceneLights[i].ShadowMap);
-			lightBuffer.Lights[i].ShadowIndex = spotShadowIndex++;
-			break;
-		}
-		case LightType::Point:
-		{
-			if (LightDrawer::Get().mySceneLights[i].ShadowMap == nullptr)
+				spotLightShadowMaps.emplace_back(LightDrawer::Get().mySceneLights[i].ShadowMap);
+				lightBuffer.Lights[i].ShadowIndex = spotShadowIndex++;
+				break;
+			}
+			case LightType::Point:
 			{
-				continue;
-			}
+				if (LightDrawer::Get().mySceneLights[i].ShadowMap == nullptr)
+				{
+					continue;
+				}
 
-			pointLightShadowCubes.emplace_back(LightDrawer::Get().mySceneLights[i].ShadowMap);
-			lightBuffer.Lights[i].ShadowIndex = pointShadowIndex++;
-			break;
-		}
+				pointLightShadowCubes.emplace_back(LightDrawer::Get().mySceneLights[i].ShadowMap);
+				lightBuffer.Lights[i].ShadowIndex = pointShadowIndex++;
+				break;
+			}
 		}
 	}
 

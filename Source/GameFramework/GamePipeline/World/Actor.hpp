@@ -48,7 +48,7 @@ public:
 	}
 
 	virtual void Update(float aDeltaTime);
-	void Render();
+	virtual void Render();
 
 	Transform& GetTransform();
 	const Transform& GetTransform() const;

@@ -81,8 +81,8 @@ void Actor::Render()
 	{
 		SpriteDrawCall drawCall =
 		{
-			.SpriteInstance = &spriteComponent->GetSpriteInstance(),
-			.SpriteShared = &spriteComponent->GetSpriteShared()
+			.SpriteInstanceData = &spriteComponent->GetInstanceData(),
+			.SpriteSharedData = &spriteComponent->GetSharedData()
 		};
 
 		SpriteDrawer::Get().Submit(drawCall);

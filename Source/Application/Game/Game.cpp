@@ -17,10 +17,12 @@
 #include "AssetPipeline/Assets/Types/TextureAsset.h"
 #include "AssetPipeline/Assets/Types/UnrealSceneAsset.h"
 #include "AssetPipeline/Assets/Types/FontAsset.h"
+#include "AssetPipeline/Assets/Types/SpriteAsset.h"
 
 #include "GamePipeline/Components/Rendering/MeshComponent.h"
 #include "GamePipeline/Components/Rendering/AnimationComponent.h"
 #include "GamePipeline/Components/Rendering/TextComponent.h"
+#include "GamePipeline/Components/Rendering/SpriteComponent.h"
 #include "GamePipeline/Components/Light/DirectionlLightComponent.h"
 #include "GamePipeline/Components/Light/PointLightComponent.h"
 #include "GamePipeline/Components/Light/SpotLightComponent.h"
@@ -55,6 +57,7 @@ bool Game::Initialize(SIZE aWindowSize, WNDPROC aWindowProcess, LPCWSTR aWindowT
 	AssetRegistry::Get().RegisterAssetType<TextureAsset>({ ".dds" });
 	AssetRegistry::Get().RegisterAssetType<UnrealSceneAsset>({ ".json" });
 	AssetRegistry::Get().RegisterAssetType<FontAsset>({ ".json" });
+	AssetRegistry::Get().RegisterAssetType<SpriteAsset>({ ".dds" });
 
 	if (!AssetRegistry::Get().Initialize(workingDirectory))
 	{
@@ -396,6 +399,11 @@ void Game::LoadScene()
 		text->SetFont(AssetRegistry::Get().GetAsset<FontAsset>("CascadiaCode_M"));
 		text->SetText("SHREK");
 		text->SetSize(36);
+
+		SpriteComponent* sprite = object->AddComponent<SpriteComponent>();
+		sprite->SetSprite(AssetRegistry::Get().GetAsset<SpriteAsset>("ShrekSprite"));
+		sprite->SetSize({ 512, 512 });
+		sprite->SetPosition({ 512, 512 });
 
 		GameWorld::Get().AddActor(std::move(object));
 	}

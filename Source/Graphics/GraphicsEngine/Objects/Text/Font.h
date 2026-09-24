@@ -3,7 +3,7 @@
 #include <unordered_map>
 
 #include "CommonUtilities/Rectangle.hpp"
-#include "../GPU/Texture.h"
+#include "GraphicsEngine/Objects/GPU/Texture.h"
 
 class Font 
 {
@@ -11,6 +11,8 @@ class Font
 	friend class ScreenSpaceRenderPass;
 
 public:
+	Font(std::string_view aName);
+
 	struct Glyph 
 	{
 		unsigned int UniCode;
@@ -19,6 +21,11 @@ public:
 		CommonUtilities::Rectanglef PlaneBounds;
 		CommonUtilities::Rectanglef AtlasBounds;
 	};
+
+	const Glyph* GetGlyph(char aGlyph) const;
+	float GetLineHeight() const;
+	float GetAscender() const;
+	float GetDescender() const;
 
 private:
 	// The height of a line of text, in font units
@@ -30,12 +37,8 @@ private:
 	// The maximum height below the line a glyph can reach.
 	float myDescender;
 
+	std::string myName;
+
 	std::unordered_map<char, Glyph> myGlyphs;
 	Texture myAtlas;
-
-public:
-	const Glyph* GetGlyph(char aGlyph) const;
-	float GetLineHeight() const { return myLineHeight; };
-	float GetAscender() const { return myAscender; };
-	float GetDescender() const { return myDescender; };
 };

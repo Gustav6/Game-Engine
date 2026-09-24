@@ -4,7 +4,7 @@
 
 #include "../Base/Asset.h"
 
-struct SpriteShared;
+struct SpriteSharedData;
 
 class SpriteAsset : public Asset
 {
@@ -14,13 +14,12 @@ public:
 	SpriteAsset();
 	~SpriteAsset() override;
 
-	const SpriteShared& GetSprite() const;
+	const SpriteSharedData& GetData() const;
 
 protected:
 	bool Load(const std::filesystem::path& aPath) override;
 
 private:
-	std::unique_ptr<SpriteShared> mySpriteShared;
-
+	std::unique_ptr<SpriteSharedData> myData;
 };
 
