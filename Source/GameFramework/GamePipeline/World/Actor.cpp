@@ -69,7 +69,10 @@ void Actor::Render()
 	{
 		TextDrawCall drawCall = 
 		{
-			.Text = &textComponent->GetText()
+			.Text = &textComponent->GetText(),
+			.Font = &textComponent->GetFont(),
+			.Material = nullptr,
+			.Transform = textComponent->GetTransform()
 		};
 
 		TextDrawer::Get().Submit(drawCall);
@@ -82,7 +85,8 @@ void Actor::Render()
 		SpriteDrawCall drawCall =
 		{
 			.SpriteInstanceData = &spriteComponent->GetInstanceData(),
-			.SpriteSharedData = &spriteComponent->GetSharedData()
+			.SpriteSharedData = &spriteComponent->GetSharedData(),
+			.Material = nullptr
 		};
 
 		SpriteDrawer::Get().Submit(drawCall);

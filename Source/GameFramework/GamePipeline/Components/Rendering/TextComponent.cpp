@@ -1,19 +1,16 @@
 #include "TextComponent.h"
 
+#include <CommonUtilities/Math/Vector3.hpp>
+
 #include <AssetPipeline/Assets/Types/FontAsset.h>
 #include <AssetPipeline/Assets/Types/MaterialAsset.h>
 
 TextComponent::TextComponent(Actor* aOwner)
 	: Component(aOwner)
 {
-	// TODO: Set a better more clear name
-
+	myIsDirty = true;
+	mySize = 12.0f;
 	myText = std::make_unique<Text>();
-}
-
-void TextComponent::SetFont(const std::shared_ptr<FontAsset>& aFontAsset)
-{
-	myText->SetFont(aFontAsset->GetFont());
 }
 
 Text& TextComponent::GetText()
@@ -21,27 +18,68 @@ Text& TextComponent::GetText()
 	return *myText;
 }
 
+Font& TextComponent::GetFont()
+{
+	return *myFont;
+}
+
+const CommonUtilities::Matrix4x4f& TextComponent::GetTransform()
+{
+	if (myIsDirty)
+	{
+		RebuildTransform();
+	}
+
+	return myTransform;
+}
+
+void TextComponent::SetFont(const std::shared_ptr<FontAsset>& aFontAsset)
+{
+	myFont = aFontAsset->GetFont();
+}
+
 void TextComponent::SetText(std::string_view aText)
 {
 	myText->SetText(aText);
+	myIsDirty = true;
 }
 
 void TextComponent::SetSize(float aPointSize)
 {
+	mySize = aPointSize;
 	myText->SetSize(aPointSize);
+	myIsDirty = true;
 }
 
-void TextComponent::SetZOrder(float aOrder)
+void TextComponent::SetDepth(float aDepth)
 {
-	myText->SetZOrder(aOrder);
+	myText->SetDepth(aDepth);
+	myIsDirty = true;
 }
 
 void TextComponent::SetColor(const CommonUtilities::Vector4f& aColor)
 {
 	myText->SetColor(aColor);
+	myIsDirty = true;
 }
 
 void TextComponent::SetPosition(const CommonUtilities::Vector2f& aPosition)
 {
-	myText->SetPosition(aPosition);
+	myPosition = aPosition;
+	myIsDirty = true;
+}
+
+void TextComponent::RebuildTransform()
+{
+	const float pointSize = mySize;
+	const float dpi = 96.0f;
+	const float fontPixelHeight = pointSize * (dpi / 72.0f);
+
+	CommonUtilities::Matrix4x4f scaling;
+	scaling.SetScaling({ fontPixelHeight, -fontPixelHeight, 1.0f });
+
+	CommonUtilities::Matrix4x4f translation;
+	translation.SetTranslation({ myPosition.x, myPosition.y, 0});
+
+	myTransform = scaling * translation;
 }

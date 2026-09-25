@@ -5,6 +5,7 @@
 
 class RenderHardwareInterface;
 class Texture;
+class Font;
 
 enum class ResourceFormat;
 
@@ -16,4 +17,6 @@ public:
     static bool CreateTexture(RenderHardwareInterface& aRHI, std::string_view aName, unsigned aWidth, unsigned aHeight, unsigned aNumMips, ResourceFormat aFormat, ResourceBindFlags aBindFlags, Texture& outTexture);
 
     static bool CreateTexture(RenderHardwareInterface& aRHI, const std::filesystem::path& aPath, Texture& outTexture);
+
+    static bool CreateFontAsset(RenderHardwareInterface& aRHI, const std::filesystem::path& aFontPath, const std::filesystem::path& aFontAtlasPath, Font& outFont);
 };

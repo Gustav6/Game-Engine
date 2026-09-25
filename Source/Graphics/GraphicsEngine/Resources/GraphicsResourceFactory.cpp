@@ -3,6 +3,10 @@
 
 #include "GraphicsEngine/RHI/RenderHardwareInterface.h"
 
+#include "CommonUtilities/Json/JsonWrapper.h"
+
+#include "GraphicsEngine/Objects/Text/Font.h"
+
 bool GraphicsResourceFactory::CreateShadowMap(RenderHardwareInterface& aRHI, std::string_view aName, unsigned int aWidth, unsigned int aHeight, Texture& outShadowMap, bool aCube)
 {
 	return aRHI.CreateDepthStencil(aName, aWidth, aHeight, outShadowMap, aCube);
@@ -37,4 +41,78 @@ bool GraphicsResourceFactory::CreateTexture(RenderHardwareInterface& aRHI, const
 	file.close();
 
 	return aRHI.CreateTexture(aPath.stem().string(), fileData.data(), fileData.size(), outTexture);
+}
+
+bool GraphicsResourceFactory::CreateFontAsset(RenderHardwareInterface& aRHI, const std::filesystem::path& aFontPath, const std::filesystem::path& aFontAtlasPath, Font& outFont)
+{
+	JsonData fontData = Json::Read(aFontPath);
+
+	if (!fontData.IsValid())
+	{
+		GELOG(Error, "Failed to read font JSON [{}]!", aFontPath.string());
+		return false;
+	}
+
+	JsonData atlasSettings = fontData.GetObjectValue("atlas");
+
+	if (!atlasSettings.IsValid())
+	{
+		GELOG(Error, "Font JSON is missing [atlas]!");
+		return false;
+	}
+
+	float width = static_cast<float>(atlasSettings.GetUnsigned("width"));
+	float height = static_cast<float>(atlasSettings.GetUnsigned("height"));
+
+	JsonData metricsSettings = fontData.GetObjectValue("metrics");
+
+	if (!metricsSettings.IsValid())
+	{
+		GELOG(Error, "Font JSON is missing [metrics]!");
+		return false;
+	}
+
+	outFont.myLineHeight = metricsSettings.GetFloat("lineHeight");
+	outFont.myAscender = metricsSettings.GetFloat("ascender");
+	outFont.myDescender = metricsSettings.GetFloat("descender");
+
+	const std::vector<JsonData> glyphs = fontData.GetObjectValueArray("glyphs");
+
+	if (glyphs.empty())
+	{
+		GELOG(Error, "Font JSON contains no glyphs [{}]!", aFontPath.string());
+		return false;
+	}
+
+	for (const JsonData& glyphData : glyphs)
+	{
+		Font::Glyph glyph = {};
+
+		glyph.UniCode = glyphData.GetUnsigned("unicode");
+		glyph.Advance = glyphData.GetFloat("advance");
+
+		if (glyphData.HasKey("planeBounds"))
+		{
+			JsonData planeBounds = glyphData.GetObjectValue("planeBounds");
+
+			glyph.PlaneBounds.Left = planeBounds.GetFloat("left");
+			glyph.PlaneBounds.Bottom = planeBounds.GetFloat("bottom");
+			glyph.PlaneBounds.Right = planeBounds.GetFloat("right");
+			glyph.PlaneBounds.Top = planeBounds.GetFloat("top");
+		}
+
+		if (glyphData.HasKey("atlasBounds"))
+		{
+			JsonData atlasBounds = glyphData.GetObjectValue("atlasBounds");
+
+			glyph.AtlasBounds.Left = atlasBounds.GetFloat("left") / width;
+			glyph.AtlasBounds.Bottom = atlasBounds.GetFloat("bottom") / height;
+			glyph.AtlasBounds.Right = atlasBounds.GetFloat("right") / width;
+			glyph.AtlasBounds.Top = atlasBounds.GetFloat("top") / height;
+		}
+
+		outFont.myGlyphs.emplace(static_cast<char>(glyph.UniCode), std::move(glyph));
+	}
+
+	return CreateTexture(aRHI, aFontAtlasPath, outFont.myAtlas);
 }

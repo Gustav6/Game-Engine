@@ -25,7 +25,8 @@ enum class JointGroup
 struct AnimationEntry
 {
 	const std::shared_ptr<AnimationAsset> AnimationAsset;
-	const bool ShouldLoop;
+	const bool ShouldLoop = false;
+	const float AnimationSpeedMultiplier = 1;
 };
 
 struct LayeredAnimation
@@ -63,7 +64,7 @@ private:
 	bool LayerEffectsJoint(JointGroup aGroup, size_t aJointIndex);
 
 	void UpdateAnimation(size_t aCurrentFrame, unsigned int aJointIdx, const CommonUtilities::Matrix4x4f& aParentJointTransform, CommonUtilities::Matrix4x4f* outTransforms, JointGroup aGroup, const std::string& aCurrentAnimation);
-
+	
 	const Skeleton* mySkeleton;
 
 	std::vector<LayeredAnimation> myAnimationStack;

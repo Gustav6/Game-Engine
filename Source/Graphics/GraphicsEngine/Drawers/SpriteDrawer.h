@@ -2,8 +2,9 @@
 
 #include <vector>
 
-struct SpriteBatch;
+class MaterialInterface;
 
+struct SpriteBatch;
 struct SpriteInstanceData;
 struct SpriteSharedData;
 
@@ -11,6 +12,7 @@ struct SpriteDrawCall
 {
 	const SpriteInstanceData* SpriteInstanceData = nullptr;
 	const SpriteSharedData* SpriteSharedData = nullptr;
+	const MaterialInterface* Material;
 };
 
 class SpriteDrawer

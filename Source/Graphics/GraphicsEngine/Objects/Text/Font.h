@@ -3,11 +3,12 @@
 #include <unordered_map>
 
 #include "CommonUtilities/Rectangle.hpp"
+
 #include "GraphicsEngine/Objects/GPU/Texture.h"
 
 class Font 
 {
-	friend class GraphicsEngine;
+	friend class GraphicsResourceFactory;
 	friend class ScreenSpaceRenderPass;
 
 public:

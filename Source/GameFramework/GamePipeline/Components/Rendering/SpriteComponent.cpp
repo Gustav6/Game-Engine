@@ -37,9 +37,10 @@ void SpriteComponent::SetAnchor(const CommonUtilities::Vector2f& aAnchor)
 	mySpriteInstance.Anchor = aAnchor;
 }
 
-void SpriteComponent::SetPosition(const CommonUtilities::Vector2f& aOffset)
+void SpriteComponent::SetPosition(const CommonUtilities::Vector2f& aPosition)
 {
-	mySpriteInstance.Position = aOffset;
+	mySpriteInstance.Position.x = aPosition.x;
+	mySpriteInstance.Position.y = aPosition.y;
 }
 
 void SpriteComponent::SetColor(const CommonUtilities::Vector4f& aColor)
@@ -49,7 +50,7 @@ void SpriteComponent::SetColor(const CommonUtilities::Vector4f& aColor)
 
 void SpriteComponent::SetDepth(float aDepth)
 {
-	mySpriteInstance.Z = aDepth;
+	mySpriteInstance.Position.z = aDepth;
 }
 
 void SpriteComponent::SetVisible(bool aVisible)

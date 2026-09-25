@@ -11,7 +11,7 @@ TextDrawer& TextDrawer::Get()
 
 void TextDrawer::Submit(const TextDrawCall& aDrawCall)
 {
-	if (aDrawCall.Text == nullptr || aDrawCall.Text->myFont == nullptr)
+	if (aDrawCall.Text == nullptr || aDrawCall.Font == nullptr)
 	{
 		GELOG(Error, "Text was submitted with invalid data!");
 		return;

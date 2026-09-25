@@ -5,20 +5,17 @@
 #include <memory>
 #include <vector>
 
-#include "../GPU/Buffer.h"
+#include "GraphicsEngine/Objects/GPU/Buffer.h"
 
 #include "CommonUtilities/Math/Vector2.hpp"
 #include "CommonUtilities/Math/Vector4.hpp"
-#include "CommonUtilities/Math/Matrix4x4.hpp"
 
 struct Vertex;
 class Font;
-class Material;
 
 class Text
 {
 	friend class GraphicsEngine;
-	friend class TextDrawer;
 	friend class ScreenSpaceRenderPass;
 
 public:
@@ -26,35 +23,25 @@ public:
 	~Text();
 
 	void SetText(std::string_view aText);
-	void SetFont(const std::shared_ptr<Font> aFont);
-	void SetFontMaterial(std::shared_ptr<Material> aMaterial);
 	void SetSize(float aPointSize);
-	void SetZOrder(float aOrder);
 	void SetColor(const CommonUtilities::Vector4f& aColor);
-	void SetPosition(const CommonUtilities::Vector2f& aPosition);
+	void SetDepth(float aZOrder);
 
-	const CommonUtilities::Matrix4x4f& GetRenderMatrix() const;
+	bool RebuildGeometry(const Font& aFont);
 
 private:
-	bool RebuildGeometry();
-	void RebuildTextRenderMatrix();
-
-	std::shared_ptr<Font> myFont;
-	std::shared_ptr<Material> myFontMaterial;
-
 	std::vector<Vertex> myVertices;
 	std::vector<unsigned int> myIndices;
-	mutable Buffer myVertexBuffer;
-	mutable Buffer myIndexBuffer;
+
+	Buffer myVertexBuffer;
+	Buffer myIndexBuffer;
 
 	std::string myText;
 
-	CommonUtilities::Vector2f myPosition;
 	CommonUtilities::Vector4f myColor;
-	CommonUtilities::Matrix4x4f myTextRenderMatrix;
 
-	float myZOrder;
 	float mySize;
+	float myZOrder;
 
 	bool myIsDirty;
 };

@@ -4,6 +4,7 @@
 #include "GPU/Texture.h"
 
 #include "CommonUtilities/Math/Vector2.hpp"
+#include "CommonUtilities/Math/Vector3.hpp"
 #include "CommonUtilities/Math/Vector4.hpp"
 
 struct SpriteSharedData
@@ -19,11 +20,10 @@ struct SpriteInstanceData
 	CommonUtilities::Vector2f Size = { 1.0f, 1.0f };
 	CommonUtilities::Vector2f Pivot = { 0.5f, 0.5f };
 	CommonUtilities::Vector2f Anchor = { 0.0f, 0.0f };
-	CommonUtilities::Vector2f Position = { 0.0f, 0.0f };
+	CommonUtilities::Vector3f Position = { 0.0f, 0.0f, 0.0f };
 
 	CommonUtilities::Vector4f Color = { 1, 1, 1, 1 };
 
-	float Z = 0.0f;
 	bool IsVisible = true;
 };
 

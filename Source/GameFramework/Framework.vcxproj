@@ -180,6 +180,10 @@
     <ClInclude Include="GamePipeline\Components\Transform\Transform.h" />
     <ClInclude Include="GamePipeline\World\Actor.hpp" />
     <ClInclude Include="GamePipeline\World\GameWorld.h" />
+    <ClInclude Include="UIPipeline\Canvas\UICanvas.h" />
+    <ClInclude Include="UIPipeline\Elements\UIElement.h" />
+    <ClInclude Include="UIPipeline\Elements\UIImage.h" />
+    <ClInclude Include="UIPipeline\UIManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\ThirdParty\Source\tracy\TracyClient.cpp" />
@@ -206,6 +210,10 @@
     <ClCompile Include="GamePipeline\Components\Transform\Transform.cpp" />
     <ClCompile Include="GamePipeline\World\Actor.cpp" />
     <ClCompile Include="GamePipeline\World\GameWorld.cpp" />
+    <ClCompile Include="UIPipeline\Canvas\UICanvas.cpp" />
+    <ClCompile Include="UIPipeline\Elements\UIElement.cpp" />
+    <ClCompile Include="UIPipeline\Elements\UIImage.cpp" />
+    <ClCompile Include="UIPipeline\UIManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Utilities\CommonUtilities\CommonUtilities.vcxproj">

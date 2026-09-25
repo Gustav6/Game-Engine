@@ -20,9 +20,9 @@ bool BuiltinAssets::Initialize(GraphicsEngine& aGraphicsEngine, RenderHardwareIn
 
 		MaterialDescription defaultMatDesc;
 		defaultMatDesc.Name = "Default";
-		defaultMatDesc.BlendMode = MaterialBlendMode::Opaque;
 		defaultMatDesc.Domain = MaterialDomain::Surface;
 		defaultMatDesc.ShadingModel = ShadingModel::Unlit;
+		defaultMatDesc.BlendMode = MaterialBlendMode::Opaque;
 		defaultMatDesc.MaterialShaderCode = aShaderRoot / "Material" / "Include" / "Material.hlsli";
 
 		if (!aGraphicsEngine.CreateMaterial(defaultMatDesc, *myDefaultMaterial))

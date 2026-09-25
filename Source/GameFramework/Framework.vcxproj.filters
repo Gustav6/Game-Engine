@@ -49,6 +49,15 @@
     <Filter Include="ThirdParty\Source\tracy">
       <UniqueIdentifier>{22F6E85D-8E2D-31F5-9737-951803EE57EE}</UniqueIdentifier>
     </Filter>
+    <Filter Include="UIPipeline">
+      <UniqueIdentifier>{79318438-65E9-C585-CEF0-9EE1BAC76076}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UIPipeline\Canvas">
+      <UniqueIdentifier>{64163506-D02C-339C-19A4-BEBD85F90324}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UIPipeline\Elements">
+      <UniqueIdentifier>{E5667979-51C8-5687-DA35-9D3946968D46}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AssetPipeline\AssetRegistry\AssetRegistry.h">
@@ -117,6 +126,18 @@
     </ClInclude>
     <ClInclude Include="GamePipeline\World\GameWorld.h">
       <Filter>GamePipeline\World</Filter>
+    </ClInclude>
+    <ClInclude Include="UIPipeline\Canvas\UICanvas.h">
+      <Filter>UIPipeline\Canvas</Filter>
+    </ClInclude>
+    <ClInclude Include="UIPipeline\Elements\UIElement.h">
+      <Filter>UIPipeline\Elements</Filter>
+    </ClInclude>
+    <ClInclude Include="UIPipeline\Elements\UIImage.h">
+      <Filter>UIPipeline\Elements</Filter>
+    </ClInclude>
+    <ClInclude Include="UIPipeline\UIManager.h">
+      <Filter>UIPipeline</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -189,6 +210,18 @@
     </ClCompile>
     <ClCompile Include="GamePipeline\World\GameWorld.cpp">
       <Filter>GamePipeline\World</Filter>
+    </ClCompile>
+    <ClCompile Include="UIPipeline\Canvas\UICanvas.cpp">
+      <Filter>UIPipeline\Canvas</Filter>
+    </ClCompile>
+    <ClCompile Include="UIPipeline\Elements\UIElement.cpp">
+      <Filter>UIPipeline\Elements</Filter>
+    </ClCompile>
+    <ClCompile Include="UIPipeline\Elements\UIImage.cpp">
+      <Filter>UIPipeline\Elements</Filter>
+    </ClCompile>
+    <ClCompile Include="UIPipeline\UIManager.cpp">
+      <Filter>UIPipeline</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

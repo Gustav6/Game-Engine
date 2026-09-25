@@ -25,7 +25,6 @@ class GraphicsCommandList;
 class Texture;
 class Sampler;
 class Font;
-class Text;
 
 class BuiltinAssets;
 class MaterialShaderRegistry;
@@ -64,7 +63,7 @@ public:
 	 * Will set the texture for the environment, which is used in PBL.
 	 * @param aEnvironmentTexture A texture which is in Cubemap format.
 	 */
-	void SetEnvironmentTexture(std::unique_ptr<Texture> aEnvironmentTexture);
+	void SetEnvironmentTexture(std::shared_ptr<Texture> aEnvironmentTexture);
 
 private:
 	GraphicsEngine();
@@ -91,7 +90,7 @@ private:
 
 	std::vector<std::unique_ptr<Sampler>> mySamplers;
 
-	std::unique_ptr<Texture> myEnvironmentCubemap;
+	std::shared_ptr<Texture> myEnvironmentCubemap;
 	std::unique_ptr<Texture> myLUTTexture;
 
 	DebugRenderMode myDebugRenderMode = DebugRenderMode::sRGB;

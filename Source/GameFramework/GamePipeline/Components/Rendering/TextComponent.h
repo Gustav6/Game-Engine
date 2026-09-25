@@ -9,8 +9,11 @@
 #include "GraphicsEngine/Objects/Text/Text.h"
 
 #include <CommonUtilities/Math/Vector2.hpp>
+#include <CommonUtilities/Math/Vector3.hpp>
 #include <CommonUtilities/Math/Vector4.hpp>
+#include <CommonUtilities/Math/Matrix4x4.hpp>
 
+class Font;
 class FontAsset;
 class MaterialAsset;
 
@@ -19,17 +22,29 @@ class TextComponent : public Component
 public:
 	TextComponent(Actor* aOwner);
 
-	void SetFont(const std::shared_ptr<FontAsset>& aFontAsset);
-
 	Text& GetText();
+	Font& GetFont();
 
+	const CommonUtilities::Matrix4x4f& GetTransform();
+
+	void SetFont(const std::shared_ptr<FontAsset>& aFontAsset);
 	void SetText(std::string_view aText);
 	void SetSize(float aPointSize);
-	void SetZOrder(float aOrder);
+	void SetDepth(float aDepth);
 	void SetColor(const CommonUtilities::Vector4f& aColor);
 	void SetPosition(const CommonUtilities::Vector2f& aPosition);
 
 private:
+	void RebuildTransform();
+
 	std::unique_ptr<Text> myText;
+	std::shared_ptr<Font> myFont;
+
+	CommonUtilities::Vector2f myPosition;
+	CommonUtilities::Matrix4x4f myTransform;
+
+	float mySize;
+
+	bool myIsDirty;
 };
 

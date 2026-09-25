@@ -1,14 +1,15 @@
 #include "Text.h"
 
 #include "Font.h"
-#include "../GPU/Vertex.h"
+
 #include "Materials/Material.h"
+
+#include "GraphicsEngine/Objects/GPU/Vertex.h"
 
 Text::Text()
 {
 	myIsDirty = true;
 	mySize = 12.0f;
-	myZOrder = 0.0f;
 	myColor = { 1.0f, 1.0f, 1.0f, 1.0f };
 }
 
@@ -20,25 +21,10 @@ void Text::SetText(std::string_view aText)
 	myIsDirty = true;
 }
 
-void Text::SetFont(const std::shared_ptr<Font> aFont)
-{
-	myFont = aFont;
-}
-
-void Text::SetFontMaterial(std::shared_ptr<Material> aMaterial)
-{
-	myFontMaterial = aMaterial;
-}
-
 void Text::SetSize(float aPointSize)
 {
 	mySize = aPointSize;
 	myIsDirty = true;
-}
-
-void Text::SetZOrder(float aOrder)
-{
-	myZOrder = aOrder;
 }
 
 void Text::SetColor(const CommonUtilities::Vector4f& aColor)
@@ -47,18 +33,12 @@ void Text::SetColor(const CommonUtilities::Vector4f& aColor)
 	myIsDirty = true;
 }
 
-void Text::SetPosition(const CommonUtilities::Vector2f& aPosition)
+void Text::SetDepth(float aZOrder)
 {
-	myPosition = aPosition;
-	myIsDirty = true;
+	myZOrder = aZOrder;
 }
 
-const CommonUtilities::Matrix4x4f& Text::GetRenderMatrix() const
-{
-	return myTextRenderMatrix;
-}
-
-bool Text::RebuildGeometry()
+bool Text::RebuildGeometry(const Font& aFont)
 {
 	myVertices.clear();
 	myIndices.clear();
@@ -71,7 +51,7 @@ bool Text::RebuildGeometry()
 	myVertices.reserve(myText.size() * 4 + 4);
 	myIndices.reserve(myText.size() * 4 + 4);
 
-	const CommonUtilities::Vector4f lineOffset = CommonUtilities::Vector4f(0, -myFont->GetLineHeight(), 0, 0);
+	const CommonUtilities::Vector4f lineOffset = CommonUtilities::Vector4f(0, -aFont.GetLineHeight(), 0, 0);
 
 	CommonUtilities::Vector4f cursor = CommonUtilities::Vector4f::Zero;
 
@@ -94,7 +74,7 @@ bool Text::RebuildGeometry()
 			}
 			case ' ':
 			{
-				if (const Font::Glyph* glyph = myFont->GetGlyph(c))
+				if (const Font::Glyph* glyph = aFont.GetGlyph(c))
 				{
 					CommonUtilities::Vector4f advance = CommonUtilities::Vector4f(glyph->Advance, 0, 0, 0);
 					cursor += advance;
@@ -103,7 +83,7 @@ bool Text::RebuildGeometry()
 			}
 		}
 
-		if (const Font::Glyph* glyph = myFont->GetGlyph(c))
+		if (const Font::Glyph* glyph = aFont.GetGlyph(c))
 		{
 			const unsigned int currentVertexCount = static_cast<unsigned int>(myVertices.size());
 
@@ -145,19 +125,4 @@ bool Text::RebuildGeometry()
 	}
 
 	return true;
-}
-
-void Text::RebuildTextRenderMatrix()
-{
-	const float pointSize = mySize;
-	const float dpi = 96.0f;
-	const float fontPixelHeight = pointSize * (dpi / 72.0f);
-
-	CommonUtilities::Matrix4x4f scaling;
-	scaling.SetScaling({ fontPixelHeight, -fontPixelHeight, 1.0f });
-
-	CommonUtilities::Matrix4x4f translation;
-	translation.SetTranslation({ myPosition.x, myPosition.y, 0.0f });
-
-	myTextRenderMatrix = scaling * translation;
 }

@@ -13,16 +13,8 @@ struct RenderItem
 
 struct ScreenSpaceItem
 {
-    enum class Kind 
-    { 
-        Text, 
-        Sprite 
-    };
-
-    Kind ItemKind;
-
     const TextDrawCall* TextCall = nullptr;
     const SpriteDrawCall* SpriteCall = nullptr;
 
-    float SortOrder = 0.0f;
+    float Depth = 0.0f;
 };

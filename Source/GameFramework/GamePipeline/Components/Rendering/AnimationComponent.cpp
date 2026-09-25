@@ -24,10 +24,11 @@ void AnimationComponent::Update(float aDeltaTime)
 	for (int animationIndex = static_cast<int>(myAnimationStack.size() - 1); animationIndex >= 0; animationIndex--)
 	{
 		LayeredAnimation::AnimationLayer& layer = myAnimationStack[animationIndex].Layer;
+		const AnimationEntry& entry = myAnimations.at(layer.AnimationName);
 
-		layer.AnimationTimer += aDeltaTime;
+		layer.AnimationTimer += aDeltaTime * entry.AnimationSpeedMultiplier;
 
-		if (layer.AnimationTimer < layer.FrameTime)
+		if (layer.AnimationTimer < layer.FrameTime /** entry.AnimationSpeedMultiplier*/)
 		{
 			if (myAnimationStack[animationIndex].IsRoot)
 			{
@@ -37,7 +38,6 @@ void AnimationComponent::Update(float aDeltaTime)
 			continue;
 		}
 
-		const AnimationEntry& entry = myAnimations.at(layer.AnimationName);
 
 		size_t nextFrame = layer.CurrentFrame + 1;
 

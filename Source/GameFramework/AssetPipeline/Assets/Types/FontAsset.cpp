@@ -31,16 +31,25 @@ bool FontAsset::Load(const std::filesystem::path& aPath)
 
 	std::string stem = aPath.stem().string();
 
+	std::filesystem::path atlasPath;
+	std::filesystem::path fontPath;
+
 	if (stem.ends_with("_M"))
 	{
 		stem.erase(stem.size() - 2);
+		fontPath = aPath;
+		atlasPath = aPath.parent_path() / (stem + "_A.dds");
+	}
+	else if (stem.ends_with("_A"))
+	{
+		stem.erase(stem.size() - 2);
+		fontPath = aPath.parent_path() / (stem + "_M.json");
+		atlasPath = aPath;
 	}
 
 	myFont = std::make_shared<Font>(stem);
 
-	std::filesystem::path atlasPath = aPath.parent_path() / (stem + "_A.dds");
-
-	if (!GraphicsEngine::Get().CreateFontAsset(aPath, atlasPath, *myFont))
+	if (!GraphicsEngine::Get().CreateFontAsset(fontPath, atlasPath, *myFont))
 	{
 		LOG(FontLog, Error, "Failed to create font [{}]!", aPath.string());
 		return false;

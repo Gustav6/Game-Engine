@@ -1,7 +1,6 @@
 #include "GraphicsEngine.pch.h"
 #include "GraphicsEngine.hpp"
 
-#include "CommonUtilities/Collision/Frustum.hpp"
 #include "CommonUtilities/Math/Matrix4x4.hpp"
 #include "CommonUtilities/Math/Vector3.hpp"
 #include "CommonUtilities/Math/Vector4.hpp"
@@ -9,16 +8,14 @@
 #include "Objects/Mesh/Mesh.h"
 
 #include "Objects/Scene/Light.h"
-#include "Objects/Scene/Camera.h"
 
 #include "Objects/GPU/Texture.h"
 #include "Objects/GPU/Shader.h"
-#include "Objects/GPU/Vertex.h"
 #include "Objects/GPU/Sampler.h"
-#include "Objects/GPU/Gbuffer.h"
+#include "Objects/GPU/GBuffer.h"
 
-#include "Objects/Text/Font.h"
 #include "Objects/Text/Text.h"
+#include "Objects/Sprite.h"
 
 #include "Resources/BuiltinAssets.h"
 #include "Resources/GraphicsResourceFactory.h"
@@ -31,7 +28,6 @@
 #include <ConstantBuffers/Manager/ConstantBufferManager.h>
 
 #include "RHI/GraphicsCommandList.h"
-#include "RHI/RHIShaderReflectionInfo.h"
 #include "RHI/PipelineStateObject.h"
 #include "RHI/RenderHardwareInterface.h"
 
@@ -59,8 +55,6 @@
 #include "Drawers/LightDrawer.h"
 #include "Drawers/TextDrawer.h"
 #include "Drawers/SpriteDrawer.h"
-
-#include "CommonUtilities/Json/JsonWrapper.h"
 
 GraphicsEngine::GraphicsEngine() = default;
 GraphicsEngine::~GraphicsEngine() = default;
@@ -149,6 +143,22 @@ void GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const SceneCa
 		inoutCommandList.EndEvent();
 	}
 
+	{
+		std::vector<Sampler*> samplerList(mySamplers.size());
+
+		for (size_t s = 0; s < mySamplers.size(); s++)
+		{
+			samplerList[s] = mySamplers[s].get();
+		}
+
+		inoutCommandList.SetShaderSamplers(samplerList.data(), samplerList.size(), 0, PipelineStage_VertexShader | PipelineStage_PixelShader);
+	}
+
+	{
+		inoutCommandList.SetShaderResource(myEnvironmentCubemap.get(), 98, PipelineStage_PixelShader);
+		inoutCommandList.SetShaderResource(myLUTTexture.get(), 99, PipelineStage_PixelShader);
+	}
+
 	std::vector<RenderItem> opaqueItems;
 	std::vector<RenderItem> alphaItems;
 	std::vector<RenderItem> shadowItems;
@@ -202,7 +212,7 @@ void GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const SceneCa
 
 	// Front to Back
 	std::sort(opaqueItems.begin(), opaqueItems.end(),
-		[&](const RenderItem& A, const RenderItem& B) -> bool
+		[cameraPosition](const RenderItem& A, const RenderItem& B) -> bool
 		{
 			float distanceToA = (A.DrawCall->Transform.GetTranslation() - cameraPosition).LengthSqr();
 			float distanceToB = (B.DrawCall->Transform.GetTranslation() - cameraPosition).LengthSqr();
@@ -212,7 +222,7 @@ void GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const SceneCa
 
 	// Back to Front
 	std::sort(alphaItems.begin(), alphaItems.end(),
-		[&](const RenderItem& A, const RenderItem& B) -> bool
+		[cameraPosition](const RenderItem& A, const RenderItem& B) -> bool
 		{
 			float distanceToA = (A.DrawCall->Transform.GetTranslation() - cameraPosition).LengthSqr();
 			float distanceToB = (B.DrawCall->Transform.GetTranslation() - cameraPosition).LengthSqr();
@@ -220,21 +230,36 @@ void GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const SceneCa
 			return distanceToA > distanceToB;
 		});
 
-	{
-		std::vector<Sampler*> samplerList(mySamplers.size());
+	std::vector<ScreenSpaceItem> screenSpaceItems;
+	screenSpaceItems.reserve(SpriteDrawer::Get().myDrawCalls.size() + TextDrawer::Get().myDrawCalls.size());
 
-		for (size_t s = 0; s < mySamplers.size(); s++)
+	for (const auto& drawCall : SpriteDrawer::Get().myDrawCalls)
+	{
+		ScreenSpaceItem item =
 		{
-			samplerList[s] = mySamplers[s].get();
-		}
+			.SpriteCall = &drawCall,
+			.Depth = drawCall.SpriteInstanceData->Position.z
+		};
 
-		inoutCommandList.SetShaderSamplers(samplerList.data(), samplerList.size(), 0, PipelineStage_VertexShader | PipelineStage_PixelShader);
+		screenSpaceItems.push_back(item);
 	}
-	
+
+	for (const auto& drawCall : TextDrawer::Get().myDrawCalls)
 	{
-		inoutCommandList.SetShaderResource(myEnvironmentCubemap.get(), 98, PipelineStage_PixelShader);
-		inoutCommandList.SetShaderResource(myLUTTexture.get(), 99, PipelineStage_PixelShader);
+		ScreenSpaceItem item =
+		{
+			.TextCall = &drawCall,
+			.Depth = drawCall.Text->myZOrder
+		};
+
+		screenSpaceItems.push_back(item);
 	}
+
+	std::sort(screenSpaceItems.begin(), screenSpaceItems.end(),
+		[](const ScreenSpaceItem& A, const ScreenSpaceItem& B)
+		{
+			return A.Depth > B.Depth;
+		});
 
 	RenderContext context =
 	{
@@ -258,7 +283,7 @@ void GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const SceneCa
 
 		myDeferredRenderPass->Execute(inoutCommandList, opaqueItems, targets, context);
 		myForwardRenderPass->Execute(inoutCommandList, alphaItems, targets, context);
-		myScreenSpaceRenderPass->Execute(inoutCommandList, targets, context);
+		myScreenSpaceRenderPass->Execute(inoutCommandList, screenSpaceItems, targets, context);
 	}
 	inoutCommandList.EndEvent();
 }
@@ -321,79 +346,10 @@ bool GraphicsEngine::CreateTexture(const std::filesystem::path& aPath, Texture& 
 
 bool GraphicsEngine::CreateFontAsset(const std::filesystem::path& aFontPath, const std::filesystem::path& aFontAtlasPath, Font& outFont) const
 {
-	JsonData fontData = Json::Read(aFontPath);
-
-	if (!fontData.IsValid())
-	{
-		GELOG(Error, "Failed to read font JSON [{}]!", aFontPath.string());
-		return false;
-	}
-
-	JsonData atlasSettings = fontData.GetObjectValue("atlas");
-
-	if (!atlasSettings.IsValid())
-	{
-		GELOG(Error, "Font JSON is missing [atlas]!");
-		return false;
-	}
-
-	float width = static_cast<float>(atlasSettings.GetUnsigned("width"));
-	float height = static_cast<float>(atlasSettings.GetUnsigned("height"));
-
-	JsonData metricsSettings = fontData.GetObjectValue("metrics");
-
-	if (!metricsSettings.IsValid())
-	{
-		GELOG(Error, "Font JSON is missing [metrics]!");
-		return false;
-	}
-
-	outFont.myLineHeight = metricsSettings.GetFloat("lineHeight");
-	outFont.myAscender = metricsSettings.GetFloat("ascender");
-	outFont.myDescender = metricsSettings.GetFloat("descender");
-
-	const std::vector<JsonData> glyphs = fontData.GetObjectValueArray("glyphs");
-
-	if (glyphs.empty())
-	{
-		GELOG(Error, "Font JSON contains no glyphs [{}]!", aFontPath.string());
-		return false;
-	}
-
-	for (const JsonData& glyphData : glyphs)
-	{
-		Font::Glyph glyph = {};
-
-		glyph.UniCode = glyphData.GetUnsigned("unicode");
-		glyph.Advance = glyphData.GetFloat("advance");
-
-		if (glyphData.HasKey("planeBounds"))
-		{
-			JsonData planeBounds = glyphData.GetObjectValue("planeBounds");
-
-			glyph.PlaneBounds.Left = planeBounds.GetFloat("left");
-			glyph.PlaneBounds.Bottom = planeBounds.GetFloat("bottom");
-			glyph.PlaneBounds.Right = planeBounds.GetFloat("right");
-			glyph.PlaneBounds.Top = planeBounds.GetFloat("top");
-		}
-
-		if (glyphData.HasKey("atlasBounds"))
-		{
-			JsonData atlasBounds = glyphData.GetObjectValue("atlasBounds");
-
-			glyph.AtlasBounds.Left = atlasBounds.GetFloat("left") / width;
-			glyph.AtlasBounds.Bottom = atlasBounds.GetFloat("bottom") / height;
-			glyph.AtlasBounds.Right = atlasBounds.GetFloat("right") / width;
-			glyph.AtlasBounds.Top = atlasBounds.GetFloat("top") / height;
-		}
-
-		outFont.myGlyphs.emplace(static_cast<char>(glyph.UniCode), std::move(glyph));
-	}
-
-	return CreateTexture(aFontAtlasPath, outFont.myAtlas);
+	return GraphicsResourceFactory::CreateFontAsset(*myRHI, aFontPath, aFontAtlasPath, outFont);
 }
 
-void GraphicsEngine::SetEnvironmentTexture(std::unique_ptr<Texture> aEnvironmentTexture)
+void GraphicsEngine::SetEnvironmentTexture(std::shared_ptr<Texture> aEnvironmentTexture)
 {
 	myEnvironmentCubemap = std::move(aEnvironmentTexture);
 }
