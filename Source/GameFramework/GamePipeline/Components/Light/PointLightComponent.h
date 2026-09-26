@@ -7,6 +7,8 @@ class PointLightComponent : public LightComponent
 public:
     PointLightComponent(Actor* aOwner);
 
+    void Render() override;
+
     void SetRadius(float aRadius);
 
 protected:

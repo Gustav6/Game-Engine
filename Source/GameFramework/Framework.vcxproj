@@ -165,14 +165,14 @@
     <ClInclude Include="AssetPipeline\Assets\Types\MeshAsset.h" />
     <ClInclude Include="AssetPipeline\Assets\Types\SpriteAsset.h" />
     <ClInclude Include="AssetPipeline\Assets\Types\TextureAsset.h" />
-    <ClInclude Include="AssetPipeline\Assets\Types\UnrealSceneAsset.h" />
-    <ClInclude Include="AudioPipeline\FmodAudioSystem.h" />
     <ClInclude Include="GameFramework.pch.h" />
     <ClInclude Include="GamePipeline\Components\Base\Component.h" />
     <ClInclude Include="GamePipeline\Components\Light\DirectionlLightComponent.h" />
     <ClInclude Include="GamePipeline\Components\Light\LightComponent.h" />
     <ClInclude Include="GamePipeline\Components\Light\PointLightComponent.h" />
     <ClInclude Include="GamePipeline\Components\Light\SpotLightComponent.h" />
+    <ClInclude Include="GamePipeline\Components\Registry\ComponentRegistry.h" />
+    <ClInclude Include="GamePipeline\Components\Registry\ComponentRegistryManager.h" />
     <ClInclude Include="GamePipeline\Components\Rendering\AnimationComponent.h" />
     <ClInclude Include="GamePipeline\Components\Rendering\MeshComponent.h" />
     <ClInclude Include="GamePipeline\Components\Rendering\SpriteComponent.h" />
@@ -180,10 +180,6 @@
     <ClInclude Include="GamePipeline\Components\Transform\Transform.h" />
     <ClInclude Include="GamePipeline\World\Actor.hpp" />
     <ClInclude Include="GamePipeline\World\GameWorld.h" />
-    <ClInclude Include="UIPipeline\Canvas\UICanvas.h" />
-    <ClInclude Include="UIPipeline\Elements\UIElement.h" />
-    <ClInclude Include="UIPipeline\Elements\UIImage.h" />
-    <ClInclude Include="UIPipeline\UIManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\ThirdParty\Source\tracy\TracyClient.cpp" />
@@ -195,14 +191,14 @@
     <ClCompile Include="AssetPipeline\Assets\Types\MeshAsset.cpp" />
     <ClCompile Include="AssetPipeline\Assets\Types\SpriteAsset.cpp" />
     <ClCompile Include="AssetPipeline\Assets\Types\TextureAsset.cpp" />
-    <ClCompile Include="AssetPipeline\Assets\Types\UnrealSceneAsset.cpp" />
-    <ClCompile Include="AudioPipeline\FmodAudioSystem.cpp" />
     <ClCompile Include="GameFramework.pch.cpp" />
     <ClCompile Include="GamePipeline\Components\Base\Component.cpp" />
     <ClCompile Include="GamePipeline\Components\Light\DirectionlLightComponent.cpp" />
     <ClCompile Include="GamePipeline\Components\Light\LightComponent.cpp" />
     <ClCompile Include="GamePipeline\Components\Light\PointLightComponent.cpp" />
     <ClCompile Include="GamePipeline\Components\Light\SpotLightComponent.cpp" />
+    <ClCompile Include="GamePipeline\Components\Registry\ComponentRegistry.cpp" />
+    <ClCompile Include="GamePipeline\Components\Registry\ComponentRegistryManager.cpp" />
     <ClCompile Include="GamePipeline\Components\Rendering\AnimationComponent.cpp" />
     <ClCompile Include="GamePipeline\Components\Rendering\MeshComponent.cpp" />
     <ClCompile Include="GamePipeline\Components\Rendering\SpriteComponent.cpp" />
@@ -210,10 +206,6 @@
     <ClCompile Include="GamePipeline\Components\Transform\Transform.cpp" />
     <ClCompile Include="GamePipeline\World\Actor.cpp" />
     <ClCompile Include="GamePipeline\World\GameWorld.cpp" />
-    <ClCompile Include="UIPipeline\Canvas\UICanvas.cpp" />
-    <ClCompile Include="UIPipeline\Elements\UIElement.cpp" />
-    <ClCompile Include="UIPipeline\Elements\UIImage.cpp" />
-    <ClCompile Include="UIPipeline\UIManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Utilities\CommonUtilities\CommonUtilities.vcxproj">

@@ -211,6 +211,7 @@ IF EXIST "$(SolutionDir)ThirdParty\Dll" ( xcopy /E /I /R /Y /D "$(SolutionDir)Th
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\ThirdParty\Source\tracy\TracyClient.cpp" />
     <ClCompile Include="Actors\Player.cpp" />
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="Camera\GameCamera.cpp" />

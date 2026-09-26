@@ -6,8 +6,6 @@
 
 #include "GamePipeline/World/Actor.hpp"
 
-
-
 class Camera;
 
 enum class Mode
@@ -20,7 +18,6 @@ enum class Mode
 class GameCamera : public Actor
 {
 public:
-
 	static GameCamera& GetInstance();
 
 	void Init(float aHorizontalFov, float aNearPlane, float aFarPlane, CommonUtilities::Vector2ui aResolution);
@@ -30,13 +27,11 @@ public:
 
 	void UpdateFrustum();
 
-
 	void UpdateMovment(float aDeltaTime);
 	void UpdateLockAt(Transform& aPlyerTransform, float aDeltaTime);
 	void UpdateLockAtLocked(Transform& aPlyerTransform, float aDeltaTime);
 	void UpdateFreeLock(float aDeltaTime);
 	Mode GetMode() const;
-
 
 	const Camera& GetRenderCamera() const;
 
@@ -46,8 +41,6 @@ private:
 	std::unique_ptr<Camera> myCamera;
 
 	Mode myMode;
-
-
 
 	float myCamerasMoveSpeed;
 };

@@ -22,10 +22,12 @@ class TextComponent : public Component
 public:
 	TextComponent(Actor* aOwner);
 
+	void Render() override;
+
 	Text& GetText();
 	Font& GetFont();
 
-	const CommonUtilities::Matrix4x4f& GetTransform();
+	const CommonUtilities::Matrix4x4f& GetTransform() const;
 
 	void SetFont(const std::shared_ptr<FontAsset>& aFontAsset);
 	void SetText(std::string_view aText);

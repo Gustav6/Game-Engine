@@ -5,12 +5,32 @@
 #include <AssetPipeline/Assets/Types/FontAsset.h>
 #include <AssetPipeline/Assets/Types/MaterialAsset.h>
 
+#include <GraphicsEngine/Drawers/TextDrawer.h>
+
 TextComponent::TextComponent(Actor* aOwner)
 	: Component(aOwner)
 {
 	myIsDirty = true;
 	mySize = 12.0f;
 	myText = std::make_unique<Text>();
+}
+
+void TextComponent::Render()
+{
+	if (myIsDirty)
+	{
+		RebuildTransform();
+	}
+
+	TextDrawCall drawCall =
+	{
+		.Text = myText.get(),
+		.Font = myFont.get(),
+		.Material = nullptr,
+		.Transform = myTransform
+	};
+
+	TextDrawer::Get().Submit(drawCall);
 }
 
 Text& TextComponent::GetText()
@@ -23,13 +43,8 @@ Font& TextComponent::GetFont()
 	return *myFont;
 }
 
-const CommonUtilities::Matrix4x4f& TextComponent::GetTransform()
+const CommonUtilities::Matrix4x4f& TextComponent::GetTransform() const
 {
-	if (myIsDirty)
-	{
-		RebuildTransform();
-	}
-
 	return myTransform;
 }
 

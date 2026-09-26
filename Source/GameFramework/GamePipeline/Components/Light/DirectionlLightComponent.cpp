@@ -3,13 +3,26 @@
 
 #include "GraphicsEngine/Objects/Scene/Light.h"
 
-#include "GamePipeline/Components/Transform/Transform.h"
-#include "GamePipeline/World/Actor.hpp"
+#include "GraphicsEngine/Drawers/LightDrawer.h"
 
 DirectionalLightComponent::DirectionalLightComponent(Actor* aOwner)
 	: LightComponent(aOwner)
 {
 	myData->Type = LightType::Directional;
+}
+
+void DirectionalLightComponent::Render()
+{
+	UpdateLightViewProjection();
+
+	SceneLight light =
+	{
+	    .LightData = myData.get(),
+	    .Transform = GetTransform(),
+	    .Projection = myProjection
+	};
+
+	LightDrawer::Get().Submit(light);
 }
 
 void DirectionalLightComponent::SetDirection(const CommonUtilities::Vector3f& aDirection)

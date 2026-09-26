@@ -26,6 +26,8 @@
 
 #include "GraphicsEngine/Drawers/LightDrawer.h"
 
+#include "RHI/PipelineStateObject.h"
+
 #include "ShadowCube_GS.h"
 
 bool ShadowRenderPass::Initialize(RenderHardwareInterface& aRHI)

@@ -17,6 +17,8 @@ class MeshComponent : public Component
 public:
 	MeshComponent(Actor* aOwner);
 
+	void Render() override;
+
 	void SetMesh(const std::shared_ptr<MeshAsset>& aMeshAsset);
 
 	const Mesh& GetMesh();

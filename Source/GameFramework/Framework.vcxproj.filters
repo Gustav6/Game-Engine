@@ -16,9 +16,6 @@
     <Filter Include="AssetPipeline\Assets\Types">
       <UniqueIdentifier>{01DD131F-EDEC-BFEF-56A6-240E42D5AE88}</UniqueIdentifier>
     </Filter>
-    <Filter Include="AudioPipeline">
-      <UniqueIdentifier>{8DA8AFA9-F968-2BE0-C2A3-745D2E2370BC}</UniqueIdentifier>
-    </Filter>
     <Filter Include="GamePipeline">
       <UniqueIdentifier>{75A1B295-6104-423A-0A8A-7AF0F6CB0DBD}</UniqueIdentifier>
     </Filter>
@@ -30,6 +27,9 @@
     </Filter>
     <Filter Include="GamePipeline\Components\Light">
       <UniqueIdentifier>{910ECFD5-FD26-B6FF-C6D3-459932AB4A99}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GamePipeline\Components\Registry">
+      <UniqueIdentifier>{F2632195-DEB4-0CD7-0719-FB98F3C89F40}</UniqueIdentifier>
     </Filter>
     <Filter Include="GamePipeline\Components\Rendering">
       <UniqueIdentifier>{37297D47-A397-D2C6-EC80-8DC6582EC862}</UniqueIdentifier>
@@ -48,15 +48,6 @@
     </Filter>
     <Filter Include="ThirdParty\Source\tracy">
       <UniqueIdentifier>{22F6E85D-8E2D-31F5-9737-951803EE57EE}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="UIPipeline">
-      <UniqueIdentifier>{79318438-65E9-C585-CEF0-9EE1BAC76076}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="UIPipeline\Canvas">
-      <UniqueIdentifier>{64163506-D02C-339C-19A4-BEBD85F90324}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="UIPipeline\Elements">
-      <UniqueIdentifier>{E5667979-51C8-5687-DA35-9D3946968D46}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -84,12 +75,6 @@
     <ClInclude Include="AssetPipeline\Assets\Types\TextureAsset.h">
       <Filter>AssetPipeline\Assets\Types</Filter>
     </ClInclude>
-    <ClInclude Include="AssetPipeline\Assets\Types\UnrealSceneAsset.h">
-      <Filter>AssetPipeline\Assets\Types</Filter>
-    </ClInclude>
-    <ClInclude Include="AudioPipeline\FmodAudioSystem.h">
-      <Filter>AudioPipeline</Filter>
-    </ClInclude>
     <ClInclude Include="GameFramework.pch.h" />
     <ClInclude Include="GamePipeline\Components\Base\Component.h">
       <Filter>GamePipeline\Components\Base</Filter>
@@ -105,6 +90,12 @@
     </ClInclude>
     <ClInclude Include="GamePipeline\Components\Light\SpotLightComponent.h">
       <Filter>GamePipeline\Components\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="GamePipeline\Components\Registry\ComponentRegistry.h">
+      <Filter>GamePipeline\Components\Registry</Filter>
+    </ClInclude>
+    <ClInclude Include="GamePipeline\Components\Registry\ComponentRegistryManager.h">
+      <Filter>GamePipeline\Components\Registry</Filter>
     </ClInclude>
     <ClInclude Include="GamePipeline\Components\Rendering\AnimationComponent.h">
       <Filter>GamePipeline\Components\Rendering</Filter>
@@ -126,18 +117,6 @@
     </ClInclude>
     <ClInclude Include="GamePipeline\World\GameWorld.h">
       <Filter>GamePipeline\World</Filter>
-    </ClInclude>
-    <ClInclude Include="UIPipeline\Canvas\UICanvas.h">
-      <Filter>UIPipeline\Canvas</Filter>
-    </ClInclude>
-    <ClInclude Include="UIPipeline\Elements\UIElement.h">
-      <Filter>UIPipeline\Elements</Filter>
-    </ClInclude>
-    <ClInclude Include="UIPipeline\Elements\UIImage.h">
-      <Filter>UIPipeline\Elements</Filter>
-    </ClInclude>
-    <ClInclude Include="UIPipeline\UIManager.h">
-      <Filter>UIPipeline</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -168,12 +147,6 @@
     <ClCompile Include="AssetPipeline\Assets\Types\TextureAsset.cpp">
       <Filter>AssetPipeline\Assets\Types</Filter>
     </ClCompile>
-    <ClCompile Include="AssetPipeline\Assets\Types\UnrealSceneAsset.cpp">
-      <Filter>AssetPipeline\Assets\Types</Filter>
-    </ClCompile>
-    <ClCompile Include="AudioPipeline\FmodAudioSystem.cpp">
-      <Filter>AudioPipeline</Filter>
-    </ClCompile>
     <ClCompile Include="GameFramework.pch.cpp" />
     <ClCompile Include="GamePipeline\Components\Base\Component.cpp">
       <Filter>GamePipeline\Components\Base</Filter>
@@ -189,6 +162,12 @@
     </ClCompile>
     <ClCompile Include="GamePipeline\Components\Light\SpotLightComponent.cpp">
       <Filter>GamePipeline\Components\Light</Filter>
+    </ClCompile>
+    <ClCompile Include="GamePipeline\Components\Registry\ComponentRegistry.cpp">
+      <Filter>GamePipeline\Components\Registry</Filter>
+    </ClCompile>
+    <ClCompile Include="GamePipeline\Components\Registry\ComponentRegistryManager.cpp">
+      <Filter>GamePipeline\Components\Registry</Filter>
     </ClCompile>
     <ClCompile Include="GamePipeline\Components\Rendering\AnimationComponent.cpp">
       <Filter>GamePipeline\Components\Rendering</Filter>
@@ -210,18 +189,6 @@
     </ClCompile>
     <ClCompile Include="GamePipeline\World\GameWorld.cpp">
       <Filter>GamePipeline\World</Filter>
-    </ClCompile>
-    <ClCompile Include="UIPipeline\Canvas\UICanvas.cpp">
-      <Filter>UIPipeline\Canvas</Filter>
-    </ClCompile>
-    <ClCompile Include="UIPipeline\Elements\UIElement.cpp">
-      <Filter>UIPipeline\Elements</Filter>
-    </ClCompile>
-    <ClCompile Include="UIPipeline\Elements\UIImage.cpp">
-      <Filter>UIPipeline\Elements</Filter>
-    </ClCompile>
-    <ClCompile Include="UIPipeline\UIManager.cpp">
-      <Filter>UIPipeline</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

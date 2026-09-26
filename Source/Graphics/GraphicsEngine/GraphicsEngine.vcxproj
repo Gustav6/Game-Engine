@@ -255,6 +255,7 @@ xcopy /E /I /R /Y /D "%SHADERSRC%" "%SHADERDEST%"</Command>
     <ClInclude Include="Resources\Textures\Normal\Default_N.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\ThirdParty\Source\tracy\TracyClient.cpp" />
     <ClCompile Include="ConstantBuffers\AnimationBuffer.cpp" />
     <ClCompile Include="ConstantBuffers\CascadeBuffer.cpp" />
     <ClCompile Include="ConstantBuffers\FrameBuffer.cpp" />

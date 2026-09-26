@@ -3,6 +3,7 @@
 #include "RHIStructs.h"
 #include <d3dcompiler.h>
 #include <d3d11shader.h>
+#include <wrl/client.h>
 
 using namespace Microsoft::WRL;
 

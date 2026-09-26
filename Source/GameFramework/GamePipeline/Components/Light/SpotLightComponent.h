@@ -7,6 +7,8 @@ class SpotLightComponent : public LightComponent
 public:
     SpotLightComponent(Actor* aOwner);
 
+    void Render() override;
+
     void SetDirection(const CommonUtilities::Vector3f& aDirection);
     void SetRadius(float aRadius);
     void SetCone(float aInner, float aOuter);

@@ -27,7 +27,7 @@ void LightComponent::UpdateLightViewProjection()
 {
 	if (myTransformDirty)
 	{
-		myData->LightViewProjectionTexture = myTransform.GetFastInverse() * myProjectionMatrix * CommonUtilities::Matrix4x4f::CreateNDCToTextureSpace();
+		myData->LightViewProjectionTexture = myTransform.GetFastInverse() * myProjection * CommonUtilities::Matrix4x4f::CreateNDCToTextureSpace();
 		myTransformDirty = false;
 	}
 }
@@ -99,7 +99,7 @@ void LightComponent::SetShadowMapSize(const CommonUtilities::Vector2ui& aSize)
 			}
 		}
 
-		myProjectionMatrix = CreateProjectionMatrix();
+		myProjection = CreateProjectionMatrix();
 
 		myTransformDirty = true;
 	}
@@ -112,7 +112,7 @@ const Texture* LightComponent::GetShadowMap() const
 
 const CommonUtilities::Matrix4x4f& LightComponent::GetProjection() const
 {
-	return myProjectionMatrix;
+	return myProjection;
 }
 
 const CommonUtilities::Matrix4x4f& LightComponent::GetTransform() const

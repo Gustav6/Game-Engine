@@ -80,4 +80,6 @@ private:
 	Actor* myDirectionLightObject = nullptr;
 	Actor* myPointLightObject = nullptr;
 	Actor* mySpotLightObject = nullptr;
+
+	Actor* myFpsCounter;
 };

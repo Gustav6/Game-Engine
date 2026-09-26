@@ -23,7 +23,7 @@ float4 main(VStoPS aPixel) : SV_TARGET
     FontTexture.GetDimensions(0, textureWidth, textureHeight, textureMips);
     
     float4 texel = FontTexture.Sample(TrilinearWrap, aPixel.UV0);
-    float distance = Median(texel.r, texel.b, texel.g);
+    float distance = Median(texel.r, texel.g, texel.b);
     float pxDist = ScreenPixelRange(aPixel.UV0, textureWidth, textureHeight);
     float glyphPxDist = pxDist * (distance - 0.5f);
     

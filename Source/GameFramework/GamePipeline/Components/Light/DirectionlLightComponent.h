@@ -7,6 +7,8 @@ class DirectionalLightComponent : public LightComponent
 public:
     DirectionalLightComponent(Actor* aOwner);
 
+    void Render() override;
+
     void SetDirection(const CommonUtilities::Vector3f& aDirection);
 
 protected:

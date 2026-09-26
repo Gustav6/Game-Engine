@@ -29,7 +29,9 @@ project "Game"
         "%{prj.location}/**.hpp",
         "%{prj.location}/**.inl",
         "%{prj.location}/**.cc",
-        "%{prj.location}/**.hlsli"
+        "%{prj.location}/**.hlsli",
+        
+        "%{wks.location}/ThirdParty/Source/tracy/TracyClient.cpp" 
     }
 
     libdirs {

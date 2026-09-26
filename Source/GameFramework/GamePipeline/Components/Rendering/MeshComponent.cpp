@@ -1,7 +1,7 @@
 #include "GameFramework.pch.h"
 #include "MeshComponent.h"
 
-#include "Ensure.h"
+#include "AnimationComponent.h"
 
 #include <AssetPipeline/Assets/Types/MeshAsset.h>
 #include <AssetPipeline/Assets/Types/MaterialAsset.h>
@@ -10,9 +10,39 @@
 
 #include "GraphicsEngine/Objects/Mesh/Mesh.h"
 
+#include <GraphicsEngine/Drawers/MeshDrawer.h>
+
+#include "Ensure.h"
+
 MeshComponent::MeshComponent(Actor* aOwner)
 	: Component(aOwner)
 {}
+
+void MeshComponent::Render()
+{
+	MeshDrawCall drawCall =
+	{
+		.Mesh = &GetMesh(),
+		.Transform = myOwner->GetTransform().GetWorldMatrix()
+	};
+
+	const auto& materialAssets = GetMaterialAssetList();
+
+	for (size_t i = 0; i < materialAssets.size(); i++)
+	{
+		drawCall.Materials[i] = materialAssets[i]->GetMaterial().get();
+	}
+
+	AnimationComponent* animationComponent = myOwner->GetComponent<AnimationComponent>();
+
+	if (animationComponent != nullptr)
+	{
+		drawCall.HasSkinning = true;
+		drawCall.JointTransforms = animationComponent->GetJointTransforms();
+	}
+
+	MeshDrawer::Get().Submit(drawCall);
+}
 
 void MeshComponent::SetMesh(const std::shared_ptr<MeshAsset>& aMeshAsset)
 {

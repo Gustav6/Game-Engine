@@ -38,7 +38,7 @@ protected:
 
     std::unique_ptr<Texture> myShadowMap;
 
-    CommonUtilities::Matrix4x4f myProjectionMatrix;
+    CommonUtilities::Matrix4x4f myProjection;
 
     std::unique_ptr<Light> myData;
 

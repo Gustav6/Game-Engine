@@ -7,7 +7,7 @@ class Component
 public:
 	Component(Actor* aOwner);
 
-	virtual void Update(float aDeltaTime) { aDeltaTime; };
+	virtual void Update([[maybe_unused]] float aDeltaTime) {};
 	virtual void Render() {};
 
 protected:

@@ -5,10 +5,25 @@
 
 #include "GraphicsEngine/Objects/Scene/Light.h"
 
+#include "GraphicsEngine/Drawers/LightDrawer.h"
+
 PointLightComponent::PointLightComponent(Actor* aOwner)
 	: LightComponent(aOwner)
 {
 	myData->Type = LightType::Point;
+}
+
+void PointLightComponent::Render()
+{
+	SceneLight light =
+	{
+		.LightData = myData.get(),
+		.ShadowMap = myShadowMap.get(),
+		.Transform = GetTransform(),
+		.Projection = myProjection
+	};
+
+	LightDrawer::Get().Submit(light);
 }
 
 void PointLightComponent::SetRadius(float aRadius)

@@ -1,10 +1,22 @@
 #include "SpriteComponent.h"
 
-#include "GraphicsEngine/Objects/GPU/Texture.h"
+#include <GraphicsEngine/Drawers/SpriteDrawer.h>
 
 SpriteComponent::SpriteComponent(Actor* aOwner)
 	: Component(aOwner)
 {
+}
+
+void SpriteComponent::Render()
+{
+	SpriteDrawCall drawCall =
+	{
+		.SpriteInstanceData = &mySpriteInstance,
+		.SpriteSharedData = &mySpriteAsset->GetData(),
+		.Material = nullptr
+	};
+
+	SpriteDrawer::Get().Submit(drawCall);
 }
 
 void SpriteComponent::SetSprite(const std::shared_ptr<SpriteAsset>& aSpriteAsset)
@@ -50,7 +62,7 @@ void SpriteComponent::SetColor(const CommonUtilities::Vector4f& aColor)
 
 void SpriteComponent::SetDepth(float aDepth)
 {
-	mySpriteInstance.Position.z = aDepth;
+	mySpriteInstance.Depth = aDepth;
 }
 
 void SpriteComponent::SetVisible(bool aVisible)

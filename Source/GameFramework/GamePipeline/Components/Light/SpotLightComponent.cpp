@@ -8,10 +8,27 @@
 
 #include "GraphicsEngine/Objects/Scene/Light.h"
 
+#include "GraphicsEngine/Drawers/LightDrawer.h"
+
 SpotLightComponent::SpotLightComponent(Actor* aOwner)
 	: LightComponent(aOwner)
 {
 	myData->Type = LightType::Spot;
+}
+
+void SpotLightComponent::Render()
+{
+	UpdateLightViewProjection();
+
+	SceneLight light =
+	{
+	    .LightData = myData.get(),
+	    .ShadowMap = myShadowMap.get(),
+	    .Transform = GetTransform(),
+	    .Projection = myProjection
+	};
+
+	LightDrawer::Get().Submit(light);
 }
 
 void SpotLightComponent::SetDirection(const CommonUtilities::Vector3f & aDirection)

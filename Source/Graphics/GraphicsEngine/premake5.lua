@@ -35,7 +35,9 @@ project "GraphicsEngine"
         "%{prj.location}/**.inl",
         "%{prj.location}/**.cc",
         "%{prj.location}/**.hlsl",
-        "%{prj.location}/**.hlsli"
+        "%{prj.location}/**.hlsli",
+        
+        "%{wks.location}/ThirdParty/Source/tracy/TracyClient.cpp" 
     }
 
     shadermodel "5.0"

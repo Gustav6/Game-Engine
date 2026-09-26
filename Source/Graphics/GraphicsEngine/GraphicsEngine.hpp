@@ -7,24 +7,19 @@
 */
 
 #include <filesystem>	
-#include <unordered_map>
 #include <vector>
 #include <memory>
 
 #include "CommonUtilities/Math/Vector2.hpp"
 
-#include "Materials/Material.h"
-
-#include "Core/SceneCamera.h"
 #include "Core/DebugRenderMode.h"
-
-#include "Objects/GPU/Buffer.h"
 
 class RenderHardwareInterface;
 class GraphicsCommandList;
 class Texture;
 class Sampler;
 class Font;
+class Material;
 
 class BuiltinAssets;
 class MaterialShaderRegistry;
@@ -34,6 +29,12 @@ class ForwardRenderPass;
 class DeferredRenderPass;
 class ScreenSpaceRenderPass;
 class ShadowRenderPass;
+
+struct SceneCamera;
+struct MaterialDescription;
+
+enum class ResourceFormat;
+typedef int ResourceBindFlags;
 
 class GraphicsEngine
 {

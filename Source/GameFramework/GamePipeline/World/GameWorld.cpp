@@ -2,6 +2,7 @@
 #include "GameWorld.h"
 
 #include "Actor.hpp"
+#include "GamePipeline/Components/Registry/ComponentRegistryManager.h"
 
 GameWorld& GameWorld::Get()
 {
@@ -11,28 +12,17 @@ GameWorld& GameWorld::Get()
 
 void GameWorld::Update(float aDeltaTime)
 {
-	for (auto& actor : myActors)
-	{
-		if (!actor->GetIsEnabled())
-		{
-			continue;
-		}
+	ComponentRegistryManager::Get().Update(aDeltaTime);
 
+	for (const auto& actor : myActors)
+	{
 		actor->Update(aDeltaTime);
 	}
 }
 
 void GameWorld::Render()
 {
-	for (auto& actor : myActors)
-	{
-		if (!actor->GetIsEnabled())
-		{
-			continue;
-		}
-
-		actor->Render();
-	}
+	ComponentRegistryManager::Get().Render();
 }
 
 Actor* GameWorld::AddActor(std::unique_ptr<Actor> aActor)

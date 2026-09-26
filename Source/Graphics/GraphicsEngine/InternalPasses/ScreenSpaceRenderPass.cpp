@@ -161,11 +161,10 @@ void ScreenSpaceRenderPass::RenderSprite(
 
 	inoutCommandList.BeginEvent(aDrawCall.SpriteSharedData->Name);
 
-	const CommonUtilities::Vector3f position =
+	const CommonUtilities::Vector2f position =
 	{
 		parentSize.x * aDrawCall.SpriteInstanceData->Anchor.x + aDrawCall.SpriteInstanceData->Position.x - aDrawCall.SpriteInstanceData->Size.x * aDrawCall.SpriteInstanceData->Pivot.x,
-		parentSize.y * aDrawCall.SpriteInstanceData->Anchor.y + aDrawCall.SpriteInstanceData->Position.y - aDrawCall.SpriteInstanceData->Size.y * aDrawCall.SpriteInstanceData->Pivot.y,
-		aDrawCall.SpriteInstanceData->Position.z
+		parentSize.y * aDrawCall.SpriteInstanceData->Anchor.y + aDrawCall.SpriteInstanceData->Position.y - aDrawCall.SpriteInstanceData->Size.y * aDrawCall.SpriteInstanceData->Pivot.y
 	};
 
 	const CommonUtilities::Vector2f size = aDrawCall.SpriteInstanceData->Size;
@@ -177,25 +176,25 @@ void ScreenSpaceRenderPass::RenderSprite(
 
 	Vertex v0 =
 	{
-		.Position = { left, top, position.z, 1.0f },
+		.Position = { left, top, aDrawCall.SpriteInstanceData->Depth, 1.0f },
 		.UV0 = { 0.0f, 0.0f }
 	};
 
 	Vertex v1 =
 	{
-		.Position = { right, top, position.z, 1.0f },
+		.Position = { right, top, aDrawCall.SpriteInstanceData->Depth, 1.0f },
 		.UV0 = { 1.0f, 0.0f }
 	};
 
 	Vertex v2 =
 	{
-		.Position = { left,  bottom, position.z, 1.0f },
+		.Position = { left,  bottom, aDrawCall.SpriteInstanceData->Depth, 1.0f },
 		.UV0 = { 0.0f, 1.0f }
 	};
 
 	Vertex v3 =
 	{
-		.Position = { right, bottom, position.z, 1.0f },
+		.Position = { right, bottom, aDrawCall.SpriteInstanceData->Depth, 1.0f },
 		.UV0 = { 1.0f, 1.0f }
 	};
 

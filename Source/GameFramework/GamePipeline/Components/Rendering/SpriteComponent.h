@@ -19,6 +19,8 @@ class SpriteComponent : public Component
 public:
 	SpriteComponent(Actor* aOwner);
 
+	void Render() override;
+
 	void SetSprite(const std::shared_ptr<SpriteAsset>& aSpriteAsset);
 
 	const SpriteInstanceData& GetInstanceData() const;

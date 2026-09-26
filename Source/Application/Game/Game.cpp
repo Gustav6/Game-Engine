@@ -3,7 +3,6 @@
 #include <utility>
 #include <algorithm>
 #include <filesystem>
-#include <iostream>
 #include <vector>
 #include <memory>
 
@@ -15,7 +14,6 @@
 #include "AssetPipeline/Assets/Types/AnimationAsset.h"
 #include "AssetPipeline/Assets/Types/MaterialAsset.h"
 #include "AssetPipeline/Assets/Types/TextureAsset.h"
-#include "AssetPipeline/Assets/Types/UnrealSceneAsset.h"
 #include "AssetPipeline/Assets/Types/FontAsset.h"
 #include "AssetPipeline/Assets/Types/SpriteAsset.h"
 
@@ -31,12 +29,14 @@
 
 #include "GraphicsEngine/GraphicsEngine.hpp"
 
+#include "GraphicsEngine/Core/SceneCamera.h"
 #include "GraphicsEngine/Objects/GPU/Texture.h"
 #include "GraphicsEngine/Objects/Scene/Camera.h"
 #include "GraphicsEngine/RHI/GraphicsCommandList.h"
 
+#include "GamePipeline/Components/Registry/ComponentRegistryManager.h"
+
 #include <tracy/core/Tracy.hpp>
-#include <AudioPipeline/FmodAudioSystem.h>
 
 Game::Game() = default;
 Game::~Game() = default;
@@ -45,17 +45,10 @@ bool Game::Initialize(SIZE aWindowSize, WNDPROC aWindowProcess, LPCWSTR aWindowT
 {
 	std::filesystem::path workingDirectory = GetExecutableDirectory().parent_path().parent_path() / "Content";
 
-	if (!FmodAudioSystem::Get().Initialize())
-	{
-		MVLOG(Error, "Failed to initialize audio system.");
-		return false;
-	}
-
 	AssetRegistry::Get().RegisterAssetType<MeshAsset>({ ".fbx" });
 	AssetRegistry::Get().RegisterAssetType<AnimationAsset>({ ".fbx" });
 	AssetRegistry::Get().RegisterAssetType<MaterialAsset>({ ".json" });
 	AssetRegistry::Get().RegisterAssetType<TextureAsset>({ ".dds" });
-	AssetRegistry::Get().RegisterAssetType<UnrealSceneAsset>({ ".json" });
 	AssetRegistry::Get().RegisterAssetType<FontAsset>({ ".json" });
 	AssetRegistry::Get().RegisterAssetType<SpriteAsset>({ ".dds" });
 
@@ -180,21 +173,20 @@ int Game::Run()
 
 			switch (msg.message)
 			{
-			case WM_QUIT:
-			{
-				myIsRunning = false;
-				break;
-			}
+				case WM_QUIT:
+				{
+					myIsRunning = false;
+					break;
+				}
 			}
 		}
 
 		Application.TimeManager.Update();
 		Application.InputManager.UpdateInput();
 
-		Update(Application.TimeManager.GetDeltaTime());
+		float deltaTime = Application.TimeManager.GetDeltaTime();
 
-		//Application.AudioSystem->Update();
-		FmodAudioSystem::Get().Update();
+		Update(deltaTime);
 
 		// Render to graphics engine and present to screen
 		{
@@ -220,12 +212,13 @@ int Game::Run()
 			GE.ExecuteCommandList(*myGraphicsCommandList);
 			GE.Present();
 		}
+
+		myFpsCounter->GetComponent<TextComponent>()->SetText(std::format("FPS : {}", (1.0f / deltaTime)));
 	}
 
 	// Cleanup
 	AssetRegistry::Get().UnInitialize();
-
-	FmodAudioSystem::Get().Shutdown();
+	ComponentRegistryManager::Get().Shutdown();
 
 	return 0;
 }
@@ -240,10 +233,10 @@ void Game::LoadScene()
 	{
 	    std::unique_ptr<Actor> object = std::make_unique<Actor>();
 
-	    MeshComponent* meshComponent = object->AddComponent<MeshComponent>();
+	    MeshComponent& meshComponent = object->AddComponent<MeshComponent>();
 
-	    meshComponent->SetMesh(AssetRegistry::Get().GetAsset<MeshAsset>("SM_Color_Checker"));
-	    meshComponent->SetMaterial(0, AssetRegistry::Get().GetAsset<MaterialAsset>("SMColorChecker"));
+	    meshComponent.SetMesh(AssetRegistry::Get().GetAsset<MeshAsset>("SM_Color_Checker"));
+	    meshComponent.SetMaterial(0, AssetRegistry::Get().GetAsset<MaterialAsset>("SMColorChecker"));
 
 	    object->GetTransform().Translate({ -400, 40, 0 });
 	    object->GetTransform().Rotate(CommonUtilities::Vector3f{ -90, 0, 0 });
@@ -254,10 +247,10 @@ void Game::LoadScene()
 	{
 	    std::unique_ptr<Actor> object = std::make_unique<Actor>();
 
-	    MeshComponent* meshComponent = object->AddComponent<MeshComponent>();
+		MeshComponent& meshComponent = object->AddComponent<MeshComponent>();
 
-	    meshComponent->SetMesh(AssetRegistry::Get().GetAsset<MeshAsset>("SM_Chest"));
-	    meshComponent->SetMaterial(0, AssetRegistry::Get().GetAsset<MaterialAsset>("ChestMaterial"));
+	    meshComponent.SetMesh(AssetRegistry::Get().GetAsset<MeshAsset>("SM_Chest"));
+	    meshComponent.SetMaterial(0, AssetRegistry::Get().GetAsset<MaterialAsset>("ChestMaterial"));
 
 	    object->GetTransform().Rotate(CommonUtilities::Vector3f{ 0, -180, 0 });
 	    object->GetTransform().Translate({ 200, 0, 400 });
@@ -268,10 +261,10 @@ void Game::LoadScene()
 	{
 	    std::unique_ptr<Actor> object = std::make_unique<Actor>();
 
-	    MeshComponent* meshComponent = object->AddComponent<MeshComponent>();
+		MeshComponent& meshComponent = object->AddComponent<MeshComponent>();
 
-	    meshComponent->SetMesh(AssetRegistry::Get().GetAsset<MeshAsset>("Unit_Plane"));
-	    meshComponent->SetMaterial(0, AssetRegistry::Get().GetAsset<MaterialAsset>("BaseMaterial"));
+	    meshComponent.SetMesh(AssetRegistry::Get().GetAsset<MeshAsset>("Unit_Plane"));
+	    meshComponent.SetMaterial(0, AssetRegistry::Get().GetAsset<MaterialAsset>("BaseMaterial"));
 
 	    object->GetTransform().SetScale({ 2000, 2000, 2000 });
 
@@ -281,10 +274,10 @@ void Game::LoadScene()
 	{
 	    std::unique_ptr<Actor> object = std::make_unique<Actor>();
 
-	    MeshComponent* meshComponent = object->AddComponent<MeshComponent>();
+		MeshComponent& meshComponent = object->AddComponent<MeshComponent>();
 
-	    meshComponent->SetMesh(AssetRegistry::Get().GetAsset<MeshAsset>("Unit_Cube"));
-	    meshComponent->SetMaterial(0, AssetRegistry::Get().GetAsset<MaterialAsset>("BaseMaterial"));
+	    meshComponent.SetMesh(AssetRegistry::Get().GetAsset<MeshAsset>("Unit_Cube"));
+	    meshComponent.SetMaterial(0, AssetRegistry::Get().GetAsset<MaterialAsset>("BaseMaterial"));
 
 	    object->GetTransform().Translate({ 0, 50, 0 });
 	    object->GetTransform().SetScale({ 100, 100, 100 });
@@ -295,10 +288,10 @@ void Game::LoadScene()
 	{
 	    std::unique_ptr<Actor> object = std::make_unique<Actor>();
 
-	    MeshComponent* meshComponent = object->AddComponent<MeshComponent>();
+		MeshComponent& meshComponent = object->AddComponent<MeshComponent>();
 
-	    meshComponent->SetMesh(AssetRegistry::Get().GetAsset<MeshAsset>("Unit_Cube"));
-	    meshComponent->SetMaterial(0, AssetRegistry::Get().GetAsset<MaterialAsset>("BaseMaterial"));
+	    meshComponent.SetMesh(AssetRegistry::Get().GetAsset<MeshAsset>("Unit_Cube"));
+	    meshComponent.SetMaterial(0, AssetRegistry::Get().GetAsset<MaterialAsset>("BaseMaterial"));
 
 	    object->GetTransform().SetEulerRotation({ 45.0f, 180.0f, 45.0f });
 	    object->GetTransform().Translate({ -200, 100, 400 });
@@ -312,12 +305,12 @@ void Game::LoadScene()
 
 	    object->GetTransform().Translate({ 200, 0, 0 });
 
-	    MeshComponent* meshComponent = object->AddComponent<MeshComponent>();
+		MeshComponent& meshComponent = object->AddComponent<MeshComponent>();
 
-	    meshComponent->SetMesh(AssetRegistry::Get().GetAsset<MeshAsset>("SK_C_TGA_Bro"));
-	    meshComponent->SetMaterial(0, AssetRegistry::Get().GetAsset<MaterialAsset>("TGABroMaterial"));
+	    meshComponent.SetMesh(AssetRegistry::Get().GetAsset<MeshAsset>("SK_C_TGA_Bro"));
+	    meshComponent.SetMaterial(0, AssetRegistry::Get().GetAsset<MaterialAsset>("TGABroMaterial"));
 
-	    AnimationComponent* animationComponent = object->AddComponent<AnimationComponent>(meshComponent->GetSkeleton());
+	    AnimationComponent& animationComponent = object->AddComponent<AnimationComponent>(meshComponent.GetSkeleton());
 
 	    AnimationEntry breathingAnimation =
 	    {
@@ -340,10 +333,10 @@ void Game::LoadScene()
 	        .ShouldLoop = true
 	    };
 
-	    animationComponent->AddAnimation("Breathing", breathingAnimation);
-	    animationComponent->AddAnimation("Wave", waveAnimation);
-	    animationComponent->AddAnimation("Run", runAnimation);
-	    animationComponent->AddAnimation("Walk", walkAnimation);
+	    animationComponent.AddAnimation("Breathing", breathingAnimation);
+	    animationComponent.AddAnimation("Wave", waveAnimation);
+	    animationComponent.AddAnimation("Run", runAnimation);
+	    animationComponent.AddAnimation("Walk", walkAnimation);
 	    
 	    myAnimatedObject = GameWorld::Get().AddActor(std::move(object));
 	}
@@ -351,11 +344,11 @@ void Game::LoadScene()
 	{
 	    std::unique_ptr<Actor> object = std::make_unique<Actor>();
 
-	    DirectionalLightComponent* directionalLight = object->AddComponent<DirectionalLightComponent>();
+	    DirectionalLightComponent& directionalLight = object->AddComponent<DirectionalLightComponent>();
 
-	    directionalLight->SetColor({ 1.0f, 0.95f, 0.85f });
-	    directionalLight->SetIntensity(1.0f);
-	    directionalLight->SetDirection({ 0.0f, -0.75f, 1.0f });
+	    directionalLight.SetColor({ 1.0f, 0.95f, 0.85f });
+	    directionalLight.SetIntensity(1.0f);
+	    directionalLight.SetDirection({ 0.0f, -0.75f, 1.0f });
 
 	    myDirectionLightObject = GameWorld::Get().AddActor(std::move(object));
 	}
@@ -365,12 +358,13 @@ void Game::LoadScene()
 
 	    object->SetEnabled(false);
 
-	    PointLightComponent* pointLight = object->AddComponent<PointLightComponent>();
-	    pointLight->SetPosition({ -200.0f, 150.0f, 0.0f });
-		pointLight->SetColor({ 1.0f, 0.95f, 0.85f });
-	    pointLight->SetIntensity(750000.0f);
-	    pointLight->SetRadius(900.0f);
-	    pointLight->SetShadowMapSize({ 512, 512 });
+	    PointLightComponent& pointLight = object->AddComponent<PointLightComponent>();
+
+	    pointLight.SetPosition({ -200.0f, 150.0f, 0.0f });
+		pointLight.SetColor({ 1.0f, 0.95f, 0.85f });
+	    pointLight.SetIntensity(750000.0f);
+	    pointLight.SetRadius(900.0f);
+	    pointLight.SetShadowMapSize({ 512, 512 });
 
 	    myPointLightObject = GameWorld::Get().AddActor(std::move(object));
 	}
@@ -380,14 +374,15 @@ void Game::LoadScene()
 
 	    object->SetEnabled(false);
 
-	    SpotLightComponent* spotLight = object->AddComponent<SpotLightComponent>();
-	    spotLight->SetPosition({ 0.0f, 50.0f, -200.0f });
-		spotLight->SetColor({ 1.0f, 0.95f, 0.85f });
-	    spotLight->SetIntensity(1000000.0f);
-	    spotLight->SetRadius(1000.0f);
-	    spotLight->SetDirection({ 0.0f, 0.0f, 1.0f });
-	    spotLight->SetCone(0.0f, 0.7f);
-	    spotLight->SetShadowMapSize({ 512, 512 });
+	    SpotLightComponent& spotLight = object->AddComponent<SpotLightComponent>();
+
+	    spotLight.SetPosition({ 0.0f, 50.0f, -200.0f });
+		spotLight.SetColor({ 1.0f, 0.95f, 0.85f });
+	    spotLight.SetIntensity(1000000.0f);
+	    spotLight.SetRadius(1000.0f);
+	    spotLight.SetDirection({ 0.0f, 0.0f, 1.0f });
+	    spotLight.SetCone(0.0f, 0.7f);
+	    spotLight.SetShadowMapSize({ 512, 512 });
 
 	    mySpotLightObject = GameWorld::Get().AddActor(std::move(object));
 	}
@@ -395,15 +390,23 @@ void Game::LoadScene()
 	{
 		std::unique_ptr<Actor> object = std::make_unique<Actor>();
 
-		TextComponent* text = object->AddComponent<TextComponent>();
-		text->SetFont(AssetRegistry::Get().GetAsset<FontAsset>("CascadiaCode_M"));
-		text->SetText("SHREK");
-		text->SetSize(36);
+		TextComponent& text = object->AddComponent<TextComponent>();
 
-		SpriteComponent* sprite = object->AddComponent<SpriteComponent>();
-		sprite->SetSprite(AssetRegistry::Get().GetAsset<SpriteAsset>("ShrekSprite"));
-		sprite->SetSize({ 512, 512 });
-		sprite->SetPosition({ 512, 512 });
+		text.SetFont(AssetRegistry::Get().GetAsset<FontAsset>("CascadiaCode_M"));
+		text.SetText("SHREK");
+		text.SetSize(36);
+
+		myFpsCounter = GameWorld::Get().AddActor(std::move(object));
+	}
+
+	{
+		std::unique_ptr<Actor> object = std::make_unique<Actor>();
+
+		SpriteComponent& sprite = object->AddComponent<SpriteComponent>();
+
+		sprite.SetSprite(AssetRegistry::Get().GetAsset<SpriteAsset>("ShrekSprite"));
+		sprite.SetSize({ 512, 512 });
+		sprite.SetPosition({ 512, 512 });
 
 		GameWorld::Get().AddActor(std::move(object));
 	}

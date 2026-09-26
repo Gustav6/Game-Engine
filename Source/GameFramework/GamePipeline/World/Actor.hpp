@@ -6,11 +6,10 @@
 
 #include "GamePipeline/Components/Transform/Transform.h"
 #include "GamePipeline/Components/Base/Component.h"
+#include "GamePipeline/Components/Registry/ComponentRegistryManager.h"
 
 class Actor
 {
-	friend class UnrealSceneAsset;
-
 public:
 	Actor();
 	virtual ~Actor();
@@ -18,50 +17,53 @@ public:
 	Actor(const Actor&) = delete;
 	Actor& operator=(const Actor&) = delete;
 
-	Actor(Actor&&) = default;
-	Actor& operator=(Actor&&) = default;
-
 	template<typename T, typename... Args>
-	T* AddComponent(Args&&... args)
+	T& AddComponent(Args&&... args)
 	{
-		auto& rawPointer = myComponentLookup[typeid(T)] = std::make_unique<T>(this, std::forward<Args>(args)...);
-		return static_cast<T*>(rawPointer.get());
+		T& component = ComponentRegistryManager::Get().AddComponent<T>(this, std::forward<Args>(args)...);
+		myComponentLookup[std::type_index(typeid(T))] = &component;
+		return component;
 	}
 
 	template<typename T>
 	void RemoveComponent()
 	{
-		myComponentLookup.erase(typeid(T));
+		auto it = myComponentLookup.find(std::type_index(typeid(T)));
+
+		if (it == myComponentLookup.end())
+		{
+			return;
+		}
+
+		ComponentRegistryManager::Get().RemoveComponent<T>(this);
+		myComponentLookup.erase(it);
 	}
 
 	template<typename T>
 	T* GetComponent()
 	{
-		auto iterator = myComponentLookup.find(typeid(T));
+		auto it = myComponentLookup.find(std::type_index(typeid(T)));
 
-		if (iterator == myComponentLookup.end())
+		if (it == myComponentLookup.end())
 		{
 			return nullptr;
 		}
 
-		return static_cast<T*>(iterator->second.get());
+		return static_cast<T*>(it->second);
 	}
-
+	
 	virtual void Update(float aDeltaTime);
-	virtual void Render();
 
 	Transform& GetTransform();
 	const Transform& GetTransform() const;
 
-
-
 	void SetEnabled(bool aState);
 	bool GetIsEnabled() const;
-protected:
-	Transform myTransform;
+
 private:
+	std::unordered_map<std::type_index, Component*> myComponentLookup;
+
+	Transform myTransform;
+
 	bool myIsEnabled;
-
-
-	std::unordered_map<std::type_index, std::unique_ptr<Component>> myComponentLookup;
 };

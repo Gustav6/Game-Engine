@@ -15,6 +15,7 @@
 #include "Objects/GPU/GBuffer.h"
 
 #include "Objects/Text/Text.h"
+
 #include "Objects/Sprite.h"
 
 #include "Resources/BuiltinAssets.h"
@@ -47,6 +48,7 @@
 #include "Core/FrameTargets.h"
 #include "Core/RenderContext.h"
 #include "Core/ConstantBufferID.h"
+#include "Core/SceneCamera.h"
 
 #include "FullTexture_VS.h"
 #include "BRDF_LUT_PS.h"
@@ -101,14 +103,14 @@ bool GraphicsEngine::Initialize(HWND aWindowHandle, const std::filesystem::path&
 	if (!myBuiltinAssets->Initialize(*this, *myRHI, myShaderRoot))
 	{
 		return false;
-	};
+	}
 
 	myConstantBufferManager = std::make_unique<ConstantBufferManager>();
 
 	if (!InitializeRenderResources())
 	{
 		return false;
-	};
+	}
 
 	// Init passes
 	{
@@ -238,7 +240,7 @@ void GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const SceneCa
 		ScreenSpaceItem item =
 		{
 			.SpriteCall = &drawCall,
-			.Depth = drawCall.SpriteInstanceData->Position.z
+			.Depth = drawCall.SpriteInstanceData->Depth
 		};
 
 		screenSpaceItems.push_back(item);
