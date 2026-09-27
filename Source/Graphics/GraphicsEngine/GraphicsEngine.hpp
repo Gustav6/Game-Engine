@@ -75,6 +75,8 @@ private:
 	std::filesystem::path myShaderRoot;
 	std::filesystem::path myContentRoot;
 
+	DebugRenderMode myDebugRenderMode = DebugRenderMode::sRGB;
+
 	std::unique_ptr<RenderHardwareInterface> myRHI;
 
 	std::unique_ptr<BuiltinAssets> myBuiltinAssets;
@@ -93,6 +95,4 @@ private:
 
 	std::shared_ptr<Texture> myEnvironmentCubemap;
 	std::unique_ptr<Texture> myLUTTexture;
-
-	DebugRenderMode myDebugRenderMode = DebugRenderMode::sRGB;
 };

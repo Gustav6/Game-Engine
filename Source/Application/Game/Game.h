@@ -46,10 +46,10 @@
 
 #include <memory>
 
-#include "Camera/GameCamera.h"
-
 struct RenderScene;
+
 class GraphicsCommandList;
+class Actor;
 
 class Game
 {
@@ -62,24 +62,21 @@ public:
 
 private:
 	void LoadScene();
-	void Update(float aDeltaTime);
-	void Render();
-
-	bool myIsRunning = false;
-
-	HWND myMainWindowHandle = nullptr;
+	void UpdateScene(float aDeltaTime);
+	void RenderScene();
 
 	std::unique_ptr<GraphicsCommandList> myGraphicsCommandList;
 
-	// TODO: TEMP
+	HWND myMainWindowHandle = nullptr;
 
-	Actor* myPlayer = nullptr;
+	bool myIsRunning = false;
 
 	Actor* myAnimatedObject = nullptr;
-
 	Actor* myDirectionLightObject = nullptr;
 	Actor* myPointLightObject = nullptr;
 	Actor* mySpotLightObject = nullptr;
 
-	Actor* myFpsCounter;
+	// TODO: TEMP
+
+	Actor* myFpsCounter = nullptr;
 };

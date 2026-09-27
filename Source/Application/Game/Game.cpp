@@ -31,10 +31,11 @@
 
 #include "GraphicsEngine/Core/SceneCamera.h"
 #include "GraphicsEngine/Objects/GPU/Texture.h"
-#include "GraphicsEngine/Objects/Scene/Camera.h"
 #include "GraphicsEngine/RHI/GraphicsCommandList.h"
 
 #include "GamePipeline/Components/Registry/ComponentRegistryManager.h"
+
+#include "Camera/GameCamera.h"
 
 #include <tracy/core/Tracy.hpp>
 
@@ -43,7 +44,7 @@ Game::~Game() = default;
 
 bool Game::Initialize(SIZE aWindowSize, WNDPROC aWindowProcess, LPCWSTR aWindowTitle)
 {
-	std::filesystem::path workingDirectory = GetExecutableDirectory().parent_path().parent_path() / "Content";
+	std::filesystem::path workingDirectory = GetContentDirectory();
 
 	AssetRegistry::Get().RegisterAssetType<MeshAsset>({ ".fbx" });
 	AssetRegistry::Get().RegisterAssetType<AnimationAsset>({ ".fbx" });
@@ -69,7 +70,6 @@ bool Game::Initialize(SIZE aWindowSize, WNDPROC aWindowProcess, LPCWSTR aWindowT
 	windowClass.lpszClassName = windowClassName;
 	RegisterClass(&windowClass);
 
-
 #if _DEBUG
 	// Put the window in the middle of the screen regardless of resolution.
 	LONG posX = (GetSystemMetrics(SM_CXSCREEN) - aWindowSize.cx) / 2;
@@ -77,8 +77,6 @@ bool Game::Initialize(SIZE aWindowSize, WNDPROC aWindowProcess, LPCWSTR aWindowT
 
 	LONG posY = (GetSystemMetrics(SM_CYSCREEN) - aWindowSize.cy) / 2;
 	posY = std::max<LONG>(posY, 0);
-
-
 
 	// Then we use the class to create our window
 	myMainWindowHandle = CreateWindow(
@@ -178,6 +176,10 @@ int Game::Run()
 					myIsRunning = false;
 					break;
 				}
+				default:
+				{
+					break;
+				}
 			}
 		}
 
@@ -186,24 +188,25 @@ int Game::Run()
 
 		float deltaTime = Application.TimeManager.GetDeltaTime();
 
-		Update(deltaTime);
+		UpdateScene(deltaTime);
+
+		myFpsCounter->GetComponent<TextComponent>()->SetText(std::format("FPS : {}", static_cast<int>(1.0f / deltaTime)));
 
 		// Render to graphics engine and present to screen
 		{
 			GraphicsEngine& GE = GraphicsEngine::Get();
 
 			GE.BeginFrame();
-			Render();
 
-			myGraphicsCommandList->ResetCommandList();
-
-			GameCamera& gameCamera = GameCamera::GetInstance();
+			RenderScene();
 
 			SceneCamera camera =
 			{
-				.Transform = gameCamera.GetTransform().GetWorldMatrix(),
-				.RenderCamera = &gameCamera.GetRenderCamera()
+				.Transform = GameCamera::GetInstance().GetTransform().GetWorldMatrix(),
+				.RenderCamera = &GameCamera::GetInstance().GetRenderCamera()
 			};
+
+			myGraphicsCommandList->ResetCommandList();
 
 			GE.Render(*myGraphicsCommandList, camera);
 
@@ -212,8 +215,6 @@ int Game::Run()
 			GE.ExecuteCommandList(*myGraphicsCommandList);
 			GE.Present();
 		}
-
-		myFpsCounter->GetComponent<TextComponent>()->SetText(std::format("FPS : {}", (1.0f / deltaTime)));
 	}
 
 	// Cleanup
@@ -399,7 +400,7 @@ void Game::LoadScene()
 		myFpsCounter = GameWorld::Get().AddActor(std::move(object));
 	}
 
-	{
+	/*{
 		std::unique_ptr<Actor> object = std::make_unique<Actor>();
 
 		SpriteComponent& sprite = object->AddComponent<SpriteComponent>();
@@ -409,23 +410,15 @@ void Game::LoadScene()
 		sprite.SetPosition({ 512, 512 });
 
 		GameWorld::Get().AddActor(std::move(object));
-	}
+	}*/
 }
 
-void Game::Update(float aDeltaTime)
+void Game::UpdateScene(float aDeltaTime)
 {
 	ZoneScopedN("Update Game");
 
 	GameWorld::Get().Update(aDeltaTime);
-
-	GameCamera::GetInstance().Update(aDeltaTime, myPlayer->GetTransform());
-
-	// Camera controls
-	{
-		
-
-		
-	}
+	GameCamera::GetInstance().Update(aDeltaTime);
 
 	// TODO: TEMP
 	if (Application.InputManager.IsKeyPressed(KeyCode::D1))
@@ -469,7 +462,7 @@ void Game::Update(float aDeltaTime)
 	}
 }
 
-void Game::Render()
+void Game::RenderScene()
 {
 	GameWorld::Get().Render();
 }

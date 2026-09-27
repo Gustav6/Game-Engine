@@ -22,25 +22,16 @@ public:
 
 	void Init(float aHorizontalFov, float aNearPlane, float aFarPlane, CommonUtilities::Vector2ui aResolution);
 
-	// TODO : Make this run on transform dirty
-	void Update(float aDeltaTime, Transform& aPlyerTransform);
-
-	void UpdateFrustum();
-
-	void UpdateMovment(float aDeltaTime);
-	void UpdateLockAt(Transform& aPlyerTransform, float aDeltaTime);
-	void UpdateLockAtLocked(Transform& aPlyerTransform, float aDeltaTime);
-	void UpdateFreeLock(float aDeltaTime);
-	Mode GetMode() const;
+	void Update(float aDeltaTime) override;
 
 	const Camera& GetRenderCamera() const;
 
 private:
 	GameCamera() = default;
-	GameCamera(float aHorizontalFov, float aNearPlane, float aFarPlane, CommonUtilities::Vector2ui aResolution);
-	std::unique_ptr<Camera> myCamera;
 
-	Mode myMode;
+	void UpdateFrustum();
+
+	std::unique_ptr<Camera> myCamera;
 
 	float myCamerasMoveSpeed;
 };

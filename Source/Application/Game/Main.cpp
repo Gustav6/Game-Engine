@@ -80,12 +80,13 @@ int GuardedMain()
     constexpr SIZE windowSize = { 1920, 1080 };
     constexpr LPCWSTR windowTitle = L"AGP Modelviewer"; // L"" denotes "I want this to be a wide-string".
 
-    Game MV;
-    MV.Initialize(windowSize, WinProc, windowTitle);
-    return MV.Run();
+    Game game;
+    game.Initialize(windowSize, WinProc, windowTitle);
+    return game.Run();
 }
 
-int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
+int APIENTRY wWinMain(
+	_In_ HINSTANCE hInstance,
     _In_opt_ HINSTANCE hPrevInstance,
     _In_ LPWSTR    lpCmdLine,
     _In_ int       nCmdShow)
@@ -102,28 +103,33 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     catch(const std::exception& e)
     {
         std::string message = e.what();
+
         if(!str::is_valid_utf8(message))
         {
 	        message = str::acp_to_utf8(message);
         }
+
         MVLOG(Error, "Exception caught!\n{}", message);
+
         return -1;
     }
 }
 
 LRESULT CALLBACK WinProc(_In_ HWND hWnd, _In_ UINT uMsg, _In_ WPARAM wParam, _In_ LPARAM lParam)
 {
-
     switch (uMsg)
     {
-    case WM_KILLFOCUS:
-        Application.InputManager.ReleaseMouse();
-        Application.InputManager.ShowMouse();
-        break;
-
-    case WM_DESTROY:
-        PostQuitMessage(0);
-        return 0;
+	    case WM_KILLFOCUS:
+	    {
+		    Application.InputManager.ReleaseMouse();
+		    Application.InputManager.ShowMouse();
+		    break;
+	    }
+	    case WM_DESTROY:
+	    {
+		    PostQuitMessage(0);
+		    return 0;
+	    }
     }
 
     if (uMsg == WM_DESTROY || uMsg == WM_CLOSE)

@@ -44,3 +44,8 @@ static std::filesystem::path GetExecutableDirectory()
 
     return exePath.parent_path();
 }
+
+static std::filesystem::path GetContentDirectory()
+{
+    return GetExecutableDirectory().parent_path().parent_path() / "Content";
+}
