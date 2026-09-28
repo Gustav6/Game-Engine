@@ -1,34 +1,24 @@
 project "CommonUtilities"
     kind "StaticLib"
-    language "C++"
-    cppdialect "C++20"
 
-    -- warnings "Extra"
-    -- fatalwarnings { "All" }
+    warnings "Extra"
+    fatalwarnings { "All" }
 
     targetdir ("%{wks.location}/Lib/%{cfg.buildcfg}/")
-    objdir    ("%{wks.location}/Intermediate/%{prj.name}/%{cfg.buildcfg}/")
-
-    vsprops {
-        DisableFastUpToDateCheck = "true"
-    }
-    
-    externalincludedirs { "%{prj.location}", "$(VC_IncludePath)", "$(WindowsSDK_IncludePath)" }
+    objdir ("%{wks.location}/Intermediate/%{prj.name}/%{cfg.buildcfg}/")
 
     includedirs {
+        "%{prj.location}",
         "%{wks.location}/Source/Utilities",
-        "%{wks.location}/ThirdParty/Source",
-        
-        "%{wks.location}/ThirdParty/Source/yyjson/yyjson.c"
+        "%{wks.location}/ThirdParty/Source"
     }
     
     files { 
         "%{prj.location}/**.h", 
         "%{prj.location}/**.cpp", 
         "%{prj.location}/**.hpp", 
-        "%{prj.location}/**.inl", 
-        "%{prj.location}/**.cc",
 
+        -- Third Party
         "%{wks.location}/ThirdParty/Source/yyjson/yyjson.c"
     }
     

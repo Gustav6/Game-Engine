@@ -3,8 +3,10 @@ workspace "GameProject"
     -- What configurations we will have.
     configurations { "Debug", "Release", "Retail" }
     platforms { "x64" }
-    toolset "v145"
     startproject "Game"
+    language "C++"
+    cppdialect "C++20"
+    systemversion "latest"
 
 filter { "platforms:x64" }
     system "Windows"
@@ -14,12 +16,13 @@ filter { "platforms:x64" }
 -- For Debug configuration, we want to set the _DEBUG #define flag and turn on symbol generation.
 filter "configurations:Debug"
     multiprocessorcompile "On"
-    defines { "_DEBUG", "TRACY_ENABLE" }
+    defines { "_DEBUG", "USE_IMGUI", "TRACY_ENABLE" }
     symbols "On"
 
 -- Generate symbols in release mode so we can debug the release build if needed.
 filter "configurations:Release"
     multiprocessorcompile "On"
+    defines { "_RELEASE", "USE_IMGUI" }
     fatalwarnings { "All" }
     optimize "On"
     symbols "On"
@@ -41,7 +44,7 @@ group "Utilities"
 group "GameFramework"
     include "Source/GameFramework/premake5.lua"
 
-group "Engine"
+group "GraphicsEngine"
     include "Source/Graphics/GraphicsEngine/premake5.lua"
   
 group "Application"

@@ -1,43 +1,33 @@
 project "GraphicsEngine"
     kind "StaticLib"
-    language "C++"
-    cppdialect "C++20"
 
     warnings "Extra"
     fatalwarnings { "All" }
     
     targetdir ("%{wks.location}/Lib/%{cfg.buildcfg}/")
-    objdir    ("%{wks.location}/Intermediate/%{prj.name}/%{cfg.buildcfg}/")
-
-    vsprops {
-        DisableFastUpToDateCheck = "true"
-    }
-    
-    externalincludedirs { "%{prj.location}", "$(VC_IncludePath)", "$(WindowsSDK_IncludePath)" }
+    objdir ("%{wks.location}/Intermediate/%{prj.name}/%{cfg.buildcfg}/")
 
     includedirs {
+        "%{prj.location}",
         "%{wks.location}/Source/Graphics/",
         "%{wks.location}/Source/Utilities/",
-        "%{wks.location}/Intermediate/GraphicsEngine/%{cfg.buildcfg}/PrecompiledShaders/", 
+        "%{wks.location}/Intermediate/GraphicsEngine/%{cfg.buildcfg}/PrecompiledShaders/"
+    }
+    
+    files {
+        "%{prj.location}/**.h",
+        "%{prj.location}/**.cpp",
+        "%{prj.location}/**.hpp",
+        "%{prj.location}/**.hlsl",
+        "%{prj.location}/**.hlsli",
         
+        -- Third Party
         "%{wks.location}/ThirdParty/Source/tracy/TracyClient.cpp" 
     }
 
     links {
         "CommonUtilities",
         "Logger"
-    }
-
-    files {
-        "%{prj.location}/**.h",
-        "%{prj.location}/**.cpp",
-        "%{prj.location}/**.hpp",
-        "%{prj.location}/**.inl",
-        "%{prj.location}/**.cc",
-        "%{prj.location}/**.hlsl",
-        "%{prj.location}/**.hlsli",
-        
-        "%{wks.location}/ThirdParty/Source/tracy/TracyClient.cpp" 
     }
 
     shadermodel "5.0"
@@ -61,6 +51,9 @@ project "GraphicsEngine"
     filter "files:**_GS.hlsl"
         shadertype "Geometry"
 
+    filter "files:**_CS.hlsl"
+        shadertype "Compute"
+        
     filter {}
     
     postbuildmessage "Copying Shaders to Content Dir"

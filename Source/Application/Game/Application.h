@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include <memory>
+#include <filesystem>
 
 #include "CommonUtilities/Input/Input.h"
 #include "CommonUtilities/Time/Timer.h"
@@ -32,20 +33,4 @@ inline ApplicationData Application;
  * https://learn.microsoft.com/en-us/windows/win32/api/libloaderapi/nf-libloaderapi-getmodulefilenamew
  * @return
  */
-static std::filesystem::path GetExecutableDirectory()
-{
-    wchar_t buf[MAX_PATH];
-    DWORD len = GetModuleFileNameW(NULL, buf, MAX_PATH);
-
-    // Ensure the fetching of the path did not fail!
-    ensure(len != 0 && len != MAX_PATH);
-
-    std::filesystem::path exePath(buf);
-
-    return exePath.parent_path();
-}
-
-static std::filesystem::path GetContentDirectory()
-{
-    return GetExecutableDirectory().parent_path().parent_path() / "Content";
-}
+std::filesystem::path GetExecutableDirectory();

@@ -44,7 +44,7 @@ Game::~Game() = default;
 
 bool Game::Initialize(SIZE aWindowSize, WNDPROC aWindowProcess, LPCWSTR aWindowTitle)
 {
-	std::filesystem::path workingDirectory = GetContentDirectory();
+	std::filesystem::path workingDirectory = GetExecutableDirectory().parent_path().parent_path() / "Content";;
 
 	AssetRegistry::Get().RegisterAssetType<MeshAsset>({ ".fbx" });
 	AssetRegistry::Get().RegisterAssetType<AnimationAsset>({ ".fbx" });

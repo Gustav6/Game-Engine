@@ -1,26 +1,18 @@
 project "Game"
     kind "WindowedApp"
-    language "C++"
-    cppdialect "C++20"
 
     warnings "Extra"
     fatalwarnings { "All" }
 
     targetdir ("%{wks.location}/Bin/%{cfg.buildcfg}/")
-    objdir    ("%{wks.location}/Intermediate/%{prj.name}/%{cfg.buildcfg}/")
-
-    vsprops {
-        DisableFastUpToDateCheck = "true"
-    }
-    
-    externalincludedirs { "%{prj.location}", "$(VC_IncludePath)", "$(WindowsSDK_IncludePath)" }
+    objdir ("%{wks.location}/Intermediate/%{prj.name}/%{cfg.buildcfg}/")
 
     includedirs {
+        "%{prj.location}",
         "%{wks.location}/Source/Utilities",
         "%{wks.location}/Source/Graphics",
         "%{wks.location}/Source/GameFramework",
-        "%{wks.location}/ThirdParty/Source",
-        "%{wks.location}/Source/Graphics/GraphicsEngine/Shaders/Material"
+        "%{wks.location}/ThirdParty/Source"
     }
 
     files {
@@ -28,14 +20,9 @@ project "Game"
         "%{prj.location}/**.cpp",
         "%{prj.location}/**.hpp",
         "%{prj.location}/**.inl",
-        "%{prj.location}/**.cc",
-        "%{prj.location}/**.hlsli",
         
+        -- Third Party
         "%{wks.location}/ThirdParty/Source/tracy/TracyClient.cpp" 
-    }
-
-    libdirs {
-        "%{wks.location}/ThirdParty/Lib/%{cfg.buildcfg}/"
     }
 
     links {
@@ -43,6 +30,8 @@ project "Game"
         "GraphicsEngine",
         "Framework",
         "CommonUtilities",
+        
+        -- Third Party
         "d3d11",
         "dxguid",
         "dxgi",
@@ -50,6 +39,10 @@ project "Game"
         "TGAFbx",
         "fmod_vc",
         "fmodstudio_vc"
+    }
+
+    libdirs {
+        "%{wks.location}/ThirdParty/Lib/%{cfg.buildcfg}/"
     }
 
     dependson {
