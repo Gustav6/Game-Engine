@@ -25,6 +25,11 @@ void GameWorld::Render()
 	ComponentRegistryManager::Get().Render();
 }
 
+void GameWorld::Clear()
+{
+	myActors.clear();
+}
+
 Actor* GameWorld::AddActor(std::unique_ptr<Actor> aActor)
 {
 	Actor* rawPointer = aActor.get();

@@ -13,6 +13,8 @@ public:
     void Update(float aDeltaTime);
     void Render();
 
+    void Clear();
+
     Actor* AddActor(std::unique_ptr<Actor> aActor);
     void AddActors(std::vector<std::unique_ptr<Actor>> aActors);
 
