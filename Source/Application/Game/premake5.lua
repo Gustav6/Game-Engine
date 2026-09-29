@@ -27,7 +27,7 @@ project "Game"
 
     links {
         "Logger",
-        "GraphicsEngine",
+        "Graphics",
         "Framework",
         "CommonUtilities",
         

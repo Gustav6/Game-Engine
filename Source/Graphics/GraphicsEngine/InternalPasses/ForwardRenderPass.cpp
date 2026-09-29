@@ -8,7 +8,7 @@
 #include "GraphicsEngine/Core/FrameTargets.h"
 #include "GraphicsEngine/Core/SceneCamera.h"
 #include "GraphicsEngine/Core/RenderContext.h"
-#include "GraphicsEngine/Core/DebugRenderMode.h"
+#include "GraphicsEngine/Core/RenderEnums.h"
 
 #include "GraphicsEngine/RHI/GraphicsCommandList.h"
 
@@ -30,7 +30,7 @@ void ForwardRenderPass::Execute(
 {
 	inoutCommandList.BeginEvent("Forward Render");
 
-	inoutCommandList.SetRenderTarget(aFrameTargets.BackBuffer, aFrameTargets.DepthBuffer);
+	inoutCommandList.SetRenderTarget(aFrameTargets.RenderTarget, aFrameTargets.DepthBuffer);
 
 	FrameBuffer frameBuffer;
 	frameBuffer.View = aContext.Camera->Transform.GetFastInverse();

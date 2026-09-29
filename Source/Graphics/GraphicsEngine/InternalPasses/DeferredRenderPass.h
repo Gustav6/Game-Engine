@@ -25,7 +25,6 @@ public:
     );
 
 private:
-    std::unique_ptr<PipelineStateObject> myGBufferPSO;
     std::unique_ptr<PipelineStateObject> myDeferredAmbientPSO;
     std::unique_ptr<PipelineStateObject> myDeferredDirPSO;
     std::unique_ptr<PipelineStateObject> myDeferredSpotPSO;

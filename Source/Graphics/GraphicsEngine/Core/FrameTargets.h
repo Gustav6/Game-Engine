@@ -4,6 +4,6 @@ class Texture;
 
 struct FrameTargets
 {
-    Texture* BackBuffer = nullptr;
+    Texture* RenderTarget = nullptr;
     Texture* DepthBuffer = nullptr;
 };

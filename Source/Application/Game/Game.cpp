@@ -348,7 +348,7 @@ void Game::LoadScene()
 	    DirectionalLightComponent& directionalLight = object->AddComponent<DirectionalLightComponent>();
 
 	    directionalLight.SetColor({ 1.0f, 0.95f, 0.85f });
-	    directionalLight.SetIntensity(1.0f);
+	    directionalLight.SetIntensity(4.0f);
 	    directionalLight.SetDirection({ 0.0f, -0.75f, 1.0f });
 
 	    myDirectionLightObject = GameWorld::Get().AddActor(std::move(object));
@@ -449,11 +449,17 @@ void Game::UpdateScene(float aDeltaTime)
 
 	if (Application.InputManager.IsKeyPressed(KeyCode::F5))
 	{
-		GraphicsEngine::Get().CycleToNextRenderPass(-1);
+		GraphicsEngine::Get().CycleDebugRenderMode(-1);
 	}
 	if (Application.InputManager.IsKeyPressed(KeyCode::F6))
 	{
-		GraphicsEngine::Get().CycleToNextRenderPass(1);
+		GraphicsEngine::Get().CycleDebugRenderMode(1);
+	}
+
+	if (Application.InputManager.IsKeyPressed(KeyCode::F7))
+	{
+		GraphicsEngine::Get().CycleToNextTonemap(1);
+		std::cout << "Test\n";
 	}
 
 	if (Application.InputManager.IsKeyReleased(KeyCode::Escape))

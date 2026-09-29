@@ -28,9 +28,4 @@ cbuffer LightBuffer : register(b3)
     float3 _LB_padding;
 }
 
-float3 LinearToGamma(float3 aColor)
-{
-    return pow(abs(aColor), 1.0f / 2.2f);
-}
-
 #endif

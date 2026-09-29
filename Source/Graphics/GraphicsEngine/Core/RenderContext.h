@@ -10,6 +10,7 @@ struct ShadowCascade;
 struct SceneCamera;
 
 enum class DebugRenderMode;
+enum class ToneMappingOperator;
 
 struct RenderContext
 {
@@ -18,5 +19,6 @@ struct RenderContext
     const BuiltinAssets* BuiltinAssets = nullptr;
     const SceneCamera* Camera = nullptr;
     DebugRenderMode Mode = {};
+    ToneMappingOperator Tonmap = {};
     const std::array<ShadowCascade, 4>* CascadeShadows = nullptr; // NUM_CASCADES
 };

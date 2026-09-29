@@ -48,6 +48,8 @@ cbuffer FrameBuffer : register(b0)
     float4x4 FB_Projection;
     float3 FB_CameraPosition;
     uint FB_TypeOfRenderPass;
+    uint FB_TypeOfTonemap;
+    float3 _FB_Padding;
 }
 
 cbuffer ObjectBuffer : register(b1)

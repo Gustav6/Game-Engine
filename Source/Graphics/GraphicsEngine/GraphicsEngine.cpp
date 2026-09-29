@@ -43,20 +43,22 @@
 #include "InternalPasses/ForwardRenderPass.h"
 #include "InternalPasses/ShadowRenderPass.h"
 #include "InternalPasses/ScreenSpaceRenderPass.h"
+#include "InternalPasses/ScreenSpaceEffectPass.h"
 
 #include "Core/RenderItem.h"
 #include "Core/FrameTargets.h"
 #include "Core/RenderContext.h"
-#include "Core/ConstantBufferID.h"
+#include "Core/RenderEnums.h"
 #include "Core/SceneCamera.h"
-
-#include "FullTexture_VS.h"
-#include "BRDF_LUT_PS.h"
 
 #include "Drawers/MeshDrawer.h"
 #include "Drawers/LightDrawer.h"
 #include "Drawers/TextDrawer.h"
 #include "Drawers/SpriteDrawer.h"
+
+// Internal hlsl code
+#include "FullTexture_VS.h"
+#include "BRDF_LUT_PS.h"
 
 GraphicsEngine::GraphicsEngine() = default;
 GraphicsEngine::~GraphicsEngine() = default;
@@ -118,10 +120,14 @@ bool GraphicsEngine::Initialize(HWND aWindowHandle, const std::filesystem::path&
 		myDeferredRenderPass = std::make_unique<DeferredRenderPass>();
 		myScreenSpaceRenderPass = std::make_unique<ScreenSpaceRenderPass>(*myRHI);
 		myShadowRenderPass = std::make_unique<ShadowRenderPass>();
+		myScreenSpaceEffectPass = std::make_unique<ScreenSpaceEffectPass>(*myRHI);
 
 		myDeferredRenderPass->Initialize(*myRHI);
 		myShadowRenderPass->Initialize(*myRHI);
 	}
+
+	myDebugRenderMode = DebugRenderMode::sRGB;
+	myToneMappingOperator = ToneMappingOperator::Unreal;
 
 	return true;
 }
@@ -140,6 +146,7 @@ void GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const SceneCa
 		inoutCommandList.BeginEvent("Clear Backbuffer/Depth");
 
 		inoutCommandList.ClearRenderTarget(*myBackBuffer);
+		inoutCommandList.ClearRenderTarget(*myHDRBuffer);
 		inoutCommandList.ClearDepthStencil(*myDepthBuffer);
 
 		inoutCommandList.EndEvent();
@@ -270,6 +277,7 @@ void GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const SceneCa
 		.BuiltinAssets = myBuiltinAssets.get(),
 		.Camera = &aCamera,
 		.Mode = myDebugRenderMode,
+		.Tonmap = myToneMappingOperator,
 		.CascadeShadows = &myShadowRenderPass->GetCascades()
 	};
 
@@ -279,15 +287,25 @@ void GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const SceneCa
 	{
 		FrameTargets targets =
 		{
-			.BackBuffer = myBackBuffer.get(),
+			.RenderTarget = myHDRBuffer.get(),
 			.DepthBuffer = myDepthBuffer.get()
 		};
 
 		myDeferredRenderPass->Execute(inoutCommandList, opaqueItems, targets, context);
 		myForwardRenderPass->Execute(inoutCommandList, alphaItems, targets, context);
-		myScreenSpaceRenderPass->Execute(inoutCommandList, screenSpaceItems, targets, context);
 	}
 	inoutCommandList.EndEvent();
+
+	{
+		FrameTargets targets =
+		{
+			.RenderTarget = myBackBuffer.get(),
+			.DepthBuffer = myDepthBuffer.get()
+		};
+
+		myScreenSpaceEffectPass->Execute(inoutCommandList, targets, context, myHDRBuffer.get());
+		myScreenSpaceRenderPass->Execute(inoutCommandList, screenSpaceItems, targets, context);
+	}
 }
 
 void GraphicsEngine::Present() const
@@ -295,7 +313,7 @@ void GraphicsEngine::Present() const
 	myRHI->Present();
 }
 
-void GraphicsEngine::CycleToNextRenderPass(int aDirection)
+void GraphicsEngine::CycleDebugRenderMode(int aDirection)
 {
 	int nextDebugRenderMode = static_cast<int>(myDebugRenderMode) + aDirection;
 
@@ -309,6 +327,22 @@ void GraphicsEngine::CycleToNextRenderPass(int aDirection)
 	}
 
 	myDebugRenderMode = static_cast<DebugRenderMode>(nextDebugRenderMode);
+}
+
+void GraphicsEngine::CycleToNextTonemap(int aDirection)
+{
+	int nextToneMappingOperator = static_cast<int>(myToneMappingOperator) + aDirection;
+
+	if (nextToneMappingOperator >= static_cast<int>(ToneMappingOperator::MAX))
+	{
+		nextToneMappingOperator = 0;
+	}
+	else if (nextToneMappingOperator < 0)
+	{
+		nextToneMappingOperator = static_cast<int>(ToneMappingOperator::MAX) - 1;
+	}
+
+	myToneMappingOperator = static_cast<ToneMappingOperator>(nextToneMappingOperator);
 }
 
 CommonUtilities::Vector2ui GraphicsEngine::GetClientSize() const
@@ -497,6 +531,19 @@ bool GraphicsEngine::InitializeRenderResources()
 		initCommandList.FinishCommandList();
 
 		myRHI->ExecuteCommandList(initCommandList);
+	}
+
+	// HDR Buffer Texture
+	{
+		myHDRBuffer = std::make_unique<Texture>();
+
+		CommonUtilities::Vector2ui clientSize = GetClientSize();
+
+		if (!myRHI->CreateTexture("HDRBuffer", clientSize.x, clientSize.y, 1, ResourceFormat::R16G16B16A16_FLOAT, ResourceBindFlag_ShaderResource | ResourceBindFlag_RenderTarget, *myHDRBuffer))
+		{
+			GELOG(Error, "Failed to create HDR buffer texture!");
+			return false;
+		}
 	}
 
 	return true;

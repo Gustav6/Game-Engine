@@ -204,8 +204,8 @@
     <ProjectReference Include="..\Utilities\Logger\Logger.vcxproj">
       <Project>{25F339C1-1195-6497-FA4F-78EBE690EBE7}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\Graphics\GraphicsEngine\GraphicsEngine.vcxproj">
-      <Project>{AC8E76BE-985C-6AC4-81F0-DAEA6D5D4629}</Project>
+    <ProjectReference Include="..\Graphics\GraphicsEngine\Graphics.vcxproj">
+      <Project>{1653CE33-0220-293F-2B39-17E717655ECD}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

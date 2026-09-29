@@ -1,4 +1,4 @@
-project "GraphicsEngine"
+project "Graphics"
     kind "StaticLib"
 
     warnings "Extra"

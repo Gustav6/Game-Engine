@@ -82,7 +82,5 @@ float4 main(FullTextureVertex aInput) : SV_TARGET
                 
     radiance += lightContribution * shadowFactor;
     
-    float3 gammaPixel = LinearToGamma(radiance);
-    
-    return float4(gammaPixel, 1);
+    return float4(radiance, 1);
 }

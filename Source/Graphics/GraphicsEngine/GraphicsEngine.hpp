@@ -12,8 +12,6 @@
 
 #include "CommonUtilities/Math/Vector2.hpp"
 
-#include "Core/DebugRenderMode.h"
-
 class RenderHardwareInterface;
 class GraphicsCommandList;
 class Texture;
@@ -29,11 +27,15 @@ class ForwardRenderPass;
 class DeferredRenderPass;
 class ScreenSpaceRenderPass;
 class ShadowRenderPass;
+class ScreenSpaceEffectPass;
 
 struct SceneCamera;
 struct MaterialDescription;
 
 enum class ResourceFormat;
+enum class DebugRenderMode;
+enum class ToneMappingOperator;
+
 typedef int ResourceBindFlags;
 
 class GraphicsEngine
@@ -47,7 +49,8 @@ public:
 	void Render(GraphicsCommandList& inoutCommandList, const SceneCamera& aCamera);
 	void Present() const;
 
-	void CycleToNextRenderPass(int aDirection);
+	void CycleDebugRenderMode(int aDirection);
+	void CycleToNextTonemap(int aDirection);
 
 	CommonUtilities::Vector2ui GetClientSize() const;
 
@@ -75,7 +78,8 @@ private:
 	std::filesystem::path myShaderRoot;
 	std::filesystem::path myContentRoot;
 
-	DebugRenderMode myDebugRenderMode = DebugRenderMode::sRGB;
+	DebugRenderMode myDebugRenderMode;
+	ToneMappingOperator myToneMappingOperator;
 
 	std::unique_ptr<RenderHardwareInterface> myRHI;
 
@@ -87,8 +91,10 @@ private:
 	std::unique_ptr<DeferredRenderPass> myDeferredRenderPass;
 	std::unique_ptr<ScreenSpaceRenderPass> myScreenSpaceRenderPass;
 	std::unique_ptr<ShadowRenderPass> myShadowRenderPass;
+	std::unique_ptr<ScreenSpaceEffectPass> myScreenSpaceEffectPass;
 
 	std::unique_ptr<Texture> myBackBuffer;
+	std::unique_ptr<Texture> myHDRBuffer;
 	std::unique_ptr<Texture> myDepthBuffer;
 
 	std::vector<std::unique_ptr<Sampler>> mySamplers;

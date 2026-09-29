@@ -55,6 +55,5 @@ float4 main(FullTextureVertex aInput) : SV_TARGET
                
     radiance += lightContribution * shadowFactor;
     
-    
     return float4(radiance, 1);
 }

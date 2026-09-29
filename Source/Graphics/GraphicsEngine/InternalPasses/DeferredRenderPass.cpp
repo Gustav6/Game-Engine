@@ -8,7 +8,7 @@
 #include "GraphicsEngine/Core/FrameTargets.h"
 #include "GraphicsEngine/Core/SceneCamera.h"
 #include "GraphicsEngine/Core/RenderContext.h"
-#include "GraphicsEngine/Core/DebugRenderMode.h"
+#include "GraphicsEngine/Core/RenderEnums.h"
 
 #include "GraphicsEngine/RHI/RenderHardwareInterface.h"
 
@@ -31,29 +31,11 @@
 #include "Deferred_PointLight_PS.h"
 #include "Deferred_Ambient_PS.h"
 #include "FullTexture_VS.h"
-#include "GBuffer_PS.h"
-#include "Surface_VS.h"
 
 bool DeferredRenderPass::Initialize(RenderHardwareInterface& aRHI)
 {
-	// GBuffer & Gbuffer PSO
+	// GBuffer
 	{
-		PipelineStateDescription gBufferPSODesc = {};
-		gBufferPSODesc.Name = "GBufferPSO";
-		gBufferPSODesc.BlendMode = BlendMode::Opaque;
-		gBufferPSODesc.VertexShader.ByteCode = INTERNAL_Surface_VS_ByteCode;
-		gBufferPSODesc.VertexShader.ByteCodeSize = sizeof(INTERNAL_Surface_VS_ByteCode);
-		gBufferPSODesc.PixelShader.ByteCode = INTERNAL_GBuffer_PS_ByteCode;
-		gBufferPSODesc.PixelShader.ByteCodeSize = sizeof(INTERNAL_GBuffer_PS_ByteCode);
-
-		myGBufferPSO = std::make_unique<PipelineStateObject>();
-
-		if (!aRHI.CreatePipelineStateObject(gBufferPSODesc, *myGBufferPSO))
-		{
-			GELOG(Error, "Failed to create GBuffer pipeline state object!");
-			return false;
-		}
-
 		myGBuffer = std::make_unique<GBuffer>();
 
 		CommonUtilities::Vector2ui renderSize = aRHI.GetClientSize();
@@ -177,7 +159,7 @@ void DeferredRenderPass::Execute(
 		inoutCommandList.BeginEvent("Light Fullscreen Render");
 
 		{
-			inoutCommandList.SetRenderTarget(aFrameTargets.BackBuffer, nullptr);
+			inoutCommandList.SetRenderTarget(aFrameTargets.RenderTarget, nullptr);
 
 			// GBuffer set resources
 			{

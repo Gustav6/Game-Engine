@@ -26,5 +26,5 @@ project "Framework"
     links {
         "CommonUtilities",
         "Logger",
-        "GraphicsEngine"
+        "Graphics"
     }

@@ -42,10 +42,14 @@ float4 main(FullTextureVertex aInput) : SV_TARGET
     const int envNumMips = GetNumMips(EnvCubeTexture) - 1;
   
     float3 radiance = CalculateAmbientContribution(
-        normalPixel.xyz, pixelView, specularColor, diffuseColor, envNumMips, roughness, occlusion);
+    	normalPixel.xyz, 
+    	pixelView, 
+    	specularColor, 
+    	diffuseColor,
+		envNumMips, 
+		roughness, 
+		occlusion
+	);
               
-  
-    float3 gammaPixel = LinearToGamma(radiance);
-    
-    return float4(gammaPixel, 1);
+    return float4(radiance, 1);
 }

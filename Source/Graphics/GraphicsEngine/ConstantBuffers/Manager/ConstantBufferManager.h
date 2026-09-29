@@ -1,12 +1,15 @@
 #pragma once
+
 #include <unordered_map>
 #include <string_view>
+#include <cstdint>
 
 #include "Objects/GPU/Buffer.h"
-#include "GraphicsEngine/Core/ConstantBufferID.h"
 
 class RenderHardwareInterface;
 class GraphicsCommandList;
+
+enum class ConstantBuffer : uint8_t;
 
 class ConstantBufferManager
 {

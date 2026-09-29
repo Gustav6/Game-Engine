@@ -3,6 +3,7 @@
 
 #include "GraphicsEngine/Core/RenderItem.h"
 #include "GraphicsEngine/Core/RenderContext.h"
+#include "GraphicsEngine/Core/RenderEnums.h"
 
 #include "GraphicsEngine/Resources/BuiltinAssets.h"
 

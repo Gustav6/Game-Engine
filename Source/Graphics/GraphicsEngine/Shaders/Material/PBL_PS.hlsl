@@ -177,7 +177,5 @@ float4 main(VStoPS aPixel) : SV_TARGET
         }
     }
    
-    float3 gammaPixel = LinearToGamma(radiance);
-    
-    return float4(gammaPixel, parameters.PixelColor.a);
+    return float4(radiance, parameters.PixelColor.a);
 }

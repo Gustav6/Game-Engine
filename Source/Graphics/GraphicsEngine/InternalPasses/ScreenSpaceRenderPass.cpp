@@ -7,6 +7,7 @@
 #include "GraphicsEngine/Core/FrameTargets.h"
 #include "GraphicsEngine/Core/SceneCamera.h"
 #include "GraphicsEngine/Core/RenderContext.h"
+#include "GraphicsEngine/Core/RenderEnums.h"
 #include "GraphicsEngine/Core/RenderItem.h"
 
 #include "GraphicsEngine/Resources/BuiltinAssets.h"
@@ -57,7 +58,7 @@ void ScreenSpaceRenderPass::Execute(
 {
 	inoutCommandList.BeginEvent("Screen Space Render");
 
-	inoutCommandList.SetRenderTarget(aFrameTargets.BackBuffer, nullptr);
+	inoutCommandList.SetRenderTarget(aFrameTargets.RenderTarget, nullptr);
 
 	for (size_t i = 0; i < aItems.size(); i++)
 	{

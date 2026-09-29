@@ -9,6 +9,7 @@
 
 #include "GraphicsEngine/Core/SceneCamera.h"
 #include "GraphicsEngine/Core/RenderContext.h"
+#include "GraphicsEngine/Core/RenderEnums.h"
 
 #include "GraphicsEngine/RHI/RenderHardwareInterface.h"
 
