@@ -6,6 +6,11 @@
 
 #include "GamePipeline/Components/Base/Component.h"
 
+// TODO: Store the components as objects and not pointers
+// TODO: Store the components so their owner can be found via the same index.
+// TODO: Replace std::find with a lookup optimization.
+// TODO: Find a way to avoid looking up the enabled flag for the actors.
+
 class Actor;
 
 class BaseComponentRegistry
@@ -25,12 +30,12 @@ class ComponentRegistry : public BaseComponentRegistry
 
 public:
 	template<typename... Args>
-	T& Add(Actor* aOwner, Args&&... aArgs)
+	T* Add(Actor* aOwner, Args&&... aArgs)
 	{
 		myOwners.push_back(aOwner);
 		myComponents.push_back(std::make_unique<T>(aOwner, std::forward<Args>(aArgs)...));
 
-		return *myComponents.back();
+		return myComponents.back().get();
 	}
 
 	void Remove(Actor* aOwner) override
@@ -49,6 +54,20 @@ public:
 
 		myOwners.pop_back();
 		myComponents.pop_back();
+	}
+
+	template<typename... Args>
+	T* Get(Actor* aOwner)
+	{
+		auto it = std::find(myOwners.begin(), myOwners.end(), aOwner);
+
+		if (it == myOwners.end())
+		{
+			return nullptr;
+		}
+
+		size_t index = std::distance(myOwners.begin(), it);
+		return myComponents[index].get();
 	}
 
 	void Update(float aDeltaTime) override

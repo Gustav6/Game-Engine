@@ -1,6 +1,9 @@
 project "Framework"
     kind "StaticLib"
 
+    pchheader "GameFramework.pch.h"
+    pchsource "GameFramework.pch.cpp"
+
     warnings "Extra"
     fatalwarnings { "All" }
 
@@ -22,6 +25,12 @@ project "Framework"
         -- Third Party
         "%{wks.location}/ThirdParty/Source/tracy/TracyClient.cpp" 
     }
+    
+    filter "files:**/TracyClient.cpp"
+        enablepch "Off"
+        warnings "Off"
+
+    filter {}
 
     links {
         "CommonUtilities",

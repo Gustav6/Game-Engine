@@ -46,6 +46,9 @@ group "GameFramework"
 
 group "GraphicsEngine"
     include "Source/Graphics/GraphicsEngine/premake5.lua"
-  
+
+group "Tools"
+    include "Source/Tools/ImGui/premake5.lua"
+
 group "Application"
     include "Source/Application/Game/premake5.lua"

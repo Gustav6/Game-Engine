@@ -17,53 +17,44 @@ public:
 	Actor(const Actor&) = delete;
 	Actor& operator=(const Actor&) = delete;
 
+	/*
+	 * @return A pointer to the component. The pointer is only valid for the relevant scope and must not be stored for later use.
+	 */
 	template<typename T, typename... Args>
-	T& AddComponent(Args&&... args)
+	T* AddComponent(Args&&... args)
 	{
-		T& component = ComponentRegistryManager::Get().AddComponent<T>(this, std::forward<Args>(args)...);
-		myComponentLookup[std::type_index(typeid(T))] = &component;
-		return component;
+		return ComponentRegistryManager::Get().AddComponent<T>(this, std::forward<Args>(args)...);
 	}
 
 	template<typename T>
 	void RemoveComponent()
 	{
-		auto it = myComponentLookup.find(std::type_index(typeid(T)));
-
-		if (it == myComponentLookup.end())
-		{
-			return;
-		}
-
 		ComponentRegistryManager::Get().RemoveComponent<T>(this);
-		myComponentLookup.erase(it);
 	}
 
+	/*
+	 * @return A pointer to the component. The pointer is only valid for the relevant scope and must not be stored for later use.
+	 */
 	template<typename T>
 	T* GetComponent()
 	{
-		auto it = myComponentLookup.find(std::type_index(typeid(T)));
-
-		if (it == myComponentLookup.end())
-		{
-			return nullptr;
-		}
-
-		return static_cast<T*>(it->second);
+		return ComponentRegistryManager::Get().GetComponent<T>(this);
 	}
 	
 	virtual void Update(float aDeltaTime);
 
+	void Destroy();
+	bool GetIsDestroyed() const;
+
 	Transform& GetTransform();
 	const Transform& GetTransform() const;
 
-	void SetEnabled(bool aState);
+	void Enable(bool aState);
 	bool GetIsEnabled() const;
 
 private:
-	std::unordered_map<std::type_index, Component*> myComponentLookup;
-
 	Transform myTransform;
 
+	bool myIsDestroyed;
 	bool myIsEnabled;
 };

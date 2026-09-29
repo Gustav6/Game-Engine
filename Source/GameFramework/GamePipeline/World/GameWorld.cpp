@@ -4,6 +4,8 @@
 #include "Actor.hpp"
 #include "GamePipeline/Components/Registry/ComponentRegistryManager.h"
 
+// TODO: Make it so that clear also clears all the components in the registry.
+
 GameWorld& GameWorld::Get()
 {
 	static GameWorld myInstance;
@@ -18,6 +20,8 @@ void GameWorld::Update(float aDeltaTime)
 	{
 		actor->Update(aDeltaTime);
 	}
+
+	// TODO: Run "destroy loop" only if any object has been marked as destroyed this frame.
 }
 
 void GameWorld::Render()

@@ -6,6 +6,7 @@
 Actor::Actor()
 {
 	myIsEnabled = true;
+	myIsDestroyed = false;
 }
 
 Actor::~Actor()
@@ -20,6 +21,16 @@ void Actor::Update(float)
 {
 }
 
+void Actor::Destroy()
+{
+	myIsDestroyed = true;
+}
+
+bool Actor::GetIsDestroyed() const
+{
+	return myIsDestroyed;
+}
+
 Transform& Actor::GetTransform()
 {
 	return myTransform;
@@ -31,7 +42,7 @@ const Transform& Actor::GetTransform() const
 }
 
 
-void Actor::SetEnabled(bool aState)
+void Actor::Enable(bool aState)
 {
 	myIsEnabled = aState;
 }

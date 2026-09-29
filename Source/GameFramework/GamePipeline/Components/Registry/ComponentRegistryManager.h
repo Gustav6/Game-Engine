@@ -17,7 +17,7 @@ public:
 	bool IsShutdown() const;
 
 	template<typename T, typename... Args>
-	T& AddComponent(Actor* aOwner, Args&&... aArgs)
+	T* AddComponent(Actor* aOwner, Args&&... aArgs)
 	{
 		return GetRegistry<T>().Add(aOwner, std::forward<Args>(aArgs)...);
 	}
@@ -26,6 +26,12 @@ public:
 	void RemoveComponent(Actor* aOwner)
 	{
 		GetRegistry<T>().Remove(aOwner);
+	}
+
+	template<typename T>
+	T* GetComponent(Actor* aOwner)
+	{
+		return GetRegistry<T>().Get<T>(aOwner);
 	}
 
 	void RemoveAll(Actor* aOwner)

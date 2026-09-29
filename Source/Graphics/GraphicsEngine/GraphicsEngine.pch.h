@@ -20,10 +20,12 @@
 #include <cassert>
 #include <filesystem>	
 #include <unordered_map>
+#include <algorithm>
 #include <vector>
 #include <memory>
 #include <array>
 #include <utility>
+#include <cstdint>
 
 #include "GraphicsEngine.hpp"
 #include "Logger/Logger.h"

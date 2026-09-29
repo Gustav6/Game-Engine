@@ -20,6 +20,10 @@
     <Project Path="Source\Graphics\GraphicsEngine\Graphics.vcxproj" Id="1653CE33-0220-293F-2B39-17E717655ECD">
     </Project>
   </Folder>
+  <Folder Name="/Tools/">
+    <Project Path="Source\Tools\ImGui\ImGui.vcxproj" Id="C0FF640D-2C14-8DBE-F595-301E616989EF">
+    </Project>
+  </Folder>
   <Folder Name="/Utilities/">
     <Project Path="Source\Utilities\CommonUtilities\CommonUtilities.vcxproj" Id="AA29E689-16B5-534E-1FC6-D6428BD0AF4E">
     </Project>

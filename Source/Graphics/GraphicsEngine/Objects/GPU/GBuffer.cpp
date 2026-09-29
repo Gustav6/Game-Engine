@@ -1,3 +1,4 @@
+#include "GraphicsEngine.pch.h"
 #include "GBuffer.h"
 
 GBuffer::GBuffer() = default;

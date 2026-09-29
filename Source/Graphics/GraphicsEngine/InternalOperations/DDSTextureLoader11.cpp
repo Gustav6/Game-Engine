@@ -14,12 +14,9 @@
 // http://go.microsoft.com/fwlink/?LinkId=248929
 //--------------------------------------------------------------------------------------
 
+#include "GraphicsEngine.pch.h"
 #include "DDSTextureLoader11.h"
 
-#include <algorithm>
-#include <cassert>
-#include <cstdint>
-#include <memory>
 #include <new>
 
 #ifdef _MSC_VER

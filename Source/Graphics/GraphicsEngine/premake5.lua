@@ -1,6 +1,9 @@
 project "Graphics"
     kind "StaticLib"
 
+    pchheader "GraphicsEngine.pch.h"
+    pchsource "GraphicsEngine.pch.cpp"
+
     warnings "Extra"
     fatalwarnings { "All" }
     
@@ -24,6 +27,12 @@ project "Graphics"
         -- Third Party
         "%{wks.location}/ThirdParty/Source/tracy/TracyClient.cpp" 
     }
+    
+    filter "files:**/TracyClient.cpp"
+        enablepch "Off"
+        warnings "Off"
+
+    filter {}
 
     links {
         "CommonUtilities",

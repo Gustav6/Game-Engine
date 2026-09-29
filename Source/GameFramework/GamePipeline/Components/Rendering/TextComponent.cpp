@@ -1,3 +1,4 @@
+#include "GameFramework.pch.h"
 #include "TextComponent.h"
 
 #include <CommonUtilities/Math/Vector3.hpp>
@@ -20,6 +21,7 @@ void TextComponent::Render()
 	if (myIsDirty)
 	{
 		RebuildTransform();
+		myIsDirty = false;
 	}
 
 	TextDrawCall drawCall =

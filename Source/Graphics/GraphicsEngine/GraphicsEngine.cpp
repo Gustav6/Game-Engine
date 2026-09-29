@@ -296,6 +296,7 @@ void GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const SceneCa
 	}
 	inoutCommandList.EndEvent();
 
+	inoutCommandList.BeginEvent("Screen Space Pass");
 	{
 		FrameTargets targets =
 		{
@@ -306,6 +307,7 @@ void GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const SceneCa
 		myScreenSpaceEffectPass->Execute(inoutCommandList, targets, context, myHDRBuffer.get());
 		myScreenSpaceRenderPass->Execute(inoutCommandList, screenSpaceItems, targets, context);
 	}
+	inoutCommandList.EndEvent();
 }
 
 void GraphicsEngine::Present() const

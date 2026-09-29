@@ -74,7 +74,8 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>GameFramework.pch.h</PrecompiledHeaderFile>
       <WarningLevel>Level4</WarningLevel>
       <TreatWarningAsError>true</TreatWarningAsError>
       <PreprocessorDefinitions>_DEBUG;USE_IMGUI;TRACY_ENABLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -96,7 +97,8 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>GameFramework.pch.h</PrecompiledHeaderFile>
       <WarningLevel>Level4</WarningLevel>
       <TreatWarningAsError>true</TreatWarningAsError>
       <PreprocessorDefinitions>_RELEASE;USE_IMGUI;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -123,7 +125,8 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Retail|x64'">
     <ClCompile>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>GameFramework.pch.h</PrecompiledHeaderFile>
       <WarningLevel>Level4</WarningLevel>
       <TreatWarningAsError>true</TreatWarningAsError>
       <PreprocessorDefinitions>_RETAIL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -172,7 +175,10 @@
     <ClInclude Include="GamePipeline\World\GameWorld.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\ThirdParty\Source\tracy\TracyClient.cpp" />
+    <ClCompile Include="..\..\ThirdParty\Source\tracy\TracyClient.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>TurnOffAllWarnings</WarningLevel>
+    </ClCompile>
     <ClCompile Include="AssetPipeline\AssetRegistry\AssetRegistry.cpp" />
     <ClCompile Include="AssetPipeline\Assets\Base\Asset.cpp" />
     <ClCompile Include="AssetPipeline\Assets\Types\AnimationAsset.cpp" />
@@ -181,7 +187,9 @@
     <ClCompile Include="AssetPipeline\Assets\Types\MeshAsset.cpp" />
     <ClCompile Include="AssetPipeline\Assets\Types\SpriteAsset.cpp" />
     <ClCompile Include="AssetPipeline\Assets\Types\TextureAsset.cpp" />
-    <ClCompile Include="GameFramework.pch.cpp" />
+    <ClCompile Include="GameFramework.pch.cpp">
+      <PrecompiledHeader>Create</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="GamePipeline\Components\Base\Component.cpp" />
     <ClCompile Include="GamePipeline\Components\Light\DirectionlLightComponent.cpp" />
     <ClCompile Include="GamePipeline\Components\Light\LightComponent.cpp" />

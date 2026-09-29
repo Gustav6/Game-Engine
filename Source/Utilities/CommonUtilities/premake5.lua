@@ -1,6 +1,9 @@
 project "CommonUtilities"
     kind "StaticLib"
 
+    pchheader "CommonUtilities.pch.h"
+    pchsource "CommonUtilities.pch.cpp"
+
     warnings "Extra"
     fatalwarnings { "All" }
 
@@ -21,6 +24,12 @@ project "CommonUtilities"
         -- Third Party
         "%{wks.location}/ThirdParty/Source/yyjson/yyjson.c"
     }
+
+    filter "files:**/yyjson.c"
+        enablepch "Off"
+        warnings "Off"
+
+    filter {}
     
     links {
         "Logger"
