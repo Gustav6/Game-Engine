@@ -51,7 +51,7 @@ float4 main(VStoPS aPixel) : SV_TARGET
         case 6: // Normals world space pass
             return float4(normal, 1.0f);
         case 7: // Shadows pass
-            return float4(1.0f, 1.0f, 1.0f, 1.0f); // TODO : FIX
+            return float4(1.0f, 1.0f, 1.0f, 1.0f); // TODO : set albedo to (0.8, 0.8, 0.8)
         default:
             break;
     }

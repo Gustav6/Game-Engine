@@ -184,7 +184,7 @@ void DeferredRenderPass::Execute(
 			inoutCommandList.Draw(4);
 			inoutCommandList.EndEvent();
 
-			if (aContext.Mode == DebugRenderMode::sRGB)
+			if (aContext.Mode == DebugRenderMode::sRGB || aContext.Mode == DebugRenderMode::Shadows)
 			{
 				for (unsigned int l = 0; l < LightDrawer::Get().mySceneLights.size(); l++)
 				{

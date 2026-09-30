@@ -65,7 +65,7 @@ GBufferOutput main(VStoPS aPixel)
             result.AlbedoTexture = float4(normal, 1.0f);
             break;
         case 7: // Shadows pass
-            result.AlbedoTexture = float4(1.0f, 1.0f, 1.0f, 1.0f); // TODO : FIX
+            result.AlbedoTexture = float4(0.8f, 0.8f, 0.8f, 1.0f);
             break;
         default:
             result.AlbedoTexture = float4(parameters.PixelColor.rgb, 1); // same as case 0, safe fallback

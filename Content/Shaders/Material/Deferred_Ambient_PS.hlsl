@@ -19,7 +19,7 @@ float4 main(FullscreenVertex aInput) : SV_TARGET
         discard;
     }
     
-    if (FB_TypeOfRenderPass != 0)
+    if (FB_TypeOfRenderPass != 0 && FB_TypeOfRenderPass != 7)
     {
         return albedoPixel;
     }
