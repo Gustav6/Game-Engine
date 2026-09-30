@@ -16,7 +16,7 @@
 #include "AssetPipeline/Assets/Types/TextureAsset.h"
 #include "AssetPipeline/Assets/Types/FontAsset.h"
 #include "AssetPipeline/Assets/Types/SpriteAsset.h"
-#include "AssetPipeline/Assets/Types/UnrealSceneAsset.h"
+//#include "AssetPipeline/Assets/Types/UnrealSceneAsset.h"
 
 #include "GamePipeline/Components/Rendering/MeshComponent.h"
 #include "GamePipeline/Components/Rendering/AnimationComponent.h"
@@ -25,6 +25,7 @@
 #include "GamePipeline/Components/Light/DirectionlLightComponent.h"
 #include "GamePipeline/Components/Light/PointLightComponent.h"
 #include "GamePipeline/Components/Light/SpotLightComponent.h"
+
 #include "GamePipeline/World/Actor.hpp"
 #include "GamePipeline/World/GameWorld.h"
 
@@ -226,8 +227,6 @@ int Game::Run()
 
 void Game::LoadScene()
 {
-	AssetRegistry::Get().GetAsset<UnrealSceneAsset>("LVL_DioramaBlockout_Level");
-
 	{
 		GameCamera& gameCamera = GameCamera::GetInstance();
 		gameCamera.Init(90.0f, 1.0f, 10000.0f, GraphicsEngine::Get().GetClientSize());
@@ -359,7 +358,7 @@ void Game::LoadScene()
 	{
 	    std::unique_ptr<Actor> object = std::make_unique<Actor>();
 
-	    object->Enable(false);
+	    object->Disable();
 
 	    PointLightComponent* pointLight = object->AddComponent<PointLightComponent>();
 
@@ -375,7 +374,7 @@ void Game::LoadScene()
 	{
 	    std::unique_ptr<Actor> object = std::make_unique<Actor>();
 
-	    object->Enable(false);
+	    object->Disable();
 
 	    SpotLightComponent* spotLight = object->AddComponent<SpotLightComponent>();
 
@@ -402,7 +401,7 @@ void Game::LoadScene()
 		myFpsCounter = GameWorld::Get().AddActor(std::move(object));
 	}
 
-	{
+	/*{
 		std::unique_ptr<Actor> object = std::make_unique<Actor>();
 
 		SpriteComponent* sprite = object->AddComponent<SpriteComponent>();
@@ -412,13 +411,11 @@ void Game::LoadScene()
 		sprite->SetPosition({ 512, 512 });
 
 		GameWorld::Get().AddActor(std::move(object));
-	}
+	}*/
 }
 
 void Game::UpdateScene(float aDeltaTime)
 {
-	ZoneScopedN("Update Game");
-
 	GameWorld::Get().Update(aDeltaTime);
 	GameCamera::GetInstance().Update(aDeltaTime);
 
@@ -438,15 +435,36 @@ void Game::UpdateScene(float aDeltaTime)
 	}
 	if (Application.InputManager.IsKeyPressed(KeyCode::D4))
 	{
-		myDirectionLightObject->Enable(!myDirectionLightObject->GetIsEnabled());
+		if (myDirectionLightObject->GetIsEnabled())
+		{
+			myDirectionLightObject->Disable();
+		}
+		else
+		{
+			myDirectionLightObject->Enable();
+		}
 	}
 	if (Application.InputManager.IsKeyPressed(KeyCode::D5))
 	{
-		myPointLightObject->Enable(!myPointLightObject->GetIsEnabled());
+		if (myPointLightObject->GetIsEnabled())
+		{
+			myPointLightObject->Disable();
+		}
+		else
+		{
+			myPointLightObject->Enable();
+		}
 	}
 	if (Application.InputManager.IsKeyPressed(KeyCode::D6))
 	{
-		mySpotLightObject->Enable(!mySpotLightObject->GetIsEnabled());
+		if (mySpotLightObject->GetIsEnabled())
+		{
+			mySpotLightObject->Disable();
+		}
+		else
+		{
+			mySpotLightObject->Enable();
+		}
 	}
 
 	if (Application.InputManager.IsKeyPressed(KeyCode::F5))

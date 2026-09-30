@@ -79,7 +79,7 @@
       <WarningLevel>Level4</WarningLevel>
       <TreatWarningAsError>true</TreatWarningAsError>
       <PreprocessorDefinitions>_DEBUG;USE_IMGUI;TRACY_ENABLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>.;..;..\..\Utilities;..\..\..\Intermediate\GraphicsEngine\Debug\PrecompiledShaders;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;..;..\..\Utilities;..\..\..\ThirdParty\Source;..\..\..\Intermediate\GraphicsEngine\Debug\PrecompiledShaders;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <MinimalRebuild>false</MinimalRebuild>
@@ -96,6 +96,9 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <Lib>
+      <AdditionalDependencies>d3d11.lib;dxguid.lib;dxgi.lib;d3dcompiler.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
     <ProjectReference>
     </ProjectReference>
     <PostBuildEvent>
@@ -116,7 +119,7 @@ xcopy /E /I /R /Y /D "%SHADERSRC%" "%SHADERDEST%"</Command>
       <WarningLevel>Level4</WarningLevel>
       <TreatWarningAsError>true</TreatWarningAsError>
       <PreprocessorDefinitions>_RELEASE;USE_IMGUI;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>.;..;..\..\Utilities;..\..\..\Intermediate\GraphicsEngine\Release\PrecompiledShaders;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;..;..\..\Utilities;..\..\..\ThirdParty\Source;..\..\..\Intermediate\GraphicsEngine\Release\PrecompiledShaders;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -138,6 +141,9 @@ xcopy /E /I /R /Y /D "%SHADERSRC%" "%SHADERDEST%"</Command>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
+    <Lib>
+      <AdditionalDependencies>d3d11.lib;dxguid.lib;dxgi.lib;d3dcompiler.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
     <ProjectReference>
     </ProjectReference>
     <PostBuildEvent>
@@ -158,7 +164,7 @@ xcopy /E /I /R /Y /D "%SHADERSRC%" "%SHADERDEST%"</Command>
       <WarningLevel>Level4</WarningLevel>
       <TreatWarningAsError>true</TreatWarningAsError>
       <PreprocessorDefinitions>_RETAIL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>.;..;..\..\Utilities;..\..\..\Intermediate\GraphicsEngine\Retail\PrecompiledShaders;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;..;..\..\Utilities;..\..\..\ThirdParty\Source;..\..\..\Intermediate\GraphicsEngine\Retail\PrecompiledShaders;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -178,6 +184,9 @@ xcopy /E /I /R /Y /D "%SHADERSRC%" "%SHADERDEST%"</Command>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
+    <Lib>
+      <AdditionalDependencies>d3d11.lib;dxguid.lib;dxgi.lib;d3dcompiler.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
     <ProjectReference>
     </ProjectReference>
     <PostBuildEvent>

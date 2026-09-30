@@ -13,7 +13,7 @@
 SpotLightComponent::SpotLightComponent(Actor* aOwner)
 	: LightComponent(aOwner)
 {
-	myData->Type = LightType::Spot;
+	myData.Type = LightType::Spot;
 }
 
 void SpotLightComponent::Render()
@@ -22,7 +22,7 @@ void SpotLightComponent::Render()
 
 	SceneLight light =
 	{
-	    .LightData = myData.get(),
+	    .LightData = &myData,
 	    .ShadowMap = myShadowMap.get(),
 	    .Transform = GetTransform(),
 	    .Projection = myProjection
@@ -33,9 +33,9 @@ void SpotLightComponent::Render()
 
 void SpotLightComponent::SetDirection(const CommonUtilities::Vector3f & aDirection)
 {
-	myData->Direction = aDirection.GetNormalized();
+	myData.Direction = aDirection.GetNormalized();
 
-    CommonUtilities::Vector3f forward = myData->Direction;
+    CommonUtilities::Vector3f forward = myData.Direction;
 
     CommonUtilities::Vector3f worldUp = { 0.0f, 1.0f, 0.0f };
 
@@ -62,7 +62,7 @@ void SpotLightComponent::SetDirection(const CommonUtilities::Vector3f & aDirecti
 
 void SpotLightComponent::SetRadius(float aRadius)
 {
-	myData->Radius = aRadius;
+	myData.Radius = aRadius;
 }
 
 void SpotLightComponent::SetCone(float aInner, float aOuter)
@@ -74,22 +74,22 @@ void SpotLightComponent::SetCone(float aInner, float aOuter)
 void SpotLightComponent::SetInnerCone(float aInnerCone)
 {
     assert(aInnerCone >= 0.0f && aInnerCone <= 1.0f);
-    assert(aInnerCone <= std::acos(myData->CosOuterCone));
+    assert(aInnerCone <= std::acos(myData.CosOuterCone));
 
-    myData->CosInnerCone = std::cos(aInnerCone);
+    myData.CosInnerCone = std::cos(aInnerCone);
 }
 
 void SpotLightComponent::SetOuterCone(float aOuterCone)
 {
     assert(aOuterCone >= 0.0f && aOuterCone <= 1.0f);
-    assert(std::acos(myData->CosInnerCone) <= aOuterCone);
+    assert(std::acos(myData.CosInnerCone) <= aOuterCone);
 
-    myData->CosOuterCone = std::cos(aOuterCone);
+    myData.CosOuterCone = std::cos(aOuterCone);
 }
 
 const CommonUtilities::Matrix4x4f SpotLightComponent::CreateProjectionMatrix() const
 {
-    const float fov = acos(myData->CosOuterCone) * 2.0f * CommonUtilities::Math::RAD_TO_DEG<float>;
+    const float fov = acos(myData.CosOuterCone) * 2.0f * CommonUtilities::Math::RAD_TO_DEG<float>;
 
-	return CommonUtilities::Matrix4x4f::CreatePerspectiveProjection(fov, 0.1f, myData->Radius, 1.0f);
+	return CommonUtilities::Matrix4x4f::CreatePerspectiveProjection(fov, 0.1f, myData.Radius, 1.0f);
 }

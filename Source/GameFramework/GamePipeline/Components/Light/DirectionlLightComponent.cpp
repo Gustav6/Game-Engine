@@ -8,7 +8,7 @@
 DirectionalLightComponent::DirectionalLightComponent(Actor* aOwner)
 	: LightComponent(aOwner)
 {
-	myData->Type = LightType::Directional;
+	myData.Type = LightType::Directional;
 }
 
 void DirectionalLightComponent::Render()
@@ -17,7 +17,7 @@ void DirectionalLightComponent::Render()
 
 	SceneLight light =
 	{
-	    .LightData = myData.get(),
+	    .LightData = &myData,
 	    .Transform = GetTransform(),
 	    .Projection = myProjection
 	};
@@ -27,9 +27,9 @@ void DirectionalLightComponent::Render()
 
 void DirectionalLightComponent::SetDirection(const CommonUtilities::Vector3f& aDirection)
 {
-	myData->Direction = aDirection.GetNormalized();
+	myData.Direction = aDirection.GetNormalized();
 
-    CommonUtilities::Vector3f forward = myData->Direction;
+    CommonUtilities::Vector3f forward = myData.Direction;
 
     CommonUtilities::Vector3f worldUp = { 0.0f, 1.0f, 0.0f };
 
@@ -56,5 +56,5 @@ void DirectionalLightComponent::SetDirection(const CommonUtilities::Vector3f& aD
 
 const CommonUtilities::Matrix4x4f DirectionalLightComponent::CreateProjectionMatrix() const
 {
-	return CommonUtilities::Matrix4x4f::CreateOrthographicProjection(1.0f, 5000.0f, static_cast<float>(myData->ShadowMapSize.x), static_cast<float>(myData->ShadowMapSize.y));
+	return CommonUtilities::Matrix4x4f::CreateOrthographicProjection(1.0f, 5000.0f, static_cast<float>(myData.ShadowMapSize.x), static_cast<float>(myData.ShadowMapSize.y));
 }

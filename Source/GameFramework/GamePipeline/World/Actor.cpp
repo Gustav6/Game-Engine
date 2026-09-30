@@ -41,10 +41,14 @@ const Transform& Actor::GetTransform() const
 	return myTransform;
 }
 
-
-void Actor::Enable(bool aState)
+void Actor::Enable()
 {
-	myIsEnabled = aState;
+	myIsEnabled = true;
+}
+
+void Actor::Disable()
+{
+	myIsEnabled = false;
 }
 
 bool Actor::GetIsEnabled() const

@@ -49,7 +49,8 @@ public:
 	Transform& GetTransform();
 	const Transform& GetTransform() const;
 
-	void Enable(bool aState);
+	void Enable();
+	void Disable();
 	bool GetIsEnabled() const;
 
 private:

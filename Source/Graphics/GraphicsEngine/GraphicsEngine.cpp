@@ -60,6 +60,8 @@
 #include "FullTexture_VS.h"
 #include "BRDF_LUT_PS.h"
 
+#include <tracy/core/Tracy.hpp>
+
 GraphicsEngine::GraphicsEngine() = default;
 GraphicsEngine::~GraphicsEngine() = default;
 
@@ -142,6 +144,8 @@ void GraphicsEngine::BeginFrame()
 
 void GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const SceneCamera& aCamera)
 {
+	ZoneScopedN("Graphics Engine Whole Render Pass");
+
 	{
 		inoutCommandList.BeginEvent("Clear Backbuffer/Depth");
 

@@ -22,3 +22,35 @@ bool ComponentRegistryManager::IsShutdown() const
 {
 	return myIsShutDown;
 }
+
+void ComponentRegistryManager::RemoveAll(Actor* aOwner)
+{
+	for (auto& [type, registry] : myRegistries)
+	{
+		registry->Remove(aOwner);
+	}
+}
+
+void ComponentRegistryManager::Update(float aDeltaTime)
+{
+	for (auto& [type, registry] : myRegistries)
+	{
+		registry->Update(aDeltaTime);
+	}
+}
+
+void ComponentRegistryManager::Render()
+{
+	for (auto& [type, registry] : myRegistries)
+	{
+		registry->Render();
+	}
+}
+
+void ComponentRegistryManager::Clear()
+{
+	for (auto& [type, registry] : myRegistries)
+	{
+		registry->Clear();
+	}
+}

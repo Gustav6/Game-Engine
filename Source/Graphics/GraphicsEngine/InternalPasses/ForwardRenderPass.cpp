@@ -22,12 +22,16 @@
 
 #include "GraphicsEngine/Drawers/LightDrawer.h"
 
+#include <tracy/core/Tracy.hpp>
+
 void ForwardRenderPass::Execute(
 	GraphicsCommandList& inoutCommandList,
 	const std::vector<RenderItem>& aItems,
 	FrameTargets& aFrameTargets,
 	RenderContext& aContext)
 {
+	ZoneScopedN("Forward Render Pass");
+
 	inoutCommandList.BeginEvent("Forward Render");
 
 	inoutCommandList.SetRenderTarget(aFrameTargets.RenderTarget, aFrameTargets.DepthBuffer);

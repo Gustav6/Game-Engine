@@ -30,12 +30,8 @@ project "Game"
         "Graphics",
         "Framework",
         "CommonUtilities",
-        
+
         -- Third Party
-        "d3d11",
-        "dxguid",
-        "dxgi",
-        "d3dcompiler",
         "TGAFbx",
         "fmod_vc",
         "fmodstudio_vc"

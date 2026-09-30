@@ -1,8 +1,6 @@
 #include "GameFramework.pch.h"
 #include "LightComponent.h"
 
-#include <string>
-
 #include "GraphicsEngine/GraphicsEngine.hpp"
 
 #include "GraphicsEngine/Objects/Scene/Light.h"
@@ -14,8 +12,6 @@
 LightComponent::LightComponent(Actor* aOwner)
 	: Component(aOwner)
 {
-	myData = std::make_unique<Light>();
-
 	myShadowMap = nullptr;
 
 	myTransformDirty = true;
@@ -27,44 +23,44 @@ void LightComponent::UpdateLightViewProjection()
 {
 	if (myTransformDirty)
 	{
-		myData->LightViewProjectionTexture = myTransform.GetFastInverse() * myProjection * CommonUtilities::Matrix4x4f::CreateNDCToTextureSpace();
+		myData.LightViewProjectionTexture = myTransform.GetFastInverse() * myProjection * CommonUtilities::Matrix4x4f::CreateNDCToTextureSpace();
 		myTransformDirty = false;
 	}
 }
 
-const Light* LightComponent::GetData() const
+const Light& LightComponent::GetData() const
 {
-	return myData.get();
+	return myData;
 }
 
 void LightComponent::SetPosition(const CommonUtilities::Vector3f& aPosition)
 {
-	myData->Position = aPosition;
+	myData.Position = aPosition;
 
-	myTransform(4, 1) = myData->Position.x;
-	myTransform(4, 2) = myData->Position.y;
-	myTransform(4, 3) = myData->Position.z;
+	myTransform(4, 1) = myData.Position.x;
+	myTransform(4, 2) = myData.Position.y;
+	myTransform(4, 3) = myData.Position.z;
 
 	myTransformDirty = true;
 }
 
 void LightComponent::SetColor(const CommonUtilities::Vector3f& aColor)
 {
-	myData->Color = aColor;
+	myData.Color = aColor;
 }
 
 void LightComponent::SetIntensity(float aIntensity)
 {
-	myData->Intensity = aIntensity;
+	myData.Intensity = aIntensity;
 }
 
 void LightComponent::SetShadowMapSize(const CommonUtilities::Vector2ui& aSize)
 {
-	if (myData->ShadowMapSize.x != aSize.x || myData->ShadowMapSize.y != aSize.y)
+	if (myData.ShadowMapSize.x != aSize.x || myData.ShadowMapSize.y != aSize.y)
 	{
-		myData->ShadowMapSize = aSize;
+		myData.ShadowMapSize = aSize;
 
-		if (myData->ShadowMapSize.x == myData->ShadowMapSize.y == 0)
+		if (myData.ShadowMapSize.x == myData.ShadowMapSize.y == 0)
 		{
 			myShadowMap = nullptr;
 			return;
@@ -74,27 +70,27 @@ void LightComponent::SetShadowMapSize(const CommonUtilities::Vector2ui& aSize)
 
 		std::string_view name;
 
-		switch (myData->Type)
+		switch (myData.Type)
 		{
 			case LightType::Directional:
 			{
 				name = "Directional_SM";
 
-				GraphicsEngine::Get().CreateShadowMap(name, myData->ShadowMapSize.x, myData->ShadowMapSize.y, *myShadowMap, false);
+				GraphicsEngine::Get().CreateShadowMap(name, myData.ShadowMapSize.x, myData.ShadowMapSize.y, *myShadowMap, false);
 				break;
 			}
 			case LightType::Point:
 			{
 				name = "Point_SM";
 
-				GraphicsEngine::Get().CreateShadowMap(name, myData->ShadowMapSize.x, myData->ShadowMapSize.y, *myShadowMap, true);
+				GraphicsEngine::Get().CreateShadowMap(name, myData.ShadowMapSize.x, myData.ShadowMapSize.y, *myShadowMap, true);
 				break;
 			}
 			case LightType::Spot:
 			{
 				name = "Spot_SM";
 
-				GraphicsEngine::Get().CreateShadowMap(name, myData->ShadowMapSize.x, myData->ShadowMapSize.y, *myShadowMap, false);
+				GraphicsEngine::Get().CreateShadowMap(name, myData.ShadowMapSize.x, myData.ShadowMapSize.y, *myShadowMap, false);
 				break;
 			}
 		}

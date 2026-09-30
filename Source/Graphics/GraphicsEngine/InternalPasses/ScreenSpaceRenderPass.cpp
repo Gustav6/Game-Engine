@@ -35,6 +35,8 @@
 #include "GraphicsEngine/Drawers/TextDrawer.h"
 #include "GraphicsEngine/Drawers/SpriteDrawer.h"
 
+#include <tracy/core/Tracy.hpp>
+
 ScreenSpaceRenderPass::ScreenSpaceRenderPass(RenderHardwareInterface& aRHI)
 {
 	constexpr float designWidth = 1920.0f;
@@ -56,6 +58,8 @@ void ScreenSpaceRenderPass::Execute(
 	FrameTargets& aFrameTargets,
 	RenderContext& aContext)
 {
+	ZoneScopedN("Screen Space Render Pass");
+
 	inoutCommandList.BeginEvent("Screen Space Render");
 
 	inoutCommandList.SetRenderTarget(aFrameTargets.RenderTarget, nullptr);

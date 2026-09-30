@@ -3,6 +3,8 @@
 
 #include <memory.h>
 
+#include "GraphicsEngine/Objects/GPU/Texture.h"
+
 #include "CommonUtilities/Json/JsonWrapper.h"
 
 #include "AssetPipeline/AssetRegistry/AssetRegistry.h"

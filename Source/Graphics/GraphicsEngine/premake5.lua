@@ -14,6 +14,7 @@ project "Graphics"
         "%{prj.location}",
         "%{wks.location}/Source/Graphics/",
         "%{wks.location}/Source/Utilities/",
+        "%{wks.location}/ThirdParty/Source",
         "%{wks.location}/Intermediate/GraphicsEngine/%{cfg.buildcfg}/PrecompiledShaders/"
     }
     
@@ -36,7 +37,13 @@ project "Graphics"
 
     links {
         "CommonUtilities",
-        "Logger"
+        "Logger",
+        
+        -- Third Party
+        "d3d11",
+        "dxguid",
+        "dxgi",
+        "d3dcompiler"
     }
 
     shadermodel "5.0"

@@ -26,6 +26,11 @@ project "Framework"
         "%{wks.location}/ThirdParty/Source/tracy/TracyClient.cpp" 
     }
     
+    links {
+        "CommonUtilities",
+        "Logger"
+    }
+
     filter "files:**/TracyClient.cpp"
         enablepch "Off"
         warnings "Off"

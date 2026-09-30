@@ -34,29 +34,12 @@ public:
 		return GetRegistry<T>().Get<T>(aOwner);
 	}
 
-	void RemoveAll(Actor* aOwner)
-	{
-		for (auto& [type, registry] : myRegistries)
-		{
-			registry->Remove(aOwner);
-		}
-	}
+	void RemoveAll(Actor* aOwner);
 
-	void Update(float aDeltaTime)
-	{
-		for (auto& [type, registry] : myRegistries)
-		{
-			registry->Update(aDeltaTime);
-		}
-	}
+	void Update(float aDeltaTime);
+	void Render();
 
-	void Render()
-	{
-		for (auto& [type, registry] : myRegistries)
-		{
-			registry->Render();
-		}
-	}
+	void Clear();
 
 private:
 	template<typename T>

@@ -32,6 +32,8 @@
 #include "Deferred_Ambient_PS.h"
 #include "FullTexture_VS.h"
 
+#include <tracy/core/Tracy.hpp>
+
 bool DeferredRenderPass::Initialize(RenderHardwareInterface& aRHI)
 {
 	// GBuffer
@@ -132,6 +134,8 @@ void DeferredRenderPass::Execute(
 	FrameTargets& aFrameTargets,
 	RenderContext& aContext)
 {
+	ZoneScopedN("Deferred Render Pass");
+
 	inoutCommandList.BeginEvent("Deffered Render");
 
 	inoutCommandList.BeginEvent("Clear GBuffer");

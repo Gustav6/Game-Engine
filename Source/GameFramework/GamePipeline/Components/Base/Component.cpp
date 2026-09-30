@@ -5,3 +5,8 @@ Component::Component(Actor* aOwner)
 {
 	myOwner = aOwner;
 }
+
+Actor* Component::GetOwner() const
+{
+	return myOwner;
+}

@@ -23,6 +23,8 @@
 
 #include "Core/RenderContext.h"
 
+#include <tracy/core/Tracy.hpp>
+
 ScreenSpaceEffectPass::ScreenSpaceEffectPass(RenderHardwareInterface& aRHI)
 {
 	// Tonemap PSO
@@ -82,6 +84,8 @@ void ScreenSpaceEffectPass::Execute(
 	RenderContext& aContext, 
 	Texture* aHDRTexture)
 {
+	ZoneScopedN("Screen Space Effects Pass");
+
 	inoutCommandList.BeginEvent("Screen Space Effects");
 
 	inoutCommandList.BeginEvent("Bloom Pass");
