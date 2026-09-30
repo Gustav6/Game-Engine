@@ -2,9 +2,9 @@
   "Name": "SMColorCheckerMaterial",
   "MasterMaterial": "BaseMaterial",
   "Textures": {
-    "AlbedoTexture": "T_Color_Checker_C",
-    "NormalTexture": "T_Color_Checker_N",
-    "MaterialTexture": "T_Color_Checker_M"
+    "AlbedoTexture": "T_Color_Checker_c",
+    "NormalTexture": "T_Color_Checker_n",
+    "MaterialTexture": "T_Color_Checker_orm"
   },
   "Shader": {
     "Parameters": {

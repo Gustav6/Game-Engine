@@ -16,6 +16,7 @@
 #include "AssetPipeline/Assets/Types/TextureAsset.h"
 #include "AssetPipeline/Assets/Types/FontAsset.h"
 #include "AssetPipeline/Assets/Types/SpriteAsset.h"
+#include "AssetPipeline/Assets/Types/UnrealSceneAsset.h"
 
 #include "GamePipeline/Components/Rendering/MeshComponent.h"
 #include "GamePipeline/Components/Rendering/AnimationComponent.h"
@@ -136,8 +137,7 @@ bool Game::Initialize(SIZE aWindowSize, WNDPROC aWindowProcess, LPCWSTR aWindowT
 
 		std::unique_ptr<Texture> environmentTexture = std::make_unique<Texture>();
 
-		GE.CreateTexture(workingDirectory / "Textures" / "Environment Map" / "T_Shipyard.dds", *environmentTexture);
-		GE.SetEnvironmentTexture(std::move(environmentTexture));
+		GE.SetEnvironmentTexture(AssetRegistry::Get().GetAsset<TextureAsset>("T_Shipyard_cm")->GetTexture());
 
 		myGraphicsCommandList = std::make_unique<GraphicsCommandList>();
 
@@ -226,6 +226,8 @@ int Game::Run()
 
 void Game::LoadScene()
 {
+	AssetRegistry::Get().GetAsset<UnrealSceneAsset>("LVL_DioramaBlockout_Level");
+
 	{
 		GameCamera& gameCamera = GameCamera::GetInstance();
 		gameCamera.Init(90.0f, 1.0f, 10000.0f, GraphicsEngine::Get().GetClientSize());
@@ -400,17 +402,17 @@ void Game::LoadScene()
 		myFpsCounter = GameWorld::Get().AddActor(std::move(object));
 	}
 
-	/*{
+	{
 		std::unique_ptr<Actor> object = std::make_unique<Actor>();
 
-		SpriteComponent& sprite = object->AddComponent<SpriteComponent>();
+		SpriteComponent* sprite = object->AddComponent<SpriteComponent>();
 
-		sprite.SetSprite(AssetRegistry::Get().GetAsset<SpriteAsset>("ShrekSprite"));
-		sprite.SetSize({ 512, 512 });
-		sprite.SetPosition({ 512, 512 });
+		sprite->SetSprite(AssetRegistry::Get().GetAsset<SpriteAsset>("ShrekSprite"));
+		sprite->SetSize({ 512, 512 });
+		sprite->SetPosition({ 512, 512 });
 
 		GameWorld::Get().AddActor(std::move(object));
-	}*/
+	}
 }
 
 void Game::UpdateScene(float aDeltaTime)

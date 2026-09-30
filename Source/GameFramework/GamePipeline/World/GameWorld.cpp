@@ -21,6 +21,7 @@ void GameWorld::Update(float aDeltaTime)
 		actor->Update(aDeltaTime);
 	}
 
+
 	// TODO: Run "destroy loop" only if any object has been marked as destroyed this frame.
 }
 

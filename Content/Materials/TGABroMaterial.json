@@ -2,9 +2,9 @@
   "Name": "TGABroMaterial",
   "MasterMaterial": "ChestMaterial",
   "Textures": {
-    "AlbedoTexture": "T_TGA_Bro_C",
-    "NormalTexture": "T_TGA_Bro_N",
-    "MaterialTexture": "T_TGA_Bro_M"
+    "AlbedoTexture": "T_TGA_Bro_c",
+    "NormalTexture": "T_TGA_Bro_n",
+    "MaterialTexture": "T_TGA_Bro_orm"
   },
   "Shader": {
     "Parameters": {

@@ -11,6 +11,7 @@
 
 #include "Textures/Albedo/Default_C.h"
 #include "Textures/Normal/Default_N.h"
+#include "Textures/Effects Map/Default_FX.h"
 
 bool BuiltinAssets::Initialize(GraphicsEngine& aGraphicsEngine, RenderHardwareInterface& aRHI, const std::filesystem::path& aShaderRoot)
 {
@@ -96,6 +97,19 @@ bool BuiltinAssets::Initialize(GraphicsEngine& aGraphicsEngine, RenderHardwareIn
 		myDefaultMaterial->SetTexture(1, myDefaultNormalTexture);
 	}
 
+	// Normal Texture
+	{
+		myDefaultEmissionTexture = std::make_shared<Texture>();
+
+		if (!aRHI.CreateTexture("Default Emission", BuiltIn_Default_FX_ByteCode, sizeof(BuiltIn_Default_FX_ByteCode), *myDefaultEmissionTexture))
+		{
+			GELOG(Error, "Failed to create default Emission texture!");
+			return false;
+		}
+
+		myDefaultMaterial->SetTexture(3, myDefaultEmissionTexture);
+	}
+
 	return true;
 }
 
@@ -122,4 +136,9 @@ const Texture& BuiltinAssets::GetDefaultAlbedoTexture() const
 const Texture& BuiltinAssets::GetDefaultNormalTexture() const
 {
 	return *myDefaultNormalTexture;
+}
+
+const Texture& BuiltinAssets::GetDefaultEmissionTexture() const
+{
+	return *myDefaultEmissionTexture;
 }

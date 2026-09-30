@@ -36,7 +36,7 @@ struct VStoPS
     float3 BiNormal : BINORMAL;
 };
 
-struct FullTextureVertex
+struct FullscreenVertex
 {
     float4 Position : SV_POSITION;
     float2 UV : UV0;

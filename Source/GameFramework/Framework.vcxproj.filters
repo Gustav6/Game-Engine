@@ -75,6 +75,9 @@
     <ClInclude Include="AssetPipeline\Assets\Types\TextureAsset.h">
       <Filter>AssetPipeline\Assets\Types</Filter>
     </ClInclude>
+    <ClInclude Include="AssetPipeline\Assets\Types\UnrealSceneAsset.h">
+      <Filter>AssetPipeline\Assets\Types</Filter>
+    </ClInclude>
     <ClInclude Include="GameFramework.pch.h" />
     <ClInclude Include="GamePipeline\Components\Base\Component.h">
       <Filter>GamePipeline\Components\Base</Filter>
@@ -145,6 +148,9 @@
       <Filter>AssetPipeline\Assets\Types</Filter>
     </ClCompile>
     <ClCompile Include="AssetPipeline\Assets\Types\TextureAsset.cpp">
+      <Filter>AssetPipeline\Assets\Types</Filter>
+    </ClCompile>
+    <ClCompile Include="AssetPipeline\Assets\Types\UnrealSceneAsset.cpp">
       <Filter>AssetPipeline\Assets\Types</Filter>
     </ClCompile>
     <ClCompile Include="GameFramework.pch.cpp" />

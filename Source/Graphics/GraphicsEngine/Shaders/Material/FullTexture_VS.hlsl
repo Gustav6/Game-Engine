@@ -6,7 +6,7 @@
 // 4 times , creating a quad of 2 triangles covering
 // 100% of what ever texture we are rendering to.
 
-FullTextureVertex main(uint aVertexIndex : SV_VertexID)
+FullscreenVertex main(uint aVertexIndex : SV_VertexID)
 {
     const float4 pos[4] =
     {
@@ -24,7 +24,7 @@ FullTextureVertex main(uint aVertexIndex : SV_VertexID)
         float2(1.0f, 0.0f),
     };
     
-    FullTextureVertex returnValue;
+    FullscreenVertex returnValue;
     
     returnValue.Position = pos[aVertexIndex];
     returnValue.UV = uv[aVertexIndex];

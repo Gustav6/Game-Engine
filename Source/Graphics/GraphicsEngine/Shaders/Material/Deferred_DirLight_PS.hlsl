@@ -10,7 +10,7 @@ Texture2D GBufferMaterial : register(t2);
 Texture2D GBufferEmission : register(t3);
 Texture2D GBufferWorldPosition : register(t4);
 
-float4 main(FullTextureVertex aInput) : SV_TARGET
+float4 main(FullscreenVertex aInput) : SV_TARGET
 {
     const float4 albedoPixel = GBufferAlbedo.Sample(TrilinearClamp, aInput.UV);
     

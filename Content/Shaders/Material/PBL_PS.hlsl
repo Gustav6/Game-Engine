@@ -8,19 +8,21 @@
 Texture2D AlbedoTexture : register(t0);
 Texture2D NormalTexture : register(t1);
 Texture2D MaterialTexture : register(t2);
+Texture2D EmissionTexture : register(t3);
 
 float4 main(VStoPS aPixel) : SV_TARGET
 {
     const float4 albedoMap = AlbedoTexture.Sample(TrilinearWrap, aPixel.UV0);
-    const float2 normalMap = NormalTexture.Sample(TrilinearWrap, aPixel.UV0).rg;
-    const float3 materialMap = MaterialTexture.Sample(TrilinearWrap, aPixel.UV0).rgb;
-    
+    const float4 normalMap = NormalTexture.Sample(TrilinearWrap, aPixel.UV0);
+    const float4 materialMap = MaterialTexture.Sample(TrilinearWrap, aPixel.UV0);
+    const float4 emissionMap = EmissionTexture.Sample(TrilinearWrap, aPixel.UV0);
+
     if (albedoMap.a < 0.05f)
     {
         discard;
     }
     
-    float2 unpackedNormal = normalMap * 2.0 - 1.0;
+    float2 unpackedNormal = normalMap.xy * 2.0 - 1.0;
     
     float3 normal = normalize(float3(unpackedNormal, sqrt(saturate(1.0 - dot(unpackedNormal, unpackedNormal)))));
 
@@ -38,27 +40,24 @@ float4 main(VStoPS aPixel) : SV_TARGET
             break;
         case 1: // Rougness pass
             return float4(materialMap.g, materialMap.g, materialMap.g, 1.0f);
-            break;
         case 2: // Metalness pass
             return float4(materialMap.b, materialMap.b, materialMap.b, 1.0f);
-            break;
         case 3: // Ambient Occlusion texture pass
             return float4(materialMap.r, materialMap.r, materialMap.r, 1.0f);
-            break;
         case 4: // Ambient Occlusion screen space pass
             return float4(1.0f, 1.0f, 1.0f, 1.0f); // TODO : FIX
-            break;
         case 5: // Normals tangent space pass
-            return float4(normalMap, 0.0f, 1.0f);
-            break;
+            return float4(normalMap.xy, 0.0f, 1.0f);
         case 6: // Normals world space pass
             return float4(normal, 1.0f);
-            break;
         case 7: // Shadows pass
             return float4(1.0f, 1.0f, 1.0f, 1.0f); // TODO : FIX
+        default:
             break;
     }
     
+    float3 emission = emissionMap.r * albedoMap.rgb * 50;
+
     MaterialPixelParameters parameters;
     parameters.PixelColor = albedoMap;
     parameters.WorldPosition = aPixel.WorldPosition;
@@ -174,8 +173,12 @@ float4 main(VStoPS aPixel) : SV_TARGET
                 
                 break;
             }
+            default:
+                break;
         }
     }
+
+    radiance += emission;
    
     return float4(radiance, parameters.PixelColor.a);
 }

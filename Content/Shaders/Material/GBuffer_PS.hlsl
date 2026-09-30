@@ -5,14 +5,16 @@
 Texture2D AlbedoTexture : register(t0);
 Texture2D NormalTexture : register(t1);
 Texture2D MaterialTexture : register(t2);
+Texture2D EmissionTexture : register(t3);
 
 GBufferOutput main(VStoPS aPixel)
 {    
     const float4 albedoMap = AlbedoTexture.Sample(TrilinearWrap, aPixel.UV0);
-    const float2 normalMap = NormalTexture.Sample(TrilinearWrap, aPixel.UV0).rg;
-    const float3 materialMap = MaterialTexture.Sample(TrilinearWrap, aPixel.UV0).rgb;
+    const float4 normalMap = NormalTexture.Sample(TrilinearWrap, aPixel.UV0);
+    const float4 materialMap = MaterialTexture.Sample(TrilinearWrap, aPixel.UV0);
+    const float4 emissionMap = EmissionTexture.Sample(TrilinearWrap, aPixel.UV0);
     
-    float2 unpackedNormal = normalMap * 2.0 - 1.0;
+    float2 unpackedNormal = normalMap.xy * 2.0 - 1.0;
     
     float3 normal = normalize(float3(unpackedNormal, sqrt(saturate(1.0 - dot(unpackedNormal, unpackedNormal)))));
 
@@ -23,6 +25,8 @@ GBufferOutput main(VStoPS aPixel)
     );
     
     normal = normalize(mul(normal, TBN));
+    
+    float3 emission = emissionMap.r * albedoMap.rgb * 50;
     
     MaterialPixelParameters parameters;
     parameters.PixelColor = albedoMap;
@@ -55,7 +59,7 @@ GBufferOutput main(VStoPS aPixel)
             result.AlbedoTexture = float4(1.0f, 1.0f, 1.0f, 1.0f); // TODO : FIX
             break;
         case 5: // Normals tangent space pass
-            result.AlbedoTexture = float4(normalMap, 0.0f, 1.0f);
+            result.AlbedoTexture = float4(normalMap.xy, 0.0f, 1.0f);
             break;
         case 6: // Normals world space pass
             result.AlbedoTexture = float4(normal, 1.0f);
@@ -70,7 +74,7 @@ GBufferOutput main(VStoPS aPixel)
     
     result.NormalTexture = float4(parameters.Normal, 0);
     result.MaterialTexture = float4(parameters.Occlusion, parameters.Roughness, parameters.Metalness, 0);
-    result.Emission = float4(1, 1, 1, 0);
+    result.Emission = float4(emission, 0);
     result.WorldPosition = parameters.WorldPosition;
     
     return result;

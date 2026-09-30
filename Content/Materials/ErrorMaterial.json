@@ -6,8 +6,8 @@
     "BlendMode": 1
   },
   "Textures": {
-    "AlbedoTexture": "T_MISSING_C",
-    "NormalTexture": "T_MISSING_N",
-    "MaterialTexture": "T_MISSING_M"
+    "AlbedoTexture": "T_MISSING_c",
+    "NormalTexture": "T_MISSING_n",
+    "MaterialTexture": "T_MISSING_orm"
   }
 }

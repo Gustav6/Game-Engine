@@ -103,7 +103,7 @@ float2 IntegrateBRDF(float aNdotV, float aRoughness)
     return float2(a, b) / NUM_SAMPLES;
 }
 
-float2 main(FullTextureVertex input) : SV_TARGET
+float2 main(FullscreenVertex input) : SV_TARGET
 {
     float2 integratedBRDF = IntegrateBRDF(input.UV.x, input.UV.y);
     return integratedBRDF;

@@ -27,4 +27,7 @@ public:
 
 private:
 	std::unique_ptr<PipelineStateObject> myTonemapPSO;
+    std::unique_ptr<PipelineStateObject> mySceneLuminancePSO;
+
+    std::unique_ptr<Texture> mySceneLuminance;
 };

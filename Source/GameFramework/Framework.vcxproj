@@ -158,6 +158,7 @@
     <ClInclude Include="AssetPipeline\Assets\Types\MeshAsset.h" />
     <ClInclude Include="AssetPipeline\Assets\Types\SpriteAsset.h" />
     <ClInclude Include="AssetPipeline\Assets\Types\TextureAsset.h" />
+    <ClInclude Include="AssetPipeline\Assets\Types\UnrealSceneAsset.h" />
     <ClInclude Include="GameFramework.pch.h" />
     <ClInclude Include="GamePipeline\Components\Base\Component.h" />
     <ClInclude Include="GamePipeline\Components\Light\DirectionlLightComponent.h" />
@@ -187,6 +188,7 @@
     <ClCompile Include="AssetPipeline\Assets\Types\MeshAsset.cpp" />
     <ClCompile Include="AssetPipeline\Assets\Types\SpriteAsset.cpp" />
     <ClCompile Include="AssetPipeline\Assets\Types\TextureAsset.cpp" />
+    <ClCompile Include="AssetPipeline\Assets\Types\UnrealSceneAsset.cpp" />
     <ClCompile Include="GameFramework.pch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>

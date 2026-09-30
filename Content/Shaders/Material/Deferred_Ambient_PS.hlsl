@@ -8,7 +8,7 @@ Texture2D GBufferMaterial : register(t2);
 Texture2D GBufferEmission : register(t3);
 Texture2D GBufferWorldPosition : register(t4);
 
-float4 main(FullTextureVertex aInput) : SV_TARGET
+float4 main(FullscreenVertex aInput) : SV_TARGET
 {
     const float4 albedoPixel = GBufferAlbedo.Sample(TrilinearClamp, aInput.UV);
     
@@ -27,6 +27,7 @@ float4 main(FullTextureVertex aInput) : SV_TARGET
     const float4 normalPixel = GBufferNormal.Sample(TrilinearClamp, aInput.UV);
     const float4 materialPixel = GBufferMaterial.Sample(TrilinearClamp, aInput.UV);
     const float4 worldPositionPixel = GBufferWorldPosition.Sample(TrilinearClamp, aInput.UV);
+    const float4 emissionPixel = GBufferEmission.Sample(TrilinearClamp, aInput.UV);
     
     float occlusion = materialPixel.r;
     float roughness = materialPixel.g;
@@ -38,6 +39,8 @@ float4 main(FullTextureVertex aInput) : SV_TARGET
     const float3 specularColor = lerp((float3) 0.04f, albedoPixel.rgb, metalness);
     const float3 diffuseColor = lerp((float3) 0.00f, albedoPixel.rgb, 1 - metalness);
     const float3 pixelView = normalize(FB_CameraPosition - worldPositionPixel.xyz);
+
+    const float3 emission = emissionPixel.rgb;
     
     const int envNumMips = GetNumMips(EnvCubeTexture) - 1;
   
@@ -50,6 +53,8 @@ float4 main(FullTextureVertex aInput) : SV_TARGET
 		roughness, 
 		occlusion
 	);
-              
+         
+    radiance += emission;
+
     return float4(radiance, 1);
 }

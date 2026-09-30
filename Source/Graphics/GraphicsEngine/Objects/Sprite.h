@@ -9,8 +9,6 @@
 
 struct SpriteSharedData
 {
-	//SpriteAtlasRegion AtlasRegion;
-	
 	std::string Name;
 	Texture Texture;
 };

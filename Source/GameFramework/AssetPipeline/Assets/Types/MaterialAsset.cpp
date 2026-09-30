@@ -54,10 +54,30 @@ bool MaterialAsset::Load(const std::filesystem::path& aPath)
         return false;
     }
 
-    myTextureAssets.clear();
-    myTextureAssets.push_back(AssetRegistry::Get().GetAsset<TextureAsset>(textureSettings.GetString("AlbedoTexture")));
-    myTextureAssets.push_back(AssetRegistry::Get().GetAsset<TextureAsset>(textureSettings.GetString("NormalTexture")));
-    myTextureAssets.push_back(AssetRegistry::Get().GetAsset<TextureAsset>(textureSettings.GetString("MaterialTexture")));
+    myTextureAssets = 
+    {
+	    nullptr,
+        nullptr,
+        nullptr,
+        nullptr
+    };
+
+    if (textureSettings.HasKey("AlbedoTexture"))
+    {
+        myTextureAssets[0] = (AssetRegistry::Get().GetAsset<TextureAsset>(textureSettings.GetString("AlbedoTexture")));
+    }
+    if (textureSettings.HasKey("NormalTexture"))
+    {
+        myTextureAssets[1] = (AssetRegistry::Get().GetAsset<TextureAsset>(textureSettings.GetString("NormalTexture")));
+    }
+    if (textureSettings.HasKey("MaterialTexture"))
+    {
+        myTextureAssets[2] = (AssetRegistry::Get().GetAsset<TextureAsset>(textureSettings.GetString("MaterialTexture")));
+    }
+    if (textureSettings.HasKey("EmissionTexture"))
+    {
+        myTextureAssets[3] = (AssetRegistry::Get().GetAsset<TextureAsset>(textureSettings.GetString("EmissionTexture")));
+    }
 
     if (materialData.HasKey("MasterMaterial"))
     {
@@ -124,9 +144,22 @@ bool MaterialAsset::Load(const std::filesystem::path& aPath)
         myMaterial = std::move(material);
     }
 
-    myMaterial->SetTexture(0, myTextureAssets[0]->GetTexture());
-    myMaterial->SetTexture(1, myTextureAssets[1]->GetTexture());
-    myMaterial->SetTexture(2, myTextureAssets[2]->GetTexture());
+    if (myTextureAssets[0] != nullptr)
+    {
+        myMaterial->SetTexture(0, myTextureAssets[0]->GetTexture());
+    }
+    if (myTextureAssets[1] != nullptr)
+    {
+        myMaterial->SetTexture(1, myTextureAssets[1]->GetTexture());
+    }
+    if (myTextureAssets[2] != nullptr)
+    {
+        myMaterial->SetTexture(2, myTextureAssets[2]->GetTexture());
+    }
+    if (myTextureAssets[3] != nullptr)
+    {
+        myMaterial->SetTexture(3, myTextureAssets[3]->GetTexture());
+    }
 
     return true;
 }

@@ -55,6 +55,9 @@
     <Filter Include="Resources\Textures\Albedo">
       <UniqueIdentifier>{4978079B-B53A-3B25-FEEA-C9B16AEC1303}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resources\Textures\Effects Map">
+      <UniqueIdentifier>{20B1C3C2-0CD7-8D29-F51C-13F5E1E1B2F5}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Resources\Textures\Normal">
       <UniqueIdentifier>{ABB999B9-177C-CD43-602C-5CD0CC2DA621}</UniqueIdentifier>
     </Filter>
@@ -233,6 +236,9 @@
     <ClInclude Include="Resources\Textures\Albedo\Default_C.h">
       <Filter>Resources\Textures\Albedo</Filter>
     </ClInclude>
+    <ClInclude Include="Resources\Textures\Effects Map\Default_FX.h">
+      <Filter>Resources\Textures\Effects Map</Filter>
+    </ClInclude>
     <ClInclude Include="Resources\Textures\Normal\Default_N.h">
       <Filter>Resources\Textures\Normal</Filter>
     </ClInclude>
@@ -404,6 +410,12 @@
     <FxCompile Include="Shaders\Material\PBL_PS.hlsl">
       <Filter>Shaders\Material</Filter>
     </FxCompile>
+    <FxCompile Include="Shaders\Material\Resample_PS.hlsl">
+      <Filter>Shaders\Material</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Material\SceneLuminance_PS.hlsl">
+      <Filter>Shaders\Material</Filter>
+    </FxCompile>
     <FxCompile Include="Shaders\Material\ShadowCube_GS.hlsl">
       <Filter>Shaders\Material</Filter>
     </FxCompile>
@@ -425,6 +437,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\Material\Include\Common.hlsli">
+      <Filter>Shaders\Material\Include</Filter>
+    </None>
+    <None Include="Shaders\Material\Include\GaussianBlur_Functions.hlsli">
       <Filter>Shaders\Material\Include</Filter>
     </None>
     <None Include="Shaders\Material\Include\LUTFunctions.hlsli">

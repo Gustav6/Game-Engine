@@ -4,7 +4,7 @@
 
 Texture2D HDRBuffer: register(t0);
 
-float4 main(FullTextureVertex aPixel) : SV_TARGET
+float4 main(FullscreenVertex aPixel) : SV_TARGET
 {
     const float4 radiance = HDRBuffer.Sample(TrilinearClamp, aPixel.UV);
     

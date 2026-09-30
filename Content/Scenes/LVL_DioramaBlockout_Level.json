@@ -1,20 +1,59 @@
 {
+	"MasterMaterials": [
+		{
+			"Name": "MatineeCam_mat",
+			"Domain": 0,
+			"ShadingModel": 1,
+			"BlendMode": 0,
+			"Parameters": []
+		},
+		{
+			"Name": "M_Instance",
+			"Domain": 0,
+			"ShadingModel": 1,
+			"BlendMode": 0,
+			"Parameters": [
+				{
+					"Name": "Color",
+					"Type": 1,
+					"Value": [
+						0,
+						0,
+						0,
+						1
+					]
+				},
+				{
+					"Name": "Roughness",
+					"Type": 0,
+					"Value": 1
+				}
+			]
+		},
+		{
+			"Name": "WorldGridMaterial",
+			"Domain": 0,
+			"ShadingModel": 1,
+			"BlendMode": 0,
+			"Parameters": []
+		}
+	],
 	"Actors": [
 		{
 			"Name": "DirectionalLight",
 			"Archetype": "DirectionalLight",
 			"Transform": [
-				0.6387413344957884,
-				-0.11617802586728826,
-				-0.76059987767032844,
+				0.67637391591533413,
+				-0.35000215174264904,
+				-0.64808704634861547,
 				0,
-				-0.76013303566406543,
-				-0.24841989327276318,
-				-0.60040432586782944,
+				-0.68088591138984766,
+				0.038467028374452823,
+				-0.73137862506445928,
 				0,
-				-0.1191943511326358,
-				0.96166015428112528,
-				-0.24698680962430597,
+				0.28091407531214857,
+				0.93595876386465271,
+				-0.21229343946244658,
 				0,
 				0,
 				0,
@@ -55,6 +94,30 @@
 					"Intensity": 6
 				}
 			]
+		},
+		{
+			"Name": "SkyLight",
+			"Archetype": "SkyLight",
+			"Transform": [
+				1,
+				0,
+				0,
+				0,
+				0,
+				1,
+				0,
+				0,
+				0,
+				0,
+				1,
+				0,
+				0,
+				0,
+				600,
+				1
+			],
+			"Tags": [],
+			"Components": []
 		},
 		{
 			"Name": "PlayerStart",
@@ -108,81 +171,7 @@
 			]
 		},
 		{
-			"Name": "SM_NoCollision_Cube",
-			"Archetype": "StaticMeshActor",
-			"Transform": [
-				63,
-				0,
-				0,
-				0,
-				0,
-				63,
-				0,
-				0,
-				0,
-				0,
-				1,
-				0,
-				-3147.7761733092402,
-				-3150.1234116522942,
-				-105,
-				1
-			],
-			"Tags": [],
-			"Components": [
-				{
-					"Name": "StaticMeshComponent0",
-					"TypeID": 1,
-					"Parent": "",
-					"Tags": [],
-					"Transform": [
-						1,
-						0,
-						0,
-						0,
-						0,
-						1,
-						0,
-						0,
-						0,
-						0,
-						1,
-						0,
-						0,
-						0,
-						0,
-						1
-					],
-					"Mesh": "SM_NoCollision_Cube",
-					"ContentPath": "/Game/Static_Meshes/Test/SM_NoCollision_Cube.SM_NoCollision_Cube",
-					"Materials": [
-						{
-							"Name": "MI_BlockoutColor2",
-							"Parent": "M_Instance",
-							"Parameters": [
-								{
-									"Name": "Color",
-									"Type": 1,
-									"Value": [
-										0.039101999253034592,
-										0.041666999459266663,
-										0.03841099888086319,
-										1
-									]
-								},
-								{
-									"Name": "Roughness",
-									"Type": 0,
-									"Value": 1
-								}
-							]
-						}
-					]
-				}
-			]
-		},
-		{
-			"Name": "Landscape",
+			"Name": "Diorama_Landscape",
 			"Archetype": "Landscape",
 			"Transform": [
 				100,
@@ -295,9 +284,9 @@
 				-0,
 				0.5,
 				0,
-				471.98308302826047,
-				-605.49395531099447,
-				5.9663650065324987,
+				2475.5218031468385,
+				-5199.2734856969555,
+				-54.341013338620087,
 				1
 			],
 			"Tags": [],
@@ -327,450 +316,7 @@
 					],
 					"Mesh": "SM_TheCube",
 					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
-					"Materials": [
-						{
-							"Name": "MI_BlockoutColor3",
-							"Parent": "M_Instance",
-							"Parameters": [
-								{
-									"Name": "Color",
-									"Type": 1,
-									"Value": [
-										0.024438999593257904,
-										0.026041999459266663,
-										0.024007000029087067,
-										1
-									]
-								},
-								{
-									"Name": "Roughness",
-									"Type": 0,
-									"Value": 1
-								}
-							]
-						}
-					]
-				}
-			]
-		},
-		{
-			"Name": "SM_Character Reference",
-			"Archetype": "StaticMeshActor",
-			"Transform": [
-				0.59999999999999998,
-				0,
-				0,
-				0,
-				0,
-				0.59999999999999998,
-				0,
-				0,
-				0,
-				0,
-				1.8,
-				0,
-				-1360,
-				-1250,
-				0,
-				1
-			],
-			"Tags": [],
-			"Components": [
-				{
-					"Name": "StaticMeshComponent0",
-					"TypeID": 1,
-					"Parent": "",
-					"Tags": [],
-					"Transform": [
-						1,
-						0,
-						0,
-						0,
-						0,
-						1,
-						0,
-						0,
-						0,
-						0,
-						1,
-						0,
-						0,
-						0,
-						0,
-						1
-					],
-					"Mesh": "SM_TheCube",
-					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
-					"Materials": [
-						{
-							"Name": "MI_BlockoutColor3",
-							"Parent": "M_Instance",
-							"Parameters": [
-								{
-									"Name": "Color",
-									"Type": 1,
-									"Value": [
-										0.024438999593257904,
-										0.026041999459266663,
-										0.024007000029087067,
-										1
-									]
-								},
-								{
-									"Name": "Roughness",
-									"Type": 0,
-									"Value": 1
-								}
-							]
-						}
-					]
-				}
-			]
-		},
-		{
-			"Name": "SM_TheCube7",
-			"Archetype": "StaticMeshActor",
-			"Transform": [
-				0.76587143591339979,
-				0.64123646121442801,
-				0.047505204569019785,
-				0,
-				-0.62159428286648655,
-				0.75726087929924368,
-				-0.20044078474859967,
-				0,
-				-0.16450377247846132,
-				0.12398290806451312,
-				0.97855339524638163,
-				0,
-				356.14047648991692,
-				-375.42981918681113,
-				-23.176330185467894,
-				1
-			],
-			"Tags": [],
-			"Components": [
-				{
-					"Name": "StaticMeshComponent0",
-					"TypeID": 1,
-					"Parent": "",
-					"Tags": [],
-					"Transform": [
-						1,
-						0,
-						0,
-						0,
-						0,
-						1,
-						0,
-						0,
-						0,
-						0,
-						1,
-						0,
-						0,
-						0,
-						0,
-						1
-					],
-					"Mesh": "SM_TheCube",
-					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
-					"Materials": [
-						{
-							"Name": "MI_BlockoutColor3",
-							"Parent": "M_Instance",
-							"Parameters": [
-								{
-									"Name": "Color",
-									"Type": 1,
-									"Value": [
-										0.024438999593257904,
-										0.026041999459266663,
-										0.024007000029087067,
-										1
-									]
-								},
-								{
-									"Name": "Roughness",
-									"Type": 0,
-									"Value": 1
-								}
-							]
-						}
-					]
-				}
-			]
-		},
-		{
-			"Name": "SM_TheCube8",
-			"Archetype": "StaticMeshActor",
-			"Transform": [
-				0.9927547124370526,
-				-0.00032410867783717954,
-				-0.12015812867879501,
-				0,
-				0.0014752354593860063,
-				0.99995386867411939,
-				0.009491269883489948,
-				0,
-				0.1201495094220708,
-				-0.009599764436006946,
-				0.99270939348250797,
-				0,
-				365.97670092699184,
-				-373.71297746265736,
-				-22.627564918989467,
-				1
-			],
-			"Tags": [],
-			"Components": [
-				{
-					"Name": "StaticMeshComponent0",
-					"TypeID": 1,
-					"Parent": "",
-					"Tags": [],
-					"Transform": [
-						1,
-						0,
-						0,
-						0,
-						0,
-						1,
-						0,
-						0,
-						0,
-						0,
-						1,
-						0,
-						0,
-						0,
-						0,
-						1
-					],
-					"Mesh": "SM_TheCube",
-					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
-					"Materials": [
-						{
-							"Name": "MI_BlockoutColor3",
-							"Parent": "M_Instance",
-							"Parameters": [
-								{
-									"Name": "Color",
-									"Type": 1,
-									"Value": [
-										0.024438999593257904,
-										0.026041999459266663,
-										0.024007000029087067,
-										1
-									]
-								},
-								{
-									"Name": "Roughness",
-									"Type": 0,
-									"Value": 1
-								}
-							]
-						}
-					]
-				}
-			]
-		},
-		{
-			"Name": "SM_TheCube9",
-			"Archetype": "StaticMeshActor",
-			"Transform": [
-				1.0081100017004274,
-				-2.8231694565300138,
-				0.11588116407594423,
-				0,
-				0.9401472405931689,
-				0.33761152577639753,
-				0.046277680019462378,
-				0,
-				-0.056590849787480024,
-				0.020764121519870362,
-				0.99818151003604494,
-				0,
-				513.08641330799742,
-				-344.81287147851208,
-				-2.9981029113563946,
-				1
-			],
-			"Tags": [],
-			"Components": [
-				{
-					"Name": "StaticMeshComponent0",
-					"TypeID": 1,
-					"Parent": "",
-					"Tags": [],
-					"Transform": [
-						1,
-						0,
-						0,
-						0,
-						0,
-						1,
-						0,
-						0,
-						0,
-						0,
-						1,
-						0,
-						0,
-						0,
-						0,
-						1
-					],
-					"Mesh": "SM_TheCube",
-					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
-					"Materials": [
-						{
-							"Name": "MI_BlockoutColor3",
-							"Parent": "M_Instance",
-							"Parameters": [
-								{
-									"Name": "Color",
-									"Type": 1,
-									"Value": [
-										0.024438999593257904,
-										0.026041999459266663,
-										0.024007000029087067,
-										1
-									]
-								},
-								{
-									"Name": "Roughness",
-									"Type": 0,
-									"Value": 1
-								}
-							]
-						}
-					]
-				}
-			]
-		},
-		{
-			"Name": "SM_TheCube10",
-			"Archetype": "StaticMeshActor",
-			"Transform": [
-				1.4538894128610396,
-				1.7165438779596673,
-				0.046719270218700787,
-				0,
-				-0.76108990024034151,
-				0.6461730723369683,
-				-0.056590850309482771,
-				0,
-				-0.056590849787481558,
-				0.020764121519870379,
-				0.99818151003604483,
-				0,
-				557.97495047750363,
-				-841.82810735767998,
-				9.8856913332370393,
-				1
-			],
-			"Tags": [],
-			"Components": [
-				{
-					"Name": "StaticMeshComponent0",
-					"TypeID": 1,
-					"Parent": "",
-					"Tags": [],
-					"Transform": [
-						1,
-						0,
-						0,
-						0,
-						0,
-						1,
-						0,
-						0,
-						0,
-						0,
-						1,
-						0,
-						0,
-						0,
-						0,
-						1
-					],
-					"Mesh": "SM_TheCube",
-					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
-					"Materials": [
-						{
-							"Name": "MI_BlockoutColor3",
-							"Parent": "M_Instance",
-							"Parameters": [
-								{
-									"Name": "Color",
-									"Type": 1,
-									"Value": [
-										0.024438999593257904,
-										0.026041999459266663,
-										0.024007000029087067,
-										1
-									]
-								},
-								{
-									"Name": "Roughness",
-									"Type": 0,
-									"Value": 1
-								}
-							]
-						}
-					]
-				}
-			]
-		},
-		{
-			"Name": "SM_TheCube12",
-			"Archetype": "StaticMeshActor",
-			"Transform": [
-				0.97397783087827461,
-				-0.0035878766376056265,
-				0.22661489822799472,
-				0,
-				0.0014752368082543781,
-				0.99995386867133984,
-				0.0094912699666811658,
-				0,
-				-0.22663849768741992,
-				-0.0089099758952634785,
-				0.97393819295452988,
-				0,
-				479.85729279669658,
-				-373.78529071866518,
-				-32.709574276942369,
-				1
-			],
-			"Tags": [],
-			"Components": [
-				{
-					"Name": "StaticMeshComponent0",
-					"TypeID": 1,
-					"Parent": "",
-					"Tags": [],
-					"Transform": [
-						1,
-						0,
-						0,
-						0,
-						0,
-						1,
-						0,
-						0,
-						0,
-						0,
-						1,
-						0,
-						0,
-						0,
-						0,
-						1
-					],
-					"Mesh": "SM_TheCube",
-					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
+					"AssetImportPath": "",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -813,9 +359,9 @@
 				0.25651511168181607,
 				1.4095389325363237,
 				0,
-				1002.9681348449783,
-				-1146.9073113764337,
-				-789.33653638796011,
+				3006.5068549635562,
+				-5740.6868417623946,
+				150.35608526688736,
 				1
 			],
 			"Tags": [],
@@ -845,6 +391,7 @@
 					],
 					"Mesh": "SM_TheCube",
 					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
+					"AssetImportPath": "",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -887,9 +434,9 @@
 				0.70273029446878987,
 				-0.75785416895790925,
 				0,
-				909.69030491260469,
-				-1044.7656609590267,
-				-725.47740781266918,
+				2913.2290250311826,
+				-5638.545191344987,
+				214.21521384217829,
 				1
 			],
 			"Tags": [],
@@ -919,6 +466,7 @@
 					],
 					"Mesh": "SM_TheCube",
 					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
+					"AssetImportPath": "",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -961,9 +509,9 @@
 				-1.0050770947441743,
 				-0.80843596817460761,
 				0,
-				650.23476674396534,
-				-1020.3874862044764,
-				-855.41263478939288,
+				2653.773486862543,
+				-5614.167016590437,
+				84.279986865454589,
 				1
 			],
 			"Tags": [],
@@ -993,6 +541,7 @@
 					],
 					"Mesh": "SM_TheCube",
 					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
+					"AssetImportPath": "",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -1035,9 +584,9 @@
 				-2.6007562931414836,
 				-0.88383292788199852,
 				0,
-				886.467094828379,
-				-1023.2365467999487,
-				-706.68355499999996,
+				2890.0058149469569,
+				-5617.0160771859091,
+				233.00906665484752,
 				1
 			],
 			"Tags": [],
@@ -1067,6 +616,7 @@
 					],
 					"Mesh": "SM_TheCube",
 					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
+					"AssetImportPath": "",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -1109,9 +659,9 @@
 				-1.6413437397379202,
 				-1.9917089648049029,
 				0,
-				868.73653649237849,
-				-1274.2890924696562,
-				-783.48509727902626,
+				2872.2752566109566,
+				-5868.0686228556169,
+				156.20752437582121,
 				1
 			],
 			"Tags": [],
@@ -1141,6 +691,7 @@
 					],
 					"Mesh": "SM_TheCube",
 					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
+					"AssetImportPath": "",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -1183,9 +734,9 @@
 				8.5457706722534758e-10,
 				1.2499999999999998,
 				0,
-				912.64638271503577,
-				-1115.7543861036179,
-				-752.24345286334608,
+				2916.1851028336132,
+				-5709.5339164895786,
+				187.44916879150139,
 				1
 			],
 			"Tags": [],
@@ -1215,6 +766,7 @@
 					],
 					"Mesh": "SM_TheCube",
 					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
+					"AssetImportPath": "",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -1257,9 +809,9 @@
 				0.15194215887324583,
 				1.7234135681833918,
 				0,
-				912.64638298829027,
-				-1115.7543859931632,
-				-632.24345299999948,
+				2916.1851031068682,
+				-5709.5339163791241,
+				307.44916865484799,
 				1
 			],
 			"Tags": [],
@@ -1289,6 +841,7 @@
 					],
 					"Mesh": "SM_TheCube",
 					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
+					"AssetImportPath": "",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -1331,9 +884,9 @@
 				-1.7696659028429762,
 				-0.19523664092560811,
 				0,
-				950.52750561914695,
-				-1044.7266392078795,
-				-689.30652137311915,
+				2954.0662257377244,
+				-5638.5061695938402,
+				250.38610028172832,
 				1
 			],
 			"Tags": [],
@@ -1363,6 +916,7 @@
 					],
 					"Mesh": "SM_TheCube",
 					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
+					"AssetImportPath": "",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -1405,9 +959,9 @@
 				0.15194216005177349,
 				1.7234135677713636,
 				0,
-				878.03145294575165,
-				-1084.2224405096035,
-				-487.99525359915276,
+				2881.5701730643295,
+				-5678.0019708955642,
+				451.69736805569443,
 				1
 			],
 			"Tags": [],
@@ -1437,6 +991,7 @@
 					],
 					"Mesh": "SM_TheCube",
 					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
+					"AssetImportPath": "",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -1479,9 +1034,9 @@
 				-1.9707459503249121,
 				-1.4988651560930129,
 				0,
-				1015.1609841136431,
-				-1211.1580849526622,
-				-712.99075528017045,
+				3018.6997042322209,
+				-5804.9376153386229,
+				226.70186637467702,
 				1
 			],
 			"Tags": [],
@@ -1511,6 +1066,7 @@
 					],
 					"Mesh": "SM_TheCube",
 					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
+					"AssetImportPath": "",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -1553,9 +1109,9 @@
 				0.14017361113797686,
 				1.4907906360578709,
 				0,
-				597.12672953299193,
-				-3.6863325775808562,
-				-828.56242964234514,
+				2600.6654496515703,
+				-4597.4658629635414,
+				111.13019201250233,
 				1
 			],
 			"Tags": [],
@@ -1585,6 +1141,7 @@
 					],
 					"Mesh": "SM_TheCube",
 					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
+					"AssetImportPath": "",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -1627,9 +1184,9 @@
 				2.5725549753955561,
 				-0.18502567674936171,
 				0,
-				608.27258753263982,
-				77.730464889629161,
-				-754.76635619074602,
+				2611.8113076512182,
+				-4516.0490654963314,
+				184.92626546410145,
 				1
 			],
 			"Tags": [],
@@ -1659,6 +1216,7 @@
 					],
 					"Mesh": "SM_TheCube",
 					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
+					"AssetImportPath": "",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -1701,9 +1259,9 @@
 				-0.96861202918361677,
 				-0.70780750489024524,
 				0,
-				608.27258753263982,
-				77.730464889629047,
-				-734.76635619074557,
+				2611.8113076512182,
+				-4516.0490654963314,
+				204.9262654641019,
 				1
 			],
 			"Tags": [],
@@ -1733,6 +1291,7 @@
 					],
 					"Mesh": "SM_TheCube",
 					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
+					"AssetImportPath": "",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -1775,9 +1334,9 @@
 				-1.8466932830498735,
 				-0.55539286824308753,
 				0,
-				643.34414824959663,
-				42.233927719010694,
-				-691.60700104269733,
+				2646.882868368175,
+				-4551.5456026669499,
+				248.08562061215014,
 				1
 			],
 			"Tags": [],
@@ -1807,6 +1366,7 @@
 					],
 					"Mesh": "SM_TheCube",
 					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
+					"AssetImportPath": "",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -1849,9 +1409,9 @@
 				2.3715743097753572,
 				-0.30396249900413136,
 				0,
-				608.27258753263936,
-				77.730464889629161,
-				-694.76635619074602,
+				2611.8113076512172,
+				-4516.0490654963314,
+				244.92626546410145,
 				1
 			],
 			"Tags": [],
@@ -1881,6 +1441,7 @@
 					],
 					"Mesh": "SM_TheCube",
 					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
+					"AssetImportPath": "",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -1923,9 +1484,9 @@
 				-0.69615285632146684,
 				-1.910252001949412,
 				0,
-				577.10972141356706,
-				-117.18182130286186,
-				-742.9633570436057,
+				2580.6484415321447,
+				-4710.9613516888221,
+				196.72926461124177,
 				1
 			],
 			"Tags": [],
@@ -1955,6 +1516,7 @@
 					],
 					"Mesh": "SM_TheCube",
 					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
+					"AssetImportPath": "",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -1997,9 +1559,9 @@
 				0.44749418396701834,
 				-2.2319325795523834,
 				0,
-				368.57320035422799,
-				-13.561103280331736,
-				-793.50547038661932,
+				2372.1119204728057,
+				-4607.340633666292,
+				146.18715126822815,
 				1
 			],
 			"Tags": [],
@@ -2029,6 +1591,7 @@
 					],
 					"Mesh": "SM_TheCube",
 					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
+					"AssetImportPath": "",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -2071,9 +1634,9 @@
 				-0.17085649595464597,
 				-1.9213067061424236,
 				0,
-				528.47865665845688,
-				292.88960765058391,
-				-760.24123171357121,
+				2532.0173767770348,
+				-4300.8899227353768,
+				179.45138994127626,
 				1
 			],
 			"Tags": [],
@@ -2103,6 +1666,7 @@
 					],
 					"Mesh": "SM_TheCube",
 					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
+					"AssetImportPath": "",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -2145,9 +1709,9 @@
 				0.14915234806009542,
 				1.7311469238060639,
 				0,
-				597.68341627888094,
-				17.01985390196694,
-				-597.57708332080199,
+				2601.2221363974586,
+				-4576.7596764839936,
+				342.11553833404548,
 				1
 			],
 			"Tags": [],
@@ -2177,6 +1741,7 @@
 					],
 					"Mesh": "SM_TheCube",
 					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
+					"AssetImportPath": "",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -2219,9 +1784,9 @@
 				-0.10351911890892988,
 				1.2285352399621112,
 				0,
-				577.89601303847371,
-				26.957689394182921,
-				-715.51646648981921,
+				2581.4347331570516,
+				-4566.8218409917772,
+				224.17615516502826,
 				1
 			],
 			"Tags": [],
@@ -2251,6 +1816,7 @@
 					],
 					"Mesh": "SM_TheCube",
 					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
+					"AssetImportPath": "",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -2293,9 +1859,9 @@
 				-0.15372411750311468,
 				1.7307469458106595,
 				0,
-				619.5866138151307,
-				51.667019050762747,
-				-451.56398886565546,
+				2623.125333933709,
+				-4542.1125113351973,
+				488.12863278919173,
 				1
 			],
 			"Tags": [],
@@ -2325,6 +1891,7 @@
 					],
 					"Mesh": "SM_TheCube",
 					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
+					"AssetImportPath": "",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -2367,9 +1934,9 @@
 				0.4269072601369005,
 				-1.1459973948865532,
 				0,
-				250.74715355804642,
-				20.611180607862789,
-				-963.94395688862028,
+				2254.2858736766248,
+				-4573.1683497780978,
+				-24.251335233772807,
 				1
 			],
 			"Tags": [],
@@ -2399,228 +1966,7 @@
 					],
 					"Mesh": "SM_TheCube",
 					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
-					"Materials": [
-						{
-							"Name": "MI_BlockoutColor3",
-							"Parent": "M_Instance",
-							"Parameters": [
-								{
-									"Name": "Color",
-									"Type": 1,
-									"Value": [
-										0.024438999593257904,
-										0.026041999459266663,
-										0.024007000029087067,
-										1
-									]
-								},
-								{
-									"Name": "Roughness",
-									"Type": 0,
-									"Value": 1
-								}
-							]
-						}
-					]
-				}
-			]
-		},
-		{
-			"Name": "SM_TheCube37",
-			"Archetype": "StaticMeshActor",
-			"Transform": [
-				-0.64537991416092777,
-				-0.75963070827794932,
-				-0.080286695278696737,
-				0,
-				1.4550550213464268,
-				-1.2866150085703465,
-				0.47690324445958232,
-				0,
-				-0.23278420825148488,
-				0.095481107929907549,
-				0.96782998011903243,
-				0,
-				542.9196961772958,
-				-1334.3991554490412,
-				-55.614401998768791,
-				1
-			],
-			"Tags": [],
-			"Components": [
-				{
-					"Name": "StaticMeshComponent0",
-					"TypeID": 1,
-					"Parent": "",
-					"Tags": [],
-					"Transform": [
-						1,
-						0,
-						0,
-						0,
-						0,
-						1,
-						0,
-						0,
-						0,
-						0,
-						1,
-						0,
-						0,
-						0,
-						0,
-						1
-					],
-					"Mesh": "SM_TheCube",
-					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
-					"Materials": [
-						{
-							"Name": "MI_BlockoutColor3",
-							"Parent": "M_Instance",
-							"Parameters": [
-								{
-									"Name": "Color",
-									"Type": 1,
-									"Value": [
-										0.024438999593257904,
-										0.026041999459266663,
-										0.024007000029087067,
-										1
-									]
-								},
-								{
-									"Name": "Roughness",
-									"Type": 0,
-									"Value": 1
-								}
-							]
-						}
-					]
-				}
-			]
-		},
-		{
-			"Name": "SM_TheCube39",
-			"Archetype": "StaticMeshActor",
-			"Transform": [
-				-0.98091389359098091,
-				-0.16402544675023856,
-				-0.10442023835716069,
-				0,
-				0.17974041526911766,
-				-1.3992946607527057,
-				0.50957613318115147,
-				0,
-				-0.15313208993733152,
-				0.32072118124996218,
-				0.93471305058239873,
-				0,
-				552.05686772151785,
-				-1238.7531358743345,
-				-103.22711856999844,
-				1
-			],
-			"Tags": [],
-			"Components": [
-				{
-					"Name": "StaticMeshComponent0",
-					"TypeID": 1,
-					"Parent": "",
-					"Tags": [],
-					"Transform": [
-						1,
-						0,
-						0,
-						0,
-						0,
-						1,
-						0,
-						0,
-						0,
-						0,
-						1,
-						0,
-						0,
-						0,
-						0,
-						1
-					],
-					"Mesh": "SM_TheCube",
-					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
-					"Materials": [
-						{
-							"Name": "MI_BlockoutColor3",
-							"Parent": "M_Instance",
-							"Parameters": [
-								{
-									"Name": "Color",
-									"Type": 1,
-									"Value": [
-										0.024438999593257904,
-										0.026041999459266663,
-										0.024007000029087067,
-										1
-									]
-								},
-								{
-									"Name": "Roughness",
-									"Type": 0,
-									"Value": 1
-								}
-							]
-						}
-					]
-				}
-			]
-		},
-		{
-			"Name": "SM_TheCube40",
-			"Archetype": "StaticMeshActor",
-			"Transform": [
-				-0.64537991604301226,
-				-0.75963070744829475,
-				-0.080286687999432782,
-				0,
-				1.5265382399946781,
-				-1.2743355605473732,
-				-0.21389221808744069,
-				0,
-				0.030083457693599137,
-				-0.13030122057259103,
-				0.99101795013535976,
-				0,
-				664.26720436325024,
-				-1440.0979839073088,
-				-30.992254280357166,
-				1
-			],
-			"Tags": [],
-			"Components": [
-				{
-					"Name": "StaticMeshComponent0",
-					"TypeID": 1,
-					"Parent": "",
-					"Tags": [],
-					"Transform": [
-						1,
-						0,
-						0,
-						0,
-						0,
-						1,
-						0,
-						0,
-						0,
-						0,
-						1,
-						0,
-						0,
-						0,
-						0,
-						1
-					],
-					"Mesh": "SM_TheCube",
-					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
+					"AssetImportPath": "",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -2663,9 +2009,9 @@
 				0.52419907244132713,
 				-0.707807496671644,
 				0,
-				-1062.7410433997088,
-				-341.36393125280381,
-				-754.76635600000009,
+				940.7976767188693,
+				-4935.1434616387642,
+				184.92626565484738,
 				1
 			],
 			"Tags": [],
@@ -2695,6 +2041,7 @@
 					],
 					"Mesh": "SM_TheCube",
 					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
+					"AssetImportPath": "",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -2737,9 +2084,9 @@
 				-1.0117277457577785,
 				-1.9476563722534828,
 				0,
-				-810.83061576596288,
-				-293.08263627372901,
-				-813.50547000000006,
+				1192.7081043526152,
+				-4886.8621666596891,
+				126.18715165484741,
 				1
 			],
 			"Tags": [],
@@ -2769,6 +2116,7 @@
 					],
 					"Mesh": "SM_TheCube",
 					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
+					"AssetImportPath": "",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -2811,9 +2159,9 @@
 				1.7513014586689504,
 				-0.22150725619141509,
 				0,
-				-1083.5030331680043,
-				-320.26329538930867,
-				-741.31775105721704,
+				920.03568695057379,
+				-4914.0428257752692,
+				198.37487059763043,
 				1
 			],
 			"Tags": [],
@@ -2843,6 +2191,7 @@
 					],
 					"Mesh": "SM_TheCube",
 					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
+					"AssetImportPath": "",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -2885,9 +2234,9 @@
 				0.36403171887748442,
 				-1.5435793492400962,
 				0,
-				-998.20545668686373,
-				-154.82417259252719,
-				-762.96335700000009,
+				1005.3332634317144,
+				-4748.6037029784875,
+				176.72926465484738,
 				1
 			],
 			"Tags": [],
@@ -2917,6 +2266,7 @@
 					],
 					"Mesh": "SM_TheCube",
 					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
+					"AssetImportPath": "",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -2959,9 +2309,9 @@
 				-2.4942890298268674,
 				-0.16820515070382569,
 				0,
-				-992.91436262746129,
-				-317.63580138647552,
-				-784.76635600000009,
+				1010.6243574911168,
+				-4911.4153317724358,
+				154.92626565484738,
 				1
 			],
 			"Tags": [],
@@ -2991,6 +2341,7 @@
 					],
 					"Mesh": "SM_TheCube",
 					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
+					"AssetImportPath": "",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -3033,9 +2384,9 @@
 				-0.56259592218334031,
 				-1.5517734772502925,
 				0,
-				-991.52134299999989,
-				-557.11039200000005,
-				-800.24123199999985,
+				1012.0173771185782,
+				-5150.8899223859607,
+				139.45138965484762,
 				1
 			],
 			"Tags": [],
@@ -3065,6 +2416,7 @@
 					],
 					"Mesh": "SM_TheCube",
 					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
+					"AssetImportPath": "",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -3107,9 +2459,9 @@
 				-0.50943817279606585,
 				-1.8304996653412067,
 				0,
-				-777.62729654447435,
-				-119.08287827497118,
-				-914.51478385384053,
+				1225.9114235741038,
+				-4712.8624086609316,
+				25.177837801006945,
 				1
 			],
 			"Tags": [],
@@ -3139,6 +2491,7 @@
 					],
 					"Mesh": "SM_TheCube",
 					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
+					"AssetImportPath": "",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -3181,9 +2534,9 @@
 				1.8747087035713312,
 				-1.5343697487429724,
 				0,
-				933.76634300000001,
-				-971.34546,
-				-706.68355500000007,
+				2937.3050631185779,
+				-5565.1249903859607,
+				233.0090666548474,
 				1
 			],
 			"Tags": [],
@@ -3213,6 +2566,7 @@
 					],
 					"Mesh": "SM_TheCube",
 					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
+					"AssetImportPath": "",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -3255,9 +2609,9 @@
 				-2.3138449308708742,
 				-1.4406692829756085,
 				0,
-				672.4676398997151,
-				-1183.6321629542042,
-				-821.11337893304915,
+				2676.006360018293,
+				-5777.4116933401647,
+				118.57924272179832,
 				1
 			],
 			"Tags": [],
@@ -3287,6 +2641,7 @@
 					],
 					"Mesh": "SM_TheCube",
 					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
+					"AssetImportPath": "",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -3329,9 +2684,9 @@
 				-0.92418656217880812,
 				-1.4352860282912345,
 				0,
-				843.76634300000001,
-				-1081.34546,
-				-706.68355500000007,
+				2847.3050631185779,
+				-5675.1249903859607,
+				233.0090666548474,
 				1
 			],
 			"Tags": [],
@@ -3361,6 +2716,7 @@
 					],
 					"Mesh": "SM_TheCube",
 					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
+					"AssetImportPath": "",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -3403,9 +2759,9 @@
 				-0,
 				1,
 				0,
-				405.38889486810291,
-				-597.41843163133467,
-				55.966461185300204,
+				2408.927614986681,
+				-5191.1979620172951,
+				-4.3409171598523244,
 				1
 			],
 			"Tags": [],
@@ -3435,6 +2791,7 @@
 					],
 					"Mesh": "SM_TheCube",
 					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
+					"AssetImportPath": "",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -3477,9 +2834,9 @@
 				0.057508568206022584,
 				0.46984631085607553,
 				0,
-				400.32820907578804,
-				-599.22552413507753,
-				162.20379003273825,
+				2403.8669291943661,
+				-5193.0050545210379,
+				101.89641168758567,
 				1
 			],
 			"Tags": [],
@@ -3509,6 +2866,7 @@
 					],
 					"Mesh": "SM_TheCube",
 					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
+					"AssetImportPath": "",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -3551,9 +2909,9 @@
 				-0.75358190822473881,
 				0.64278760554185788,
 				0,
-				386.34534374736307,
-				-604.72327616280324,
-				129.53858494458592,
+				2389.8840638659412,
+				-5198.5028065487641,
+				69.231206599433335,
 				1
 			],
 			"Tags": [],
@@ -3583,6 +2941,7 @@
 					],
 					"Mesh": "SM_TheCube",
 					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
+					"AssetImportPath": "",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -3625,9 +2984,9 @@
 				0.58981374316969282,
 				0.64278760552862735,
 				0,
-				354.62751558513185,
-				-572.95435527067832,
-				129.53858494471373,
+				2358.1662357037098,
+				-5166.7338856566394,
+				69.231206599561233,
 				1
 			],
 			"Tags": [],
@@ -3657,6 +3016,7 @@
 					],
 					"Mesh": "SM_TheCube",
 					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
+					"AssetImportPath": "",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -3699,9 +3059,9 @@
 				-1.5610292115526518,
 				0.18011655466585325,
 				0,
-				-1046.1678317354574,
-				-335.74004353771988,
-				-798.09925620392187,
+				957.3708883831207,
+				-4929.5195739236806,
+				141.5933654509256,
 				1
 			],
 			"Tags": [],
@@ -3731,6 +3091,7 @@
 					],
 					"Mesh": "SM_TheCube",
 					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
+					"AssetImportPath": "",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -3773,9 +3134,9 @@
 				0.16665266988129926,
 				1.2365335180099946,
 				0,
-				-1009.9239759773611,
-				-430.67888535791269,
-				-663.57289638611746,
+				993.61474414121699,
+				-5024.458415743873,
+				276.11972526873001,
 				1
 			],
 			"Tags": [],
@@ -3805,6 +3166,7 @@
 					],
 					"Mesh": "SM_TheCube",
 					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
+					"AssetImportPath": "",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -3847,9 +3209,9 @@
 				0.0080455244651376281,
 				0.73712114553490671,
 				0,
-				-1009.567404966522,
-				-440.27996300950213,
-				-732.47835083953237,
+				993.97131515205615,
+				-5034.0594933954626,
+				207.2142708153151,
 				1
 			],
 			"Tags": [],
@@ -3879,6 +3241,7 @@
 					],
 					"Mesh": "SM_TheCube",
 					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
+					"AssetImportPath": "",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -3921,9 +3284,9 @@
 				-0.020703565593003011,
 				1.2362478184926742,
 				0,
-				-1008.7488739716114,
-				-401.42394036666479,
-				-559.27782913148576,
+				994.78984614696674,
+				-4995.2034707526254,
+				380.41479252336171,
 				1
 			],
 			"Tags": [],
@@ -3953,6 +3316,7 @@
 					],
 					"Mesh": "SM_TheCube",
 					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
+					"AssetImportPath": "",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -3995,9 +3359,9 @@
 				-1.1907347556619923,
 				-0.73894391730814513,
 				0,
-				-1110.8213834967564,
-				-464.98509267214172,
-				-776.81283468231277,
+				892.71733662182169,
+				-5058.7646230581022,
+				162.8797869725347,
 				1
 			],
 			"Tags": [],
@@ -4027,6 +3391,7 @@
 					],
 					"Mesh": "SM_TheCube",
 					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
+					"AssetImportPath": "",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -4069,9 +3434,9 @@
 				0.11844270990218382,
 				1.064850454551223,
 				0,
-				-1002.87327,
-				-443.68633299999999,
-				-828.56242999999995,
+				1000.6654501185781,
+				-5037.4658633859608,
+				111.13019165484752,
 				1
 			],
 			"Tags": [],
@@ -4101,6 +3466,7 @@
 					],
 					"Mesh": "SM_TheCube",
 					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
+					"AssetImportPath": "",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -4143,9 +3509,9 @@
 				-2.2593125032086494,
 				-1.5517734730731418,
 				0,
-				-821.521343,
-				-327.11039200000005,
-				-800.24123199999985,
+				1182.0173771185782,
+				-4920.8899223859598,
+				139.45138965484762,
 				1
 			],
 			"Tags": [],
@@ -4175,228 +3541,7 @@
 					],
 					"Mesh": "SM_TheCube",
 					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
-					"Materials": [
-						{
-							"Name": "MI_BlockoutColor3",
-							"Parent": "M_Instance",
-							"Parameters": [
-								{
-									"Name": "Color",
-									"Type": 1,
-									"Value": [
-										0.024438999593257904,
-										0.026041999459266663,
-										0.024007000029087067,
-										1
-									]
-								},
-								{
-									"Name": "Roughness",
-									"Type": 0,
-									"Value": 1
-								}
-							]
-						}
-					]
-				}
-			]
-		},
-		{
-			"Name": "SM_TheCube5",
-			"Archetype": "StaticMeshActor",
-			"Transform": [
-				0.86602540784042592,
-				-0.49999999297482384,
-				0,
-				0,
-				1.9999999718992953,
-				3.4641016313617037,
-				-0,
-				0,
-				0,
-				0,
-				0.10000000000000001,
-				0,
-				-411.09503643598106,
-				1320.1980647097687,
-				0,
-				1
-			],
-			"Tags": [],
-			"Components": [
-				{
-					"Name": "StaticMeshComponent0",
-					"TypeID": 1,
-					"Parent": "",
-					"Tags": [],
-					"Transform": [
-						1,
-						0,
-						0,
-						0,
-						0,
-						1,
-						0,
-						0,
-						0,
-						0,
-						1,
-						0,
-						0,
-						0,
-						0,
-						1
-					],
-					"Mesh": "SM_TheCube",
-					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
-					"Materials": [
-						{
-							"Name": "MI_BlockoutColor3",
-							"Parent": "M_Instance",
-							"Parameters": [
-								{
-									"Name": "Color",
-									"Type": 1,
-									"Value": [
-										0.024438999593257904,
-										0.026041999459266663,
-										0.024007000029087067,
-										1
-									]
-								},
-								{
-									"Name": "Roughness",
-									"Type": 0,
-									"Value": 1
-								}
-							]
-						}
-					]
-				}
-			]
-		},
-		{
-			"Name": "SM_TheCube59",
-			"Archetype": "StaticMeshActor",
-			"Transform": [
-				0.76604444833325491,
-				-0.64278760347240627,
-				0,
-				0,
-				2.5711504138896251,
-				3.0641777933330197,
-				-0,
-				0,
-				0,
-				0,
-				0.10000000000000001,
-				0,
-				-661.71681264979634,
-				1026.1084087933066,
-				0,
-				1
-			],
-			"Tags": [],
-			"Components": [
-				{
-					"Name": "StaticMeshComponent0",
-					"TypeID": 1,
-					"Parent": "",
-					"Tags": [],
-					"Transform": [
-						1,
-						0,
-						0,
-						0,
-						0,
-						1,
-						0,
-						0,
-						0,
-						0,
-						1,
-						0,
-						0,
-						0,
-						0,
-						1
-					],
-					"Mesh": "SM_TheCube",
-					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
-					"Materials": [
-						{
-							"Name": "MI_BlockoutColor3",
-							"Parent": "M_Instance",
-							"Parameters": [
-								{
-									"Name": "Color",
-									"Type": 1,
-									"Value": [
-										0.024438999593257904,
-										0.026041999459266663,
-										0.024007000029087067,
-										1
-									]
-								},
-								{
-									"Name": "Roughness",
-									"Type": 0,
-									"Value": 1
-								}
-							]
-						}
-					]
-				}
-			]
-		},
-		{
-			"Name": "SM_TheCube60",
-			"Archetype": "StaticMeshActor",
-			"Transform": [
-				0.98480775254266484,
-				-0.17364818032984222,
-				0,
-				0,
-				0.69459272131936889,
-				3.9392310101706594,
-				-0,
-				0,
-				0,
-				0,
-				0.10000000000000001,
-				0,
-				-216.30448132354704,
-				1637.0639943416049,
-				0,
-				1
-			],
-			"Tags": [],
-			"Components": [
-				{
-					"Name": "StaticMeshComponent0",
-					"TypeID": 1,
-					"Parent": "",
-					"Tags": [],
-					"Transform": [
-						1,
-						0,
-						0,
-						0,
-						0,
-						1,
-						0,
-						0,
-						0,
-						0,
-						1,
-						0,
-						0,
-						0,
-						0,
-						1
-					],
-					"Mesh": "SM_TheCube",
-					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
+					"AssetImportPath": "",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -4439,9 +3584,9 @@
 				0.1440435162017753,
 				-0.84100447957725599,
 				0,
-				576.21995633178756,
-				-1117.5449286785824,
-				-933.56143833440751,
+				2579.7586764503658,
+				-5711.3244590645427,
+				6.1311833204399591,
 				1
 			],
 			"Tags": [],
@@ -4471,6 +3616,7 @@
 					],
 					"Mesh": "SM_TheCube",
 					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
+					"AssetImportPath": "",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -4513,9 +3659,9 @@
 				1.0906106364950521,
 				-2.3453884324874701,
 				0,
-				706.68506831188802,
-				-950.65453941908152,
-				-809.76566230278672,
+				2710.2237884304659,
+				-5544.4340698050419,
+				129.92695935206075,
 				1
 			],
 			"Tags": [],
@@ -4545,6 +3691,7 @@
 					],
 					"Mesh": "SM_TheCube",
 					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
+					"AssetImportPath": "",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -4587,9 +3734,9 @@
 				0.52376647545307875,
 				0.51900084792873891,
 				0,
-				947.41096426565059,
-				-1119.0985821854149,
-				-680.22076416396499,
+				2950.949684384228,
+				-5712.8781125713758,
+				259.47185749088248,
 				1
 			],
 			"Tags": [],
@@ -4619,6 +3766,7 @@
 					],
 					"Mesh": "SM_TheCube",
 					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
+					"AssetImportPath": "",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -4661,9 +3809,9 @@
 				-0.46830410046752741,
 				-0.69954290597481994,
 				0,
-				755.56308132952825,
-				-984.9943599018751,
-				-800.95643600466963,
+				2759.101801448106,
+				-5578.7738902878355,
+				138.73618565017784,
 				1
 			],
 			"Tags": [],
@@ -4693,6 +3841,7 @@
 					],
 					"Mesh": "SM_TheCube",
 					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
+					"AssetImportPath": "",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -4735,9 +3884,9 @@
 				-2.1676883949079322,
 				-0.16820515070382291,
 				0,
-				-1232.9904398959811,
-				-719.02280167159188,
-				-784.76635599999997,
+				770.54828022259699,
+				-5312.8023320575521,
+				154.9262656548475,
 				1
 			],
 			"Tags": [],
@@ -4767,6 +3916,7 @@
 					],
 					"Mesh": "SM_TheCube",
 					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
+					"AssetImportPath": "",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -4809,9 +3959,9 @@
 				0.10012404919453388,
 				1.0648508804914054,
 				0,
-				-1304.6403715067738,
-				-823.20631162535767,
-				-828.56242999999995,
+				698.89834861180429,
+				-5416.9858420113187,
+				111.13019165484752,
 				1
 			],
 			"Tags": [],
@@ -4841,6 +3991,7 @@
 					],
 					"Mesh": "SM_TheCube",
 					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
+					"AssetImportPath": "",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -4883,9 +4034,9 @@
 				0.10653739836143764,
 				1.2365335180099943,
 				0,
-				-1304.2427381373666,
-				-808.41617821572697,
-				-663.57289600000001,
+				699.29598198121153,
+				-5402.1957086016873,
+				276.11972565484746,
 				1
 			],
 			"Tags": [],
@@ -4915,6 +4066,7 @@
 					],
 					"Mesh": "SM_TheCube",
 					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
+					"AssetImportPath": "",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -4957,9 +4109,9 @@
 				-0.062111467010716688,
 				0.7371211455349066,
 				0,
-				-1308.7344775242179,
-				-816.90924120387967,
-				-732.47835099999998,
+				694.80424259436018,
+				-5410.6887715898401,
+				207.2142706548475,
 				1
 			],
 			"Tags": [],
@@ -4989,6 +4141,7 @@
 					],
 					"Mesh": "SM_TheCube",
 					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
+					"AssetImportPath": "",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -5031,9 +4184,9 @@
 				-0.10980295013737208,
 				1.2362478184926742,
 				0,
-				-1288.5975976540833,
-				-783.6682035324975,
-				-559.277829,
+				714.94112246449481,
+				-5377.4477339184577,
+				380.41479265484747,
 				1
 			],
 			"Tags": [],
@@ -5063,6 +4216,7 @@
 					],
 					"Mesh": "SM_TheCube",
 					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
+					"AssetImportPath": "",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -5105,9 +4259,9 @@
 				-0.84859736644904216,
 				-0.70780749667162257,
 				0,
-				-1305.3261837544301,
-				-704.65862562267728,
-				-754.76635599999997,
+				698.21253636414804,
+				-5298.4381560086376,
+				184.9262656548475,
 				1
 			],
 			"Tags": [],
@@ -5137,6 +4291,7 @@
 					],
 					"Mesh": "SM_TheCube",
 					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
+					"AssetImportPath": "",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -5179,9 +4334,9 @@
 				-2.0684322540578721,
 				-1.5517734730731436,
 				0,
-				-1089.2970252829182,
-				-812.9245470024216,
-				-800.24123199999997,
+				914.24169483565993,
+				-5406.7040773883818,
+				139.4513896548475,
 				1
 			],
 			"Tags": [],
@@ -5211,6 +4366,7 @@
 					],
 					"Mesh": "SM_TheCube",
 					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
+					"AssetImportPath": "",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -5253,9 +4409,9 @@
 				-1.7046657283403754,
 				-1.9476563572376842,
 				0,
-				-1063.0247063116835,
-				-788.80100915952289,
-				-813.50547000000006,
+				940.51401380689458,
+				-5382.5805395454836,
+				126.18715165484741,
 				1
 			],
 			"Tags": [],
@@ -5285,6 +4441,7 @@
 					],
 					"Mesh": "SM_TheCube",
 					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
+					"AssetImportPath": "",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -5327,9 +4484,9 @@
 				-0.94628729731242955,
 				-0.54803615589063048,
 				0,
-				-1156.166848879034,
-				-575.37824816889884,
-				-762.96335699999997,
+				847.37187123954413,
+				-5169.1577785548598,
+				176.7292646548475,
 				1
 			],
 			"Tags": [],
@@ -5359,6 +4516,7 @@
 					],
 					"Mesh": "SM_TheCube",
 					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
+					"AssetImportPath": "",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -5401,9 +4559,9 @@
 				1.0465976852657479,
 				-0.22150725351728928,
 				0,
-				-1312.7562767599945,
-				-676.00394387094161,
-				-741.31775100000004,
+				690.78244335858358,
+				-5269.7834742569021,
+				198.37487065484743,
 				1
 			],
 			"Tags": [],
@@ -5433,6 +4591,7 @@
 					],
 					"Mesh": "SM_TheCube",
 					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
+					"AssetImportPath": "",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -5475,9 +4634,9 @@
 				-1.5552801674265062,
 				-0.73894390835440893,
 				0,
-				-1408.7755599435757,
-				-787.67752319920771,
-				-776.81283499999995,
+				594.76316017500244,
+				-5381.4570535851681,
+				162.87978665484752,
 				1
 			],
 			"Tags": [],
@@ -5507,6 +4666,7 @@
 					],
 					"Mesh": "SM_TheCube",
 					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
+					"AssetImportPath": "",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -5549,9 +4709,9 @@
 				-0.966778702649018,
 				0.18011654321243589,
 				0,
-				-1288.1614184784385,
-				-708.07480197342397,
-				-798.09925599999997,
+				715.37730164013965,
+				-5301.8543323593849,
+				141.5933656548475,
 				1
 			],
 			"Tags": [],
@@ -5581,6 +4741,7 @@
 					],
 					"Mesh": "SM_TheCube",
 					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
+					"AssetImportPath": "",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -5623,9 +4784,9 @@
 				-1.586993349134429,
 				-1.5517734730731454,
 				0,
-				-1351.5213429999999,
-				-927.11039200000005,
-				-800.24123199999997,
+				652.01737711857822,
+				-5520.8899223859607,
+				139.4513896548475,
 				1
 			],
 			"Tags": [],
@@ -5655,6 +4816,7 @@
 					],
 					"Mesh": "SM_TheCube",
 					"ContentPath": "/Game/Static_Meshes/Test/SM_TheCube.SM_TheCube",
+					"AssetImportPath": "",
 					"Materials": [
 						{
 							"Name": "MI_BlockoutColor3",
@@ -5729,9 +4891,11 @@
 					],
 					"Mesh": "SM_Cube",
 					"ContentPath": "/Game/Static_Meshes/Test/SM_Cube.SM_Cube",
+					"AssetImportPath": "C:/Users/nilsegede.scherer/Perforce/nilsegede.scherer_TGA-LD61_Content_&_Unreal_Project_9749/Content/Meshes/Test/SM_Cube.fbx",
 					"Materials": [
 						{
 							"Name": "WorldGridMaterial",
+							"Parent": "Self",
 							"Parameters": []
 						}
 					]
@@ -5786,9 +4950,11 @@
 					],
 					"Mesh": "SM_Cube",
 					"ContentPath": "/Game/Static_Meshes/Test/SM_Cube.SM_Cube",
+					"AssetImportPath": "C:/Users/nilsegede.scherer/Perforce/nilsegede.scherer_TGA-LD61_Content_&_Unreal_Project_9749/Content/Meshes/Test/SM_Cube.fbx",
 					"Materials": [
 						{
 							"Name": "WorldGridMaterial",
+							"Parent": "Self",
 							"Parameters": []
 						}
 					]
@@ -5843,9 +5009,11 @@
 					],
 					"Mesh": "SM_Cube",
 					"ContentPath": "/Game/Static_Meshes/Test/SM_Cube.SM_Cube",
+					"AssetImportPath": "C:/Users/nilsegede.scherer/Perforce/nilsegede.scherer_TGA-LD61_Content_&_Unreal_Project_9749/Content/Meshes/Test/SM_Cube.fbx",
 					"Materials": [
 						{
 							"Name": "WorldGridMaterial",
+							"Parent": "Self",
 							"Parameters": []
 						}
 					]
@@ -5900,9 +5068,11 @@
 					],
 					"Mesh": "SM_Cube",
 					"ContentPath": "/Game/Static_Meshes/Test/SM_Cube.SM_Cube",
+					"AssetImportPath": "C:/Users/nilsegede.scherer/Perforce/nilsegede.scherer_TGA-LD61_Content_&_Unreal_Project_9749/Content/Meshes/Test/SM_Cube.fbx",
 					"Materials": [
 						{
 							"Name": "WorldGridMaterial",
+							"Parent": "Self",
 							"Parameters": []
 						}
 					]
@@ -5957,9 +5127,11 @@
 					],
 					"Mesh": "SM_Cube",
 					"ContentPath": "/Game/Static_Meshes/Test/SM_Cube.SM_Cube",
+					"AssetImportPath": "C:/Users/nilsegede.scherer/Perforce/nilsegede.scherer_TGA-LD61_Content_&_Unreal_Project_9749/Content/Meshes/Test/SM_Cube.fbx",
 					"Materials": [
 						{
 							"Name": "WorldGridMaterial",
+							"Parent": "Self",
 							"Parameters": []
 						}
 					]
@@ -6014,9 +5186,11 @@
 					],
 					"Mesh": "SM_Cube",
 					"ContentPath": "/Game/Static_Meshes/Test/SM_Cube.SM_Cube",
+					"AssetImportPath": "C:/Users/nilsegede.scherer/Perforce/nilsegede.scherer_TGA-LD61_Content_&_Unreal_Project_9749/Content/Meshes/Test/SM_Cube.fbx",
 					"Materials": [
 						{
 							"Name": "WorldGridMaterial",
+							"Parent": "Self",
 							"Parameters": []
 						}
 					]
@@ -6071,9 +5245,11 @@
 					],
 					"Mesh": "SM_Cube",
 					"ContentPath": "/Game/Static_Meshes/Test/SM_Cube.SM_Cube",
+					"AssetImportPath": "C:/Users/nilsegede.scherer/Perforce/nilsegede.scherer_TGA-LD61_Content_&_Unreal_Project_9749/Content/Meshes/Test/SM_Cube.fbx",
 					"Materials": [
 						{
 							"Name": "WorldGridMaterial",
+							"Parent": "Self",
 							"Parameters": []
 						}
 					]
@@ -6128,9 +5304,11 @@
 					],
 					"Mesh": "SM_Cube",
 					"ContentPath": "/Game/Static_Meshes/Test/SM_Cube.SM_Cube",
+					"AssetImportPath": "C:/Users/nilsegede.scherer/Perforce/nilsegede.scherer_TGA-LD61_Content_&_Unreal_Project_9749/Content/Meshes/Test/SM_Cube.fbx",
 					"Materials": [
 						{
 							"Name": "WorldGridMaterial",
+							"Parent": "Self",
 							"Parameters": []
 						}
 					]
@@ -6185,9 +5363,11 @@
 					],
 					"Mesh": "SM_Cube",
 					"ContentPath": "/Game/Static_Meshes/Test/SM_Cube.SM_Cube",
+					"AssetImportPath": "C:/Users/nilsegede.scherer/Perforce/nilsegede.scherer_TGA-LD61_Content_&_Unreal_Project_9749/Content/Meshes/Test/SM_Cube.fbx",
 					"Materials": [
 						{
 							"Name": "WorldGridMaterial",
+							"Parent": "Self",
 							"Parameters": []
 						}
 					]
@@ -6242,9 +5422,11 @@
 					],
 					"Mesh": "SM_Cube",
 					"ContentPath": "/Game/Static_Meshes/Test/SM_Cube.SM_Cube",
+					"AssetImportPath": "C:/Users/nilsegede.scherer/Perforce/nilsegede.scherer_TGA-LD61_Content_&_Unreal_Project_9749/Content/Meshes/Test/SM_Cube.fbx",
 					"Materials": [
 						{
 							"Name": "WorldGridMaterial",
+							"Parent": "Self",
 							"Parameters": []
 						}
 					]
@@ -6299,9 +5481,11 @@
 					],
 					"Mesh": "SM_Cube",
 					"ContentPath": "/Game/Static_Meshes/Test/SM_Cube.SM_Cube",
+					"AssetImportPath": "C:/Users/nilsegede.scherer/Perforce/nilsegede.scherer_TGA-LD61_Content_&_Unreal_Project_9749/Content/Meshes/Test/SM_Cube.fbx",
 					"Materials": [
 						{
 							"Name": "WorldGridMaterial",
+							"Parent": "Self",
 							"Parameters": []
 						}
 					]
@@ -6356,9 +5540,11 @@
 					],
 					"Mesh": "SM_Cube",
 					"ContentPath": "/Game/Static_Meshes/Test/SM_Cube.SM_Cube",
+					"AssetImportPath": "C:/Users/nilsegede.scherer/Perforce/nilsegede.scherer_TGA-LD61_Content_&_Unreal_Project_9749/Content/Meshes/Test/SM_Cube.fbx",
 					"Materials": [
 						{
 							"Name": "WorldGridMaterial",
+							"Parent": "Self",
 							"Parameters": []
 						}
 					]
@@ -6413,9 +5599,11 @@
 					],
 					"Mesh": "SM_Cube",
 					"ContentPath": "/Game/Static_Meshes/Test/SM_Cube.SM_Cube",
+					"AssetImportPath": "C:/Users/nilsegede.scherer/Perforce/nilsegede.scherer_TGA-LD61_Content_&_Unreal_Project_9749/Content/Meshes/Test/SM_Cube.fbx",
 					"Materials": [
 						{
 							"Name": "WorldGridMaterial",
+							"Parent": "Self",
 							"Parameters": []
 						}
 					]
@@ -6426,12 +5614,12 @@
 			"Name": "SM_E_CypressTree_Large_01",
 			"Archetype": "StaticMeshActor",
 			"Transform": [
-				0.93969262171072798,
-				-0.34202014078474779,
+				-0.34202012935059645,
+				-0.93969262587241842,
 				0,
 				0,
-				0.34202014078474779,
-				0.93969262171072798,
+				0.93969262587241842,
+				-0.34202012935059645,
 				-0,
 				0,
 				0,
@@ -6470,9 +5658,11 @@
 					],
 					"Mesh": "SM_E_CypressTree_Large_01",
 					"ContentPath": "/Game/Static_Meshes/Environment/SM_E_CypressTree_Large_01.SM_E_CypressTree_Large_01",
+					"AssetImportPath": "C:/Users/nilsegede.scherer/Perforce/nilsegede.scherer_TGA-LD61_Content_&_Unreal_Project_9749/Content/Meshes/Environment/Folliage/SM_E_CypressTree_Large_01.fbx",
 					"Materials": [
 						{
 							"Name": "WorldGridMaterial",
+							"Parent": "Self",
 							"Parameters": []
 						}
 					]
@@ -6495,9 +5685,9 @@
 				0.68171225584412032,
 				-0.55795263590653565,
 				0,
-				778.29129210287817,
-				-1096.1696801729588,
-				-703.24880221850447,
+				2781.8300122214559,
+				-5689.9492105589197,
+				236.44381943634301,
 				1
 			],
 			"Tags": [],
@@ -6544,9 +5734,9 @@
 				0.15523900368614574,
 				-0.41672632541329202,
 				0,
-				417.65437087223523,
-				72.130283363465736,
-				-707.90243516912903,
+				2421.1930909908133,
+				-4521.6492470224948,
+				231.79018648571844,
 				1
 			],
 			"Tags": [],
@@ -6593,9 +5783,9 @@
 				-0.016562852474402236,
 				0.98899825479413928,
 				0,
-				-865.1047965880565,
-				-365.216790638303,
-				-783.85664945311009,
+				1138.4339235305215,
+				-4958.996321024264,
+				155.83597220173738,
 				1
 			],
 			"Tags": [],
@@ -6642,9 +5832,9 @@
 				-0.552444972942295,
 				0.10292373897853579,
 				0,
-				-1210.4387770835556,
-				-818.39575778760513,
-				-736.37884108282924,
+				793.09994303502253,
+				-5412.1752881735656,
+				203.31378057201823,
 				1
 			],
 			"Tags": [],
@@ -6723,9 +5913,11 @@
 					],
 					"Mesh": "Pivot_Testcube",
 					"ContentPath": "/Game/Static_Meshes/Test/Pivot_Testcube.Pivot_Testcube",
+					"AssetImportPath": "C:/Users/nilsegede.scherer/Perforce/nilsegede.scherer_TGA-LD61_Content_&_Unreal_Project_9749/Content/Meshes/Test/Pivot_Testcube.fbx",
 					"Materials": [
 						{
 							"Name": "WorldGridMaterial",
+							"Parent": "Self",
 							"Parameters": []
 						}
 					]
@@ -6748,8 +5940,8 @@
 				-0,
 				1,
 				0,
-				713.39746082379236,
-				-3.5898373237680374,
+				748.03847705628971,
+				16.410162535728411,
 				132.028154,
 				1
 			],
@@ -6780,9 +5972,11 @@
 					],
 					"Mesh": "SM_E_CypressTree_Large_01",
 					"ContentPath": "/Game/Static_Meshes/Environment/SM_E_CypressTree_Large_01.SM_E_CypressTree_Large_01",
+					"AssetImportPath": "C:/Users/nilsegede.scherer/Perforce/nilsegede.scherer_TGA-LD61_Content_&_Unreal_Project_9749/Content/Meshes/Environment/Folliage/SM_E_CypressTree_Large_01.fbx",
 					"Materials": [
 						{
 							"Name": "WorldGridMaterial",
+							"Parent": "Self",
 							"Parameters": []
 						}
 					]
@@ -6793,21 +5987,21 @@
 			"Name": "SM_A_StoneShortEdge_Small_01",
 			"Archetype": "StaticMeshActor",
 			"Transform": [
-				-0.17364816435236641,
-				-0.98480775535992515,
+				0.98480775324698033,
+				-0.17364817633547047,
 				0,
 				0,
-				0.98480775535992515,
-				-0.17364816435236641,
+				0.17364817633547047,
+				0.98480775324698033,
 				-0,
 				0,
 				0,
 				0,
 				1,
 				0,
-				558.69692517868236,
-				-931.00975475289442,
-				2.3138840009731183,
+				637.46532954857946,
+				-856.98349761108045,
+				-10,
 				1
 			],
 			"Tags": [],
@@ -6836,10 +6030,12 @@
 						1
 					],
 					"Mesh": "SM_A_StoneShortEdge_Small_01",
-					"ContentPath": "/Game/Static_Meshes/Architecture/SM_A_StoneShortEdge_Small_01.SM_A_StoneShortEdge_Small_01",
+					"ContentPath": "/Game/Static_Meshes/Architecture/StoneKit/SM_A_StoneShortEdge_Small_01.SM_A_StoneShortEdge_Small_01",
+					"AssetImportPath": "C:/Users/nilsegede.scherer/Perforce/nilsegede.scherer_TGA-LD61_Content_&_Unreal_Project_9749/Content/Meshes/Architecture/Stone_Ruin_Modular_Kit/SM_A_StoneShortEdge_Small_01.fbx",
 					"Materials": [
 						{
 							"Name": "WorldGridMaterial",
+							"Parent": "Self",
 							"Parameters": []
 						}
 					]
@@ -6874,21 +6070,21 @@
 			"Name": "SM_A_StoneShortPillar_Small_01",
 			"Archetype": "StaticMeshActor",
 			"Transform": [
-				-0.17364816435236508,
-				-0.98480775535992526,
+				0.98480775324698122,
+				-0.17364817633546559,
 				0,
 				0,
-				0.98480775535992526,
-				-0.17364816435236508,
+				0.17364817633546559,
+				0.98480775324698122,
 				-0,
 				0,
 				0,
 				0,
 				1,
 				0,
-				609.43249268979059,
-				-799.7005831935171,
-				2.3138840009731183,
+				688.20089705968769,
+				-725.67432605170313,
+				-10,
 				1
 			],
 			"Tags": [],
@@ -6917,10 +6113,12 @@
 						1
 					],
 					"Mesh": "SM_A_StoneShortPillar_Small_01",
-					"ContentPath": "/Game/Static_Meshes/Architecture/SM_A_StoneShortPillar_Small_01.SM_A_StoneShortPillar_Small_01",
+					"ContentPath": "/Game/Static_Meshes/Architecture/StoneKit/SM_A_StoneShortPillar_Small_01.SM_A_StoneShortPillar_Small_01",
+					"AssetImportPath": "C:/Users/nilsegede.scherer/Perforce/nilsegede.scherer_TGA-LD61_Content_&_Unreal_Project_9749/Content/Meshes/Architecture/Stone_Ruin_Modular_Kit/SM_A_StoneShortPillar_Small_01.fbx",
 					"Materials": [
 						{
 							"Name": "WorldGridMaterial",
+							"Parent": "Self",
 							"Parameters": []
 						}
 					]
@@ -6943,8 +6141,8 @@
 				0,
 				1,
 				0,
-				220,
-				-440,
+				286.98463129362085,
+				-432.89899353247,
 				0,
 				1
 			],
@@ -6975,9 +6173,11 @@
 					],
 					"Mesh": "SM_P_WoodTorch_Medium_01",
 					"ContentPath": "/Game/Static_Meshes/Props/SM_P_WoodTorch_Medium_01.SM_P_WoodTorch_Medium_01",
+					"AssetImportPath": "C:/Users/nilsegede.scherer/Perforce/nilsegede.scherer_TGA-LD61_Content_&_Unreal_Project_9749/Content/Meshes/Prop/Native World Decos/SM_P_WoodTorch_Medium_01.fbx",
 					"Materials": [
 						{
 							"Name": "WorldGridMaterial",
+							"Parent": "Self",
 							"Parameters": []
 						}
 					]
@@ -7000,8 +6200,8 @@
 				0,
 				1,
 				0,
-				400,
-				-440,
+				466.98463129362085,
+				-432.89899353247,
 				0,
 				1
 			],
@@ -7032,9 +6232,11 @@
 					],
 					"Mesh": "SM_P_WoodTorch_Medium_01",
 					"ContentPath": "/Game/Static_Meshes/Props/SM_P_WoodTorch_Medium_01.SM_P_WoodTorch_Medium_01",
+					"AssetImportPath": "C:/Users/nilsegede.scherer/Perforce/nilsegede.scherer_TGA-LD61_Content_&_Unreal_Project_9749/Content/Meshes/Prop/Native World Decos/SM_P_WoodTorch_Medium_01.fbx",
 					"Materials": [
 						{
 							"Name": "WorldGridMaterial",
+							"Parent": "Self",
 							"Parameters": []
 						}
 					]
@@ -7057,8 +6259,8 @@
 				0,
 				1,
 				0,
-				500,
-				-660,
+				566.98463129362085,
+				-652.89899353246994,
 				0,
 				1
 			],
@@ -7089,9 +6291,11 @@
 					],
 					"Mesh": "SM_P_WoodTorch_Medium_01",
 					"ContentPath": "/Game/Static_Meshes/Props/SM_P_WoodTorch_Medium_01.SM_P_WoodTorch_Medium_01",
+					"AssetImportPath": "C:/Users/nilsegede.scherer/Perforce/nilsegede.scherer_TGA-LD61_Content_&_Unreal_Project_9749/Content/Meshes/Prop/Native World Decos/SM_P_WoodTorch_Medium_01.fbx",
 					"Materials": [
 						{
 							"Name": "WorldGridMaterial",
+							"Parent": "Self",
 							"Parameters": []
 						}
 					]
@@ -7114,8 +6318,8 @@
 				0,
 				1,
 				0,
-				390,
-				-800,
+				456.98463129362085,
+				-792.89899353246994,
 				0,
 				1
 			],
@@ -7146,9 +6350,11 @@
 					],
 					"Mesh": "SM_P_WoodTorch_Medium_01",
 					"ContentPath": "/Game/Static_Meshes/Props/SM_P_WoodTorch_Medium_01.SM_P_WoodTorch_Medium_01",
+					"AssetImportPath": "C:/Users/nilsegede.scherer/Perforce/nilsegede.scherer_TGA-LD61_Content_&_Unreal_Project_9749/Content/Meshes/Prop/Native World Decos/SM_P_WoodTorch_Medium_01.fbx",
 					"Materials": [
 						{
 							"Name": "WorldGridMaterial",
+							"Parent": "Self",
 							"Parameters": []
 						}
 					]
@@ -7159,12 +6365,12 @@
 			"Name": "SM_E_Rock_Large_01",
 			"Archetype": "StaticMeshActor",
 			"Transform": [
-				-0.17364816435236641,
-				-0.98480775535992515,
+				0.98480775324698033,
+				-0.17364817633547047,
 				0,
 				0,
-				0.98480775535992515,
-				-0.17364816435236641,
+				0.17364817633547047,
+				0.98480775324698033,
 				-0,
 				0,
 				0,
@@ -7203,9 +6409,11 @@
 					],
 					"Mesh": "SM_E_Rock_Large_01",
 					"ContentPath": "/Game/Static_Meshes/Environment/SM_E_Rock_Large_01.SM_E_Rock_Large_01",
+					"AssetImportPath": "C:/Users/nilsegede.scherer/Perforce/nilsegede.scherer_TGA-LD61_Content_&_Unreal_Project_9749/Content/Meshes/Environment/Folliage/SM_E_Rock_Large_01.fbx",
 					"Materials": [
 						{
 							"Name": "WorldGridMaterial",
+							"Parent": "Self",
 							"Parameters": []
 						}
 					]
@@ -7216,20 +6424,20 @@
 			"Name": "SM_E_Rock_Large_2",
 			"Archetype": "StaticMeshActor",
 			"Transform": [
-				-0.64278759320947154,
-				-0.76604445694487888,
+				-0.76604446476630095,
+				0.64278758388826363,
 				0,
 				0,
-				0.76604445694487888,
-				-0.64278759320947154,
+				-0.64278758388826363,
+				-0.76604446476630095,
+				0,
+				0,
+				0,
 				-0,
-				0,
-				0,
-				0,
 				1,
 				0,
-				-1032.4372903587064,
-				-731.67297592963064,
+				-1109.0417368353365,
+				-667.39421754080433,
 				10,
 				1
 			],
@@ -7260,9 +6468,11 @@
 					],
 					"Mesh": "SM_E_Rock_Large_01",
 					"ContentPath": "/Game/Static_Meshes/Environment/SM_E_Rock_Large_01.SM_E_Rock_Large_01",
+					"AssetImportPath": "C:/Users/nilsegede.scherer/Perforce/nilsegede.scherer_TGA-LD61_Content_&_Unreal_Project_9749/Content/Meshes/Environment/Folliage/SM_E_Rock_Large_01.fbx",
 					"Materials": [
 						{
 							"Name": "WorldGridMaterial",
+							"Parent": "Self",
 							"Parameters": []
 						}
 					]
@@ -7273,16 +6483,16 @@
 			"Name": "SM_E_Rock_Large_3",
 			"Archetype": "StaticMeshActor",
 			"Transform": [
-				0.17364818819778838,
-				-0.98480775115533381,
+				0.98480775326827807,
+				0.1736481762146849,
 				0,
 				0,
-				0.98480775115533381,
-				0.17364818819778838,
+				-0.1736481762146849,
+				0.98480775326827807,
+				0,
+				0,
+				0,
 				-0,
-				0,
-				0,
-				0,
 				1,
 				0,
 				-1139.0537012861457,
@@ -7317,9 +6527,11 @@
 					],
 					"Mesh": "SM_E_Rock_Large_01",
 					"ContentPath": "/Game/Static_Meshes/Environment/SM_E_Rock_Large_01.SM_E_Rock_Large_01",
+					"AssetImportPath": "C:/Users/nilsegede.scherer/Perforce/nilsegede.scherer_TGA-LD61_Content_&_Unreal_Project_9749/Content/Meshes/Environment/Folliage/SM_E_Rock_Large_01.fbx",
 					"Materials": [
 						{
 							"Name": "WorldGridMaterial",
+							"Parent": "Self",
 							"Parameters": []
 						}
 					]
@@ -7330,12 +6542,12 @@
 			"Name": "SM_E_Rock_Large_4",
 			"Archetype": "StaticMeshActor",
 			"Transform": [
-				0.34202010278619044,
-				0.93969263554107085,
+				-0.9396926313793823,
+				0.34202011422033662,
 				0,
 				0,
-				-0.93969263554107085,
-				0.34202010278619044,
+				-0.34202011422033662,
+				-0.9396926313793823,
 				0,
 				0,
 				0,
@@ -7374,9 +6586,11 @@
 					],
 					"Mesh": "SM_E_Rock_Large_01",
 					"ContentPath": "/Game/Static_Meshes/Environment/SM_E_Rock_Large_01.SM_E_Rock_Large_01",
+					"AssetImportPath": "C:/Users/nilsegede.scherer/Perforce/nilsegede.scherer_TGA-LD61_Content_&_Unreal_Project_9749/Content/Meshes/Environment/Folliage/SM_E_Rock_Large_01.fbx",
 					"Materials": [
 						{
 							"Name": "WorldGridMaterial",
+							"Parent": "Self",
 							"Parameters": []
 						}
 					]
@@ -7387,20 +6601,20 @@
 			"Name": "SM_A_BoardPath_Long_01",
 			"Archetype": "StaticMeshActor",
 			"Transform": [
-				0.76604444659516369,
-				0.64278760554378245,
+				-0.49999999999999933,
+				0.86602540378443871,
 				0,
 				0,
-				-0.64278760554378245,
-				0.76604444659516369,
+				-0.86602540378443871,
+				-0.49999999999999933,
 				0,
 				0,
 				0,
 				-0,
 				1,
 				0,
-				-146.3671535144681,
-				-97.75864508861234,
+				-134.33578092902482,
+				-195.58920814076436,
 				0,
 				1
 			],
@@ -7431,9 +6645,11 @@
 					],
 					"Mesh": "SM_A_BoardPath_Long_01",
 					"ContentPath": "/Game/Static_Meshes/Architecture/SM_A_BoardPath_Long_01.SM_A_BoardPath_Long_01",
+					"AssetImportPath": "C:/Users/nilsegede.scherer/Perforce/nilsegede.scherer_TGA-LD61_Content_&_Unreal_Project_9749/Content/Meshes/Architecture/Wooden_Building_Kit/SM_A_BoardPath_Long_01.fbx",
 					"Materials": [
 						{
 							"Name": "WorldGridMaterial",
+							"Parent": "Self",
 							"Parameters": []
 						}
 					]
@@ -7444,20 +6660,20 @@
 			"Name": "SM_A_BoardPath_Long_2",
 			"Archetype": "StaticMeshActor",
 			"Transform": [
-				-0.86602539161647485,
-				-0.50000002107553254,
+				0.34202020176685377,
+				-0.93969259951505446,
 				0,
 				0,
-				0.50000002107553254,
-				-0.86602539161647485,
+				0.93969259951505446,
+				0.34202020176685377,
 				-0,
 				0,
 				0,
 				0,
 				1,
 				0,
-				-388.43680791736381,
-				239.26070977539914,
+				-316.38792957925665,
+				171.02854923833212,
 				0,
 				1
 			],
@@ -7488,9 +6704,11 @@
 					],
 					"Mesh": "SM_A_BoardPath_Long_01",
 					"ContentPath": "/Game/Static_Meshes/Architecture/SM_A_BoardPath_Long_01.SM_A_BoardPath_Long_01",
+					"AssetImportPath": "C:/Users/nilsegede.scherer/Perforce/nilsegede.scherer_TGA-LD61_Content_&_Unreal_Project_9749/Content/Meshes/Architecture/Wooden_Building_Kit/SM_A_BoardPath_Long_01.fbx",
 					"Materials": [
 						{
 							"Name": "WorldGridMaterial",
+							"Parent": "Self",
 							"Parameters": []
 						}
 					]
@@ -7501,20 +6719,20 @@
 			"Name": "SM_A_BoardPath_Long_3",
 			"Archetype": "StaticMeshActor",
 			"Transform": [
-				-0.76604443276926215,
-				-0.64278762202084994,
+				-0.50000002565276147,
+				0.8660253889738091,
 				0,
 				0,
-				0.64278762202084994,
-				-0.76604443276926215,
+				-0.8660253889738091,
+				-0.50000002565276147,
+				0,
+				0,
+				0,
 				-0,
-				0,
-				0,
-				0,
 				1,
 				0,
-				-619.79496289132703,
-				571.61904537396254,
+				-480.67469005514084,
+				559.4892608435805,
 				0,
 				1
 			],
@@ -7545,9 +6763,11 @@
 					],
 					"Mesh": "SM_A_BoardPath_Long_01",
 					"ContentPath": "/Game/Static_Meshes/Architecture/SM_A_BoardPath_Long_01.SM_A_BoardPath_Long_01",
+					"AssetImportPath": "C:/Users/nilsegede.scherer/Perforce/nilsegede.scherer_TGA-LD61_Content_&_Unreal_Project_9749/Content/Meshes/Architecture/Wooden_Building_Kit/SM_A_BoardPath_Long_01.fbx",
 					"Materials": [
 						{
 							"Name": "WorldGridMaterial",
+							"Parent": "Self",
 							"Parameters": []
 						}
 					]
@@ -7555,23 +6775,23 @@
 			]
 		},
 		{
-			"Name": "SM_MaterialBall_Test_01",
+			"Name": "SM_A_Checkpoint_01",
 			"Archetype": "StaticMeshActor",
 			"Transform": [
+				-0.93969263003410575,
+				-0.3420201179164537,
+				0,
+				0,
+				0.3420201179164537,
+				-0.93969263003410575,
+				-0,
+				0,
+				0,
+				0,
 				1,
 				0,
-				0,
-				0,
-				0,
-				1,
-				0,
-				0,
-				0,
-				0,
-				1,
-				0,
-				-60,
-				-970,
+				499.8836248260908,
+				-545.91436223884898,
 				0,
 				1
 			],
@@ -7600,12 +6820,1099 @@
 						0,
 						1
 					],
-					"Mesh": "SM_MaterialBall_Test_01",
-					"ContentPath": "/Game/Static_Meshes/Test/SM_MaterialBall_Test_01.SM_MaterialBall_Test_01",
+					"Mesh": "SM_A_Checkpoint_01",
+					"ContentPath": "/Game/Static_Meshes/Architecture/Hero_Assets/SM_A_Checkpoint_01.SM_A_Checkpoint_01",
+					"AssetImportPath": "C:/Users/nilsegede.scherer/Perforce/nilsegede.scherer_TGA-LD61_Content_&_Unreal_Project_9749/Content/Meshes/Architecture/Hero_Assets/SM_A_Checkpoint_01.fbx",
 					"Materials": [
 						{
 							"Name": "WorldGridMaterial",
+							"Parent": "Self",
 							"Parameters": []
+						},
+						{
+							"Name": "WorldGridMaterial",
+							"Parent": "Self",
+							"Parameters": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"Name": "GroupActor0",
+			"Archetype": "GroupActor",
+			"Transform": [
+				-0.33628761206752733,
+				0.94175933335960038,
+				1.1460804527629875e-11,
+				0,
+				-0.88496429698525225,
+				-0.31600698783674508,
+				0.3420201407808377,
+				0,
+				0.32210065978094027,
+				0.11501713641204525,
+				0.93969262171215107,
+				0,
+				2392.4030782329364,
+				-5177.7072833626926,
+				55.820518237094007,
+				1
+			],
+			"Tags": [],
+			"Components": [
+				{
+					"Name": "GroupComponent",
+					"TypeID": 0,
+					"Parent": "",
+					"Tags": [],
+					"Transform": [
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1
+					]
+				}
+			]
+		},
+		{
+			"Name": "SM_E_Rock_Large_5",
+			"Archetype": "StaticMeshActor",
+			"Transform": [
+				0.7660444440668609,
+				0.64278760855689654,
+				0,
+				0,
+				-0.64278760855689654,
+				0.7660444440668609,
+				0,
+				0,
+				0,
+				-0,
+				1,
+				0,
+				-895.80490311660651,
+				-97.645544249594224,
+				10,
+				1
+			],
+			"Tags": [],
+			"Components": [
+				{
+					"Name": "StaticMeshComponent0",
+					"TypeID": 1,
+					"Parent": "",
+					"Tags": [],
+					"Transform": [
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1
+					],
+					"Mesh": "SM_E_Rock_Large_01",
+					"ContentPath": "/Game/Static_Meshes/Environment/SM_E_Rock_Large_01.SM_E_Rock_Large_01",
+					"AssetImportPath": "C:/Users/nilsegede.scherer/Perforce/nilsegede.scherer_TGA-LD61_Content_&_Unreal_Project_9749/Content/Meshes/Environment/Folliage/SM_E_Rock_Large_01.fbx",
+					"Materials": [
+						{
+							"Name": "WorldGridMaterial",
+							"Parent": "Self",
+							"Parameters": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"Name": "SM_A_StoneShortPillar_Small_2",
+			"Archetype": "StaticMeshActor",
+			"Transform": [
+				0.34202015591502233,
+				-0.93969261620375832,
+				0,
+				0,
+				0.93969261620375832,
+				0.34202015591502233,
+				-0,
+				0,
+				0,
+				0,
+				1,
+				0,
+				548.1628809332675,
+				-336.79170987862847,
+				-10,
+				1
+			],
+			"Tags": [],
+			"Components": [
+				{
+					"Name": "StaticMeshComponent0",
+					"TypeID": 1,
+					"Parent": "",
+					"Tags": [],
+					"Transform": [
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1
+					],
+					"Mesh": "SM_A_StoneShortPillar_Small_01",
+					"ContentPath": "/Game/Static_Meshes/Architecture/StoneKit/SM_A_StoneShortPillar_Small_01.SM_A_StoneShortPillar_Small_01",
+					"AssetImportPath": "C:/Users/nilsegede.scherer/Perforce/nilsegede.scherer_TGA-LD61_Content_&_Unreal_Project_9749/Content/Meshes/Architecture/Stone_Ruin_Modular_Kit/SM_A_StoneShortPillar_Small_01.fbx",
+					"Materials": [
+						{
+							"Name": "WorldGridMaterial",
+							"Parent": "Self",
+							"Parameters": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"Name": "SM_A_StoneShortWall_Medium_01",
+			"Archetype": "StaticMeshActor",
+			"Transform": [
+				-0.93969263003410575,
+				-0.3420201179164537,
+				0,
+				0,
+				0.3420201179164537,
+				-0.93969263003410575,
+				-0,
+				0,
+				0,
+				0,
+				1,
+				0,
+				719.72587715864915,
+				-690.21026354697233,
+				-10,
+				1
+			],
+			"Tags": [],
+			"Components": [
+				{
+					"Name": "StaticMeshComponent0",
+					"TypeID": 1,
+					"Parent": "",
+					"Tags": [],
+					"Transform": [
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1
+					],
+					"Mesh": "SM_A_StoneShortWall_Medium_01",
+					"ContentPath": "/Game/Static_Meshes/Architecture/StoneKit/SM_A_StoneShortWall_Medium_01.SM_A_StoneShortWall_Medium_01",
+					"AssetImportPath": "C:/Users/nilsegede.scherer/Perforce/nilsegede.scherer_TGA-LD61_Content_&_Unreal_Project_9749/Content/Meshes/Architecture/Stone_Ruin_Modular_Kit/SM_A_StoneShortWall_Medium_01.fbx",
+					"Materials": [
+						{
+							"Name": "WorldGridMaterial",
+							"Parent": "Self",
+							"Parameters": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"Name": "SM_A_StoneShortWall_Small_01",
+			"Archetype": "StaticMeshActor",
+			"Transform": [
+				0.34202015221891946,
+				-0.93969261754902988,
+				0,
+				0,
+				0.93969261754902988,
+				0.34202015221891946,
+				-0,
+				0,
+				0,
+				0,
+				1,
+				0,
+				847.89715233940387,
+				-749.97750947065106,
+				-9.9999999999999538,
+				1
+			],
+			"Tags": [],
+			"Components": [
+				{
+					"Name": "StaticMeshComponent0",
+					"TypeID": 1,
+					"Parent": "",
+					"Tags": [],
+					"Transform": [
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1
+					],
+					"Mesh": "SM_A_StoneShortWall_Small_01",
+					"ContentPath": "/Game/Static_Meshes/Architecture/StoneKit/SM_A_StoneShortWall_Small_01.SM_A_StoneShortWall_Small_01",
+					"AssetImportPath": "C:/Users/nilsegede.scherer/Perforce/nilsegede.scherer_TGA-LD61_Content_&_Unreal_Project_9749/Content/Meshes/Architecture/Stone_Ruin_Modular_Kit/SM_A_StoneShortWall_Small_01.fbx",
+					"Materials": [
+						{
+							"Name": "WorldGridMaterial",
+							"Parent": "Self",
+							"Parameters": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"Name": "SM_A_StoneShortWall_Small_2",
+			"Archetype": "StaticMeshActor",
+			"Transform": [
+				0.3420201482922548,
+				-0.93969261897821887,
+				0,
+				0,
+				0.93969261897821887,
+				0.3420201482922548,
+				-0,
+				0,
+				0,
+				0,
+				1,
+				0,
+				676.88707209753363,
+				-280.13120160602642,
+				-10,
+				1
+			],
+			"Tags": [],
+			"Components": [
+				{
+					"Name": "StaticMeshComponent0",
+					"TypeID": 1,
+					"Parent": "",
+					"Tags": [],
+					"Transform": [
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1
+					],
+					"Mesh": "SM_A_StoneShortWall_Small_01",
+					"ContentPath": "/Game/Static_Meshes/Architecture/StoneKit/SM_A_StoneShortWall_Small_01.SM_A_StoneShortWall_Small_01",
+					"AssetImportPath": "C:/Users/nilsegede.scherer/Perforce/nilsegede.scherer_TGA-LD61_Content_&_Unreal_Project_9749/Content/Meshes/Architecture/Stone_Ruin_Modular_Kit/SM_A_StoneShortWall_Small_01.fbx",
+					"Materials": [
+						{
+							"Name": "WorldGridMaterial",
+							"Parent": "Self",
+							"Parameters": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"Name": "SM_A_StoneShortestWall_Small_01",
+			"Archetype": "StaticMeshActor",
+			"Transform": [
+				-0.98480775747287175,
+				0.17364815236924619,
+				0,
+				0,
+				-0.17364815236924619,
+				-0.98480775747287175,
+				0,
+				0,
+				0,
+				-0,
+				1,
+				0,
+				469.52529309371488,
+				-1233.5417869505332,
+				-10,
+				1
+			],
+			"Tags": [],
+			"Components": [
+				{
+					"Name": "StaticMeshComponent0",
+					"TypeID": 1,
+					"Parent": "",
+					"Tags": [],
+					"Transform": [
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1
+					],
+					"Mesh": "SM_A_StoneShortestWall_Small_01",
+					"ContentPath": "/Game/Static_Meshes/Architecture/StoneKit/SM_A_StoneShortestWall_Small_01.SM_A_StoneShortestWall_Small_01",
+					"AssetImportPath": "C:/Users/nilsegede.scherer/Perforce/nilsegede.scherer_TGA-LD61_Content_&_Unreal_Project_9749/Content/Meshes/Architecture/Stone_Ruin_Modular_Kit/SM_A_StoneShortestWall_Small_01.fbx",
+					"Materials": [
+						{
+							"Name": "WorldGridMaterial",
+							"Parent": "Self",
+							"Parameters": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"Name": "SM_A_StoneShortEdge_Small_2",
+			"Archetype": "StaticMeshActor",
+			"Transform": [
+				-0.93969261204206944,
+				-0.34202016734916718,
+				0,
+				0,
+				0.34202016734916718,
+				-0.93969261204206944,
+				-0,
+				0,
+				0,
+				0,
+				1,
+				0,
+				542.86077096110103,
+				-1548.8647916327104,
+				-10,
+				1
+			],
+			"Tags": [],
+			"Components": [
+				{
+					"Name": "StaticMeshComponent0",
+					"TypeID": 1,
+					"Parent": "",
+					"Tags": [],
+					"Transform": [
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1
+					],
+					"Mesh": "SM_A_StoneShortEdge_Small_01",
+					"ContentPath": "/Game/Static_Meshes/Architecture/StoneKit/SM_A_StoneShortEdge_Small_01.SM_A_StoneShortEdge_Small_01",
+					"AssetImportPath": "C:/Users/nilsegede.scherer/Perforce/nilsegede.scherer_TGA-LD61_Content_&_Unreal_Project_9749/Content/Meshes/Architecture/Stone_Ruin_Modular_Kit/SM_A_StoneShortEdge_Small_01.fbx",
+					"Materials": [
+						{
+							"Name": "WorldGridMaterial",
+							"Parent": "Self",
+							"Parameters": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"Name": "SM_A_StoneShortWall_Small_3",
+			"Archetype": "StaticMeshActor",
+			"Transform": [
+				0.34202019402884276,
+				-0.93969260233146068,
+				0,
+				0,
+				0.93969260233146068,
+				0.34202019402884276,
+				-0,
+				0,
+				0,
+				0,
+				1,
+				0,
+				671.03205132437654,
+				-1608.6320309033883,
+				-10,
+				1
+			],
+			"Tags": [],
+			"Components": [
+				{
+					"Name": "StaticMeshComponent0",
+					"TypeID": 1,
+					"Parent": "",
+					"Tags": [],
+					"Transform": [
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1
+					],
+					"Mesh": "SM_A_StoneShortWall_Small_01",
+					"ContentPath": "/Game/Static_Meshes/Architecture/StoneKit/SM_A_StoneShortWall_Small_01.SM_A_StoneShortWall_Small_01",
+					"AssetImportPath": "C:/Users/nilsegede.scherer/Perforce/nilsegede.scherer_TGA-LD61_Content_&_Unreal_Project_9749/Content/Meshes/Architecture/Stone_Ruin_Modular_Kit/SM_A_StoneShortWall_Small_01.fbx",
+					"Materials": [
+						{
+							"Name": "WorldGridMaterial",
+							"Parent": "Self",
+							"Parameters": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"Name": "SM_A_BoardPath_Long_4",
+			"Archetype": "StaticMeshActor",
+			"Transform": [
+				0.17364814316986454,
+				0.98480775909497098,
+				0,
+				0,
+				-0.98480775909497098,
+				0.17364814316986454,
+				0,
+				0,
+				0,
+				-0,
+				1,
+				0,
+				-353.24362139653022,
+				1837.3974783350998,
+				0,
+				1
+			],
+			"Tags": [],
+			"Components": [
+				{
+					"Name": "StaticMeshComponent0",
+					"TypeID": 1,
+					"Parent": "",
+					"Tags": [],
+					"Transform": [
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1
+					],
+					"Mesh": "SM_A_BoardPath_Long_01",
+					"ContentPath": "/Game/Static_Meshes/Architecture/SM_A_BoardPath_Long_01.SM_A_BoardPath_Long_01",
+					"AssetImportPath": "C:/Users/nilsegede.scherer/Perforce/nilsegede.scherer_TGA-LD61_Content_&_Unreal_Project_9749/Content/Meshes/Architecture/Wooden_Building_Kit/SM_A_BoardPath_Long_01.fbx",
+					"Materials": [
+						{
+							"Name": "WorldGridMaterial",
+							"Parent": "Self",
+							"Parameters": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"Name": "SM_A_BoardPath_Long_5",
+			"Archetype": "StaticMeshActor",
+			"Transform": [
+				0.17364813409125557,
+				0.98480776069577447,
+				0,
+				0,
+				-0.98480776069577447,
+				0.17364813409125557,
+				0,
+				0,
+				0,
+				-0,
+				1,
+				0,
+				-433.45783612401721,
+				1430.2409381779132,
+				0,
+				1
+			],
+			"Tags": [],
+			"Components": [
+				{
+					"Name": "StaticMeshComponent0",
+					"TypeID": 1,
+					"Parent": "",
+					"Tags": [],
+					"Transform": [
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1
+					],
+					"Mesh": "SM_A_BoardPath_Long_01",
+					"ContentPath": "/Game/Static_Meshes/Architecture/SM_A_BoardPath_Long_01.SM_A_BoardPath_Long_01",
+					"AssetImportPath": "C:/Users/nilsegede.scherer/Perforce/nilsegede.scherer_TGA-LD61_Content_&_Unreal_Project_9749/Content/Meshes/Architecture/Wooden_Building_Kit/SM_A_BoardPath_Long_01.fbx",
+					"Materials": [
+						{
+							"Name": "WorldGridMaterial",
+							"Parent": "Self",
+							"Parameters": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"Name": "SM_A_BoardPath_Long_6",
+			"Archetype": "StaticMeshActor",
+			"Transform": [
+				0.34202014840751394,
+				0.9396926189362681,
+				0,
+				0,
+				-0.9396926189362681,
+				0.34202014840751394,
+				0,
+				0,
+				0,
+				-0,
+				1,
+				0,
+				-543.74346692678387,
+				1031.1420074581408,
+				0,
+				1
+			],
+			"Tags": [],
+			"Components": [
+				{
+					"Name": "StaticMeshComponent0",
+					"TypeID": 1,
+					"Parent": "",
+					"Tags": [],
+					"Transform": [
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1
+					],
+					"Mesh": "SM_A_BoardPath_Long_01",
+					"ContentPath": "/Game/Static_Meshes/Architecture/SM_A_BoardPath_Long_01.SM_A_BoardPath_Long_01",
+					"AssetImportPath": "C:/Users/nilsegede.scherer/Perforce/nilsegede.scherer_TGA-LD61_Content_&_Unreal_Project_9749/Content/Meshes/Architecture/Wooden_Building_Kit/SM_A_BoardPath_Long_01.fbx",
+					"Materials": [
+						{
+							"Name": "WorldGridMaterial",
+							"Parent": "Self",
+							"Parameters": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"Name": "PointLight",
+			"Archetype": "PointLight",
+			"Transform": [
+				1,
+				0,
+				0,
+				0,
+				0,
+				1,
+				0,
+				0,
+				0,
+				0,
+				1,
+				0,
+				280,
+				-430,
+				240,
+				1
+			],
+			"Tags": [],
+			"Components": [
+				{
+					"Name": "LightComponent0",
+					"TypeID": 3,
+					"Parent": "",
+					"Tags": [],
+					"Transform": [
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1
+					],
+					"Color": [
+						1,
+						0.45078578591346741,
+						0.099898725748062134,
+						1
+					],
+					"Intensity": 1,
+					"FalloffExponent": 8,
+					"AttenuationRadius": 1000
+				}
+			]
+		},
+		{
+			"Name": "PointLight2",
+			"Archetype": "PointLight",
+			"Transform": [
+				1,
+				0,
+				0,
+				0,
+				0,
+				1,
+				0,
+				0,
+				0,
+				0,
+				1,
+				0,
+				470,
+				-430,
+				240,
+				1
+			],
+			"Tags": [],
+			"Components": [
+				{
+					"Name": "LightComponent0",
+					"TypeID": 3,
+					"Parent": "",
+					"Tags": [],
+					"Transform": [
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1
+					],
+					"Color": [
+						1,
+						0.45078578591346741,
+						0.099898725748062134,
+						1
+					],
+					"Intensity": 1,
+					"FalloffExponent": 8,
+					"AttenuationRadius": 1000
+				}
+			]
+		},
+		{
+			"Name": "PointLight3",
+			"Archetype": "PointLight",
+			"Transform": [
+				1,
+				0,
+				0,
+				0,
+				0,
+				1,
+				0,
+				0,
+				0,
+				0,
+				1,
+				0,
+				570,
+				-650,
+				240,
+				1
+			],
+			"Tags": [],
+			"Components": [
+				{
+					"Name": "LightComponent0",
+					"TypeID": 3,
+					"Parent": "",
+					"Tags": [],
+					"Transform": [
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1
+					],
+					"Color": [
+						1,
+						0.45078578591346741,
+						0.099898725748062134,
+						1
+					],
+					"Intensity": 1,
+					"FalloffExponent": 8,
+					"AttenuationRadius": 1000
+				}
+			]
+		},
+		{
+			"Name": "PointLight4",
+			"Archetype": "PointLight",
+			"Transform": [
+				1,
+				0,
+				0,
+				0,
+				0,
+				1,
+				0,
+				0,
+				0,
+				0,
+				1,
+				0,
+				460,
+				-790,
+				240,
+				1
+			],
+			"Tags": [],
+			"Components": [
+				{
+					"Name": "LightComponent0",
+					"TypeID": 3,
+					"Parent": "",
+					"Tags": [],
+					"Transform": [
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1
+					],
+					"Color": [
+						1,
+						0.45078578591346741,
+						0.099898725748062134,
+						1
+					],
+					"Intensity": 1,
+					"FalloffExponent": 8,
+					"AttenuationRadius": 1000
+				}
+			]
+		},
+		{
+			"Name": "Landscape",
+			"Archetype": "StaticMeshActor",
+			"Transform": [
+				1.216796519099006e-08,
+				1,
+				0,
+				0,
+				-1,
+				1.216796519099006e-08,
+				0,
+				0,
+				0,
+				-0,
+				1,
+				0,
+				2.6769523245206983e-05,
+				-1.2167964054121683e-06,
+				0,
+				1
+			],
+			"Tags": [],
+			"Components": [
+				{
+					"Name": "StaticMeshComponent0",
+					"TypeID": 1,
+					"Parent": "",
+					"Tags": [],
+					"Transform": [
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1
+					],
+					"Mesh": "Landscape",
+					"ContentPath": "/Game/Static_Meshes/Test/Landscape.Landscape",
+					"AssetImportPath": "C:/Users/lukasandreas.gothbe/Perforce/P5_Lukas/Content/Meshes/Test/Landscape.fbx",
+					"Materials": [
+						{
+							"Name": "MI_BlockoutColor2",
+							"Parent": "M_Instance",
+							"Parameters": [
+								{
+									"Name": "Color",
+									"Type": 1,
+									"Value": [
+										0.039101999253034592,
+										0.041666999459266663,
+										0.03841099888086319,
+										1
+									]
+								},
+								{
+									"Name": "Roughness",
+									"Type": 0,
+									"Value": 1
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"Name": "WaterCube",
+			"Archetype": "StaticMeshActor",
+			"Transform": [
+				-62.999999999999972,
+				-1.5331633000373896e-06,
+				0,
+				0,
+				1.5331633000373896e-06,
+				-62.999999999999972,
+				-0,
+				0,
+				0,
+				0,
+				1,
+				0,
+				-3147.7761730000002,
+				-3150.1234119999999,
+				-105,
+				1
+			],
+			"Tags": [],
+			"Components": [
+				{
+					"Name": "StaticMeshComponent0",
+					"TypeID": 1,
+					"Parent": "",
+					"Tags": [],
+					"Transform": [
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1
+					],
+					"Mesh": "WaterCube",
+					"ContentPath": "/Game/Static_Meshes/Test/WaterCube.WaterCube",
+					"AssetImportPath": "C:/Users/nilsegede.scherer/Perforce/nilsegede.scherer_TGA-LD61_Content_&_Unreal_Project_9749/Content/Meshes/Test/WaterCube.fbx",
+					"Materials": [
+						{
+							"Name": "MI_BlockoutColor3",
+							"Parent": "M_Instance",
+							"Parameters": [
+								{
+									"Name": "Color",
+									"Type": 1,
+									"Value": [
+										0.024438999593257904,
+										0.026041999459266663,
+										0.024007000029087067,
+										1
+									]
+								},
+								{
+									"Name": "Roughness",
+									"Type": 0,
+									"Value": 1
+								}
+							]
 						}
 					]
 				}

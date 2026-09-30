@@ -160,8 +160,6 @@ void ScreenSpaceRenderPass::RenderSprite(
 		1080.0f
 	};
 
-	inoutCommandList.BeginEvent(aDrawCall.SpriteSharedData->Name);
-
 	const CommonUtilities::Vector2f position =
 	{
 		parentSize.x * aDrawCall.SpriteInstanceData->Anchor.x + aDrawCall.SpriteInstanceData->Position.x - aDrawCall.SpriteInstanceData->Size.x * aDrawCall.SpriteInstanceData->Pivot.x,
@@ -236,5 +234,4 @@ void ScreenSpaceRenderPass::RenderSprite(
 	inoutCommandList.SetVertexBuffer(&mySpriteRenderResources.VertexBuffer);
 	inoutCommandList.DrawSpecificVertices(static_cast<unsigned int>(mySpriteRenderResources.Vertices.size()), 0);
 
-	inoutCommandList.EndEvent();
 }

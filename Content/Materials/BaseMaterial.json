@@ -6,9 +6,9 @@
     "BlendMode": 1
   },
   "Textures": {
-    "AlbedoTexture": "T_Marble_Tiles_C",
-    "NormalTexture": "T_Marble_Tiles_N",
-    "MaterialTexture": "T_Marble_Tiles_M"
+    "AlbedoTexture": "T_Marble_Tiles_c",
+    "NormalTexture": "T_Marble_Tiles_n",
+    "MaterialTexture": "T_Marble_Tiles_orm"
   },
   "Shader": {
     "Code": "Shaders/BaseMaterial.hlsli"

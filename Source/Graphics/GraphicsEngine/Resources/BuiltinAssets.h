@@ -18,6 +18,7 @@ public:
     const Material& GetDefaultSpriteMaterial() const;
     const Texture& GetDefaultAlbedoTexture() const;
     const Texture& GetDefaultNormalTexture() const;
+    const Texture& GetDefaultEmissionTexture() const;
 
 private:
     std::unique_ptr<Material> myDefaultMaterial;
@@ -25,4 +26,5 @@ private:
     std::unique_ptr<Material> myDefaultSpriteMaterial;
     std::shared_ptr<Texture> myDefaultAlbedoTexture;
     std::shared_ptr<Texture> myDefaultNormalTexture;
+    std::shared_ptr<Texture> myDefaultEmissionTexture;
 };
