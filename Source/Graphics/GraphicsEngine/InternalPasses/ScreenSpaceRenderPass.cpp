@@ -35,6 +35,12 @@
 #include "GraphicsEngine/Drawers/TextDrawer.h"
 #include "GraphicsEngine/Drawers/SpriteDrawer.h"
 
+#include "FontMaterial_PS.h"
+#include "FontMaterial_VS.h"
+
+#include "Sprite_PS.h"
+#include "Sprite_VS.h"
+
 #include <tracy/core/Tracy.hpp>
 
 ScreenSpaceRenderPass::ScreenSpaceRenderPass(RenderHardwareInterface& aRHI)
@@ -50,6 +56,44 @@ ScreenSpaceRenderPass::ScreenSpaceRenderPass(RenderHardwareInterface& aRHI)
 	mySpriteRenderResources.Projection(4, 2) = 1.0f;
 
 	aRHI.CreateDynamicVertexBuffer("SpriteRenderer", 10000, mySpriteRenderResources.VertexBuffer);
+
+	// Font PSO
+	{
+		PipelineStateDescription fontPSODesc = {};
+		fontPSODesc.Name = "FontPSO";
+		fontPSODesc.BlendMode = BlendMode::Alpha;
+		fontPSODesc.Topology = Topology::TriangleList;
+		fontPSODesc.VertexShader.ByteCode = INTERNAL_FontMaterial_VS_ByteCode;
+		fontPSODesc.VertexShader.ByteCodeSize = sizeof(INTERNAL_FontMaterial_VS_ByteCode);
+		fontPSODesc.PixelShader.ByteCode = INTERNAL_FontMaterial_PS_ByteCode;
+		fontPSODesc.PixelShader.ByteCodeSize = sizeof(INTERNAL_FontMaterial_PS_ByteCode);
+
+		myFontPSO = std::make_unique<PipelineStateObject>();
+
+		if (!aRHI.CreatePipelineStateObject(fontPSODesc, *myFontPSO))
+		{
+			GELOG(Error, "Failed to create Font pipeline state object!");
+		}
+	}
+
+	// Sprite PSO
+	{
+		PipelineStateDescription spritePSODesc = {};
+		spritePSODesc.Name = "SpritePSO";
+		spritePSODesc.BlendMode = BlendMode::Alpha;
+		spritePSODesc.Topology = Topology::TriangleList;
+		spritePSODesc.VertexShader.ByteCode = INTERNAL_Sprite_VS_ByteCode;
+		spritePSODesc.VertexShader.ByteCodeSize = sizeof(INTERNAL_Sprite_VS_ByteCode);
+		spritePSODesc.PixelShader.ByteCode = INTERNAL_Sprite_PS_ByteCode;
+		spritePSODesc.PixelShader.ByteCodeSize = sizeof(INTERNAL_Sprite_PS_ByteCode);
+
+		mySpritePSO = std::make_unique<PipelineStateObject>();
+
+		if (!aRHI.CreatePipelineStateObject(spritePSODesc, *mySpritePSO))
+		{
+			GELOG(Error, "Failed to create Sprite pipeline state object!");
+		}
+	}
 }
 
 void ScreenSpaceRenderPass::Execute(
@@ -68,10 +112,12 @@ void ScreenSpaceRenderPass::Execute(
 	{
 		if (aItems[i].SpriteCall != nullptr)
 		{
+			inoutCommandList.SetOverridePipelineState(*mySpritePSO, PipelineStage_VertexShader | PipelineStage_PixelShader);
 			RenderSprite(inoutCommandList, *aItems[i].SpriteCall, aContext);
 		}
 		if (aItems[i].TextCall != nullptr)
 		{
+			inoutCommandList.SetOverridePipelineState(*myFontPSO, PipelineStage_VertexShader | PipelineStage_PixelShader);
 			RenderText(inoutCommandList, *aItems[i].TextCall, aContext);
 		}
 	}
@@ -237,5 +283,4 @@ void ScreenSpaceRenderPass::RenderSprite(
 	inoutCommandList.UpdateVertexBuffer(mySpriteRenderResources.VertexBuffer, mySpriteRenderResources.Vertices);
 	inoutCommandList.SetVertexBuffer(&mySpriteRenderResources.VertexBuffer);
 	inoutCommandList.DrawSpecificVertices(static_cast<unsigned int>(mySpriteRenderResources.Vertices.size()), 0);
-
 }

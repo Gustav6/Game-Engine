@@ -232,6 +232,21 @@ void Game::LoadScene()
 		gameCamera.Init(90.0f, 1.0f, 10000.0f, GraphicsEngine::Get().GetClientSize());
 	}
 
+	/*for (int i = 0; i < 1000; ++i)
+	{
+		std::unique_ptr<Actor> object = std::make_unique<Actor>();
+
+		MeshComponent* meshComponent = object->AddComponent<MeshComponent>();
+
+		meshComponent->SetMesh(AssetRegistry::Get().GetAsset<MeshAsset>("Unit_Cube"));
+		meshComponent->SetMaterial(0, AssetRegistry::Get().GetAsset<MaterialAsset>("BaseMaterial"));
+
+		object->GetTransform().Translate({ -20 * static_cast<float>(i), 40, 0 });
+		object->GetTransform().Rotate(CommonUtilities::Vector3f{ -90, 0, 0 });
+
+		GameWorld::Get().AddActor(std::move(object));
+	}*/
+
 	{
 	    std::unique_ptr<Actor> object = std::make_unique<Actor>();
 

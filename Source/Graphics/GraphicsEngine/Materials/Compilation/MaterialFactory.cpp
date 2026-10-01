@@ -50,14 +50,7 @@ bool MaterialFactory::Create(
 	{
 		std::filesystem::path shaderProgramPath;
 
-		if (!aDescription.VertexShader.empty())
-		{
-			shaderProgramPath = aDescription.VertexShader;
-		}
-		else
-		{
-			shaderProgramPath = aShaderRegistry.GetDomainShader(aDescription.Domain);
-		}
+		shaderProgramPath = aShaderRegistry.GetDomainShader(aDescription.Domain);
 
 		const std::filesystem::path shaderRoot = aShaderRoot / "Material" / "Include";
 		std::filesystem::path materialProgramPath;
@@ -82,29 +75,22 @@ bool MaterialFactory::Create(
 	{
 		std::filesystem::path shaderProgramPath;
 
-		if (!aDescription.PixelShader.empty())
+		switch (aDescription.BlendMode)
 		{
-			shaderProgramPath = aDescription.PixelShader;
-		}
-		else
-		{
-			switch (aDescription.BlendMode)
+			case MaterialBlendMode::Opaque:
 			{
-				case MaterialBlendMode::Opaque:
-				{
-					shaderProgramPath = aShaderRoot / "Material" / "GBuffer_PS.hlsl";
-					break;
-				}
-				case MaterialBlendMode::Alpha:
-				{
-					shaderProgramPath = aShaderRegistry.GetShadingModelShader(aDescription.ShadingModel);
-					break;
-				}
-				default:
-				{
-					// TODO: Log error
-					break;
-				}
+				shaderProgramPath = aShaderRoot / "Material" / "GBuffer_PS.hlsl";
+				break;
+			}
+			case MaterialBlendMode::Alpha:
+			{
+				shaderProgramPath = aShaderRegistry.GetShadingModelShader(aDescription.ShadingModel);
+				break;
+			}
+			default:
+			{
+				// TODO: Log error
+				break;
 			}
 		}
 

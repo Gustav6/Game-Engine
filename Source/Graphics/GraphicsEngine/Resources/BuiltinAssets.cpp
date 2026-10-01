@@ -42,8 +42,6 @@ bool BuiltinAssets::Initialize(GraphicsEngine& aGraphicsEngine, RenderHardwareIn
 		fontMaterialDesc.Domain = MaterialDomain::Surface;
 		fontMaterialDesc.ShadingModel = ShadingModel::Unlit;
 		fontMaterialDesc.BlendMode = MaterialBlendMode::Alpha;
-		fontMaterialDesc.PixelShader = aShaderRoot / "Material" / "FontMaterial_PS.hlsl";
-		fontMaterialDesc.VertexShader = aShaderRoot / "Material" / "FontMaterial_VS.hlsl";
 
 		if (!aGraphicsEngine.CreateMaterial(fontMaterialDesc, *myDefaultFontMaterial))
 		{
@@ -61,8 +59,6 @@ bool BuiltinAssets::Initialize(GraphicsEngine& aGraphicsEngine, RenderHardwareIn
 		spriteMaterialDesc.Domain = MaterialDomain::Surface;
 		spriteMaterialDesc.ShadingModel = ShadingModel::Unlit;
 		spriteMaterialDesc.BlendMode = MaterialBlendMode::Alpha;
-		spriteMaterialDesc.PixelShader = aShaderRoot / "Material" / "Sprite_PS.hlsl";
-		spriteMaterialDesc.VertexShader = aShaderRoot / "Material" / "Sprite_VS.hlsl";
 
 		if (!aGraphicsEngine.CreateMaterial(spriteMaterialDesc, *myDefaultSpriteMaterial))
 		{

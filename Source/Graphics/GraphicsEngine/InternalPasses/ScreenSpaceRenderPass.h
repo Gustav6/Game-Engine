@@ -6,6 +6,7 @@
 
 class GraphicsCommandList;
 class RenderHardwareInterface;
+class PipelineStateObject;
 
 struct RenderContext;
 struct FrameTargets;
@@ -29,6 +30,9 @@ public:
 private:
     void RenderText(GraphicsCommandList& inoutCommandList, const TextDrawCall& aDrawCall, RenderContext& aContext);
     void RenderSprite(GraphicsCommandList& inoutCommandList, const SpriteDrawCall& aDrawCall, RenderContext& aContext);
+    \
+    std::unique_ptr<PipelineStateObject> myFontPSO;
+    std::unique_ptr<PipelineStateObject> mySpritePSO;
 
     SpriteRenderResources mySpriteRenderResources;
 };
