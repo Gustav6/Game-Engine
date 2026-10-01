@@ -30,7 +30,10 @@ void MeshComponent::Render()
 
 	for (size_t i = 0; i < materialAssets.size(); i++)
 	{
-		drawCall.Materials[i] = materialAssets[i]->GetMaterial().get();
+		if (materialAssets[i] != nullptr)
+		{
+			drawCall.Materials[i] = materialAssets[i]->GetMaterial().get();
+		}
 	}
 
 	AnimationComponent* animationComponent = myOwner->GetComponent<AnimationComponent>();

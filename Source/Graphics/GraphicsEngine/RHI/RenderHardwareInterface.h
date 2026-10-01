@@ -31,7 +31,7 @@ public:
 	RenderHardwareInterface();
 	~RenderHardwareInterface();
 
-	bool Initialize(HWND aWindowHandle, bool aEnableDebug, Texture& outBackBuffer, Texture& outDepthStencil);
+	bool Initialize(HWND aWindowHandle, bool aEnableDebug, Texture& outBackBuffer, Texture& outDepthStencil, bool aEnableVsync = false);
 
 	CommonUtilities::Vector2ui GetClientSize() const;
 
@@ -63,4 +63,6 @@ private:
 	Microsoft::WRL::ComPtr<IDXGISwapChain> mySwapChain;
 
 	HWND myWindowHandle;
+
+	bool myVsyncEnabled;
 };

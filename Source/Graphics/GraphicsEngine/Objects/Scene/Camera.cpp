@@ -63,6 +63,25 @@ float Camera::GetAspectRatio() const
 	return myFrustum.GetAspectRatio();
 }
 
+void Camera::SetResolution(CommonUtilities::Vector2ui aResolution)
+{
+	if (aResolution.x == 0 || aResolution.y == 0)
+	{
+		return;
+	}
+
+	myResolution = aResolution;
+
+	const float aspectRatio = static_cast<float>(myResolution.x) / static_cast<float>(myResolution.y);
+
+	const float fov = GetFovInRadians();
+
+	myFrustum = CommonUtilities::Frustum<float>(fov, myNearPlane, myFarPlane, aspectRatio);
+
+	myProjection = CommonUtilities::Matrix4x4f::CreatePerspectiveProjection(fov, myNearPlane, myFarPlane, aspectRatio);
+
+}
+
 CommonUtilities::Vector2ui Camera::GetResolution() const
 {
 	return myResolution;

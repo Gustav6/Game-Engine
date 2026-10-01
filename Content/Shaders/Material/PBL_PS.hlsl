@@ -34,6 +34,19 @@ float4 main(VStoPS aPixel) : SV_TARGET
 
     normal = normalize(mul(normal, TBN));
     
+    float3 emission = emissionMap.r * albedoMap.rgb * 50;
+
+    MaterialPixelParameters parameters;
+    parameters.PixelColor = albedoMap;
+    parameters.WorldPosition = aPixel.WorldPosition;
+    parameters.Normal = normal;
+    parameters.UV0 = aPixel.UV0;
+    parameters.Occlusion = materialMap.r;
+    parameters.Roughness = materialMap.g;
+    parameters.Metalness = materialMap.b;
+    
+    Material_Pixel(parameters);
+    
     switch (FB_TypeOfRenderPass)
     {
         case 0: // sRGB pass do nothing!
@@ -51,24 +64,13 @@ float4 main(VStoPS aPixel) : SV_TARGET
         case 6: // Normals world space pass
             return float4(normal, 1.0f);
         case 7: // Shadows pass
-            return float4(1.0f, 1.0f, 1.0f, 1.0f); // TODO : set albedo to (0.8, 0.8, 0.8)
+            parameters.PixelColor = float4(0.5f, 0.5f, 0.5f, 1.0f);
+            parameters.Roughness = 1.0f;
+            break;
         default:
             break;
     }
-    
-    float3 emission = emissionMap.r * albedoMap.rgb * 50;
 
-    MaterialPixelParameters parameters;
-    parameters.PixelColor = albedoMap;
-    parameters.WorldPosition = aPixel.WorldPosition;
-    parameters.Normal = normal;
-    parameters.UV0 = aPixel.UV0;
-    parameters.Occlusion = materialMap.r;
-    parameters.Roughness = materialMap.g;
-    parameters.Metalness = materialMap.b;
-    
-    Material_Pixel(parameters);
-    
     const float3 specularColor = lerp((float3) 0.04f, parameters.PixelColor.rgb, parameters.Metalness);
     const float3 diffuseColor = lerp((float3) 0.00f, parameters.PixelColor.rgb, 1 - parameters.Metalness);
     const float3 pixelView = normalize(FB_CameraPosition - parameters.WorldPosition.xyz);
@@ -177,7 +179,7 @@ float4 main(VStoPS aPixel) : SV_TARGET
                 break;
         }
     }
-
+    
     radiance += emission;
    
     return float4(radiance, parameters.PixelColor.a);

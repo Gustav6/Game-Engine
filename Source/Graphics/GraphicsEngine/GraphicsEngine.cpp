@@ -60,8 +60,6 @@
 #include "FullTexture_VS.h"
 #include "BRDF_LUT_PS.h"
 
-#include <tracy/core/Tracy.hpp>
-
 GraphicsEngine::GraphicsEngine() = default;
 GraphicsEngine::~GraphicsEngine() = default;
 
@@ -144,8 +142,6 @@ void GraphicsEngine::BeginFrame()
 
 void GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const SceneCamera& aCamera)
 {
-	ZoneScopedN("Graphics Engine Whole Render Pass");
-
 	{
 		inoutCommandList.BeginEvent("Clear Backbuffer/Depth");
 
@@ -300,7 +296,6 @@ void GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const SceneCa
 	}
 	inoutCommandList.EndEvent();
 
-	inoutCommandList.BeginEvent("Screen Space Pass");
 	{
 		FrameTargets targets =
 		{
@@ -311,7 +306,6 @@ void GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const SceneCa
 		myScreenSpaceEffectPass->Execute(inoutCommandList, targets, context, myHDRBuffer.get());
 		myScreenSpaceRenderPass->Execute(inoutCommandList, screenSpaceItems, targets, context);
 	}
-	inoutCommandList.EndEvent();
 }
 
 void GraphicsEngine::Present() const

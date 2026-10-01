@@ -29,9 +29,10 @@ RenderHardwareInterface::RenderHardwareInterface()
 
 RenderHardwareInterface::~RenderHardwareInterface() = default;
 
-bool RenderHardwareInterface::Initialize(HWND aWindowHandle, bool aEnableDebug, Texture& outBackBuffer, Texture& outDepthStencil)
+bool RenderHardwareInterface::Initialize(HWND aWindowHandle, bool aEnableDebug, Texture& outBackBuffer, Texture& outDepthStencil, bool aEnableVsync)
 {
 	myWindowHandle = aWindowHandle;
+	myVsyncEnabled = aEnableVsync;
 
 	HRESULT result = E_FAIL;
 
@@ -127,11 +128,9 @@ bool RenderHardwareInterface::Initialize(HWND aWindowHandle, bool aEnableDebug, 
 	swapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
 	swapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_FLIP_DISCARD;
 	swapChainDesc.BufferCount = 2;
-	swapChainDesc.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_TEARING;
+	swapChainDesc.Flags = myVsyncEnabled? 0 : DXGI_SWAP_CHAIN_FLAG_ALLOW_TEARING;
 	swapChainDesc.SampleDesc.Count = 1;
 	swapChainDesc.Windowed = true;
-	
-
 
 	result = dxFactory->CreateSwapChain(myDevice.Get(), &swapChainDesc, &mySwapChain);
 
@@ -912,7 +911,14 @@ void RenderHardwareInterface::ExecuteCommandList(const GraphicsCommandList& aCom
 
 void RenderHardwareInterface::Present() const
 {
-	mySwapChain->Present(0, DXGI_PRESENT_ALLOW_TEARING);
+	if (myVsyncEnabled)
+	{
+		mySwapChain->Present(1, 0);
+	}
+	else
+	{
+		mySwapChain->Present(0, DXGI_PRESENT_ALLOW_TEARING);
+	}
 }
 
 bool RenderHardwareInterface::CompileShader(ShaderType aShaderType, const std::filesystem::path& aPath, ID3DInclude* aIncludeHandler, bool aCompileDebug, Shader& outShader) const
