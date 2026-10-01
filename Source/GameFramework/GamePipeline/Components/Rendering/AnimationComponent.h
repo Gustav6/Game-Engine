@@ -42,7 +42,6 @@ struct LayeredAnimation
 	};
 
 	AnimationLayer Layer;
-	bool IsRoot = false;
 };
 
 class AnimationComponent : public Component

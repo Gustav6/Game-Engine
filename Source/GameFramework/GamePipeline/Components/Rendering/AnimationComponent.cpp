@@ -21,23 +21,19 @@ AnimationComponent::AnimationComponent(Actor* aOwner, const Skeleton* aSkeleton)
 
 void AnimationComponent::Update(float aDeltaTime)
 {
-	for (int animationIndex = static_cast<int>(myAnimationStack.size() - 1); animationIndex >= 0; animationIndex--)
+	bool jointsNeedRebuild = false;
+
+	for (LayeredAnimation& animation : myAnimationStack)
 	{
-		LayeredAnimation::AnimationLayer& layer = myAnimationStack[animationIndex].Layer;
+		LayeredAnimation::AnimationLayer& layer = animation.Layer;
 		const AnimationEntry& entry = myAnimations.at(layer.AnimationName);
 
 		layer.AnimationTimer += aDeltaTime * entry.AnimationSpeedMultiplier;
 
-		if (layer.AnimationTimer < layer.FrameTime /** entry.AnimationSpeedMultiplier*/)
+		if (layer.AnimationTimer < layer.FrameTime)
 		{
-			if (myAnimationStack[animationIndex].IsRoot)
-			{
-				break;
-			}
-
 			continue;
 		}
-
 
 		size_t nextFrame = layer.CurrentFrame + 1;
 
@@ -46,6 +42,7 @@ void AnimationComponent::Update(float aDeltaTime)
 			if (!entry.ShouldLoop)
 			{
 				layer.HasFinished = true;
+				jointsNeedRebuild = true;
 				continue;
 			}
 
@@ -54,19 +51,20 @@ void AnimationComponent::Update(float aDeltaTime)
 
 		layer.AnimationTimer -= layer.FrameTime;
 		layer.CurrentFrame = nextFrame;
-
-		UpdateAnimation(layer.CurrentFrame, 0, CommonUtilities::Matrix4x4f::Identity, myJointTransforms, layer.Group, layer.AnimationName);
+		jointsNeedRebuild = true;
 	}
 
-	for (auto iterator = myAnimationStack.begin(); iterator != myAnimationStack.end();)
+	std::erase_if(myAnimationStack, [](const LayeredAnimation& a)
 	{
-		if (iterator->Layer.HasFinished)
+		return a.Layer.HasFinished;
+	});
+
+	if (jointsNeedRebuild)
+	{
+		for (const LayeredAnimation& animation : myAnimationStack)
 		{
-			iterator = myAnimationStack.erase(iterator);
-		}
-		else
-		{
-			iterator++;
+			const auto& layer = animation.Layer;
+			UpdateAnimation(layer.CurrentFrame, 0, CommonUtilities::Matrix4x4f::Identity, myJointTransforms, layer.Group, layer.AnimationName);
 		}
 	}
 }
@@ -83,7 +81,6 @@ void AnimationComponent::PlayAnimation(std::string aName, bool aIsNewRoot, Joint
 
 	LayeredAnimation animation;
 	animation.Layer = layer;
-	animation.IsRoot = aIsNewRoot;
 
 	if (aIsNewRoot)
 	{

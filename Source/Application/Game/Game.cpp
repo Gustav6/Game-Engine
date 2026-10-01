@@ -232,7 +232,7 @@ void Game::LoadScene()
 		gameCamera.Init(90.0f, 1.0f, 10000.0f, GraphicsEngine::Get().GetClientSize());
 	}
 
-	/*for (int i = 0; i < 1000; ++i)
+	for (int i = 0; i < 1000; ++i)
 	{
 		std::unique_ptr<Actor> object = std::make_unique<Actor>();
 
@@ -245,7 +245,7 @@ void Game::LoadScene()
 		object->GetTransform().Rotate(CommonUtilities::Vector3f{ -90, 0, 0 });
 
 		GameWorld::Get().AddActor(std::move(object));
-	}*/
+	}
 
 	{
 	    std::unique_ptr<Actor> object = std::make_unique<Actor>();
@@ -337,7 +337,7 @@ void Game::LoadScene()
 	    AnimationEntry waveAnimation =
 	    {
 	        .AnimationAsset = AssetRegistry::Get().GetAsset<AnimationAsset>("A_C_TGA_Bro_Idle_Wave"),
-	        .ShouldLoop = true
+	        .ShouldLoop = false
 	    };
 	    AnimationEntry runAnimation =
 	    {
@@ -437,8 +437,8 @@ void Game::UpdateScene(float aDeltaTime)
 	// TODO: TEMP
 	if (Application.InputManager.IsKeyPressed(KeyCode::D1))
 	{
-		myAnimatedObject->GetComponent<AnimationComponent>()->PlayAnimation("Wave", true, JointGroup::RightArm);
-		myAnimatedObject->GetComponent<AnimationComponent>()->PlayAnimation("Walk", false);
+		myAnimatedObject->GetComponent<AnimationComponent>()->PlayAnimation("Walk", true);
+		myAnimatedObject->GetComponent<AnimationComponent>()->PlayAnimation("Wave", false);
 	}
 	if (Application.InputManager.IsKeyPressed(KeyCode::D2))
 	{

@@ -599,3 +599,347 @@ Logging has started at 2026-10-01 13:57:16.
 [13:57:18] [   LOG   ] [ASSETREGISTRY] Type [AnimationAsset], Asset Name [A_C_TGA_Bro_Run], Extension [.fbx], Loaded successfully!
 [13:57:18] [   LOG   ] [ASSETREGISTRY] Type [AnimationAsset], Asset Name [A_C_TGA_Bro_Walk], Extension [.fbx], Loaded successfully!
 [13:57:18] [   LOG   ] [ASSETREGISTRY] Type [FontAsset], Asset Name [CascadiaCode_M], Extension [.json], Loaded successfully!
+****************************************************************************************************
+Logging has started at 2026-10-01 14:46:51.
+****************************************************************************************************
+[14:46:51] [   LOG   ] [ModelViewer] ModelViewer starting...
+[14:46:51] [   LOG   ] [ModelViewer] Ready!
+[14:46:51] [   LOG   ] [ModelViewer] Initializing Graphics Engine...
+[14:46:51] [   LOG   ] [RHI] Initializing RHI...
+[14:46:51] [   LOG   ] [RHI] Selected adapter is NVIDIA GeForce RTX 4060
+[14:46:52] [   LOG   ] [RHI] RHI Started!
+[14:46:52] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_Shipyard_cm], Extension [.dds], Loaded successfully!
+[14:46:52] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_Marble_Tiles_c], Extension [.dds], Loaded successfully!
+[14:46:52] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_Marble_Tiles_n], Extension [.dds], Loaded successfully!
+[14:46:52] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_Marble_Tiles_orm], Extension [.dds], Loaded successfully!
+[14:46:53] [   LOG   ] [ASSETREGISTRY] Type [MaterialAsset], Asset Name [BaseMaterial], Extension [.json], Loaded successfully!
+[14:46:53] [   LOG   ] [ASSETREGISTRY] Type [MeshAsset], Asset Name [SM_Color_Checker], Extension [.fbx], Loaded successfully!
+[14:46:53] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_Color_Checker_c], Extension [.dds], Loaded successfully!
+[14:46:53] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_Color_Checker_n], Extension [.dds], Loaded successfully!
+[14:46:53] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_Color_Checker_orm], Extension [.dds], Loaded successfully!
+[14:46:53] [   LOG   ] [ASSETREGISTRY] Type [MaterialAsset], Asset Name [SMColorChecker], Extension [.json], Loaded successfully!
+[14:46:53] [   LOG   ] [ASSETREGISTRY] Type [MeshAsset], Asset Name [SM_Chest], Extension [.fbx], Loaded successfully!
+[14:46:53] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_Chest_c], Extension [.dds], Loaded successfully!
+[14:46:53] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_Chest_n], Extension [.dds], Loaded successfully!
+[14:46:53] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_Chest_orm], Extension [.dds], Loaded successfully!
+[14:46:53] [   LOG   ] [ASSETREGISTRY] Type [MaterialAsset], Asset Name [ChestMaterial], Extension [.json], Loaded successfully!
+[14:46:54] [   LOG   ] [ASSETREGISTRY] Type [MeshAsset], Asset Name [SK_C_TGA_Bro], Extension [.fbx], Loaded successfully!
+[14:46:54] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_TGA_Bro_c], Extension [.dds], Loaded successfully!
+[14:46:54] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_TGA_Bro_n], Extension [.dds], Loaded successfully!
+[14:46:54] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_TGA_Bro_orm], Extension [.dds], Loaded successfully!
+[14:46:54] [   LOG   ] [ASSETREGISTRY] Type [MaterialAsset], Asset Name [TGABroMaterial], Extension [.json], Loaded successfully!
+[14:46:54] [   LOG   ] [ASSETREGISTRY] Type [AnimationAsset], Asset Name [A_C_TGA_Bro_Idle_Breathing], Extension [.fbx], Loaded successfully!
+[14:46:54] [   LOG   ] [ASSETREGISTRY] Type [AnimationAsset], Asset Name [A_C_TGA_Bro_Idle_Wave], Extension [.fbx], Loaded successfully!
+[14:46:54] [   LOG   ] [ASSETREGISTRY] Type [AnimationAsset], Asset Name [A_C_TGA_Bro_Run], Extension [.fbx], Loaded successfully!
+[14:46:54] [   LOG   ] [ASSETREGISTRY] Type [AnimationAsset], Asset Name [A_C_TGA_Bro_Walk], Extension [.fbx], Loaded successfully!
+[14:46:54] [   LOG   ] [ASSETREGISTRY] Type [FontAsset], Asset Name [CascadiaCode_M], Extension [.json], Loaded successfully!
+****************************************************************************************************
+Logging has started at 2026-10-01 14:47:30.
+****************************************************************************************************
+[14:47:30] [   LOG   ] [RHI] Initializing RHI...
+[14:47:30] [   LOG   ] [RHI] Selected adapter is NVIDIA GeForce RTX 4060
+[14:47:30] [   LOG   ] [RHI] RHI Started!
+[14:47:31] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_Shipyard_cm], Extension [.dds], Loaded successfully!
+[14:47:31] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_Marble_Tiles_c], Extension [.dds], Loaded successfully!
+[14:47:31] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_Marble_Tiles_n], Extension [.dds], Loaded successfully!
+[14:47:31] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_Marble_Tiles_orm], Extension [.dds], Loaded successfully!
+[14:47:31] [   LOG   ] [ASSETREGISTRY] Type [MaterialAsset], Asset Name [BaseMaterial], Extension [.json], Loaded successfully!
+[14:47:31] [   LOG   ] [ASSETREGISTRY] Type [MeshAsset], Asset Name [SM_Color_Checker], Extension [.fbx], Loaded successfully!
+[14:47:31] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_Color_Checker_c], Extension [.dds], Loaded successfully!
+[14:47:31] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_Color_Checker_n], Extension [.dds], Loaded successfully!
+[14:47:31] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_Color_Checker_orm], Extension [.dds], Loaded successfully!
+[14:47:31] [   LOG   ] [ASSETREGISTRY] Type [MaterialAsset], Asset Name [SMColorChecker], Extension [.json], Loaded successfully!
+[14:47:31] [   LOG   ] [ASSETREGISTRY] Type [MeshAsset], Asset Name [SM_Chest], Extension [.fbx], Loaded successfully!
+[14:47:31] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_Chest_c], Extension [.dds], Loaded successfully!
+[14:47:31] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_Chest_n], Extension [.dds], Loaded successfully!
+[14:47:31] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_Chest_orm], Extension [.dds], Loaded successfully!
+[14:47:31] [   LOG   ] [ASSETREGISTRY] Type [MaterialAsset], Asset Name [ChestMaterial], Extension [.json], Loaded successfully!
+[14:47:31] [   LOG   ] [ASSETREGISTRY] Type [MeshAsset], Asset Name [SK_C_TGA_Bro], Extension [.fbx], Loaded successfully!
+[14:47:31] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_TGA_Bro_c], Extension [.dds], Loaded successfully!
+[14:47:31] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_TGA_Bro_n], Extension [.dds], Loaded successfully!
+[14:47:31] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_TGA_Bro_orm], Extension [.dds], Loaded successfully!
+[14:47:31] [   LOG   ] [ASSETREGISTRY] Type [MaterialAsset], Asset Name [TGABroMaterial], Extension [.json], Loaded successfully!
+[14:47:32] [   LOG   ] [ASSETREGISTRY] Type [AnimationAsset], Asset Name [A_C_TGA_Bro_Idle_Breathing], Extension [.fbx], Loaded successfully!
+[14:47:32] [   LOG   ] [ASSETREGISTRY] Type [AnimationAsset], Asset Name [A_C_TGA_Bro_Idle_Wave], Extension [.fbx], Loaded successfully!
+[14:47:32] [   LOG   ] [ASSETREGISTRY] Type [AnimationAsset], Asset Name [A_C_TGA_Bro_Run], Extension [.fbx], Loaded successfully!
+[14:47:32] [   LOG   ] [ASSETREGISTRY] Type [AnimationAsset], Asset Name [A_C_TGA_Bro_Walk], Extension [.fbx], Loaded successfully!
+[14:47:32] [   LOG   ] [ASSETREGISTRY] Type [FontAsset], Asset Name [CascadiaCode_M], Extension [.json], Loaded successfully!
+****************************************************************************************************
+Logging has started at 2026-10-01 15:25:30.
+****************************************************************************************************
+[15:25:30] [   LOG   ] [RHI] Initializing RHI...
+[15:25:30] [   LOG   ] [RHI] Selected adapter is NVIDIA GeForce RTX 4060
+[15:25:30] [   LOG   ] [RHI] RHI Started!
+[15:25:31] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_Shipyard_cm], Extension [.dds], Loaded successfully!
+[15:25:31] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_Marble_Tiles_c], Extension [.dds], Loaded successfully!
+[15:25:31] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_Marble_Tiles_n], Extension [.dds], Loaded successfully!
+[15:25:31] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_Marble_Tiles_orm], Extension [.dds], Loaded successfully!
+[15:25:31] [   LOG   ] [ASSETREGISTRY] Type [MaterialAsset], Asset Name [BaseMaterial], Extension [.json], Loaded successfully!
+[15:25:31] [   LOG   ] [ASSETREGISTRY] Type [MeshAsset], Asset Name [SM_Color_Checker], Extension [.fbx], Loaded successfully!
+[15:25:31] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_Color_Checker_c], Extension [.dds], Loaded successfully!
+[15:25:31] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_Color_Checker_n], Extension [.dds], Loaded successfully!
+[15:25:31] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_Color_Checker_orm], Extension [.dds], Loaded successfully!
+[15:25:31] [   LOG   ] [ASSETREGISTRY] Type [MaterialAsset], Asset Name [SMColorChecker], Extension [.json], Loaded successfully!
+[15:25:31] [   LOG   ] [ASSETREGISTRY] Type [MeshAsset], Asset Name [SM_Chest], Extension [.fbx], Loaded successfully!
+[15:25:31] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_Chest_c], Extension [.dds], Loaded successfully!
+[15:25:31] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_Chest_n], Extension [.dds], Loaded successfully!
+[15:25:31] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_Chest_orm], Extension [.dds], Loaded successfully!
+[15:25:31] [   LOG   ] [ASSETREGISTRY] Type [MaterialAsset], Asset Name [ChestMaterial], Extension [.json], Loaded successfully!
+[15:25:31] [   LOG   ] [ASSETREGISTRY] Type [MeshAsset], Asset Name [SK_C_TGA_Bro], Extension [.fbx], Loaded successfully!
+[15:25:31] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_TGA_Bro_c], Extension [.dds], Loaded successfully!
+[15:25:31] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_TGA_Bro_n], Extension [.dds], Loaded successfully!
+[15:25:31] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_TGA_Bro_orm], Extension [.dds], Loaded successfully!
+[15:25:31] [   LOG   ] [ASSETREGISTRY] Type [MaterialAsset], Asset Name [TGABroMaterial], Extension [.json], Loaded successfully!
+[15:25:32] [   LOG   ] [ASSETREGISTRY] Type [AnimationAsset], Asset Name [A_C_TGA_Bro_Idle_Breathing], Extension [.fbx], Loaded successfully!
+[15:25:32] [   LOG   ] [ASSETREGISTRY] Type [AnimationAsset], Asset Name [A_C_TGA_Bro_Idle_Wave], Extension [.fbx], Loaded successfully!
+[15:25:32] [   LOG   ] [ASSETREGISTRY] Type [AnimationAsset], Asset Name [A_C_TGA_Bro_Run], Extension [.fbx], Loaded successfully!
+[15:25:32] [   LOG   ] [ASSETREGISTRY] Type [AnimationAsset], Asset Name [A_C_TGA_Bro_Walk], Extension [.fbx], Loaded successfully!
+[15:25:32] [   LOG   ] [ASSETREGISTRY] Type [FontAsset], Asset Name [CascadiaCode_M], Extension [.json], Loaded successfully!
+****************************************************************************************************
+Logging has started at 2026-10-01 15:26:33.
+****************************************************************************************************
+[15:26:33] [   LOG   ] [RHI] Initializing RHI...
+[15:26:33] [   LOG   ] [RHI] Selected adapter is NVIDIA GeForce RTX 4060
+[15:26:34] [   LOG   ] [RHI] RHI Started!
+[15:26:34] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_Shipyard_cm], Extension [.dds], Loaded successfully!
+[15:26:34] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_Marble_Tiles_c], Extension [.dds], Loaded successfully!
+[15:26:34] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_Marble_Tiles_n], Extension [.dds], Loaded successfully!
+[15:26:34] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_Marble_Tiles_orm], Extension [.dds], Loaded successfully!
+[15:26:34] [   LOG   ] [ASSETREGISTRY] Type [MaterialAsset], Asset Name [BaseMaterial], Extension [.json], Loaded successfully!
+[15:26:34] [   LOG   ] [ASSETREGISTRY] Type [MeshAsset], Asset Name [SM_Color_Checker], Extension [.fbx], Loaded successfully!
+[15:26:34] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_Color_Checker_c], Extension [.dds], Loaded successfully!
+[15:26:34] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_Color_Checker_n], Extension [.dds], Loaded successfully!
+[15:26:34] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_Color_Checker_orm], Extension [.dds], Loaded successfully!
+[15:26:34] [   LOG   ] [ASSETREGISTRY] Type [MaterialAsset], Asset Name [SMColorChecker], Extension [.json], Loaded successfully!
+[15:26:34] [   LOG   ] [ASSETREGISTRY] Type [MeshAsset], Asset Name [SM_Chest], Extension [.fbx], Loaded successfully!
+[15:26:34] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_Chest_c], Extension [.dds], Loaded successfully!
+[15:26:34] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_Chest_n], Extension [.dds], Loaded successfully!
+[15:26:34] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_Chest_orm], Extension [.dds], Loaded successfully!
+[15:26:35] [   LOG   ] [ASSETREGISTRY] Type [MaterialAsset], Asset Name [ChestMaterial], Extension [.json], Loaded successfully!
+[15:26:35] [   LOG   ] [ASSETREGISTRY] Type [MeshAsset], Asset Name [SK_C_TGA_Bro], Extension [.fbx], Loaded successfully!
+[15:26:35] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_TGA_Bro_c], Extension [.dds], Loaded successfully!
+[15:26:35] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_TGA_Bro_n], Extension [.dds], Loaded successfully!
+[15:26:35] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_TGA_Bro_orm], Extension [.dds], Loaded successfully!
+[15:26:35] [   LOG   ] [ASSETREGISTRY] Type [MaterialAsset], Asset Name [TGABroMaterial], Extension [.json], Loaded successfully!
+[15:26:35] [   LOG   ] [ASSETREGISTRY] Type [AnimationAsset], Asset Name [A_C_TGA_Bro_Idle_Breathing], Extension [.fbx], Loaded successfully!
+[15:26:35] [   LOG   ] [ASSETREGISTRY] Type [AnimationAsset], Asset Name [A_C_TGA_Bro_Idle_Wave], Extension [.fbx], Loaded successfully!
+[15:26:35] [   LOG   ] [ASSETREGISTRY] Type [AnimationAsset], Asset Name [A_C_TGA_Bro_Run], Extension [.fbx], Loaded successfully!
+[15:26:35] [   LOG   ] [ASSETREGISTRY] Type [AnimationAsset], Asset Name [A_C_TGA_Bro_Walk], Extension [.fbx], Loaded successfully!
+[15:26:35] [   LOG   ] [ASSETREGISTRY] Type [FontAsset], Asset Name [CascadiaCode_M], Extension [.json], Loaded successfully!
+****************************************************************************************************
+Logging has started at 2026-10-01 15:29:07.
+****************************************************************************************************
+[15:29:07] [   LOG   ] [RHI] Initializing RHI...
+[15:29:07] [   LOG   ] [RHI] Selected adapter is NVIDIA GeForce RTX 4060
+[15:29:07] [   LOG   ] [RHI] RHI Started!
+[15:29:07] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_Shipyard_cm], Extension [.dds], Loaded successfully!
+[15:29:07] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_Marble_Tiles_c], Extension [.dds], Loaded successfully!
+[15:29:07] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_Marble_Tiles_n], Extension [.dds], Loaded successfully!
+[15:29:07] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_Marble_Tiles_orm], Extension [.dds], Loaded successfully!
+[15:29:07] [   LOG   ] [ASSETREGISTRY] Type [MaterialAsset], Asset Name [BaseMaterial], Extension [.json], Loaded successfully!
+[15:29:08] [   LOG   ] [ASSETREGISTRY] Type [MeshAsset], Asset Name [SM_Color_Checker], Extension [.fbx], Loaded successfully!
+[15:29:08] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_Color_Checker_c], Extension [.dds], Loaded successfully!
+[15:29:08] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_Color_Checker_n], Extension [.dds], Loaded successfully!
+[15:29:08] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_Color_Checker_orm], Extension [.dds], Loaded successfully!
+[15:29:08] [   LOG   ] [ASSETREGISTRY] Type [MaterialAsset], Asset Name [SMColorChecker], Extension [.json], Loaded successfully!
+[15:29:08] [   LOG   ] [ASSETREGISTRY] Type [MeshAsset], Asset Name [SM_Chest], Extension [.fbx], Loaded successfully!
+[15:29:08] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_Chest_c], Extension [.dds], Loaded successfully!
+[15:29:08] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_Chest_n], Extension [.dds], Loaded successfully!
+[15:29:08] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_Chest_orm], Extension [.dds], Loaded successfully!
+[15:29:08] [   LOG   ] [ASSETREGISTRY] Type [MaterialAsset], Asset Name [ChestMaterial], Extension [.json], Loaded successfully!
+[15:29:08] [   LOG   ] [ASSETREGISTRY] Type [MeshAsset], Asset Name [SK_C_TGA_Bro], Extension [.fbx], Loaded successfully!
+[15:29:08] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_TGA_Bro_c], Extension [.dds], Loaded successfully!
+[15:29:08] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_TGA_Bro_n], Extension [.dds], Loaded successfully!
+[15:29:08] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_TGA_Bro_orm], Extension [.dds], Loaded successfully!
+[15:29:08] [   LOG   ] [ASSETREGISTRY] Type [MaterialAsset], Asset Name [TGABroMaterial], Extension [.json], Loaded successfully!
+[15:29:08] [   LOG   ] [ASSETREGISTRY] Type [AnimationAsset], Asset Name [A_C_TGA_Bro_Idle_Breathing], Extension [.fbx], Loaded successfully!
+[15:29:08] [   LOG   ] [ASSETREGISTRY] Type [AnimationAsset], Asset Name [A_C_TGA_Bro_Idle_Wave], Extension [.fbx], Loaded successfully!
+[15:29:08] [   LOG   ] [ASSETREGISTRY] Type [AnimationAsset], Asset Name [A_C_TGA_Bro_Run], Extension [.fbx], Loaded successfully!
+[15:29:08] [   LOG   ] [ASSETREGISTRY] Type [AnimationAsset], Asset Name [A_C_TGA_Bro_Walk], Extension [.fbx], Loaded successfully!
+[15:29:08] [   LOG   ] [ASSETREGISTRY] Type [FontAsset], Asset Name [CascadiaCode_M], Extension [.json], Loaded successfully!
+****************************************************************************************************
+Logging has started at 2026-10-01 15:30:07.
+****************************************************************************************************
+[15:30:07] [   LOG   ] [RHI] Initializing RHI...
+[15:30:07] [   LOG   ] [RHI] Selected adapter is NVIDIA GeForce RTX 4060
+[15:30:08] [   LOG   ] [RHI] RHI Started!
+[15:30:08] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_Shipyard_cm], Extension [.dds], Loaded successfully!
+[15:30:08] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_Marble_Tiles_c], Extension [.dds], Loaded successfully!
+[15:30:08] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_Marble_Tiles_n], Extension [.dds], Loaded successfully!
+[15:30:08] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_Marble_Tiles_orm], Extension [.dds], Loaded successfully!
+[15:30:08] [   LOG   ] [ASSETREGISTRY] Type [MaterialAsset], Asset Name [BaseMaterial], Extension [.json], Loaded successfully!
+[15:30:08] [   LOG   ] [ASSETREGISTRY] Type [MeshAsset], Asset Name [SM_Color_Checker], Extension [.fbx], Loaded successfully!
+[15:30:08] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_Color_Checker_c], Extension [.dds], Loaded successfully!
+[15:30:08] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_Color_Checker_n], Extension [.dds], Loaded successfully!
+[15:30:08] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_Color_Checker_orm], Extension [.dds], Loaded successfully!
+[15:30:08] [   LOG   ] [ASSETREGISTRY] Type [MaterialAsset], Asset Name [SMColorChecker], Extension [.json], Loaded successfully!
+[15:30:08] [   LOG   ] [ASSETREGISTRY] Type [MeshAsset], Asset Name [SM_Chest], Extension [.fbx], Loaded successfully!
+[15:30:08] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_Chest_c], Extension [.dds], Loaded successfully!
+[15:30:08] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_Chest_n], Extension [.dds], Loaded successfully!
+[15:30:08] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_Chest_orm], Extension [.dds], Loaded successfully!
+[15:30:09] [   LOG   ] [ASSETREGISTRY] Type [MaterialAsset], Asset Name [ChestMaterial], Extension [.json], Loaded successfully!
+[15:30:09] [   LOG   ] [ASSETREGISTRY] Type [MeshAsset], Asset Name [SK_C_TGA_Bro], Extension [.fbx], Loaded successfully!
+[15:30:09] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_TGA_Bro_c], Extension [.dds], Loaded successfully!
+[15:30:09] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_TGA_Bro_n], Extension [.dds], Loaded successfully!
+[15:30:09] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_TGA_Bro_orm], Extension [.dds], Loaded successfully!
+[15:30:09] [   LOG   ] [ASSETREGISTRY] Type [MaterialAsset], Asset Name [TGABroMaterial], Extension [.json], Loaded successfully!
+[15:30:09] [   LOG   ] [ASSETREGISTRY] Type [AnimationAsset], Asset Name [A_C_TGA_Bro_Idle_Breathing], Extension [.fbx], Loaded successfully!
+[15:30:09] [   LOG   ] [ASSETREGISTRY] Type [AnimationAsset], Asset Name [A_C_TGA_Bro_Idle_Wave], Extension [.fbx], Loaded successfully!
+[15:30:09] [   LOG   ] [ASSETREGISTRY] Type [AnimationAsset], Asset Name [A_C_TGA_Bro_Run], Extension [.fbx], Loaded successfully!
+[15:30:09] [   LOG   ] [ASSETREGISTRY] Type [AnimationAsset], Asset Name [A_C_TGA_Bro_Walk], Extension [.fbx], Loaded successfully!
+[15:30:09] [   LOG   ] [ASSETREGISTRY] Type [FontAsset], Asset Name [CascadiaCode_M], Extension [.json], Loaded successfully!
+****************************************************************************************************
+Logging has started at 2026-10-01 15:30:40.
+****************************************************************************************************
+[15:30:40] [   LOG   ] [RHI] Initializing RHI...
+[15:30:40] [   LOG   ] [RHI] Selected adapter is NVIDIA GeForce RTX 4060
+[15:30:40] [   LOG   ] [RHI] RHI Started!
+[15:30:41] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_Shipyard_cm], Extension [.dds], Loaded successfully!
+[15:30:41] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_Marble_Tiles_c], Extension [.dds], Loaded successfully!
+[15:30:41] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_Marble_Tiles_n], Extension [.dds], Loaded successfully!
+[15:30:41] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_Marble_Tiles_orm], Extension [.dds], Loaded successfully!
+[15:30:41] [   LOG   ] [ASSETREGISTRY] Type [MaterialAsset], Asset Name [BaseMaterial], Extension [.json], Loaded successfully!
+[15:30:41] [   LOG   ] [ASSETREGISTRY] Type [MeshAsset], Asset Name [SM_Color_Checker], Extension [.fbx], Loaded successfully!
+[15:30:41] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_Color_Checker_c], Extension [.dds], Loaded successfully!
+[15:30:41] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_Color_Checker_n], Extension [.dds], Loaded successfully!
+[15:30:41] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_Color_Checker_orm], Extension [.dds], Loaded successfully!
+[15:30:41] [   LOG   ] [ASSETREGISTRY] Type [MaterialAsset], Asset Name [SMColorChecker], Extension [.json], Loaded successfully!
+[15:30:41] [   LOG   ] [ASSETREGISTRY] Type [MeshAsset], Asset Name [SM_Chest], Extension [.fbx], Loaded successfully!
+[15:30:41] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_Chest_c], Extension [.dds], Loaded successfully!
+[15:30:41] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_Chest_n], Extension [.dds], Loaded successfully!
+[15:30:41] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_Chest_orm], Extension [.dds], Loaded successfully!
+[15:30:41] [   LOG   ] [ASSETREGISTRY] Type [MaterialAsset], Asset Name [ChestMaterial], Extension [.json], Loaded successfully!
+[15:30:41] [   LOG   ] [ASSETREGISTRY] Type [MeshAsset], Asset Name [SK_C_TGA_Bro], Extension [.fbx], Loaded successfully!
+[15:30:41] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_TGA_Bro_c], Extension [.dds], Loaded successfully!
+[15:30:41] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_TGA_Bro_n], Extension [.dds], Loaded successfully!
+[15:30:41] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_TGA_Bro_orm], Extension [.dds], Loaded successfully!
+[15:30:41] [   LOG   ] [ASSETREGISTRY] Type [MaterialAsset], Asset Name [TGABroMaterial], Extension [.json], Loaded successfully!
+[15:30:41] [   LOG   ] [ASSETREGISTRY] Type [AnimationAsset], Asset Name [A_C_TGA_Bro_Idle_Breathing], Extension [.fbx], Loaded successfully!
+[15:30:41] [   LOG   ] [ASSETREGISTRY] Type [AnimationAsset], Asset Name [A_C_TGA_Bro_Idle_Wave], Extension [.fbx], Loaded successfully!
+[15:30:42] [   LOG   ] [ASSETREGISTRY] Type [AnimationAsset], Asset Name [A_C_TGA_Bro_Run], Extension [.fbx], Loaded successfully!
+[15:30:42] [   LOG   ] [ASSETREGISTRY] Type [AnimationAsset], Asset Name [A_C_TGA_Bro_Walk], Extension [.fbx], Loaded successfully!
+[15:30:42] [   LOG   ] [ASSETREGISTRY] Type [FontAsset], Asset Name [CascadiaCode_M], Extension [.json], Loaded successfully!
+****************************************************************************************************
+Logging has started at 2026-10-01 15:33:33.
+****************************************************************************************************
+[15:33:33] [   LOG   ] [RHI] Initializing RHI...
+[15:33:33] [   LOG   ] [RHI] Selected adapter is NVIDIA GeForce RTX 4060
+[15:33:33] [   LOG   ] [RHI] RHI Started!
+[15:33:34] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_Shipyard_cm], Extension [.dds], Loaded successfully!
+[15:33:34] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_Marble_Tiles_c], Extension [.dds], Loaded successfully!
+[15:33:34] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_Marble_Tiles_n], Extension [.dds], Loaded successfully!
+[15:33:34] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_Marble_Tiles_orm], Extension [.dds], Loaded successfully!
+[15:33:34] [   LOG   ] [ASSETREGISTRY] Type [MaterialAsset], Asset Name [BaseMaterial], Extension [.json], Loaded successfully!
+[15:33:34] [   LOG   ] [ASSETREGISTRY] Type [MeshAsset], Asset Name [SM_Color_Checker], Extension [.fbx], Loaded successfully!
+[15:33:34] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_Color_Checker_c], Extension [.dds], Loaded successfully!
+[15:33:34] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_Color_Checker_n], Extension [.dds], Loaded successfully!
+[15:33:34] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_Color_Checker_orm], Extension [.dds], Loaded successfully!
+[15:33:34] [   LOG   ] [ASSETREGISTRY] Type [MaterialAsset], Asset Name [SMColorChecker], Extension [.json], Loaded successfully!
+[15:33:34] [   LOG   ] [ASSETREGISTRY] Type [MeshAsset], Asset Name [SM_Chest], Extension [.fbx], Loaded successfully!
+[15:33:34] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_Chest_c], Extension [.dds], Loaded successfully!
+[15:33:34] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_Chest_n], Extension [.dds], Loaded successfully!
+[15:33:34] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_Chest_orm], Extension [.dds], Loaded successfully!
+[15:33:35] [   LOG   ] [ASSETREGISTRY] Type [MaterialAsset], Asset Name [ChestMaterial], Extension [.json], Loaded successfully!
+[15:33:35] [   LOG   ] [ASSETREGISTRY] Type [MeshAsset], Asset Name [SK_C_TGA_Bro], Extension [.fbx], Loaded successfully!
+[15:33:35] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_TGA_Bro_c], Extension [.dds], Loaded successfully!
+[15:33:35] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_TGA_Bro_n], Extension [.dds], Loaded successfully!
+[15:33:35] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_TGA_Bro_orm], Extension [.dds], Loaded successfully!
+[15:33:35] [   LOG   ] [ASSETREGISTRY] Type [MaterialAsset], Asset Name [TGABroMaterial], Extension [.json], Loaded successfully!
+[15:33:35] [   LOG   ] [ASSETREGISTRY] Type [AnimationAsset], Asset Name [A_C_TGA_Bro_Idle_Breathing], Extension [.fbx], Loaded successfully!
+[15:33:35] [   LOG   ] [ASSETREGISTRY] Type [AnimationAsset], Asset Name [A_C_TGA_Bro_Idle_Wave], Extension [.fbx], Loaded successfully!
+[15:33:35] [   LOG   ] [ASSETREGISTRY] Type [AnimationAsset], Asset Name [A_C_TGA_Bro_Run], Extension [.fbx], Loaded successfully!
+[15:33:35] [   LOG   ] [ASSETREGISTRY] Type [AnimationAsset], Asset Name [A_C_TGA_Bro_Walk], Extension [.fbx], Loaded successfully!
+[15:33:35] [   LOG   ] [ASSETREGISTRY] Type [FontAsset], Asset Name [CascadiaCode_M], Extension [.json], Loaded successfully!
+****************************************************************************************************
+Logging has started at 2026-10-01 15:34:14.
+****************************************************************************************************
+[15:34:14] [   LOG   ] [RHI] Initializing RHI...
+[15:34:14] [   LOG   ] [RHI] Selected adapter is NVIDIA GeForce RTX 4060
+[15:34:14] [   LOG   ] [RHI] RHI Started!
+[15:34:14] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_Shipyard_cm], Extension [.dds], Loaded successfully!
+[15:34:14] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_Marble_Tiles_c], Extension [.dds], Loaded successfully!
+[15:34:14] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_Marble_Tiles_n], Extension [.dds], Loaded successfully!
+[15:34:14] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_Marble_Tiles_orm], Extension [.dds], Loaded successfully!
+[15:34:15] [   LOG   ] [ASSETREGISTRY] Type [MaterialAsset], Asset Name [BaseMaterial], Extension [.json], Loaded successfully!
+[15:34:15] [   LOG   ] [ASSETREGISTRY] Type [MeshAsset], Asset Name [SM_Color_Checker], Extension [.fbx], Loaded successfully!
+[15:34:15] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_Color_Checker_c], Extension [.dds], Loaded successfully!
+[15:34:15] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_Color_Checker_n], Extension [.dds], Loaded successfully!
+[15:34:15] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_Color_Checker_orm], Extension [.dds], Loaded successfully!
+[15:34:15] [   LOG   ] [ASSETREGISTRY] Type [MaterialAsset], Asset Name [SMColorChecker], Extension [.json], Loaded successfully!
+[15:34:15] [   LOG   ] [ASSETREGISTRY] Type [MeshAsset], Asset Name [SM_Chest], Extension [.fbx], Loaded successfully!
+[15:34:15] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_Chest_c], Extension [.dds], Loaded successfully!
+[15:34:15] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_Chest_n], Extension [.dds], Loaded successfully!
+[15:34:15] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_Chest_orm], Extension [.dds], Loaded successfully!
+[15:34:15] [   LOG   ] [ASSETREGISTRY] Type [MaterialAsset], Asset Name [ChestMaterial], Extension [.json], Loaded successfully!
+[15:34:15] [   LOG   ] [ASSETREGISTRY] Type [MeshAsset], Asset Name [SK_C_TGA_Bro], Extension [.fbx], Loaded successfully!
+[15:34:15] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_TGA_Bro_c], Extension [.dds], Loaded successfully!
+[15:34:15] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_TGA_Bro_n], Extension [.dds], Loaded successfully!
+[15:34:15] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_TGA_Bro_orm], Extension [.dds], Loaded successfully!
+[15:34:15] [   LOG   ] [ASSETREGISTRY] Type [MaterialAsset], Asset Name [TGABroMaterial], Extension [.json], Loaded successfully!
+[15:34:15] [   LOG   ] [ASSETREGISTRY] Type [AnimationAsset], Asset Name [A_C_TGA_Bro_Idle_Breathing], Extension [.fbx], Loaded successfully!
+[15:34:15] [   LOG   ] [ASSETREGISTRY] Type [AnimationAsset], Asset Name [A_C_TGA_Bro_Idle_Wave], Extension [.fbx], Loaded successfully!
+[15:34:15] [   LOG   ] [ASSETREGISTRY] Type [AnimationAsset], Asset Name [A_C_TGA_Bro_Run], Extension [.fbx], Loaded successfully!
+[15:34:15] [   LOG   ] [ASSETREGISTRY] Type [AnimationAsset], Asset Name [A_C_TGA_Bro_Walk], Extension [.fbx], Loaded successfully!
+[15:34:15] [   LOG   ] [ASSETREGISTRY] Type [FontAsset], Asset Name [CascadiaCode_M], Extension [.json], Loaded successfully!
+****************************************************************************************************
+Logging has started at 2026-10-01 15:35:55.
+****************************************************************************************************
+[15:35:55] [   LOG   ] [RHI] Initializing RHI...
+[15:35:55] [   LOG   ] [RHI] Selected adapter is NVIDIA GeForce RTX 4060
+[15:35:55] [   LOG   ] [RHI] RHI Started!
+[15:35:56] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_Shipyard_cm], Extension [.dds], Loaded successfully!
+[15:35:56] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_Marble_Tiles_c], Extension [.dds], Loaded successfully!
+[15:35:56] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_Marble_Tiles_n], Extension [.dds], Loaded successfully!
+[15:35:56] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_Marble_Tiles_orm], Extension [.dds], Loaded successfully!
+[15:35:56] [   LOG   ] [ASSETREGISTRY] Type [MaterialAsset], Asset Name [BaseMaterial], Extension [.json], Loaded successfully!
+[15:35:56] [   LOG   ] [ASSETREGISTRY] Type [MeshAsset], Asset Name [SM_Color_Checker], Extension [.fbx], Loaded successfully!
+[15:35:56] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_Color_Checker_c], Extension [.dds], Loaded successfully!
+[15:35:56] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_Color_Checker_n], Extension [.dds], Loaded successfully!
+[15:35:56] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_Color_Checker_orm], Extension [.dds], Loaded successfully!
+[15:35:56] [   LOG   ] [ASSETREGISTRY] Type [MaterialAsset], Asset Name [SMColorChecker], Extension [.json], Loaded successfully!
+[15:35:56] [   LOG   ] [ASSETREGISTRY] Type [MeshAsset], Asset Name [SM_Chest], Extension [.fbx], Loaded successfully!
+[15:35:56] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_Chest_c], Extension [.dds], Loaded successfully!
+[15:35:56] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_Chest_n], Extension [.dds], Loaded successfully!
+[15:35:56] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_Chest_orm], Extension [.dds], Loaded successfully!
+[15:35:57] [   LOG   ] [ASSETREGISTRY] Type [MaterialAsset], Asset Name [ChestMaterial], Extension [.json], Loaded successfully!
+[15:35:57] [   LOG   ] [ASSETREGISTRY] Type [MeshAsset], Asset Name [SK_C_TGA_Bro], Extension [.fbx], Loaded successfully!
+[15:35:57] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_TGA_Bro_c], Extension [.dds], Loaded successfully!
+[15:35:57] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_TGA_Bro_n], Extension [.dds], Loaded successfully!
+[15:35:57] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_TGA_Bro_orm], Extension [.dds], Loaded successfully!
+[15:35:57] [   LOG   ] [ASSETREGISTRY] Type [MaterialAsset], Asset Name [TGABroMaterial], Extension [.json], Loaded successfully!
+[15:35:57] [   LOG   ] [ASSETREGISTRY] Type [AnimationAsset], Asset Name [A_C_TGA_Bro_Idle_Breathing], Extension [.fbx], Loaded successfully!
+[15:35:57] [   LOG   ] [ASSETREGISTRY] Type [AnimationAsset], Asset Name [A_C_TGA_Bro_Idle_Wave], Extension [.fbx], Loaded successfully!
+[15:35:57] [   LOG   ] [ASSETREGISTRY] Type [AnimationAsset], Asset Name [A_C_TGA_Bro_Run], Extension [.fbx], Loaded successfully!
+[15:35:57] [   LOG   ] [ASSETREGISTRY] Type [AnimationAsset], Asset Name [A_C_TGA_Bro_Walk], Extension [.fbx], Loaded successfully!
+[15:35:57] [   LOG   ] [ASSETREGISTRY] Type [FontAsset], Asset Name [CascadiaCode_M], Extension [.json], Loaded successfully!
+****************************************************************************************************
+Logging has started at 2026-10-01 15:36:37.
+****************************************************************************************************
+[15:36:37] [   LOG   ] [RHI] Initializing RHI...
+[15:36:37] [   LOG   ] [RHI] Selected adapter is NVIDIA GeForce RTX 4060
+[15:36:37] [   LOG   ] [RHI] RHI Started!
+[15:36:37] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_Shipyard_cm], Extension [.dds], Loaded successfully!
+[15:36:37] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_Marble_Tiles_c], Extension [.dds], Loaded successfully!
+[15:36:37] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_Marble_Tiles_n], Extension [.dds], Loaded successfully!
+[15:36:37] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_Marble_Tiles_orm], Extension [.dds], Loaded successfully!
+[15:36:38] [   LOG   ] [ASSETREGISTRY] Type [MaterialAsset], Asset Name [BaseMaterial], Extension [.json], Loaded successfully!
+[15:36:38] [   LOG   ] [ASSETREGISTRY] Type [MeshAsset], Asset Name [SM_Color_Checker], Extension [.fbx], Loaded successfully!
+[15:36:38] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_Color_Checker_c], Extension [.dds], Loaded successfully!
+[15:36:38] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_Color_Checker_n], Extension [.dds], Loaded successfully!
+[15:36:38] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_Color_Checker_orm], Extension [.dds], Loaded successfully!
+[15:36:38] [   LOG   ] [ASSETREGISTRY] Type [MaterialAsset], Asset Name [SMColorChecker], Extension [.json], Loaded successfully!
+[15:36:38] [   LOG   ] [ASSETREGISTRY] Type [MeshAsset], Asset Name [SM_Chest], Extension [.fbx], Loaded successfully!
+[15:36:38] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_Chest_c], Extension [.dds], Loaded successfully!
+[15:36:38] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_Chest_n], Extension [.dds], Loaded successfully!
+[15:36:38] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_Chest_orm], Extension [.dds], Loaded successfully!
+[15:36:38] [   LOG   ] [ASSETREGISTRY] Type [MaterialAsset], Asset Name [ChestMaterial], Extension [.json], Loaded successfully!
+[15:36:38] [   LOG   ] [ASSETREGISTRY] Type [MeshAsset], Asset Name [SK_C_TGA_Bro], Extension [.fbx], Loaded successfully!
+[15:36:38] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_TGA_Bro_c], Extension [.dds], Loaded successfully!
+[15:36:38] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_TGA_Bro_n], Extension [.dds], Loaded successfully!
+[15:36:38] [   LOG   ] [ASSETREGISTRY] Type [TextureAsset], Asset Name [T_TGA_Bro_orm], Extension [.dds], Loaded successfully!
+[15:36:38] [   LOG   ] [ASSETREGISTRY] Type [MaterialAsset], Asset Name [TGABroMaterial], Extension [.json], Loaded successfully!
+[15:36:38] [   LOG   ] [ASSETREGISTRY] Type [AnimationAsset], Asset Name [A_C_TGA_Bro_Idle_Breathing], Extension [.fbx], Loaded successfully!
+[15:36:38] [   LOG   ] [ASSETREGISTRY] Type [AnimationAsset], Asset Name [A_C_TGA_Bro_Idle_Wave], Extension [.fbx], Loaded successfully!
+[15:36:38] [   LOG   ] [ASSETREGISTRY] Type [AnimationAsset], Asset Name [A_C_TGA_Bro_Run], Extension [.fbx], Loaded successfully!
+[15:36:38] [   LOG   ] [ASSETREGISTRY] Type [AnimationAsset], Asset Name [A_C_TGA_Bro_Walk], Extension [.fbx], Loaded successfully!
+[15:36:38] [   LOG   ] [ASSETREGISTRY] Type [FontAsset], Asset Name [CascadiaCode_M], Extension [.json], Loaded successfully!
