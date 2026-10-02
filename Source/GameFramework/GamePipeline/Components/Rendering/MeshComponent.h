@@ -27,9 +27,6 @@ public:
 	void SetMaterial(unsigned int aMaterialIndex, const std::shared_ptr<MaterialAsset> aMaterialAsset);
 	const std::vector<std::shared_ptr<MaterialAsset>>& GetMaterialAssetList() const;
 
-	CommonUtilities::Sphere<float> GetWorldSpaceBoundingSphere() const;
-	CommonUtilities::Sphere<float> GetLocalSpaceBoundingSphere() const;
-
 private:
 	std::shared_ptr<MeshAsset> myMeshAsset;
 	std::vector<std::shared_ptr<MaterialAsset>> myMaterialAssets;

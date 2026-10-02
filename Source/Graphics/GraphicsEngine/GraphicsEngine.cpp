@@ -60,6 +60,8 @@
 #include "FullTexture_VS.h"
 #include "BRDF_LUT_PS.h"
 
+#include <tracy/core/Tracy.hpp>
+
 GraphicsEngine::GraphicsEngine() = default;
 GraphicsEngine::~GraphicsEngine() = default;
 
@@ -142,8 +144,10 @@ void GraphicsEngine::BeginFrame()
 
 void GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const SceneCamera& aCamera)
 {
+	ZoneScopedN("Whole render pass");
+
 	{
-		inoutCommandList.BeginEvent("Clear Backbuffer/Depth");
+		inoutCommandList.BeginEvent("Clear Backbuffers");
 
 		inoutCommandList.ClearRenderTarget(*myBackBuffer);
 		inoutCommandList.ClearRenderTarget(*myHDRBuffer);
@@ -153,14 +157,7 @@ void GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const SceneCa
 	}
 
 	{
-		std::vector<Sampler*> samplerList(mySamplers.size());
-
-		for (size_t s = 0; s < mySamplers.size(); s++)
-		{
-			samplerList[s] = mySamplers[s].get();
-		}
-
-		inoutCommandList.SetShaderSamplers(samplerList.data(), samplerList.size(), 0, PipelineStage_VertexShader | PipelineStage_PixelShader);
+		inoutCommandList.SetShaderSamplers(mySamplerPointers.data(), mySamplerPointers.size(), 0, PipelineStage_VertexShader | PipelineStage_PixelShader);
 	}
 
 	{
@@ -168,9 +165,9 @@ void GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const SceneCa
 		inoutCommandList.SetShaderResource(myLUTTexture.get(), 99, PipelineStage_PixelShader);
 	}
 
-	std::vector<RenderItem> opaqueItems;
-	std::vector<RenderItem> alphaItems;
-	std::vector<RenderItem> shadowItems;
+	myOpaqueItems.clear();
+	myAlphaItems.clear();
+	myShadowItems.clear();
 
 	for (const auto& drawCall : MeshDrawer::Get().myDrawCalls)
 	{
@@ -189,38 +186,41 @@ void GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const SceneCa
 
 			if (material == nullptr)
 			{
-				opaqueItems.push_back(item);
-				shadowItems.push_back(item);
-				continue;
+				myOpaqueItems.push_back(item);
 			}
-
-			switch (material->GetBlendMode())
+			else
 			{
-				case MaterialBlendMode::Opaque:
+				switch (material->GetBlendMode())
 				{
-					opaqueItems.push_back(item);
-					break;
-				}
-				case MaterialBlendMode::Alpha:
-				{
-					alphaItems.push_back(item);
-					break;
-				}
-				default:
-				{
-					GELOG(Error, "Mesh {} has a invalid Material Blend Mode setting!", drawCall.Mesh->GetName());
-					break;
+					case MaterialBlendMode::Opaque:
+					{
+						myOpaqueItems.push_back(item);
+						myShadowItems.push_back(item);
+						break;
+					}
+					case MaterialBlendMode::Alpha:
+					{
+						myAlphaItems.push_back(item);
+						break;
+					}
+					default:
+					{
+						GELOG(Error, "Mesh {} has a invalid Material Blend Mode setting!", drawCall.Mesh->GetName());
+						break;
+					}
 				}
 			}
-
-			shadowItems.push_back(item);
 		}
 	}
+
+	myOpaqueItems.shrink_to_fit();
+	myAlphaItems.shrink_to_fit();
+	myShadowItems.shrink_to_fit();
 
 	CommonUtilities::Vector3f cameraPosition = aCamera.Transform.GetTranslation();
 
 	// Front to Back
-	std::sort(opaqueItems.begin(), opaqueItems.end(),
+	std::sort(myOpaqueItems.begin(), myOpaqueItems.end(),
 		[cameraPosition](const RenderItem& A, const RenderItem& B) -> bool
 		{
 			float distanceToA = (A.DrawCall->Transform.GetTranslation() - cameraPosition).LengthSqr();
@@ -230,7 +230,7 @@ void GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const SceneCa
 		});
 
 	// Back to Front
-	std::sort(alphaItems.begin(), alphaItems.end(),
+	std::sort(myAlphaItems.begin(), myAlphaItems.end(),
 		[cameraPosition](const RenderItem& A, const RenderItem& B) -> bool
 		{
 			float distanceToA = (A.DrawCall->Transform.GetTranslation() - cameraPosition).LengthSqr();
@@ -281,7 +281,7 @@ void GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const SceneCa
 		.CascadeShadows = &myShadowRenderPass->GetCascades()
 	};
 
-	myShadowRenderPass->Execute(inoutCommandList, shadowItems, context);
+	myShadowRenderPass->Execute(inoutCommandList, myShadowItems, context);
 
 	inoutCommandList.BeginEvent("Main Pass");
 	{
@@ -291,8 +291,8 @@ void GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const SceneCa
 			.DepthBuffer = myDepthBuffer.get()
 		};
 
-		myDeferredRenderPass->Execute(inoutCommandList, opaqueItems, targets, context);
-		myForwardRenderPass->Execute(inoutCommandList, alphaItems, targets, context);
+		myDeferredRenderPass->Execute(inoutCommandList, myOpaqueItems, targets, context);
+		myForwardRenderPass->Execute(inoutCommandList, myAlphaItems, targets, context);
 	}
 	inoutCommandList.EndEvent();
 
@@ -435,6 +435,7 @@ bool GraphicsEngine::InitializeRenderResources()
 		}
 
 		mySamplers.emplace_back(std::move(sampler));
+		mySamplerPointers.push_back(mySamplers.back().get());
 	}
 
 	// Shadow Sampler
@@ -454,6 +455,7 @@ bool GraphicsEngine::InitializeRenderResources()
 		}
 
 		mySamplers.emplace_back(std::move(sampler));
+		mySamplerPointers.push_back(mySamplers.back().get());
 	}
 
 	// LUT Sampler
@@ -472,6 +474,7 @@ bool GraphicsEngine::InitializeRenderResources()
 		}
 
 		mySamplers.emplace_back(std::move(sampler));
+		mySamplerPointers.push_back(mySamplers.back().get());
 	}
 
 	// Trilinear Clamp
@@ -489,6 +492,7 @@ bool GraphicsEngine::InitializeRenderResources()
 		}
 
 		mySamplers.emplace_back(std::move(sampler));
+		mySamplerPointers.push_back(mySamplers.back().get());
 	}
 
 	// LUT Texture

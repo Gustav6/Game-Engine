@@ -29,6 +29,7 @@ class ScreenSpaceRenderPass;
 class ShadowRenderPass;
 class ScreenSpaceEffectPass;
 
+struct RenderItem;
 struct SceneCamera;
 struct MaterialDescription;
 
@@ -97,8 +98,13 @@ private:
 	std::unique_ptr<Texture> myHDRBuffer;
 	std::unique_ptr<Texture> myDepthBuffer;
 
+	std::vector<Sampler*> mySamplerPointers;
 	std::vector<std::unique_ptr<Sampler>> mySamplers;
 
 	std::shared_ptr<Texture> myEnvironmentCubemap;
 	std::unique_ptr<Texture> myLUTTexture;
+
+	std::vector<RenderItem> myOpaqueItems;
+	std::vector<RenderItem> myAlphaItems;
+	std::vector<RenderItem> myShadowItems;
 };

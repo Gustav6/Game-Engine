@@ -37,8 +37,7 @@ enum class MaterialBlendMode : uint8_t
 {
 	None,
 	Opaque,
-	Alpha,
-	Additve,
+	Alpha
 };
 
 /**

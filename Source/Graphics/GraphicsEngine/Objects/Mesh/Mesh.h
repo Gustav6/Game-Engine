@@ -4,8 +4,9 @@
 #include <vector>
 
 #include "CommonUtilities/Collision/Sphere.hpp"
+#include "CommonUtilities/Collision/AABB3D.hpp"
 
-#include "../GPU/Buffer.h"
+#include "GraphicsEngine/Objects/GPU/Buffer.h"
 
 struct Skeleton;
 struct Vertex;
@@ -32,6 +33,9 @@ public:
 
 		// The material index of this element
 		unsigned int MaterialIndex = 0;
+
+		CommonUtilities::Sphere<float> BoundingSphere;
+		CommonUtilities::AABB3D<float> BoundingBox;
 	};
 
 	Mesh();
@@ -40,17 +44,20 @@ public:
 	Mesh& operator=(Mesh&) = delete;
 	Mesh& operator=(Mesh&& aOther) noexcept = delete;
 
-	void Initialize(std::string aName, 
-					std::vector<Element>&& aElementList, 
-					std::vector<Vertex>&& aVertexList, 
-					std::vector<unsigned>&& aIndexList,
-					std::unique_ptr<Skeleton> aSkeleton,
-					std::unique_ptr<CommonUtilities::Sphere<float>> aBoundingSphere);
+	void Initialize(
+		std::string aName, 
+		std::vector<Element>&& aElementList, 
+		std::vector<Vertex>&& aVertexList, 
+		std::vector<unsigned>&& aIndexList,
+		std::unique_ptr<Skeleton> aSkeleton,
+		CommonUtilities::Sphere<float>& aBoundingSphere,
+		CommonUtilities::AABB3D<float>& aBoundingBox);
 
 	std::string_view GetName() const;
 	Skeleton* GetSkeleton() const;
 	size_t GetNumMaterialSlots() const;
-	CommonUtilities::Sphere<float>* GetBoundingSphere() const;
+	const CommonUtilities::Sphere<float>& GetBoundingSphere() const;
+	const CommonUtilities::AABB3D<float>& GetBoundingBox() const;
 
 private:
 	std::string myName;
@@ -64,5 +71,7 @@ private:
 	mutable Buffer myIndexBuffer;
 
 	std::unique_ptr<Skeleton> mySkeleton;
-	std::unique_ptr<CommonUtilities::Sphere<float>> myBoundingSphere;
+
+	CommonUtilities::Sphere<float> myBoundingSphere;
+	CommonUtilities::AABB3D<float> myBoundingBox;
 };

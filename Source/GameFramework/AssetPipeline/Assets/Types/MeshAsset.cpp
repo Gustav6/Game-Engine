@@ -10,6 +10,8 @@
 #include "GraphicsEngine/Objects/Mesh/Skeleton.h"
 
 #include <CommonUtilities/Collision/Sphere.hpp>
+#include <CommonUtilities/Collision/AABB3D.hpp>
+
 #include <CommonUtilities/Math/Vector2.hpp>
 #include <CommonUtilities/Math/Vector4.hpp>
 #include <CommonUtilities/Math/Vector3.hpp>
@@ -160,6 +162,28 @@ bool MeshAsset::Load(const std::filesystem::path& aPath)
             meshIndices.emplace_back(index + element.VertexOffset);
         }
 
+        element.BoundingSphere.InitWithCenterAndRadius(
+            {
+	            tgaElement.BoxSphereBounds.Center[0],
+	            tgaElement.BoxSphereBounds.Center[1],
+	            tgaElement.BoxSphereBounds.Center[2]
+            },
+            tgaElement.BoxSphereBounds.Radius
+        );
+
+        element.BoundingBox.InitWithMinAndMax(
+			{
+                tgaElement.BoxBounds.Min[0],
+				tgaElement.BoxBounds.Min[1],
+                tgaElement.BoxBounds.Min[2]
+            },
+			{
+	            tgaElement.BoxBounds.Max[0],
+	            tgaElement.BoxBounds.Max[1],
+	            tgaElement.BoxBounds.Max[2]
+			}
+        );
+
         elements.emplace_back(std::move(element));
     }
 
@@ -187,10 +211,31 @@ bool MeshAsset::Load(const std::filesystem::path& aPath)
         skeleton->JointNameToIndex = std::move(tgaMesh->Skeleton.BoneNameToIndex);
     }
 
-    std::unique_ptr<CommonUtilities::Sphere<float>> boundingSphere = std::make_unique<CommonUtilities::Sphere<float>>();
-    /*boundingSphere->InitWithCenterAndRadius({ tgaMesh->BoxSphereBounds.Center[0], tgaMesh->BoxSphereBounds.Center[1], tgaMesh->BoxSphereBounds.Center[2] }, tgaMesh->BoxSphereBounds.Radius);*/
+	CommonUtilities::Sphere<float> boundingSphere; // TODO: It seems the bounding spheres radius is bugged when there is 1 element?
+    /*boundingSphere.InitWithCenterAndRadius(
+		{
+			tgaMesh->BoxSphereBounds.Center[0],
+			tgaMesh->BoxSphereBounds.Center[1],
+			tgaMesh->BoxSphereBounds.Center[2] 
+		}, 
+		tgaMesh->BoxSphereBounds.Radius
+	);*/
 
-    myMesh->Initialize(aPath.filename().string(), std::move(elements), std::move(meshVertices), std::move(meshIndices), std::move(skeleton), std::move(boundingSphere));
+	CommonUtilities::AABB3D<float> boundingBox;
+    /*boundingBox.InitWithMinAndMax(
+		{ 
+			tgaMesh->BoxBounds.Min[0], 
+			tgaMesh->BoxBounds.Min[1], 
+			tgaMesh->BoxBounds.Min[2] 
+		}, 
+		{ 
+			tgaMesh->BoxBounds.Max[0],
+            tgaMesh->BoxBounds.Max[1],
+            tgaMesh->BoxBounds.Max[2]
+		}
+	);*/
+
+    myMesh->Initialize(aPath.filename().string(), std::move(elements), std::move(meshVertices), std::move(meshIndices), std::move(skeleton), boundingSphere, boundingBox);
 
     return true;
 }

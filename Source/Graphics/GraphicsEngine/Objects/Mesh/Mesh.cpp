@@ -1,25 +1,28 @@
 #include "GraphicsEngine.pch.h"
 #include "Mesh.h"
 
-#include "../GPU/Vertex.h"
+#include "GraphicsEngine/Objects/GPU/Vertex.h"
 #include "Skeleton.h"
 
 Mesh::Mesh() = default;
 Mesh::~Mesh() = default;
 
-void Mesh::Initialize(std::string aName, 
-					  std::vector<Element>&& aElementList, 
-					  std::vector<Vertex>&& aVertexList, 
-					  std::vector<unsigned>&& aIndexList, 
-					  std::unique_ptr<Skeleton> aSkeleton,
-					  std::unique_ptr<CommonUtilities::Sphere<float>> aBoundingSphere)
+void Mesh::Initialize(
+	std::string aName, 
+	std::vector<Element>&& aElementList, 
+	std::vector<Vertex>&& aVertexList, 
+	std::vector<unsigned>&& aIndexList, 
+	std::unique_ptr<Skeleton> aSkeleton,
+	CommonUtilities::Sphere<float>& aBoundingSphere,
+	CommonUtilities::AABB3D<float>& aBoundingBox)
 {
 	myName = aName;
 	myElements = std::move(aElementList);
 	myVertices = std::move(aVertexList);
 	myIndices = std::move(aIndexList);
 	mySkeleton = std::move(aSkeleton);
-	myBoundingSphere = std::move(aBoundingSphere);
+	myBoundingSphere = aBoundingSphere;
+	myBoundingBox = aBoundingBox;
 
 	std::unordered_set<unsigned int> materialIds;
 	for (const Element& element : myElements)
@@ -45,7 +48,12 @@ size_t Mesh::GetNumMaterialSlots() const
 	return myNumMaterialSlots;
 }
 
-CommonUtilities::Sphere<float>* Mesh::GetBoundingSphere() const
+const CommonUtilities::Sphere<float>& Mesh::GetBoundingSphere() const
 {
-	return myBoundingSphere.get();
+	return myBoundingSphere;
+}
+
+const CommonUtilities::AABB3D<float>& Mesh::GetBoundingBox() const
+{
+	return myBoundingBox;
 }

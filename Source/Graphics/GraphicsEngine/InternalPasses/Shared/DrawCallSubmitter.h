@@ -4,6 +4,7 @@
 
 class GraphicsCommandList;
 class Mesh;
+class Texture;
 
 struct RenderItem;
 struct RenderContext;

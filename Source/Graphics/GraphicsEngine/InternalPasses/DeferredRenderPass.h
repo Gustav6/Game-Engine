@@ -1,12 +1,12 @@
 #pragma once
 
 #include <vector>
-#include <filesystem>
 
 class GraphicsCommandList;
 class RenderHardwareInterface;
 class GBuffer;
 class PipelineStateObject;
+class Texture;
 
 struct RenderItem;
 struct RenderContext;
@@ -31,5 +31,7 @@ private:
     std::unique_ptr<PipelineStateObject> myDeferredPointPSO;
 
     std::unique_ptr<GBuffer> myGBuffer;
+
+    std::vector<const Texture*> myGBufferTextures;
 };
 

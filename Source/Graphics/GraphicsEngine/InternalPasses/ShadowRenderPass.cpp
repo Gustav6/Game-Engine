@@ -31,6 +31,8 @@
 
 #include "ShadowCube_GS.h"
 
+#include <tracy/core/Tracy.hpp>
+
 bool ShadowRenderPass::Initialize(RenderHardwareInterface& aRHI)
 {
 	// Shadow PSO
@@ -50,6 +52,10 @@ bool ShadowRenderPass::Initialize(RenderHardwareInterface& aRHI)
 		}
 	}
 
+	myCameraNearPlane = 0.0f;
+	myCameraFarPlane = 0.0f;
+	myShadowCascadePlaneChangeThreshold = 1.0f;
+
 	return true;
 }
 
@@ -58,6 +64,8 @@ void ShadowRenderPass::Execute(
 	const std::vector<RenderItem>& aItems,
 	RenderContext& aContext)
 {
+	ZoneScopedN("Shadow render pass");
+
 	inoutCommandList.BeginEvent("Shadow Pass");
 
 	inoutCommandList.SetOverridePipelineState(*myShadowPSO, PipelineStage_None);
@@ -71,19 +79,27 @@ void ShadowRenderPass::Execute(
 				// TODO: Blend between cascades
 				// https://learn.microsoft.com/en-us/windows/win32/dxtecharts/cascaded-shadow-maps
 
-				static float cameraNear = 0.0f;
-				static float cameraFar = 0.0f;
-
 				float cameraNearPlane = aContext.Camera->RenderCamera->GetNearPlane();
 				float cameraFarPlane = aContext.Camera->RenderCamera->GetFarPlane();
 				float cameraFov = aContext.Camera->RenderCamera->GetFovInDegrees();
 				float cameraAspectRatio = aContext.Camera->RenderCamera->GetAspectRatio();
 
-				if (cameraNear != cameraNearPlane || cameraFar != cameraFarPlane)
+				bool needToRebuildCascades = false;
+
+				if (std::abs(myCameraNearPlane - cameraNearPlane) > myShadowCascadePlaneChangeThreshold)
 				{
-					cameraNear = cameraNearPlane;
-					cameraFar = cameraFarPlane;
-					BuildShadowCascades(aContext, { 4096, 2048, 2048, 2048 }, cameraNear, cameraFar);
+					needToRebuildCascades = true;
+				}
+				else if (std::abs(myCameraFarPlane - cameraFarPlane) > myShadowCascadePlaneChangeThreshold)
+				{
+					needToRebuildCascades = true;
+				}
+
+				if (needToRebuildCascades)
+				{
+					myCameraNearPlane = cameraNearPlane;
+					myCameraFarPlane = cameraFarPlane;
+					BuildShadowCascades(aContext, { 4096, 2048, 2048, 2048 }, myCameraNearPlane, myCameraFarPlane);
 				}
 
 				CommonUtilities::Matrix4x4f lightViewProjectionTextures[NUM_CASCADES];

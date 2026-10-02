@@ -24,6 +24,7 @@
 #include <memory>
 #include <array>
 #include <utility>
+#include <algorithm> 
 
 #include "GraphicsEngine.hpp"
 #include "Logger/Logger.h"

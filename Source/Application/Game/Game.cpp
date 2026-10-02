@@ -243,6 +243,7 @@ void Game::LoadScene()
 
 		object->GetTransform().Translate({ -20 * static_cast<float>(i), 40, 0 });
 		object->GetTransform().Rotate(CommonUtilities::Vector3f{ -90, 0, 0 });
+		object->GetTransform().SetScale({ 10, 10, 10 });
 
 		GameWorld::Get().AddActor(std::move(object));
 	}*/

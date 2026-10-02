@@ -74,17 +74,3 @@ const std::vector<std::shared_ptr<MaterialAsset>>& MeshComponent::GetMaterialAss
 {
 	return myMaterialAssets;
 }
-
-CommonUtilities::Sphere<float> MeshComponent::GetWorldSpaceBoundingSphere() const
-{
-	const CommonUtilities::Vector3f worldPosition = myOwner->GetTransform().GetPosition();
-	const CommonUtilities::Vector3f& meshCenter = myMeshAsset->GetMesh().GetBoundingSphere()->GetCenter();
-	const float meshRadius = myMeshAsset->GetMesh().GetBoundingSphere()->GetRadius();
-
-	return CommonUtilities::Sphere<float>(meshCenter + worldPosition, meshRadius);
-}
-
-CommonUtilities::Sphere<float> MeshComponent::GetLocalSpaceBoundingSphere() const
-{
-	return *myMeshAsset->GetMesh().GetBoundingSphere();
-}

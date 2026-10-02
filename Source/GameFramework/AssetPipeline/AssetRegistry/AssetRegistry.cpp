@@ -1,7 +1,7 @@
 #include "GameFramework.pch.h"
 #include "AssetRegistry.h"
 
-#include <cctype>
+#include "CommonUtilities/Collision/Sphere.hpp"
 
 #include "GraphicsEngine/Objects/GPU/Vertex.h"
 
@@ -192,19 +192,24 @@ void AssetRegistry::InitUnitCube()
         23, 20, 22
     };
 
+    CommonUtilities::Sphere<float> boundingSphere;
+    boundingSphere.InitWithCenterAndRadius(CommonUtilities::Vector3f::Zero, 0.75f);
+
+    CommonUtilities::AABB3D<float> boundingBox;
+    boundingBox.InitWithMinAndMax({ -0.5f, -0.5f , -0.5f }, { 0.5f, 0.5f , 0.5f });
+
     Mesh::Element element;
 
     element.NumVertices = static_cast<unsigned>(meshVertices.size());
     element.NumIndices = static_cast<unsigned>(meshIndices.size());
+    element.BoundingBox = boundingBox;
+    element.BoundingSphere = boundingSphere;
 
-    // TODO: Calculate bounding box / sphere for unit cube
-    //std::unique_ptr<CommonUtilities::Sphere<float>> boundingSphere = nullptr;
-
-    std::shared_ptr<MeshAsset> asset = std::make_shared<MeshAsset>();;
+    std::shared_ptr<MeshAsset> asset = std::make_shared<MeshAsset>();
 
     std::string assetName = "unit_cube";
 
-    asset->myMesh->Initialize(assetName, {element}, std::move(meshVertices), std::move(meshIndices), nullptr, nullptr);
+    asset->myMesh->Initialize(assetName, {element }, std::move(meshVertices), std::move(meshIndices), nullptr, boundingSphere, boundingBox);
 
     AssetInformation assetInformation;
 
@@ -232,21 +237,24 @@ void AssetRegistry::InitUnitPlane()
 		3, 2, 0,
 	};
 
+    CommonUtilities::Sphere<float> boundingSphere;
+    boundingSphere.InitWithCenterAndRadius(CommonUtilities::Vector3f::Zero, 0.75f);
+
+    CommonUtilities::AABB3D<float> boundingBox;
+    boundingBox.InitWithMinAndMax({ -0.5f, 0.0f , -0.5f }, { 0.5f, 0.0f , 0.5f });
+
 	Mesh::Element element;
 
 	element.NumVertices = static_cast<unsigned>(meshVertices.size());
 	element.NumIndices = static_cast<unsigned>(meshIndices.size());
+    element.BoundingBox = boundingBox;
+    element.BoundingSphere = boundingSphere;
 
-	// TODO: Calculate bounding box / sphere for unit plane
-	//std::unique_ptr<CommonUtilities::Sphere<float>> boundingSphere = nullptr;
-
-	std::shared_ptr<Mesh> mesh = std::make_shared<Mesh>();
-
-    std::shared_ptr<MeshAsset> asset = std::make_shared<MeshAsset>();;
+    std::shared_ptr<MeshAsset> asset = std::make_shared<MeshAsset>();
 
     std::string assetName = "unit_plane";
 
-    asset->myMesh->Initialize(assetName, { element }, std::move(meshVertices), std::move(meshIndices), nullptr, nullptr);
+    asset->myMesh->Initialize(assetName, { element }, std::move(meshVertices), std::move(meshIndices), nullptr, boundingSphere, boundingBox);
 
     AssetInformation assetInformation;
 

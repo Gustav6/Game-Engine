@@ -21,19 +21,29 @@
 
 #include "GraphicsEngine/Drawers/MeshDrawer.h"
 
+#include <tracy/core/Tracy.hpp>
+
 void DrawCallSubmitter::RenderDrawCalls(
 	GraphicsCommandList& inoutCommandList,
 	const std::vector<RenderItem>& aItems,
 	RenderContext& aContext,
 	DrawCallFlags someFlags)
 {
+	ZoneScopedN("Draw all meshes");
+
+	thread_local std::array<const Texture*, Material::MAX_MATERIAL_TEXTURE_COUNT> textureList;
+
 	for (const auto& renderItem : aItems)
 	{
+		ZoneScopedN("Draw a mesh");
+
 		if (renderItem.DrawCall == nullptr)
 		{
 			GELOG(Error, "Tried to render a draw call with a null mesh!");
 			continue;
 		}
+
+		textureList.fill(nullptr);
 
 		const MeshDrawCall& drawCall = *renderItem.DrawCall;
 		const Mesh& mesh = *drawCall.Mesh;
@@ -83,19 +93,17 @@ void DrawCallSubmitter::RenderDrawCalls(
 
 			if (HasDrawCallFlag(someFlags, DrawCallFlag_BindTextures))
 			{
-				std::vector<const Texture*> textures(Material::MAX_MATERIAL_TEXTURE_COUNT);
-
 				for (size_t t = 0; t < Material::MAX_MATERIAL_TEXTURE_COUNT; t++)
 				{
 					const std::shared_ptr<Texture>& texture = material->GetTexture(static_cast<unsigned int>(t));
 
 					if (texture != nullptr)
 					{
-						textures[t] = texture.get();
+						textureList[t] = texture.get();
 					}
 				}
 
-				inoutCommandList.SetShaderResources(textures.data(), textures.size(), 0, PipelineStage_VertexShader | PipelineStage_PixelShader);
+				inoutCommandList.SetShaderResources(textureList.data(), textureList.size(), 0, PipelineStage_VertexShader | PipelineStage_PixelShader);
 			}
 
 			inoutCommandList.SetPipelineStateObject(material->GetPSO());

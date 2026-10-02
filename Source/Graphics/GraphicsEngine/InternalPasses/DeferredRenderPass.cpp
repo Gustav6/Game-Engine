@@ -125,6 +125,13 @@ bool DeferredRenderPass::Initialize(RenderHardwareInterface& aRHI)
 		}
 	}
 
+	myGBufferTextures.reserve(GBuffer::NUM_GBUFFER_TARGETS);
+
+	for (size_t t = 0; t < GBuffer::NUM_GBUFFER_TARGETS; t++)
+	{
+		myGBufferTextures.emplace_back(&myGBuffer->GetTextures()[t]);
+	}
+
 	return true;
 }
 
@@ -167,15 +174,7 @@ void DeferredRenderPass::Execute(
 
 			// GBuffer set resources
 			{
-				std::vector<const Texture*> gBufferTextures;
-				gBufferTextures.reserve(GBuffer::NUM_GBUFFER_TARGETS);
-
-				for (size_t t = 0; t < GBuffer::NUM_GBUFFER_TARGETS; t++)
-				{
-					gBufferTextures.emplace_back(&myGBuffer->GetTextures()[t]);
-				}
-
-				inoutCommandList.SetShaderResources(gBufferTextures.data(), gBufferTextures.size(), 0, PipelineStage_PixelShader);
+				inoutCommandList.SetShaderResources(myGBufferTextures.data(), myGBufferTextures.size(), 0, PipelineStage_PixelShader);
 			}
 
 
@@ -186,13 +185,13 @@ void DeferredRenderPass::Execute(
 
 			if (aContext.Mode == DebugRenderMode::sRGB || aContext.Mode == DebugRenderMode::Shadows)
 			{
-				for (unsigned int l = 0; l < LightDrawer::Get().mySceneLights.size(); l++)
+				for (const auto& light : LightDrawer::Get().mySceneLights)
 				{
 					LightBuffer lightBuffer;
-					lightBuffer.Lights[0] = *LightDrawer::Get().mySceneLights[l].LightData;
+					lightBuffer.Lights[0] = *light.LightData;
 					aContext.ConstantBuffers->UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::LightBuffer, lightBuffer, 3, PipelineStage_PixelShader);
 
-					switch (LightDrawer::Get().mySceneLights[l].LightData->Type)
+					switch (light.LightData->Type)
 					{
 						case LightType::Directional:
 						{
@@ -215,7 +214,7 @@ void DeferredRenderPass::Execute(
 						{
 							inoutCommandList.BeginEvent("Spot Light");
 
-							const Texture* shadowMap = LightDrawer::Get().mySceneLights[l].ShadowMap;
+							const Texture* shadowMap = light.ShadowMap;
 
 							inoutCommandList.SetShaderResource(shadowMap, 104, PipelineStage_PixelShader);
 
@@ -229,7 +228,7 @@ void DeferredRenderPass::Execute(
 						{
 							inoutCommandList.BeginEvent("Point Light");
 
-							const Texture* shadowMap = LightDrawer::Get().mySceneLights[l].ShadowMap;
+							const Texture* shadowMap = light.ShadowMap;
 
 							inoutCommandList.SetShaderResource(shadowMap, 112, PipelineStage_PixelShader);
 
