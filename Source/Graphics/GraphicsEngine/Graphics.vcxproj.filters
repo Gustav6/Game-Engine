@@ -380,6 +380,9 @@
     <FxCompile Include="Shaders\Material\BRDF_LUT_PS.hlsl">
       <Filter>Shaders\Material</Filter>
     </FxCompile>
+    <FxCompile Include="Shaders\Material\Bloom_PS.hlsl">
+      <Filter>Shaders\Material</Filter>
+    </FxCompile>
     <FxCompile Include="Shaders\Material\Deferred_Ambient_PS.hlsl">
       <Filter>Shaders\Material</Filter>
     </FxCompile>
@@ -402,6 +405,12 @@
       <Filter>Shaders\Material</Filter>
     </FxCompile>
     <FxCompile Include="Shaders\Material\GBuffer_PS.hlsl">
+      <Filter>Shaders\Material</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Material\GaussianH_PS.hlsl">
+      <Filter>Shaders\Material</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Material\GaussianV_PS.hlsl">
       <Filter>Shaders\Material</Filter>
     </FxCompile>
     <FxCompile Include="Shaders\Material\Lambert_PS.hlsl">
@@ -437,9 +446,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\Material\Include\Common.hlsli">
-      <Filter>Shaders\Material\Include</Filter>
-    </None>
-    <None Include="Shaders\Material\Include\GaussianBlur_Functions.hlsli">
       <Filter>Shaders\Material\Include</Filter>
     </None>
     <None Include="Shaders\Material\Include\LUTFunctions.hlsli">

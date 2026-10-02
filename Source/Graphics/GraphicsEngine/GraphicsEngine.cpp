@@ -313,6 +313,11 @@ void GraphicsEngine::Present() const
 	myRHI->Present();
 }
 
+void GraphicsEngine::ToggleBloom() const
+{
+	myScreenSpaceEffectPass->ToggleBloom();
+}
+
 void GraphicsEngine::CycleDebugRenderMode(int aDirection)
 {
 	int nextDebugRenderMode = static_cast<int>(myDebugRenderMode) + aDirection;

@@ -491,11 +491,13 @@ void Game::UpdateScene(float aDeltaTime)
 	{
 		GraphicsEngine::Get().CycleDebugRenderMode(1);
 	}
-
 	if (Application.InputManager.IsKeyPressed(KeyCode::F7))
 	{
 		GraphicsEngine::Get().CycleToNextTonemap(1);
-		std::cout << "Test\n";
+	}
+	if (Application.InputManager.IsKeyPressed(KeyCode::F8))
+	{
+		GraphicsEngine::Get().ToggleBloom();
 	}
 
 	if (Application.InputManager.IsKeyReleased(KeyCode::Escape))

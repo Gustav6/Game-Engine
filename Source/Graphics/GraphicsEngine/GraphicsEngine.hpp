@@ -50,6 +50,8 @@ public:
 	void Render(GraphicsCommandList& inoutCommandList, const SceneCamera& aCamera);
 	void Present() const;
 
+	void ToggleBloom() const;
+
 	void CycleDebugRenderMode(int aDirection);
 	void CycleToNextTonemap(int aDirection);
 

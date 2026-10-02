@@ -3,14 +3,15 @@
   "Settings": {
     "MaterialDomain": 1,
     "ShadingModel": 2,
-    "BlendMode": 2
+    "BlendMode": 1
   },
   "Textures": {
     "AlbedoTexture": "T_Chest_c",
     "NormalTexture": "T_Chest_n",
-    "MaterialTexture": "T_Chest_orm"
+    "MaterialTexture": "T_Chest_orm",
+    "EmissionTexture": "Chest_FX"
   },
   "Shader": {
-    "Code": "Shaders/BlendMaterial.hlsli"
+    "Code": "Shaders/BaseMaterial.hlsli"
   }
 }

@@ -1,15 +1,16 @@
 {
   "Name": "TGABroMaterial",
-  "MasterMaterial": "ChestMaterial",
+  "Settings": {
+    "MaterialDomain": 1,
+    "ShadingModel": 2,
+    "BlendMode": 2
+  },
   "Textures": {
     "AlbedoTexture": "T_TGA_Bro_c",
     "NormalTexture": "T_TGA_Bro_n",
     "MaterialTexture": "T_TGA_Bro_orm"
   },
   "Shader": {
-    "Parameters": {
-      "MB_Tint": [ 1.0, 0.0, 0.0, 1.0 ],
-      "MB_Alpha": 0.75
-    }
+    "Code": "Shaders/BlendMaterial.hlsli"
   }
 }

@@ -25,9 +25,30 @@ public:
         Texture* aHDRTexture
     );
 
+    void ToggleBloom();
+
 private:
+	void BloomPass(
+        GraphicsCommandList& inoutCommandList,
+        Texture* aHDRTexture);
+    void TonemapPass(
+        GraphicsCommandList& inoutCommandList,
+        RenderContext& aContext,
+        Texture* aHDRTexture);
+
 	std::unique_ptr<PipelineStateObject> myTonemapPSO;
-    std::unique_ptr<PipelineStateObject> mySceneLuminancePSO;
+    std::unique_ptr<PipelineStateObject> myLuminancePSO;
+    std::unique_ptr<PipelineStateObject> myResamplePSO;
+    std::unique_ptr<PipelineStateObject> myGaussianBlurVerticalPSO;
+    std::unique_ptr<PipelineStateObject> myGaussianBlurHorizontalPSO;
+    std::unique_ptr<PipelineStateObject> myBloomPSO;
 
     std::unique_ptr<Texture> mySceneLuminance;
+    std::unique_ptr<Texture> myResampleFullSize;
+    std::unique_ptr<Texture> myResampleHalfSize;
+    std::unique_ptr<Texture> myResampleQuarterSize;
+    std::unique_ptr<Texture> myBlurredTexture;
+    std::unique_ptr<Texture> myBloomTexture;
+
+    bool myBloomEnabled;
 };
