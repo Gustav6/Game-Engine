@@ -4,6 +4,11 @@
 
 #include "TgaFbxStructs.h"
 
+namespace fbxsdk
+{
+	class FbxScene;
+}
+
 namespace TGA
 {
 	namespace FBX
@@ -33,6 +38,18 @@ namespace TGA
 			static FbxImportStatus LoadMesh(const std::filesystem::path& aFilePath, Mesh& outMesh, bool aRegenerateNormals = false, bool aMergeDuplicateVertices = true);
 
 			/**
+			 * Attempts to load a FBX model into the provided Mesh structure. Supports skeletal meshes, multi-element meshes
+			 * and multiple materials. Will treat multiple meshes in the file as belonging to the same Model.
+			 * @param aName The name to give the imported model.
+			 * @param aData The raw data of a FBX in stream format.
+			 * @param aDataSize The size of the FBX stream data.
+			 * @param outMesh The model data read from the stream.
+			 * @param aRegenerateNormals If True existing normal data will be discarded and completely regenerated from smoothing groups.
+			 * @returns True if the model was successfully loaded, otherwise false.
+			 */
+			static FbxImportStatus LoadMesh(std::string_view aName, const void* aData, size_t aDataSize, Mesh& outMesh, bool aRegenerateNormals = false, bool aMergeDuplicateVertices = true);
+
+			/**
 			 * Attempts to load a FBX animation into the provided Animation structure. Does not require a mesh present in the
 			 * file to function.
 			 * @param aFilePath The path of the FBX file to load, in UTF-8 format.
@@ -40,16 +57,6 @@ namespace TGA
 			 * @returns True if the animation was successfully loaded, otherwise false.
 			 */
 			static FbxImportStatus LoadAnimation(const std::filesystem::path& aFilePath, Animation& outAnimation);
-
-			
-			/**
-			 * Attempts to load a FBX skeleton into the provided Mesh structure.
-			 * Please note that since this is a separate Skeleton no skinning data will exist!
-			 * @param aFilePath The path of the FBX file to load, in UTF-8 format.
-			 * @param outSkeleton The skeleton data read from the file.
-			 * @returns True if the skeleton was successfully loaded, otherwise false.
-			 */
-			static FbxImportStatus LoadSkeleton(const std::filesystem::path& aFilePath, Skeleton& outSkeleton);
 
 			/**
 			 * Attempts to load an FBX file exported by the TGA Unreal Plugin navmesh exporter. May work with other exports as well.
@@ -61,6 +68,10 @@ namespace TGA
 			static FbxImportStatus LoadNavMesh(const std::filesystem::path& aFilePath, NavMesh& outNavMesh, bool aShouldTriangulate = false);
 
 			static std::string_view GetLastSDKError();
+
+		private:
+
+			static void LoadMeshInternal(std::string_view aName, bool aRegenerateNormals, fbxsdk::FbxScene* aScene, FbxImportStatus& inoutStatus, Mesh& outMesh);
 		};
 
 	}

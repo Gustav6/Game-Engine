@@ -212,17 +212,17 @@ bool MeshAsset::Load(const std::filesystem::path& aPath)
     }
 
 	CommonUtilities::Sphere<float> boundingSphere; // TODO: It seems the bounding spheres radius is bugged when there is 1 element?
-    /*boundingSphere.InitWithCenterAndRadius(
+    boundingSphere.InitWithCenterAndRadius(
 		{
 			tgaMesh->BoxSphereBounds.Center[0],
 			tgaMesh->BoxSphereBounds.Center[1],
 			tgaMesh->BoxSphereBounds.Center[2] 
 		}, 
 		tgaMesh->BoxSphereBounds.Radius
-	);*/
+	);
 
 	CommonUtilities::AABB3D<float> boundingBox;
-    /*boundingBox.InitWithMinAndMax(
+    boundingBox.InitWithMinAndMax(
 		{ 
 			tgaMesh->BoxBounds.Min[0], 
 			tgaMesh->BoxBounds.Min[1], 
@@ -233,7 +233,7 @@ bool MeshAsset::Load(const std::filesystem::path& aPath)
             tgaMesh->BoxBounds.Max[1],
             tgaMesh->BoxBounds.Max[2]
 		}
-	);*/
+	);
 
     myMesh->Initialize(aPath.filename().string(), std::move(elements), std::move(meshVertices), std::move(meshIndices), std::move(skeleton), boundingSphere, boundingBox);
 

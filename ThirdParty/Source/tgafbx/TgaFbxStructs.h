@@ -166,6 +166,7 @@ namespace TGA
 			GenerateNormalsFailed,
 			CannotTriangulate,
 			DuplicateBoneNames,
+			PolygonNgon,
 		};
 
 		enum class FbxImportResult : uint8_t
@@ -175,6 +176,7 @@ namespace TGA
 			InternalError,
 			NotInitialized,
 			FileNotFound,
+			NoData,
 			NoSkeletonData,
 			NoAnimationData,
 			NoMeshData,
@@ -224,6 +226,7 @@ namespace TGA
 
 			struct Bone
 			{
+				bool BindPoseInverseInitialized = false;
 				Matrix BindPoseInverse;
 				int ParentIdx = -1;
 				std::string NamespaceName;
@@ -257,6 +260,13 @@ namespace TGA
 				std::string MeshName;
 				BoxSphereBounds BoxSphereBounds;
 				Box BoxBounds;
+
+				// Local-Only transform which does not affect children in the FBX file.
+				Matrix GeometricTransform;
+				// Local-Level transform which propagates to children in the FBX file.
+				Matrix LocalTransform;
+				// Complete Global-Level transform for this mesh in the FBX file.
+				Matrix GlobalTransform;
 			};
 
 			struct LODGroup
