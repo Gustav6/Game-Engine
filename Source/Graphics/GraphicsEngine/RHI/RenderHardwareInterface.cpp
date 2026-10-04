@@ -481,6 +481,10 @@ bool RenderHardwareInterface::CreatePipelineStateObject(const PipelineStateDescr
 				desc.FillMode = D3D11_FILL_SOLID;
 				desc.CullMode = D3D11_CULL_FRONT;
 				break;
+			case RasterizerState::FillWireframeCullNone:
+				desc.FillMode = D3D11_FILL_WIREFRAME;
+				desc.CullMode = D3D11_CULL_FRONT;
+				break;
 		}
 
 		ComPtr<ID3D11RasterizerState> rasterizerState;
@@ -996,6 +1000,22 @@ bool RenderHardwareInterface::CompileShader(ShaderType aShaderType, const std::f
 	outShader.myType = aShaderType;
 
 	return true;
+}
+
+ID3D11Device* RenderHardwareInterface::GetDevice() const
+{
+	return myDevice.Get();
+}
+
+ID3D11DeviceContext* RenderHardwareInterface::GetContext() const
+{
+	return myContext.Get();
+}
+
+void RenderHardwareInterface::BindRenderTarget(const Texture* aTexture)
+{
+	ID3D11RenderTargetView* rtv = aTexture->myRTV.Get();
+	myContext->OMSetRenderTargets(1, &rtv, nullptr);
 }
 
 void RenderHardwareInterface::SetObjectName(const Microsoft::WRL::ComPtr<ID3D11DeviceChild>& aObject, std::string_view aName) const

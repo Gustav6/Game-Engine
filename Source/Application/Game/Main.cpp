@@ -8,6 +8,10 @@
 
 #include "StringHelpers.h"
 
+#ifdef IMGUI_ENABLE
+#include "ImGui/ImGuiLayer.h"
+#endif
+
 LRESULT CALLBACK WinProc(_In_ HWND hWnd, _In_ UINT uMsg, _In_ WPARAM wParam, _In_ LPARAM lParam);
 
 int GuardedMain()
@@ -136,6 +140,13 @@ LRESULT CALLBACK WinProc(_In_ HWND hWnd, _In_ UINT uMsg, _In_ WPARAM wParam, _In
     {
         PostQuitMessage(0);
     }
+
+#ifdef IMGUI_ENABLE
+    if (ImGuiLayer::HandleWndProc(hWnd, uMsg, wParam, lParam))
+    {
+        return true;
+    }
+#endif
 
     return DefWindowProc(hWnd, uMsg, wParam, lParam);
 }

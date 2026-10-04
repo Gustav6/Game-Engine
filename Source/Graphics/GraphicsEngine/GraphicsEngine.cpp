@@ -50,11 +50,13 @@
 #include "Core/RenderContext.h"
 #include "Core/RenderEnums.h"
 #include "Core/SceneCamera.h"
+#include "Core/RenderOverlay.h"
 
 #include "Drawers/MeshDrawer.h"
 #include "Drawers/LightDrawer.h"
 #include "Drawers/TextDrawer.h"
 #include "Drawers/SpriteDrawer.h"
+#include "Drawers/DebugDrawer.h"
 
 // Internal hlsl code
 #include "FullTexture_VS.h"
@@ -128,8 +130,9 @@ bool GraphicsEngine::Initialize(HWND aWindowHandle, const std::filesystem::path&
 		myShadowRenderPass->Initialize(*myRHI);
 	}
 
-	myDebugRenderMode = DebugRenderMode::sRGB;
+	myRenderMode = RenderMode::sRGB;
 	myToneMappingOperator = ToneMappingOperator::Unreal;
+	myRenderOverlay = nullptr;
 
 	return true;
 }
@@ -140,6 +143,12 @@ void GraphicsEngine::BeginFrame()
 	LightDrawer::Get().mySceneLights.clear();
 	TextDrawer::Get().myDrawCalls.clear();
 	SpriteDrawer::Get().myDrawCalls.clear();
+	DebugDrawer::Get().myDebugDrawCalls.clear();
+
+	if (myRenderOverlay != nullptr)
+	{
+		myRenderOverlay->BeginFrame();
+	}
 }
 
 void GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const SceneCamera& aCamera)
@@ -276,7 +285,7 @@ void GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const SceneCa
 		.RHI = myRHI.get(),
 		.BuiltinAssets = myBuiltinAssets.get(),
 		.Camera = &aCamera,
-		.Mode = myDebugRenderMode,
+		.Mode = myRenderMode,
 		.Tonmap = myToneMappingOperator,
 		.CascadeShadows = &myShadowRenderPass->GetCascades()
 	};
@@ -304,12 +313,19 @@ void GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const SceneCa
 		};
 
 		myScreenSpaceEffectPass->Execute(inoutCommandList, targets, context, myHDRBuffer.get());
+		// Render Debug pass here
 		myScreenSpaceRenderPass->Execute(inoutCommandList, screenSpaceItems, targets, context);
 	}
 }
 
 void GraphicsEngine::Present() const
 {
+	if (myRenderOverlay != nullptr)
+	{
+		myRHI->BindRenderTarget(myBackBuffer.get());
+		myRenderOverlay->Render();
+	}
+
 	myRHI->Present();
 }
 
@@ -320,18 +336,18 @@ void GraphicsEngine::ToggleBloom() const
 
 void GraphicsEngine::CycleDebugRenderMode(int aDirection)
 {
-	int nextDebugRenderMode = static_cast<int>(myDebugRenderMode) + aDirection;
+	int nextDebugRenderMode = static_cast<int>(myRenderMode) + aDirection;
 
-	if (nextDebugRenderMode >= static_cast<int>(DebugRenderMode::MAX))
+	if (nextDebugRenderMode >= static_cast<int>(RenderMode::MAX))
 	{
 		nextDebugRenderMode = 0;
 	}
 	else if (nextDebugRenderMode < 0)
 	{
-		nextDebugRenderMode = static_cast<int>(DebugRenderMode::MAX) - 1;
+		nextDebugRenderMode = static_cast<int>(RenderMode::MAX) - 1;
 	}
 
-	myDebugRenderMode = static_cast<DebugRenderMode>(nextDebugRenderMode);
+	myRenderMode = static_cast<RenderMode>(nextDebugRenderMode);
 }
 
 void GraphicsEngine::CycleToNextTonemap(int aDirection)
@@ -393,6 +409,29 @@ bool GraphicsEngine::CreateFontAsset(const std::filesystem::path& aFontPath, con
 void GraphicsEngine::SetEnvironmentTexture(std::shared_ptr<Texture> aEnvironmentTexture)
 {
 	myEnvironmentCubemap = std::move(aEnvironmentTexture);
+}
+
+void GraphicsEngine::SetRenderOverlay(RenderOverlay* aOverlay)
+{
+	myRenderOverlay = aOverlay;
+
+	if (myRenderOverlay == nullptr)
+	{
+		return;
+	}
+
+	myRenderOverlay->OnAttach(myRHI->GetDevice(), myRHI->GetContext());
+}
+
+void GraphicsEngine::ClearRenderOverlay()
+{
+	if (myRenderOverlay == nullptr)
+	{
+		return;
+	}
+
+	myRenderOverlay->OnDetach();
+	myRenderOverlay = nullptr;
 }
 
 bool GraphicsEngine::InitializeRenderResources()

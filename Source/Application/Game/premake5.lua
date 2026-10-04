@@ -12,6 +12,7 @@ project "Game"
         "%{wks.location}/Source/Utilities",
         "%{wks.location}/Source/Graphics",
         "%{wks.location}/Source/GameFramework",
+        "%{wks.location}/Source/Tools",
         "%{wks.location}/ThirdParty/Source"
     }
 
@@ -30,6 +31,7 @@ project "Game"
         "Graphics",
         "Framework",
         "CommonUtilities",
+        "ImGui",
 
         -- Third Party
         "TGAFbx",
@@ -45,7 +47,8 @@ project "Game"
         "CommonUtilities",
         "Logger",
         "GraphicsEngine",
-        "Framework"
+        "Framework",
+        "ImGui" -- Move to only depnd on ImGui if we want to use it in the game project. (Debug and Release builds)
     }
 
     postbuildmessage "Copying Materials and DLLs"

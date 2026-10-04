@@ -111,11 +111,17 @@
     <ClInclude Include="Core\RenderItem.h">
       <Filter>Core</Filter>
     </ClInclude>
+    <ClInclude Include="Core\RenderOverlay.h">
+      <Filter>Core</Filter>
+    </ClInclude>
     <ClInclude Include="Core\SceneCamera.h">
       <Filter>Core</Filter>
     </ClInclude>
     <ClInclude Include="Core\SpriteRenderResources.h">
       <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Drawers\DebugDrawer.h">
+      <Filter>Drawers</Filter>
     </ClInclude>
     <ClInclude Include="Drawers\LightDrawer.h">
       <Filter>Drawers</Filter>
@@ -265,6 +271,9 @@
     <ClCompile Include="ConstantBuffers\ObjectBuffer.cpp">
       <Filter>ConstantBuffers</Filter>
     </ClCompile>
+    <ClCompile Include="Drawers\DebugDrawer.cpp">
+      <Filter>Drawers</Filter>
+    </ClCompile>
     <ClCompile Include="Drawers\LightDrawer.cpp">
       <Filter>Drawers</Filter>
     </ClCompile>
@@ -411,9 +420,6 @@
       <Filter>Shaders\Material</Filter>
     </FxCompile>
     <FxCompile Include="Shaders\Material\GaussianV_PS.hlsl">
-      <Filter>Shaders\Material</Filter>
-    </FxCompile>
-    <FxCompile Include="Shaders\Material\Lambert_PS.hlsl">
       <Filter>Shaders\Material</Filter>
     </FxCompile>
     <FxCompile Include="Shaders\Material\PBL_PS.hlsl">

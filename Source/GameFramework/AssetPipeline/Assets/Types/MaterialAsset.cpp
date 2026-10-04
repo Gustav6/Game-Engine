@@ -54,7 +54,7 @@ bool MaterialAsset::Load(const std::filesystem::path& aPath)
         return false;
     }
 
-    myTextureAssets = 
+    std::vector<std::shared_ptr<TextureAsset>> myTextureAssets = 
     {
 	    nullptr,
         nullptr,

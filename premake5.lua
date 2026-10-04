@@ -16,13 +16,13 @@ filter { "platforms:x64" }
 -- For Debug configuration, we want to set the _DEBUG #define flag and turn on symbol generation.
 filter "configurations:Debug"
     multiprocessorcompile "On"
-    defines { "_DEBUG", "USE_IMGUI", "TRACY_ENABLE" }
+    defines { "_DEBUG", "IMGUI_ENABLE", "TRACY_ENABLE" }
     symbols "On"
 
 -- Generate symbols in release mode so we can debug the release build if needed.
 filter "configurations:Release"
     multiprocessorcompile "On"
-    defines { "_RELEASE", "USE_IMGUI" }
+    defines { "_RELEASE", "IMGUI_ENABLE" }
     fatalwarnings { "All" }
     optimize "On"
     symbols "On"

@@ -28,4 +28,4 @@ public:
 
 private:
     std::vector<MeshDrawCall> myDrawCalls;
-};
+}; 

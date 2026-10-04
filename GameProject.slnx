@@ -10,6 +10,7 @@
       <BuildDependency Project="Source\Utilities\CommonUtilities\CommonUtilities.vcxproj" />
       <BuildDependency Project="Source\Utilities\Logger\Logger.vcxproj" />
       <BuildDependency Project="Source\GameFramework\Framework.vcxproj" />
+      <BuildDependency Project="Source\Tools\ImGui\ImGui.vcxproj" />
     </Project>
   </Folder>
   <Folder Name="/GameFramework/">

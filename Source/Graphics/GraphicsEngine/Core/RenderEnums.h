@@ -2,7 +2,7 @@
 
 #include <cstdint>
 
-enum class DebugRenderMode
+enum class RenderMode
 {
     sRGB,
     Roughness,

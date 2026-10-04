@@ -25,6 +25,9 @@
     <Filter Include="GamePipeline\Components\Base">
       <UniqueIdentifier>{34A2E1B8-205D-D164-C914-4AAFB5AE1BF5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GamePipeline\Components\Collision">
+      <UniqueIdentifier>{0595C227-7103-18A7-BAEC-D2A6269A0D43}</UniqueIdentifier>
+    </Filter>
     <Filter Include="GamePipeline\Components\Light">
       <UniqueIdentifier>{910ECFD5-FD26-B6FF-C6D3-459932AB4A99}</UniqueIdentifier>
     </Filter>
@@ -81,6 +84,12 @@
     <ClInclude Include="GameFramework.pch.h" />
     <ClInclude Include="GamePipeline\Components\Base\Component.h">
       <Filter>GamePipeline\Components\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="GamePipeline\Components\Collision\BoxColliderComponent.h">
+      <Filter>GamePipeline\Components\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="GamePipeline\Components\Collision\SphereColliderComponent.h">
+      <Filter>GamePipeline\Components\Collision</Filter>
     </ClInclude>
     <ClInclude Include="GamePipeline\Components\Light\DirectionlLightComponent.h">
       <Filter>GamePipeline\Components\Light</Filter>
@@ -156,6 +165,12 @@
     <ClCompile Include="GameFramework.pch.cpp" />
     <ClCompile Include="GamePipeline\Components\Base\Component.cpp">
       <Filter>GamePipeline\Components\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="GamePipeline\Components\Collision\BoxColliderComponent.cpp">
+      <Filter>GamePipeline\Components\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="GamePipeline\Components\Collision\SphereColliderComponent.cpp">
+      <Filter>GamePipeline\Components\Collision</Filter>
     </ClCompile>
     <ClCompile Include="GamePipeline\Components\Light\DirectionlLightComponent.cpp">
       <Filter>GamePipeline\Components\Light</Filter>

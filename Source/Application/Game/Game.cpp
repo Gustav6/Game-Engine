@@ -18,6 +18,8 @@
 #include "AssetPipeline/Assets/Types/SpriteAsset.h"
 //#include "AssetPipeline/Assets/Types/UnrealSceneAsset.h"
 
+#include <imgui/imgui.h>
+
 #include "GamePipeline/Components/Rendering/MeshComponent.h"
 #include "GamePipeline/Components/Rendering/AnimationComponent.h"
 #include "GamePipeline/Components/Rendering/TextComponent.h"
@@ -39,7 +41,10 @@
 
 #include "Camera/GameCamera.h"
 
-#include <tracy/core/Tracy.hpp>
+#ifdef IMGUI_ENABLE
+#include <ImGui/ImGuiLayer.h>
+#include <ImGui/imgui.h>
+#endif
 
 Game::Game() = default;
 Game::~Game() = default;
@@ -72,7 +77,6 @@ bool Game::Initialize(SIZE aWindowSize, WNDPROC aWindowProcess, LPCWSTR aWindowT
 	windowClass.lpszClassName = windowClassName;
 	RegisterClass(&windowClass);
 
-#if _DEBUG
 	// Put the window in the middle of the screen regardless of resolution.
 	LONG posX = (GetSystemMetrics(SM_CXSCREEN) - aWindowSize.cx) / 2;
 	posX = std::max<LONG>(posX, 0);
@@ -92,36 +96,6 @@ bool Game::Initialize(SIZE aWindowSize, WNDPROC aWindowProcess, LPCWSTR aWindowT
 		nullptr, nullptr, nullptr,
 		nullptr
 	);
-#else
-
-	aWindowSize;
-
-	MONITORINFO monitorInfo = {};
-	monitorInfo.cbSize = sizeof(MONITORINFO);
-
-	HMONITOR monitor = MonitorFromPoint({ 0, 0 }, MONITOR_DEFAULTTOPRIMARY);
-	GetMonitorInfo(monitor, &monitorInfo);
-
-	const RECT& monitorRect = monitorInfo.rcMonitor;
-
-	const LONG posX = monitorRect.left;
-	const LONG posY = monitorRect.top;
-	const LONG width = monitorRect.right - monitorRect.left;
-	const LONG height = monitorRect.bottom - monitorRect.top;
-
-	// Then we use the class to create our window
-	myMainWindowHandle = CreateWindow(
-		windowClassName,                                // Classname
-		aWindowTitle,                                   // Window Title
-		/*WS_THICKFRAME |*/ WS_POPUP,                 // Flags
-		posX,
-		posY,
-		width,
-		height,
-		nullptr, nullptr, nullptr,
-		nullptr
-	);
-#endif
 
 	MVLOG(Log, "Ready!");
 
@@ -136,7 +110,11 @@ bool Game::Initialize(SIZE aWindowSize, WNDPROC aWindowProcess, LPCWSTR aWindowT
 			return false;
 		}
 
-		std::unique_ptr<Texture> environmentTexture = std::make_unique<Texture>();
+#ifdef IMGUI_ENABLE
+		myImGuiLayer = std::make_unique<ImGuiLayer>(myMainWindowHandle);
+
+		GE.SetRenderOverlay(myImGuiLayer.get());
+#endif
 
 		GE.SetEnvironmentTexture(AssetRegistry::Get().GetAsset<TextureAsset>("T_Shipyard_cm")->GetTexture());
 
@@ -191,13 +169,13 @@ int Game::Run()
 
 		UpdateScene(deltaTime);
 
-		myFpsCounter->GetComponent<TextComponent>()->SetText(std::format("FPS : {}", static_cast<int>(1.0f / deltaTime)));
-
 		// Render to graphics engine and present to screen
 		{
 			GraphicsEngine& GE = GraphicsEngine::Get();
 
 			GE.BeginFrame();
+
+			myGraphicsCommandList->ResetCommandList();
 
 			RenderScene();
 
@@ -206,8 +184,6 @@ int Game::Run()
 				.Transform = GameCamera::GetInstance().GetTransform().GetWorldMatrix(),
 				.RenderCamera = &GameCamera::GetInstance().GetRenderCamera()
 			};
-
-			myGraphicsCommandList->ResetCommandList();
 
 			GE.Render(*myGraphicsCommandList, camera);
 
@@ -405,7 +381,7 @@ void Game::LoadScene()
 	    mySpotLightObject = GameWorld::Get().AddActor(std::move(object));
 	}
 
-	{
+	/*{
 		std::unique_ptr<Actor> object = std::make_unique<Actor>();
 
 		TextComponent* text = object->AddComponent<TextComponent>();
@@ -415,7 +391,7 @@ void Game::LoadScene()
 		text->SetSize(36);
 
 		myFpsCounter = GameWorld::Get().AddActor(std::move(object));
-	}
+	}*/
 
 	/*{
 		std::unique_ptr<Actor> object = std::make_unique<Actor>();
@@ -508,5 +484,16 @@ void Game::UpdateScene(float aDeltaTime)
 
 void Game::RenderScene()
 {
+#ifdef IMGUI_ENABLE
+	ImGui::ShowDemoWindow();
+
+	ImGui::PushFont(nullptr, 28.0f);
+	ImGui::Begin("Debug");
+	ImGui::Text("FPS: %.1f", ImGui::GetIO().Framerate);
+	ImGui::PopFont();
+
+	ImGui::End();
+#endif
+
 	GameWorld::Get().Render();
 }

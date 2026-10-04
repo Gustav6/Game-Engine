@@ -78,7 +78,7 @@
       <PrecompiledHeaderFile>GraphicsEngine.pch.h</PrecompiledHeaderFile>
       <WarningLevel>Level4</WarningLevel>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <PreprocessorDefinitions>_DEBUG;USE_IMGUI;TRACY_ENABLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;IMGUI_ENABLE;TRACY_ENABLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>.;..;..\..\Utilities;..\..\..\ThirdParty\Source;..\..\..\Intermediate\GraphicsEngine\Debug\PrecompiledShaders;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
@@ -118,7 +118,7 @@ xcopy /E /I /R /Y /D "%SHADERSRC%" "%SHADERDEST%"</Command>
       <PrecompiledHeaderFile>GraphicsEngine.pch.h</PrecompiledHeaderFile>
       <WarningLevel>Level4</WarningLevel>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <PreprocessorDefinitions>_RELEASE;USE_IMGUI;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_RELEASE;IMGUI_ENABLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>.;..;..\..\Utilities;..\..\..\ThirdParty\Source;..\..\..\Intermediate\GraphicsEngine\Release\PrecompiledShaders;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <Optimization>Full</Optimization>
@@ -211,8 +211,10 @@ xcopy /E /I /R /Y /D "%SHADERSRC%" "%SHADERDEST%"</Command>
     <ClInclude Include="Core\RenderContext.h" />
     <ClInclude Include="Core\RenderEnums.h" />
     <ClInclude Include="Core\RenderItem.h" />
+    <ClInclude Include="Core\RenderOverlay.h" />
     <ClInclude Include="Core\SceneCamera.h" />
     <ClInclude Include="Core\SpriteRenderResources.h" />
+    <ClInclude Include="Drawers\DebugDrawer.h" />
     <ClInclude Include="Drawers\LightDrawer.h" />
     <ClInclude Include="Drawers\MeshDrawer.h" />
     <ClInclude Include="Drawers\SpriteDrawer.h" />
@@ -268,6 +270,7 @@ xcopy /E /I /R /Y /D "%SHADERSRC%" "%SHADERDEST%"</Command>
     <ClCompile Include="ConstantBuffers\LightBuffer.cpp" />
     <ClCompile Include="ConstantBuffers\Manager\ConstantBufferManager.cpp" />
     <ClCompile Include="ConstantBuffers\ObjectBuffer.cpp" />
+    <ClCompile Include="Drawers\DebugDrawer.cpp" />
     <ClCompile Include="Drawers\LightDrawer.cpp" />
     <ClCompile Include="Drawers\MeshDrawer.cpp" />
     <ClCompile Include="Drawers\SpriteDrawer.cpp" />
@@ -399,14 +402,6 @@ xcopy /E /I /R /Y /D "%SHADERSRC%" "%SHADERDEST%"</Command>
       <ObjectFileOutput></ObjectFileOutput>
     </FxCompile>
     <FxCompile Include="Shaders\Material\GaussianV_PS.hlsl">
-      <ShaderType>Pixel</ShaderType>
-      <VariableName>INTERNAL_%(Filename)_ByteCode</VariableName>
-      <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">../../..\Intermediate\GraphicsEngine\Debug\PrecompiledShaders\%(Filename).h</HeaderFileOutput>
-      <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../../..\Intermediate\GraphicsEngine\Release\PrecompiledShaders\%(Filename).h</HeaderFileOutput>
-      <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Retail|x64'">../../..\Intermediate\GraphicsEngine\Retail\PrecompiledShaders\%(Filename).h</HeaderFileOutput>
-      <ObjectFileOutput></ObjectFileOutput>
-    </FxCompile>
-    <FxCompile Include="Shaders\Material\Lambert_PS.hlsl">
       <ShaderType>Pixel</ShaderType>
       <VariableName>INTERNAL_%(Filename)_ByteCode</VariableName>
       <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">../../..\Intermediate\GraphicsEngine\Debug\PrecompiledShaders\%(Filename).h</HeaderFileOutput>

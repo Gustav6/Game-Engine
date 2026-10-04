@@ -34,17 +34,22 @@ struct SceneCamera;
 struct MaterialDescription;
 
 enum class ResourceFormat;
-enum class DebugRenderMode;
+enum class RenderMode;
 enum class ToneMappingOperator;
 
 typedef int ResourceBindFlags;
+
+struct ID3D11Device;
+struct ID3D11DeviceContext;
+
+class RenderOverlay;
 
 class GraphicsEngine
 {
 public:
 	static GraphicsEngine& Get();
 
-	bool Initialize(HWND aWindowHandle, const std::filesystem::path& aShaderRoot);
+	bool Initialize(HWND aWindowHandle, const std::filesystem::path& aContentRoot);
 
 	void BeginFrame();
 	void Render(GraphicsCommandList& inoutCommandList, const SceneCamera& aCamera);
@@ -72,6 +77,9 @@ public:
 	 */
 	void SetEnvironmentTexture(std::shared_ptr<Texture> aEnvironmentTexture);
 
+	void SetRenderOverlay(RenderOverlay* aOverlay);
+	void ClearRenderOverlay();
+
 private:
 	GraphicsEngine();
 	~GraphicsEngine();
@@ -81,7 +89,7 @@ private:
 	std::filesystem::path myShaderRoot;
 	std::filesystem::path myContentRoot;
 
-	DebugRenderMode myDebugRenderMode;
+	RenderMode myRenderMode;
 	ToneMappingOperator myToneMappingOperator;
 
 	std::unique_ptr<RenderHardwareInterface> myRHI;
@@ -109,4 +117,6 @@ private:
 	std::vector<RenderItem> myOpaqueItems;
 	std::vector<RenderItem> myAlphaItems;
 	std::vector<RenderItem> myShadowItems;
+
+	RenderOverlay* myRenderOverlay;
 };

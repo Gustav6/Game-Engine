@@ -15,7 +15,7 @@ struct FrameTargets;
 
 class ScreenSpaceEffectPass
 {
-public:
+    public:
     ScreenSpaceEffectPass(RenderHardwareInterface& aRHI);
 
     void Execute(
@@ -27,8 +27,8 @@ public:
 
     void ToggleBloom();
 
-private:
-	void BloomPass(
+    private:
+    void BloomPass(
         GraphicsCommandList& inoutCommandList,
         Texture* aHDRTexture);
     void TonemapPass(
@@ -36,7 +36,7 @@ private:
         RenderContext& aContext,
         Texture* aHDRTexture);
 
-	std::unique_ptr<PipelineStateObject> myTonemapPSO;
+    std::unique_ptr<PipelineStateObject> myTonemapPSO;
     std::unique_ptr<PipelineStateObject> myLuminancePSO;
     std::unique_ptr<PipelineStateObject> myResamplePSO;
     std::unique_ptr<PipelineStateObject> myGaussianBlurVerticalPSO;
@@ -46,7 +46,8 @@ private:
     std::unique_ptr<Texture> mySceneLuminance;
     std::unique_ptr<Texture> myResampleFullSize;
     std::unique_ptr<Texture> myResampleHalfSize;
-    std::unique_ptr<Texture> myResampleQuarterSize;
+    std::unique_ptr<Texture> myResampleQuarterSize1;
+    std::unique_ptr<Texture> myResampleQuarterSize2;
     std::unique_ptr<Texture> myBlurredTexture;
     std::unique_ptr<Texture> myBloomTexture;
 

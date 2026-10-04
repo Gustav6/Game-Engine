@@ -25,7 +25,5 @@ private:
 	void LoadParameters(const JsonData& aMaterialParameters, MaterialInstance* aMaterialInstance);
 
 	std::shared_ptr<MaterialInterface> myMaterial;
-
-	std::vector<std::shared_ptr<TextureAsset>> myTextureAssets;
 };
 

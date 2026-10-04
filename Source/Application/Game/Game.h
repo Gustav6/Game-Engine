@@ -51,6 +51,8 @@ struct RenderScene;
 class GraphicsCommandList;
 class Actor;
 
+class ImGuiLayer;
+
 class Game
 {
 public:
@@ -78,5 +80,5 @@ private:
 
 	// TODO: TEMP
 
-	Actor* myFpsCounter = nullptr;
+	std::unique_ptr<ImGuiLayer> myImGuiLayer;
 };

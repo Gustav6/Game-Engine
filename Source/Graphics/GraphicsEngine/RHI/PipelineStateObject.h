@@ -14,6 +14,7 @@ enum class RasterizerState : unsigned int
 {
 	FillSolidCullBack,
 	FillSolidCullFront,
+	FillWireframeCullNone
 };
 
 struct PipelineStateDescription

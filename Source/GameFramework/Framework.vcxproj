@@ -78,7 +78,7 @@
       <PrecompiledHeaderFile>GameFramework.pch.h</PrecompiledHeaderFile>
       <WarningLevel>Level4</WarningLevel>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <PreprocessorDefinitions>_DEBUG;USE_IMGUI;TRACY_ENABLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;IMGUI_ENABLE;TRACY_ENABLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>.;..\Utilities;..\Graphics;..\..\ThirdParty\Source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
@@ -101,7 +101,7 @@
       <PrecompiledHeaderFile>GameFramework.pch.h</PrecompiledHeaderFile>
       <WarningLevel>Level4</WarningLevel>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <PreprocessorDefinitions>_RELEASE;USE_IMGUI;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_RELEASE;IMGUI_ENABLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>.;..\Utilities;..\Graphics;..\..\ThirdParty\Source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <Optimization>Full</Optimization>
@@ -161,6 +161,8 @@
     <ClInclude Include="AssetPipeline\Assets\Types\UnrealSceneAsset.h" />
     <ClInclude Include="GameFramework.pch.h" />
     <ClInclude Include="GamePipeline\Components\Base\Component.h" />
+    <ClInclude Include="GamePipeline\Components\Collision\BoxColliderComponent.h" />
+    <ClInclude Include="GamePipeline\Components\Collision\SphereColliderComponent.h" />
     <ClInclude Include="GamePipeline\Components\Light\DirectionlLightComponent.h" />
     <ClInclude Include="GamePipeline\Components\Light\LightComponent.h" />
     <ClInclude Include="GamePipeline\Components\Light\PointLightComponent.h" />
@@ -193,6 +195,8 @@
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="GamePipeline\Components\Base\Component.cpp" />
+    <ClCompile Include="GamePipeline\Components\Collision\BoxColliderComponent.cpp" />
+    <ClCompile Include="GamePipeline\Components\Collision\SphereColliderComponent.cpp" />
     <ClCompile Include="GamePipeline\Components\Light\DirectionlLightComponent.cpp" />
     <ClCompile Include="GamePipeline\Components\Light\LightComponent.cpp" />
     <ClCompile Include="GamePipeline\Components\Light\PointLightComponent.cpp" />

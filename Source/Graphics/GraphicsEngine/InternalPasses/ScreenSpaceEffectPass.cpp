@@ -185,11 +185,16 @@ ScreenSpaceEffectPass::ScreenSpaceEffectPass(RenderHardwareInterface& aRHI)
 
 	// Quarter Screen Buffer Texture
 	{
-		myResampleQuarterSize = std::make_unique<Texture>();
+		myResampleQuarterSize1 = std::make_unique<Texture>();
+		myResampleQuarterSize2 = std::make_unique<Texture>();
 
 		CommonUtilities::Vector2ui bufferSize = aRHI.GetClientSize() / 4u;
 
-		if (!aRHI.CreateTexture("QuarterScreenBuffer", bufferSize.x, bufferSize.y, 1, ResourceFormat::R16G16B16A16_FLOAT, ResourceBindFlag_ShaderResource | ResourceBindFlag_RenderTarget, *myResampleQuarterSize))
+		if (!aRHI.CreateTexture("QuarterScreenBuffer", bufferSize.x, bufferSize.y, 1, ResourceFormat::R16G16B16A16_FLOAT, ResourceBindFlag_ShaderResource | ResourceBindFlag_RenderTarget, *myResampleQuarterSize1))
+		{
+			GELOG(Error, "Failed to create Quarter Screen Buffer texture!");
+		}
+		if (!aRHI.CreateTexture("QuarterScreenBuffer", bufferSize.x, bufferSize.y, 1, ResourceFormat::R16G16B16A16_FLOAT, ResourceBindFlag_ShaderResource | ResourceBindFlag_RenderTarget, *myResampleQuarterSize2))
 		{
 			GELOG(Error, "Failed to create Quarter Screen Buffer texture!");
 		}
@@ -221,9 +226,9 @@ ScreenSpaceEffectPass::ScreenSpaceEffectPass(RenderHardwareInterface& aRHI)
 }
 
 void ScreenSpaceEffectPass::Execute(
-	GraphicsCommandList& inoutCommandList, 
+	GraphicsCommandList& inoutCommandList,
 	FrameTargets& aFrameTargets,
-	RenderContext& aContext, 
+	RenderContext& aContext,
 	Texture* aHDRTexture)
 {
 	ZoneScopedN("Screen Space Effects Pass");
@@ -275,7 +280,7 @@ void ScreenSpaceEffectPass::BloomPass(
 
 	inoutCommandList.BeginEvent("Downsample Quarter Size");
 	{
-		inoutCommandList.SetRenderTarget(myBlurredTexture.get(), nullptr);
+		inoutCommandList.SetRenderTarget(myResampleQuarterSize1.get(), nullptr);
 
 		inoutCommandList.SetShaderResource(myResampleHalfSize.get(), 0, PipelineStage_PixelShader);
 		inoutCommandList.SetPipelineStateObject(*myResamplePSO);
@@ -287,9 +292,9 @@ void ScreenSpaceEffectPass::BloomPass(
 	{
 		inoutCommandList.BeginEvent("Horizontal Blur");
 		{
-			inoutCommandList.SetRenderTarget(myResampleQuarterSize.get(), nullptr);
+			inoutCommandList.SetRenderTarget(myBlurredTexture.get(), nullptr);
 
-			inoutCommandList.SetShaderResource(myBlurredTexture.get(), 0, PipelineStage_PixelShader);
+			inoutCommandList.SetShaderResource(myResampleQuarterSize1.get(), 0, PipelineStage_PixelShader);
 			inoutCommandList.SetPipelineStateObject(*myGaussianBlurHorizontalPSO);
 			inoutCommandList.Draw(4);
 		}
@@ -297,9 +302,9 @@ void ScreenSpaceEffectPass::BloomPass(
 
 		inoutCommandList.BeginEvent("Vertical Blur");
 		{
-			inoutCommandList.SetRenderTarget(myBlurredTexture.get(), nullptr);
+			inoutCommandList.SetRenderTarget(myResampleQuarterSize2.get(), nullptr);
 
-			inoutCommandList.SetShaderResource(myResampleQuarterSize.get(), 0, PipelineStage_PixelShader);
+			inoutCommandList.SetShaderResource(myBlurredTexture.get(), 0, PipelineStage_PixelShader);
 			inoutCommandList.SetPipelineStateObject(*myGaussianBlurVerticalPSO);
 			inoutCommandList.Draw(4);
 		}
@@ -307,9 +312,9 @@ void ScreenSpaceEffectPass::BloomPass(
 
 		inoutCommandList.BeginEvent("Horizontal Blur");
 		{
-			inoutCommandList.SetRenderTarget(myResampleQuarterSize.get(), nullptr);
+			inoutCommandList.SetRenderTarget(myResampleQuarterSize1.get(), nullptr);
 
-			inoutCommandList.SetShaderResource(myBlurredTexture.get(), 0, PipelineStage_PixelShader);
+			inoutCommandList.SetShaderResource(myResampleQuarterSize2.get(), 0, PipelineStage_PixelShader);
 			inoutCommandList.SetPipelineStateObject(*myGaussianBlurHorizontalPSO);
 			inoutCommandList.Draw(4);
 		}
@@ -319,7 +324,7 @@ void ScreenSpaceEffectPass::BloomPass(
 		{
 			inoutCommandList.SetRenderTarget(myBlurredTexture.get(), nullptr);
 
-			inoutCommandList.SetShaderResource(myResampleQuarterSize.get(), 0, PipelineStage_PixelShader);
+			inoutCommandList.SetShaderResource(myResampleQuarterSize1.get(), 0, PipelineStage_PixelShader);
 			inoutCommandList.SetPipelineStateObject(*myGaussianBlurVerticalPSO);
 			inoutCommandList.Draw(4);
 		}

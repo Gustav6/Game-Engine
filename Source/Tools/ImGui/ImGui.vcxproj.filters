@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="ThirdParty">
+      <UniqueIdentifier>{107145F9-FC28-8746-6530-60A251072237}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty\Source">
+      <UniqueIdentifier>{10AD61F8-7CC3-5F8E-C53A-EBAF31903016}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty\Source\imgui">
+      <UniqueIdentifier>{7A461F5D-E67D-67F4-EF87-CB175B3E8EED}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty\Source\imgui\backends">
+      <UniqueIdentifier>{E4A94C4E-D0FA-3790-F95E-2652E50ECBF9}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ImGuiLayer.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\ThirdParty\Source\imgui\backends\imgui_impl_dx11.cpp">
+      <Filter>ThirdParty\Source\imgui\backends</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\ThirdParty\Source\imgui\backends\imgui_impl_win32.cpp">
+      <Filter>ThirdParty\Source\imgui\backends</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\ThirdParty\Source\imgui\imgui.cpp">
+      <Filter>ThirdParty\Source\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\ThirdParty\Source\imgui\imgui_demo.cpp">
+      <Filter>ThirdParty\Source\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\ThirdParty\Source\imgui\imgui_draw.cpp">
+      <Filter>ThirdParty\Source\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\ThirdParty\Source\imgui\imgui_tables.cpp">
+      <Filter>ThirdParty\Source\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\ThirdParty\Source\imgui\imgui_widgets.cpp">
+      <Filter>ThirdParty\Source\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGuiLayer.cpp" />
+  </ItemGroup>
+</Project>
