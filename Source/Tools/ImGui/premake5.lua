@@ -25,3 +25,8 @@ project "ImGui"
         "%{wks.location}/ThirdParty/Source/imgui/backends/imgui_impl_dx11.cpp",
         "%{wks.location}/ThirdParty/Source/imgui/imgui_demo.cpp",
     }
+    
+    filter "configurations:Retail"
+        kind "None"
+
+    filter {}

@@ -10,7 +10,7 @@
 
 #include "GraphicsEngine/Objects/Mesh/Mesh.h"
 
-#include <GraphicsEngine/Drawers/MeshDrawer.h>
+#include "GraphicsEngine/Drawers/MeshDrawer.h"
 
 #include "Ensure.h"
 

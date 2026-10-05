@@ -39,7 +39,6 @@ protected:
 	CommonUtilities::Matrix4x4f UnrealToDirectX(const CommonUtilities::Matrix4x4f& someData);
 
 private:
-
 	void PrintVector(float* aVector);
 	void PrintRot(float* aVector, bool aUEStyle);
 	void PrintTrx(float* aVector, bool aUEStyle);

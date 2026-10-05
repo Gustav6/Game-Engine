@@ -27,22 +27,12 @@ void TextComponent::Render()
 	TextDrawCall drawCall =
 	{
 		.Text = myText.get(),
-		.Font = myFont.get(),
+		.Font = &myFontAsset->GetFont(),
 		.Material = nullptr,
 		.Transform = myTransform
 	};
 
 	TextDrawer::Get().Submit(drawCall);
-}
-
-Text& TextComponent::GetText()
-{
-	return *myText;
-}
-
-Font& TextComponent::GetFont()
-{
-	return *myFont;
 }
 
 const CommonUtilities::Matrix4x4f& TextComponent::GetTransform() const
@@ -52,7 +42,7 @@ const CommonUtilities::Matrix4x4f& TextComponent::GetTransform() const
 
 void TextComponent::SetFont(const std::shared_ptr<FontAsset>& aFontAsset)
 {
-	myFont = aFontAsset->GetFont();
+	myFontAsset = aFontAsset;
 }
 
 void TextComponent::SetText(std::string_view aText)

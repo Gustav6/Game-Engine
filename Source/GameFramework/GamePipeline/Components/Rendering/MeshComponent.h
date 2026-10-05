@@ -1,11 +1,9 @@
 #pragma once
 
-#include "../Base/Component.h"
-
-#include "CommonUtilities/Collision/Sphere.hpp"
-
 #include <memory>
 #include <vector>
+
+#include "GamePipeline/Components/Base/Component.h"
 
 class MeshAsset;
 class MaterialAsset;

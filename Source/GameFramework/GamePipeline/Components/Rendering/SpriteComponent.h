@@ -1,9 +1,8 @@
 #pragma once
 
-#include "../Base/Component.h"
+#include "GamePipeline/Components/Base/Component.h"
 
 #include <memory>
-#include <string_view>
 
 #include <AssetPipeline/Assets/Types/SpriteAsset.h>
 

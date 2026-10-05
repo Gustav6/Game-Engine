@@ -51,7 +51,9 @@ struct RenderScene;
 class GraphicsCommandList;
 class Actor;
 
+#ifdef IMGUI_ENABLE
 class ImGuiLayer;
+#endif
 
 class Game
 {
@@ -78,7 +80,7 @@ private:
 	Actor* myPointLightObject = nullptr;
 	Actor* mySpotLightObject = nullptr;
 
-	// TODO: TEMP
-
+#ifdef IMGUI_ENABLE
 	std::unique_ptr<ImGuiLayer> myImGuiLayer;
+#endif
 };

@@ -1,17 +1,17 @@
 #include "GameFramework.pch.h"
 #include "AssetRegistry.h"
 
+#include "AssetPipeline/Assets/Types/MeshAsset.h"
+
 #include "CommonUtilities/Collision/Sphere.hpp"
-
+#include "CommonUtilities/Collision/AABB3D.hpp"
 #include "GraphicsEngine/Objects/GPU/Vertex.h"
-
 #include "GraphicsEngine/Objects/Mesh/Mesh.h"
 #include "GraphicsEngine/Objects/Mesh/Skeleton.h"
 
 #include "ensure.h"
 #include "tgafbx/Importer.h"
 
-#include "AssetPipeline/Assets/Types/MeshAsset.h"
 
 DECLARE_LOG_CATEGORY_WITH_NAME(LogAssetRegistry, ASSETREGISTRY, Verbose);
 
@@ -36,6 +36,7 @@ bool AssetRegistry::Initialize(std::filesystem::path aWorkingDirectory)
 
     InitUnitAxes();
     InitUnitCube();
+    InitUnitSphere();
 	InitUnitPlane();
 
     if (!std::filesystem::exists(myWorkingDirectory))
@@ -73,7 +74,7 @@ void AssetRegistry::UnInitialize()
     myAssets.clear();
 }
 
-const std::filesystem::path& AssetRegistry::GetWorkingDirectory()
+const std::filesystem::path& AssetRegistry::GetWorkingDirectory() const
 {
     return myWorkingDirectory;
 }
@@ -107,20 +108,30 @@ void AssetRegistry::InternalLogMessage(LogVerbosity::Type aVerbosity, std::strin
     switch (aVerbosity)
     {
         case LogVerbosity::Fatal:
-            LOG(LogAssetRegistry, Fatal, "{}", aMessage);
-            break;
+        {
+	        LOG(LogAssetRegistry, Fatal, "{}", aMessage);
+	        break;
+        }
         case LogVerbosity::Error:
-            LOG(LogAssetRegistry, Error, "{}", aMessage);
-            break;
+        {
+	        LOG(LogAssetRegistry, Error, "{}", aMessage);
+	        break;
+        }
         case LogVerbosity::Warning:
-            LOG(LogAssetRegistry, Warning, "{}", aMessage);
-            break;
+        {
+	        LOG(LogAssetRegistry, Warning, "{}", aMessage);
+	        break;
+        }
         case LogVerbosity::Log:
-            LOG(LogAssetRegistry, Log, "{}", aMessage);
-            break;
+        {
+	        LOG(LogAssetRegistry, Log, "{}", aMessage);
+	        break;
+        }
         case LogVerbosity::Verbose:
-            LOG(LogAssetRegistry, Verbose, "{}", aMessage);
-            break;
+        {
+	        LOG(LogAssetRegistry, Verbose, "{}", aMessage);
+	        break;
+        }
     }
 }
 
@@ -219,6 +230,10 @@ void AssetRegistry::InitUnitCube()
     myAssets.emplace(assetName, assetInformation);
 
     myPersistentAssets.emplace(assetName, asset);
+}
+
+void AssetRegistry::InitUnitSphere()
+{
 }
 
 void AssetRegistry::InitUnitPlane()

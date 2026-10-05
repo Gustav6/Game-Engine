@@ -15,7 +15,7 @@ struct FrameTargets;
 
 class ScreenSpaceEffectPass
 {
-    public:
+public:
     ScreenSpaceEffectPass(RenderHardwareInterface& aRHI);
 
     void Execute(
@@ -27,9 +27,10 @@ class ScreenSpaceEffectPass
 
     void ToggleBloom();
 
-    private:
+private:
     void BloomPass(
         GraphicsCommandList& inoutCommandList,
+        RenderContext& aContext,
         Texture* aHDRTexture);
     void TonemapPass(
         GraphicsCommandList& inoutCommandList,

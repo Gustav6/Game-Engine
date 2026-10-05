@@ -5,10 +5,5 @@
     "AlbedoTexture": "T_Color_Checker_c",
     "NormalTexture": "T_Color_Checker_n",
     "MaterialTexture": "T_Color_Checker_orm"
-  },
-  "Shader": {
-    "Parameters": {
-      "MB_Tint": [ 1.0, 0.0, 1.0, 1.0 ]
-    }
   }
 }

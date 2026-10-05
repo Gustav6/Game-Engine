@@ -3,6 +3,7 @@
 #include <vector>
 
 class GraphicsCommandList;
+class RenderHardwareInterface;
 
 struct RenderItem;
 struct RenderContext;

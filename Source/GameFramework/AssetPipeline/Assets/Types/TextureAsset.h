@@ -2,7 +2,7 @@
 
 #include <filesystem>
 
-#include "../Base/Asset.h"
+#include "AssetPipeline/Assets/Base/Asset.h"
 
 class Texture;
 

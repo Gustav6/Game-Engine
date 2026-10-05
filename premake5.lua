@@ -33,7 +33,6 @@ filter "configurations:Retail"
     fatalwarnings { "All" }
     defines { "_RETAIL" }
     optimize "On"
-    enableunitybuild "On"
 
 filter {} 
 

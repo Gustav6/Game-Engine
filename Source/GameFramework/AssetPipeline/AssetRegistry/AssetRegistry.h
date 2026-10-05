@@ -18,9 +18,6 @@
 
 class AssetRegistry
 {
-private:
-	std::string_view RemoveTypePrefix(std::string_view aTypeName);
-
 public:
 	static AssetRegistry& Get();
 
@@ -30,7 +27,7 @@ public:
 	bool Initialize(std::filesystem::path aWorkingDirectory);
 	void UnInitialize();
 
-	const std::filesystem::path& GetWorkingDirectory();
+	const std::filesystem::path& GetWorkingDirectory() const;
 
 	template<typename AssetType>
 	requires std::is_base_of_v<Asset, AssetType>
@@ -70,7 +67,6 @@ public:
 			return nullptr;
 		}
 
-		asset->myName = assetInformation.Path.stem().string();
 		assetInformation.Asset = asset;
 
 		std::string loadMessage = std::format("Type [{}], Asset Name [{}], Extension [{}], Loaded successfully!", RemoveTypePrefix(typeid(AssetType).name()), aAssetName, extension);
@@ -87,6 +83,8 @@ public:
 	}
 
 private:
+	std::string_view RemoveTypePrefix(std::string_view aTypeName);
+
 	void RegisterAssetTypeInternal(const std::vector<std::string>& aExtensionList, std::type_index aTypeIndex);
 
 	void InternalLogMessage(LogVerbosity::Type aVerbosity, std::string_view aMessage) const;
@@ -94,6 +92,8 @@ private:
 	// TODO: Not implemented
 	void InitUnitAxes();
 	void InitUnitCube();
+	// TODO: Not implemented
+	void InitUnitSphere();
 	void InitUnitPlane();
 
 	struct AssetInformation

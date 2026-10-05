@@ -1,8 +1,9 @@
 #pragma once
 
 #include <filesystem>
+#include <memory>
 
-#include "../Base/Asset.h"
+#include "AssetPipeline/Assets/Base/Asset.h"
 
 struct Animation;
 

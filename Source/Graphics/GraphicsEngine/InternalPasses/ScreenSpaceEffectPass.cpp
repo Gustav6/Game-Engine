@@ -237,7 +237,7 @@ void ScreenSpaceEffectPass::Execute(
 
 	if (myBloomEnabled)
 	{
-		BloomPass(inoutCommandList, aHDRTexture);
+		BloomPass(inoutCommandList, aContext, aHDRTexture);
 	}
 
 	inoutCommandList.SetRenderTarget(aFrameTargets.RenderTarget, nullptr);
@@ -254,8 +254,14 @@ void ScreenSpaceEffectPass::ToggleBloom()
 
 void ScreenSpaceEffectPass::BloomPass(
 	GraphicsCommandList& inoutCommandList,
+	RenderContext& aContext,
 	Texture* aHDRTexture)
 {
+	if (aContext.Mode != RenderMode::sRGB)
+	{
+		return;
+	}
+
 	inoutCommandList.BeginEvent("Bloom Pass");
 
 	inoutCommandList.BeginEvent("Scene Luminance");
@@ -373,7 +379,15 @@ void ScreenSpaceEffectPass::TonemapPass(
 	inoutCommandList.BeginEvent("Tonemap Pass");
 
 	FrameBuffer frameBuffer;
-	frameBuffer.TypeOfTonemap = static_cast<unsigned int>(aContext.Tonmap);
+
+	if (aContext.Mode == RenderMode::sRGB)
+	{
+		frameBuffer.TypeOfTonemap = static_cast<unsigned int>(aContext.Tonmap);
+	}
+	else
+	{
+		frameBuffer.TypeOfTonemap = static_cast<unsigned int>(ToneMappingOperator::None);
+	}
 
 	aContext.ConstantBuffers->UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::FrameBuffer, frameBuffer, 0, PipelineStage_PixelShader);
 

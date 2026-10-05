@@ -5,7 +5,7 @@
 #include <unordered_map>
 #include <memory>
 
-#include "../Base/Component.h"
+#include "GamePipeline/Components/Base/Component.h"
 
 #include "CommonUtilities/Math/Matrix4x4.hpp"
 

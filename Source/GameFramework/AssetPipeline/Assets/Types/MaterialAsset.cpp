@@ -18,9 +18,7 @@ DECLARE_LOG_CATEGORY_WITH_NAME(MaterialLog, MATERIAL, Verbose);
 
 DEFINE_LOG_CATEGORY(MaterialLog);
 
-MaterialAsset::~MaterialAsset() = default;
-
-const std::shared_ptr<MaterialInterface> MaterialAsset::GetMaterial() const
+const std::shared_ptr<MaterialInterface>& MaterialAsset::GetMaterial() const
 {
     return myMaterial;
 }
@@ -64,19 +62,19 @@ bool MaterialAsset::Load(const std::filesystem::path& aPath)
 
     if (textureSettings.HasKey("AlbedoTexture"))
     {
-        myTextureAssets[0] = (AssetRegistry::Get().GetAsset<TextureAsset>(textureSettings.GetString("AlbedoTexture")));
+        myTextureAssets[0] = AssetRegistry::Get().GetAsset<TextureAsset>(textureSettings.GetString("AlbedoTexture"));
     }
     if (textureSettings.HasKey("NormalTexture"))
     {
-        myTextureAssets[1] = (AssetRegistry::Get().GetAsset<TextureAsset>(textureSettings.GetString("NormalTexture")));
+        myTextureAssets[1] = AssetRegistry::Get().GetAsset<TextureAsset>(textureSettings.GetString("NormalTexture"));
     }
     if (textureSettings.HasKey("MaterialTexture"))
     {
-        myTextureAssets[2] = (AssetRegistry::Get().GetAsset<TextureAsset>(textureSettings.GetString("MaterialTexture")));
+        myTextureAssets[2] = AssetRegistry::Get().GetAsset<TextureAsset>(textureSettings.GetString("MaterialTexture"));
     }
     if (textureSettings.HasKey("EmissionTexture"))
     {
-        myTextureAssets[3] = (AssetRegistry::Get().GetAsset<TextureAsset>(textureSettings.GetString("EmissionTexture")));
+        myTextureAssets[3] = AssetRegistry::Get().GetAsset<TextureAsset>(textureSettings.GetString("EmissionTexture"));
     }
 
     if (materialData.HasKey("MasterMaterial"))

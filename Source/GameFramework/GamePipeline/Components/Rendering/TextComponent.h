@@ -1,19 +1,16 @@
 #pragma once
 
-#include "../Base/Component.h"
+#include "GamePipeline/Components/Base/Component.h"
 
 #include <memory>
 #include <string_view>
 
-
 #include "GraphicsEngine/Objects/Text/Text.h"
 
 #include <CommonUtilities/Math/Vector2.hpp>
-#include <CommonUtilities/Math/Vector3.hpp>
 #include <CommonUtilities/Math/Vector4.hpp>
 #include <CommonUtilities/Math/Matrix4x4.hpp>
 
-class Font;
 class FontAsset;
 class MaterialAsset;
 
@@ -40,7 +37,7 @@ private:
 	void RebuildTransform();
 
 	std::unique_ptr<Text> myText;
-	std::shared_ptr<Font> myFont;
+	std::shared_ptr<FontAsset> myFontAsset;
 
 	CommonUtilities::Vector2f myPosition;
 	CommonUtilities::Matrix4x4f myTransform;

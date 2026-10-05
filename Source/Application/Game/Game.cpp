@@ -233,7 +233,7 @@ void Game::LoadScene()
 	    meshComponent->SetMaterial(0, AssetRegistry::Get().GetAsset<MaterialAsset>("SMColorChecker"));
 
 	    object->GetTransform().Translate({ -400, 40, 0 });
-	    object->GetTransform().Rotate(CommonUtilities::Vector3f{ -90, 0, 0 });
+	    object->GetTransform().Rotate(CommonUtilities::Vector3f{ 0, 0, 0 });
 
 		GameWorld::Get().AddActor(std::move(object));
 	}

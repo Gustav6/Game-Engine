@@ -14,13 +14,6 @@ DECLARE_LOG_CATEGORY_WITH_NAME(SpriteLog, SPRITE, Verbose);
 
 DEFINE_LOG_CATEGORY(SpriteLog);
 
-SpriteAsset::SpriteAsset()
-{
-	myData = std::make_unique<SpriteSharedData>();
-}
-
-SpriteAsset::~SpriteAsset() = default;
-
 const SpriteSharedData& SpriteAsset::GetData() const
 {
 	return *myData;
@@ -28,6 +21,8 @@ const SpriteSharedData& SpriteAsset::GetData() const
 
 bool SpriteAsset::Load(const std::filesystem::path& aPath)
 {
+	myData = std::make_unique<SpriteSharedData>();
+
 	if (!GraphicsEngine::Get().CreateTexture(aPath, myData->Texture))
 	{
 		LOG(SpriteLog, Error, "Could not create a sprite texture for {}!", aPath.string());

@@ -2,7 +2,7 @@
 
 #include <filesystem>
 
-#include "../Base/Asset.h"
+#include "AssetPipeline/Assets/Base/Asset.h"
 
 struct SpriteSharedData;
 
@@ -11,9 +11,6 @@ class SpriteAsset : public Asset
 	friend class AssetRegistry;
 
 public:
-	SpriteAsset();
-	~SpriteAsset() override;
-
 	const SpriteSharedData& GetData() const;
 
 protected:

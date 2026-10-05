@@ -31,7 +31,6 @@ project "Game"
         "Graphics",
         "Framework",
         "CommonUtilities",
-        "ImGui",
 
         -- Third Party
         "TGAFbx",
@@ -47,9 +46,18 @@ project "Game"
         "CommonUtilities",
         "Logger",
         "GraphicsEngine",
-        "Framework",
-        "ImGui" -- Move to only depnd on ImGui if we want to use it in the game project. (Debug and Release builds)
+        "Framework"
     }
+
+    filter "configurations:Debug"
+        links { "ImGui" }
+        dependson { "ImGui" }
+
+    filter "configurations:Release"
+        links { "ImGui" }
+        dependson { "ImGui" }
+
+    filter {}
 
     postbuildmessage "Copying Materials and DLLs"
     

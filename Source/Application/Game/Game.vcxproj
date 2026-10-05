@@ -39,7 +39,6 @@
     <UseDebugLibraries>false</UseDebugLibraries>
     <CharacterSet>Unicode</CharacterSet>
     <PlatformToolset>v145</PlatformToolset>
-    <EnableUnitySupport>true</EnableUnitySupport>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -173,10 +172,11 @@ IF EXIST "$(SolutionDir)ThirdParty\Dll" ( xcopy /E /I /R /Y /D "$(SolutionDir)Th
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>TGAFbx.lib;fmod_vc.lib;fmodstudio_vc.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>..\..\..\Lib\Retail\Logger.lib;..\..\..\Lib\Retail\Graphics.lib;..\..\..\Lib\Retail\Framework.lib;..\..\..\Lib\Retail\CommonUtilities.lib;TGAFbx.lib;fmod_vc.lib;fmodstudio_vc.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>..\..\..\ThirdParty\Lib\Retail;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
     </ProjectReference>
     <PostBuildEvent>
       <Command>set "CONTENTROOT=$(SolutionDir)Content"
