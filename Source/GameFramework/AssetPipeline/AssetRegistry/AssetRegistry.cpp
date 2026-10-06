@@ -229,7 +229,7 @@ void AssetRegistry::InitUnitCube()
 
     myAssets.emplace(assetName, assetInformation);
 
-    myPersistentAssets.emplace(assetName, asset);
+    myPersistentAssets.push_back(asset);
 }
 
 void AssetRegistry::InitUnitSphere()
@@ -278,7 +278,7 @@ void AssetRegistry::InitUnitPlane()
 
     myAssets.emplace(assetName, assetInformation);
 
-    myPersistentAssets.emplace(assetName, asset);
+    myPersistentAssets.push_back(asset);
 }
 
 void AssetRegistry::InitUnitAxes()

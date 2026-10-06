@@ -103,7 +103,7 @@ private:
 	};
 
 	// Just holds assets alive as long as the registry is not destroyed
-	std::unordered_map<std::string, std::shared_ptr<Asset>> myPersistentAssets;
+	std::vector<std::shared_ptr<Asset>> myPersistentAssets;
 
 	std::unordered_map<std::string, AssetInformation> myAssets;
 	std::unordered_map<std::string, std::set<std::type_index>> myFileExtensionToAssetTypeMap;
