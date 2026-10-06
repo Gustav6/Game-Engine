@@ -142,7 +142,7 @@ void ScreenSpaceRenderPass::RenderText(
 
 	FrameBuffer frameBuffer;
 	frameBuffer.View = aContext.Camera->Transform.GetFastInverse();
-	frameBuffer.Projection = aContext.Camera->RenderCamera->GetProjection();
+	frameBuffer.Projection = aContext.Camera->RenderCamera.GetProjection();
 	frameBuffer.CameraPosition = aContext.Camera->Transform.GetTranslation();
 
 	aContext.ConstantBuffers->UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::FrameBuffer, frameBuffer, 0, PipelineStage_VertexShader | PipelineStage_PixelShader);

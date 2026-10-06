@@ -17,9 +17,9 @@ struct Vertex
 
 struct GBufferOutput
 {
-    float4 AlbedoTexture : SV_TARGET0;
-    float4 NormalTexture : SV_TARGET1;
-    float4 MaterialTexture : SV_TARGET2;
+    float4 Albedo : SV_TARGET0;
+    float4 WolrdNormalDepth : SV_TARGET1;
+    float4 Material : SV_TARGET2;
     float4 Emission : SV_TARGET3;
     float4 WorldPosition : SV_TARGET4;
 };
@@ -34,7 +34,8 @@ struct VStoPS
     float3 Normal : NORMAL;
     float3 Tangent : TANGENT;
     float3 BiNormal : BINORMAL;
-};
+    float ViewDepth : VIEWDEPTH;
+};  
 
 struct FullscreenVertex
 {

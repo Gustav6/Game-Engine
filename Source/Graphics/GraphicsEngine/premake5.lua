@@ -15,6 +15,7 @@ project "Graphics"
         "%{wks.location}/Source/Graphics/",
         "%{wks.location}/Source/Utilities/",
         "%{wks.location}/ThirdParty/Source",
+        "%{wks.location}/Source/Tools/Json",
         "%{wks.location}/Intermediate/GraphicsEngine/%{cfg.buildcfg}/PrecompiledShaders/"
     }
     
@@ -23,10 +24,7 @@ project "Graphics"
         "%{prj.location}/**.cpp",
         "%{prj.location}/**.hpp",
         "%{prj.location}/**.hlsl",
-        "%{prj.location}/**.hlsli",
-        
-        -- Third Party
-        "%{wks.location}/ThirdParty/Source/tracy/TracyClient.cpp" 
+        "%{prj.location}/**.hlsli"
     }
     
     filter "files:**/TracyClient.cpp"
@@ -38,6 +36,7 @@ project "Graphics"
     links {
         "CommonUtilities",
         "Logger",
+        "Json",
         
         -- Third Party
         "d3d11",

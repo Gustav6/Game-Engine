@@ -30,8 +30,6 @@ const Animation& AnimationAsset::GetAnimation() const
 
 bool AnimationAsset::Load(const std::filesystem::path& aPath)
 {
-    ZoneScopedN("Load Animation");
-
     std::unique_ptr<TGA::FBX::Animation> tgaAnimation = std::make_unique<TGA::FBX::Animation>();
     const TGA::FBX::FbxImportStatus& importStatus = TGA::FBX::Importer::LoadAnimation(aPath, *tgaAnimation);
 

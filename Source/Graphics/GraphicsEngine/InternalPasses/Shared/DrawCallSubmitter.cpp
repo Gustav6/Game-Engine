@@ -29,14 +29,10 @@ void DrawCallSubmitter::RenderDrawCalls(
 	RenderContext& aContext,
 	DrawCallFlags someFlags)
 {
-	ZoneScopedN("Draw all meshes");
-
 	thread_local std::array<const Texture*, Material::MAX_MATERIAL_TEXTURE_COUNT> textureList;
 
 	for (const auto& renderItem : aItems)
 	{
-		ZoneScopedN("Draw a mesh");
-
 		if (renderItem.DrawCall == nullptr)
 		{
 			GELOG(Error, "Tried to render a draw call with a null mesh!");

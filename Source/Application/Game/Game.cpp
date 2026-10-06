@@ -18,8 +18,6 @@
 #include "AssetPipeline/Assets/Types/SpriteAsset.h"
 //#include "AssetPipeline/Assets/Types/UnrealSceneAsset.h"
 
-#include <imgui/imgui.h>
-
 #include "GamePipeline/Components/Rendering/MeshComponent.h"
 #include "GamePipeline/Components/Rendering/AnimationComponent.h"
 #include "GamePipeline/Components/Rendering/TextComponent.h"
@@ -34,17 +32,16 @@
 #include "GraphicsEngine/GraphicsEngine.hpp"
 
 #include "GraphicsEngine/Core/SceneCamera.h"
-#include "GraphicsEngine/Objects/GPU/Texture.h"
 #include "GraphicsEngine/RHI/GraphicsCommandList.h"
 
 #include "GamePipeline/Components/Registry/ComponentRegistryManager.h"
 
 #include "Camera/GameCamera.h"
-
-#ifdef IMGUI_ENABLE
-#include <ImGui/ImGuiLayer.h>
-#include <ImGui/imgui.h>
-#endif
+//
+//#ifdef IMGUI_ENABLE
+//#include <ImGui/ImGuiLayer.h>
+//#include <ImGui/imgui.h>
+//#endif
 
 Game::Game() = default;
 Game::~Game() = default;
@@ -110,11 +107,10 @@ bool Game::Initialize(SIZE aWindowSize, WNDPROC aWindowProcess, LPCWSTR aWindowT
 			return false;
 		}
 
-#ifdef IMGUI_ENABLE
-		myImGuiLayer = std::make_unique<ImGuiLayer>(myMainWindowHandle);
-
-		GE.SetRenderOverlay(myImGuiLayer.get());
-#endif
+//#ifdef IMGUI_ENABLE
+//		myImGuiLayer = std::make_unique<ImGuiLayer>(myMainWindowHandle);
+//		GE.SetRenderOverlay(myImGuiLayer.get());
+//#endif
 
 		GE.SetEnvironmentTexture(AssetRegistry::Get().GetAsset<TextureAsset>("T_Shipyard_cm")->GetTexture());
 
@@ -156,9 +152,7 @@ int Game::Run()
 					break;
 				}
 				default:
-				{
 					break;
-				}
 			}
 		}
 
@@ -182,7 +176,7 @@ int Game::Run()
 			SceneCamera camera =
 			{
 				.Transform = GameCamera::GetInstance().GetTransform().GetWorldMatrix(),
-				.RenderCamera = &GameCamera::GetInstance().GetRenderCamera()
+				.RenderCamera = GameCamera::GetInstance().GetRenderCamera()
 			};
 
 			GE.Render(*myGraphicsCommandList, camera);
@@ -484,16 +478,16 @@ void Game::UpdateScene(float aDeltaTime)
 
 void Game::RenderScene()
 {
-#ifdef IMGUI_ENABLE
-	ImGui::ShowDemoWindow();
-
-	ImGui::PushFont(nullptr, 28.0f);
-	ImGui::Begin("Debug");
-	ImGui::Text("FPS: %.1f", ImGui::GetIO().Framerate);
-	ImGui::PopFont();
-
-	ImGui::End();
-#endif
+//#ifdef IMGUI_ENABLE
+//	ImGui::ShowDemoWindow();
+//
+//	ImGui::PushFont(nullptr, 28.0f);
+//	ImGui::Begin("Debug");
+//	ImGui::Text("FPS: %.1f", ImGui::GetIO().Framerate);
+//	ImGui::PopFont();
+//
+//	ImGui::End();
+//#endif
 
 	GameWorld::Get().Render();
 }

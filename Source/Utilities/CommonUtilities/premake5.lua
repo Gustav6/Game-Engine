@@ -19,18 +19,9 @@ project "CommonUtilities"
     files { 
         "%{prj.location}/**.h", 
         "%{prj.location}/**.cpp", 
-        "%{prj.location}/**.hpp", 
-
-        -- Third Party
-        "%{wks.location}/ThirdParty/Source/yyjson/yyjson.c"
+        "%{prj.location}/**.hpp"
     }
 
-    filter "files:**/yyjson.c"
-        enablepch "Off"
-        warnings "Off"
-
-    filter {}
-    
     links {
         "Logger"
     }

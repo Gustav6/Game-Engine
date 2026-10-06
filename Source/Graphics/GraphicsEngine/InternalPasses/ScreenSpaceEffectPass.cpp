@@ -24,6 +24,7 @@
 #include "Bloom_PS.h"
 #include "GaussianV_PS.h"
 #include "GaussianH_PS.h"
+#include "SSAO_PS.h"
 
 #include "Core/RenderContext.h"
 
@@ -32,6 +33,25 @@
 ScreenSpaceEffectPass::ScreenSpaceEffectPass(RenderHardwareInterface& aRHI)
 {
 	myBloomEnabled = true;
+
+	// SSAO PSO
+	{
+		PipelineStateDescription SSAOPSODesc = {};
+		SSAOPSODesc.Name = "SSAOPSO";
+		SSAOPSODesc.BlendMode = BlendMode::Opaque;
+		SSAOPSODesc.Topology = Topology::TriangleStrip;
+		SSAOPSODesc.VertexShader.ByteCode = INTERNAL_FullTexture_VS_ByteCode;
+		SSAOPSODesc.VertexShader.ByteCodeSize = sizeof(INTERNAL_FullTexture_VS_ByteCode);
+		SSAOPSODesc.PixelShader.ByteCode = INTERNAL_SSAO_PS_ByteCode;
+		SSAOPSODesc.PixelShader.ByteCodeSize = sizeof(INTERNAL_SSAO_PS_ByteCode);
+
+		mySSAOPSO = std::make_unique<PipelineStateObject>();
+
+		if (!aRHI.CreatePipelineStateObject(SSAOPSODesc, *mySSAOPSO))
+		{
+			GELOG(Error, "Failed to create SSAO pipeline state object!");
+		}
+	}
 
 	// Tonemap PSO
 	{
@@ -231,9 +251,9 @@ void ScreenSpaceEffectPass::Execute(
 	RenderContext& aContext,
 	Texture* aHDRTexture)
 {
-	ZoneScopedN("Screen Space Effects Pass");
-
 	inoutCommandList.BeginEvent("Screen Space Effects");
+
+	SSAOPass();
 
 	if (myBloomEnabled)
 	{
@@ -250,6 +270,10 @@ void ScreenSpaceEffectPass::Execute(
 void ScreenSpaceEffectPass::ToggleBloom()
 {
 	myBloomEnabled = !myBloomEnabled;
+}
+
+void ScreenSpaceEffectPass::SSAOPass()
+{
 }
 
 void ScreenSpaceEffectPass::BloomPass(

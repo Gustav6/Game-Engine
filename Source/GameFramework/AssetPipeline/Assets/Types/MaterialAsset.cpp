@@ -7,7 +7,7 @@
 #include "AssetPipeline/AssetRegistry/AssetRegistry.h"
 #include "TextureAsset.h"
 
-#include "CommonUtilities/Json/JsonWrapper.h"
+#include "Json/JsonWrapper.h"
 
 #include "yyjson/yyjson.h"
 #include "tracy/core/Tracy.hpp"

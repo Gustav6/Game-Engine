@@ -14,31 +14,19 @@ project "Framework"
         "%{prj.location}",
         "%{wks.location}/Source/Utilities",
         "%{wks.location}/Source/Graphics",
+        "%{wks.location}/Source/Tools",
         "%{wks.location}/ThirdParty/Source"
     }
 
     files {
         "%{prj.location}/**.h",
         "%{prj.location}/**.cpp",
-        "%{prj.location}/**.hpp",
-        
-        -- Third Party
-        "%{wks.location}/ThirdParty/Source/tracy/TracyClient.cpp" 
+        "%{prj.location}/**.hpp"
     }
     
     links {
         "CommonUtilities",
-        "Logger"
-    }
-
-    filter "files:**/TracyClient.cpp"
-        enablepch "Off"
-        warnings "Off"
-
-    filter {}
-
-    links {
-        "CommonUtilities",
         "Logger",
-        "Graphics"
+        "Graphics",
+        "Json"
     }

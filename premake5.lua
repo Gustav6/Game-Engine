@@ -16,7 +16,7 @@ filter { "platforms:x64" }
 -- For Debug configuration, we want to set the _DEBUG #define flag and turn on symbol generation.
 filter "configurations:Debug"
     multiprocessorcompile "On"
-    defines { "_DEBUG", "IMGUI_ENABLE", "TRACY_ENABLE" }
+    defines { "_DEBUG", "IMGUI_ENABLE", "TRACY_ENABLE", "TRACY_ON_DEMAND" }
     symbols "On"
 
 -- Generate symbols in release mode so we can debug the release build if needed.
@@ -48,6 +48,7 @@ group "GraphicsEngine"
 
 group "Tools"
     include "Source/Tools/ImGui/premake5.lua"
+    include "Source/Tools/Json/premake5.lua"
 
 group "Application"
     include "Source/Application/Game/premake5.lua"

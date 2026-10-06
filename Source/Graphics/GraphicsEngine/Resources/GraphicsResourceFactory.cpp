@@ -3,7 +3,7 @@
 
 #include "GraphicsEngine/RHI/RenderHardwareInterface.h"
 
-#include "CommonUtilities/Json/JsonWrapper.h"
+#include "JsonWrapper.h"
 
 #include "GraphicsEngine/Objects/Text/Font.h"
 

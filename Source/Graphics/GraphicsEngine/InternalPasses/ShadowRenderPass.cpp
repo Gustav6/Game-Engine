@@ -79,10 +79,10 @@ void ShadowRenderPass::Execute(
 				// TODO: Blend between cascades
 				// https://learn.microsoft.com/en-us/windows/win32/dxtecharts/cascaded-shadow-maps
 
-				float cameraNearPlane = aContext.Camera->RenderCamera->GetNearPlane();
-				float cameraFarPlane = aContext.Camera->RenderCamera->GetFarPlane();
-				float cameraFov = aContext.Camera->RenderCamera->GetFovInDegrees();
-				float cameraAspectRatio = aContext.Camera->RenderCamera->GetAspectRatio();
+				float cameraNearPlane = aContext.Camera->RenderCamera.GetNearPlane();
+				float cameraFarPlane = aContext.Camera->RenderCamera.GetFarPlane();
+				float cameraFov = aContext.Camera->RenderCamera.GetFovInDegrees();
+				float cameraAspectRatio = aContext.Camera->RenderCamera.GetAspectRatio();
 
 				bool needToRebuildCascades = false;
 

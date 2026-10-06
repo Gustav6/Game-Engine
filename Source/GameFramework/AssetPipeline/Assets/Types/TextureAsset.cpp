@@ -22,8 +22,6 @@ const std::shared_ptr<Texture>& TextureAsset::GetTexture() const
 
 bool TextureAsset::Load(const std::filesystem::path& aPath)
 {
-    ZoneScopedN("Load Texture");
-
     myTexture = std::make_shared<Texture>();
 
     if (!GraphicsEngine::Get().CreateTexture(aPath, *myTexture))

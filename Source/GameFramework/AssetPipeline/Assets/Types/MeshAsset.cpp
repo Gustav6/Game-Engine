@@ -42,8 +42,6 @@ const Mesh& MeshAsset::GetMesh() const
 
 bool MeshAsset::Load(const std::filesystem::path& aPath)
 {
-    ZoneScopedN("Load Mesh");
-
     std::unique_ptr<TGA::FBX::Mesh> tgaMesh = std::make_unique<TGA::FBX::Mesh>();
     const TGA::FBX::FbxImportStatus& importStatus = TGA::FBX::Importer::LoadMesh(aPath, *tgaMesh);
 
@@ -211,7 +209,7 @@ bool MeshAsset::Load(const std::filesystem::path& aPath)
         skeleton->JointNameToIndex = std::move(tgaMesh->Skeleton.BoneNameToIndex);
     }
 
-	CommonUtilities::Sphere<float> boundingSphere; // TODO: It seems the bounding spheres radius is bugged when there is 1 element?
+	CommonUtilities::Sphere<float> boundingSphere;
     boundingSphere.InitWithCenterAndRadius(
 		{
 			tgaMesh->BoxSphereBounds.Center[0],

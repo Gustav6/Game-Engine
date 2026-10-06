@@ -38,7 +38,7 @@ void ForwardRenderPass::Execute(
 
 	FrameBuffer frameBuffer;
 	frameBuffer.View = aContext.Camera->Transform.GetFastInverse();
-	frameBuffer.Projection = aContext.Camera->RenderCamera->GetProjection();
+	frameBuffer.Projection = aContext.Camera->RenderCamera.GetProjection();
 	frameBuffer.CameraPosition = aContext.Camera->Transform.GetTranslation();
 	frameBuffer.TypeOfRenderPass = static_cast<unsigned int>(aContext.Mode);
 

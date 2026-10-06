@@ -20,7 +20,6 @@ project "Game"
         "%{prj.location}/**.h",
         "%{prj.location}/**.cpp",
         "%{prj.location}/**.hpp",
-        "%{prj.location}/**.inl",
         
         -- Third Party
         "%{wks.location}/ThirdParty/Source/tracy/TracyClient.cpp" 
@@ -31,6 +30,7 @@ project "Game"
         "Graphics",
         "Framework",
         "CommonUtilities",
+        "Json",
 
         -- Third Party
         "TGAFbx",
@@ -46,7 +46,8 @@ project "Game"
         "CommonUtilities",
         "Logger",
         "GraphicsEngine",
-        "Framework"
+        "Framework",
+        "Json"
     }
 
     filter "configurations:Debug"

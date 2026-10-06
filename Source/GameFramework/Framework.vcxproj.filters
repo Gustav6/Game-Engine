@@ -43,15 +43,6 @@
     <Filter Include="GamePipeline\World">
       <UniqueIdentifier>{ECBFCC95-D8A3-8DEB-4104-883E2D07786D}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ThirdParty">
-      <UniqueIdentifier>{107145F9-FC28-8746-6530-60A251072237}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ThirdParty\Source">
-      <UniqueIdentifier>{10AD61F8-7CC3-5F8E-C53A-EBAF31903016}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ThirdParty\Source\tracy">
-      <UniqueIdentifier>{22F6E85D-8E2D-31F5-9737-951803EE57EE}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AssetPipeline\AssetRegistry\AssetRegistry.h">
@@ -132,9 +123,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\ThirdParty\Source\tracy\TracyClient.cpp">
-      <Filter>ThirdParty\Source\tracy</Filter>
-    </ClCompile>
     <ClCompile Include="AssetPipeline\AssetRegistry\AssetRegistry.cpp">
       <Filter>AssetPipeline\AssetRegistry</Filter>
     </ClCompile>

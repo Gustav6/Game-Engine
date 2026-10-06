@@ -28,6 +28,8 @@ public:
     void ToggleBloom();
 
 private:
+	void SSAOPass();
+
     void BloomPass(
         GraphicsCommandList& inoutCommandList,
         RenderContext& aContext,
@@ -37,6 +39,7 @@ private:
         RenderContext& aContext,
         Texture* aHDRTexture);
 
+    std::unique_ptr<PipelineStateObject> mySSAOPSO;
     std::unique_ptr<PipelineStateObject> myTonemapPSO;
     std::unique_ptr<PipelineStateObject> myLuminancePSO;
     std::unique_ptr<PipelineStateObject> myResamplePSO;

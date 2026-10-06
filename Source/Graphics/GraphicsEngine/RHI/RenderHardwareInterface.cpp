@@ -483,7 +483,7 @@ bool RenderHardwareInterface::CreatePipelineStateObject(const PipelineStateDescr
 				break;
 			case RasterizerState::FillWireframeCullNone:
 				desc.FillMode = D3D11_FILL_WIREFRAME;
-				desc.CullMode = D3D11_CULL_FRONT;
+				desc.CullMode = D3D11_CULL_NONE;
 				break;
 		}
 

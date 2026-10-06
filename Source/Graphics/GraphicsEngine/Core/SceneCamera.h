@@ -7,5 +7,5 @@ class Camera;
 struct SceneCamera
 {
 	CommonUtilities::Matrix4x4f Transform;
-	const Camera* RenderCamera = nullptr;
+	const Camera& RenderCamera;
 };

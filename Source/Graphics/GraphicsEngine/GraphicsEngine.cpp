@@ -222,10 +222,6 @@ void GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const SceneCa
 		}
 	}
 
-	myOpaqueItems.shrink_to_fit();
-	myAlphaItems.shrink_to_fit();
-	myShadowItems.shrink_to_fit();
-
 	CommonUtilities::Vector3f cameraPosition = aCamera.Transform.GetTranslation();
 
 	// Front to Back
@@ -291,6 +287,8 @@ void GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const SceneCa
 	};
 
 	myShadowRenderPass->Execute(inoutCommandList, myShadowItems, context);
+
+	//// TODO: Run SSAO Before Lights
 
 	inoutCommandList.BeginEvent("Main Pass");
 	{

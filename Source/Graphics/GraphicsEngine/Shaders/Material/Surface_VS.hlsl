@@ -47,6 +47,7 @@ VStoPS main(Vertex aVertex)
     result.Color = parameters.VertexColor;
     result.UV0 = aVertex.UV0;
     result.UV1 = aVertex.UV1;
+    result.ViewDepth = viewPos.z;
     
     return result;
 }

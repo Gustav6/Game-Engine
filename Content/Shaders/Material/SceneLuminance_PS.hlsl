@@ -1,5 +1,5 @@
-#include "Include\Common.hlsli"
-#include "Include\Samplers.hlsli"
+#include "Include/Common.hlsli"
+#include "Include/Samplers.hlsli"
 
 Texture2D Resource : register(t0);
 

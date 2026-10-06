@@ -5,7 +5,7 @@
 
 #include "GraphicsEngine/Objects/GPU/Texture.h"
 
-#include "CommonUtilities/Json/JsonWrapper.h"
+#include "Json/JsonWrapper.h"
 
 #include "AssetPipeline/AssetRegistry/AssetRegistry.h"
 #include "AssetPipeline/Assets/Types/MeshAsset.h"
@@ -38,7 +38,6 @@ std::vector<std::unique_ptr<Actor>>& UnrealSceneAsset::GetSceneActors()
 
 bool UnrealSceneAsset::Load(const std::filesystem::path& aPath)
 {
-	ZoneScopedN("Load Unreal Scene");
 	myActors.clear();
 
 	JsonData unrealSceneData = Json::Read(aPath);

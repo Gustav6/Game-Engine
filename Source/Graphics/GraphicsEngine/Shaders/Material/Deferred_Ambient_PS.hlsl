@@ -3,7 +3,7 @@
 #include "Include/PBL_Functions.hlsli"
 
 Texture2D GBufferAlbedo : register(t0);
-Texture2D GBufferNormal : register(t1);
+Texture2D GBufferWorldNormalDepth : register(t1);
 Texture2D GBufferMaterial : register(t2);
 Texture2D GBufferEmission : register(t3);
 Texture2D GBufferWorldPosition : register(t4);
@@ -24,7 +24,7 @@ float4 main(FullscreenVertex aInput) : SV_TARGET
         return albedoPixel;
     }
     
-    const float4 normalPixel = GBufferNormal.Sample(TrilinearClamp, aInput.UV);
+    const float4 normalPixel = GBufferWorldNormalDepth.Sample(TrilinearClamp, aInput.UV);
     const float4 materialPixel = GBufferMaterial.Sample(TrilinearClamp, aInput.UV);
     const float4 worldPositionPixel = GBufferWorldPosition.Sample(TrilinearClamp, aInput.UV);
     const float4 emissionPixel = GBufferEmission.Sample(TrilinearClamp, aInput.UV);

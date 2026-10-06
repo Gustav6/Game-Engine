@@ -44,37 +44,37 @@ GBufferOutput main(VStoPS aPixel)
     switch (FB_TypeOfRenderPass)
     {
         case 0: // sRGB pass do nothing!
-            result.AlbedoTexture = float4(parameters.PixelColor.rgb, 1);
+            result.Albedo = float4(parameters.PixelColor.rgb, 1);
             break;
         case 1: // Rougness pass
-            result.AlbedoTexture = float4(materialMap.g, materialMap.g, materialMap.g, 1.0f);
+            result.Albedo = float4(materialMap.g, materialMap.g, materialMap.g, 1.0f);
             break;
         case 2: // Metalness pass
-            result.AlbedoTexture = float4(materialMap.b, materialMap.b, materialMap.b, 1.0f);
+            result.Albedo = float4(materialMap.b, materialMap.b, materialMap.b, 1.0f);
             break;
         case 3: // Ambient Occlusion texture pass
-            result.AlbedoTexture = float4(materialMap.r, materialMap.r, materialMap.r, 1.0f);
+            result.Albedo = float4(materialMap.r, materialMap.r, materialMap.r, 1.0f);
             break;
         case 4: // Ambient Occlusion screen space pass
-            result.AlbedoTexture = float4(1.0f, 1.0f, 1.0f, 1.0f); // TODO : FIX
+            result.Albedo = float4(1.0f, 1.0f, 1.0f, 1.0f); // TODO : FIX
             break;
         case 5: // Normals tangent space pass
-            result.AlbedoTexture = float4(normalMap.xy, 0.0f, 1.0f);
+            result.Albedo = float4(normalMap.xy, 0.0f, 1.0f);
             break;
         case 6: // Normals world space pass
-            result.AlbedoTexture = float4(normal, 1.0f);
+            result.Albedo = float4(normal, 1.0f);
             break;
         case 7: // Shadows pass
-            result.AlbedoTexture = float4(0.5f, 0.5f, 0.5f, 1.0f);
+            result.Albedo = float4(0.5f, 0.5f, 0.5f, 1.0f);
             parameters.Roughness = 1.0f;
             break;
         default:
-            result.AlbedoTexture = float4(parameters.PixelColor.rgb, 1); // same as case 0, safe fallback
+            result.Albedo = float4(parameters.PixelColor.rgb, 1); // same as case 0, safe fallback
             break;
     }
     
-    result.NormalTexture = float4(parameters.Normal, 0);
-    result.MaterialTexture = float4(parameters.Occlusion, parameters.Roughness, parameters.Metalness, 0);
+    result.WolrdNormalDepth = float4(parameters.Normal, aPixel.ViewDepth);
+    result.Material = float4(parameters.Occlusion, parameters.Roughness, parameters.Metalness, 0);
     result.Emission = float4(emission, 0);
     result.WorldPosition = parameters.WorldPosition;
     
