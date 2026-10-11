@@ -27,9 +27,9 @@ struct PipelineStateDescription
 		size_t ByteCodeSize = 0;
 	};
 
+	ShaderData PixelShader;
 	ShaderData VertexShader;
 	ShaderData GeometryShader;
-	ShaderData PixelShader;
 
 	std::vector<VertexElementDescription> InputLayoutElements;
 	Topology Topology = Topology::TriangleList;

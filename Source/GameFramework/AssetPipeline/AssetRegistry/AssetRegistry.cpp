@@ -12,9 +12,6 @@
 #include "ensure.h"
 #include "tgafbx/Importer.h"
 
-
-DECLARE_LOG_CATEGORY_WITH_NAME(LogAssetRegistry, ASSETREGISTRY, Verbose);
-
 DEFINE_LOG_CATEGORY(LogAssetRegistry);
 
 AssetRegistry& AssetRegistry::Get()
@@ -89,7 +86,6 @@ void AssetRegistry::RegisterAssetTypeInternal(const std::vector<std::string>& aE
         myFileExtensionToAssetTypeMap[lowerCaseFileExtension].insert(aTypeIndex);
     }
 }
-
 std::string_view AssetRegistry::RemoveTypePrefix(std::string_view aTypeName)
 {
     for (std::string_view prefix : { "class ", "struct " })
@@ -101,38 +97,6 @@ std::string_view AssetRegistry::RemoveTypePrefix(std::string_view aTypeName)
     }
 
     return aTypeName;
-}
-
-void AssetRegistry::InternalLogMessage(LogVerbosity::Type aVerbosity, std::string_view aMessage) const
-{
-    switch (aVerbosity)
-    {
-        case LogVerbosity::Fatal:
-        {
-	        LOG(LogAssetRegistry, Fatal, "{}", aMessage);
-	        break;
-        }
-        case LogVerbosity::Error:
-        {
-	        LOG(LogAssetRegistry, Error, "{}", aMessage);
-	        break;
-        }
-        case LogVerbosity::Warning:
-        {
-	        LOG(LogAssetRegistry, Warning, "{}", aMessage);
-	        break;
-        }
-        case LogVerbosity::Log:
-        {
-	        LOG(LogAssetRegistry, Log, "{}", aMessage);
-	        break;
-        }
-        case LogVerbosity::Verbose:
-        {
-	        LOG(LogAssetRegistry, Verbose, "{}", aMessage);
-	        break;
-        }
-    }
 }
 
 void AssetRegistry::InitUnitCube()
@@ -229,7 +193,7 @@ void AssetRegistry::InitUnitCube()
 
     myAssets.emplace(assetName, assetInformation);
 
-    myPersistentAssets.push_back(asset);
+    myPersistentAssets.emplace_back(asset);
 }
 
 void AssetRegistry::InitUnitSphere()
@@ -278,7 +242,7 @@ void AssetRegistry::InitUnitPlane()
 
     myAssets.emplace(assetName, assetInformation);
 
-    myPersistentAssets.push_back(asset);
+    myPersistentAssets.emplace_back(asset);
 }
 
 void AssetRegistry::InitUnitAxes()

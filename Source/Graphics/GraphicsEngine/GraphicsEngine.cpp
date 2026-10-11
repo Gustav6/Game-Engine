@@ -21,11 +21,6 @@
 #include "Resources/BuiltinAssets.h"
 #include "Resources/GraphicsResourceFactory.h"
 
-#include "ConstantBuffers/FrameBuffer.h"
-#include "ConstantBuffers/ObjectBuffer.h"
-#include "ConstantBuffers/AnimationBuffer.h"
-#include "ConstantBuffers/LightBuffer.h"
-#include "ConstantBuffers/CascadeBuffer.h"
 #include <ConstantBuffers/Manager/ConstantBufferManager.h>
 
 #include "RHI/GraphicsCommandList.h"
@@ -33,7 +28,6 @@
 #include "RHI/RenderHardwareInterface.h"
 
 #include "Materials/Material.h"
-#include "Materials/MaterialHelpers.h"
 #include "Materials/MaterialShaderIncludeHandler.h"
 
 #include "Materials/Compilation/MaterialFactory.h"
@@ -64,6 +58,8 @@
 
 #include <tracy/core/Tracy.hpp>
 
+#include "InternalPasses/DebugRenderPass.h"
+
 GraphicsEngine::GraphicsEngine() = default;
 GraphicsEngine::~GraphicsEngine() = default;
 
@@ -75,11 +71,9 @@ GraphicsEngine& GraphicsEngine::Get()
 
 bool GraphicsEngine::Initialize(HWND aWindowHandle, const std::filesystem::path& aContentRoot)
 {
-	myContentRoot = aContentRoot;
-
-	if (!std::filesystem::exists(myContentRoot))
+	if (!std::filesystem::exists(aContentRoot))
 	{
-		GELOG(Fatal, "Content root dir is not a valid path! Provided root was {}.", myContentRoot.string());
+		GELOG(Fatal, "Content root dir is not a valid path! Provided root was {}.", aContentRoot.string());
 		return false;
 	}
 
@@ -104,37 +98,37 @@ bool GraphicsEngine::Initialize(HWND aWindowHandle, const std::filesystem::path&
 		return false;
 	}
 
+	bool hasErrored = false;
+
 	myBuiltinAssets = std::make_unique<BuiltinAssets>();
-
-	if (!myBuiltinAssets->Initialize(*this, *myRHI, myShaderRoot))
-	{
-		return false;
-	}
-
 	myConstantBufferManager = std::make_unique<ConstantBufferManager>();
 
-	if (!InitializeRenderResources())
-	{
-		return false;
-	}
+	hasErrored = !myBuiltinAssets->Initialize(*this, *myRHI, myShaderRoot);
+	hasErrored = !myConstantBufferManager->Initialize(*myRHI);
 
 	// Init passes
 	{
 		myForwardRenderPass = std::make_unique<ForwardRenderPass>();
 		myDeferredRenderPass = std::make_unique<DeferredRenderPass>();
-		myScreenSpaceRenderPass = std::make_unique<ScreenSpaceRenderPass>(*myRHI);
+		myScreenSpaceRenderPass = std::make_unique<ScreenSpaceRenderPass>();
 		myShadowRenderPass = std::make_unique<ShadowRenderPass>();
-		myScreenSpaceEffectPass = std::make_unique<ScreenSpaceEffectPass>(*myRHI);
+		myScreenSpaceEffectPass = std::make_unique<ScreenSpaceEffectPass>();
+		myDebugRenderPass = std::make_unique<DebugRenderPass>();
 
-		myDeferredRenderPass->Initialize(*myRHI);
-		myShadowRenderPass->Initialize(*myRHI);
+		hasErrored = !myDeferredRenderPass->Initialize(*myRHI);
+		hasErrored = !myShadowRenderPass->Initialize(*myRHI);
+		hasErrored = !myScreenSpaceRenderPass->Initialize(*myRHI);
+		hasErrored = !myScreenSpaceEffectPass->Initialize(*myRHI);
+		hasErrored = !myDebugRenderPass->Initialize(*myRHI);
 	}
 
-	myRenderMode = RenderMode::sRGB;
+	hasErrored = !InitializeRenderResources();
+
+	myRenderMode = DebugRenderMode::None;
 	myToneMappingOperator = ToneMappingOperator::Unreal;
 	myRenderOverlay = nullptr;
 
-	return true;
+	return !hasErrored;
 }
 
 void GraphicsEngine::BeginFrame()
@@ -174,9 +168,8 @@ void GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const SceneCa
 		inoutCommandList.SetShaderResource(myLUTTexture.get(), 99, PipelineStage_PixelShader);
 	}
 
-	myOpaqueItems.clear();
-	myAlphaItems.clear();
-	myShadowItems.clear();
+	myDeferredItems.clear();
+	myForwardItems.clear();
 
 	for (const auto& drawCall : MeshDrawer::Get().myDrawCalls)
 	{
@@ -195,7 +188,7 @@ void GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const SceneCa
 
 			if (material == nullptr)
 			{
-				myOpaqueItems.push_back(item);
+				myForwardItems.push_back(item);
 			}
 			else
 			{
@@ -203,13 +196,12 @@ void GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const SceneCa
 				{
 					case MaterialBlendMode::Opaque:
 					{
-						myOpaqueItems.push_back(item);
-						myShadowItems.push_back(item);
+						myDeferredItems.push_back(item);
 						break;
 					}
 					case MaterialBlendMode::Alpha:
 					{
-						myAlphaItems.push_back(item);
+						myForwardItems.push_back(item);
 						break;
 					}
 					default:
@@ -222,10 +214,19 @@ void GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const SceneCa
 		}
 	}
 
+	myShadowItems.clear();
+	myShadowItems.reserve(myDeferredItems.size());
+
+	myShadowItems.insert(
+		myShadowItems.end(),
+		myDeferredItems.begin(),
+		myDeferredItems.end()
+	);
+
 	CommonUtilities::Vector3f cameraPosition = aCamera.Transform.GetTranslation();
 
 	// Front to Back
-	std::sort(myOpaqueItems.begin(), myOpaqueItems.end(),
+	std::sort(myDeferredItems.begin(), myDeferredItems.end(),
 		[cameraPosition](const RenderItem& A, const RenderItem& B) -> bool
 		{
 			float distanceToA = (A.DrawCall->Transform.GetTranslation() - cameraPosition).LengthSqr();
@@ -235,7 +236,7 @@ void GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const SceneCa
 		});
 
 	// Back to Front
-	std::sort(myAlphaItems.begin(), myAlphaItems.end(),
+	std::sort(myForwardItems.begin(), myForwardItems.end(),
 		[cameraPosition](const RenderItem& A, const RenderItem& B) -> bool
 		{
 			float distanceToA = (A.DrawCall->Transform.GetTranslation() - cameraPosition).LengthSqr();
@@ -298,8 +299,8 @@ void GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const SceneCa
 			.DepthBuffer = myDepthBuffer.get()
 		};
 
-		myDeferredRenderPass->Execute(inoutCommandList, myOpaqueItems, targets, context);
-		myForwardRenderPass->Execute(inoutCommandList, myAlphaItems, targets, context);
+		myDeferredRenderPass->Execute(inoutCommandList, myDeferredItems, targets, context);
+		myForwardRenderPass->Execute(inoutCommandList, myForwardItems, targets, context);
 	}
 	inoutCommandList.EndEvent();
 
@@ -336,16 +337,16 @@ void GraphicsEngine::CycleDebugRenderMode(int aDirection)
 {
 	int nextDebugRenderMode = static_cast<int>(myRenderMode) + aDirection;
 
-	if (nextDebugRenderMode >= static_cast<int>(RenderMode::MAX))
+	if (nextDebugRenderMode >= static_cast<int>(DebugRenderMode::MAX))
 	{
 		nextDebugRenderMode = 0;
 	}
 	else if (nextDebugRenderMode < 0)
 	{
-		nextDebugRenderMode = static_cast<int>(RenderMode::MAX) - 1;
+		nextDebugRenderMode = static_cast<int>(DebugRenderMode::MAX) - 1;
 	}
 
-	myRenderMode = static_cast<RenderMode>(nextDebugRenderMode);
+	myRenderMode = static_cast<DebugRenderMode>(nextDebugRenderMode);
 }
 
 void GraphicsEngine::CycleToNextTonemap(int aDirection)
@@ -434,34 +435,6 @@ void GraphicsEngine::ClearRenderOverlay()
 
 bool GraphicsEngine::InitializeRenderResources()
 {
-	// Constant Buffers
-	{
-		if (!myConstantBufferManager->CreateConstantBuffer<FrameBuffer>(*myRHI, ConstantBuffer::FrameBuffer, "FrameBuffer"))
-		{
-			return false;
-		}
-		if (!myConstantBufferManager->CreateConstantBuffer<ObjectBuffer>(*myRHI, ConstantBuffer::ObjectBuffer, "ObjectBuffer"))
-		{
-			return false;
-		}
-		if (!myConstantBufferManager->CreateConstantBuffer<AnimationBuffer>(*myRHI, ConstantBuffer::AnimationBuffer, "AnimationBuffer"))
-		{
-			return false;
-		}
-		if (!myConstantBufferManager->CreateConstantBuffer<LightBuffer>(*myRHI, ConstantBuffer::LightBuffer, "LightBuffer"))
-		{
-			return false;
-		}
-		if (!myConstantBufferManager->CreateConstantBuffer<CascadeBuffer>(*myRHI, ConstantBuffer::CascadeBuffer, "CascadeBuffer"))
-		{
-			return false;
-		}
-		if (!myConstantBufferManager->CreateConstantBuffer(*myRHI, ConstantBuffer::MaterialBuffer, "MaterialBuffer", Material::MATERIAL_BUFFER_SIZE))
-		{
-			return false;
-		}
-	}
-
 	// Trilinear Wrap
 	{
 		SamplerDescription samplerDesc;

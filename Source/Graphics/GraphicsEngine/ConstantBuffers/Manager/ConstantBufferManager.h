@@ -14,6 +14,8 @@ enum class ConstantBuffer : uint8_t;
 class ConstantBufferManager
 {
 public:
+	bool Initialize(RenderHardwareInterface& aRHI);
+
     bool CreateConstantBuffer(RenderHardwareInterface& aRHI, ConstantBuffer aBufferID, std::string_view aName, size_t aBufferSize);
 
     template<class T>

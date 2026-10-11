@@ -80,7 +80,7 @@ private:
 	Actor* myPointLightObject = nullptr;
 	Actor* mySpotLightObject = nullptr;
 
-//#ifdef IMGUI_ENABLE
-//	std::unique_ptr<ImGuiLayer> myImGuiLayer;
-//#endif
+#ifdef IMGUI_ENABLE
+	std::unique_ptr<ImGuiLayer> myImGuiLayer;
+#endif
 };

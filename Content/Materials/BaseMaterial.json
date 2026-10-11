@@ -1,15 +1,31 @@
 {
   "Name": "BaseMaterial",
-  "Settings": {
-    "MaterialDomain": 1,
-    "ShadingModel": 2,
-    "BlendMode": 1
-  },
-  "Textures": {
-    "AlbedoTexture": "T_Marble_Tiles_c",
-    "NormalTexture": "T_Marble_Tiles_n",
-    "MaterialTexture": "T_Marble_Tiles_orm"
-  },
+  "Domain": 0,
+  "ShadingModel": 1,
+  "BlendMode": 0,
+  "Parameters": [
+    {
+      "Name": "AlbedoTexture",
+      "Type": 3,
+      "Value": {
+        "Name": "T_Marble_Tiles_c"
+      }
+    },
+    {
+      "Name": "NormalTexture",
+      "Type": 3,
+      "Value": {
+        "Name": "T_Marble_Tiles_n"
+      }
+    },
+    {
+      "Name": "MaterialTexture",
+      "Type": 3,
+      "Value": {
+        "Name": "T_Marble_Tiles_orm"
+      }
+    }
+  ],
   "Shader": {
     "Code": "Shaders/BaseMaterial.hlsli"
   }

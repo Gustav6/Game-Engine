@@ -170,6 +170,9 @@
     <ClInclude Include="Materials\MaterialShaderIncludeHandler.h">
       <Filter>Materials</Filter>
     </ClInclude>
+    <ClInclude Include="Materials\MaterialTypes.h">
+      <Filter>Materials</Filter>
+    </ClInclude>
     <ClInclude Include="Objects\GPU\Buffer.h">
       <Filter>Objects\GPU</Filter>
     </ClInclude>

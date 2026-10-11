@@ -4,11 +4,17 @@
 #include <string>
 #include <vector>
 
+#include "CommonUtilities/Math/Vector2.hpp"
+#include "CommonUtilities/Math/Vector3.hpp"
+#include "CommonUtilities/Math/Vector4.hpp"
+
 // More info can be found at their repo:
 // https://github.com/ibireme/yyjson 
 
 struct yyjson_doc;
 struct yyjson_val;
+struct yyjson_mut_doc;
+struct yyjson_mut_val;
 
 enum class JsonValueType
 {
@@ -29,7 +35,6 @@ enum class JsonValueType
 class JsonData
 {
 public:
-	JsonData();
 	JsonData(const std::filesystem::path& aJsonPath);
 
 	bool IsValid() const;
@@ -38,6 +43,7 @@ public:
 	int GetInt(const char* aName) const;
 	unsigned int GetUnsigned(const char* aName) const;
 	float GetFloat(const char* aName) const;
+	double GetDouble(const char* aName) const;
 	std::string GetString(const char* aName) const;
 	JsonData GetObjectValue(const char* aName) const;
 
@@ -45,6 +51,7 @@ public:
 	std::vector<int> GetIntArray(const char* aName) const;
 	std::vector<unsigned int> GetUnsignedArray(const char* aName) const;
 	std::vector<float> GetFloatArray(const char* aName) const;
+	std::vector<double> GetDoubleArray(const char* aName) const;
 	std::vector<std::string> GetStringArray(const char* aName) const;
 	std::vector<JsonData> GetObjectValueArray(const char* aName) const;
 
@@ -55,8 +62,10 @@ public:
 
 	bool HasKey(const char* aName) const;
 
+	std::string GetPath() const;
+
 private:
-	// Send path to send clear debug messages
+	JsonData();
 	JsonData(std::shared_ptr<yyjson_doc> aDocument, yyjson_val* aValue, std::filesystem::path aPath);
 
 	std::shared_ptr<yyjson_doc> myDocument;
@@ -65,12 +74,22 @@ private:
 	std::filesystem::path myPath;
 };
 
+class JsonWriter
+{
+public:
+	JsonWriter(const std::filesystem::path& aJsonDestination);
+
+	// TODO: Add methods to write
+
+private:
+	yyjson_mut_doc* myDocument;
+	yyjson_mut_val* myRoot;
+};
+
 class Json
 {
 public:
 	static JsonData Read(const std::filesystem::path& aJsonPath);
-
-	// TODO: Implement
-	static void Write();
+	static JsonWriter Write(const std::filesystem::path& aJsonDestination);
 };
 

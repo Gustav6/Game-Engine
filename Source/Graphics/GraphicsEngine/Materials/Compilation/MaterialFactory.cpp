@@ -75,22 +75,29 @@ bool MaterialFactory::Create(
 	{
 		std::filesystem::path shaderProgramPath;
 
-		switch (aDescription.BlendMode)
+		if (aDescription.ShadingModel == ShadingModel::Unlit)
 		{
-			case MaterialBlendMode::Opaque:
+			shaderProgramPath = aShaderRegistry.GetShadingModelShader(aDescription.ShadingModel);
+		}
+		else
+		{
+			switch (aDescription.BlendMode)
 			{
-				shaderProgramPath = aShaderRoot / "Material" / "GBuffer_PS.hlsl";
-				break;
-			}
-			case MaterialBlendMode::Alpha:
-			{
-				shaderProgramPath = aShaderRegistry.GetShadingModelShader(aDescription.ShadingModel);
-				break;
-			}
-			default:
-			{
-				// TODO: Log error
-				break;
+				case MaterialBlendMode::Opaque:
+				{
+					shaderProgramPath = aShaderRoot / "Material" / "GBuffer_PS.hlsl";
+					break;
+				}
+				case MaterialBlendMode::Alpha:
+				{
+					shaderProgramPath = aShaderRegistry.GetShadingModelShader(aDescription.ShadingModel);
+					break;
+				}
+				default:
+				{
+					// TODO: Log error
+					break;
+				}
 			}
 		}
 

@@ -1,8 +1,9 @@
 ﻿#pragma once
 
 #include <unordered_map>
+#include <string>
 
-#include "MaterialInterface.h"
+#include "MaterialTypes.h"
 
 #include <CommonUtilities/Math/Vector2.hpp>
 #include <CommonUtilities/Math/Vector3.hpp>
@@ -15,11 +16,11 @@
  */
 namespace MaterialHelpers
 {
-	static MaterialParameterType HLSLTypeToMaterialParameterType(const std::string& aHLSLTypeName)
+	inline MaterialParameterType HLSLTypeToMaterialParameterType(const std::string& aHLSLTypeName)
 	{
 		static std::unordered_map<std::string, MaterialParameterType> HLSLTypeToMaterialParameterType = {
 			{ "float",		MaterialParameterType::Float },
-			{ "bool",			MaterialParameterType::Int },		// This is because bool is 1 byte on CPU, and 4 bytes on GPU.
+			{ "bool",		MaterialParameterType::Int },		// This is because bool is 1 byte on CPU, and 4 bytes on GPU.
 			{ "float2",		MaterialParameterType::Float2 },
 			{ "float3",		MaterialParameterType::Float3 },
 			{ "float4",		MaterialParameterType::Float4 },

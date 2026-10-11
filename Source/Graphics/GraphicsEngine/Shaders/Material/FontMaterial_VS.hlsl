@@ -18,6 +18,7 @@ VStoPS main(Vertex aVertex)
     result.Normal = 0;
     result.Tangent = 0;
     result.BiNormal = 0;
+    result.ViewDepth = 0;
     
     return result;
 }

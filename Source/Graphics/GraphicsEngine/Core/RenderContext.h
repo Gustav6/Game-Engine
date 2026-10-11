@@ -9,7 +9,7 @@ class ConstantBufferManager;
 struct ShadowCascade;
 struct SceneCamera;
 
-enum class RenderMode;
+enum class DebugRenderMode;
 enum class ToneMappingOperator;
 
 struct RenderContext
@@ -18,7 +18,7 @@ struct RenderContext
     RenderHardwareInterface* RHI = nullptr;
     const BuiltinAssets* BuiltinAssets = nullptr;
     const SceneCamera* Camera = nullptr;
-    RenderMode Mode = {};
+    DebugRenderMode Mode = {};
     ToneMappingOperator Tonmap = {};
     const std::array<ShadowCascade, 4>* CascadeShadows = nullptr; // NUM_CASCADES
 };

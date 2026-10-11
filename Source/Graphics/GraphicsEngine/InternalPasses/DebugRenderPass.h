@@ -10,7 +10,7 @@ struct RenderItem;
 struct RenderContext;
 struct FrameTargets;
 
-class ForwardRenderPass
+class DebugRenderPass
 {
 public:
     bool Initialize(RenderHardwareInterface& aRHI);

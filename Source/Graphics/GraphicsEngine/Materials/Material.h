@@ -5,7 +5,6 @@
 #include "Ensure.h"
 
 #include "MaterialInterface.h"
-#include "MaterialHelpers.h"
 #include "GraphicsEngine/RHI/PipelineStateObject.h"
 
 #pragma warning(push)
@@ -52,6 +51,9 @@ public:
 	std::shared_ptr<Texture> GetTexture(const std::string aName) const override;
 	std::shared_ptr<Texture> GetTexture(unsigned int aSlot) const override;
 
+protected:
+	bool SetRawParameterValue(const MaterialParameterInfo& aParamInfo, const void* aPtr, size_t aPtrSize) override;
+
 private:
 	alignas(16) uint8_t myData[MATERIAL_BUFFER_SIZE] = {};
 	std::vector<MaterialParameterInfo> myParameters;
@@ -86,21 +88,6 @@ public:
 	const MaterialParameterInfo* GetParameterByIndex(unsigned aIndex) const override { return myParentMaterial->GetParameterByIndex(aIndex); };
 	const MaterialParameterInfo* GetParameterByName(const std::string& aName) const override { return myParentMaterial->GetParameterByName(aName); };
 
-	template<typename T>
-	bool SetValue(const std::string& aLabel, const T& aValue)
-	{
-		const MaterialParameterInfo* param = GetParameterByName(aLabel);
-
-		if (param == nullptr)
-		{
-			return false;
-		}
-
-		ensure(MaterialHelpers::MaterialParameterTraits<T>::IsA(*param));
-
-		return SetRawParameterValue(*param, &aValue, sizeof(T));
-	}
-
 	unsigned int GetTextureSlotByName(const std::string& aName) const override;
 
 	bool SetTexture(const std::string& aName, const std::shared_ptr<Texture>& aTexture) override;
@@ -109,9 +96,10 @@ public:
 	std::shared_ptr<Texture> GetTexture(const std::string aName) const override;
 	std::shared_ptr<Texture> GetTexture(unsigned int aSlot) const override;
 
-private:
-	bool SetRawParameterValue(const MaterialParameterInfo& aParamInfo, const void* aPtr, size_t aPtrSize);
+protected:
+	bool SetRawParameterValue(const MaterialParameterInfo& aParamInfo, const void* aPtr, size_t aPtrSize) override;
 
+private:
 	alignas(16) mutable uint8_t myData[MATERIAL_BUFFER_SIZE] = {};
 
 	std::optional<std::shared_ptr<Texture>> myTextures[MAX_MATERIAL_TEXTURE_COUNT] = {};

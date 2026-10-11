@@ -80,7 +80,7 @@
       <WarningLevel>Level4</WarningLevel>
       <TreatWarningAsError>true</TreatWarningAsError>
       <PreprocessorDefinitions>_DEBUG;IMGUI_ENABLE;TRACY_ENABLE;TRACY_ON_DEMAND;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>.;..\..\Utilities;..\..\Graphics;..\..\GameFramework;..\..\Tools;..\..\..\ThirdParty\Source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;..\..\Utilities;..\..\Graphics;..\..\GameFramework;..\..\ThirdParty;..\..\..\ThirdParty\Source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <MinimalRebuild>false</MinimalRebuild>
@@ -98,16 +98,7 @@
     <ProjectReference>
     </ProjectReference>
     <PostBuildEvent>
-      <Command>set "CONTENTROOT=$(SolutionDir)Content"
-set "SHADERSRC=$(ProjectDir)Materials"
-set "SHADERDEST=%CONTENTROOT%\Shaders"
-
-IF NOT EXIST "%CONTENTROOT%" ( mkdir "%CONTENTROOT%" )
-IF NOT EXIST "%SHADERDEST%" ( mkdir "%SHADERDEST%" )
-xcopy /E /I /R /Y /D "%SHADERSRC%" "%SHADERDEST%"
-
-IF EXIST "$(SolutionDir)ThirdParty\Dll" ( xcopy /E /I /R /Y /D "$(SolutionDir)ThirdParty\Dll" "$(OutDir)" )</Command>
-      <Message>Copying Materials and DLLs</Message>
+      <Command>IF EXIST "$(SolutionDir)ThirdParty\Dll" ( xcopy /E /I /R /Y /D "$(SolutionDir)ThirdParty\Dll" "$(OutDir)" )</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -116,7 +107,7 @@ IF EXIST "$(SolutionDir)ThirdParty\Dll" ( xcopy /E /I /R /Y /D "$(SolutionDir)Th
       <WarningLevel>Level4</WarningLevel>
       <TreatWarningAsError>true</TreatWarningAsError>
       <PreprocessorDefinitions>_RELEASE;IMGUI_ENABLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>.;..\..\Utilities;..\..\Graphics;..\..\GameFramework;..\..\Tools;..\..\..\ThirdParty\Source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;..\..\Utilities;..\..\Graphics;..\..\GameFramework;..\..\ThirdParty;..\..\..\ThirdParty\Source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -139,15 +130,7 @@ IF EXIST "$(SolutionDir)ThirdParty\Dll" ( xcopy /E /I /R /Y /D "$(SolutionDir)Th
     <ProjectReference>
     </ProjectReference>
     <PostBuildEvent>
-      <Command>set "CONTENTROOT=$(SolutionDir)Content"
-set "SHADERSRC=$(ProjectDir)Materials"
-set "SHADERDEST=%CONTENTROOT%\Shaders"
-
-IF NOT EXIST "%CONTENTROOT%" ( mkdir "%CONTENTROOT%" )
-IF NOT EXIST "%SHADERDEST%" ( mkdir "%SHADERDEST%" )
-xcopy /E /I /R /Y /D "%SHADERSRC%" "%SHADERDEST%"
-
-IF EXIST "$(SolutionDir)ThirdParty\Dll" ( xcopy /E /I /R /Y /D "$(SolutionDir)ThirdParty\Dll" "$(OutDir)" )</Command>
+      <Command>IF EXIST "$(SolutionDir)ThirdParty\Dll" ( xcopy /E /I /R /Y /D "$(SolutionDir)ThirdParty\Dll" "$(OutDir)" )</Command>
       <Message>Copying Materials and DLLs</Message>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -157,7 +140,7 @@ IF EXIST "$(SolutionDir)ThirdParty\Dll" ( xcopy /E /I /R /Y /D "$(SolutionDir)Th
       <WarningLevel>Level4</WarningLevel>
       <TreatWarningAsError>true</TreatWarningAsError>
       <PreprocessorDefinitions>_RETAIL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>.;..\..\Utilities;..\..\Graphics;..\..\GameFramework;..\..\Tools;..\..\..\ThirdParty\Source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;..\..\Utilities;..\..\Graphics;..\..\GameFramework;..\..\ThirdParty;..\..\..\ThirdParty\Source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -179,16 +162,7 @@ IF EXIST "$(SolutionDir)ThirdParty\Dll" ( xcopy /E /I /R /Y /D "$(SolutionDir)Th
       <LinkLibraryDependencies>false</LinkLibraryDependencies>
     </ProjectReference>
     <PostBuildEvent>
-      <Command>set "CONTENTROOT=$(SolutionDir)Content"
-set "SHADERSRC=$(ProjectDir)Materials"
-set "SHADERDEST=%CONTENTROOT%\Shaders"
-
-IF NOT EXIST "%CONTENTROOT%" ( mkdir "%CONTENTROOT%" )
-IF NOT EXIST "%SHADERDEST%" ( mkdir "%SHADERDEST%" )
-xcopy /E /I /R /Y /D "%SHADERSRC%" "%SHADERDEST%"
-
-IF EXIST "$(SolutionDir)ThirdParty\Dll" ( xcopy /E /I /R /Y /D "$(SolutionDir)ThirdParty\Dll" "$(OutDir)" )</Command>
-      <Message>Copying Materials and DLLs</Message>
+      <Command>IF EXIST "$(SolutionDir)ThirdParty\Dll" ( xcopy /E /I /R /Y /D "$(SolutionDir)ThirdParty\Dll" "$(OutDir)" )</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -208,6 +182,22 @@ IF EXIST "$(SolutionDir)ThirdParty\Dll" ( xcopy /E /I /R /Y /D "$(SolutionDir)Th
     <ClCompile Include="WindowManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <CustomBuild Include="Materials\BaseMaterial.hlsli">
+      <FileType>Document</FileType>
+      <Command>if not exist "$(SolutionDir)Content\Shaders" mkdir "$(SolutionDir)Content\Shaders"
+copy /Y "%(FullPath)" "$(SolutionDir)Content\Shaders\%(Filename)%(Extension)"</Command>
+      <Outputs>$(SolutionDir)Content/Shaders/BaseMaterial.hlsli</Outputs>
+      <Message>Copying %(Identity)</Message>
+    </CustomBuild>
+    <CustomBuild Include="Materials\BlendMaterial.hlsli">
+      <FileType>Document</FileType>
+      <Command>if not exist "$(SolutionDir)Content\Shaders" mkdir "$(SolutionDir)Content\Shaders"
+copy /Y "%(FullPath)" "$(SolutionDir)Content\Shaders\%(Filename)%(Extension)"</Command>
+      <Outputs>$(SolutionDir)Content/Shaders/BlendMaterial.hlsli</Outputs>
+      <Message>Copying %(Identity)</Message>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\..\Utilities\Logger\Logger.vcxproj">
       <Project>{25F339C1-1195-6497-FA4F-78EBE690EBE7}</Project>
     </ProjectReference>
@@ -220,10 +210,10 @@ IF EXIST "$(SolutionDir)ThirdParty\Dll" ( xcopy /E /I /R /Y /D "$(SolutionDir)Th
     <ProjectReference Include="..\..\Utilities\CommonUtilities\CommonUtilities.vcxproj">
       <Project>{AA29E689-16B5-534E-1FC6-D6428BD0AF4E}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\..\Tools\Json\Json.vcxproj">
+    <ProjectReference Include="..\..\ThirdParty\Json\Json.vcxproj">
       <Project>{7F9B877C-6BD2-880D-14BF-6E1000D5040F}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\..\Tools\ImGui\ImGui.vcxproj">
+    <ProjectReference Include="..\..\ThirdParty\ImGui\ImGui.vcxproj">
       <Project>{C0FF640D-2C14-8DBE-F595-301E616989EF}</Project>
     </ProjectReference>
   </ItemGroup>

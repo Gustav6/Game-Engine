@@ -39,6 +39,41 @@ void Text::SetDepth(float aZOrder)
 	myZOrder = aZOrder;
 }
 
+CommonUtilities::Vector2f Text::GetTextBounds(const Font& aFont) const
+{
+	float width = 0.0f;
+	float currentLineWidth = 0.0f;
+
+	// Start with 1 line height minimum
+	float height = aFont.GetLineHeight();
+
+	for (char c : myText)
+	{
+		if (c == '\n')
+		{
+			width = std::max(width, currentLineWidth);
+			currentLineWidth = 0.0f;
+			height += aFont.GetLineHeight();
+			continue;
+		}
+
+		if (const Font::Glyph* glyph = aFont.GetGlyph(c))
+		{
+			currentLineWidth += glyph->Advance;
+		}
+	}
+
+	width = std::max(width, currentLineWidth);
+
+	// Return raw bounds (or multiplied by font size if mySize is a point size multiplier)
+	return CommonUtilities::Vector2f(width, height);
+}
+
+const std::string& Text::GetText() const
+{
+	return myText;
+}
+
 bool Text::RebuildGeometry(const Font& aFont)
 {
 	myVertices.clear();
@@ -66,22 +101,22 @@ bool Text::RebuildGeometry(const Font& aFont)
 
 		switch (c)
 		{
-			case '\n':
+		case '\n':
+		{
+			row++;
+			cursor = CommonUtilities::Vector4f::Zero;
+			cursor.y = lineOffset.y * row;
+			continue;
+		}
+		case ' ':
+		{
+			if (const Font::Glyph* glyph = aFont.GetGlyph(c))
 			{
-				row++;
-				cursor = CommonUtilities::Vector4f::Zero;
-				cursor.y = lineOffset.y * row;
-				continue;
+				CommonUtilities::Vector4f advance = CommonUtilities::Vector4f(glyph->Advance, 0, 0, 0);
+				cursor += advance;
 			}
-			case ' ':
-			{
-				if (const Font::Glyph* glyph = aFont.GetGlyph(c))
-				{
-					CommonUtilities::Vector4f advance = CommonUtilities::Vector4f(glyph->Advance, 0, 0, 0);
-					cursor += advance;
-				}
-				continue;
-			}
+			continue;
+		}
 		}
 
 		if (const Font::Glyph* glyph = aFont.GetGlyph(c))

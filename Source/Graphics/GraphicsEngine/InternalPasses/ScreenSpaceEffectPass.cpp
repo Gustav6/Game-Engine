@@ -30,7 +30,7 @@
 
 #include <tracy/core/Tracy.hpp>
 
-ScreenSpaceEffectPass::ScreenSpaceEffectPass(RenderHardwareInterface& aRHI)
+bool ScreenSpaceEffectPass::Initialize(RenderHardwareInterface& aRHI)
 {
 	myBloomEnabled = true;
 
@@ -50,6 +50,7 @@ ScreenSpaceEffectPass::ScreenSpaceEffectPass(RenderHardwareInterface& aRHI)
 		if (!aRHI.CreatePipelineStateObject(SSAOPSODesc, *mySSAOPSO))
 		{
 			GELOG(Error, "Failed to create SSAO pipeline state object!");
+			return false;
 		}
 	}
 
@@ -69,6 +70,7 @@ ScreenSpaceEffectPass::ScreenSpaceEffectPass(RenderHardwareInterface& aRHI)
 		if (!aRHI.CreatePipelineStateObject(tonemapPSODesc, *myTonemapPSO))
 		{
 			GELOG(Error, "Failed to create Tonemap pipeline state object!");
+			return false;
 		}
 	}
 
@@ -88,6 +90,7 @@ ScreenSpaceEffectPass::ScreenSpaceEffectPass(RenderHardwareInterface& aRHI)
 		if (!aRHI.CreatePipelineStateObject(resamplePSODesc, *myResamplePSO))
 		{
 			GELOG(Error, "Failed to create Resample pipeline state object!");
+			return false;
 		}
 	}
 
@@ -107,6 +110,7 @@ ScreenSpaceEffectPass::ScreenSpaceEffectPass(RenderHardwareInterface& aRHI)
 		if (!aRHI.CreatePipelineStateObject(sceneLuminancePSODesc, *myLuminancePSO))
 		{
 			GELOG(Error, "Failed to create Scene Luminance pipeline state object!");
+			return false;
 		}
 	}
 
@@ -126,6 +130,7 @@ ScreenSpaceEffectPass::ScreenSpaceEffectPass(RenderHardwareInterface& aRHI)
 		if (!aRHI.CreatePipelineStateObject(gaussianBlurPSODesc, *myGaussianBlurHorizontalPSO))
 		{
 			GELOG(Error, "Failed to create Gaussian blur pipeline state object!");
+			return false;
 		}
 	}
 
@@ -145,6 +150,7 @@ ScreenSpaceEffectPass::ScreenSpaceEffectPass(RenderHardwareInterface& aRHI)
 		if (!aRHI.CreatePipelineStateObject(gaussianBlurPSODesc, *myGaussianBlurVerticalPSO))
 		{
 			GELOG(Error, "Failed to create Gaussian blur pipeline state object!");
+			return false;
 		}
 	}
 
@@ -164,6 +170,7 @@ ScreenSpaceEffectPass::ScreenSpaceEffectPass(RenderHardwareInterface& aRHI)
 		if (!aRHI.CreatePipelineStateObject(bloomPSODesc, *myBloomPSO))
 		{
 			GELOG(Error, "Failed to create Bloom pipeline state object!");
+			return false;
 		}
 	}
 
@@ -176,6 +183,7 @@ ScreenSpaceEffectPass::ScreenSpaceEffectPass(RenderHardwareInterface& aRHI)
 		if (!aRHI.CreateTexture("SceneLuminance", clientSize.x, clientSize.y, 1, ResourceFormat::R16G16B16A16_FLOAT, ResourceBindFlag_ShaderResource | ResourceBindFlag_RenderTarget, *mySceneLuminance))
 		{
 			GELOG(Error, "Failed to create Scene Luminance texture!");
+			return false;
 		}
 	}
 
@@ -188,6 +196,7 @@ ScreenSpaceEffectPass::ScreenSpaceEffectPass(RenderHardwareInterface& aRHI)
 		if (!aRHI.CreateTexture("FullscreenBuffer", bufferSize.x, bufferSize.y, 1, ResourceFormat::R16G16B16A16_FLOAT, ResourceBindFlag_ShaderResource | ResourceBindFlag_RenderTarget, *myResampleFullSize))
 		{
 			GELOG(Error, "Failed to create Fullscreen Buffer texture!");
+			return false;
 		}
 	}
 
@@ -200,6 +209,7 @@ ScreenSpaceEffectPass::ScreenSpaceEffectPass(RenderHardwareInterface& aRHI)
 		if (!aRHI.CreateTexture("HalfScreenBuffer", bufferSize.x, bufferSize.y, 1, ResourceFormat::R16G16B16A16_FLOAT, ResourceBindFlag_ShaderResource | ResourceBindFlag_RenderTarget, *myResampleHalfSize))
 		{
 			GELOG(Error, "Failed to create Half Screen Buffer texture!");
+			return false;
 		}
 	}
 
@@ -213,10 +223,12 @@ ScreenSpaceEffectPass::ScreenSpaceEffectPass(RenderHardwareInterface& aRHI)
 		if (!aRHI.CreateTexture("QuarterScreenBuffer", bufferSize.x, bufferSize.y, 1, ResourceFormat::R16G16B16A16_FLOAT, ResourceBindFlag_ShaderResource | ResourceBindFlag_RenderTarget, *myResampleQuarterSize1))
 		{
 			GELOG(Error, "Failed to create Quarter Screen Buffer texture!");
+			return false;
 		}
 		if (!aRHI.CreateTexture("QuarterScreenBuffer", bufferSize.x, bufferSize.y, 1, ResourceFormat::R16G16B16A16_FLOAT, ResourceBindFlag_ShaderResource | ResourceBindFlag_RenderTarget, *myResampleQuarterSize2))
 		{
 			GELOG(Error, "Failed to create Quarter Screen Buffer texture!");
+			return false;
 		}
 	}
 
@@ -229,6 +241,7 @@ ScreenSpaceEffectPass::ScreenSpaceEffectPass(RenderHardwareInterface& aRHI)
 		if (!aRHI.CreateTexture("QuarterBlurred", bufferSize.x, bufferSize.y, 1, ResourceFormat::R16G16B16A16_FLOAT, ResourceBindFlag_ShaderResource | ResourceBindFlag_RenderTarget, *myBlurredTexture))
 		{
 			GELOG(Error, "Failed to create Quarter Blurred Screen Buffer texture!");
+			return false;
 		}
 	}
 
@@ -241,8 +254,11 @@ ScreenSpaceEffectPass::ScreenSpaceEffectPass(RenderHardwareInterface& aRHI)
 		if (!aRHI.CreateTexture("BloomBuffer", bufferSize.x, bufferSize.y, 1, ResourceFormat::R16G16B16A16_FLOAT, ResourceBindFlag_ShaderResource | ResourceBindFlag_RenderTarget, *myBloomTexture))
 		{
 			GELOG(Error, "Failed to create Bloom Buffer texture!");
+			return false;
 		}
 	}
+
+	return true;
 }
 
 void ScreenSpaceEffectPass::Execute(
@@ -281,7 +297,7 @@ void ScreenSpaceEffectPass::BloomPass(
 	RenderContext& aContext,
 	Texture* aHDRTexture)
 {
-	if (aContext.Mode != RenderMode::sRGB)
+	if (aContext.Mode != DebugRenderMode::None)
 	{
 		return;
 	}
@@ -404,7 +420,7 @@ void ScreenSpaceEffectPass::TonemapPass(
 
 	FrameBuffer frameBuffer;
 
-	if (aContext.Mode == RenderMode::sRGB)
+	if (aContext.Mode == DebugRenderMode::None)
 	{
 		frameBuffer.TypeOfTonemap = static_cast<unsigned int>(aContext.Tonmap);
 	}

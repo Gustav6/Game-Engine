@@ -3,8 +3,6 @@
 
 #include <memory.h>
 
-#include "GraphicsEngine/Objects/GPU/Texture.h"
-
 #include "Json/JsonWrapper.h"
 
 #include "AssetPipeline/AssetRegistry/AssetRegistry.h"
@@ -12,6 +10,8 @@
 #include "AssetPipeline/Assets/Types/AnimationAsset.h"
 #include "AssetPipeline/Assets/Types/MaterialAsset.h"
 #include "AssetPipeline/Assets/Types/TextureAsset.h"
+
+#include "GraphicsEngine/Objects/GPU/Texture.h"
 
 #include "GamePipeline/Components/Rendering/MeshComponent.h"
 #include "GamePipeline/Components/Rendering/AnimationComponent.h"
@@ -25,9 +25,9 @@
 
 #include <tracy/core/Tracy.hpp>
 
-DECLARE_LOG_CATEGORY_WITH_NAME(SceneLoaderLog, SCENELOADER, Verbose);
+DECLARE_LOG_CATEGORY_WITH_NAME(LogUnreal, UNREALSCENE, Verbose);
 
-DEFINE_LOG_CATEGORY(SceneLoaderLog);
+DEFINE_LOG_CATEGORY(LogUnreal);
 
 UnrealSceneAsset::~UnrealSceneAsset() = default;
 
@@ -38,30 +38,56 @@ std::vector<std::unique_ptr<Actor>>& UnrealSceneAsset::GetSceneActors()
 
 bool UnrealSceneAsset::Load(const std::filesystem::path& aPath)
 {
-	myActors.clear();
+	ZoneScopedN("Load Unreal Scene")
 
 	JsonData unrealSceneData = Json::Read(aPath);
 
 	if (!unrealSceneData.IsValid())
 	{
-		LOG(SceneLoaderLog, Error, "Failed to load Scene from JSON [{}]", aPath.string());
+		LOG(LogUnreal, Error, "Failed to load Scene from JSON [{}]", aPath.string());
 		return false;
 	}
 
+	myMasterMaterials.clear();
+
+	if (unrealSceneData.HasKey("MasterMaterials"))
+	{
+		LOG_GROUP(LogUnreal, Verbose, "Master Materials");
+
+		std::vector<JsonData> jsonMaterials = unrealSceneData.GetObjectValueArray("MasterMaterials");
+
+		for (const auto& masterMaterial : jsonMaterials)
+		{
+			std::string name = masterMaterial.GetString("Name");
+
+			myMasterMaterials.emplace_back(AssetRegistry::Get().ConstructAsset<MaterialAsset>(name, masterMaterial));
+		}
+	}
+	else
+	{
+		LOG(LogUnreal, Warning, "No Master Materials found in scene [{}]. Scene might be empty", aPath.string());
+	}
+
+
+	myActors.clear();
+
 	if (unrealSceneData.HasKey("Actors"))
 	{
-		std::vector<JsonData> JsonActors = unrealSceneData.GetObjectValueArray("Actors");
-		std::vector<Actor> actors;
+		LOG_GROUP(LogUnreal, Verbose, "Actors");
 
-		for (auto& jsonActor : JsonActors)
+		std::vector<JsonData> jsonActors = unrealSceneData.GetObjectValueArray("Actors");
+
+		for (const auto& jsonActor : jsonActors)
 		{
 			std::unique_ptr<Actor> actor = std::make_unique<Actor>();
 
+			std::string actorName = jsonActor.GetString("Name");
+
 			std::vector<float> matrix = jsonActor.GetFloatArray("Transform");
 
-			//actor->myName = jsonActor.GetString("Name");
-
 			actor->GetTransform() = UnrealToDirectX(matrix);
+
+			LOG_GROUP(LogUnreal, Verbose, "Actor [{}] Loaded to the Scene!", actorName);
 
 			std::vector<JsonData> jsonComponents = jsonActor.GetObjectValueArray("Components");
 
@@ -71,125 +97,238 @@ bool UnrealSceneAsset::Load(const std::filesystem::path& aPath)
 
 				switch (componentType)
 				{
-				case ComponentType::SceneComponent:
-					break;
-				case ComponentType::StaticMeshComponent:
-				{
-					std::string fullMeshPath = jsonComponent.GetString("ContentPath");
-
-					size_t pos = fullMeshPath.find(".");
-					std::string meshPath = fullMeshPath.substr(pos + 1);
-
-					MeshComponent* meshComponent = actor->AddComponent<MeshComponent>();
-					meshComponent->SetMesh(AssetRegistry::Get().GetAsset<MeshAsset>(meshPath));
-
-					std::vector<JsonData> materials = jsonComponent.GetObjectValueArray("Materials");
-					for (unsigned int i = 0; i < materials.size(); i++)
+					case ComponentType::SceneComponent:
 					{
-						std::string materialName = materials[i].GetString("Name");
+						break;
+					}
+					case ComponentType::StaticMeshComponent:
+					{
+						LOG_GROUP(LogUnreal, Verbose, "Component [StaticMesh]");
 
-						auto material = AssetRegistry::Get().GetAsset<MaterialAsset>(materialName);
+						std::shared_ptr<MeshAsset> mesh = AssetRegistry::Get().GetAsset<MeshAsset>(jsonComponent.GetString("Mesh"));
 
-						if (material != nullptr)
+						if (mesh == nullptr)
 						{
-							meshComponent->SetMaterial(i, material);
+							break;
+						}
+
+						MeshComponent* meshComponent = actor->AddComponent<MeshComponent>();
+						meshComponent->SetMesh(mesh);
+
+						std::vector<JsonData> materials = jsonComponent.GetObjectValueArray("Materials");
+
+						if (materials.empty())
+						{
+							LOG(LogUnreal, Error, "Mesh has no material set [{}]!", actorName);
 						}
 						else
 						{
-							meshComponent->SetMaterial(i, AssetRegistry::Get().GetAsset<MaterialAsset>("ErrorMaterial"));
+							for (unsigned int i = 0; i < materials.size(); i++)
+							{
+								std::string materialName;
+
+								if (materials[i].HasKey("Name"))
+								{
+									materialName = materials[i].GetString("Name");
+								}
+								else
+								{
+									LOG(LogUnreal, Error, "Material had no name for actor [{}]!", actorName);
+									materialName = "NO NAME GIVEN";
+								}
+
+								meshComponent->SetMaterial(i, AssetRegistry::Get().ConstructAsset<MaterialAsset>(materialName, materials[i]));
+							}
 						}
 
+						break;
 					}
-				}
-				break;
-				case ComponentType::SkeletalMeshComponent:
+					case ComponentType::SkeletalMeshComponent:
+					{
+						LOG_GROUP(LogUnreal, Verbose, "Component [SkeletalMesh]");
 
-					//AnimationComponent* animationComponent = actor->AddComponent<AnimationComponent>(meshComponent->GetSkeleton());
+						std::shared_ptr<MeshAsset> mesh = AssetRegistry::Get().GetAsset<MeshAsset>(jsonComponent.GetString("Mesh"));
 
-					//AnimationEntry breathingAnimation =
-					//{
-					//	.AnimationAsset = AssetRegistry::Get().GetAsset<AnimationAsset>("A_C_TGA_Bro_Idle_Breathing"),
-					//	.ShouldLoop = true
-					//};
-					//AnimationEntry waveAnimation =
-					//{
-					//	.AnimationAsset = AssetRegistry::Get().GetAsset<AnimationAsset>("A_C_TGA_Bro_Idle_Wave"),
-					//	.ShouldLoop = true
-					//};
-					//AnimationEntry runAnimation =
-					//{
-					//	.AnimationAsset = AssetRegistry::Get().GetAsset<AnimationAsset>("A_C_TGA_Bro_Run"),
-					//	.ShouldLoop = true
-					//};
-					//AnimationEntry walkAnimation =
-					//{
-					//	.AnimationAsset = AssetRegistry::Get().GetAsset<AnimationAsset>("A_C_TGA_Bro_Walk"),
-					//	.ShouldLoop = true
-					//};
+						if (mesh == nullptr)
+						{
+							break;
+						}
 
-					break;
-				case ComponentType::PointLightComponent:
-				{
-					PointLightComponent* spotLight = actor->AddComponent<PointLightComponent>();
-					std::vector<float> jsonColor = jsonComponent.GetFloatArray("Color");
-					CommonUtilities::Vector3f color = { jsonColor[0],jsonColor[1] ,jsonColor[2] };
+						MeshComponent* meshComponent = actor->AddComponent<MeshComponent>();
+						meshComponent->SetMesh(mesh);
 
-					spotLight->SetColor(color);
-					spotLight->SetIntensity(jsonComponent.GetFloat("Intensity"));
-					spotLight->SetRadius(jsonComponent.GetFloat("AttenuationRadius"));
-				}
-				break;
-				case ComponentType::SpotLightComponent:
+						std::vector<JsonData> materials = jsonComponent.GetObjectValueArray("Materials");
 
-				{
-					SpotLightComponent* spotLight = actor->AddComponent<SpotLightComponent>();
-					std::vector<float> jsonColor = jsonComponent.GetFloatArray("Color");
-					CommonUtilities::Vector3f color = { jsonColor[0],jsonColor[1] ,jsonColor[2] };
+						if (materials.empty())
+						{
+							LOG(LogUnreal, Error, "Mesh has no material set [{}]!", actorName);
+						}
+						else
+						{
+							for (unsigned int i = 0; i < materials.size(); i++)
+							{
+								std::string materialName;
 
-					float outerConeAngle = jsonComponent.GetFloat("OuterConeAngle");
-					float outerConeRadius = outerConeAngle * CommonUtilities::Math::DEG_TO_RAD<float>;
+								if (materials[i].HasKey("Name"))
+								{
+									materialName = materials[i].GetString("Name");
+								}
+								else
+								{
+									LOG(LogUnreal, Error, "Material had no name for actor [{}]!", actorName);
+									materialName = "NO NAME GIVEN";
+								}
 
-					spotLight->SetColor(color);
-					spotLight->SetIntensity(jsonComponent.GetFloat("Intensity"));
-					spotLight->SetInnerCone(jsonComponent.GetFloat("InnerConeAngle"));
-					spotLight->SetOuterCone(outerConeRadius);
-					spotLight->SetRadius(jsonComponent.GetFloat("AttenuationRadius"));
-				}
+								meshComponent->SetMaterial(i, AssetRegistry::Get().ConstructAsset<MaterialAsset>(materialName, materials[i]));
+							}
+						}
 
-				break;
-				case ComponentType::DirectionalLightComponent:
-				{
-					DirectionalLightComponent* directionalLight = actor->AddComponent<DirectionalLightComponent>();
+						AnimationComponent* animationComponent = actor->AddComponent<AnimationComponent>(meshComponent->GetSkeleton());
 
-					std::vector<float> jsonColor = jsonComponent.GetFloatArray("Color");
-					CommonUtilities::Vector3f color = { jsonColor[0],jsonColor[1] ,jsonColor[2] };
+						AnimationEntry idleAnimation =
+						{
+							.AnimationAsset = AssetRegistry::Get().GetAsset<AnimationAsset>("A_swampGrass"),
+							.ShouldLoop = true
+						};
 
-					directionalLight->SetColor(color);
-					directionalLight->SetIntensity(jsonComponent.GetFloat("Intensity"));
+						animationComponent->AddAnimation("Idle", idleAnimation);
 
-				}
-				break;
-				case ComponentType::BoxComponent:
-					break;
-				case ComponentType::SphereComponent:
-					break;
-				case ComponentType::CapsuleComponent:
-					break;
-				case ComponentType::SpringArmComponent:
-					break;
-				case ComponentType::COUNT:
-					break;
-				default:
-					break;
+						break;
+					}
+					case ComponentType::PointLightComponent:
+					{
+						LOG_GROUP(LogUnreal, Verbose, "Component [PointLight]");
+
+						if (!jsonComponent.HasKey("Color"))
+						{
+							LOG(LogUnreal, Error, "Point Light has no Color [{}]!", actorName);
+							break;
+						}
+						if (!jsonComponent.HasKey("Intensity"))
+						{
+							LOG(LogUnreal, Error, "Point Light has no Intensity [{}]!", actorName);
+							break;
+						}
+						if (!jsonComponent.HasKey("AttenuationRadius"))
+						{
+							LOG(LogUnreal, Error, "Point Light has no Attenuation Radius [{}]!", actorName);
+							break;
+						}
+
+						PointLightComponent* pointLight = actor->AddComponent<PointLightComponent>();
+						std::vector<float> jsonColor = jsonComponent.GetFloatArray("Color");
+						CommonUtilities::Vector3f color = { jsonColor[0],jsonColor[1] ,jsonColor[2] };
+
+						pointLight->SetColor(color);
+						pointLight->SetPosition(actor->GetTransform().GetPosition());
+						pointLight->SetIntensity(jsonComponent.GetFloat("Intensity") * myLightMultiplier);
+						pointLight->SetRadius(jsonComponent.GetFloat("AttenuationRadius"));
+						pointLight->SetShadowMapSize({ 512, 512 });
+
+						break;
+					}
+					case ComponentType::SpotLightComponent:
+					{
+						LOG_GROUP(LogUnreal, Verbose, "Component [SpotLight]");
+
+						if (!jsonComponent.HasKey("Color"))
+						{
+							LOG(LogUnreal, Error, "Spot Light has no Color [{}]!", actorName);
+							break;
+						}
+						if (!jsonComponent.HasKey("Intensity"))
+						{
+							LOG(LogUnreal, Error, "Spot Light has no Intensity [{}]!", actorName);
+							break;
+						}
+						if (!jsonComponent.HasKey("AttenuationRadius"))
+						{
+							LOG(LogUnreal, Error, "Spot Light has no Attenuation Radius [{}]!", actorName);
+							break;
+						}
+						if (!jsonComponent.HasKey("InnerConeAngle"))
+						{
+							LOG(LogUnreal, Error, "Spot Light has no Inner Cone Angle [{}]!", actorName);
+							break;
+						}
+						if (!jsonComponent.HasKey("OuterConeAngle"))
+						{
+							LOG(LogUnreal, Error, "Spot Light has no Outer Cone Angle [{}]!", actorName);
+							break;
+						}
+
+						SpotLightComponent* spotLight = actor->AddComponent<SpotLightComponent>();
+						std::vector<float> jsonColor = jsonComponent.GetFloatArray("Color");
+						CommonUtilities::Vector3f color = { jsonColor[0],jsonColor[1] ,jsonColor[2] };
+
+						spotLight->SetColor(color);
+						spotLight->SetIntensity(jsonComponent.GetFloat("Intensity") * myLightMultiplier);
+						spotLight->SetInnerCone(jsonComponent.GetFloat("InnerConeAngle") * CommonUtilities::Math::DEG_TO_RAD<float>);
+						spotLight->SetOuterCone(jsonComponent.GetFloat("OuterConeAngle") * CommonUtilities::Math::DEG_TO_RAD<float>);
+						spotLight->SetRadius(jsonComponent.GetFloat("AttenuationRadius"));
+						spotLight->SetDirection(actor->GetTransform().GetForward());
+						spotLight->SetShadowMapSize({ 512, 512 });
+
+						break;
+					}
+					case ComponentType::DirectionalLightComponent:
+					{
+						LOG_GROUP(LogUnreal, Verbose, "Component [DirectionalLight]");
+
+						if (!jsonComponent.HasKey("Color"))
+						{
+							LOG(LogUnreal, Error, "Directional Light has no Color [{}]!", actorName);
+							break;
+						}
+						if (!jsonComponent.HasKey("Intensity"))
+						{
+							LOG(LogUnreal, Error, "Directional Light has no Intensity [{}]!", actorName);
+							break;
+						}
+
+						DirectionalLightComponent* directionalLight = actor->AddComponent<DirectionalLightComponent>();
+
+						std::vector<float> jsonColor = jsonComponent.GetFloatArray("Color");
+						CommonUtilities::Vector3f color = { jsonColor[0],jsonColor[1] ,jsonColor[2] };
+
+						directionalLight->SetColor(color);
+						directionalLight->SetIntensity(jsonComponent.GetFloat("Intensity"));
+						directionalLight->SetDirection(actor->GetTransform().GetForward());
+
+						break;
+					}
+					case ComponentType::BoxComponent:
+					{
+						LOG_GROUP(LogUnreal, Verbose, "Component [BoxComponent]");
+
+						break;
+					}
+					case ComponentType::SphereComponent:
+					{
+						LOG_GROUP(LogUnreal, Verbose, "Component [SphereComponent]");
+
+						break;
+					}
+					case ComponentType::CapsuleComponent:
+					{
+						break;
+					}
+					case ComponentType::SpringArmComponent:
+					{
+						break;
+					}
+					default:
+						// Log error here
+						break;
 				}
 			}
 
-			GameWorld::Get().AddActor(std::move(actor));
+			myActors.push_back(std::move(actor));
 		}
 	}
 	else
 	{
-		LOG(SceneLoaderLog, Warning, "No Actors found in scene [{}]. Scene might be empty", aPath.string());
+		LOG(LogUnreal, Warning, "No Actors found in scene [{}]. Scene might be empty", aPath.string());
 	}
 
 	return true;

@@ -12,9 +12,9 @@
 
 #include "Logger/Logger.h"
 
-DECLARE_LOG_CATEGORY_WITH_NAME(AnimationLog, FBX, Verbose);
+DECLARE_LOG_CATEGORY_WITH_NAME(LogAnimation, ANIMATION, Verbose);
 
-DEFINE_LOG_CATEGORY(AnimationLog);
+DEFINE_LOG_CATEGORY(LogAnimation);
 
 AnimationAsset::AnimationAsset()
 {
@@ -30,6 +30,8 @@ const Animation& AnimationAsset::GetAnimation() const
 
 bool AnimationAsset::Load(const std::filesystem::path& aPath)
 {
+    ZoneScopedN("Load Animation")
+
     std::unique_ptr<TGA::FBX::Animation> tgaAnimation = std::make_unique<TGA::FBX::Animation>();
     const TGA::FBX::FbxImportStatus& importStatus = TGA::FBX::Importer::LoadAnimation(aPath, *tgaAnimation);
 
@@ -40,46 +42,69 @@ bool AnimationAsset::Load(const std::filesystem::path& aPath)
         switch (importStatus.Result)
         {
             case TGA::FBX::FbxImportResult::InternalError:
-                LOG(AnimationLog, Error, "Could not load animation [{}] : Internal FBX importer error!", pathString);
+            {
+                LOG(LogAnimation, Error, "Could not load animation [{}] : Internal FBX importer error!", pathString);
                 break;
+            }
             case TGA::FBX::FbxImportResult::NotInitialized:
-                LOG(AnimationLog, Error, "Could not load animation [{}] : FBX importer is not initialized!", pathString);
+            {
+                LOG(LogAnimation, Error, "Could not load animation [{}] : FBX importer is not initialized!", pathString);
                 break;
+            }
             case TGA::FBX::FbxImportResult::FileNotFound:
-                LOG(AnimationLog, Error, "Could not load animation [{}] : File not found!", pathString);
+            {
+                LOG(LogAnimation, Error, "Could not load animation [{}] : File not found!", pathString);
                 break;
+            }
             case TGA::FBX::FbxImportResult::NoSkeletonData:
-                LOG(AnimationLog, Error, "Could not load animation [{}] : No skeleton data found in file!", pathString);
+            {
+                LOG(LogAnimation, Error, "Could not load animation [{}] : No skeleton data found in file!", pathString);
                 break;
+            }
             case TGA::FBX::FbxImportResult::NoAnimationData:
-                LOG(AnimationLog, Error, "Could not load animation [{}] : No animation data found in file!", pathString);
+            {
+                LOG(LogAnimation, Error, "Could not load animation [{}] : No animation data found in file!", pathString);
                 break;
+            }
             default:
-                LOG(AnimationLog, Error, "Could not load animation [{}] : Unknown error!", pathString);
+            {
+                LOG(LogAnimation, Error, "Could not load animation [{}] : Unknown error!", pathString);
                 break;
+            }
         }
 
         return false;
     }
 
-    for (const auto& [warning, count] : importStatus.Warnings)
+    if (!importStatus.Warnings.empty())
     {
         const std::string pathString = aPath.string();
 
-        switch (warning)
+        for (const auto& [warning, count] : importStatus.Warnings)
         {
-            case TGA::FBX::FbxImportWarning::TooManySkinWeights:
-                LOG(AnimationLog, Warning, "Animation [{}] : vertices had too many skin weights and were truncated!", pathString);
-                break;
-            case TGA::FBX::FbxImportWarning::MissingSkinWeights:
-                LOG(AnimationLog, Warning, "Animation [{}] : vertices are missing skin weights!", pathString);
-                break;
-            case TGA::FBX::FbxImportWarning::DuplicateBoneNames:
-                LOG(AnimationLog, Warning, "Animation [{}] : duplicate bone names detected, skinning may be incorrect!", pathString);
-                break;
-            default:
-                LOG(AnimationLog, Warning, "Animation [{}] : Unknown warning!", pathString);
-                break;
+            switch (warning)
+            {
+                case TGA::FBX::FbxImportWarning::TooManySkinWeights:
+                {
+                    LOG(LogAnimation, Warning, "Animation [{}] : vertices had too many skin weights and were truncated!", pathString);
+                    break;
+                }
+                case TGA::FBX::FbxImportWarning::MissingSkinWeights:
+                {
+                    LOG(LogAnimation, Warning, "Animation [{}] : vertices are missing skin weights!", pathString);
+                    break;
+                }
+                case TGA::FBX::FbxImportWarning::DuplicateBoneNames:
+                {
+                    LOG(LogAnimation, Warning, "Animation [{}] : duplicate bone names detected, skinning may be incorrect!", pathString);
+                    break;
+                }
+                default:
+                {
+                    LOG(LogAnimation, Warning, "Animation [{}] : Unknown warning!", pathString);
+                    break;
+                }
+            }
         }
     }
 

@@ -2,8 +2,9 @@
 
 #include <cstdint>
 
-enum class RenderMode
+enum class DebugRenderMode
 {
+    None,
     sRGB,
     Roughness,
     Metalness,

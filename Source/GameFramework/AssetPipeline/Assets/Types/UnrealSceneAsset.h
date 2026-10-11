@@ -4,9 +4,12 @@
 #include <vector>
 #include <memory>
 
+#include <CommonUtilities/Math/Matrix4x4.hpp>
+
 #include <AssetPipeline/Assets/Base/Asset.h>
 
-#include "GamePipeline/World/Actor.hpp"
+class MaterialAsset;
+class Actor;
 
 enum class ComponentType
 {
@@ -21,7 +24,6 @@ enum class ComponentType
 	CapsuleComponent,
 	SpringArmComponent,
 	COUNT
-
 };
 
 class UnrealSceneAsset : public Asset
@@ -35,19 +37,20 @@ public:
 
 protected:
 	bool Load(const std::filesystem::path& aPath) override;
-	CommonUtilities::Matrix4x4f UnrealToDirectX(const std::vector<float>& someData);
-	CommonUtilities::Matrix4x4f UnrealToDirectX(const CommonUtilities::Matrix4x4f& someData);
 
 private:
+	CommonUtilities::Matrix4x4f UnrealToDirectX(const std::vector<float>& someData);
+	CommonUtilities::Matrix4x4f UnrealToDirectX(const CommonUtilities::Matrix4x4f& someData);
+	void Decompose(const CommonUtilities::Matrix4x4f& m, float* outTranslation, float* outRotation, float* outScale);
+
 	void PrintVector(float* aVector);
 	void PrintRot(float* aVector, bool aUEStyle);
 	void PrintTrx(float* aVector, bool aUEStyle);
-
-	void Decompose(const CommonUtilities::Matrix4x4f& m, float* outTranslation, float* outRotation, float* outScale);
-
 	void PrintMatrix(CommonUtilities::Matrix4x4f& aMatrix);
 
-
 	std::vector<std::unique_ptr<Actor>> myActors;
+	std::vector<std::shared_ptr<MaterialAsset>> myMasterMaterials;
+
+	float myLightMultiplier = 1000000.0f;
 };
 

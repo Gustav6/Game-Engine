@@ -178,6 +178,7 @@
     <ClInclude Include="Math\Vector4.hpp" />
     <ClInclude Include="Rectangle.hpp" />
     <ClInclude Include="Time\Timer.h" />
+    <ClInclude Include="Utility\AStar.hpp" />
     <ClInclude Include="Utility\Alias.h" />
     <ClInclude Include="Utility\Random.hpp" />
     <ClInclude Include="Utility\Sort.hpp" />

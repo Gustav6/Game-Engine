@@ -20,7 +20,7 @@ bool BuiltinAssets::Initialize(GraphicsEngine& aGraphicsEngine, RenderHardwareIn
 		myDefaultMaterial = std::make_unique<Material>();
 
 		MaterialDescription defaultMatDesc;
-		defaultMatDesc.Name = "Default";
+		defaultMatDesc.Name = "Default Mesh Material";
 		defaultMatDesc.Domain = MaterialDomain::Surface;
 		defaultMatDesc.ShadingModel = ShadingModel::Unlit;
 		defaultMatDesc.BlendMode = MaterialBlendMode::Opaque;
@@ -28,41 +28,7 @@ bool BuiltinAssets::Initialize(GraphicsEngine& aGraphicsEngine, RenderHardwareIn
 
 		if (!aGraphicsEngine.CreateMaterial(defaultMatDesc, *myDefaultMaterial))
 		{
-			GELOG(Error, "Failed to create default material!");
-			return false;
-		}
-	}
-
-	// Font Material
-	{
-		myDefaultFontMaterial = std::make_unique<Material>();
-
-		MaterialDescription fontMaterialDesc;
-		fontMaterialDesc.Name = "FontMaterial";
-		fontMaterialDesc.Domain = MaterialDomain::Surface;
-		fontMaterialDesc.ShadingModel = ShadingModel::Unlit;
-		fontMaterialDesc.BlendMode = MaterialBlendMode::Alpha;
-
-		if (!aGraphicsEngine.CreateMaterial(fontMaterialDesc, *myDefaultFontMaterial))
-		{
-			GELOG(Error, "Failed to create font material!");
-			return false;
-		}
-	}
-
-	// Sprite Material
-	{
-		myDefaultSpriteMaterial = std::make_unique<Material>();
-
-		MaterialDescription spriteMaterialDesc;
-		spriteMaterialDesc.Name = "SpriteMaterial";
-		spriteMaterialDesc.Domain = MaterialDomain::Surface;
-		spriteMaterialDesc.ShadingModel = ShadingModel::Unlit;
-		spriteMaterialDesc.BlendMode = MaterialBlendMode::Alpha;
-
-		if (!aGraphicsEngine.CreateMaterial(spriteMaterialDesc, *myDefaultSpriteMaterial))
-		{
-			GELOG(Error, "Failed to create sprite material!");
+			GELOG(Error, "Failed to create default mesh material!");
 			return false;
 		}
 	}
@@ -112,29 +78,4 @@ bool BuiltinAssets::Initialize(GraphicsEngine& aGraphicsEngine, RenderHardwareIn
 const Material& BuiltinAssets::GetDefaultMaterial() const
 {
 	return *myDefaultMaterial;
-}
-
-const Material& BuiltinAssets::GetDefaultFontMaterial() const
-{
-	return *myDefaultFontMaterial;
-}
-
-const Material& BuiltinAssets::GetDefaultSpriteMaterial() const
-{
-	return *myDefaultSpriteMaterial;
-}
-
-const Texture& BuiltinAssets::GetDefaultAlbedoTexture() const
-{
-	return *myDefaultAlbedoTexture;
-}
-
-const Texture& BuiltinAssets::GetDefaultNormalTexture() const
-{
-	return *myDefaultNormalTexture;
-}
-
-const Texture& BuiltinAssets::GetDefaultEmissionTexture() const
-{
-	return *myDefaultEmissionTexture;
 }

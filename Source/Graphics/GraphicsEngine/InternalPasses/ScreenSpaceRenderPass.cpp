@@ -43,7 +43,7 @@
 
 #include <tracy/core/Tracy.hpp>
 
-ScreenSpaceRenderPass::ScreenSpaceRenderPass(RenderHardwareInterface& aRHI)
+bool ScreenSpaceRenderPass::Initialize(RenderHardwareInterface& aRHI)
 {
 	constexpr float designWidth = 1920.0f;
 	constexpr float designHeight = 1080.0f;
@@ -73,6 +73,7 @@ ScreenSpaceRenderPass::ScreenSpaceRenderPass(RenderHardwareInterface& aRHI)
 		if (!aRHI.CreatePipelineStateObject(fontPSODesc, *myFontPSO))
 		{
 			GELOG(Error, "Failed to create Font pipeline state object!");
+			return false;
 		}
 	}
 
@@ -92,8 +93,11 @@ ScreenSpaceRenderPass::ScreenSpaceRenderPass(RenderHardwareInterface& aRHI)
 		if (!aRHI.CreatePipelineStateObject(spritePSODesc, *mySpritePSO))
 		{
 			GELOG(Error, "Failed to create Sprite pipeline state object!");
+			return false;
 		}
 	}
+
+	return true;
 }
 
 void ScreenSpaceRenderPass::Execute(
@@ -102,7 +106,7 @@ void ScreenSpaceRenderPass::Execute(
 	FrameTargets& aFrameTargets,
 	RenderContext& aContext)
 {
-	ZoneScopedN("Screen Space Render Pass");
+	ZoneScopedN("Screen Space Render Pass")
 
 	inoutCommandList.BeginEvent("Screen Space Render");
 
@@ -121,6 +125,8 @@ void ScreenSpaceRenderPass::Execute(
 			RenderText(inoutCommandList, *aItems[i].TextCall, aContext);
 		}
 	}
+
+	inoutCommandList.ClearOverridePipelineState();
 
 	inoutCommandList.EndEvent();
 }
@@ -171,7 +177,7 @@ void ScreenSpaceRenderPass::RenderText(
 
 	if (material == nullptr)
 	{
-		material = &aContext.BuiltinAssets->GetDefaultFontMaterial();
+		material = &aContext.BuiltinAssets->GetDefaultMaterial();
 	}
 
 	if (material->HasParameters())
@@ -265,7 +271,7 @@ void ScreenSpaceRenderPass::RenderSprite(
 
 	if (material == nullptr)
 	{
-		material = &aContext.BuiltinAssets->GetDefaultSpriteMaterial();
+		material = &aContext.BuiltinAssets->GetDefaultMaterial();
 	}
 
 	if (material->HasParameters())

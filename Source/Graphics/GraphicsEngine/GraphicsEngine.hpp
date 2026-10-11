@@ -28,13 +28,14 @@ class DeferredRenderPass;
 class ScreenSpaceRenderPass;
 class ShadowRenderPass;
 class ScreenSpaceEffectPass;
+class DebugRenderPass;
 
 struct RenderItem;
 struct SceneCamera;
 struct MaterialDescription;
 
 enum class ResourceFormat;
-enum class RenderMode;
+enum class DebugRenderMode;
 enum class ToneMappingOperator;
 
 typedef int ResourceBindFlags;
@@ -87,9 +88,8 @@ private:
 	bool InitializeRenderResources();
 
 	std::filesystem::path myShaderRoot;
-	std::filesystem::path myContentRoot;
 
-	RenderMode myRenderMode;
+	DebugRenderMode myRenderMode;
 	ToneMappingOperator myToneMappingOperator;
 
 	std::unique_ptr<RenderHardwareInterface> myRHI;
@@ -103,6 +103,7 @@ private:
 	std::unique_ptr<ScreenSpaceRenderPass> myScreenSpaceRenderPass;
 	std::unique_ptr<ShadowRenderPass> myShadowRenderPass;
 	std::unique_ptr<ScreenSpaceEffectPass> myScreenSpaceEffectPass;
+	std::unique_ptr<DebugRenderPass> myDebugRenderPass;
 
 	std::unique_ptr<Texture> myBackBuffer;
 	std::unique_ptr<Texture> myHDRBuffer;
@@ -114,8 +115,8 @@ private:
 	std::shared_ptr<Texture> myEnvironmentCubemap;
 	std::unique_ptr<Texture> myLUTTexture;
 
-	std::vector<RenderItem> myOpaqueItems;
-	std::vector<RenderItem> myAlphaItems;
+	std::vector<RenderItem> myDeferredItems;
+	std::vector<RenderItem> myForwardItems;
 	std::vector<RenderItem> myShadowItems;
 
 	RenderOverlay* myRenderOverlay;

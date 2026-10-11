@@ -3,6 +3,10 @@
 
 #include <GraphicsEngine/Drawers/SpriteDrawer.h>
 
+#include "AssetPipeline/Assets/Types/MaterialAsset.h"
+#include "AssetPipeline/Assets/Types/SpriteAsset.h"
+
+
 SpriteComponent::SpriteComponent(Actor* aOwner)
 	: Component(aOwner)
 {
@@ -10,11 +14,23 @@ SpriteComponent::SpriteComponent(Actor* aOwner)
 
 void SpriteComponent::Render()
 {
+	if (mySpriteAsset == nullptr)
+	{
+		return;
+	}
+
+	MaterialInterface* material = nullptr;
+
+	if (myMaterialAsset != nullptr)
+	{
+		material = myMaterialAsset->GetMaterial().get();
+	}
+
 	SpriteDrawCall drawCall =
 	{
 		.SpriteInstanceData = &mySpriteInstance,
 		.SpriteSharedData = &mySpriteAsset->GetData(),
-		.Material = nullptr
+		.Material = material
 	};
 
 	SpriteDrawer::Get().Submit(drawCall);
@@ -69,4 +85,9 @@ void SpriteComponent::SetDepth(float aDepth)
 void SpriteComponent::SetVisible(bool aVisible)
 {
 	mySpriteInstance.IsVisible = aVisible;
+}
+
+void SpriteComponent::SetMaterial(const std::shared_ptr<MaterialAsset>& aMaterial)
+{
+	myMaterialAsset = aMaterial;
 }

@@ -16,7 +16,6 @@
 #include "AssetPipeline/Assets/Types/TextureAsset.h"
 #include "AssetPipeline/Assets/Types/FontAsset.h"
 #include "AssetPipeline/Assets/Types/SpriteAsset.h"
-//#include "AssetPipeline/Assets/Types/UnrealSceneAsset.h"
 
 #include "GamePipeline/Components/Rendering/MeshComponent.h"
 #include "GamePipeline/Components/Rendering/AnimationComponent.h"
@@ -37,11 +36,13 @@
 #include "GamePipeline/Components/Registry/ComponentRegistryManager.h"
 
 #include "Camera/GameCamera.h"
-//
-//#ifdef IMGUI_ENABLE
-//#include <ImGui/ImGuiLayer.h>
-//#include <ImGui/imgui.h>
-//#endif
+
+#include "Logger/Logger.h"
+
+#ifdef IMGUI_ENABLE
+#include <ImGui/ImGuiLayer.h>
+#include <ImGui/imgui.h>
+#endif
 
 Game::Game() = default;
 Game::~Game() = default;
@@ -107,12 +108,17 @@ bool Game::Initialize(SIZE aWindowSize, WNDPROC aWindowProcess, LPCWSTR aWindowT
 			return false;
 		}
 
-//#ifdef IMGUI_ENABLE
-//		myImGuiLayer = std::make_unique<ImGuiLayer>(myMainWindowHandle);
-//		GE.SetRenderOverlay(myImGuiLayer.get());
-//#endif
+#ifdef IMGUI_ENABLE
+		myImGuiLayer = std::make_unique<ImGuiLayer>(myMainWindowHandle);
+		GE.SetRenderOverlay(myImGuiLayer.get());
+#endif
 
-		GE.SetEnvironmentTexture(AssetRegistry::Get().GetAsset<TextureAsset>("T_Shipyard_cm")->GetTexture());
+		std::shared_ptr<TextureAsset> environmentTexture = AssetRegistry::Get().GetAsset<TextureAsset>("T_Shipyard_cm");
+
+		if (environmentTexture != nullptr)
+		{
+			GE.SetEnvironmentTexture(environmentTexture->GetTexture());
+		}
 
 		myGraphicsCommandList = std::make_unique<GraphicsCommandList>();
 
@@ -335,7 +341,7 @@ void Game::LoadScene()
 	    DirectionalLightComponent* directionalLight = object->AddComponent<DirectionalLightComponent>();
 
 	    directionalLight->SetColor({ 1.0f, 0.95f, 0.85f });
-	    directionalLight->SetIntensity(4.0f);
+	    directionalLight->SetIntensity(1.0f);
 	    directionalLight->SetDirection({ 0.0f, -0.75f, 1.0f });
 
 	    myDirectionLightObject = GameWorld::Get().AddActor(std::move(object));
@@ -478,16 +484,18 @@ void Game::UpdateScene(float aDeltaTime)
 
 void Game::RenderScene()
 {
-//#ifdef IMGUI_ENABLE
-//	ImGui::ShowDemoWindow();
-//
-//	ImGui::PushFont(nullptr, 28.0f);
-//	ImGui::Begin("Debug");
-//	ImGui::Text("FPS: %.1f", ImGui::GetIO().Framerate);
-//	ImGui::PopFont();
-//
-//	ImGui::End();
-//#endif
+#ifdef IMGUI_ENABLE
+
+	ImGui::ShowDemoWindow();
+
+	ImGui::PushFont(nullptr, 28.0f);
+	ImGui::Begin("Debug");
+	ImGui::Text("FPS: %.1f", ImGui::GetIO().Framerate);
+	ImGui::PopFont();
+
+	ImGui::End();
+
+#endif
 
 	GameWorld::Get().Render();
 }

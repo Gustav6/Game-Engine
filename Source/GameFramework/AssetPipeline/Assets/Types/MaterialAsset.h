@@ -6,7 +6,6 @@
 
 class JsonData;
 class MaterialInterface;
-class MaterialInstance;
 
 class MaterialAsset : public Asset
 {
@@ -19,8 +18,9 @@ protected:
 	bool Load(const std::filesystem::path& aPath) override;
 
 private:
-	void LoadParameters(const JsonData& aMaterialParameters, MaterialInstance* aMaterialInstance);
+	bool Construct(const JsonData& aMaterialData);
+
+	void PushParameters(const std::vector<JsonData>& aMaterialParameters, MaterialInterface* aMaterialInstance);
 
 	std::shared_ptr<MaterialInterface> myMaterial;
 };
-

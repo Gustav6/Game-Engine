@@ -127,11 +127,30 @@ float JsonData::GetFloat(const char* aName) const
 
 	if (!yyjson_is_num(data))
 	{
-		LOG(JSONLog, Warning, "Key [{}] exists but is not a double, type: [{}] in [{}]!", aName, yyjson_get_type_desc(data), myPath.string());
+		LOG(JSONLog, Warning, "Key [{}] exists but is not a float / double, type: [{}] in [{}]!", aName, yyjson_get_type_desc(data), myPath.string());
 		return 0.0f;
 	}
 
 	return static_cast<float>(yyjson_get_num(data));
+}
+
+double JsonData::GetDouble(const char* aName) const
+{
+	yyjson_val* data = yyjson_obj_get(myRoot, aName);
+
+	if (data == nullptr)
+	{
+		LOG(JSONLog, Warning, "Key [{}] not found in [{}]!", aName, myPath.string());
+		return 0.0f;
+	}
+
+	if (!yyjson_is_num(data))
+	{
+		LOG(JSONLog, Warning, "Key [{}] exists but is not a double, type: [{}] in [{}]!", aName, yyjson_get_type_desc(data), myPath.string());
+		return 0.0f;
+	}
+
+	return yyjson_get_num(data);
 }
 
 std::string JsonData::GetString(const char* aName) const
@@ -308,6 +327,42 @@ std::vector<float> JsonData::GetFloatArray(const char* aName) const
 		if (yyjson_is_num(value))
 		{
 			values.push_back(static_cast<float>(yyjson_get_num(value)));
+		}
+		else
+		{
+			LOG(JSONLog, Warning, "Array [{}] contains a non-float / double value in [{}]!", aName, myPath.string());
+		}
+	}
+
+	return values;
+}
+
+std::vector<double> JsonData::GetDoubleArray(const char* aName) const
+{
+	std::vector<double> values;
+
+	yyjson_val* data = yyjson_obj_get(myRoot, aName);
+
+	if (data == nullptr)
+	{
+		LOG(JSONLog, Warning, "Key [{}] not found in [{}]!", aName, myPath.string());
+		return values;
+	}
+
+	if (!yyjson_is_arr(data))
+	{
+		LOG(JSONLog, Warning, "Key [{}] is not an array in [{}]!", aName, myPath.string());
+		return values;
+	}
+
+	yyjson_val* value;
+	size_t idx, max;
+
+	yyjson_arr_foreach(data, idx, max, value)
+	{
+		if (yyjson_is_num(value))
+		{
+			values.push_back(yyjson_get_num(value));
 		}
 		else
 		{
@@ -513,7 +568,28 @@ bool JsonData::HasKey(const char* aName) const
 	return false;
 }
 
+std::string JsonData::GetPath() const
+{
+	return myPath.string();
+}
+
+JsonWriter::JsonWriter(const std::filesystem::path& aJsonDestination)
+{
+	aJsonDestination;
+	// TODO: Controll destination create folders if needed.
+
+	yyjson_mut_doc* doc = yyjson_mut_doc_new(NULL);
+	yyjson_mut_val* root = yyjson_mut_obj(doc);
+
+	yyjson_mut_doc_set_root(doc, root);
+}
+
 JsonData Json::Read(const std::filesystem::path& aJsonPath)
 {
 	return JsonData(aJsonPath);
+}
+
+JsonWriter Json::Write(const std::filesystem::path& aJsonDestination)
+{
+	return JsonWriter(aJsonDestination);
 }

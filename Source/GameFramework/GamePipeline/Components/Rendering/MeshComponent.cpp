@@ -26,13 +26,11 @@ void MeshComponent::Render()
 		.Transform = myOwner->GetTransform().GetWorldMatrix()
 	};
 
-	const auto& materialAssets = GetMaterialAssetList();
-
-	for (size_t i = 0; i < materialAssets.size(); i++)
+	for (size_t i = 0; i < myMaterialAssets.size(); i++)
 	{
-		if (materialAssets[i] != nullptr)
+		if (myMaterialAssets[i] != nullptr)
 		{
-			drawCall.Materials[i] = materialAssets[i]->GetMaterial().get();
+			drawCall.Materials[i] = myMaterialAssets[i]->GetMaterial().get();
 		}
 	}
 
@@ -63,14 +61,9 @@ Skeleton* MeshComponent::GetSkeleton() const
 	return myMeshAsset->GetMesh().GetSkeleton();
 }
 
-void MeshComponent::SetMaterial(unsigned int aMaterialIndex, std::shared_ptr<MaterialAsset> aMaterialAsset)
+void MeshComponent::SetMaterial(unsigned int aMaterialIndex, const std::shared_ptr<MaterialAsset>& aMaterialAsset)
 {
 	ensure(aMaterialIndex < myMaterialAssets.size());
 
 	myMaterialAssets[aMaterialIndex] = aMaterialAsset;
-}
-
-const std::vector<std::shared_ptr<MaterialAsset>>& MeshComponent::GetMaterialAssetList() const
-{
-	return myMaterialAssets;
 }

@@ -9,7 +9,6 @@
 
 #include "Json/JsonWrapper.h"
 
-#include "yyjson/yyjson.h"
 #include "tracy/core/Tracy.hpp"
 
 #include "Logger/Logger.h"
@@ -18,6 +17,20 @@ DECLARE_LOG_CATEGORY_WITH_NAME(MaterialLog, MATERIAL, Verbose);
 
 DEFINE_LOG_CATEGORY(MaterialLog);
 
+enum class ParameterType
+{
+    ScalarFloat = 0,
+    Vector3Float = 1,
+    Vector3Double = 2,
+	Texture = 3,
+    TextureCollection = 4,
+    Font = 5,
+    RuntimeVirtualTexture = 6,
+    SparseVolumeTexture = 7,
+    StaticSwitch = 8,
+    ParameterCollection = 9
+};
+
 const std::shared_ptr<MaterialInterface>& MaterialAsset::GetMaterial() const
 {
     return myMaterial;
@@ -25,251 +38,371 @@ const std::shared_ptr<MaterialInterface>& MaterialAsset::GetMaterial() const
 
 bool MaterialAsset::Load(const std::filesystem::path& aPath)
 {
-    ZoneScopedN("Load Material");
-
     JsonData materialData = Json::Read(aPath);
 
     if (!materialData.IsValid())
     {
+        LOG(MaterialLog, Error, "Failed to read material JSON [{}]", aPath.string());
         return false;
     }
+
+    bool hasErrord = false;
 
     std::string materialName = materialData.GetString("Name");
 
     if (materialName.empty())
     {
-        LOG(MaterialLog, Error, "Material has no name [{}]!", aPath.string());
-
-        return false;
+        LOG(MaterialLog, Warning, "Loaded material has no name, using placeholder");
+        materialName = "NO NAME GIVEN";
+        hasErrord = true;
     }
 
-    JsonData textureSettings = materialData.GetObjectValue("Textures");
+    if (materialData.HasKey("Parent"))
+    {
+        LOG_GROUP(LogAssetRegistry, Verbose, "Instance Material");
 
-    if (!textureSettings.IsValid())
-    {
-        LOG(MaterialLog, Error, "Material has no valid textures [{}]!", aPath.string());
+        std::string parent = materialData.GetString("Parent");
 
-        return false;
-    }
-
-    std::vector<std::shared_ptr<TextureAsset>> myTextureAssets = 
-    {
-	    nullptr,
-        nullptr,
-        nullptr,
-        nullptr
-    };
-
-    if (textureSettings.HasKey("AlbedoTexture"))
-    {
-        myTextureAssets[0] = AssetRegistry::Get().GetAsset<TextureAsset>(textureSettings.GetString("AlbedoTexture"));
-    }
-    if (textureSettings.HasKey("NormalTexture"))
-    {
-        myTextureAssets[1] = AssetRegistry::Get().GetAsset<TextureAsset>(textureSettings.GetString("NormalTexture"));
-    }
-    if (textureSettings.HasKey("MaterialTexture"))
-    {
-        myTextureAssets[2] = AssetRegistry::Get().GetAsset<TextureAsset>(textureSettings.GetString("MaterialTexture"));
-    }
-    if (textureSettings.HasKey("EmissionTexture"))
-    {
-        myTextureAssets[3] = AssetRegistry::Get().GetAsset<TextureAsset>(textureSettings.GetString("EmissionTexture"));
-    }
-
-    if (materialData.HasKey("MasterMaterial"))
-    {
-        std::shared_ptr<MaterialAsset> masterMaterialAsset = AssetRegistry::Get().GetAsset<MaterialAsset>(materialData.GetString("MasterMaterial"));
+        std::shared_ptr<MaterialAsset> masterMaterialAsset = AssetRegistry::Get().GetAsset<MaterialAsset>(parent);
 
         if (masterMaterialAsset == nullptr)
         {
-            LOG(MaterialLog, Error, "Failed to get master material [{}]!", aPath.string());
-
+            LOG(MaterialLog, Error, "Material [{}] failed to get master material [{}]!", materialName, parent);
             return false;
         }
 
         std::shared_ptr<MaterialInstance> instance = MaterialInstance::Create(materialName, masterMaterialAsset->GetMaterial());
+        
+	    {
+            LOG_GROUP(MaterialLog, Verbose, "Instance Parameters");
 
-        // Checks if a material wants to effect the connected shader!
-        if (materialData.HasKey("Shader"))
-        {
-            // Will assume that if a json shader object exists there will be parameters
+		    if (materialData.HasKey("Parameters"))
+		    {
+		    	std::vector<JsonData> parameters = materialData.GetObjectValueArray("Parameters");
 
-            JsonData shaderSettings = materialData.GetObjectValue("Shader");
+		    	if (parameters.empty())
+		    	{
+		    		LOG(MaterialLog, Error, "Material has no Parameters [{}]!", materialName);
+                    hasErrord = true;
+		    	}
 
-            JsonData materialParameters = shaderSettings.GetObjectValue("Parameters");
-
-            LoadParameters(materialParameters, instance.get());
-        }
+		    	PushParameters(parameters, instance.get());
+		    }
+		    else
+		    {
+		    	LOG(MaterialLog, Error, "Material has no Parameters [{}]!", materialName);
+                hasErrord = true;
+		    }
+	    }
 
         myMaterial = std::move(instance);
     }
     else
     {
-        if (!materialData.HasKey("Settings"))
-        {
-            LOG(MaterialLog, Error, "Material has no valid settings [{}]!", aPath.string());
-
-            return false;
-        }
-
-        JsonData materialSettings = materialData.GetObjectValue("Settings");
+        LOG_GROUP(MaterialLog, Verbose, "Master Material");
 
         MaterialDescription desc;
         desc.Name = materialName;
-        desc.Domain = static_cast<MaterialDomain>(materialSettings.GetInt("MaterialDomain"));
-        desc.ShadingModel = static_cast<ShadingModel>(materialSettings.GetInt("ShadingModel"));
-        desc.BlendMode = static_cast<MaterialBlendMode>(materialSettings.GetInt("BlendMode"));
 
-        // If no shader settings is provided it will run the default shaders code instead!
-        if (materialData.HasKey("Shader"))
+	    {
+            LOG_GROUP(MaterialLog, Verbose, "Master Settings");
+
+		    if (materialData.HasKey("Domain"))
+		    {
+                desc.Domain = static_cast<MaterialDomain>(materialData.GetInt("Domain") + 1);
+		    }
+		    else
+		    {
+                LOG(MaterialLog, Error, "Material has no Domain [{}]!", materialName);
+                hasErrord = true;
+		    }
+
+        	if (materialData.HasKey("ShadingModel"))
+        	{
+                desc.ShadingModel = static_cast<ShadingModel>(materialData.GetInt("ShadingModel") + 1);
+        	}
+        	else
+        	{
+                LOG(MaterialLog, Error, "Material has no Shading Model [{}]!", materialName);
+                hasErrord = true;
+        	}
+
+        	if (materialData.HasKey("BlendMode"))
+        	{
+                desc.BlendMode = static_cast<MaterialBlendMode>(materialData.GetInt("BlendMode") + 1);
+        	}
+        	else
+        	{
+                LOG(MaterialLog, Error, "Material has no Blend Mode [{}]!", materialName);
+                hasErrord = true;
+        	}
+	    }
+
+        if (!hasErrord)
         {
-            JsonData shaderSettings = materialData.GetObjectValue("Shader");
 
-            // Will assume that if a json shader object exists there will be a directory
-            desc.MaterialShaderCode = AssetRegistry::Get().GetWorkingDirectory() / shaderSettings.GetString("Code");
+            desc.MaterialShaderCode = AssetRegistry::Get().GetWorkingDirectory() / "Shaders/BaseMaterial.hlsli";
+
+            std::shared_ptr<Material> material = std::make_shared<Material>();
+
+            if (!GraphicsEngine::Get().CreateMaterial(desc, *material))
+            {
+                LOG(MaterialLog, Error, "Failed to create material [{}]!", materialName);
+                hasErrord = true;
+            }
+
+            {
+                LOG_GROUP(MaterialLog, Verbose, "Master Parameters");
+
+                if (materialData.HasKey("Parameters"))
+                {
+                    std::vector<JsonData> parameters = materialData.GetObjectValueArray("Parameters");
+
+                    if (parameters.empty())
+                    {
+                        LOG(MaterialLog, Error, "Material has no Parameters [{}]!", materialName);
+                        hasErrord = true;
+                    }
+
+                    PushParameters(parameters, material.get());
+                }
+                else
+                {
+                    LOG(MaterialLog, Error, "Material has no Parameters [{}]!", materialName);
+                    hasErrord = true;
+                }
+            }
+
+            myMaterial = std::move(material);
         }
-
-        std::shared_ptr<Material> material = std::make_shared<Material>();
-
-        if (!GraphicsEngine::Get().CreateMaterial(desc, *material))
-        {
-            LOG(MaterialLog, Error, "Failed to create material [{}]!", aPath.string());
-
-            return false;
-        }
-
-        myMaterial = std::move(material);
     }
 
-    if (myTextureAssets[0] != nullptr)
-    {
-        myMaterial->SetTexture(0, myTextureAssets[0]->GetTexture());
-    }
-    if (myTextureAssets[1] != nullptr)
-    {
-        myMaterial->SetTexture(1, myTextureAssets[1]->GetTexture());
-    }
-    if (myTextureAssets[2] != nullptr)
-    {
-        myMaterial->SetTexture(2, myTextureAssets[2]->GetTexture());
-    }
-    if (myTextureAssets[3] != nullptr)
-    {
-        myMaterial->SetTexture(3, myTextureAssets[3]->GetTexture());
-    }
-
-    return true;
+    return !hasErrord;
 }
 
-void MaterialAsset::LoadParameters(const JsonData& aMaterialParameters, MaterialInstance* aMaterialInstance)
+bool MaterialAsset::Construct(const JsonData& aMaterialData)
 {
-    for (const auto& parameterName : aMaterialParameters.GetKeys())
+    if (!aMaterialData.IsValid())
     {
-        switch (aMaterialParameters.GetType(parameterName.c_str()))
+        LOG(MaterialLog, Error, "Cannot construct material from invalid JSON data!");
+        return false;
+    }
+
+    bool hasErrord = false;
+
+    std::string materialName;
+
+    if (aMaterialData.HasKey("Name"))
+    {
+	    materialName = aMaterialData.GetString("Name");
+    }
+    else
+    {
+        LOG(MaterialLog, Warning, "Constructed material has no name, using placeholder");
+        materialName = "NO NAME GIVEN";
+        hasErrord = true;
+    }
+
+    if (aMaterialData.HasKey("Parent"))
+    {
+        std::string parent = aMaterialData.GetString("Parent");
+
+        if (parent == "Self")
         {
-            case JsonValueType::Int:
+            parent = aMaterialData.GetString("Name");
+        }
+
+        std::shared_ptr<MaterialAsset> masterMaterialAsset = AssetRegistry::Get().GetAsset<MaterialAsset>(parent);
+
+        if (masterMaterialAsset == nullptr)
+        {
+            LOG(MaterialLog, Error, "Material [{}] failed to get master material [{}]!", materialName, parent);
+        	return false;
+        }
+
+        std::shared_ptr<MaterialInstance> instance = MaterialInstance::Create(materialName, masterMaterialAsset->GetMaterial());
+
+	    {
+            LOG_GROUP(MaterialLog, Verbose, "Instance Parameters");
+
+		    if (aMaterialData.HasKey("Parameters"))
+		    {
+		    	std::vector<JsonData> parameters = aMaterialData.GetObjectValueArray("Parameters");
+
+		    	if (parameters.empty())
+		    	{
+		    		LOG(MaterialLog, Error, "Material has no Parameters [{}]!", materialName);
+                    hasErrord = true;
+		    	}
+
+		    	PushParameters(parameters, instance.get());
+		    }
+		    else
+		    {
+		    	LOG(MaterialLog, Error, "Material has no Parameters [{}]!", materialName);
+		    	hasErrord = true;
+		    }
+	    }
+
+        myMaterial = std::move(instance);
+    }
+    else
+    {
+        MaterialDescription desc;
+        desc.Name = materialName;
+
+        if (aMaterialData.HasKey("Domain"))
+        {
+            desc.Domain = static_cast<MaterialDomain>(aMaterialData.GetInt("Domain") + 1);
+        }
+        else
+        {
+            LOG(MaterialLog, Error, "Material has no Domain [{}]!", materialName);
+            hasErrord = true;
+        }
+
+        if (aMaterialData.HasKey("ShadingModel"))
+        {
+            desc.ShadingModel = static_cast<ShadingModel>(aMaterialData.GetInt("ShadingModel") + 1);
+        }
+        else
+        {
+            LOG(MaterialLog, Error, "Material has no Shading Model [{}]!", materialName);
+            hasErrord = true;
+        }
+
+        if (aMaterialData.HasKey("BlendMode"))
+        {
+            desc.BlendMode = static_cast<MaterialBlendMode>(aMaterialData.GetInt("BlendMode") + 1);
+        }
+        else
+        {
+            LOG(MaterialLog, Error, "Material has no Blend Mode [{}]!", materialName);
+            hasErrord = true;
+        }
+
+        if (!hasErrord)
+        {
+            desc.MaterialShaderCode = AssetRegistry::Get().GetWorkingDirectory() / "Shaders/BaseMaterial.hlsli";
+
+            std::shared_ptr<Material> material = std::make_shared<Material>();
+
+            if (!GraphicsEngine::Get().CreateMaterial(desc, *material))
             {
-                aMaterialInstance->SetValue(parameterName, aMaterialParameters.GetInt(parameterName.c_str()));
-                break;
+                LOG(MaterialLog, Error, "Failed to create material [{}]!", materialName);
+                hasErrord = true;
             }
-            case JsonValueType::Unsigned:
-            {
-                aMaterialInstance->SetValue(parameterName, aMaterialParameters.GetUnsigned(parameterName.c_str()));
-                break;
-            }
-            case JsonValueType::Float:
-            {
-                aMaterialInstance->SetValue(parameterName, aMaterialParameters.GetFloat(parameterName.c_str()));
-                break;
-            }
-            case JsonValueType::Array:
-            {
-                switch (aMaterialParameters.GetArrayType(parameterName.c_str()))
-                {
-                    case JsonValueType::Int:
-                    {
-                        std::vector<int> values = aMaterialParameters.GetIntArray(parameterName.c_str());
 
-                        if (values.size() == 2)
-                        {
-                            aMaterialInstance->SetValue(parameterName, CommonUtilities::Vector2i(values.data()));
-                        }
-                        else if (values.size() == 3)
-                        {
-                            aMaterialInstance->SetValue(parameterName, CommonUtilities::Vector3i(values.data()));
-                        }
-                        else if (values.size() == 4)
-                        {
-                            aMaterialInstance->SetValue(parameterName, CommonUtilities::Vector4i(values.data()));
-                        }
-                        else
-                        {
-                            LOG(MaterialLog, Error, "Array parameter has unhandled / invalid length [{}]!", parameterName);
-                        }
+	        {
+                LOG_GROUP(MaterialLog, Verbose, "Master Parameters");
 
-                        break;
-                    }
-                    case JsonValueType::Unsigned:
-                    {
-                        std::vector<unsigned int> values = aMaterialParameters.GetUnsignedArray(parameterName.c_str());
+		        if (aMaterialData.HasKey("Parameters"))
+		        {
+		        	std::vector<JsonData> parameters = aMaterialData.GetObjectValueArray("Parameters");
 
-                        if (values.size() == 2)
-                        {
-                            aMaterialInstance->SetValue(parameterName, CommonUtilities::Vector2ui(values.data()));
-                        }
-                        else if (values.size() == 3)
-                        {
-                            aMaterialInstance->SetValue(parameterName, CommonUtilities::Vector3ui(values.data()));
-                        }
-                        else if (values.size() == 4)
-                        {
-                            aMaterialInstance->SetValue(parameterName, CommonUtilities::Vector4ui(values.data()));
-                        }
-                        else
-                        {
-                            LOG(MaterialLog, Error, "Array parameter has unhandled / invalid length [{}]!", parameterName);
-                        }
+		        	if (parameters.empty())
+		        	{
+		        		LOG(MaterialLog, Error, "Material has no Parameters [{}]!", materialName);
+		        		hasErrord = true;
+		        	}
 
-                        break;
-                    }
-                    case JsonValueType::Float:
-                    {
-                        std::vector<float> values = aMaterialParameters.GetFloatArray(parameterName.c_str());
+		        	PushParameters(parameters, material.get());
+		        }
+		        else
+		        {
+		        	LOG(MaterialLog, Error, "Material has no Parameters [{}]!", materialName);
+		        	hasErrord = true;
+		        }
+	        }
 
-                        if (values.size() == 2)
-                        {
-                            aMaterialInstance->SetValue(parameterName, CommonUtilities::Vector2f(values.data()));
-                        }
-                        else if (values.size() == 3)
-                        {
-                            aMaterialInstance->SetValue(parameterName, CommonUtilities::Vector3f(values.data()));
-                        }
-                        else if (values.size() == 4)
-                        {
-                            aMaterialInstance->SetValue(parameterName, CommonUtilities::Vector4f(values.data()));
-                        }
-                        else
-                        {
-                            LOG(MaterialLog, Error, "Array parameter has unhandled / invalid length [{}]!", parameterName);
-                        }
-
-                        break;
-                    }
-                    default:
-                    {
-                        LOG(MaterialLog, Error, "Array parameter has unhandled / invalid type [{}]!", parameterName);
-                        break;
-                    }
-                }
-
-                break;
-            }
-            default:
-            {
-                LOG(MaterialLog, Error, "Parameter has unhandled / invalid type [{}]!", parameterName);
-                break;
-            }
+            myMaterial = std::move(material);
         }
     }
+
+    return !hasErrord;
+}
+
+void MaterialAsset::PushParameters(const std::vector<JsonData>& aMaterialParameters, MaterialInterface* aMaterialInstance)
+{
+	for (const auto& parameter : aMaterialParameters)
+	{
+		std::string parameterName = parameter.GetString("Name");
+        int type = parameter.GetInt("Type");
+
+		switch (static_cast<ParameterType>(type))
+		{
+            case ParameterType::ScalarFloat:
+            {
+                aMaterialInstance->SetValue(parameterName, parameter.GetFloat("Value"));
+                break;
+            }
+            case ParameterType::Vector3Float:
+            {
+                std::vector<float> values = parameter.GetFloatArray("Value");
+
+                aMaterialInstance->SetValue(parameterName, CommonUtilities::Vector3f(values.data()));
+                break;
+            }
+			case ParameterType::Texture:
+			{   
+				JsonData parameterData = parameter.GetObjectValue("Value");
+
+                if (!parameterData.HasKey("Name"))
+                {
+                    LOG(MaterialLog, Warning, "Texture parameter [{}] has no texture Name, skipping", parameterName);
+                    break;
+                }
+
+                std::string textureName = parameterData.GetString("Name");
+
+                std::shared_ptr<TextureAsset> textureAsset = AssetRegistry::Get().GetAsset<TextureAsset>(textureName);
+
+                if (textureAsset == nullptr)
+                {
+                    LOG(MaterialLog, Warning, "Texture parameter [{}] could not load texture [{}]", parameterName, textureName);
+                    break;
+                }
+
+                std::string suffix = {};
+
+                size_t pos = textureName.rfind('_');
+
+                if (pos != std::string::npos)
+                {
+                    suffix = textureName.substr(pos + 1);
+                }
+
+                std::string lowerCaseSuffix = suffix;
+                std::ranges::transform(lowerCaseSuffix, lowerCaseSuffix.begin(), tolower);
+
+                if (lowerCaseSuffix == "c")
+                {
+                    aMaterialInstance->SetTexture(0, textureAsset->GetTexture());
+                }
+                else if (lowerCaseSuffix == "n")
+                {
+                    aMaterialInstance->SetTexture(1, textureAsset->GetTexture());
+                }
+                else if (lowerCaseSuffix == "orm")
+                {
+                    aMaterialInstance->SetTexture(2, textureAsset->GetTexture());
+                }
+                else if (lowerCaseSuffix == "fx")
+                {
+                    aMaterialInstance->SetTexture(3, textureAsset->GetTexture());
+                }
+                else
+                {
+                    LOG(MaterialLog, Warning, "Texture [{}] has unknown suffix [{}]!", textureName, suffix);
+                }
+
+				break;
+			}
+			default:
+			{
+                LOG(MaterialLog, Error, "Non handled parameter type found [{}], Parameter [{}]!", type, aMaterialInstance->GetName());
+				break;
+			}
+		}
+	}
 }

@@ -1,11 +1,9 @@
 #pragma once
 
 #include <wrl.h>
+#include <d3d11.h>
 #include "GraphicsEngine/RHI/RHIStructs.h"
 
-struct ID3D11RenderTargetView;
-struct ID3D11DepthStencilView;
-struct ID3D11ShaderResourceView;
 
 class Texture
 {

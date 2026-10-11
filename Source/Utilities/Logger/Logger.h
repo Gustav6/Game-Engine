@@ -40,6 +40,8 @@
 #include <queue>
 #include <string>
 #include <thread>
+#include <format>
+#include <vector>
 #include <unordered_set>
 
 // Define this before including Logger.h to override.
@@ -80,7 +82,6 @@ public:
 	protected:
 		LogCategoryBase(std::string aName, LogVerbosity::Type aVerbosity);
 		
-
 		static unsigned ourNextId;
 	};
 
@@ -98,6 +99,38 @@ public:
 		{
 			return static_cast<size_t>(x.Id);
 		}
+	};
+
+	class Group
+	{
+	public:
+		template<typename... Args>
+		explicit Group(const LogCategoryBase& aCategory, LogVerbosity::Type aVerbosity, const char* aMessage, Args... args)
+		{
+			if (aCategory.Verbosity >= aVerbosity)
+			{
+				const std::string s = std::vformat(aMessage, std::make_format_args(args...));
+				GroupHeader(aCategory, aVerbosity, s.c_str());
+			}
+
+			ourDepth++;
+		}
+
+		~Group()
+		{
+			ourDepth--;
+
+			if (ourDepth == 0)
+			{
+				QueueGroup();
+			}
+		}
+
+		Group(const Group&) = delete;
+		Group& operator=(const Group&) = delete;
+
+	private:
+		static void GroupHeader(const LogCategoryBase& aCategory, LogVerbosity::Type aVerbosity, const char* aMessage);
 	};
 
 private:
@@ -153,10 +186,15 @@ private:
 		~LogStream();
 	};
 
+	// Group Methods
+	static void QueueGroup();
+	static std::string FormatLog(unsigned aDepth, bool aIsLast, const std::vector<bool>& aGroupContinues);
+
 	struct LogEntry
 	{
 		const LogCategoryBase* Category;
 		std::string Message;
+		unsigned Depth;
 		LogVerbosity::Type Verbosity;
 	};
 
@@ -171,8 +209,10 @@ private:
 	void* myStdErrHandle;
 	std::atomic_bool myIsRunning;
 
-public:
+	static inline unsigned ourDepth = 0;
+	static inline std::vector<LogEntry> ourPendingLogs;
 
+public:
 	template<typename... Args>
 	static void Log(const LogCategoryBase& aCategory, LogVerbosity::Type aVerbosity, const char* aMessage, Args... args)
 	{
@@ -206,4 +246,11 @@ public:
 #define INT_LOG_MESSAGE()
 #define LOG(Category, Verbosity, Message, ...) Logger::Log(Category, LogVerbosity::Verbosity, Message, ##__VA_ARGS__)
 
+// Group Macros
+
+#define LOGGER_CONCAT_INNER(a, b) a##b
+#define LOGGER_CONCAT(a, b) LOGGER_CONCAT_INNER(a, b)
+
+#define LOG_GROUP(Category, Verbosity, Message, ...) \
+	Logger::Group LOGGER_CONCAT(logGroup_, __COUNTER__)(Category, LogVerbosity::Verbosity, Message, ##__VA_ARGS__)
 

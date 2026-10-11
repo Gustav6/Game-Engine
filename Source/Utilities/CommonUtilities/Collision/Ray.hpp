@@ -1,6 +1,5 @@
 #pragma once
-
-#include "Vector3.hpp"
+#include "../Math/Vector.hpp"
 
 namespace CommonUtilities
 {

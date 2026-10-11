@@ -30,7 +30,7 @@ void ForwardRenderPass::Execute(
 	FrameTargets& aFrameTargets,
 	RenderContext& aContext)
 {
-	ZoneScopedN("Forward Render Pass");
+	ZoneScopedN("Forward Render Pass")
 
 	inoutCommandList.BeginEvent("Forward Render");
 

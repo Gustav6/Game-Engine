@@ -27,6 +27,10 @@ public:
 	void SetColor(const CommonUtilities::Vector4f& aColor);
 	void SetDepth(float aZOrder);
 
+	CommonUtilities::Vector2f GetTextBounds(const Font& aFont) const;
+
+	const std::string& GetText() const;
+
 	bool RebuildGeometry(const Font& aFont);
 
 private:

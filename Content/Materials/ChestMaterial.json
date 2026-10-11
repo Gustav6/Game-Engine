@@ -1,16 +1,38 @@
 {
   "Name": "ChestMaterial",
-  "Settings": {
-    "MaterialDomain": 1,
-    "ShadingModel": 2,
-    "BlendMode": 1
-  },
-  "Textures": {
-    "AlbedoTexture": "T_Chest_c",
-    "NormalTexture": "T_Chest_n",
-    "MaterialTexture": "T_Chest_orm",
-    "EmissionTexture": "Chest_FX"
-  },
+  "Domain": 0,
+  "ShadingModel": 1,
+  "BlendMode": 0,
+  "Parameters": [
+    {
+      "Name": "AlbedoTexture",
+      "Type": 3,
+      "Value": {
+        "Name": "T_Chest_c"
+      }
+    },
+    {
+      "Name": "NormalTexture",
+      "Type": 3,
+      "Value": {
+        "Name": "T_Chest_n"
+      }
+    },
+    {
+      "Name": "MaterialTexture",
+      "Type": 3,
+      "Value": {
+        "Name": "T_Chest_orm"
+      }
+    },
+    {
+      "Name": "EmissionTexture",
+      "Type": 3,
+      "Value": {
+        "Name": "T_Chest_fx"
+      }
+    }
+  ],
   "Shader": {
     "Code": "Shaders/BaseMaterial.hlsli"
   }

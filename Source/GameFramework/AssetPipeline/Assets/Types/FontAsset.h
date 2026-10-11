@@ -4,7 +4,8 @@
 
 #include "AssetPipeline/Assets/Base/Asset.h"
 
-class Font;
+#include "GraphicsEngine/Objects/Text/Font.h"
+
 class Texture;
 
 class FontAsset : public Asset

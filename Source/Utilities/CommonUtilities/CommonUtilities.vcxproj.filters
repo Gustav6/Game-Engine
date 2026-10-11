@@ -104,6 +104,9 @@
     <ClInclude Include="Time\Timer.h">
       <Filter>Time</Filter>
     </ClInclude>
+    <ClInclude Include="Utility\AStar.hpp">
+      <Filter>Utility</Filter>
+    </ClInclude>
     <ClInclude Include="Utility\Alias.h">
       <Filter>Utility</Filter>
     </ClInclude>

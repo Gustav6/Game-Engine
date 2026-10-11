@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <cassert>
+#include "Vector4.hpp"
 
 namespace CommonUtilities
 {
@@ -115,6 +116,24 @@ namespace CommonUtilities
 		inline T Lerp(const T aStart, const T aStop, const float aPercentage)
 		{
 			return aStart + aPercentage * (aStop - aStart);
+		}
+
+
+		//Används för animationblending. får gärna byggas bättre eller flyttas
+		template<typename T>
+		inline Vector4<T> SlerpVector4(const Vector4<T>& aStart, const Vector4<T>& aEnd, float aT)
+		{
+			constexpr T zero = static_cast<T>(0);
+			constexpr T one = static_cast<T>(1);
+			constexpr T oneNeg = static_cast<T>(-1);
+
+			T dot = Clamp(aStart.Dot(aEnd), oneNeg, one);
+
+			T theta = acos(dot) * Clamp(aT, zero, one);
+			Vector4<T> relative = aEnd - (aStart * dot);
+			relative.Normalize();
+
+			return (aStart * cos(theta)) + (relative * sin(theta));
 		}
 
 		template <typename T>

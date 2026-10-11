@@ -12,7 +12,7 @@ project "Game"
         "%{wks.location}/Source/Utilities",
         "%{wks.location}/Source/Graphics",
         "%{wks.location}/Source/GameFramework",
-        "%{wks.location}/Source/Tools",
+        "%{wks.location}/Source/ThirdParty",
         "%{wks.location}/ThirdParty/Source"
     }
 
@@ -20,6 +20,9 @@ project "Game"
         "%{prj.location}/**.h",
         "%{prj.location}/**.cpp",
         "%{prj.location}/**.hpp",
+
+        "%{prj.location}/**.hlsl",
+        "%{prj.location}/**.hlsli",
         
         -- Third Party
         "%{wks.location}/ThirdParty/Source/tracy/TracyClient.cpp" 
@@ -58,18 +61,18 @@ project "Game"
         links { "ImGui" }
         dependson { "ImGui" }
 
+    postbuildmessage "Copying Materials and DLLs"
+
+    filter "files:**.hlsl or files:**.hlsli"
+        buildmessage "Copying %{file.relpath}"
+        buildcommands {
+            'if not exist "$(SolutionDir)Content\\Shaders" mkdir "$(SolutionDir)Content\\Shaders"',
+            'copy /Y "%{file.abspath}" "$(SolutionDir)Content\\Shaders\\%{file.name}"'
+        }
+        buildoutputs { "$(SolutionDir)Content\\Shaders\\%{file.name}" }
+        
     filter {}
 
-    postbuildmessage "Copying Materials and DLLs"
-    
     postbuildcommands {
-        'set "CONTENTROOT=$(SolutionDir)Content"',
-        'set "SHADERSRC=$(ProjectDir)Materials"',
-        'set "SHADERDEST=%CONTENTROOT%\\Shaders"',
-        '',
-        'IF NOT EXIST "%CONTENTROOT%" ( mkdir "%CONTENTROOT%" )',
-        'IF NOT EXIST "%SHADERDEST%" ( mkdir "%SHADERDEST%" )',
-        'xcopy /E /I /R /Y /D "%SHADERSRC%" "%SHADERDEST%"',
-        '',
         'IF EXIST "$(SolutionDir)ThirdParty\\Dll" ( xcopy /E /I /R /Y /D "$(SolutionDir)ThirdParty\\Dll" "$(OutDir)" )'
     }

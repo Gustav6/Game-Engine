@@ -24,9 +24,9 @@
 
 #include "Logger/Logger.h"
 
-DECLARE_LOG_CATEGORY_WITH_NAME(MeshLog, FBX, Verbose);
+DECLARE_LOG_CATEGORY_WITH_NAME(LogMesh, MESH, Verbose);
 
-DEFINE_LOG_CATEGORY(MeshLog);
+DEFINE_LOG_CATEGORY(LogMesh);
 
 MeshAsset::MeshAsset()
 {
@@ -42,6 +42,8 @@ const Mesh& MeshAsset::GetMesh() const
 
 bool MeshAsset::Load(const std::filesystem::path& aPath)
 {
+    ZoneScopedN("Load Mesh")
+
     std::unique_ptr<TGA::FBX::Mesh> tgaMesh = std::make_unique<TGA::FBX::Mesh>();
     const TGA::FBX::FbxImportStatus& importStatus = TGA::FBX::Importer::LoadMesh(aPath, *tgaMesh);
 
@@ -53,27 +55,27 @@ bool MeshAsset::Load(const std::filesystem::path& aPath)
         {
             case TGA::FBX::FbxImportResult::InternalError:
             {
-                LOG(MeshLog, Error, "Could not load mesh [{}] : Internal FBX importer error!", pathString);
+                LOG(LogMesh, Error, "Could not load mesh [{}] : Internal FBX importer error!", pathString);
                 break;
             }
             case TGA::FBX::FbxImportResult::NotInitialized:
             {
-                LOG(MeshLog, Error, "Could not load mesh [{}] : FBX importer is not initialized!", pathString);
+                LOG(LogMesh, Error, "Could not load mesh [{}] : FBX importer is not initialized!", pathString);
                 break;
             }
             case TGA::FBX::FbxImportResult::FileNotFound:
             {
-                LOG(MeshLog, Error, "Could not load mesh [{}] : File was not found!", pathString);
+                LOG(LogMesh, Error, "Could not load mesh [{}] : File was not found!", pathString);
                 break;
             }
             case TGA::FBX::FbxImportResult::NoMeshData:
             {
-                LOG(MeshLog, Error, "Could not load mesh [{}] : No mesh data found in file!", pathString);
+                LOG(LogMesh, Error, "Could not load mesh [{}] : No mesh data found in file!", pathString);
                 break;
             }
             default:
             {
-                LOG(MeshLog, Error, "Could not load mesh [{}] : Unknown error!", pathString);
+                LOG(LogMesh, Error, "Could not load mesh [{}] : Unknown error!", pathString);
                 break;
             }
         }
@@ -81,46 +83,49 @@ bool MeshAsset::Load(const std::filesystem::path& aPath)
         return false;
     }
 
-    for (const auto& [warning, amount] : importStatus.Warnings)
+    if (!importStatus.Warnings.empty())
     {
         const std::string pathString = aPath.string();
 
-        switch (warning)
+        for (const auto& [warning, amount] : importStatus.Warnings)
         {
-            case TGA::FBX::FbxImportWarning::TooManySkinWeights:
+            switch (warning)
             {
-                LOG(MeshLog, Warning, "Mesh [{}] : Vertices had too many skin weights and were truncated!", pathString);
-                break;
-            }
-            case TGA::FBX::FbxImportWarning::MissingSkinWeights:
-            {
-                LOG(MeshLog, Warning, "Mesh [{}] : Vertices are missing skin weights!", pathString);
-                break;
-            }
-            case TGA::FBX::FbxImportWarning::NoUVCoordinates:
-            {
-                LOG(MeshLog, Warning, "Mesh [{}] : Surfaces have no UV coordinates!", pathString);
-                break;
-            }
-            case TGA::FBX::FbxImportWarning::GenerateNormalsFailed:
-            {
-                LOG(MeshLog, Warning, "Mesh [{}] : Failed to generate normal's for surfaces!", pathString);
-                break;
-            }
-            case TGA::FBX::FbxImportWarning::CannotTriangulate:
-            {
-                LOG(MeshLog, Warning, "Mesh [{}] : Could not triangulate polygons!", pathString);
-                break;
-            }
-            case TGA::FBX::FbxImportWarning::DuplicateBoneNames:
-            {
-                LOG(MeshLog, Warning, "Mesh [{}] : Duplicate bone names detected!", pathString);
-                break;
-            }
-            default:
-            {
-                LOG(MeshLog, Warning, "Mesh [{}] : Unknown warning!", pathString);
-                break;
+                case TGA::FBX::FbxImportWarning::TooManySkinWeights:
+                {
+                    LOG(LogMesh, Warning, "Mesh [{}] : Vertices had too many skin weights and were truncated!", pathString);
+                    break;
+                }
+                case TGA::FBX::FbxImportWarning::MissingSkinWeights:
+                {
+                    LOG(LogMesh, Warning, "Mesh [{}] : Vertices are missing skin weights!", pathString);
+                    break;
+                }
+                case TGA::FBX::FbxImportWarning::NoUVCoordinates:
+                {
+                    LOG(LogMesh, Warning, "Mesh [{}] : Surfaces have no UV coordinates!", pathString);
+                    break;
+                }
+                case TGA::FBX::FbxImportWarning::GenerateNormalsFailed:
+                {
+                    LOG(LogMesh, Warning, "Mesh [{}] : Failed to generate normals for surfaces!", pathString);
+                    break;
+                }
+                case TGA::FBX::FbxImportWarning::CannotTriangulate:
+                {
+                    LOG(LogMesh, Warning, "Mesh [{}] : Could not triangulate polygons!", pathString);
+                    break;
+                }
+                case TGA::FBX::FbxImportWarning::DuplicateBoneNames:
+                {
+                    LOG(LogMesh, Warning, "Mesh [{}] : Duplicate bone names detected!", pathString);
+                    break;
+                }
+                default:
+                {
+                    LOG(LogMesh, Warning, "Mesh [{}] : Unknown warning!", pathString);
+                    break;
+                }
             }
         }
     }
@@ -162,24 +167,24 @@ bool MeshAsset::Load(const std::filesystem::path& aPath)
 
         element.BoundingSphere.InitWithCenterAndRadius(
             {
-	            tgaElement.BoxSphereBounds.Center[0],
-	            tgaElement.BoxSphereBounds.Center[1],
-	            tgaElement.BoxSphereBounds.Center[2]
+                tgaElement.BoxSphereBounds.Center[0],
+                tgaElement.BoxSphereBounds.Center[1],
+                tgaElement.BoxSphereBounds.Center[2]
             },
             tgaElement.BoxSphereBounds.Radius
         );
 
         element.BoundingBox.InitWithMinAndMax(
-			{
+            {
                 tgaElement.BoxBounds.Min[0],
-				tgaElement.BoxBounds.Min[1],
+                tgaElement.BoxBounds.Min[1],
                 tgaElement.BoxBounds.Min[2]
             },
-			{
-	            tgaElement.BoxBounds.Max[0],
-	            tgaElement.BoxBounds.Max[1],
-	            tgaElement.BoxBounds.Max[2]
-			}
+            {
+                tgaElement.BoxBounds.Max[0],
+                tgaElement.BoxBounds.Max[1],
+                tgaElement.BoxBounds.Max[2]
+            }
         );
 
         elements.emplace_back(std::move(element));
@@ -209,29 +214,29 @@ bool MeshAsset::Load(const std::filesystem::path& aPath)
         skeleton->JointNameToIndex = std::move(tgaMesh->Skeleton.BoneNameToIndex);
     }
 
-	CommonUtilities::Sphere<float> boundingSphere;
+    CommonUtilities::Sphere<float> boundingSphere;
     boundingSphere.InitWithCenterAndRadius(
-		{
-			tgaMesh->BoxSphereBounds.Center[0],
-			tgaMesh->BoxSphereBounds.Center[1],
-			tgaMesh->BoxSphereBounds.Center[2] 
-		}, 
-		tgaMesh->BoxSphereBounds.Radius
-	);
+        {
+            tgaMesh->BoxSphereBounds.Center[0],
+            tgaMesh->BoxSphereBounds.Center[1],
+            tgaMesh->BoxSphereBounds.Center[2]
+        },
+        tgaMesh->BoxSphereBounds.Radius
+    );
 
-	CommonUtilities::AABB3D<float> boundingBox;
+    CommonUtilities::AABB3D<float> boundingBox;
     boundingBox.InitWithMinAndMax(
-		{ 
-			tgaMesh->BoxBounds.Min[0], 
-			tgaMesh->BoxBounds.Min[1], 
-			tgaMesh->BoxBounds.Min[2] 
-		}, 
-		{ 
-			tgaMesh->BoxBounds.Max[0],
+        {
+            tgaMesh->BoxBounds.Min[0],
+            tgaMesh->BoxBounds.Min[1],
+            tgaMesh->BoxBounds.Min[2]
+        },
+        {
+            tgaMesh->BoxBounds.Max[0],
             tgaMesh->BoxBounds.Max[1],
             tgaMesh->BoxBounds.Max[2]
-		}
-	);
+        }
+    );
 
     myMesh->Initialize(aPath.filename().string(), std::move(elements), std::move(meshVertices), std::move(meshIndices), std::move(skeleton), boundingSphere, boundingBox);
 

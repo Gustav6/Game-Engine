@@ -14,7 +14,7 @@ project "Framework"
         "%{prj.location}",
         "%{wks.location}/Source/Utilities",
         "%{wks.location}/Source/Graphics",
-        "%{wks.location}/Source/Tools",
+        "%{wks.location}/Source/ThirdParty",
         "%{wks.location}/ThirdParty/Source"
     }
 

@@ -22,8 +22,7 @@ public:
 	const Mesh& GetMesh();
 	Skeleton* GetSkeleton() const;
 
-	void SetMaterial(unsigned int aMaterialIndex, const std::shared_ptr<MaterialAsset> aMaterialAsset);
-	const std::vector<std::shared_ptr<MaterialAsset>>& GetMaterialAssetList() const;
+	void SetMaterial(unsigned int aMaterialIndex, const std::shared_ptr<MaterialAsset>& aMaterialAsset);
 
 private:
 	std::shared_ptr<MeshAsset> myMeshAsset;

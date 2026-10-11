@@ -102,7 +102,7 @@ float3 CalculateDirectionalLightContribution(in Light aDirectionalLight, float3 
     
     float3 radiance = aDirectionalLight.Color * aDirectionalLight.Intensity;
     
-    return (diffuseBRDF + specularBRDF) * NdotL * radiance;
+    return (diffuseBRDF + specularBRDF) * radiance;
 }
 
 float3 CalculatePointLightContribution(in Light aPointLight, float3 aNormal, float3 aPixelPosition, float3 aPixelView, float3 aSpecularColor, float3 aDiffuseColor, float aRoughness)
@@ -123,7 +123,7 @@ float3 CalculatePointLightContribution(in Light aPointLight, float3 aNormal, flo
     const float3 specularBRDF = Specular_BRDF(aRoughness, aNormal, halfAngleToCamera, aPixelView, pixelToLight, aSpecularColor) * NdotL;
     const float3 diffuseBRDF = Diffuse_BRDF(aDiffuseColor) * (1.0f - specularBRDF);
     
-    return (diffuseBRDF + specularBRDF) * NdotL * radiance;
+    return (diffuseBRDF + specularBRDF) * radiance;
 }
 
 float3 CalculateSpotLightContribution(in Light aSpotLight, float3 aNormal, float3 aPixelPosition, float3 aPixelView, float3 aSpecularColor, float3 aDiffuseColor, float aRoughness)
@@ -148,7 +148,7 @@ float3 CalculateSpotLightContribution(in Light aSpotLight, float3 aNormal, float
     const float3 specularBRDF = Specular_BRDF(aRoughness, aNormal, halfAngleToCamera, aPixelView, pixelToLight, aSpecularColor) * NdotL;
     const float3 diffuseBRDF = Diffuse_BRDF(aDiffuseColor) * (1.0f - specularBRDF);
     
-    return (diffuseBRDF + specularBRDF) * NdotL * radiance;
+    return (diffuseBRDF + specularBRDF) * radiance;
 }
 
 #endif

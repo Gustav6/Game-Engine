@@ -16,7 +16,7 @@ struct FrameTargets;
 class ScreenSpaceEffectPass
 {
 public:
-    ScreenSpaceEffectPass(RenderHardwareInterface& aRHI);
+	bool Initialize(RenderHardwareInterface& aRHI);
 
     void Execute(
         GraphicsCommandList& inoutCommandList,

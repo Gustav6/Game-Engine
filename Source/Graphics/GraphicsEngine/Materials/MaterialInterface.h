@@ -4,6 +4,9 @@
 #include <string>
 #include <string_view>
 #include <vector>
+#include <memory>
+
+#include "MaterialHelpers.h"
 
 class PipelineStateObject;
 class Texture;
@@ -38,32 +41,6 @@ enum class MaterialBlendMode : uint8_t
 	None,
 	Opaque,
 	Alpha
-};
-
-/**
- * Enum of types used in HLSL during the AGP Course. To make matching easier.
- * @return
- */
-enum class MaterialParameterType : uint8_t
-{
-	Unknown,
-	Float, Float2, Float3, Float4,
-	Int, Int2, Int3, Int4,
-	Uint, Uint2, Uint3, Uint4,
-	Bool, Matrix4x4
-};
-
-/**
- * Information about a Material Parameter found in the HLSL MaterialParametersBuffer
- * @return
- */
-struct MaterialParameterInfo
-{
-	std::string Name;
-	MaterialParameterType Type = MaterialParameterType::Unknown;
-	size_t Offset = 0;
-	size_t Size = 0;
-	size_t Index = 0;
 };
 
 /**
@@ -102,6 +79,25 @@ public:
 	virtual MaterialBlendMode GetBlendMode() const = 0;
 
 	virtual const PipelineStateObject& GetPSO() const = 0;
+
+	template<typename T>
+	bool SetValue(const std::string& aName, const T& aValue)
+	{
+		const MaterialParameterInfo* param = GetParameterByName(aName);
+
+		if (param == nullptr)
+		{
+			return false;
+		}
+
+		if (!MaterialHelpers::MaterialParameterTraits<T>::IsA(*param))
+		{
+			ensure(false);
+			return false;
+		}
+
+		return SetRawParameterValue(*param, &aValue, sizeof(T));
+	}
 
 	/**
 	 * If True there has been changes to the C++ side MaterialParametersBuffer
@@ -184,4 +180,7 @@ public:
 	 * @return The texture bound to the slot, or nullptr if none is set.
 	*/
 	virtual std::shared_ptr<Texture> GetTexture(unsigned int aSlot) const = 0;
+
+protected:
+	virtual bool SetRawParameterValue(const MaterialParameterInfo& aParamInfo, const void* aPtr, size_t aPtrSize) = 0;
 };

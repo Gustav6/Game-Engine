@@ -19,6 +19,7 @@
 #include "GraphicsEngine/ConstantBuffers/Manager/ConstantBufferManager.h"
 
 #include "GraphicsEngine/Objects/GPU/Texture.h"
+#include "GraphicsEngine/Objects/GPU/Vertex.h"
 
 #include "GraphicsEngine/Objects/Scene/Light.h"
 #include "GraphicsEngine/Objects/Scene/Camera.h"
@@ -30,24 +31,43 @@
 #include "RHI/PipelineStateObject.h"
 
 #include "ShadowCube_GS.h"
+#include "Surface_VS.h"
+#include "Unlit_PS.h"
 
 #include <tracy/core/Tracy.hpp>
 
 bool ShadowRenderPass::Initialize(RenderHardwareInterface& aRHI)
 {
-	// Shadow PSO
+	// Directional & Spot PSO
 	{
 		PipelineStateDescription shadowPSODesc = {};
 		shadowPSODesc.Name = "ShadowPSO";
+		shadowPSODesc.InputLayoutElements = Vertex::Description;
 		shadowPSODesc.RasterizerState = RasterizerState::FillSolidCullFront;
-		shadowPSODesc.GeometryShader.ByteCode = INTERNAL_ShadowCube_GS_ByteCode;
-		shadowPSODesc.GeometryShader.ByteCodeSize = sizeof(INTERNAL_ShadowCube_GS_ByteCode);
+		shadowPSODesc.VertexShader.ByteCode = INTERNAL_Surface_VS_ByteCode;
+		shadowPSODesc.VertexShader.ByteCodeSize = sizeof(INTERNAL_Surface_VS_ByteCode);
 
 		myShadowPSO = std::make_unique<PipelineStateObject>();
 
 		if (!aRHI.CreatePipelineStateObject(shadowPSODesc, *myShadowPSO))
 		{
 			GELOG(Error, "Failed to create Shadow pipeline state object!");
+			return false;
+		}
+	}
+
+	// Point PSO
+	{
+		PipelineStateDescription shadowCubePSODesc = {};
+		shadowCubePSODesc.Name = "ShadowCubePSO";
+		shadowCubePSODesc.GeometryShader.ByteCode = INTERNAL_ShadowCube_GS_ByteCode;
+		shadowCubePSODesc.GeometryShader.ByteCodeSize = sizeof(INTERNAL_ShadowCube_GS_ByteCode);
+
+		myShadowCubePSO = std::make_unique<PipelineStateObject>();
+
+		if (!aRHI.CreatePipelineStateObject(shadowCubePSODesc, *myShadowCubePSO))
+		{
+			GELOG(Error, "Failed to create Shadow Cube pipeline state object!");
 			return false;
 		}
 	}
@@ -64,11 +84,11 @@ void ShadowRenderPass::Execute(
 	const std::vector<RenderItem>& aItems,
 	RenderContext& aContext)
 {
-	ZoneScopedN("Shadow render pass");
+	ZoneScopedN("Shadow render pass")
 
 	inoutCommandList.BeginEvent("Shadow Pass");
 
-	inoutCommandList.SetOverridePipelineState(*myShadowPSO, PipelineStage_None);
+	inoutCommandList.SetPipelineStateObject(*myShadowPSO);
 
 	for (const auto& light : LightDrawer::Get().mySceneLights)
 	{
@@ -178,10 +198,9 @@ void ShadowRenderPass::Execute(
 						inoutCommandList.ClearDepthStencil(*myCascades[c].ShadowMap);
 						inoutCommandList.SetRenderTarget(nullptr, myCascades[c].ShadowMap.get());
 
-						inoutCommandList.ChangeActiveOverrides(PipelineStage_Rasterizer | PipelineStage_PixelShader);
 						aContext.ConstantBuffers->UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::FrameBuffer, frameBuffer, 0, PipelineStage_VertexShader);
 
-						DrawCallSubmitter::RenderDrawCalls(inoutCommandList, aItems, aContext, DrawCallFlag_BindMaterial);
+						DrawCallSubmitter::RenderDrawCalls(inoutCommandList, aItems, aContext, DrawCallFlag_None);
 
 						inoutCommandList.EndEvent();
 					}
@@ -221,11 +240,9 @@ void ShadowRenderPass::Execute(
 				inoutCommandList.ClearDepthStencil(*light.ShadowMap);
 				inoutCommandList.SetRenderTarget(nullptr, light.ShadowMap);
 
-				inoutCommandList.ChangeActiveOverrides(PipelineStage_Rasterizer | PipelineStage_PixelShader);
-
 				aContext.ConstantBuffers->UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::FrameBuffer, frameBuffer, 0, PipelineStage_VertexShader);
 
-				DrawCallSubmitter::RenderDrawCalls(inoutCommandList, aItems, aContext, DrawCallFlag_BindMaterial);
+				DrawCallSubmitter::RenderDrawCalls(inoutCommandList, aItems, aContext, DrawCallFlag_None);
 
 				inoutCommandList.EndEvent();
 
@@ -243,11 +260,13 @@ void ShadowRenderPass::Execute(
 				inoutCommandList.ClearDepthStencil(*light.ShadowMap);
 				inoutCommandList.SetRenderTarget(nullptr, light.ShadowMap);
 
-				inoutCommandList.ChangeActiveOverrides(PipelineStage_GeometryShader | PipelineStage_Rasterizer | PipelineStage_PixelShader);
+				inoutCommandList.SetOverridePipelineState(*myShadowCubePSO, PipelineStage_GeometryShader);
 
 				aContext.ConstantBuffers->UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::FrameBuffer, frameBuffer, 0, PipelineStage_VertexShader | PipelineStage_GeometryShader);
 
-				DrawCallSubmitter::RenderDrawCalls(inoutCommandList, aItems, aContext, DrawCallFlag_BindMaterial);
+				DrawCallSubmitter::RenderDrawCalls(inoutCommandList, aItems, aContext, DrawCallFlag_None);
+
+				inoutCommandList.ClearOverridePipelineState();
 
 				inoutCommandList.EndEvent();
 
@@ -255,8 +274,6 @@ void ShadowRenderPass::Execute(
 			}
 		}
 	}
-
-	inoutCommandList.ClearOverridePipelineState();
 
 	inoutCommandList.EndEvent();
 }

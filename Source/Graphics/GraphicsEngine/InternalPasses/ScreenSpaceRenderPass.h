@@ -18,7 +18,7 @@ struct SpriteDrawCall;
 class ScreenSpaceRenderPass
 {
 public:
-    ScreenSpaceRenderPass(RenderHardwareInterface& aRHI);
+	bool Initialize(RenderHardwareInterface& aRHI);
 
     void Execute(
         GraphicsCommandList& inoutCommandList,

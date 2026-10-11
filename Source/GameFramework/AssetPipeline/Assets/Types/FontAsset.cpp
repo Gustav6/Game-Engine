@@ -1,10 +1,7 @@
 #include "GameFramework.pch.h"
 #include "FontAsset.h"
 
-#include <utility>
 #include <memory>
-
-#include "GraphicsEngine/Objects/Text/Font.h"
 
 #include "GraphicsEngine/GraphicsEngine.hpp"
 
@@ -12,9 +9,9 @@
 
 #include "Logger/Logger.h"
 
-DECLARE_LOG_CATEGORY_WITH_NAME(FontLog, FONT, Verbose);
+DECLARE_LOG_CATEGORY_WITH_NAME(LogFont, FONT, Verbose);
 
-DEFINE_LOG_CATEGORY(FontLog);
+DEFINE_LOG_CATEGORY(LogFont);
 
 const Font& FontAsset::GetFont() const
 {
@@ -49,25 +46,10 @@ bool FontAsset::Load(const std::filesystem::path& aPath)
 
 	if (!GraphicsEngine::Get().CreateFontAsset(fontPath, atlasPath, *myFont))
 	{
-		LOG(FontLog, Error, "Failed to create font [{}]!", aPath.string());
+		LOG(LogFont, Error, "Failed to create font [{}]!", aPath.string());
+
 		return false;
 	}
-
-	/*myDefaultFontMaterial = std::make_shared<Material>();
-
-	MaterialDescription fontMaterialDesc;
-	fontMaterialDesc.Name = "FontMaterial";
-	fontMaterialDesc.Domain = MaterialDomain::Surface;
-	fontMaterialDesc.ShadingModel = ShadingModel::Unlit;
-	fontMaterialDesc.BlendMode = MaterialBlendMode::Alpha;
-	fontMaterialDesc.PixelShader = myShaderRoot / "Material" / "FontMaterial_PS.hlsl";
-	fontMaterialDesc.VertexShader = myShaderRoot / "Material" / "FontMaterial_VS.hlsl";
-
-	if (!CreateMaterial(fontMaterialDesc, *myDefaultFontMaterial))
-	{
-		GELOG(Error, "Failed to create font material!");
-		return false;
-	}*/
 
     return true;
 }

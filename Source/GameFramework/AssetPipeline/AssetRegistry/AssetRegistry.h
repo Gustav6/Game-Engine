@@ -12,9 +12,15 @@
 #include <typeindex>
 #include <set>
 #include <algorithm>
+#include <format>
+
+#include "AssetPipeline/Assets/Base/Asset.h"
 
 #include "Logger/Logger.h"
-#include "AssetPipeline/Assets/Base/Asset.h"
+
+// TODO: Stop using string and move to interned string.
+
+DECLARE_LOG_CATEGORY_WITH_NAME(LogAssetRegistry, ASSETREGISTRY, Verbose);
 
 class AssetRegistry
 {
@@ -36,14 +42,17 @@ public:
 		std::string lowerName(aAssetName);
 		std::ranges::transform(lowerName, lowerName.begin(), tolower);
 
-		if (!myAssets.contains(lowerName))
+		const std::string_view typeName = RemoveTypePrefix(typeid(AssetType).name());
+
+		auto assetEntry = myAssets.find(lowerName);
+
+		if (assetEntry == myAssets.end())
 		{
-			std::string errorMessage = std::format("Type [{}], Asset Name [{}], Is not contained within the content folder!", RemoveTypePrefix(typeid(AssetType).name()), aAssetName);
-			InternalLogMessage(LogVerbosity::Type::Error, errorMessage);
+			LOG(LogAssetRegistry, Error, "Type [{}], Asset Name [{}], Is not contained within the content folder!", typeName, aAssetName);
 			return nullptr;
 		}
 
-		AssetInformation& assetInformation = myAssets.at(lowerName);
+		AssetInformation& assetInformation = assetEntry->second;
 
 		if (!assetInformation.Asset.expired())
 		{
@@ -51,26 +60,74 @@ public:
 		}
 
 		std::string extension = assetInformation.Path.extension().string();
+		std::ranges::transform(extension, extension.begin(), tolower);
+
 		auto extensionEntry = myFileExtensionToAssetTypeMap.find(extension);
 
 		if (extensionEntry == myFileExtensionToAssetTypeMap.end() || !extensionEntry->second.contains(std::type_index(typeid(AssetType))))
 		{
-			std::string errorMessage = std::format("Asset Name [{}], Extension [{}], Was never registered for type {}!", aAssetName, extension, RemoveTypePrefix(typeid(AssetType).name()));
-			InternalLogMessage(LogVerbosity::Type::Error, errorMessage);
+			LOG(LogAssetRegistry, Error, "Asset Name [{}], Extension [{}], Was never registered for type {}!", aAssetName, extension, typeName);
 			return nullptr;
 		}
+
+		LOG_GROUP(LogAssetRegistry, Verbose, "Loading Type [{}], Asset Name [{}], Extension [{}]", typeName, aAssetName, extension);
 
 		std::shared_ptr<AssetType> asset = std::make_shared<AssetType>();
 
 		if (!asset->Load(assetInformation.Path))
 		{
+			LOG(LogAssetRegistry, Error, "Failed to load!");
 			return nullptr;
 		}
 
 		assetInformation.Asset = asset;
 
-		std::string loadMessage = std::format("Type [{}], Asset Name [{}], Extension [{}], Loaded successfully!", RemoveTypePrefix(typeid(AssetType).name()), aAssetName, extension);
-		InternalLogMessage(LogVerbosity::Type::Verbose, loadMessage);
+		LOG(LogAssetRegistry, Verbose, "Loaded successfully!");
+
+		return asset;
+	}
+
+	template<typename AssetType, typename... Args>
+	requires std::is_base_of_v<Asset, AssetType>
+	std::shared_ptr<AssetType> ConstructAsset(const std::string_view aAssetName, Args&&... args)
+	{
+		std::string lowerName(aAssetName);
+		std::ranges::transform(lowerName, lowerName.begin(), tolower);
+
+		if (auto existing = myAssets.find(lowerName); existing != myAssets.end())
+		{
+			if (!existing->second.Asset.expired())
+			{
+				return std::dynamic_pointer_cast<AssetType>(existing->second.Asset.lock());
+			}
+		}
+
+		const std::string_view typeName = RemoveTypePrefix(typeid(AssetType).name());
+
+		LOG_GROUP(LogAssetRegistry, Verbose, "Constructing Type [{}], Asset Name [{}]", typeName, aAssetName);
+
+		std::shared_ptr<AssetType> asset = std::make_shared<AssetType>();
+
+		if (!asset->Construct(std::forward<Args>(args)...))
+		{
+			LOG(LogAssetRegistry, Error, "Failed to construct!");
+			return nullptr;
+		}
+
+		asset->myName = lowerName;
+
+		auto entry = myAssets.find(lowerName);
+
+		if (entry != myAssets.end())
+		{
+			entry->second.Asset = asset;
+		}
+		else
+		{
+			myAssets.emplace(lowerName, AssetInformation{ .Path = {}, .Asset = asset });
+		}
+
+		LOG(LogAssetRegistry, Verbose, "Constructed successfully!");
 
 		return asset;
 	}
@@ -83,11 +140,15 @@ public:
 	}
 
 private:
-	std::string_view RemoveTypePrefix(std::string_view aTypeName);
+	struct AssetInformation
+	{
+		std::filesystem::path Path;
+		std::weak_ptr<Asset> Asset;
+	};
 
 	void RegisterAssetTypeInternal(const std::vector<std::string>& aExtensionList, std::type_index aTypeIndex);
 
-	void InternalLogMessage(LogVerbosity::Type aVerbosity, std::string_view aMessage) const;
+	std::string_view RemoveTypePrefix(std::string_view aTypeName);
 
 	// TODO: Not implemented
 	void InitUnitAxes();
@@ -95,12 +156,6 @@ private:
 	// TODO: Not implemented
 	void InitUnitSphere();
 	void InitUnitPlane();
-
-	struct AssetInformation
-	{
-		std::filesystem::path Path;
-		std::weak_ptr<Asset> Asset;
-	};
 
 	// Just holds assets alive as long as the registry is not destroyed
 	std::vector<std::shared_ptr<Asset>> myPersistentAssets;

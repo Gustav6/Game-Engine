@@ -141,7 +141,7 @@ void DeferredRenderPass::Execute(
 	FrameTargets& aFrameTargets,
 	RenderContext& aContext)
 {
-	ZoneScopedN("Deferred Render Pass");
+	ZoneScopedN("Deferred Render Pass")
 
 	inoutCommandList.BeginEvent("Deffered Render");
 
@@ -183,7 +183,7 @@ void DeferredRenderPass::Execute(
 			inoutCommandList.Draw(4);
 			inoutCommandList.EndEvent();
 
-			if (aContext.Mode == RenderMode::sRGB || aContext.Mode == RenderMode::Shadows)
+			if (aContext.Mode == DebugRenderMode::None || aContext.Mode == DebugRenderMode::Shadows)
 			{
 				for (const auto& light : LightDrawer::Get().mySceneLights)
 				{

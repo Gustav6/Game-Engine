@@ -47,6 +47,7 @@ private:
 
 	std::array<ShadowCascade, NUM_CASCADES> myCascades;
 	std::unique_ptr<PipelineStateObject> myShadowPSO;
+	std::unique_ptr<PipelineStateObject> myShadowCubePSO;
 
 	float myCameraNearPlane = 0.0f;
 	float myCameraFarPlane = 0.0f;

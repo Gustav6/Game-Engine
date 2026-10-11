@@ -1,9 +1,32 @@
 {
   "Name": "SMColorCheckerMaterial",
-  "MasterMaterial": "BaseMaterial",
-  "Textures": {
-    "AlbedoTexture": "T_Color_Checker_c",
-    "NormalTexture": "T_Color_Checker_n",
-    "MaterialTexture": "T_Color_Checker_orm"
+  "Domain": 0,
+  "ShadingModel": 1,
+  "BlendMode": 0,
+  "Parameters": [
+    {
+      "Name": "AlbedoTexture",
+      "Type": 3,
+      "Value": {
+        "Name": "T_Color_Checker_c"
+      }
+    },
+    {
+      "Name": "NormalTexture",
+      "Type": 3,
+      "Value": {
+        "Name": "T_Color_Checker_n"
+      }
+    },
+    {
+      "Name": "MaterialTexture",
+      "Type": 3,
+      "Value": {
+        "Name": "T_Color_Checker_orm"
+      }
+    }
+  ],
+  "Shader": {
+    "Code": "Shaders/BaseMaterial.hlsli"
   }
 }

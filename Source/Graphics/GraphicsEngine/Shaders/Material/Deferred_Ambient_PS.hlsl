@@ -13,13 +13,12 @@ float4 main(FullscreenVertex aInput) : SV_TARGET
     const float4 albedoPixel = GBufferAlbedo.Sample(TrilinearClamp, aInput.UV);
     
     // If this is 0 we've read Infinity from the GBuffer. We cannot light Infinity so discard.
-    
     if (albedoPixel.a == 0)
     {
         discard;
     }
     
-    if (FB_TypeOfRenderPass != 0 && FB_TypeOfRenderPass != 7)
+    if (FB_TypeOfRenderPass != 0 && FB_TypeOfRenderPass != 8)
     {
         return albedoPixel;
     }

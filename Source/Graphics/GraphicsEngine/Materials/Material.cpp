@@ -84,6 +84,20 @@ std::shared_ptr<Texture> Material::GetTexture(unsigned int aSlot) const
     return myTextures[aSlot];
 }
 
+bool Material::SetRawParameterValue(const MaterialParameterInfo& aParamInfo, const void* aPtr, size_t aPtrSize)
+{
+    if (aParamInfo.Offset > MATERIAL_BUFFER_SIZE ||
+        aParamInfo.Offset + aParamInfo.Size > MATERIAL_BUFFER_SIZE ||
+        aParamInfo.Size > aPtrSize)
+    {
+        return false;
+    }
+
+    memcpy_s(myData + aParamInfo.Offset, aParamInfo.Size, aPtr, aParamInfo.Size);
+
+    return true;
+}
+
 std::shared_ptr<MaterialInstance> MaterialInstance::Create(std::string_view aName, const std::shared_ptr<MaterialInterface>& aMaterialInterface)
 {
     std::shared_ptr<MaterialInstance> instance = std::make_shared<MaterialInstance>();

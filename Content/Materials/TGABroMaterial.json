@@ -1,15 +1,31 @@
 {
   "Name": "TGABroMaterial",
-  "Settings": {
-    "MaterialDomain": 1,
-    "ShadingModel": 2,
-    "BlendMode": 2
-  },
-  "Textures": {
-    "AlbedoTexture": "T_TGA_Bro_c",
-    "NormalTexture": "T_TGA_Bro_n",
-    "MaterialTexture": "T_TGA_Bro_orm"
-  },
+  "Domain": 0,
+  "ShadingModel": 1,
+  "BlendMode": 1,
+  "Parameters": [
+    {
+      "Name": "AlbedoTexture",
+      "Type": 3,
+      "Value": {
+        "Name": "T_TGA_Bro_c"
+      }
+    },
+    {
+      "Name": "NormalTexture",
+      "Type": 3,
+      "Value": {
+        "Name": "T_TGA_Bro_n"
+      }
+    },
+    {
+      "Name": "MaterialTexture",
+      "Type": 3,
+      "Value": {
+        "Name": "T_TGA_Bro_orm"
+      }
+    }
+  ],
   "Shader": {
     "Code": "Shaders/BlendMaterial.hlsli"
   }

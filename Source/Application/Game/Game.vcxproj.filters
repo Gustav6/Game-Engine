@@ -4,6 +4,9 @@
     <Filter Include="Camera">
       <UniqueIdentifier>{CE7141AB-BA13-6C81-A3CE-7FD58F0FF3D1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Materials">
+      <UniqueIdentifier>{67E8C255-D352-77CC-1C91-2872883A5521}</UniqueIdentifier>
+    </Filter>
     <Filter Include="ThirdParty">
       <UniqueIdentifier>{107145F9-FC28-8746-6530-60A251072237}</UniqueIdentifier>
     </Filter>
@@ -35,5 +38,13 @@
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="WindowManager.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="Materials\BaseMaterial.hlsli">
+      <Filter>Materials</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Materials\BlendMaterial.hlsli">
+      <Filter>Materials</Filter>
+    </CustomBuild>
   </ItemGroup>
 </Project>
