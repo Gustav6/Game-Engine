@@ -153,7 +153,6 @@ private:
 	// TODO: Not implemented
 	void InitUnitAxes();
 	void InitUnitCube();
-	// TODO: Not implemented
 	void InitUnitSphere();
 	void InitUnitPlane();
 

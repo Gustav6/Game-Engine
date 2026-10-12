@@ -19,4 +19,5 @@ struct Vertex
 	CommonUtilities::Vector3f Tangent = { 0, 0, 0 };
 
 	static const std::vector<VertexElementDescription> Description;
+	static const std::vector<VertexElementDescription> LineDescription;
 };

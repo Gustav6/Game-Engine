@@ -19,12 +19,14 @@ struct MeshDrawCall
 
 class MeshDrawer
 {
-    friend class GraphicsEngine;
-
 public:
 	static MeshDrawer& Get();
 
     void Submit(const MeshDrawCall& aDrawCall);
+
+    const std::vector<MeshDrawCall>& GetMeshDrawCalls() const;
+
+    void Clear();
 
 private:
     std::vector<MeshDrawCall> myDrawCalls;

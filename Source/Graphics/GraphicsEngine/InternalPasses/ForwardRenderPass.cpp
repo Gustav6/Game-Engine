@@ -34,18 +34,20 @@ void ForwardRenderPass::Execute(
 
 	inoutCommandList.BeginEvent("Forward Render");
 
+	const std::vector<SceneLight>& sceneLights = LightDrawer::Get().GetSceneLights();
+
 	inoutCommandList.SetRenderTarget(aFrameTargets.RenderTarget, aFrameTargets.DepthBuffer);
 
 	FrameBuffer frameBuffer;
 	frameBuffer.View = aContext.Camera->Transform.GetFastInverse();
 	frameBuffer.Projection = aContext.Camera->RenderCamera.GetProjection();
 	frameBuffer.CameraPosition = aContext.Camera->Transform.GetTranslation();
-	frameBuffer.TypeOfRenderPass = static_cast<unsigned int>(aContext.Mode);
+	frameBuffer.TypeOfRenderPass = static_cast<unsigned int>(aContext.RenderSettings->DebugRenderMode);
 
 	aContext.ConstantBuffers->UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::FrameBuffer, frameBuffer, 0, PipelineStage_VertexShader | PipelineStage_PixelShader);
 
 	LightBuffer lightBuffer;
-	lightBuffer.NumLights = static_cast<unsigned int>(std::min(LightDrawer::Get().mySceneLights.size(), static_cast<size_t>(MAX_LIGHTS)));
+	lightBuffer.NumLights = static_cast<unsigned int>(std::min(sceneLights.size(), static_cast<size_t>(MAX_LIGHTS)));
 
 	std::vector<const Texture*> dirLightShadowMaps;
 	dirLightShadowMaps.reserve(ShadowRenderPass::NUM_CASCADES);
@@ -57,9 +59,9 @@ void ForwardRenderPass::Execute(
 
 	for (unsigned int i = 0; i < lightBuffer.NumLights; i++)
 	{
-		lightBuffer.Lights[i] = *LightDrawer::Get().mySceneLights[i].LightData;
+		lightBuffer.Lights[i] = *sceneLights[i].LightData;
 
-		switch (LightDrawer::Get().mySceneLights[i].LightData->Type)
+		switch (sceneLights[i].LightData->Type)
 		{
 			case LightType::Directional:
 			{
@@ -72,23 +74,23 @@ void ForwardRenderPass::Execute(
 			}
 			case LightType::Spot:
 			{
-				if (LightDrawer::Get().mySceneLights[i].ShadowMap == nullptr)
+				if (sceneLights[i].ShadowMap == nullptr)
 				{
 					continue;
 				}
 
-				spotLightShadowMaps.emplace_back(LightDrawer::Get().mySceneLights[i].ShadowMap);
+				spotLightShadowMaps.emplace_back(LightDrawer::Get().GetSceneLights()[i].ShadowMap);
 				lightBuffer.Lights[i].ShadowIndex = spotShadowIndex++;
 				break;
 			}
 			case LightType::Point:
 			{
-				if (LightDrawer::Get().mySceneLights[i].ShadowMap == nullptr)
+				if (sceneLights[i].ShadowMap == nullptr)
 				{
 					continue;
 				}
 
-				pointLightShadowCubes.emplace_back(LightDrawer::Get().mySceneLights[i].ShadowMap);
+				pointLightShadowCubes.emplace_back(sceneLights[i].ShadowMap);
 				lightBuffer.Lights[i].ShadowIndex = pointShadowIndex++;
 				break;
 			}

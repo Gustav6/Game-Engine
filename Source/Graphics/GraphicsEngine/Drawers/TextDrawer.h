@@ -20,13 +20,14 @@ struct TextDrawCall
 
 class TextDrawer
 {
-	friend class GraphicsEngine;
-	friend class ScreenSpaceRenderPass;
-
 public:
 	static TextDrawer& Get();
 
 	void Submit(const TextDrawCall& aDrawCall);
+
+	const std::vector<TextDrawCall>& GetTextDrawCalls() const;
+
+	void Clear();
 
 private:
 	std::vector<TextDrawCall> myDrawCalls;

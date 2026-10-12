@@ -21,3 +21,13 @@ void LightDrawer::Submit(const SceneLight& aSceneLight)
 
 	mySceneLights.emplace_back(aSceneLight);
 }
+
+const std::vector<SceneLight>& LightDrawer::GetSceneLights() const
+{
+	return mySceneLights;
+}
+
+void LightDrawer::Clear()
+{
+	mySceneLights.clear();
+}

@@ -16,7 +16,7 @@ LRESULT CALLBACK WinProc(_In_ HWND hWnd, _In_ UINT uMsg, _In_ WPARAM wParam, _In
 
 int GuardedMain()
 {
-#ifdef _DEBUG
+#ifndef _RETAIL
     // Request a console window.
     AllocConsole();
 

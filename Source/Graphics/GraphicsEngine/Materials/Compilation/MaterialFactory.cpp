@@ -52,12 +52,12 @@ bool MaterialFactory::Create(
 
 		shaderProgramPath = aShaderRegistry.GetDomainShader(aDescription.Domain);
 
-		const std::filesystem::path shaderRoot = aShaderRoot / "Material" / "Include";
+		const std::filesystem::path shaderRoot = aShaderRoot / "Include";
 		std::filesystem::path materialProgramPath;
 
 		if (aDescription.MaterialShaderCode.empty())
 		{
-			materialProgramPath = aShaderRoot / "Material" / "Include" / "Material.hlsli";
+			materialProgramPath = aShaderRoot / "Include" / "Core" / "Material.hlsli";
 		}
 		else
 		{
@@ -85,7 +85,7 @@ bool MaterialFactory::Create(
 			{
 				case MaterialBlendMode::Opaque:
 				{
-					shaderProgramPath = aShaderRoot / "Material" / "GBuffer_PS.hlsl";
+					shaderProgramPath = aShaderRoot / "Deferred" / "GBuffer_PS.hlsl";
 					break;
 				}
 				case MaterialBlendMode::Alpha:
@@ -101,12 +101,12 @@ bool MaterialFactory::Create(
 			}
 		}
 
-		const std::filesystem::path shaderRoot = aShaderRoot / "Material" / "Include";
+		const std::filesystem::path shaderRoot = aShaderRoot / "Include";
 		std::filesystem::path materialProgramPath;
 
 		if (aDescription.MaterialShaderCode.empty())
 		{
-			materialProgramPath = aShaderRoot / "Material" / "Include" / "Material.hlsli";
+			materialProgramPath = aShaderRoot / "Include" / "Core" / "Material.hlsli";
 		}
 		else
 		{

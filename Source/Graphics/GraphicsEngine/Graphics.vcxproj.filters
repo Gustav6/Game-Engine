@@ -64,11 +64,38 @@
     <Filter Include="Shaders">
       <UniqueIdentifier>{EFAC8DF2-5B8C-0C8E-64A4-9764D00273EF}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Shaders\Material">
-      <UniqueIdentifier>{6DD8FDB3-59D1-1C06-8203-028B6E5BFC11}</UniqueIdentifier>
+    <Filter Include="Shaders\Deferred">
+      <UniqueIdentifier>{7F3DEE78-6B36-0DCB-9468-F24F80C0ECD6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Shaders\Material\Include">
-      <UniqueIdentifier>{C0849754-ACA9-E6D4-D5F4-CB64C178E5F2}</UniqueIdentifier>
+    <Filter Include="Shaders\Forward">
+      <UniqueIdentifier>{13526803-7FDD-D5C7-88EE-58BCF4F831C8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders\Geometry">
+      <UniqueIdentifier>{2AD73B53-16D0-5AA5-3F02-402A2B5A3AB1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders\Include">
+      <UniqueIdentifier>{42BBECE6-AE46-5AAB-B757-DD9F2362B6AB}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders\Include\Core">
+      <UniqueIdentifier>{DA3887EC-C6C7-10B6-6FE6-24B15B54215C}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders\Include\Lighting">
+      <UniqueIdentifier>{07190E44-F33D-5DC4-1C89-4254080D5CE2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders\Include\PostProcess">
+      <UniqueIdentifier>{76588477-E265-B25D-6B4C-AE48D7587E14}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders\Include\Shadows">
+      <UniqueIdentifier>{4A2D7150-B664-B9E7-BF6E-1D0B2B25E0E0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders\PostProcess">
+      <UniqueIdentifier>{A335500E-0F97-2D1C-9804-74CE046564DB}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders\Shadows">
+      <UniqueIdentifier>{F77B8BDA-6307-F99E-6C18-7C93D822559F}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders\UI">
+      <UniqueIdentifier>{BC0D4262-A8C5-83AF-11CD-5C0BFDA31EA0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -106,9 +133,6 @@
       <Filter>Core</Filter>
     </ClInclude>
     <ClInclude Include="Core\SceneCamera.h">
-      <Filter>Core</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\SpriteRenderResources.h">
       <Filter>Core</Filter>
     </ClInclude>
     <ClInclude Include="Drawers\DebugDrawer.h">
@@ -383,106 +407,109 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="Shaders\Material\BRDF_LUT_PS.hlsl">
-      <Filter>Shaders\Material</Filter>
+    <FxCompile Include="Shaders\Deferred\AmbientLighting_PS.hlsl">
+      <Filter>Shaders\Deferred</Filter>
     </FxCompile>
-    <FxCompile Include="Shaders\Material\Bloom_PS.hlsl">
-      <Filter>Shaders\Material</Filter>
+    <FxCompile Include="Shaders\Deferred\DirectionalLighting_PS.hlsl">
+      <Filter>Shaders\Deferred</Filter>
     </FxCompile>
-    <FxCompile Include="Shaders\Material\Deferred_Ambient_PS.hlsl">
-      <Filter>Shaders\Material</Filter>
+    <FxCompile Include="Shaders\Deferred\GBuffer_PS.hlsl">
+      <Filter>Shaders\Deferred</Filter>
     </FxCompile>
-    <FxCompile Include="Shaders\Material\Deferred_DirLight_PS.hlsl">
-      <Filter>Shaders\Material</Filter>
+    <FxCompile Include="Shaders\Deferred\PointLighting_PS.hlsl">
+      <Filter>Shaders\Deferred</Filter>
     </FxCompile>
-    <FxCompile Include="Shaders\Material\Deferred_PointLight_PS.hlsl">
-      <Filter>Shaders\Material</Filter>
+    <FxCompile Include="Shaders\Deferred\SpotLighting_PS.hlsl">
+      <Filter>Shaders\Deferred</Filter>
     </FxCompile>
-    <FxCompile Include="Shaders\Material\Deferred_SpotLight_PS.hlsl">
-      <Filter>Shaders\Material</Filter>
+    <FxCompile Include="Shaders\Forward\PBR_PS.hlsl">
+      <Filter>Shaders\Forward</Filter>
     </FxCompile>
-    <FxCompile Include="Shaders\Material\FontMaterial_PS.hlsl">
-      <Filter>Shaders\Material</Filter>
+    <FxCompile Include="Shaders\Forward\Unlit_PS.hlsl">
+      <Filter>Shaders\Forward</Filter>
     </FxCompile>
-    <FxCompile Include="Shaders\Material\FontMaterial_VS.hlsl">
-      <Filter>Shaders\Material</Filter>
+    <FxCompile Include="Shaders\Geometry\Surface_VS.hlsl">
+      <Filter>Shaders\Geometry</Filter>
     </FxCompile>
-    <FxCompile Include="Shaders\Material\FullTexture_VS.hlsl">
-      <Filter>Shaders\Material</Filter>
+    <FxCompile Include="Shaders\Include\Core\Fullscreen_VS.hlsl">
+      <Filter>Shaders\Include\Core</Filter>
     </FxCompile>
-    <FxCompile Include="Shaders\Material\GBuffer_PS.hlsl">
-      <Filter>Shaders\Material</Filter>
+    <FxCompile Include="Shaders\Line_PS.hlsl">
+      <Filter>Shaders</Filter>
     </FxCompile>
-    <FxCompile Include="Shaders\Material\GaussianH_PS.hlsl">
-      <Filter>Shaders\Material</Filter>
+    <FxCompile Include="Shaders\Line_VS.hlsl">
+      <Filter>Shaders</Filter>
     </FxCompile>
-    <FxCompile Include="Shaders\Material\GaussianV_PS.hlsl">
-      <Filter>Shaders\Material</Filter>
+    <FxCompile Include="Shaders\PostProcess\BRDF_LUT_PS.hlsl">
+      <Filter>Shaders\PostProcess</Filter>
     </FxCompile>
-    <FxCompile Include="Shaders\Material\PBL_PS.hlsl">
-      <Filter>Shaders\Material</Filter>
+    <FxCompile Include="Shaders\PostProcess\Bloom_PS.hlsl">
+      <Filter>Shaders\PostProcess</Filter>
     </FxCompile>
-    <FxCompile Include="Shaders\Material\Resample_PS.hlsl">
-      <Filter>Shaders\Material</Filter>
+    <FxCompile Include="Shaders\PostProcess\GaussianBlurH_PS.hlsl">
+      <Filter>Shaders\PostProcess</Filter>
     </FxCompile>
-    <FxCompile Include="Shaders\Material\SSAO_PS.hlsl">
-      <Filter>Shaders\Material</Filter>
+    <FxCompile Include="Shaders\PostProcess\GaussianBlurV_PS.hlsl">
+      <Filter>Shaders\PostProcess</Filter>
     </FxCompile>
-    <FxCompile Include="Shaders\Material\SceneLuminance_PS.hlsl">
-      <Filter>Shaders\Material</Filter>
+    <FxCompile Include="Shaders\PostProcess\Resample_PS.hlsl">
+      <Filter>Shaders\PostProcess</Filter>
     </FxCompile>
-    <FxCompile Include="Shaders\Material\ShadowCube_GS.hlsl">
-      <Filter>Shaders\Material</Filter>
+    <FxCompile Include="Shaders\PostProcess\SSAO_PS.hlsl">
+      <Filter>Shaders\PostProcess</Filter>
     </FxCompile>
-    <FxCompile Include="Shaders\Material\Sprite_PS.hlsl">
-      <Filter>Shaders\Material</Filter>
+    <FxCompile Include="Shaders\PostProcess\SceneLuminance_PS.hlsl">
+      <Filter>Shaders\PostProcess</Filter>
     </FxCompile>
-    <FxCompile Include="Shaders\Material\Sprite_VS.hlsl">
-      <Filter>Shaders\Material</Filter>
+    <FxCompile Include="Shaders\PostProcess\Tonemap_PS.hlsl">
+      <Filter>Shaders\PostProcess</Filter>
     </FxCompile>
-    <FxCompile Include="Shaders\Material\Surface_VS.hlsl">
-      <Filter>Shaders\Material</Filter>
+    <FxCompile Include="Shaders\Shadows\ShadowCube_GS.hlsl">
+      <Filter>Shaders\Shadows</Filter>
     </FxCompile>
-    <FxCompile Include="Shaders\Material\Tonemap_PS.hlsl">
-      <Filter>Shaders\Material</Filter>
+    <FxCompile Include="Shaders\UI\FontMaterial_PS.hlsl">
+      <Filter>Shaders\UI</Filter>
     </FxCompile>
-    <FxCompile Include="Shaders\Material\Unlit_PS.hlsl">
-      <Filter>Shaders\Material</Filter>
+    <FxCompile Include="Shaders\UI\FontMaterial_VS.hlsl">
+      <Filter>Shaders\UI</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\UI\Sprite_PS.hlsl">
+      <Filter>Shaders\UI</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\UI\Sprite_VS.hlsl">
+      <Filter>Shaders\UI</Filter>
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Shaders\Material\Include\Common.hlsli">
-      <Filter>Shaders\Material\Include</Filter>
+    <None Include="Shaders\Include\Core\Common.hlsli">
+      <Filter>Shaders\Include\Core</Filter>
     </None>
-    <None Include="Shaders\Material\Include\LUTFunctions.hlsli">
-      <Filter>Shaders\Material\Include</Filter>
+    <None Include="Shaders\Include\Core\Material.hlsli">
+      <Filter>Shaders\Include\Core</Filter>
     </None>
-    <None Include="Shaders\Material\Include\Lambert_Functions.hlsli">
-      <Filter>Shaders\Material\Include</Filter>
+    <None Include="Shaders\Include\Core\MaterialParameters.hlsli">
+      <Filter>Shaders\Include\Core</Filter>
     </None>
-    <None Include="Shaders\Material\Include\Light.hlsli">
-      <Filter>Shaders\Material\Include</Filter>
+    <None Include="Shaders\Include\Core\Samplers.hlsli">
+      <Filter>Shaders\Include\Core</Filter>
     </None>
-    <None Include="Shaders\Material\Include\Material.hlsli">
-      <Filter>Shaders\Material\Include</Filter>
+    <None Include="Shaders\Include\Lighting\Light.hlsli">
+      <Filter>Shaders\Include\Lighting</Filter>
     </None>
-    <None Include="Shaders\Material\Include\MaterialParameters.hlsli">
-      <Filter>Shaders\Material\Include</Filter>
+    <None Include="Shaders\Include\Lighting\PBRFunctions.hlsli">
+      <Filter>Shaders\Include\Lighting</Filter>
     </None>
-    <None Include="Shaders\Material\Include\PBL_Functions.hlsli">
-      <Filter>Shaders\Material\Include</Filter>
+    <None Include="Shaders\Include\PostProcess\LUTFunctions.hlsli">
+      <Filter>Shaders\Include\PostProcess</Filter>
     </None>
-    <None Include="Shaders\Material\Include\PoissonDisks.hlsli">
-      <Filter>Shaders\Material\Include</Filter>
+    <None Include="Shaders\Include\PostProcess\Tonemap.hlsli">
+      <Filter>Shaders\Include\PostProcess</Filter>
     </None>
-    <None Include="Shaders\Material\Include\Samplers.hlsli">
-      <Filter>Shaders\Material\Include</Filter>
+    <None Include="Shaders\Include\Shadows\PoissonDisks.hlsli">
+      <Filter>Shaders\Include\Shadows</Filter>
     </None>
-    <None Include="Shaders\Material\Include\Shadow.hlsli">
-      <Filter>Shaders\Material\Include</Filter>
-    </None>
-    <None Include="Shaders\Material\Include\Tonemap.hlsli">
-      <Filter>Shaders\Material\Include</Filter>
+    <None Include="Shaders\Include\Shadows\Shadow.hlsli">
+      <Filter>Shaders\Include\Shadows</Filter>
     </None>
   </ItemGroup>
 </Project>

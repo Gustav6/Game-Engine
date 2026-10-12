@@ -17,13 +17,14 @@ struct SpriteDrawCall
 
 class SpriteDrawer
 {
-	friend class GraphicsEngine;
-	friend class ScreenSpaceRenderPass;
-
 public:
 	static SpriteDrawer& Get();
 
 	void Submit(const SpriteDrawCall& aDrawCall);
+
+	const std::vector<SpriteDrawCall>& GetSpriteDrawCalls() const;
+
+	void Clear();
 
 private:
 	std::vector<SpriteDrawCall> myDrawCalls;

@@ -5,24 +5,38 @@
 
 #include <AssetPipeline/Assets/Types/MeshAsset.h>
 #include <AssetPipeline/Assets/Types/MaterialAsset.h>
+#include "AssetPipeline/AssetRegistry/AssetRegistry.h"
 
 #include "GamePipeline/World/Actor.hpp"
 
 #include "GraphicsEngine/Objects/Mesh/Mesh.h"
 
 #include "GraphicsEngine/Drawers/MeshDrawer.h"
+#include "GraphicsEngine/Drawers/DebugDrawer.h"
 
 #include "Ensure.h"
 
 MeshComponent::MeshComponent(Actor* aOwner)
 	: Component(aOwner)
-{}
+{
+
+#ifdef _DEBUG
+	myRenderColliders = true;
+#else
+	myRenderColliders = false;
+#endif
+}
 
 void MeshComponent::Render()
 {
+	if (myMeshAsset == nullptr)
+	{
+		return;
+	}
+
 	MeshDrawCall drawCall =
 	{
-		.Mesh = &GetMesh(),
+		.Mesh = &myMeshAsset->GetMesh(),
 		.Transform = myOwner->GetTransform().GetWorldMatrix()
 	};
 
@@ -43,22 +57,92 @@ void MeshComponent::Render()
 	}
 
 	MeshDrawer::Get().Submit(drawCall);
+
+	if (myRenderColliders)
+	{
+		const CommonUtilities::Vector3f worldScale = myOwner->GetTransform().GetScale();
+		const CommonUtilities::Vector3f worldPosition = myOwner->GetTransform().GetPosition();
+
+		{
+			const CommonUtilities::AABB3D<float>& box = myMeshAsset->GetMesh().GetBoundingBox();
+
+			const CommonUtilities::Matrix4x4f& world = myOwner->GetTransform().GetWorldMatrix();
+
+			const CommonUtilities::Vector3f localMin = box.GetMin();
+			const CommonUtilities::Vector3f localMax = box.GetMax();
+
+			CommonUtilities::Vector3f minPoint = { FLT_MAX, FLT_MAX, FLT_MAX };
+			CommonUtilities::Vector3f maxPoint = { -FLT_MAX, -FLT_MAX, -FLT_MAX };
+
+			for (int i = 0; i < 8; i++)
+			{
+				CommonUtilities::Vector4f local;
+
+				if (i & 1)
+				{
+					local.x = localMax.x;
+				}
+				else
+				{
+					local.x = localMin.x;
+				}
+
+				if (i & 2)
+				{
+					local.y = localMax.y;
+				}
+				else
+				{
+					local.y = localMin.y;
+				}
+
+				if (i & 4)
+				{
+					local.z = localMax.z;
+				}
+				else
+				{
+					local.z = localMin.z;
+				}
+
+				local.w = 1.0f;
+
+				const CommonUtilities::Vector4f transformedPoint = local * world;
+
+				minPoint = { std::min(minPoint.x, transformedPoint.x), std::min(minPoint.y, transformedPoint.y), std::min(minPoint.z, transformedPoint.z) };
+				maxPoint = { std::max(maxPoint.x, transformedPoint.x), std::max(maxPoint.y, transformedPoint.y), std::max(maxPoint.z, transformedPoint.z) };
+			}
+
+			DebugDrawer::Get().DrawBox(minPoint, maxPoint, { 1.f, 1.f, 0.f, 1.f });
+		}
+		
+		{
+			const CommonUtilities::Sphere<float>& sphere = myMeshAsset->GetMesh().GetBoundingSphere();
+
+			const float scale = std::max({ std::abs(worldScale.x), std::abs(worldScale.y), std::abs(worldScale.z) });
+			const float radius = sphere.GetRadius() * scale;
+
+			CommonUtilities::Vector3f position = sphere.GetCenter() + worldPosition;
+
+			DebugDrawer::Get().DrawSphere(radius, position, { 1.f, 1.f, 0.f, 1.f });
+		}
+	}
+}
+
+Skeleton* MeshComponent::GetSkeleton() const
+{
+	if (myMeshAsset == nullptr)
+	{
+		return nullptr;
+	}
+
+	return myMeshAsset->GetMesh().GetSkeleton();
 }
 
 void MeshComponent::SetMesh(const std::shared_ptr<MeshAsset>& aMeshAsset)
 {
 	myMeshAsset = aMeshAsset;
 	myMaterialAssets.resize(myMeshAsset->GetMesh().GetNumMaterialSlots());
-}
-
-const Mesh& MeshComponent::GetMesh()
-{
-	return myMeshAsset->GetMesh();
-}
-
-Skeleton* MeshComponent::GetSkeleton() const
-{
-	return myMeshAsset->GetMesh().GetSkeleton();
 }
 
 void MeshComponent::SetMaterial(unsigned int aMaterialIndex, const std::shared_ptr<MaterialAsset>& aMaterialAsset)

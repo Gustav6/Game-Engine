@@ -13,7 +13,7 @@
 #include "Textures/Normal/Default_N.h"
 #include "Textures/Effects Map/Default_FX.h"
 
-bool BuiltinAssets::Initialize(GraphicsEngine& aGraphicsEngine, RenderHardwareInterface& aRHI, const std::filesystem::path& aShaderRoot)
+bool BuiltinAssets::Initialize(GraphicsEngine& aGraphicsEngine, RenderHardwareInterface& aRHI)
 {
 	// Mesh Material
 	{
@@ -24,7 +24,6 @@ bool BuiltinAssets::Initialize(GraphicsEngine& aGraphicsEngine, RenderHardwareIn
 		defaultMatDesc.Domain = MaterialDomain::Surface;
 		defaultMatDesc.ShadingModel = ShadingModel::Unlit;
 		defaultMatDesc.BlendMode = MaterialBlendMode::Opaque;
-		defaultMatDesc.MaterialShaderCode = aShaderRoot / "Material" / "Include" / "Material.hlsli";
 
 		if (!aGraphicsEngine.CreateMaterial(defaultMatDesc, *myDefaultMaterial))
 		{

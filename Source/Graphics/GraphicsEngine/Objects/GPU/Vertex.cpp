@@ -11,4 +11,10 @@ const std::vector<VertexElementDescription> Vertex::Description =
 	{ "UV", 1, DXGI_FORMAT_R32G32_FLOAT },
 	{ "NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT },
 	{ "TANGENT", 0, DXGI_FORMAT_R32G32B32_FLOAT },
+}; 
+
+const std::vector<VertexElementDescription> Vertex::LineDescription =
+{
+	{ "POSITION", 0, DXGI_FORMAT_R32G32B32A32_FLOAT },
+	{ "COLOR",    0, DXGI_FORMAT_R32G32B32A32_FLOAT },
 };

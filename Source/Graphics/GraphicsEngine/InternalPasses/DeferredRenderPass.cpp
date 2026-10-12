@@ -26,11 +26,11 @@
 
 #include "GraphicsEngine/Drawers/LightDrawer.h"
 
-#include "Deferred_DirLight_PS.h"
-#include "Deferred_SpotLight_PS.h"
-#include "Deferred_PointLight_PS.h"
-#include "Deferred_Ambient_PS.h"
-#include "FullTexture_VS.h"
+#include "DirectionalLighting_PS.h"
+#include "SpotLighting_PS.h"
+#include "PointLighting_PS.h"
+#include "AmbientLighting_PS.h"
+#include "Fullscreen_VS.h"
 
 #include <tracy/core/Tracy.hpp>
 
@@ -49,10 +49,10 @@ bool DeferredRenderPass::Initialize(RenderHardwareInterface& aRHI)
 	{
 		PipelineStateDescription deferredDirLightDesc;
 		deferredDirLightDesc.Name = "DeferredAmbientLight";
-		deferredDirLightDesc.VertexShader.ByteCode = INTERNAL_FullTexture_VS_ByteCode;
-		deferredDirLightDesc.VertexShader.ByteCodeSize = sizeof(INTERNAL_FullTexture_VS_ByteCode);
-		deferredDirLightDesc.PixelShader.ByteCode = INTERNAL_Deferred_Ambient_PS_ByteCode;
-		deferredDirLightDesc.PixelShader.ByteCodeSize = sizeof(INTERNAL_Deferred_Ambient_PS_ByteCode);
+		deferredDirLightDesc.VertexShader.ByteCode = INTERNAL_Fullscreen_VS_ByteCode;
+		deferredDirLightDesc.VertexShader.ByteCodeSize = sizeof(INTERNAL_Fullscreen_VS_ByteCode);
+		deferredDirLightDesc.PixelShader.ByteCode = INTERNAL_AmbientLighting_PS_ByteCode;
+		deferredDirLightDesc.PixelShader.ByteCodeSize = sizeof(INTERNAL_AmbientLighting_PS_ByteCode);
 		deferredDirLightDesc.BlendMode = BlendMode::Additive;
 		deferredDirLightDesc.Topology = Topology::TriangleStrip;
 
@@ -69,10 +69,10 @@ bool DeferredRenderPass::Initialize(RenderHardwareInterface& aRHI)
 	{
 		PipelineStateDescription deferredDirLightDesc;
 		deferredDirLightDesc.Name = "DeferredDirLight";
-		deferredDirLightDesc.VertexShader.ByteCode = INTERNAL_FullTexture_VS_ByteCode;
-		deferredDirLightDesc.VertexShader.ByteCodeSize = sizeof(INTERNAL_FullTexture_VS_ByteCode);
-		deferredDirLightDesc.PixelShader.ByteCode = INTERNAL_Deferred_DirLight_PS_ByteCode;
-		deferredDirLightDesc.PixelShader.ByteCodeSize = sizeof(INTERNAL_Deferred_DirLight_PS_ByteCode);
+		deferredDirLightDesc.VertexShader.ByteCode = INTERNAL_Fullscreen_VS_ByteCode;
+		deferredDirLightDesc.VertexShader.ByteCodeSize = sizeof(INTERNAL_Fullscreen_VS_ByteCode);
+		deferredDirLightDesc.PixelShader.ByteCode = INTERNAL_DirectionalLighting_PS_ByteCode;
+		deferredDirLightDesc.PixelShader.ByteCodeSize = sizeof(INTERNAL_DirectionalLighting_PS_ByteCode);
 		deferredDirLightDesc.BlendMode = BlendMode::Additive;
 		deferredDirLightDesc.Topology = Topology::TriangleStrip;
 
@@ -89,10 +89,10 @@ bool DeferredRenderPass::Initialize(RenderHardwareInterface& aRHI)
 	{
 		PipelineStateDescription deferredSpotLightDesc;
 		deferredSpotLightDesc.Name = "DeferredSpotLight";
-		deferredSpotLightDesc.VertexShader.ByteCode = INTERNAL_FullTexture_VS_ByteCode;
-		deferredSpotLightDesc.VertexShader.ByteCodeSize = sizeof(INTERNAL_FullTexture_VS_ByteCode);
-		deferredSpotLightDesc.PixelShader.ByteCode = INTERNAL_Deferred_SpotLight_PS_ByteCode;
-		deferredSpotLightDesc.PixelShader.ByteCodeSize = sizeof(INTERNAL_Deferred_SpotLight_PS_ByteCode);
+		deferredSpotLightDesc.VertexShader.ByteCode = INTERNAL_Fullscreen_VS_ByteCode;
+		deferredSpotLightDesc.VertexShader.ByteCodeSize = sizeof(INTERNAL_Fullscreen_VS_ByteCode);
+		deferredSpotLightDesc.PixelShader.ByteCode = INTERNAL_SpotLighting_PS_ByteCode;
+		deferredSpotLightDesc.PixelShader.ByteCodeSize = sizeof(INTERNAL_SpotLighting_PS_ByteCode);
 		deferredSpotLightDesc.BlendMode = BlendMode::Additive;
 		deferredSpotLightDesc.Topology = Topology::TriangleStrip;
 
@@ -109,10 +109,10 @@ bool DeferredRenderPass::Initialize(RenderHardwareInterface& aRHI)
 	{
 		PipelineStateDescription deferredPointLightDesc;
 		deferredPointLightDesc.Name = "DeferredPointLight";
-		deferredPointLightDesc.VertexShader.ByteCode = INTERNAL_FullTexture_VS_ByteCode;
-		deferredPointLightDesc.VertexShader.ByteCodeSize = sizeof(INTERNAL_FullTexture_VS_ByteCode);
-		deferredPointLightDesc.PixelShader.ByteCode = INTERNAL_Deferred_PointLight_PS_ByteCode;
-		deferredPointLightDesc.PixelShader.ByteCodeSize = sizeof(INTERNAL_Deferred_PointLight_PS_ByteCode);
+		deferredPointLightDesc.VertexShader.ByteCode = INTERNAL_Fullscreen_VS_ByteCode;
+		deferredPointLightDesc.VertexShader.ByteCodeSize = sizeof(INTERNAL_Fullscreen_VS_ByteCode);
+		deferredPointLightDesc.PixelShader.ByteCode = INTERNAL_PointLighting_PS_ByteCode;
+		deferredPointLightDesc.PixelShader.ByteCodeSize = sizeof(INTERNAL_PointLighting_PS_ByteCode);
 		deferredPointLightDesc.BlendMode = BlendMode::Additive;
 		deferredPointLightDesc.Topology = Topology::TriangleStrip;
 
@@ -145,6 +145,8 @@ void DeferredRenderPass::Execute(
 
 	inoutCommandList.BeginEvent("Deffered Render");
 
+	const std::vector<SceneLight>& sceneLights = LightDrawer::Get().GetSceneLights();
+
 	inoutCommandList.BeginEvent("Clear GBuffer");
 	inoutCommandList.ClearRenderTargets(myGBuffer->GetTextures(), GBuffer::NUM_GBUFFER_TARGETS);
 	inoutCommandList.EndEvent();
@@ -153,7 +155,7 @@ void DeferredRenderPass::Execute(
 	frameBuffer.View = aContext.Camera->Transform.GetFastInverse();
 	frameBuffer.Projection = aContext.Camera->RenderCamera.GetProjection();
 	frameBuffer.CameraPosition = aContext.Camera->Transform.GetTranslation();
-	frameBuffer.TypeOfRenderPass = static_cast<unsigned int>(aContext.Mode);
+	frameBuffer.TypeOfRenderPass = static_cast<unsigned int>(aContext.RenderSettings->DebugRenderMode);
 
 	aContext.ConstantBuffers->UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::FrameBuffer, frameBuffer, 0, PipelineStage_VertexShader | PipelineStage_PixelShader);
 
@@ -183,9 +185,9 @@ void DeferredRenderPass::Execute(
 			inoutCommandList.Draw(4);
 			inoutCommandList.EndEvent();
 
-			if (aContext.Mode == DebugRenderMode::None || aContext.Mode == DebugRenderMode::Shadows)
+			if (aContext.RenderSettings->DebugRenderMode == DebugRenderMode::None || aContext.RenderSettings->DebugRenderMode == DebugRenderMode::Shadows)
 			{
-				for (const auto& light : LightDrawer::Get().mySceneLights)
+				for (const auto& light : sceneLights)
 				{
 					LightBuffer lightBuffer;
 					lightBuffer.Lights[0] = *light.LightData;

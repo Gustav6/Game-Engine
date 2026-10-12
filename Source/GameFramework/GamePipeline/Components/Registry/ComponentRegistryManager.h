@@ -3,8 +3,11 @@
 #include <memory>
 #include <typeindex>
 #include <unordered_map>
+#include <vector>
 
 #include "ComponentRegistry.h"
+
+class Component;
 
 class ComponentRegistryManager
 {
@@ -31,10 +34,12 @@ public:
 	template<typename T>
 	T* GetComponent(Actor* aOwner)
 	{
-		return GetRegistry<T>().Get<T>(aOwner);
+		return GetRegistry<T>().Get(aOwner);
 	}
 
 	void RemoveAll(Actor* aOwner);
+
+	std::vector<Component*> GetAll(Actor* aOwner);
 
 	void Update(float aDeltaTime);
 	void Render();

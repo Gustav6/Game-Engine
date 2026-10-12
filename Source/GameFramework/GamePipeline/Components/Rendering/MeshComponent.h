@@ -17,15 +17,15 @@ public:
 
 	void Render() override;
 
-	void SetMesh(const std::shared_ptr<MeshAsset>& aMeshAsset);
-
-	const Mesh& GetMesh();
 	Skeleton* GetSkeleton() const;
 
+	void SetMesh(const std::shared_ptr<MeshAsset>& aMeshAsset);
 	void SetMaterial(unsigned int aMaterialIndex, const std::shared_ptr<MaterialAsset>& aMaterialAsset);
 
 private:
 	std::shared_ptr<MeshAsset> myMeshAsset;
 	std::vector<std::shared_ptr<MaterialAsset>> myMaterialAssets;
+	
+	bool myRenderColliders;
 };
 

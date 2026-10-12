@@ -23,7 +23,7 @@ namespace CommonUtilities
 
 		private:
 			Vector3<T> myMinPoint;
-			Vector3<T> myMaxPoint;
+			Vector3<T> myMaxPoint;	
 	};
 
 	template<typename T>
@@ -76,11 +76,11 @@ namespace CommonUtilities
 		{	
 			return false;
 		}
-		else if (myMinPoint.x > aPosition.x || myMinPoint.y > aPosition.y || myMinPoint.z > aPosition.z)
+		if (myMinPoint.x > aPosition.x || myMinPoint.y > aPosition.y || myMinPoint.z > aPosition.z)
 		{
 			return false;
 		}
-		else if (myMaxPoint.x < aPosition.x || myMaxPoint.y < aPosition.y || myMaxPoint.z < aPosition.z)
+		if (myMaxPoint.x < aPosition.x || myMaxPoint.y < aPosition.y || myMaxPoint.z < aPosition.z)
 		{
 			return false;
 		}

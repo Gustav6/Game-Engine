@@ -4,10 +4,6 @@
 #include <string>
 #include <vector>
 
-#include "CommonUtilities/Math/Vector2.hpp"
-#include "CommonUtilities/Math/Vector3.hpp"
-#include "CommonUtilities/Math/Vector4.hpp"
-
 // More info can be found at their repo:
 // https://github.com/ibireme/yyjson 
 
@@ -62,7 +58,7 @@ public:
 
 	bool HasKey(const char* aName) const;
 
-	std::string GetPath() const;
+	const std::filesystem::path& GetPath() const;
 
 private:
 	JsonData();

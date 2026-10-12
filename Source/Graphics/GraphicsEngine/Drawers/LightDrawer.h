@@ -17,15 +17,14 @@ struct SceneLight
 
 class LightDrawer
 {
-    friend class GraphicsEngine;
-    friend class DeferredRenderPass;
-    friend class ForwardRenderPass;
-    friend class ShadowRenderPass;
-
 public:
     static LightDrawer& Get();
 
     void Submit(const SceneLight& aSceneLight);
+
+    const std::vector<SceneLight>& GetSceneLights() const;
+
+    void Clear();
 
 private:
     std::vector<SceneLight> mySceneLights;

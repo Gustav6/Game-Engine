@@ -11,6 +11,7 @@
 #include "GraphicsEngine/RHI/RenderHardwareInterface.h"
 
 #include "GraphicsEngine/ConstantBuffers/FrameBuffer.h"
+#include "GraphicsEngine/ConstantBuffers/ObjectBuffer.h"
 
 #include "GraphicsEngine/ConstantBuffers/Manager/ConstantBufferManager.h"
 
@@ -18,32 +19,59 @@
 #include <GraphicsEngine/RHI/PipelineStateObject.h>
 
 #include "GraphicsEngine/Objects/Scene/Camera.h"
+#include "GraphicsEngine/Objects/GPU/Vertex.h"
+#include "GraphicsEngine/Objects/Mesh/Mesh.h"
 
 #include "GraphicsEngine/Drawers/DebugDrawer.h"
 
 #include "Surface_VS.h"
-#include "PBL_PS.h"
+#include "Unlit_PS.h"
+#include "Line_PS.h"
+#include "Line_VS.h"
 
 #include <tracy/core/Tracy.hpp>
 
 bool DebugRenderPass::Initialize(RenderHardwareInterface& aRHI)
 {
-	// Deffered Dir Light PSO
+	aRHI.CreateDynamicVertexBuffer("LineRenderer", 10000, myLineVertexBuffer);
+
+	// Wireframe Mesh PSO
 	{
-		PipelineStateDescription debugDesc;
-		debugDesc.Name = "Debug";
-		debugDesc.VertexShader.ByteCode = INTERNAL_Surface_VS_ByteCode;
-		debugDesc.VertexShader.ByteCodeSize = sizeof(INTERNAL_Surface_VS_ByteCode);
-		debugDesc.PixelShader.ByteCode = INTERNAL_PBL_PS_ByteCode;
-		debugDesc.PixelShader.ByteCodeSize = sizeof(INTERNAL_PBL_PS_ByteCode);
-		debugDesc.BlendMode = BlendMode::Opaque;
-		debugDesc.RasterizerState = RasterizerState::FillWireframeCullNone;
+		PipelineStateDescription wireframePSODesc;
+		wireframePSODesc.Name = "Wireframe Mesh";
+		wireframePSODesc.VertexShader.ByteCode = INTERNAL_Surface_VS_ByteCode;
+		wireframePSODesc.VertexShader.ByteCodeSize = sizeof(INTERNAL_Surface_VS_ByteCode);
+		wireframePSODesc.PixelShader.ByteCode = INTERNAL_Unlit_PS_ByteCode;
+		wireframePSODesc.PixelShader.ByteCodeSize = sizeof(INTERNAL_Unlit_PS_ByteCode);
+		wireframePSODesc.InputLayoutElements = Vertex::Description;
+		wireframePSODesc.BlendMode = BlendMode::Opaque;
+		wireframePSODesc.RasterizerState = RasterizerState::FillWireframeCullNone;
 
 		myDebugPSO = std::make_unique<PipelineStateObject>();
 
-		if (!aRHI.CreatePipelineStateObject(debugDesc, *myDebugPSO))
+		if (!aRHI.CreatePipelineStateObject(wireframePSODesc, *myDebugPSO))
 		{
-			GELOG(Error, "Failed to create debug pipeline state object!");
+			GELOG(Error, "Failed to create Wireframe pipeline state object!");
+			return false;
+		}
+	}
+
+	// Line PSO
+	{
+		PipelineStateDescription linePSODesc;
+		linePSODesc.Name = "Line";
+		linePSODesc.VertexShader.ByteCode = INTERNAL_Line_VS_ByteCode;
+		linePSODesc.VertexShader.ByteCodeSize = sizeof(INTERNAL_Line_VS_ByteCode);
+		linePSODesc.PixelShader.ByteCode = INTERNAL_Line_PS_ByteCode;
+		linePSODesc.PixelShader.ByteCodeSize = sizeof(INTERNAL_Line_PS_ByteCode);
+		linePSODesc.InputLayoutElements = Vertex::LineDescription;
+		linePSODesc.Topology = Topology::LineList;
+
+		myLinePSO = std::make_unique<PipelineStateObject>();
+
+		if (!aRHI.CreatePipelineStateObject(linePSODesc, *myLinePSO))
+		{
+			GELOG(Error, "Failed to create Line pipeline state object!");
 			return false;
 		}
 	}
@@ -51,21 +79,107 @@ bool DebugRenderPass::Initialize(RenderHardwareInterface& aRHI)
 	return true;
 }
 
-//void DebugRenderPass::Execute(GraphicsCommandList& inoutCommandList, FrameTargets& aFrameTargets, RenderContext& aContext)
-//{
-//	inoutCommandList.BeginEvent("Debug Render");
-//
-//	inoutCommandList.SetRenderTarget(aFrameTargets.RenderTarget, aFrameTargets.DepthBuffer);
-//
-//	FrameBuffer frameBuffer;
-//	frameBuffer.View = aContext.Camera->Transform.GetFastInverse();
-//	frameBuffer.Projection = aContext.Camera->RenderCamera.GetProjection();
-//	frameBuffer.CameraPosition = aContext.Camera->Transform.GetTranslation();
-//	frameBuffer.TypeOfRenderPass = static_cast<unsigned int>(aContext.Mode);
-//
-//	aContext.ConstantBuffers->UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::FrameBuffer, frameBuffer, 0, PipelineStage_VertexShader | PipelineStage_PixelShader);
-//
-//	//DrawCallSubmitter::RenderDrawCalls(inoutCommandList, aItems, aContext, DrawCallFlag_BindTextures | DrawCallFlag_BindMaterial);
-//
-//	inoutCommandList.EndEvent();
-//}
+void DebugRenderPass::Execute(
+	GraphicsCommandList& inoutCommandList, 
+	FrameTargets& aFrameTargets,
+	RenderContext& aContext)
+{
+	inoutCommandList.BeginEvent("Debug Render");
+
+	inoutCommandList.SetRenderTarget(aFrameTargets.RenderTarget, aFrameTargets.DepthBuffer);
+
+	FrameBuffer frameBuffer;
+	frameBuffer.View = aContext.Camera->Transform.GetFastInverse();
+	frameBuffer.Projection = aContext.Camera->RenderCamera.GetProjection();
+	frameBuffer.CameraPosition = aContext.Camera->Transform.GetTranslation();
+	frameBuffer.TypeOfRenderPass = static_cast<unsigned int>(aContext.RenderSettings->DebugRenderMode);
+
+	aContext.ConstantBuffers->UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::FrameBuffer, frameBuffer, 0, PipelineStage_VertexShader | PipelineStage_PixelShader);
+
+	RenderWireMeshes(inoutCommandList, aContext);
+	RenderLines(inoutCommandList, aContext);
+
+	inoutCommandList.EndEvent();
+}
+
+void DebugRenderPass::RenderWireMeshes(GraphicsCommandList& inoutCommandList, RenderContext& aContext)
+{
+	const std::vector<WireMeshDrawCall>& wireCalls = DebugDrawer::Get().GetMeshDrawCalls();
+
+	if (wireCalls.empty())
+	{
+		return;
+	}
+
+	// TODO: Add support to color the wireframes!
+
+	inoutCommandList.SetPipelineStateObject(*myDebugPSO);
+
+	for (const auto& drawCall : wireCalls)
+	{
+		const Mesh& mesh = *drawCall.Mesh;
+
+		inoutCommandList.BeginEvent(mesh.GetName());
+
+		for (unsigned int e = 0; e < drawCall.Mesh->myElements.size(); e++)
+		{
+			const Mesh::Element& element = mesh.myElements[e];
+
+			if (!mesh.myVertexBuffer.IsValid())
+			{
+				if (!aContext.RHI->CreateVertexBuffer(mesh.myName, mesh.myVertices, mesh.myVertexBuffer))
+				{
+					GELOG(Warning, "Could not prepare mesh {}! Vertex Buffer could not be created!", mesh.myName);
+					continue;
+				}
+			}
+
+			if (!mesh.myIndexBuffer.IsValid())
+			{
+				if (!aContext.RHI->CreateIndexBuffer(mesh.myName, mesh.myIndices, mesh.myIndexBuffer))
+				{
+					GELOG(Warning, "Could not prepare mesh {}! Index Buffer could not be created!", mesh.myName);
+					continue;
+				}
+			}
+
+			inoutCommandList.SetVertexBuffer(&mesh.myVertexBuffer);
+			inoutCommandList.SetIndexBuffer(&mesh.myIndexBuffer);
+
+			ObjectBuffer objectBuffer;
+			objectBuffer.World = drawCall.Transform;
+			objectBuffer.WorldInvT = (drawCall.Transform.GetInverse()).GetTranspose();
+
+			aContext.ConstantBuffers->UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::ObjectBuffer, objectBuffer, 1, PipelineStage_VertexShader);
+
+			inoutCommandList.DrawIndexed(element.NumIndices, element.IndexOffset);
+		}
+
+		inoutCommandList.EndEvent();
+	}
+}
+
+void DebugRenderPass::RenderLines(GraphicsCommandList& inoutCommandList, RenderContext&)
+{
+	const std::vector<LineDrawCall>& lineCalls = DebugDrawer::Get().GetLineDrawCalls();
+
+	if (lineCalls.empty())
+	{
+		return;
+	}
+
+	inoutCommandList.SetPipelineStateObject(*myLinePSO);
+
+	myLineVertices.clear();
+	myLineVertices.reserve(lineCalls.size() * 2);
+
+	for (const LineDrawCall& call : lineCalls)
+	{
+		myLineVertices.push_back({ { call.Start.x, call.Start.y, call.Start.z, 1.f }, call.Color });
+		myLineVertices.push_back({ { call.End.x,   call.End.y,   call.End.z,   1.f }, call.Color });
+	}
+
+	inoutCommandList.UpdateVertexBuffer(myLineVertexBuffer, myLineVertices);
+	inoutCommandList.SetVertexBuffer(&myLineVertexBuffer);
+	inoutCommandList.DrawSpecificVertices(static_cast<unsigned int>(myLineVertices.size()), 0);
+}

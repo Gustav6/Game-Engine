@@ -20,6 +20,8 @@ protected:
 private:
 	bool Construct(const JsonData& aMaterialData);
 
+	bool LoadInstanceData(const JsonData& aMaterialData);
+	bool LoadMasterData(const JsonData& aMaterialData);
 	void PushParameters(const std::vector<JsonData>& aMaterialParameters, MaterialInterface* aMaterialInstance);
 
 	std::shared_ptr<MaterialInterface> myMaterial;

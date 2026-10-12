@@ -3,10 +3,10 @@
 
 void MaterialShaderRegistry::Initialize(const std::filesystem::path& aShaderRoot)
 {
-	myMaterialDomainShaders.emplace(MaterialDomain::Surface, aShaderRoot / "Material" / "Surface_VS.hlsl");
+	myMaterialDomainShaders.emplace(MaterialDomain::Surface, aShaderRoot / "Geometry" / "Surface_VS.hlsl");
 
-	myMaterialShadingModelShaders.emplace(ShadingModel::Unlit, aShaderRoot / "Material" / "Unlit_PS.hlsl");
-	myMaterialShadingModelShaders.emplace(ShadingModel::Lit, aShaderRoot / "Material" / "PBL_PS.hlsl");
+	myMaterialShadingModelShaders.emplace(ShadingModel::Unlit, aShaderRoot / "Forward" / "Unlit_PS.hlsl");
+	myMaterialShadingModelShaders.emplace(ShadingModel::Lit, aShaderRoot / "Forward" / "PBR_PS.hlsl");
 }
 
 const std::filesystem::path& MaterialShaderRegistry::GetDomainShader(MaterialDomain aDomain) const

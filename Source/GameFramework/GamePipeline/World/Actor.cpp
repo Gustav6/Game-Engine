@@ -44,11 +44,21 @@ const Transform& Actor::GetTransform() const
 void Actor::Enable()
 {
 	myIsEnabled = true;
+
+	for (const auto& component : ComponentRegistryManager::Get().GetAll(this))
+	{
+		component->Enable();
+	}
 }
 
 void Actor::Disable()
 {
 	myIsEnabled = false;
+
+	for (const auto& component : ComponentRegistryManager::Get().GetAll(this))
+	{
+		component->Disable();
+	}
 }
 
 bool Actor::GetIsEnabled() const

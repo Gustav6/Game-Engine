@@ -2,7 +2,10 @@
 
 #include <vector>
 
-#include "GraphicsEngine/Core/SpriteRenderResources.h"
+#include "CommonUtilities/Math/Matrix4x4.hpp"
+
+#include "Objects/GPU/Buffer.h"
+#include "Objects/GPU/Vertex.h"
 
 class GraphicsCommandList;
 class RenderHardwareInterface;
@@ -34,5 +37,7 @@ private:
     std::unique_ptr<PipelineStateObject> myFontPSO;
     std::unique_ptr<PipelineStateObject> mySpritePSO;
 
-    SpriteRenderResources mySpriteRenderResources;
+    CommonUtilities::Matrix4x4f mySpriteProjection;
+    std::vector<Vertex> mySpriteVertices;
+    Buffer mySpriteVertexBuffer;
 };

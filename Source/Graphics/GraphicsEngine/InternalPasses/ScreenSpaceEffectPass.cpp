@@ -17,13 +17,13 @@
 
 #include "Logger/Logger.h"
 
-#include "FullTexture_VS.h"
+#include "Fullscreen_VS.h"
 #include "Tonemap_PS.h"
 #include "SceneLuminance_PS.h"
 #include "Resample_PS.h"
 #include "Bloom_PS.h"
-#include "GaussianV_PS.h"
-#include "GaussianH_PS.h"
+#include "GaussianBlurH_PS.h"
+#include "GaussianBlurV_PS.h"
 #include "SSAO_PS.h"
 
 #include "Core/RenderContext.h"
@@ -40,8 +40,8 @@ bool ScreenSpaceEffectPass::Initialize(RenderHardwareInterface& aRHI)
 		SSAOPSODesc.Name = "SSAOPSO";
 		SSAOPSODesc.BlendMode = BlendMode::Opaque;
 		SSAOPSODesc.Topology = Topology::TriangleStrip;
-		SSAOPSODesc.VertexShader.ByteCode = INTERNAL_FullTexture_VS_ByteCode;
-		SSAOPSODesc.VertexShader.ByteCodeSize = sizeof(INTERNAL_FullTexture_VS_ByteCode);
+		SSAOPSODesc.VertexShader.ByteCode = INTERNAL_Fullscreen_VS_ByteCode;
+		SSAOPSODesc.VertexShader.ByteCodeSize = sizeof(INTERNAL_Fullscreen_VS_ByteCode);
 		SSAOPSODesc.PixelShader.ByteCode = INTERNAL_SSAO_PS_ByteCode;
 		SSAOPSODesc.PixelShader.ByteCodeSize = sizeof(INTERNAL_SSAO_PS_ByteCode);
 
@@ -60,8 +60,8 @@ bool ScreenSpaceEffectPass::Initialize(RenderHardwareInterface& aRHI)
 		tonemapPSODesc.Name = "TonemapPSO";
 		tonemapPSODesc.BlendMode = BlendMode::Opaque;
 		tonemapPSODesc.Topology = Topology::TriangleStrip;
-		tonemapPSODesc.VertexShader.ByteCode = INTERNAL_FullTexture_VS_ByteCode;
-		tonemapPSODesc.VertexShader.ByteCodeSize = sizeof(INTERNAL_FullTexture_VS_ByteCode);
+		tonemapPSODesc.VertexShader.ByteCode = INTERNAL_Fullscreen_VS_ByteCode;
+		tonemapPSODesc.VertexShader.ByteCodeSize = sizeof(INTERNAL_Fullscreen_VS_ByteCode);
 		tonemapPSODesc.PixelShader.ByteCode = INTERNAL_Tonemap_PS_ByteCode;
 		tonemapPSODesc.PixelShader.ByteCodeSize = sizeof(INTERNAL_Tonemap_PS_ByteCode);
 
@@ -80,8 +80,8 @@ bool ScreenSpaceEffectPass::Initialize(RenderHardwareInterface& aRHI)
 		resamplePSODesc.Name = "ResamplePSO";
 		resamplePSODesc.BlendMode = BlendMode::Opaque;
 		resamplePSODesc.Topology = Topology::TriangleStrip;
-		resamplePSODesc.VertexShader.ByteCode = INTERNAL_FullTexture_VS_ByteCode;
-		resamplePSODesc.VertexShader.ByteCodeSize = sizeof(INTERNAL_FullTexture_VS_ByteCode);
+		resamplePSODesc.VertexShader.ByteCode = INTERNAL_Fullscreen_VS_ByteCode;
+		resamplePSODesc.VertexShader.ByteCodeSize = sizeof(INTERNAL_Fullscreen_VS_ByteCode);
 		resamplePSODesc.PixelShader.ByteCode = INTERNAL_Resample_PS_ByteCode;
 		resamplePSODesc.PixelShader.ByteCodeSize = sizeof(INTERNAL_Resample_PS_ByteCode);
 
@@ -100,8 +100,8 @@ bool ScreenSpaceEffectPass::Initialize(RenderHardwareInterface& aRHI)
 		sceneLuminancePSODesc.Name = "SceneLuminancePSO";
 		sceneLuminancePSODesc.BlendMode = BlendMode::Opaque;
 		sceneLuminancePSODesc.Topology = Topology::TriangleStrip;
-		sceneLuminancePSODesc.VertexShader.ByteCode = INTERNAL_FullTexture_VS_ByteCode;
-		sceneLuminancePSODesc.VertexShader.ByteCodeSize = sizeof(INTERNAL_FullTexture_VS_ByteCode);
+		sceneLuminancePSODesc.VertexShader.ByteCode = INTERNAL_Fullscreen_VS_ByteCode;
+		sceneLuminancePSODesc.VertexShader.ByteCodeSize = sizeof(INTERNAL_Fullscreen_VS_ByteCode);
 		sceneLuminancePSODesc.PixelShader.ByteCode = INTERNAL_SceneLuminance_PS_ByteCode;
 		sceneLuminancePSODesc.PixelShader.ByteCodeSize = sizeof(INTERNAL_SceneLuminance_PS_ByteCode);
 
@@ -120,10 +120,10 @@ bool ScreenSpaceEffectPass::Initialize(RenderHardwareInterface& aRHI)
 		gaussianBlurPSODesc.Name = "GaussianBlurPSO";
 		gaussianBlurPSODesc.BlendMode = BlendMode::Opaque;
 		gaussianBlurPSODesc.Topology = Topology::TriangleStrip;
-		gaussianBlurPSODesc.VertexShader.ByteCode = INTERNAL_FullTexture_VS_ByteCode;
-		gaussianBlurPSODesc.VertexShader.ByteCodeSize = sizeof(INTERNAL_FullTexture_VS_ByteCode);
-		gaussianBlurPSODesc.PixelShader.ByteCode = INTERNAL_GaussianH_PS_ByteCode;
-		gaussianBlurPSODesc.PixelShader.ByteCodeSize = sizeof(INTERNAL_GaussianH_PS_ByteCode);
+		gaussianBlurPSODesc.VertexShader.ByteCode = INTERNAL_Fullscreen_VS_ByteCode;
+		gaussianBlurPSODesc.VertexShader.ByteCodeSize = sizeof(INTERNAL_Fullscreen_VS_ByteCode);
+		gaussianBlurPSODesc.PixelShader.ByteCode = INTERNAL_GaussianBlurH_PS_ByteCode;
+		gaussianBlurPSODesc.PixelShader.ByteCodeSize = sizeof(INTERNAL_GaussianBlurH_PS_ByteCode);
 
 		myGaussianBlurHorizontalPSO = std::make_unique<PipelineStateObject>();
 
@@ -140,10 +140,10 @@ bool ScreenSpaceEffectPass::Initialize(RenderHardwareInterface& aRHI)
 		gaussianBlurPSODesc.Name = "GaussianBlurPSO";
 		gaussianBlurPSODesc.BlendMode = BlendMode::Opaque;
 		gaussianBlurPSODesc.Topology = Topology::TriangleStrip;
-		gaussianBlurPSODesc.VertexShader.ByteCode = INTERNAL_FullTexture_VS_ByteCode;
-		gaussianBlurPSODesc.VertexShader.ByteCodeSize = sizeof(INTERNAL_FullTexture_VS_ByteCode);
-		gaussianBlurPSODesc.PixelShader.ByteCode = INTERNAL_GaussianV_PS_ByteCode;
-		gaussianBlurPSODesc.PixelShader.ByteCodeSize = sizeof(INTERNAL_GaussianV_PS_ByteCode);
+		gaussianBlurPSODesc.VertexShader.ByteCode = INTERNAL_Fullscreen_VS_ByteCode;
+		gaussianBlurPSODesc.VertexShader.ByteCodeSize = sizeof(INTERNAL_Fullscreen_VS_ByteCode);
+		gaussianBlurPSODesc.PixelShader.ByteCode = INTERNAL_GaussianBlurV_PS_ByteCode;
+		gaussianBlurPSODesc.PixelShader.ByteCodeSize = sizeof(INTERNAL_GaussianBlurV_PS_ByteCode);
 
 		myGaussianBlurVerticalPSO = std::make_unique<PipelineStateObject>();
 
@@ -160,8 +160,8 @@ bool ScreenSpaceEffectPass::Initialize(RenderHardwareInterface& aRHI)
 		bloomPSODesc.Name = "BloomPSO";
 		bloomPSODesc.BlendMode = BlendMode::Alpha;
 		bloomPSODesc.Topology = Topology::TriangleStrip;
-		bloomPSODesc.VertexShader.ByteCode = INTERNAL_FullTexture_VS_ByteCode;
-		bloomPSODesc.VertexShader.ByteCodeSize = sizeof(INTERNAL_FullTexture_VS_ByteCode);
+		bloomPSODesc.VertexShader.ByteCode = INTERNAL_Fullscreen_VS_ByteCode;
+		bloomPSODesc.VertexShader.ByteCodeSize = sizeof(INTERNAL_Fullscreen_VS_ByteCode);
 		bloomPSODesc.PixelShader.ByteCode = INTERNAL_Bloom_PS_ByteCode;
 		bloomPSODesc.PixelShader.ByteCodeSize = sizeof(INTERNAL_Bloom_PS_ByteCode);
 
@@ -283,9 +283,9 @@ void ScreenSpaceEffectPass::Execute(
 	inoutCommandList.EndEvent();
 }
 
-void ScreenSpaceEffectPass::ToggleBloom()
+void ScreenSpaceEffectPass::SetBloomStatus(bool aEnabled)
 {
-	myBloomEnabled = !myBloomEnabled;
+	myBloomEnabled = aEnabled;
 }
 
 void ScreenSpaceEffectPass::SSAOPass()
@@ -297,7 +297,7 @@ void ScreenSpaceEffectPass::BloomPass(
 	RenderContext& aContext,
 	Texture* aHDRTexture)
 {
-	if (aContext.Mode != DebugRenderMode::None)
+	if (aContext.RenderSettings->DebugRenderMode != DebugRenderMode::None)
 	{
 		return;
 	}
@@ -420,13 +420,13 @@ void ScreenSpaceEffectPass::TonemapPass(
 
 	FrameBuffer frameBuffer;
 
-	if (aContext.Mode == DebugRenderMode::None)
+	if (aContext.RenderSettings->DebugRenderMode == DebugRenderMode::None)
 	{
-		frameBuffer.TypeOfTonemap = static_cast<unsigned int>(aContext.Tonmap);
+		frameBuffer.TypeOfTonemap = static_cast<unsigned int>(aContext.RenderSettings->ToneMapper);
 	}
 	else
 	{
-		frameBuffer.TypeOfTonemap = static_cast<unsigned int>(ToneMappingOperator::None);
+		frameBuffer.TypeOfTonemap = static_cast<unsigned int>(ToneMapper::None);
 	}
 
 	aContext.ConstantBuffers->UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::FrameBuffer, frameBuffer, 0, PipelineStage_PixelShader);

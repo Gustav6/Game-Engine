@@ -33,12 +33,6 @@ void DrawCallSubmitter::RenderDrawCalls(
 
 	for (const auto& renderItem : aItems)
 	{
-		if (renderItem.DrawCall == nullptr)
-		{
-			GELOG(Error, "Tried to render a draw call with a null mesh!");
-			continue;
-		}
-
 		textureList.fill(nullptr);
 
 		const MeshDrawCall& drawCall = *renderItem.DrawCall;
@@ -107,7 +101,6 @@ void DrawCallSubmitter::RenderDrawCalls(
 
 		inoutCommandList.DrawIndexed(element.NumIndices, element.IndexOffset);
 
-		// Ends event for the draw call!
 		inoutCommandList.EndEvent();
 	}
 }

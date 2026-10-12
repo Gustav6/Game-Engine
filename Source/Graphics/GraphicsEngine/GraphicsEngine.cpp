@@ -52,8 +52,7 @@
 #include "Drawers/SpriteDrawer.h"
 #include "Drawers/DebugDrawer.h"
 
-// Internal hlsl code
-#include "FullTexture_VS.h"
+#include "Fullscreen_VS.h"
 #include "BRDF_LUT_PS.h"
 
 #include <tracy/core/Tracy.hpp>
@@ -98,13 +97,19 @@ bool GraphicsEngine::Initialize(HWND aWindowHandle, const std::filesystem::path&
 		return false;
 	}
 
-	bool hasErrored = false;
-
 	myBuiltinAssets = std::make_unique<BuiltinAssets>();
+
+	if (!myBuiltinAssets->Initialize(*this, *myRHI))
+	{
+		return false;
+	}
+
 	myConstantBufferManager = std::make_unique<ConstantBufferManager>();
 
-	hasErrored = !myBuiltinAssets->Initialize(*this, *myRHI, myShaderRoot);
-	hasErrored = !myConstantBufferManager->Initialize(*myRHI);
+	if (!myConstantBufferManager->Initialize(*myRHI))
+	{
+		return false;
+	}
 
 	// Init passes
 	{
@@ -115,29 +120,49 @@ bool GraphicsEngine::Initialize(HWND aWindowHandle, const std::filesystem::path&
 		myScreenSpaceEffectPass = std::make_unique<ScreenSpaceEffectPass>();
 		myDebugRenderPass = std::make_unique<DebugRenderPass>();
 
-		hasErrored = !myDeferredRenderPass->Initialize(*myRHI);
-		hasErrored = !myShadowRenderPass->Initialize(*myRHI);
-		hasErrored = !myScreenSpaceRenderPass->Initialize(*myRHI);
-		hasErrored = !myScreenSpaceEffectPass->Initialize(*myRHI);
-		hasErrored = !myDebugRenderPass->Initialize(*myRHI);
+		if (!myDeferredRenderPass->Initialize(*myRHI))
+		{
+			return false;
+		}
+		if (!myShadowRenderPass->Initialize(*myRHI))
+		{
+			return false;
+		}
+		if (!myScreenSpaceRenderPass->Initialize(*myRHI))
+		{
+			return false;
+		}
+		if (!myScreenSpaceEffectPass->Initialize(*myRHI))
+		{
+			return false;
+		}
+		if (!myDebugRenderPass->Initialize(*myRHI))
+		{
+			return false;
+		}
 	}
 
-	hasErrored = !InitializeRenderResources();
+	if (!InitializeRenderResources())
+	{
+		return false;
+	}
 
-	myRenderMode = DebugRenderMode::None;
-	myToneMappingOperator = ToneMappingOperator::Unreal;
+	myRenderSettings.DebugRenderMode = DebugRenderMode::None;
+	myRenderSettings.ToneMapper = ToneMapper::Unreal;
 	myRenderOverlay = nullptr;
+	myRenderSettings.BloomEnabled = true;
+	myScreenSpaceEffectPass->SetBloomStatus(myRenderSettings.BloomEnabled);
 
-	return !hasErrored;
+	return true;
 }
 
-void GraphicsEngine::BeginFrame()
+void GraphicsEngine::BeginFrame() const
 {
-	MeshDrawer::Get().myDrawCalls.clear();
-	LightDrawer::Get().mySceneLights.clear();
-	TextDrawer::Get().myDrawCalls.clear();
-	SpriteDrawer::Get().myDrawCalls.clear();
-	DebugDrawer::Get().myDebugDrawCalls.clear();
+	MeshDrawer::Get().Clear();
+	LightDrawer::Get().Clear();
+	TextDrawer::Get().Clear();
+	SpriteDrawer::Get().Clear();
+	DebugDrawer::Get().Clear();
 
 	if (myRenderOverlay != nullptr)
 	{
@@ -171,7 +196,7 @@ void GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const SceneCa
 	myDeferredItems.clear();
 	myForwardItems.clear();
 
-	for (const auto& drawCall : MeshDrawer::Get().myDrawCalls)
+	for (const auto& drawCall : MeshDrawer::Get().GetMeshDrawCalls())
 	{
 		for (unsigned int e = 0; e < drawCall.Mesh->myElements.size(); e++)
 		{
@@ -246,9 +271,9 @@ void GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const SceneCa
 		});
 
 	std::vector<ScreenSpaceItem> screenSpaceItems;
-	screenSpaceItems.reserve(SpriteDrawer::Get().myDrawCalls.size() + TextDrawer::Get().myDrawCalls.size());
+	screenSpaceItems.reserve(SpriteDrawer::Get().GetSpriteDrawCalls().size() + TextDrawer::Get().GetTextDrawCalls().size());
 
-	for (const auto& drawCall : SpriteDrawer::Get().myDrawCalls)
+	for (const auto& drawCall : SpriteDrawer::Get().GetSpriteDrawCalls())
 	{
 		ScreenSpaceItem item =
 		{
@@ -259,7 +284,7 @@ void GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const SceneCa
 		screenSpaceItems.push_back(item);
 	}
 
-	for (const auto& drawCall : TextDrawer::Get().myDrawCalls)
+	for (const auto& drawCall : TextDrawer::Get().GetTextDrawCalls())
 	{
 		ScreenSpaceItem item =
 		{
@@ -282,15 +307,14 @@ void GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const SceneCa
 		.RHI = myRHI.get(),
 		.BuiltinAssets = myBuiltinAssets.get(),
 		.Camera = &aCamera,
-		.Mode = myRenderMode,
-		.Tonmap = myToneMappingOperator,
+		.RenderSettings = &myRenderSettings,
 		.CascadeShadows = &myShadowRenderPass->GetCascades()
 	};
-
+		
 	myShadowRenderPass->Execute(inoutCommandList, myShadowItems, context);
 
 	//// TODO: Run SSAO Before Lights
-
+	
 	inoutCommandList.BeginEvent("Main Pass");
 	{
 		FrameTargets targets =
@@ -312,7 +336,7 @@ void GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const SceneCa
 		};
 
 		myScreenSpaceEffectPass->Execute(inoutCommandList, targets, context, myHDRBuffer.get());
-		// Render Debug pass here
+		myDebugRenderPass->Execute(inoutCommandList, targets, context);
 		myScreenSpaceRenderPass->Execute(inoutCommandList, screenSpaceItems, targets, context);
 	}
 }
@@ -328,14 +352,15 @@ void GraphicsEngine::Present() const
 	myRHI->Present();
 }
 
-void GraphicsEngine::ToggleBloom() const
+void GraphicsEngine::ToggleBloom()
 {
-	myScreenSpaceEffectPass->ToggleBloom();
+	myRenderSettings.BloomEnabled = !myRenderSettings.BloomEnabled;
+	myScreenSpaceEffectPass->SetBloomStatus(myRenderSettings.BloomEnabled);
 }
 
 void GraphicsEngine::CycleDebugRenderMode(int aDirection)
 {
-	int nextDebugRenderMode = static_cast<int>(myRenderMode) + aDirection;
+	int nextDebugRenderMode = static_cast<int>(myRenderSettings.DebugRenderMode) + aDirection;
 
 	if (nextDebugRenderMode >= static_cast<int>(DebugRenderMode::MAX))
 	{
@@ -346,23 +371,23 @@ void GraphicsEngine::CycleDebugRenderMode(int aDirection)
 		nextDebugRenderMode = static_cast<int>(DebugRenderMode::MAX) - 1;
 	}
 
-	myRenderMode = static_cast<DebugRenderMode>(nextDebugRenderMode);
+	myRenderSettings.DebugRenderMode = static_cast<DebugRenderMode>(nextDebugRenderMode);
 }
 
 void GraphicsEngine::CycleToNextTonemap(int aDirection)
 {
-	int nextToneMappingOperator = static_cast<int>(myToneMappingOperator) + aDirection;
+	int nextToneMappingOperator = static_cast<int>(myRenderSettings.ToneMapper) + aDirection;
 
-	if (nextToneMappingOperator >= static_cast<int>(ToneMappingOperator::MAX))
+	if (nextToneMappingOperator >= static_cast<int>(ToneMapper::MAX))
 	{
 		nextToneMappingOperator = 0;
 	}
 	else if (nextToneMappingOperator < 0)
 	{
-		nextToneMappingOperator = static_cast<int>(ToneMappingOperator::MAX) - 1;
+		nextToneMappingOperator = static_cast<int>(ToneMapper::MAX) - 1;
 	}
 
-	myToneMappingOperator = static_cast<ToneMappingOperator>(nextToneMappingOperator);
+	myRenderSettings.ToneMapper = static_cast<ToneMapper>(nextToneMappingOperator);
 }
 
 CommonUtilities::Vector2ui GraphicsEngine::GetClientSize() const
@@ -431,6 +456,16 @@ void GraphicsEngine::ClearRenderOverlay()
 
 	myRenderOverlay->OnDetach();
 	myRenderOverlay = nullptr;
+}
+
+const GraphicsEngineDebugInfo& GraphicsEngine::GetDebugInfo() const
+{
+	return myDebugInfo;
+}
+
+const GraphicsEngineRenderSettings& GraphicsEngine::GetSettings() const
+{
+	return myRenderSettings;
 }
 
 bool GraphicsEngine::InitializeRenderResources()
@@ -515,8 +550,8 @@ bool GraphicsEngine::InitializeRenderResources()
 		PipelineStateDescription lutPSODesc = {};
 		lutPSODesc.Name = "LUTPSO";
 		lutPSODesc.Topology = Topology::TriangleStrip;
-		lutPSODesc.VertexShader.ByteCode = INTERNAL_FullTexture_VS_ByteCode;
-		lutPSODesc.VertexShader.ByteCodeSize = sizeof(INTERNAL_FullTexture_VS_ByteCode);
+		lutPSODesc.VertexShader.ByteCode = INTERNAL_Fullscreen_VS_ByteCode;
+		lutPSODesc.VertexShader.ByteCodeSize = sizeof(INTERNAL_Fullscreen_VS_ByteCode);
 		lutPSODesc.PixelShader.ByteCode = INTERNAL_BRDF_LUT_PS_ByteCode;
 		lutPSODesc.PixelShader.ByteCodeSize = sizeof(INTERNAL_BRDF_LUT_PS_ByteCode);
 

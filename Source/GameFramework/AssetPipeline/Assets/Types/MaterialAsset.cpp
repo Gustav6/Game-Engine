@@ -46,138 +46,12 @@ bool MaterialAsset::Load(const std::filesystem::path& aPath)
         return false;
     }
 
-    bool hasErrord = false;
-
-    std::string materialName = materialData.GetString("Name");
-
-    if (materialName.empty())
-    {
-        LOG(MaterialLog, Warning, "Loaded material has no name, using placeholder");
-        materialName = "NO NAME GIVEN";
-        hasErrord = true;
-    }
-
     if (materialData.HasKey("Parent"))
     {
-        LOG_GROUP(LogAssetRegistry, Verbose, "Instance Material");
-
-        std::string parent = materialData.GetString("Parent");
-
-        std::shared_ptr<MaterialAsset> masterMaterialAsset = AssetRegistry::Get().GetAsset<MaterialAsset>(parent);
-
-        if (masterMaterialAsset == nullptr)
-        {
-            LOG(MaterialLog, Error, "Material [{}] failed to get master material [{}]!", materialName, parent);
-            return false;
-        }
-
-        std::shared_ptr<MaterialInstance> instance = MaterialInstance::Create(materialName, masterMaterialAsset->GetMaterial());
-        
-	    {
-            LOG_GROUP(MaterialLog, Verbose, "Instance Parameters");
-
-		    if (materialData.HasKey("Parameters"))
-		    {
-		    	std::vector<JsonData> parameters = materialData.GetObjectValueArray("Parameters");
-
-		    	if (parameters.empty())
-		    	{
-		    		LOG(MaterialLog, Error, "Material has no Parameters [{}]!", materialName);
-                    hasErrord = true;
-		    	}
-
-		    	PushParameters(parameters, instance.get());
-		    }
-		    else
-		    {
-		    	LOG(MaterialLog, Error, "Material has no Parameters [{}]!", materialName);
-                hasErrord = true;
-		    }
-	    }
-
-        myMaterial = std::move(instance);
-    }
-    else
-    {
-        LOG_GROUP(MaterialLog, Verbose, "Master Material");
-
-        MaterialDescription desc;
-        desc.Name = materialName;
-
-	    {
-            LOG_GROUP(MaterialLog, Verbose, "Master Settings");
-
-		    if (materialData.HasKey("Domain"))
-		    {
-                desc.Domain = static_cast<MaterialDomain>(materialData.GetInt("Domain") + 1);
-		    }
-		    else
-		    {
-                LOG(MaterialLog, Error, "Material has no Domain [{}]!", materialName);
-                hasErrord = true;
-		    }
-
-        	if (materialData.HasKey("ShadingModel"))
-        	{
-                desc.ShadingModel = static_cast<ShadingModel>(materialData.GetInt("ShadingModel") + 1);
-        	}
-        	else
-        	{
-                LOG(MaterialLog, Error, "Material has no Shading Model [{}]!", materialName);
-                hasErrord = true;
-        	}
-
-        	if (materialData.HasKey("BlendMode"))
-        	{
-                desc.BlendMode = static_cast<MaterialBlendMode>(materialData.GetInt("BlendMode") + 1);
-        	}
-        	else
-        	{
-                LOG(MaterialLog, Error, "Material has no Blend Mode [{}]!", materialName);
-                hasErrord = true;
-        	}
-	    }
-
-        if (!hasErrord)
-        {
-
-            desc.MaterialShaderCode = AssetRegistry::Get().GetWorkingDirectory() / "Shaders/BaseMaterial.hlsli";
-
-            std::shared_ptr<Material> material = std::make_shared<Material>();
-
-            if (!GraphicsEngine::Get().CreateMaterial(desc, *material))
-            {
-                LOG(MaterialLog, Error, "Failed to create material [{}]!", materialName);
-                hasErrord = true;
-            }
-
-            {
-                LOG_GROUP(MaterialLog, Verbose, "Master Parameters");
-
-                if (materialData.HasKey("Parameters"))
-                {
-                    std::vector<JsonData> parameters = materialData.GetObjectValueArray("Parameters");
-
-                    if (parameters.empty())
-                    {
-                        LOG(MaterialLog, Error, "Material has no Parameters [{}]!", materialName);
-                        hasErrord = true;
-                    }
-
-                    PushParameters(parameters, material.get());
-                }
-                else
-                {
-                    LOG(MaterialLog, Error, "Material has no Parameters [{}]!", materialName);
-                    hasErrord = true;
-                }
-            }
-
-            myMaterial = std::move(material);
-        }
+        return LoadInstanceData(materialData);
     }
 
-    return !hasErrord;
+    return LoadMasterData(materialData);
 }
 
 bool MaterialAsset::Construct(const JsonData& aMaterialData)
@@ -188,68 +62,93 @@ bool MaterialAsset::Construct(const JsonData& aMaterialData)
         return false;
     }
 
+    if (aMaterialData.HasKey("Parent"))
+    {
+        return LoadInstanceData(aMaterialData);
+    }
+
+    return LoadMasterData(aMaterialData);
+}
+
+bool MaterialAsset::LoadInstanceData(const JsonData& aMaterialData)
+{
     bool hasErrord = false;
 
-    std::string materialName;
+    std::string materialName = aMaterialData.GetString("Name");
 
-    if (aMaterialData.HasKey("Name"))
-    {
-	    materialName = aMaterialData.GetString("Name");
-    }
-    else
+    if (materialName.empty())
     {
         LOG(MaterialLog, Warning, "Constructed material has no name, using placeholder");
         materialName = "NO NAME GIVEN";
         hasErrord = true;
     }
 
-    if (aMaterialData.HasKey("Parent"))
+    LOG_GROUP(LogAssetRegistry, Verbose, "Instance Material");
+
+    std::string parent = aMaterialData.GetString("Parent");
+
+    if (parent == "Self")
     {
-        std::string parent = aMaterialData.GetString("Parent");
+        parent = aMaterialData.GetString("Name");
+    }
 
-        if (parent == "Self")
-        {
-            parent = aMaterialData.GetString("Name");
-        }
+    std::shared_ptr<MaterialAsset> masterMaterialAsset = AssetRegistry::Get().GetAsset<MaterialAsset>(parent);
 
-        std::shared_ptr<MaterialAsset> masterMaterialAsset = AssetRegistry::Get().GetAsset<MaterialAsset>(parent);
-
-        if (masterMaterialAsset == nullptr)
-        {
-            LOG(MaterialLog, Error, "Material [{}] failed to get master material [{}]!", materialName, parent);
-        	return false;
-        }
-
-        std::shared_ptr<MaterialInstance> instance = MaterialInstance::Create(materialName, masterMaterialAsset->GetMaterial());
-
-	    {
-            LOG_GROUP(MaterialLog, Verbose, "Instance Parameters");
-
-		    if (aMaterialData.HasKey("Parameters"))
-		    {
-		    	std::vector<JsonData> parameters = aMaterialData.GetObjectValueArray("Parameters");
-
-		    	if (parameters.empty())
-		    	{
-		    		LOG(MaterialLog, Error, "Material has no Parameters [{}]!", materialName);
-                    hasErrord = true;
-		    	}
-
-		    	PushParameters(parameters, instance.get());
-		    }
-		    else
-		    {
-		    	LOG(MaterialLog, Error, "Material has no Parameters [{}]!", materialName);
-		    	hasErrord = true;
-		    }
-	    }
-
-        myMaterial = std::move(instance);
+    if (masterMaterialAsset == nullptr)
+    {
+        LOG(MaterialLog, Error, "Material [{}] failed to get master material [{}]!", materialName, parent);
+        hasErrord = true;
     }
     else
     {
-        MaterialDescription desc;
-        desc.Name = materialName;
+        std::shared_ptr<MaterialInstance> instance = MaterialInstance::Create(materialName, masterMaterialAsset->GetMaterial());
+
+        LOG_GROUP(MaterialLog, Verbose, "Instance Parameters");
+
+        if (aMaterialData.HasKey("Parameters"))
+        {
+            std::vector<JsonData> parameters = aMaterialData.GetObjectValueArray("Parameters");
+
+            if (parameters.empty())
+            {
+                LOG(MaterialLog, Error, "Material has no Parameters [{}]!", materialName);
+                hasErrord = true;
+            }
+
+            PushParameters(parameters, instance.get());
+        }
+        else
+        {
+            LOG(MaterialLog, Error, "Material has no Parameters [{}]!", materialName);
+            hasErrord = true;
+        }
+
+        myMaterial = std::move(instance);
+    }
+
+    return !hasErrord;
+}
+
+bool MaterialAsset::LoadMasterData(const JsonData& aMaterialData)
+{
+    bool hasErrord = false;
+
+    std::string materialName = aMaterialData.GetString("Name");
+
+    if (materialName.empty())
+    {
+        LOG(MaterialLog, Warning, "Constructed material has no name, using placeholder");
+        materialName = "NO NAME GIVEN";
+        hasErrord = true;
+    }
+
+    LOG_GROUP(MaterialLog, Verbose, "Master Material");
+
+    MaterialDescription desc;
+    desc.Name = materialName;
+
+    {
+        LOG_GROUP(MaterialLog, Verbose, "Master Settings");
 
         if (aMaterialData.HasKey("Domain"))
         {
@@ -280,44 +179,41 @@ bool MaterialAsset::Construct(const JsonData& aMaterialData)
             LOG(MaterialLog, Error, "Material has no Blend Mode [{}]!", materialName);
             hasErrord = true;
         }
+    }
 
-        if (!hasErrord)
+    desc.MaterialShaderCode = AssetRegistry::Get().GetWorkingDirectory() / "Shaders/BaseMaterial.hlsli";
+
+    std::shared_ptr<Material> material = std::make_shared<Material>();
+
+    if (!GraphicsEngine::Get().CreateMaterial(desc, *material))
+    {
+        LOG(MaterialLog, Error, "Failed to create material [{}]!", materialName);
+        hasErrord = true;
+    }
+    else
+    {
+        LOG_GROUP(MaterialLog, Verbose, "Master Parameters");
+
+        if (aMaterialData.HasKey("Parameters"))
         {
-            desc.MaterialShaderCode = AssetRegistry::Get().GetWorkingDirectory() / "Shaders/BaseMaterial.hlsli";
+            std::vector<JsonData> parameters = aMaterialData.GetObjectValueArray("Parameters");
 
-            std::shared_ptr<Material> material = std::make_shared<Material>();
-
-            if (!GraphicsEngine::Get().CreateMaterial(desc, *material))
+            if (parameters.empty())
             {
-                LOG(MaterialLog, Error, "Failed to create material [{}]!", materialName);
+                LOG(MaterialLog, Error, "Material has no Parameters [{}]!", materialName);
                 hasErrord = true;
             }
 
-	        {
-                LOG_GROUP(MaterialLog, Verbose, "Master Parameters");
-
-		        if (aMaterialData.HasKey("Parameters"))
-		        {
-		        	std::vector<JsonData> parameters = aMaterialData.GetObjectValueArray("Parameters");
-
-		        	if (parameters.empty())
-		        	{
-		        		LOG(MaterialLog, Error, "Material has no Parameters [{}]!", materialName);
-		        		hasErrord = true;
-		        	}
-
-		        	PushParameters(parameters, material.get());
-		        }
-		        else
-		        {
-		        	LOG(MaterialLog, Error, "Material has no Parameters [{}]!", materialName);
-		        	hasErrord = true;
-		        }
-	        }
-
-            myMaterial = std::move(material);
+            PushParameters(parameters, material.get());
+        }
+        else
+        {
+            LOG(MaterialLog, Error, "Material has no Parameters [{}]!", materialName);
+            hasErrord = true;
         }
     }
+
+    myMaterial = std::move(material);
 
     return !hasErrord;
 }

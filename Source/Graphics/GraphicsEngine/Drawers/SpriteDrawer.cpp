@@ -24,3 +24,13 @@ void SpriteDrawer::Submit(const SpriteDrawCall& aDrawCall)
 
 	myDrawCalls.emplace_back(aDrawCall);
 }
+
+const std::vector<SpriteDrawCall>& SpriteDrawer::GetSpriteDrawCalls() const
+{
+	return myDrawCalls;
+}
+
+void SpriteDrawer::Clear()
+{
+	myDrawCalls.clear();
+}

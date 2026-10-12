@@ -1,9 +1,6 @@
 #pragma once
 
-#include <vector>
 #include <memory>
-
-#include "GraphicsEngine/Core/SpriteRenderResources.h"
 
 class GraphicsCommandList;
 class RenderHardwareInterface;
@@ -25,7 +22,7 @@ public:
         Texture* aHDRTexture
     );
 
-    void ToggleBloom();
+    void SetBloomStatus(bool aEnabled);
 
 private:
 	void SSAOPass();

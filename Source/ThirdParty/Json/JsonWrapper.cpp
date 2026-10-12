@@ -568,9 +568,9 @@ bool JsonData::HasKey(const char* aName) const
 	return false;
 }
 
-std::string JsonData::GetPath() const
+const std::filesystem::path& JsonData::GetPath() const
 {
-	return myPath.string();
+	return myPath;
 }
 
 JsonWriter::JsonWriter(const std::filesystem::path& aJsonDestination)

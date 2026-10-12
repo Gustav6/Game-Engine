@@ -13,13 +13,18 @@ class SphereColliderComponent : public Component
 public:
 	SphereColliderComponent(Actor* aOwner);
 
+#ifdef _DEBUG
 	void Render() override;
+#endif
 
-	const CommonUtilities::Sphere<float>& GetCollider() const;
+	const CommonUtilities::Sphere<float>& GetSphere() const;
+	CommonUtilities::Sphere<float> GetWorldSphere() const;
+	
+	void SetRadius(float aRadius);
+	void SetOffset(const CommonUtilities::Vector3f& aOffset);
+	void SetBounds(const CommonUtilities::Vector3f& aOffset, float aRadius);
 
 private:
-	std::shared_ptr<MeshAsset> myDebugMesh;
-
 	CommonUtilities::Sphere<float> myCollider;
 };
 

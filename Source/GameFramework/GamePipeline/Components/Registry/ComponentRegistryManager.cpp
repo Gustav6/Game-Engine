@@ -1,6 +1,10 @@
 #include "GameFramework.pch.h"
 #include "ComponentRegistryManager.h"
 
+#include <ranges>
+
+#include "GamePipeline/Components/Base/Component.h"
+
 ComponentRegistryManager::ComponentRegistryManager()
 {
 	myIsShutDown = false;
@@ -25,15 +29,31 @@ bool ComponentRegistryManager::IsShutdown() const
 
 void ComponentRegistryManager::RemoveAll(Actor* aOwner)
 {
-	for (auto& [type, registry] : myRegistries)
+	for (auto& registry : myRegistries | std::views::values)
 	{
 		registry->Remove(aOwner);
 	}
 }
 
+std::vector<Component*> ComponentRegistryManager::GetAll(Actor* aOwner)
+{
+	std::vector<Component*> components;
+	components.reserve(myRegistries.size());
+
+	for (auto& registry : myRegistries | std::views::values)
+	{
+		if (Component* component = registry->GetAsBase(aOwner))
+		{
+			components.push_back(component);
+		}
+	}
+
+	return components;
+}
+
 void ComponentRegistryManager::Update(float aDeltaTime)
 {
-	for (auto& [type, registry] : myRegistries)
+	for (auto& registry : myRegistries | std::views::values)
 	{
 		registry->Update(aDeltaTime);
 	}
@@ -41,7 +61,7 @@ void ComponentRegistryManager::Update(float aDeltaTime)
 
 void ComponentRegistryManager::Render()
 {
-	for (auto& [type, registry] : myRegistries)
+	for (auto& registry : myRegistries | std::views::values)
 	{
 		registry->Render();
 	}
@@ -49,7 +69,7 @@ void ComponentRegistryManager::Render()
 
 void ComponentRegistryManager::Clear()
 {
-	for (auto& [type, registry] : myRegistries)
+	for (auto& registry : myRegistries | std::views::values)
 	{
 		registry->Clear();
 	}

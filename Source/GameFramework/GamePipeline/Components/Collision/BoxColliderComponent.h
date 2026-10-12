@@ -12,14 +12,19 @@ class BoxColliderComponent : public Component
 {
 public:
 	BoxColliderComponent(Actor* aOwner);
-
+	
+#ifdef _DEBUG
 	void Render() override;
+#endif
 
-	const CommonUtilities::AABB3D<float>& GetCollider() const;
+	const CommonUtilities::AABB3D<float>& GetLocalAABB() const;
+	CommonUtilities::AABB3D<float> GetWorldAABB() const;
+
+	void SetSize(const CommonUtilities::Vector3f& aSize);
+	void SetOffset(const CommonUtilities::Vector3f& aOffset);
+	void SetBounds(const CommonUtilities::Vector3f& aCenter, const CommonUtilities::Vector3f& aSize);
 
 private:
-	std::shared_ptr<MeshAsset> myDebugMesh;
-
 	CommonUtilities::AABB3D<float> myCollider;
 };
 

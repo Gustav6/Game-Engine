@@ -20,6 +20,7 @@ public:
 	virtual void Render() = 0;
 	virtual void Remove(Actor* aOwner) = 0;
 	virtual void Clear() = 0;
+	virtual Component* GetAsBase(Actor* aOwner) = 0;
 };
 
 template<typename T>
@@ -62,7 +63,6 @@ public:
 		myOwnerToComponentLookup.erase(aOwner);
 	}
 
-	template<typename... Args>
 	T* Get(Actor* aOwner)
 	{
 		auto it = myOwnerToComponentLookup.find(aOwner);
@@ -77,30 +77,35 @@ public:
 
 	void Update(float aDeltaTime) override
 	{
-		for (size_t a = 0; a < myComponents.size(); a++)
+		for (size_t c = 0; c < myComponents.size(); c++)
 		{
-			if (myComponents[a].GetOwner()->GetIsEnabled())
+			if (myComponents[c].GetIsEnabled())
 			{
-				myComponents[a].Update(aDeltaTime);
+				myComponents[c].Update(aDeltaTime);
 			}
 		}
 	}
 
 	void Render() override
 	{
-		for (size_t a = 0; a < myComponents.size(); a++)
+		for (size_t c = 0; c < myComponents.size(); c++)
 		{
-			if (myComponents[a].GetOwner()->GetIsEnabled())
+			if (myComponents[c].GetIsEnabled())
 			{
-				myComponents[a].Render();
+				myComponents[c].Render();
 			}
 		}
 	}
 
-	void Clear()
+	void Clear() override
 	{
 		myOwnerToComponentLookup.clear();
 		myComponents.clear();
+	}
+
+	Component* GetAsBase(Actor* aOwner) override
+	{
+		return Get(aOwner);
 	}
 
 private:

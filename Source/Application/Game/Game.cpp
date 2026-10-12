@@ -24,6 +24,8 @@
 #include "GamePipeline/Components/Light/DirectionlLightComponent.h"
 #include "GamePipeline/Components/Light/PointLightComponent.h"
 #include "GamePipeline/Components/Light/SpotLightComponent.h"
+#include "GamePipeline/Components/Collision/BoxColliderComponent.h"
+#include "GamePipeline/Components/Collision/SphereColliderComponent.h"
 
 #include "GamePipeline/World/Actor.hpp"
 #include "GamePipeline/World/GameWorld.h"
@@ -105,7 +107,7 @@ bool Game::Initialize(SIZE aWindowSize, WNDPROC aWindowProcess, LPCWSTR aWindowT
 
 		if (!GE.Initialize(myMainWindowHandle, workingDirectory))
 		{
-			return false;
+ 			return false;
 		}
 
 #ifdef IMGUI_ENABLE
@@ -233,7 +235,6 @@ void Game::LoadScene()
 	    meshComponent->SetMaterial(0, AssetRegistry::Get().GetAsset<MaterialAsset>("SMColorChecker"));
 
 	    object->GetTransform().Translate({ -400, 40, 0 });
-	    object->GetTransform().Rotate(CommonUtilities::Vector3f{ 0, 0, 0 });
 
 		GameWorld::Get().AddActor(std::move(object));
 	}
@@ -248,7 +249,7 @@ void Game::LoadScene()
 
 	    object->GetTransform().Rotate(CommonUtilities::Vector3f{ 0, -180, 0 });
 	    object->GetTransform().Translate({ 200, 0, 400 });
-
+		
 		GameWorld::Get().AddActor(std::move(object));
 	}
 
@@ -287,9 +288,24 @@ void Game::LoadScene()
 	    meshComponent->SetMesh(AssetRegistry::Get().GetAsset<MeshAsset>("Unit_Cube"));
 	    meshComponent->SetMaterial(0, AssetRegistry::Get().GetAsset<MaterialAsset>("BaseMaterial"));
 
-	    object->GetTransform().SetEulerRotation({ 45.0f, 180.0f, 45.0f });
+		// TODO: Inspect rotation with multiple axis
+	    object->GetTransform().SetEulerRotation({ 45.0f, 0.0f, 0.0f });
 	    object->GetTransform().Translate({ -200, 100, 400 });
 	    object->GetTransform().SetScale({ 100, 100, 100 });
+
+		GameWorld::Get().AddActor(std::move(object));
+	}
+
+	{
+		std::unique_ptr<Actor> object = std::make_unique<Actor>();
+
+		MeshComponent* meshComponent = object->AddComponent<MeshComponent>();
+
+		meshComponent->SetMesh(AssetRegistry::Get().GetAsset<MeshAsset>("Unit_Sphere"));
+		meshComponent->SetMaterial(0, AssetRegistry::Get().GetAsset<MaterialAsset>("BaseMaterial"));
+
+		object->GetTransform().Translate({ 0, 50, -200 });
+		object->GetTransform().SetScale({ 100, 100, 100 });
 
 		GameWorld::Get().AddActor(std::move(object));
 	}
@@ -332,6 +348,11 @@ void Game::LoadScene()
 	    animationComponent->AddAnimation("Run", runAnimation);
 	    animationComponent->AddAnimation("Walk", walkAnimation);
 	    
+		BoxColliderComponent* boxColliderComponent = object->AddComponent<BoxColliderComponent>();
+
+		boxColliderComponent->SetSize({ 64, 128, 64 });
+		boxColliderComponent->SetOffset({ 0, 64, 0 });
+
 	    myAnimatedObject = GameWorld::Get().AddActor(std::move(object));
 	}
 
@@ -390,7 +411,7 @@ void Game::LoadScene()
 		text->SetText("SHREK");
 		text->SetSize(36);
 
-		myFpsCounter = GameWorld::Get().AddActor(std::move(object));
+		GameWorld::Get().AddActor(std::move(object));
 	}*/
 
 	/*{

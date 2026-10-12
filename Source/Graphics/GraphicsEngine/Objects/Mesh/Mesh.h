@@ -15,6 +15,7 @@ class Mesh
 {
 	friend class GraphicsEngine;
 	friend class DrawCallSubmitter;
+	friend class DebugRenderPass;
 
 public:
 	struct Element

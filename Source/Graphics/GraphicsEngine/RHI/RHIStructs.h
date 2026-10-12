@@ -23,6 +23,9 @@ enum class BufferType : uint8_t
 enum class Topology : unsigned int
 {
 	Undefined = 0,
+	PointList = 1,
+	LineList = 2,
+	LineStrip = 3,
 	TriangleList = 4,
 	TriangleStrip = 5,
 };

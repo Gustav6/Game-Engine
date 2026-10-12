@@ -17,3 +17,13 @@ void MeshDrawer::Submit(const MeshDrawCall& aDrawCall)
 
 	myDrawCalls.emplace_back(aDrawCall);
 }
+
+const std::vector<MeshDrawCall>& MeshDrawer::GetMeshDrawCalls() const
+{
+	return myDrawCalls;
+}
+
+void MeshDrawer::Clear()
+{
+	myDrawCalls.clear();
+}

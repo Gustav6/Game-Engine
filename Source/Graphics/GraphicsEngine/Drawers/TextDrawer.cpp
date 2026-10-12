@@ -19,3 +19,13 @@ void TextDrawer::Submit(const TextDrawCall& aDrawCall)
 
 	myDrawCalls.emplace_back(aDrawCall);
 }
+
+const std::vector<TextDrawCall>& TextDrawer::GetTextDrawCalls() const
+{
+	return myDrawCalls;
+}
+
+void TextDrawer::Clear()
+{
+	myDrawCalls.clear();
+}

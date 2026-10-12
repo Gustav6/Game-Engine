@@ -36,7 +36,7 @@ struct MaterialDescription;
 
 enum class ResourceFormat;
 enum class DebugRenderMode;
-enum class ToneMappingOperator;
+enum class ToneMapper;
 
 typedef int ResourceBindFlags;
 
@@ -45,6 +45,18 @@ struct ID3D11DeviceContext;
 
 class RenderOverlay;
 
+struct GraphicsEngineDebugInfo
+{
+	unsigned int DrawCallCount;
+};
+
+struct GraphicsEngineRenderSettings
+{
+	DebugRenderMode DebugRenderMode;
+	ToneMapper ToneMapper;
+	bool BloomEnabled;
+};
+
 class GraphicsEngine
 {
 public:
@@ -52,11 +64,11 @@ public:
 
 	bool Initialize(HWND aWindowHandle, const std::filesystem::path& aContentRoot);
 
-	void BeginFrame();
+	void BeginFrame() const;
 	void Render(GraphicsCommandList& inoutCommandList, const SceneCamera& aCamera);
 	void Present() const;
 
-	void ToggleBloom() const;
+	void ToggleBloom();
 
 	void CycleDebugRenderMode(int aDirection);
 	void CycleToNextTonemap(int aDirection);
@@ -81,6 +93,9 @@ public:
 	void SetRenderOverlay(RenderOverlay* aOverlay);
 	void ClearRenderOverlay();
 
+	const GraphicsEngineDebugInfo& GetDebugInfo() const;
+	const GraphicsEngineRenderSettings& GetSettings() const;
+
 private:
 	GraphicsEngine();
 	~GraphicsEngine();
@@ -89,8 +104,8 @@ private:
 
 	std::filesystem::path myShaderRoot;
 
-	DebugRenderMode myRenderMode;
-	ToneMappingOperator myToneMappingOperator;
+	GraphicsEngineDebugInfo myDebugInfo;
+	GraphicsEngineRenderSettings myRenderSettings;
 
 	std::unique_ptr<RenderHardwareInterface> myRHI;
 

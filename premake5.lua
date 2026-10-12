@@ -7,6 +7,7 @@ workspace "GameProject"
     language "C++"
     cppdialect "C++20"
     systemversion "latest"
+    toolset "v145"
 
 filter { "platforms:x64" }
     system "Windows"

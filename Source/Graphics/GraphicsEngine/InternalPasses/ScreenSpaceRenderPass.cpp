@@ -48,14 +48,14 @@ bool ScreenSpaceRenderPass::Initialize(RenderHardwareInterface& aRHI)
 	constexpr float designWidth = 1920.0f;
 	constexpr float designHeight = 1080.0f;
 
-	mySpriteRenderResources.Projection = CommonUtilities::Matrix4x4f::Identity;
+	mySpriteProjection = CommonUtilities::Matrix4x4f::Identity;
 
-	mySpriteRenderResources.Projection(1, 1) = 2.0f / designWidth;
-	mySpriteRenderResources.Projection(2, 2) = -2.0f / designHeight;
-	mySpriteRenderResources.Projection(4, 1) = -1.0f;
-	mySpriteRenderResources.Projection(4, 2) = 1.0f;
+	mySpriteProjection(1, 1) = 2.0f / designWidth;
+	mySpriteProjection(2, 2) = -2.0f / designHeight;
+	mySpriteProjection(4, 1) = -1.0f;
+	mySpriteProjection(4, 2) = 1.0f;
 
-	aRHI.CreateDynamicVertexBuffer("SpriteRenderer", 10000, mySpriteRenderResources.VertexBuffer);
+	aRHI.CreateDynamicVertexBuffer("SpriteRenderer", 10000, mySpriteVertexBuffer);
 
 	// Font PSO
 	{
@@ -205,10 +205,10 @@ void ScreenSpaceRenderPass::RenderSprite(
 	RenderContext& aContext)
 {
 	FrameBuffer frameBuffer;
-	frameBuffer.Projection = mySpriteRenderResources.Projection;
+	frameBuffer.Projection = mySpriteProjection;
 	aContext.ConstantBuffers->UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::FrameBuffer, frameBuffer, 0, PipelineStage_VertexShader | PipelineStage_PixelShader);
 
-	mySpriteRenderResources.Vertices.clear();
+	mySpriteVertices.clear();
 
 	const CommonUtilities::Vector2f parentSize =
 	{
@@ -258,12 +258,12 @@ void ScreenSpaceRenderPass::RenderSprite(
 	v2.Color = aDrawCall.SpriteInstanceData->Color;
 	v3.Color = aDrawCall.SpriteInstanceData->Color;
 
-	mySpriteRenderResources.Vertices.push_back(v0);
-	mySpriteRenderResources.Vertices.push_back(v1);
-	mySpriteRenderResources.Vertices.push_back(v2);
-	mySpriteRenderResources.Vertices.push_back(v1);
-	mySpriteRenderResources.Vertices.push_back(v3);
-	mySpriteRenderResources.Vertices.push_back(v2);
+	mySpriteVertices.push_back(v0);
+	mySpriteVertices.push_back(v1);
+	mySpriteVertices.push_back(v2);
+	mySpriteVertices.push_back(v1);
+	mySpriteVertices.push_back(v3);
+	mySpriteVertices.push_back(v2);
 
 	inoutCommandList.SetShaderResource(&aDrawCall.SpriteSharedData->Texture, 0, PipelineStage_PixelShader);
 
@@ -286,7 +286,7 @@ void ScreenSpaceRenderPass::RenderSprite(
 
 	inoutCommandList.SetPipelineStateObject(material->GetPSO());
 
-	inoutCommandList.UpdateVertexBuffer(mySpriteRenderResources.VertexBuffer, mySpriteRenderResources.Vertices);
-	inoutCommandList.SetVertexBuffer(&mySpriteRenderResources.VertexBuffer);
-	inoutCommandList.DrawSpecificVertices(static_cast<unsigned int>(mySpriteRenderResources.Vertices.size()), 0);
+	inoutCommandList.UpdateVertexBuffer(mySpriteVertexBuffer, mySpriteVertices);
+	inoutCommandList.SetVertexBuffer(&mySpriteVertexBuffer);
+	inoutCommandList.DrawSpecificVertices(static_cast<unsigned int>(mySpriteVertices.size()), 0);
 }

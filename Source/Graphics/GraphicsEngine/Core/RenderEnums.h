@@ -16,7 +16,7 @@ enum class DebugRenderMode
     MAX
 };
 
-enum class ToneMappingOperator
+enum class ToneMapper
 {
 	None,
     Aces,

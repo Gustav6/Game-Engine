@@ -10,7 +10,7 @@ class GraphicsEngine;
 class BuiltinAssets
 {
 public:
-    bool Initialize(GraphicsEngine& aGraphicsEngine, RenderHardwareInterface& aRHI, const std::filesystem::path& aShaderRoot);
+    bool Initialize(GraphicsEngine& aGraphicsEngine, RenderHardwareInterface& aRHI);
 
     const Material& GetDefaultMaterial() const;
 

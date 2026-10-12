@@ -43,9 +43,9 @@ bool ShadowRenderPass::Initialize(RenderHardwareInterface& aRHI)
 		PipelineStateDescription shadowPSODesc = {};
 		shadowPSODesc.Name = "ShadowPSO";
 		shadowPSODesc.InputLayoutElements = Vertex::Description;
-		shadowPSODesc.RasterizerState = RasterizerState::FillSolidCullFront;
 		shadowPSODesc.VertexShader.ByteCode = INTERNAL_Surface_VS_ByteCode;
 		shadowPSODesc.VertexShader.ByteCodeSize = sizeof(INTERNAL_Surface_VS_ByteCode);
+		shadowPSODesc.RasterizerState = RasterizerState::FillSolidCullFront;
 
 		myShadowPSO = std::make_unique<PipelineStateObject>();
 
@@ -88,9 +88,11 @@ void ShadowRenderPass::Execute(
 
 	inoutCommandList.BeginEvent("Shadow Pass");
 
+	const std::vector<SceneLight>& sceneLights = LightDrawer::Get().GetSceneLights();
+
 	inoutCommandList.SetPipelineStateObject(*myShadowPSO);
 
-	for (const auto& light : LightDrawer::Get().mySceneLights)
+	for (const auto& light : sceneLights)
 	{
 		switch (light.LightData->Type)
 		{
