@@ -1,25 +1,44 @@
 // Pick one of these at a time. Keep in mind that ACES and Lottes need to be
 // corrected after output but no the Unreal one!
 
+// Source : https://github.com/TheRealMJP/BakingLab/blob/master/BakingLab/ACES.hlsl
+
+static const float3x3 ACESInputMat =
+{
+    { 0.59719, 0.35458, 0.04823 },
+    { 0.07600, 0.90834, 0.01566 },
+    { 0.02840, 0.13383, 0.83777 }
+};
+
+// ODT_SAT => XYZ => D60_2_D65 => sRGB
+static const float3x3 ACESOutputMat =
+{
+    { 1.60475, -0.53108, -0.07367 },
+    { -0.10208, 1.10813, -0.00605 },
+    { -0.00327, -0.07276, 1.07602 }
+};
+
+float3 RRTAndODTFit(float3 v)
+{
+    float3 a = v * (v + 0.0245786f) - 0.000090537f;
+    float3 b = v * (0.983729f * v + 0.4329510f) + 0.238081f;
+    return a / b;
+}
+
 float3 Tonemap_ACES(float3 aColor)
 {
-    // Narkowicz 2015, "ACES Filmic Tone Mapping Curve"
-	const float a = 2.51;
-	const float b = 0.03;
-	const float c = 2.43;
-	const float d = 0.59;
-	const float e = 0.14;
-	return (aColor * (a * aColor + b)) / (aColor * (c * aColor + d) + e);
-}
+    aColor = mul(ACESInputMat, aColor);
 
-float3 Tonemap_UnrealEngine(float3 aColor)
-{
-    // Unreal 3, Documentation: "Color Grading"
-	// Adapted to be close to Tonemap_ACES, with similar range
-	// Gamma 2.2 correction is baked in, don't use with sRGB conversion!
-	return aColor / (aColor + 0.155) * 1.019;
-}
+    // Apply RRT and ODT
+    aColor = RRTAndODTFit(aColor);
 
+    aColor = mul(ACESOutputMat, aColor);
+
+    // Clamp to [0, 1]
+    aColor = saturate(aColor);
+
+    return aColor;
+}
 
 float3 Tonemap_Lottes(float3 aColor)
 {
@@ -39,6 +58,14 @@ float3 Tonemap_Lottes(float3 aColor)
 		((pow(hdrMax, a * d) - pow(midIn, a * d)) * midOut);
 
 	return pow(aColor, a) / (pow(aColor, a * d) * b + c);
+}
+
+float3 Tonemap_UnrealEngine(float3 aColor)
+{
+    // Unreal 3, Documentation: "Color Grading"
+	// Adapted to be close to Tonemap_ACES, with similar range
+	// Gamma 2.2 correction is baked in, don't use with sRGB conversion!
+    return aColor / (aColor + 0.155) * 1.019;
 }
 
 float3 LinearToGamma(float3 aColor)

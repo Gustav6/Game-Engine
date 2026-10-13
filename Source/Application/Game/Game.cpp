@@ -31,6 +31,7 @@
 #include "GamePipeline/World/GameWorld.h"
 
 #include "GraphicsEngine/GraphicsEngine.hpp"
+#include "GraphicsEngine/Core/RenderEnums.h"
 
 #include "GraphicsEngine/Core/SceneCamera.h"
 #include "GraphicsEngine/RHI/GraphicsCommandList.h"
@@ -38,6 +39,7 @@
 #include "GamePipeline/Components/Registry/ComponentRegistryManager.h"
 
 #include "Camera/GameCamera.h"
+#include "GraphicsEngine/Core/RenderEnums.h"
 
 #include "Logger/Logger.h"
 
@@ -190,8 +192,128 @@ int Game::Run()
 				.RenderCamera = GameCamera::GetInstance().GetRenderCamera()
 			};
 
-			GE.Render(*myGraphicsCommandList, camera);
+			FrameStats frameStats = GE.Render(*myGraphicsCommandList, camera);
+			
+#ifdef IMGUI_ENABLE
+			ImGui::PushFont(nullptr, 28.0f);
+			ImGui::Begin("Debug");
 
+			if (ImGui::CollapsingHeader("Frame Info", ImGuiTreeNodeFlags_DefaultOpen))
+			{
+				ImGui::Text("FPS: %.1f", ImGui::GetIO().Framerate);
+				ImGui::Text("DrawCallCount: %u", frameStats.DrawCallCount);
+				ImGui::Text("PipelineSwitches: %u", frameStats.PipelineSwitches);
+				ImGui::Text("VisibleObjects: %u", frameStats.VisibleObjects);
+				ImGui::Text("CulledObjects: %u", frameStats.CulledObjects);
+			}
+
+			if (ImGui::CollapsingHeader("Settings", ImGuiTreeNodeFlags_DefaultOpen))
+			{
+				RenderSettings settings = GraphicsEngine::Get().GetSettings();
+
+				switch (settings.DebugRenderMode)
+				{
+					case DebugRenderMode::None:
+					{
+						ImGui::Text("DebugRenderMode: None");
+						break;
+					}
+					case DebugRenderMode::sRGB:
+					{
+						ImGui::Text("DebugRenderMode: SRGB");
+						break;
+					}
+					case DebugRenderMode::Roughness:
+					{
+						ImGui::Text("DebugRenderMode: Roughness");
+						break;
+					}
+					case DebugRenderMode::Metalness:
+					{
+						ImGui::Text("DebugRenderMode: Metalness");
+						break;
+					}
+					case DebugRenderMode::AmbientOcclusionTexture:
+					{
+						ImGui::Text("DebugRenderMode: AO (Texture)");
+						break;
+					}
+					case DebugRenderMode::AmbientOcclusionScreenSpace:
+					{
+						ImGui::Text("DebugRenderMode: AO (Screen Space)");
+						break;
+					}
+					case DebugRenderMode::NormalsTangentSpace:
+					{
+						ImGui::Text("DebugRenderMode: Normals (Tangent Space)");
+						break;
+					}
+					case DebugRenderMode::NormalsWorldSpace:
+					{
+						ImGui::Text("DebugRenderMode: Normals (World Space)");
+						break;
+					}
+					case DebugRenderMode::Shadows:
+					{
+						ImGui::Text("DebugRenderMode: Shadows");
+						break;
+					}
+					default:
+					{
+						break;
+					}
+				}
+
+				switch (settings.ToneMapper)
+				{
+					case ToneMapper::None:
+					{
+						ImGui::Text("ToneMapper: None");
+						break;
+					}
+					case ToneMapper::Aces:
+					{
+						ImGui::Text("ToneMapper: Aces");
+						break;
+					}
+					case ToneMapper::Lottes:
+					{
+						ImGui::Text("ToneMapper: Lottes");
+						break;
+					}
+					case ToneMapper::Unreal:
+					{
+						ImGui::Text("ToneMapper: Unreal");
+						break;
+					}
+					default:
+					{
+						break;
+					}
+				}
+
+				if (settings.BloomEnabled)
+				{
+					ImGui::Text("Bloom: Enabled");
+				}
+				else
+				{
+					ImGui::Text("Bloom: Disabled");
+				}
+
+				if (settings.VSyncEnabled)
+				{
+					ImGui::Text("VSync: Enabled");
+				}
+				else
+				{
+					ImGui::Text("VSync: Disabled");
+				}
+			}
+
+			ImGui::End();
+			ImGui::PopFont();
+#endif
 			myGraphicsCommandList->FinishCommandList();
 
 			GE.ExecuteCommandList(*myGraphicsCommandList);
@@ -492,18 +614,5 @@ void Game::UpdateScene(float aDeltaTime)
 
 void Game::RenderScene()
 {
-#ifdef IMGUI_ENABLE
-
-	ImGui::ShowDemoWindow();
-
-	ImGui::PushFont(nullptr, 28.0f);
-	ImGui::Begin("Debug");
-	ImGui::Text("FPS: %.1f", ImGui::GetIO().Framerate);
-	ImGui::PopFont();
-
-	ImGui::End();
-
-#endif
-
 	GameWorld::Get().Render();
 }

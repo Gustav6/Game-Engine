@@ -45,16 +45,21 @@ struct ID3D11DeviceContext;
 
 class RenderOverlay;
 
-struct GraphicsEngineDebugInfo
+// TODO: Fill these stats in render
+struct FrameStats
 {
-	unsigned int DrawCallCount;
+	unsigned int DrawCallCount = 0;
+    unsigned int PipelineSwitches = 0;
+    unsigned int VisibleObjects = 0;
+    unsigned int CulledObjects = 0;
 };
 
-struct GraphicsEngineRenderSettings
+struct RenderSettings
 {
 	DebugRenderMode DebugRenderMode;
 	ToneMapper ToneMapper;
-	bool BloomEnabled;
+	bool BloomEnabled = true;
+	bool VSyncEnabled = false;
 };
 
 class GraphicsEngine
@@ -65,7 +70,7 @@ public:
 	bool Initialize(HWND aWindowHandle, const std::filesystem::path& aContentRoot);
 
 	void BeginFrame() const;
-	void Render(GraphicsCommandList& inoutCommandList, const SceneCamera& aCamera);
+	FrameStats Render(GraphicsCommandList& inoutCommandList, const SceneCamera& aCamera);
 	void Present() const;
 
 	void ToggleBloom();
@@ -93,8 +98,8 @@ public:
 	void SetRenderOverlay(RenderOverlay* aOverlay);
 	void ClearRenderOverlay();
 
-	const GraphicsEngineDebugInfo& GetDebugInfo() const;
-	const GraphicsEngineRenderSettings& GetSettings() const;
+	void SetSettings(const RenderSettings& aSettings);
+	const RenderSettings& GetSettings() const;
 
 private:
 	GraphicsEngine();
@@ -104,8 +109,7 @@ private:
 
 	std::filesystem::path myShaderRoot;
 
-	GraphicsEngineDebugInfo myDebugInfo;
-	GraphicsEngineRenderSettings myRenderSettings;
+	RenderSettings myRenderSettings;
 
 	std::unique_ptr<RenderHardwareInterface> myRHI;
 

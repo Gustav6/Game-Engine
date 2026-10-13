@@ -92,7 +92,7 @@ bool GraphicsEngine::Initialize(HWND aWindowHandle, const std::filesystem::path&
 
 	myRHI = std::make_unique<RenderHardwareInterface>();
 
-	if (!myRHI->Initialize(aWindowHandle, true, *myBackBuffer, *myDepthBuffer))
+	if (!myRHI->Initialize(aWindowHandle, true, *myBackBuffer, *myDepthBuffer, myRenderSettings.VSyncEnabled))
 	{
 		return false;
 	}
@@ -170,9 +170,13 @@ void GraphicsEngine::BeginFrame() const
 	}
 }
 
-void GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const SceneCamera& aCamera)
+FrameStats GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const SceneCamera& aCamera)
 {
 	ZoneScopedN("Whole render pass");
+
+	FrameStats frameStats;
+
+	// TODO : Cull objects that are outside the provided cameras frustum
 
 	{
 		inoutCommandList.BeginEvent("Clear Backbuffers");
@@ -339,6 +343,8 @@ void GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const SceneCa
 		myDebugRenderPass->Execute(inoutCommandList, targets, context);
 		myScreenSpaceRenderPass->Execute(inoutCommandList, screenSpaceItems, targets, context);
 	}
+
+	return frameStats;
 }
 
 void GraphicsEngine::Present() const
@@ -458,12 +464,12 @@ void GraphicsEngine::ClearRenderOverlay()
 	myRenderOverlay = nullptr;
 }
 
-const GraphicsEngineDebugInfo& GraphicsEngine::GetDebugInfo() const
+void GraphicsEngine::SetSettings(const RenderSettings& aSettings)
 {
-	return myDebugInfo;
+	myRenderSettings = aSettings;
 }
 
-const GraphicsEngineRenderSettings& GraphicsEngine::GetSettings() const
+const RenderSettings& GraphicsEngine::GetSettings() const
 {
 	return myRenderSettings;
 }

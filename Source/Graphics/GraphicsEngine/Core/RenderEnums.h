@@ -9,7 +9,7 @@ enum class DebugRenderMode
     Roughness,
     Metalness,
     AmbientOcclusionTexture,
-    AmbientOcclusionScreenspace,
+    AmbientOcclusionScreenSpace,
     NormalsTangentSpace,
     NormalsWorldSpace,
     Shadows,

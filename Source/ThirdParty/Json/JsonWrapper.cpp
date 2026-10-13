@@ -30,7 +30,7 @@ JsonData::JsonData(const std::filesystem::path& aJsonPath)
 
 	yyjson_doc* document = yyjson_read_file(aJsonPath.string().c_str(), 0, nullptr, &error);
 
-	if (document == nullptr)
+	if (error.code)
 	{
 		LOG(JSONLog, Error, "Could not read json [{}]! Error [{}] : [{}] at position: [{}]!", aJsonPath.string(), error.code, error.msg, error.pos);
 		return;
@@ -573,23 +573,141 @@ const std::filesystem::path& JsonData::GetPath() const
 	return myPath;
 }
 
-JsonWriter::JsonWriter(const std::filesystem::path& aJsonDestination)
+JsonWriter::JsonWriter(const std::filesystem::path& aDestination)
 {
-	aJsonDestination;
-	// TODO: Controll destination create folders if needed.
+	myDestination = aDestination;
 
-	yyjson_mut_doc* doc = yyjson_mut_doc_new(NULL);
-	yyjson_mut_val* root = yyjson_mut_obj(doc);
+	myDocument = yyjson_mut_doc_new(NULL);
 
-	yyjson_mut_doc_set_root(doc, root);
+	if (myDocument != nullptr) 
+	{
+		myRoot = yyjson_mut_obj(myDocument);
+
+		if (myRoot != nullptr)
+		{
+			yyjson_mut_doc_set_root(myDocument, myRoot);
+		}
+	}
+}
+
+JsonWriter::~JsonWriter()
+{
+	yyjson_mut_doc_free(myDocument);
+}
+
+bool JsonWriter::IsValid() const
+{
+	if (myRoot == nullptr || myDocument == nullptr)
+	{
+		return false;
+	}
+
+	return true;
+}
+
+void JsonWriter::Save()
+{
+	if (myDocument == nullptr) 
+	{
+		return;
+	}
+	
+	yyjson_mut_val* object = yyjson_mut_doc_get_root(myDocument);
+
+	yyjson_mut_obj_iter iter;
+	yyjson_mut_obj_iter_init(object, &iter);
+	yyjson_mut_val *key, *val;
+	while ((key = yyjson_mut_obj_iter_next(&iter))) 
+	{
+		val = yyjson_mut_obj_iter_get_val(key);
+
+		if (yyjson_mut_is_null(val)) 
+		{
+			yyjson_mut_obj_iter_remove(&iter);
+			// TODO: Log here
+		}
+	}
+
+	yyjson_write_err error;
+
+	if (!yyjson_mut_write_file(myDestination.string().c_str(), myDocument, YYJSON_WRITE_NOFLAG, NULL, &error))
+	{
+		if (error.code)
+		{
+			LOG(JSONLog, Error, "Could not write json [{}]! Error [{}] : [{}]!", myDestination.string(), error.code, error.msg);
+		}
+	}
+}
+
+void JsonWriter::Clear()
+{
+	if (myDocument != nullptr)
+	{
+		yyjson_mut_doc_free(myDocument);
+	}
+
+	myDocument = yyjson_mut_doc_new(nullptr);
+
+	if (myDocument != nullptr) 
+	{
+		myRoot = yyjson_mut_obj(myDocument);
+
+		if (myRoot != nullptr)
+		{
+			yyjson_mut_doc_set_root(myDocument, myRoot);
+		}
+		else 
+		{
+			// TODO: Log here
+		}
+	}
+	else 
+	{
+		// TODO: Log here
+	}
+}
+
+bool JsonWriter::AddBool(const char* aKey, bool aValue) const
+{
+	return yyjson_mut_obj_add_bool(myDocument, myRoot, aKey, aValue);
+}
+
+bool JsonWriter::AddInt(const char* aKey, int aValue) const
+{
+	return yyjson_mut_obj_add_int(myDocument, myRoot, aKey, aValue);
+}
+
+bool JsonWriter::AddUnsigned(const char* aKey, unsigned int aValue) const
+{
+	return yyjson_mut_obj_add_uint(myDocument, myRoot, aKey, aValue);
+}
+
+bool JsonWriter::AddFloat(const char* aKey, float aValue) const
+{
+	return yyjson_mut_obj_add_float(myDocument, myRoot, aKey, aValue);
+}
+
+bool JsonWriter::AddDouble(const char* aKey, double aValue) const
+{
+	return yyjson_mut_obj_add_double(myDocument, myRoot, aKey, aValue);
+}
+
+bool JsonWriter::AddString(const char* aKey, const std::string& aValue) const
+{
+	return yyjson_mut_obj_add_str(myDocument, myRoot, aKey, aValue.c_str());
+}
+
+const std::filesystem::path& JsonWriter::GetDestination() const
+{
+	return myDestination;
 }
 
 JsonData Json::Read(const std::filesystem::path& aJsonPath)
 {
-	return JsonData(aJsonPath);
+	return { aJsonPath };
 }
 
 JsonWriter Json::Write(const std::filesystem::path& aJsonDestination)
 {
-	return JsonWriter(aJsonDestination);
+	return { aJsonDestination };
 }
