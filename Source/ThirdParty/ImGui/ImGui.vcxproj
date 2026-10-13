@@ -58,14 +58,17 @@
     <IntDir>$(ProjectDir)..\..\..\Intermediate\ImGui\Debug\</IntDir>
     <TargetName>ImGui</TargetName>
     <TargetExt>.lib</TargetExt>
+    <ExternalIncludePath>..\..\..\ThirdParty\Source\imgui;$(ExternalIncludePath)</ExternalIncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(ProjectDir)..\..\..\Lib\Release\</OutDir>
     <IntDir>$(ProjectDir)..\..\..\Intermediate\ImGui\Release\</IntDir>
     <TargetName>ImGui</TargetName>
     <TargetExt>.lib</TargetExt>
+    <ExternalIncludePath>..\..\..\ThirdParty\Source\imgui;$(ExternalIncludePath)</ExternalIncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Retail|x64'">
+    <ExternalIncludePath>..\..\..\ThirdParty\Source\imgui;$(ExternalIncludePath)</ExternalIncludePath>
     <NMakeOutput>$(OutDir)ImGui</NMakeOutput>
     <AdditionalOptions>/sdl /std:c++20 %(AdditionalOptions)</AdditionalOptions>
   </PropertyGroup>
@@ -73,8 +76,8 @@
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>_DEBUG;IMGUI_ENABLE;TRACY_ENABLE;TRACY_ON_DEMAND;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>.;..\..\..\ThirdParty\Source;..\..\Graphics;..\..\..\ThirdParty\Source\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_DEBUG;IMGUI_ENABLE;TRACY_ENABLE;TRACY_ON_DEMAND;ENABLE_FILE_WATCHER;ENABLE_LOGGER;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>.;..\..\Graphics;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <MinimalRebuild>false</MinimalRebuild>
@@ -95,8 +98,8 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <PreprocessorDefinitions>_RELEASE;IMGUI_ENABLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>.;..\..\..\ThirdParty\Source;..\..\Graphics;..\..\..\ThirdParty\Source\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_RELEASE;IMGUI_ENABLE;ENABLE_FILE_WATCHER;ENABLE_LOGGER;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>.;..\..\Graphics;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>

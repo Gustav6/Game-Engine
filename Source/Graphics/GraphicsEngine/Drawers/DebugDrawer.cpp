@@ -3,6 +3,10 @@
 
 #include <array>
 
+#include "CommonUtilities/Math/MathUtils.hpp"
+
+#include <tracy/core/Tracy.hpp>
+
 DebugDrawer& DebugDrawer::Get()
 {
 	static DebugDrawer myInstance;
@@ -34,60 +38,74 @@ void DebugDrawer::DrawBox(
 	const CommonUtilities::Vector3f& aMax, 
 	const CommonUtilities::Vector4f& aColor)
 {
-    std::array<CommonUtilities::Vector3f, 8> corners;
+	const CommonUtilities::Vector3f corner1 = { aMax.x, aMin.y, aMin.z };
+	const CommonUtilities::Vector3f corner2 = { aMax.x, aMax.y, aMin.z };
+	const CommonUtilities::Vector3f corner3 = { aMin.x, aMax.y, aMin.z };
+	const CommonUtilities::Vector3f corner4 = { aMin.x, aMin.y, aMax.z };
+	const CommonUtilities::Vector3f corner5 = { aMax.x, aMin.y, aMax.z };
+	const CommonUtilities::Vector3f corner6 = { aMin.x, aMax.y, aMax.z };
 
-    for (int i = 0; i < corners.size(); i++)
-	{
-		CommonUtilities::Vector4f position;
+	myLineDrawCalls.reserve(myLineDrawCalls.size() + 12);
 
-		if (i & 1)
-		{
-			position.x = aMax.x;
-		}
-		else
-		{
-			position.x = aMin.x;
-		}
+	myLineDrawCalls.emplace_back(aMin, corner1, aColor);
+	myLineDrawCalls.emplace_back(corner1, corner2, aColor);
+	myLineDrawCalls.emplace_back(corner2, corner3, aColor);
+	myLineDrawCalls.emplace_back(corner3, aMin, aColor);
 
-		if (i & 2)
-		{
-			position.y = aMax.y;
-		}
-		else
-		{
-			position.y = aMin.y;
-		}
+	myLineDrawCalls.emplace_back(corner4, corner5, aColor);
+	myLineDrawCalls.emplace_back(corner5, aMax, aColor);
+	myLineDrawCalls.emplace_back(aMax, corner6, aColor);
+	myLineDrawCalls.emplace_back(corner6, corner4, aColor);
 
-		if (i & 4)
-		{
-			position.z = aMax.z;
-		}
-		else
-		{
-			position.z = aMin.z;
-		}
-
-        corners[i] = { position.x, position.y, position.z };
-    }
-
-    static constexpr int edges[12][2] =
-    {
-        { 0, 1 }, { 2, 3 }, { 4, 5 }, { 6, 7 },
-        { 0, 2 }, { 1, 3 }, { 4, 6 }, { 5, 7 },
-        { 0, 4 }, { 1, 5 }, { 2, 6 }, { 3, 7 } 
-    };
-
-    for (const auto& edge : edges)
-    {
-        Submit({ corners[edge[0]], corners[edge[1]], aColor });
-    }
+	myLineDrawCalls.emplace_back(aMin, corner4, aColor);
+	myLineDrawCalls.emplace_back(corner1, corner5, aColor);
+	myLineDrawCalls.emplace_back(corner2, aMax, aColor);
+	myLineDrawCalls.emplace_back(corner3, corner6, aColor);
 }
 
-void DebugDrawer::DrawSphere(float aRadius, const CommonUtilities::Vector3f& aPosition, const CommonUtilities::Vector4f& aColor)
+void DebugDrawer::DrawSphere(
+	float aRadius, 
+	const CommonUtilities::Vector3f& aPosition, 
+	const CommonUtilities::Vector4f& aColor)
 {
-	aRadius;
-	aPosition;
-	aColor;
+	constexpr int amountOfSegments = 24;
+	constexpr float twoPi = CommonUtilities::Math::PI<float> * 2.0f;
+
+	struct Segment
+	{
+		CommonUtilities::Vector3f From;
+		CommonUtilities::Vector3f To;
+	};
+
+	static const std::array<Segment, amountOfSegments * 3> unitSphere = []
+    {
+        std::array<Segment, amountOfSegments * 3> segments = {};
+
+        for (int i = 0; i < amountOfSegments; ++i)
+        {
+            const float a0 = twoPi * static_cast<float>(i) / amountOfSegments;
+            const float a1 = twoPi * static_cast<float>(i + 1) / amountOfSegments;
+
+            const float c0 = std::cos(a0), s0 = std::sin(a0);
+            const float c1 = std::cos(a1), s1 = std::sin(a1);
+
+            segments[i * 3 + 0] = { { c0, s0, 0.f }, { c1, s1, 0.f } };
+            segments[i * 3 + 1] = { { c0, 0.f, s0 }, { c1, 0.f, s1 } };
+            segments[i * 3 + 2] = { { 0.f, c0, s0 }, { 0.f, c1, s1 } };
+        }
+
+        return segments;
+    }();
+
+	myLineDrawCalls.reserve(myLineDrawCalls.size() + unitSphere.size());
+
+	for (const Segment& segment : unitSphere) 
+	{
+		CommonUtilities::Vector3f from = aPosition + segment.From * aRadius;
+		CommonUtilities::Vector3f to = aPosition + segment.To * aRadius;
+
+		myLineDrawCalls.emplace_back(from, to, aColor);
+	}
 }
 
 const std::vector<WireMeshDrawCall>& DebugDrawer::GetMeshDrawCalls() const

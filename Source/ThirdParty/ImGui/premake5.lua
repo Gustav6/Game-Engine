@@ -6,8 +6,10 @@ project "ImGui"
 
     includedirs {
         "%{prj.location}",
-        "%{wks.location}/ThirdParty/Source",
-        "%{wks.location}/Source/Graphics",
+        "%{wks.location}/Source/Graphics"
+    }
+
+    externalincludedirs {
         "%{wks.location}/ThirdParty/Source/imgui",
     }
 

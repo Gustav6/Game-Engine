@@ -18,14 +18,7 @@
 
 MeshComponent::MeshComponent(Actor* aOwner)
 	: Component(aOwner)
-{
-
-#ifdef _DEBUG
-	myRenderColliders = true;
-#else
-	myRenderColliders = false;
-#endif
-}
+{ }
 
 void MeshComponent::Render()
 {
@@ -58,15 +51,13 @@ void MeshComponent::Render()
 
 	MeshDrawer::Get().Submit(drawCall);
 
-	if (myRenderColliders)
+#ifdef _DEBUG
 	{
+		const CommonUtilities::Matrix4x4f& world = myOwner->GetTransform().GetWorldMatrix();
 		const CommonUtilities::Vector3f worldScale = myOwner->GetTransform().GetScale();
-		const CommonUtilities::Vector3f worldPosition = myOwner->GetTransform().GetPosition();
 
 		{
 			const CommonUtilities::AABB3D<float>& box = myMeshAsset->GetMesh().GetBoundingBox();
-
-			const CommonUtilities::Matrix4x4f& world = myOwner->GetTransform().GetWorldMatrix();
 
 			const CommonUtilities::Vector3f localMin = box.GetMin();
 			const CommonUtilities::Vector3f localMax = box.GetMax();
@@ -121,12 +112,17 @@ void MeshComponent::Render()
 
 			const float scale = std::max({ std::abs(worldScale.x), std::abs(worldScale.y), std::abs(worldScale.z) });
 			const float radius = sphere.GetRadius() * scale;
+			
+			const CommonUtilities::Vector4f local = sphere.GetCenter().ToXYZ1();
 
-			CommonUtilities::Vector3f position = sphere.GetCenter() + worldPosition;
+			const CommonUtilities::Vector4f transformedPoint = local * world;
+
+			CommonUtilities::Vector3f position = transformedPoint.ToXYZ();
 
 			DebugDrawer::Get().DrawSphere(radius, position, { 1.f, 1.f, 0.f, 1.f });
 		}
 	}
+#endif
 }
 
 Skeleton* MeshComponent::GetSkeleton() const

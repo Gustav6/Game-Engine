@@ -3,6 +3,8 @@
 
 #include "GamePipeline/World/Actor.hpp"
 
+#include "GraphicsEngine/Drawers/DebugDrawer.h"
+
 
 SphereColliderComponent::SphereColliderComponent(Actor* aOwner)
 	: Component(aOwner)
@@ -11,12 +13,16 @@ SphereColliderComponent::SphereColliderComponent(Actor* aOwner)
 #ifdef _DEBUG
 void SphereColliderComponent::Render()
 {
-	//const float scale = std::max({ std::abs(worldScale.x), std::abs(worldScale.y), std::abs(worldScale.z) });
-	//const float radius = sphere.GetRadius() * scale;
+	const CommonUtilities::Vector3f worldScale = myOwner->GetTransform().GetScale();
+	const CommonUtilities::Vector3f worldPosition = myOwner->GetTransform().GetPosition();
 
-	//CommonUtilities::Vector3f position = sphere.GetCenter() + worldPosition;
+	const float scale = std::max({ std::abs(worldScale.x), std::abs(worldScale.y), std::abs(worldScale.z) });
 
-	//DebugDrawer::Get().DrawSphere(radius, position, { 1.f, 1.f, 0.f, 1.f });
+	const float radius = myCollider.GetRadius() * scale;
+
+	const CommonUtilities::Vector3f position = myCollider.GetCenter() + worldPosition;
+
+	DebugDrawer::Get().DrawSphere(radius, position, { 1.f, 1.f, 0.f, 1.f });
 }
 #endif
 
@@ -28,7 +34,9 @@ const CommonUtilities::Sphere<float>& SphereColliderComponent::GetSphere() const
 CommonUtilities::Sphere<float> SphereColliderComponent::GetWorldSphere() const
 {
     // TODO: Translate to world space
-	return myCollider;
+	CommonUtilities::Sphere<float> collider;
+	
+	return collider;
 }
 
 void SphereColliderComponent::SetRadius(float aRadius)

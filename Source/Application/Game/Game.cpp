@@ -51,6 +51,9 @@ Game::~Game() = default;
 
 bool Game::Initialize(SIZE aWindowSize, WNDPROC aWindowProcess, LPCWSTR aWindowTitle)
 {
+	// TODO: Read or create a settings json file.
+	// Should contain vsync flag and content directory.
+
 	std::filesystem::path workingDirectory = GetExecutableDirectory().parent_path().parent_path() / "Content";;
 
 	AssetRegistry::Get().RegisterAssetType<MeshAsset>({ ".fbx" });
@@ -209,22 +212,6 @@ void Game::LoadScene()
 		GameCamera& gameCamera = GameCamera::GetInstance();
 		gameCamera.Init(90.0f, 1.0f, 10000.0f, GraphicsEngine::Get().GetClientSize());
 	}
-
-	/*for (int i = 0; i < 1000; ++i)
-	{
-		std::unique_ptr<Actor> object = std::make_unique<Actor>();
-
-		MeshComponent* meshComponent = object->AddComponent<MeshComponent>();
-
-		meshComponent->SetMesh(AssetRegistry::Get().GetAsset<MeshAsset>("Unit_Cube"));
-		meshComponent->SetMaterial(0, AssetRegistry::Get().GetAsset<MaterialAsset>("BaseMaterial"));
-
-		object->GetTransform().Translate({ -20 * static_cast<float>(i), 40, 0 });
-		object->GetTransform().Rotate(CommonUtilities::Vector3f{ -90, 0, 0 });
-		object->GetTransform().SetScale({ 10, 10, 10 });
-
-		GameWorld::Get().AddActor(std::move(object));
-	}*/
 
 	{
 	    std::unique_ptr<Actor> object = std::make_unique<Actor>();

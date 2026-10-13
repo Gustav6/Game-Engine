@@ -11,7 +11,10 @@ project "Json"
 
     includedirs {
         "%{prj.location}",
-        "%{wks.location}/Source/Utilities",
+        "%{wks.location}/Source/Utilities"
+    }
+
+    externalincludedirs {
         "%{wks.location}/ThirdParty/Source/yyjson",
     }
     
@@ -23,14 +26,14 @@ project "Json"
         -- Third Party
         "%{wks.location}/ThirdParty/Source/yyjson/yyjson.c"
     }
+    
+    links {
+        "Logger"
+    }
 
     filter "files:**/yyjson.c"
         enablepch "Off"
         warnings "Off"
 
     filter {}
-    
-    links {
-        "Logger"
-    }
 

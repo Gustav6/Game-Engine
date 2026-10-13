@@ -30,7 +30,10 @@ const CommonUtilities::AABB3D<float>& BoxColliderComponent::GetLocalAABB() const
 CommonUtilities::AABB3D<float> BoxColliderComponent::GetWorldAABB() const
 {
     // TODO: Translate to world space
-	return myCollider;
+	
+	CommonUtilities::AABB3D<float> collider;
+	
+	return collider;
 }
 
 void BoxColliderComponent::SetSize(const CommonUtilities::Vector3f& aSize)

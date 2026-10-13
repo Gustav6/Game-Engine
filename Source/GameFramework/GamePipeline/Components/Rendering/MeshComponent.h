@@ -25,7 +25,5 @@ public:
 private:
 	std::shared_ptr<MeshAsset> myMeshAsset;
 	std::vector<std::shared_ptr<MaterialAsset>> myMaterialAssets;
-	
-	bool myRenderColliders;
 };
 

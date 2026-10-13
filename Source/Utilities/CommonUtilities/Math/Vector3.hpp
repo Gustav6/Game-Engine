@@ -62,6 +62,7 @@ namespace CommonUtilities
 
 			Vector2<T> ToXY() const;
 			Vector4<T> ToXYZ0() const;
+			Vector4<T> ToXYZ1() const;
 	};
 
 	using Vector3f = Vector3<float>;
@@ -345,6 +346,12 @@ namespace CommonUtilities
 	inline Vector4<T> Vector3<T>::ToXYZ0() const
 	{
 		return Vector4<T>(x, y, z, 0);
+	}
+
+	template<typename T>
+	inline Vector4<T> Vector3<T>::ToXYZ1() const
+	{
+		return Vector4<T>(x, y, z, 1);
 	}
 }
 

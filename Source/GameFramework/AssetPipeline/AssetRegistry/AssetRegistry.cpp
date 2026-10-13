@@ -170,7 +170,7 @@ void AssetRegistry::InitUnitCube()
     };
 
     CommonUtilities::Sphere<float> boundingSphere;
-    boundingSphere.InitWithCenterAndRadius(CommonUtilities::Vector3f::Zero, 0.75f);
+	boundingSphere.InitWithCenterAndRadius(CommonUtilities::Vector3f::Zero, 0.8661f); // ~ sqrt(3) / 2
 
     CommonUtilities::AABB3D<float> boundingBox;
     boundingBox.InitWithMinAndMax({ -0.5f, -0.5f , -0.5f }, { 0.5f, 0.5f , 0.5f });
@@ -200,55 +200,59 @@ void AssetRegistry::InitUnitCube()
 
 void AssetRegistry::InitUnitSphere()
 {
+    // Resource:
+	// https://gist.github.com/Pikachuxxxx/5c4c490a7d7679824e0e18af42918efc
+
+    constexpr float radius = 0.5f; 
+	
+	constexpr int latitudes = 18; 
+	constexpr int longitudes = 36;
+
+    constexpr float deltaLatitude = CommonUtilities::Math::PI<float> / latitudes;
+    constexpr float deltaLongitude = 2 * CommonUtilities::Math::PI<float> / longitudes;
+
     std::vector<Vertex> meshVertices;
-    std::vector<unsigned> meshIndices;
+    std::vector<unsigned int> meshIndices;
 
-    constexpr unsigned int sectorCount = 36;
-    constexpr unsigned int stackCount = 18;
-
-    constexpr float sectorStep = 2.0f * CommonUtilities::Math::PI<float> / sectorCount;
-    constexpr float stackStep = CommonUtilities::Math::PI<float> / stackCount;
-
-    Vertex vertex;
-
-    for (unsigned int i = 0; i <= stackCount; ++i)
+    for (int i = 0; i <= latitudes; ++i)
     {
-        float stackAngle = CommonUtilities::Math::PI<float> / 2.0f - static_cast<float>(i) * stackStep;
-        float xy = std::cos(stackAngle);
-        float z = std::sin(stackAngle);
+        float latitudeAngle = CommonUtilities::Math::PI<float> / 2 - static_cast<float>(i) * deltaLatitude;
+        float xy = radius * cosf(latitudeAngle);
+        float z = radius * sinf(latitudeAngle);
 
-        for (unsigned int j = 0; j <= sectorCount; ++j)
+        for (int j = 0; j <= longitudes; ++j)
         {
-            float sectorAngle = static_cast<float>(j) * sectorStep;
+            float longitudeAngle = static_cast<float>(j) * deltaLongitude;
 
-            vertex.Position.x = xy * std::cos(sectorAngle) * 0.5f;
-            vertex.Position.y = xy * std::sin(sectorAngle) * 0.5f;
-            vertex.Position.z = z * 0.5f;
+            Vertex vertex;
+            vertex.Position.x = xy * cosf(longitudeAngle);
+            vertex.Position.y = xy * sinf(longitudeAngle);
+            vertex.Position.z = z;
             vertex.Position.w = 1.0f;
 
             vertex.Color = { 1.0f, 1.0f, 1.0f, 1.0f };
 
-            vertex.UV0.x = static_cast<float>(j) / sectorCount;
-            vertex.UV0.y = static_cast<float>(i) / stackCount;
+            vertex.UV0.x = static_cast<float>(j) / longitudes;
+            vertex.UV0.y = static_cast<float>(i) / latitudes;
 
-            vertex.Normal.x = xy * std::cos(sectorAngle);
-            vertex.Normal.y = xy * std::sin(sectorAngle);
-            vertex.Normal.z = z;
+            vertex.Normal = vertex.Position.ToXYZ() / radius;
 
-            vertex.Tangent.x = -std::sin(sectorAngle);
-            vertex.Tangent.y = std::cos(sectorAngle);
+            vertex.Tangent.x = -sinf(longitudeAngle);
+            vertex.Tangent.y = cosf(longitudeAngle);
             vertex.Tangent.z = 0.0f;
 
-            meshVertices.emplace_back(vertex);
+			meshVertices.emplace_back(vertex);
         }
     }
 
-    for (unsigned int i = 0; i < stackCount; ++i)
-    {
-        unsigned int k1 = i * (sectorCount + 1);
-        unsigned int k2 = k1 + sectorCount + 1;
+    unsigned int k1, k2;
 
-        for (unsigned int j = 0; j < sectorCount; ++j, ++k1, ++k2)
+    for (unsigned int i = 0; i < latitudes; ++i)
+    {
+        k1 = i * (longitudes + 1);
+        k2 = k1 + longitudes + 1;
+
+        for (int j = 0; j < longitudes; ++j, ++k1, ++k2)
         {
             if (i != 0)
             {
@@ -257,7 +261,7 @@ void AssetRegistry::InitUnitSphere()
                 meshIndices.push_back(k1 + 1);
             }
 
-            if (i != (stackCount - 1))
+            if (i != (latitudes - 1))
             {
                 meshIndices.push_back(k1 + 1);
                 meshIndices.push_back(k2);
@@ -267,10 +271,10 @@ void AssetRegistry::InitUnitSphere()
     }
 
     CommonUtilities::Sphere<float> boundingSphere;
-    boundingSphere.InitWithCenterAndRadius(CommonUtilities::Vector3f::Zero, 0.5f);
+    boundingSphere.InitWithCenterAndRadius(CommonUtilities::Vector3f::Zero, radius);
 
     CommonUtilities::AABB3D<float> boundingBox;
-    boundingBox.InitWithMinAndMax({ -0.5f, -0.5f, -0.5f }, { 0.5f, 0.5f, 0.5f });
+    boundingBox.InitWithMinAndMax({ -radius, -radius, -radius }, { radius, radius, radius });
 
     Mesh::Element element;
     element.NumVertices = static_cast<unsigned>(meshVertices.size());
@@ -308,7 +312,7 @@ void AssetRegistry::InitUnitPlane()
 	};
 
     CommonUtilities::Sphere<float> boundingSphere;
-    boundingSphere.InitWithCenterAndRadius(CommonUtilities::Vector3f::Zero, 0.75f);
+	boundingSphere.InitWithCenterAndRadius(CommonUtilities::Vector3f::Zero, 0.7072f); // ~ sqrt(2) / 2
 
     CommonUtilities::AABB3D<float> boundingBox;
     boundingBox.InitWithMinAndMax({ -0.5f, 0.0f , -0.5f }, { 0.5f, 0.0f , 0.5f });

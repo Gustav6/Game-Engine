@@ -17,13 +17,13 @@ filter { "platforms:x64" }
 -- For Debug configuration, we want to set the _DEBUG #define flag and turn on symbol generation.
 filter "configurations:Debug"
     multiprocessorcompile "On"
-    defines { "_DEBUG", "IMGUI_ENABLE", "TRACY_ENABLE", "TRACY_ON_DEMAND" }
+    defines { "_DEBUG", "IMGUI_ENABLE", "TRACY_ENABLE", "TRACY_ON_DEMAND", "ENABLE_FILE_WATCHER", "ENABLE_LOGGER" }
     symbols "On"
 
 -- Generate symbols in release mode so we can debug the release build if needed.
 filter "configurations:Release"
     multiprocessorcompile "On"
-    defines { "_RELEASE", "IMGUI_ENABLE" }
+    defines { "_RELEASE", "IMGUI_ENABLE", "ENABLE_FILE_WATCHER", "ENABLE_LOGGER" }
     fatalwarnings { "All" }
     optimize "On"
     symbols "On"
@@ -40,6 +40,7 @@ filter {}
 group "Utilities"
     include "Source/Utilities/CommonUtilities/premake5.lua"
     include "Source/Utilities/Logger/premake5.lua"
+    include "Source/Utilities/FileWatcher/premake5.lua"
 
 group "GameFramework"
     include "Source/GameFramework/premake5.lua"

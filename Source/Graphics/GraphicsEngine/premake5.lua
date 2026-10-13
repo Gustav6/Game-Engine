@@ -14,11 +14,14 @@ project "Graphics"
         "%{prj.location}",
         "%{wks.location}/Source/Graphics/",
         "%{wks.location}/Source/Utilities/",
-        "%{wks.location}/ThirdParty/Source",
         "%{wks.location}/Source/ThirdParty/Json",
         "%{wks.location}/Intermediate/GraphicsEngine/%{cfg.buildcfg}/PrecompiledShaders/"
     }
     
+    externalincludedirs {
+        "%{wks.location}/ThirdParty/Source",
+    }
+
     files {
         "%{prj.location}/**.h",
         "%{prj.location}/**.cpp",

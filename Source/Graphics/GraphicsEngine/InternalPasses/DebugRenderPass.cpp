@@ -179,7 +179,11 @@ void DebugRenderPass::RenderLines(GraphicsCommandList& inoutCommandList, RenderC
 		myLineVertices.push_back({ { call.End.x,   call.End.y,   call.End.z,   1.f }, call.Color });
 	}
 
-	inoutCommandList.UpdateVertexBuffer(myLineVertexBuffer, myLineVertices);
+	if (!inoutCommandList.UpdateVertexBuffer(myLineVertexBuffer, myLineVertices))
+	{
+		return;
+	}
+
 	inoutCommandList.SetVertexBuffer(&myLineVertexBuffer);
 	inoutCommandList.DrawSpecificVertices(static_cast<unsigned int>(myLineVertices.size()), 0);
 }

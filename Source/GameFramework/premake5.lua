@@ -14,8 +14,11 @@ project "Framework"
         "%{prj.location}",
         "%{wks.location}/Source/Utilities",
         "%{wks.location}/Source/Graphics",
-        "%{wks.location}/Source/ThirdParty",
-        "%{wks.location}/ThirdParty/Source"
+        "%{wks.location}/Source/ThirdParty"
+    }
+
+    externalincludedirs {
+        "%{wks.location}/ThirdParty/Source",
     }
 
     files {
