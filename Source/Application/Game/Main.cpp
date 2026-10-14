@@ -1,12 +1,14 @@
 ﻿#define WIN32_LEAN_AND_MEAN
 #include <cstdio>
 #include <exception>
+#include <Windows.h>
 
 #include "Application.h"
 #include "Game.h"
-#include "Windows.h"
 
 #include "StringHelpers.h"
+
+#include "Logger/Logger.h"
 
 #ifdef IMGUI_ENABLE
 #include "ImGui/ImGuiLayer.h"
@@ -37,6 +39,8 @@ int GuardedMain()
     // Read below about strings to understand this.
 	SetConsoleOutputCP(CP_UTF8);
 #endif
+
+    Logger::Init();
 
     /*
      * A note about strings:
@@ -79,7 +83,7 @@ int GuardedMain()
      * read your strings in the same format, and always treat them as byte blocks, you'll be fine.
      */
 
-    MVLOG(Log, "ModelViewer starting...");
+    spdlog::info("ModelViewer starting...");
 
     constexpr SIZE windowSize = { 1920, 1080 };
     constexpr LPCWSTR windowTitle = L"AGP Modelviewer"; // L"" denotes "I want this to be a wide-string".
@@ -88,6 +92,7 @@ int GuardedMain()
     game.Initialize(windowSize, WinProc, windowTitle);
     return game.Run();
 }
+
 
 int APIENTRY wWinMain(
 	_In_ HINSTANCE hInstance,
@@ -113,7 +118,12 @@ int APIENTRY wWinMain(
 	        message = str::acp_to_utf8(message);
         }
 
-        MVLOG(Error, "Exception caught!\n{}", message);
+        spdlog::critical("Fatal error: {}", message);
+        spdlog::default_logger()->flush();
+
+        MessageBoxW(nullptr, string_helpers::utf8_to_wide(message).c_str(), L"Fatal Error", MB_OK | MB_ICONERROR);
+
+        Logger::Shutdown();
 
         return -1;
     }
@@ -134,11 +144,11 @@ LRESULT CALLBACK WinProc(_In_ HWND hWnd, _In_ UINT uMsg, _In_ WPARAM wParam, _In
 		    PostQuitMessage(0);
 		    return 0;
 	    }
-    }
-
-    if (uMsg == WM_DESTROY || uMsg == WM_CLOSE)
-    {
-        PostQuitMessage(0);
+        case WM_CLOSE:
+        {
+            PostQuitMessage(0);
+            return 0;
+        }
     }
 
 #ifdef IMGUI_ENABLE

@@ -20,8 +20,6 @@
 
 // TODO: Stop using string and move to interned string.
 
-DECLARE_LOG_CATEGORY_WITH_NAME(LogAssetRegistry, ASSETREGISTRY, Verbose);
-
 class AssetRegistry
 {
 public:
@@ -48,7 +46,7 @@ public:
 
 		if (assetEntry == myAssets.end())
 		{
-			LOG(LogAssetRegistry, Error, "Type [{}], Asset Name [{}], Is not contained within the content folder!", typeName, aAssetName);
+			spdlog::error("Type [{}], Asset Name [{}], Is not contained within the content folder!", typeName, aAssetName);
 			return nullptr;
 		}
 
@@ -66,23 +64,23 @@ public:
 
 		if (extensionEntry == myFileExtensionToAssetTypeMap.end() || !extensionEntry->second.contains(std::type_index(typeid(AssetType))))
 		{
-			LOG(LogAssetRegistry, Error, "Asset Name [{}], Extension [{}], Was never registered for type {}!", aAssetName, extension, typeName);
+			spdlog::error("Asset Name [{}], Extension [{}], Was never registered for type {}!", aAssetName, extension, typeName);
 			return nullptr;
 		}
 
-		LOG_GROUP(LogAssetRegistry, Verbose, "Loading Type [{}], Asset Name [{}], Extension [{}]", typeName, aAssetName, extension);
+		spdlog::info("Loading Type [{}], Asset Name [{}], Extension [{}]", typeName, aAssetName, extension);
 
 		std::shared_ptr<AssetType> asset = std::make_shared<AssetType>();
 
 		if (!asset->Load(assetInformation.Path))
 		{
-			LOG(LogAssetRegistry, Error, "Failed to load!");
+			spdlog::error("Failed to load!");
 			return nullptr;
 		}
 
 		assetInformation.Asset = asset;
 
-		LOG(LogAssetRegistry, Verbose, "Loaded successfully!");
+		spdlog::info("Loaded successfully!");
 
 		return asset;
 	}
@@ -104,13 +102,13 @@ public:
 
 		const std::string_view typeName = RemoveTypePrefix(typeid(AssetType).name());
 
-		LOG_GROUP(LogAssetRegistry, Verbose, "Constructing Type [{}], Asset Name [{}]", typeName, aAssetName);
+		//LOG_GROUP(LogAssetRegistry, Verbose, "Constructing Type [{}], Asset Name [{}]", typeName, aAssetName);
 
 		std::shared_ptr<AssetType> asset = std::make_shared<AssetType>();
 
 		if (!asset->Construct(std::forward<Args>(args)...))
 		{
-			LOG(LogAssetRegistry, Error, "Failed to construct!");
+			spdlog::error("Failed to construct!");
 			return nullptr;
 		}
 
@@ -127,7 +125,7 @@ public:
 			myAssets.emplace(lowerName, AssetInformation{ .Path = {}, .Asset = asset });
 		}
 
-		LOG(LogAssetRegistry, Verbose, "Constructed successfully!");
+		spdlog::info("Constructed successfully!");
 
 		return asset;
 	}

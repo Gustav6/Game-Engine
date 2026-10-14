@@ -17,7 +17,7 @@ void DebugDrawer::Submit(const WireMeshDrawCall& aDrawCall)
 {
 	if (aDrawCall.Mesh == nullptr)
 	{
-		GELOG(Error, "Mesh was submitted with invalid data!");
+		spdlog::error("Mesh was submitted with invalid data!");
 		return;
 	}
 

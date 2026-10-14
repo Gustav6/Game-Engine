@@ -2,11 +2,12 @@
 
 #define WIN32_LEAN_AND_MEAN 
 #define NOMINMAX 
+
 #include "Windows.h"
 
 #include <bitset>
 
-#include "../Math/Vector2.hpp"
+#include "CommonUtilities/Math/Vector2.hpp"
 
 typedef uint64_t u64;
 typedef int64_t s64;

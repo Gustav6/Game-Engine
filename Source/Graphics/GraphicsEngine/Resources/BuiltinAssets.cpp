@@ -27,7 +27,7 @@ bool BuiltinAssets::Initialize(GraphicsEngine& aGraphicsEngine, RenderHardwareIn
 
 		if (!aGraphicsEngine.CreateMaterial(defaultMatDesc, *myDefaultMaterial))
 		{
-			GELOG(Error, "Failed to create default mesh material!");
+			spdlog::critical("Failed to create default mesh material!");
 			return false;
 		}
 	}
@@ -38,7 +38,7 @@ bool BuiltinAssets::Initialize(GraphicsEngine& aGraphicsEngine, RenderHardwareIn
 
 		if (!aRHI.CreateTexture("Default Albedo", BuiltIn_Default_C_ByteCode, sizeof(BuiltIn_Default_C_ByteCode), *myDefaultAlbedoTexture))
 		{
-			GELOG(Error, "Failed to create default albedo texture!");
+			spdlog::critical("Failed to create default albedo texture!");
 			return false;
 		}
 
@@ -51,7 +51,7 @@ bool BuiltinAssets::Initialize(GraphicsEngine& aGraphicsEngine, RenderHardwareIn
 
 		if (!aRHI.CreateTexture("Default Normal", BuiltIn_Default_N_ByteCode, sizeof(BuiltIn_Default_N_ByteCode), *myDefaultNormalTexture))
 		{
-			GELOG(Error, "Failed to create default normal texture!");
+			spdlog::critical("Failed to create default normal texture!");
 			return false;
 		}
 
@@ -64,7 +64,7 @@ bool BuiltinAssets::Initialize(GraphicsEngine& aGraphicsEngine, RenderHardwareIn
 
 		if (!aRHI.CreateTexture("Default Emission", BuiltIn_Default_FX_ByteCode, sizeof(BuiltIn_Default_FX_ByteCode), *myDefaultEmissionTexture))
 		{
-			GELOG(Error, "Failed to create default Emission texture!");
+			spdlog::critical("Failed to create default Emission texture!");
 			return false;
 		}
 

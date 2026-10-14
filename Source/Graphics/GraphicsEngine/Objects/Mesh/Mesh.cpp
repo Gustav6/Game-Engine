@@ -1,6 +1,8 @@
 #include "GraphicsEngine.pch.h"
 #include "Mesh.h"
 
+#include <unordered_set>
+
 #include "GraphicsEngine/Objects/GPU/Vertex.h"
 #include "Skeleton.h"
 
@@ -25,6 +27,7 @@ void Mesh::Initialize(
 	myBoundingBox = aBoundingBox;
 
 	std::unordered_set<unsigned int> materialIds;
+
 	for (const Element& element : myElements)
 	{
 		materialIds.emplace(element.MaterialIndex);

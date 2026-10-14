@@ -12,7 +12,7 @@ namespace CommonUtilities
 		myScrollWheelDelta = 0;
 		myScrollWheelTentative = 0;
 
-		myHWND = NULL;
+		myHWND = nullptr;
 	}
 
 	void Input::SetWindowHandle(HWND aWindowHandle)

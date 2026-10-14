@@ -2,6 +2,7 @@
 #include "RenderHardwareInterface.h"
 
 #include <d3dcompiler.h>
+#include <fstream>
 
 #include "StringHelpers.h"
 #include "GraphicsEngine/Objects/GPU/Buffer.h"
@@ -18,13 +19,9 @@
 
 using namespace Microsoft::WRL;
 
-DECLARE_LOG_CATEGORY_WITH_NAME(RhiLog, RHI, Verbose);
-
-DEFINE_LOG_CATEGORY(RhiLog);
-
 RenderHardwareInterface::RenderHardwareInterface() 
 {
-	myWindowHandle = NULL;
+	myWindowHandle = nullptr;
 }
 
 RenderHardwareInterface::~RenderHardwareInterface() = default;
@@ -42,11 +39,11 @@ bool RenderHardwareInterface::Initialize(HWND aWindowHandle, bool aEnableDebug, 
 
 	if (FAILED(result))
 	{
-		LOG(RhiLog, Error, "Failed to create DXGI Factory");
+		spdlog::critical("Failed to create DXGI Factory");
 		return false;
 	}
 
-	LOG(RhiLog, Log, "Initializing RHI...");
+	spdlog::info("Initializing RHI...");
 
 	ComPtr<IDXGIAdapter> tempAdapter;
 	std::vector<ComPtr<IDXGIAdapter>> adapters;
@@ -75,7 +72,7 @@ bool RenderHardwareInterface::Initialize(HWND aWindowHandle, bool aEnableDebug, 
 	const wchar_t* wideAdapterName = selectedAdapterDesc.Description;
 	const std::string adapterName = str::wide_to_utf8(wideAdapterName);
 
-	LOG(RhiLog, Log, "Selected adapter is {}", adapterName);
+	spdlog::info("Selected adapter is {}", adapterName);
 
 	result = D3D11CreateDevice(
 		selectedAdapter.Get(),
@@ -92,7 +89,7 @@ bool RenderHardwareInterface::Initialize(HWND aWindowHandle, bool aEnableDebug, 
 
 	if (FAILED(result))
 	{
-		LOG(RhiLog, Error, "Failed to create Device!");
+		spdlog::critical("Failed to create Device!");
 		return false;
 	}
 
@@ -136,7 +133,7 @@ bool RenderHardwareInterface::Initialize(HWND aWindowHandle, bool aEnableDebug, 
 
 	if (FAILED(result))
 	{
-		LOG(RhiLog, Error, "Failed to create Swap Chain!");
+		spdlog::critical("Failed to create Swap Chain!");
 		return false;
 	}
 
@@ -148,7 +145,7 @@ bool RenderHardwareInterface::Initialize(HWND aWindowHandle, bool aEnableDebug, 
 
 	if (FAILED(result))
 	{
-		LOG(RhiLog, Error, "Failed to fetch Back Buffer!");
+		spdlog::critical("Failed to fetch Back Buffer!");
 		return false;
 	}
 
@@ -158,7 +155,7 @@ bool RenderHardwareInterface::Initialize(HWND aWindowHandle, bool aEnableDebug, 
 
 	if (FAILED(result))
 	{
-		LOG(RhiLog, Error, "Failed to create Render Target View!");
+		spdlog::critical("Failed to create Render Target View!");
 		return false;
 	}
 
@@ -187,7 +184,7 @@ bool RenderHardwareInterface::Initialize(HWND aWindowHandle, bool aEnableDebug, 
 
 	if (FAILED(result))
 	{
-		LOG(RhiLog, Error, "Failed to create Depth Stencil!");
+		spdlog::critical("Failed to create Depth Stencil!");
 		return false;
 	}
 
@@ -201,7 +198,7 @@ bool RenderHardwareInterface::Initialize(HWND aWindowHandle, bool aEnableDebug, 
 
 	if (FAILED(result))
 	{
-		LOG(RhiLog, Error, "Failed to create Depth Stencil View!");
+		spdlog::critical("Failed to create Depth Stencil View!");
 		return false;
 	}
 
@@ -209,7 +206,7 @@ bool RenderHardwareInterface::Initialize(HWND aWindowHandle, bool aEnableDebug, 
 
 	outDepthStencil.myViewport = viewport;
 
-	LOG(RhiLog, Log, "RHI Started!");
+	spdlog::info("RHI Started!");
 	return true;
 }
 
@@ -229,7 +226,7 @@ bool RenderHardwareInterface::CreateVertexBuffer(std::string_view aName, const s
 {
 	if (aVertexList.empty())
 	{
-		LOG(RhiLog, Error, "Failed to create vertex buffer for {}! Vertex list is empty", aName);
+		spdlog::error("Failed to create vertex buffer for {}! Vertex list is empty", aName);
 		return false;
 	}
 
@@ -246,7 +243,7 @@ bool RenderHardwareInterface::CreateVertexBuffer(std::string_view aName, const s
 
 	if (FAILED(result))
 	{
-		LOG(RhiLog, Error, "Failed to create vertex buffer for {}! Failed to create Buffer!", aName);
+		spdlog::error("Failed to create vertex buffer for {}! Failed to create Buffer!", aName);
 		return false;
 	}
 
@@ -265,7 +262,7 @@ bool RenderHardwareInterface::CreateIndexBuffer(std::string_view aName, const st
 {
 	if (aIndexList.empty())
 	{
-		LOG(RhiLog, Error, "Failed to create index buffer for {}! Index list is empty", aName);
+		spdlog::error("Failed to create index buffer for {}! Index list is empty", aName);
 		return false;
 	}
 
@@ -282,7 +279,7 @@ bool RenderHardwareInterface::CreateIndexBuffer(std::string_view aName, const st
 
 	if (FAILED(result))
 	{
-		LOG(RhiLog, Error, "Failed to create index buffer for {}! Failed to create Buffer!", aName);
+		spdlog::error("Failed to create index buffer for {}! Failed to create Buffer!", aName);
 		return false;
 	}
 
@@ -301,7 +298,7 @@ bool RenderHardwareInterface::CreateConstantBuffer(std::string_view aName, size_
 {
 	if (aSize > 65536)
 	{
-		LOG(RhiLog, Error, "Failed to create constant buffer {}! Size is greater than 64 KB!", aName);
+		spdlog::error("Failed to create constant buffer {}! Size is greater than 64 KB!", aName);
 		return false;
 	}
 
@@ -315,7 +312,7 @@ bool RenderHardwareInterface::CreateConstantBuffer(std::string_view aName, size_
 
 	if (FAILED(result))
 	{
-		LOG(RhiLog, Error, "Failed to create constant buffer {}!", aName);
+		spdlog::error("Failed to create constant buffer {}!", aName);
 		return false;
 	}
 
@@ -333,7 +330,7 @@ bool RenderHardwareInterface::CreateDynamicVertexBuffer(std::string_view aName, 
 {
 	if (aMaxVertexCount == 0)
 	{
-		LOG(RhiLog,	Error, "Failed to create dynamic vertex buffer for {}! Max vertex count is 0", aName);
+		spdlog::error("Failed to create dynamic vertex buffer for {}! Max vertex count is 0", aName);
 
 		return false;
 	}
@@ -349,7 +346,7 @@ bool RenderHardwareInterface::CreateDynamicVertexBuffer(std::string_view aName, 
 
 	if (FAILED(result))
 	{
-		LOG(RhiLog,	Error,"Failed to create dynamic vertex buffer for {}!",	aName);
+		spdlog::error("Failed to create dynamic vertex buffer for {}!",	aName);
 
 		return false;
 	}
@@ -379,7 +376,7 @@ bool RenderHardwareInterface::CreatePipelineStateObject(const PipelineStateDescr
 
 		if (FAILED(result))
 		{
-			LOG(RhiLog, Error, "Failed to create the vertex shader for the pipeline state object {}!", aDescription.Name);
+			spdlog::error("Failed to create the vertex shader for the pipeline state object {}!", aDescription.Name);
 			hasErrored = true;
 		}
 		else
@@ -397,7 +394,7 @@ bool RenderHardwareInterface::CreatePipelineStateObject(const PipelineStateDescr
 
 		if (FAILED(result))
 		{
-			LOG(RhiLog, Error, "Failed to create the geometry shader for the pipeline state object {}!", aDescription.Name);
+			spdlog::error("Failed to create the geometry shader for the pipeline state object {}!", aDescription.Name);
 			hasErrored = true;
 		}
 		else
@@ -415,7 +412,7 @@ bool RenderHardwareInterface::CreatePipelineStateObject(const PipelineStateDescr
 
 		if (FAILED(result))
 		{
-			LOG(RhiLog, Error, "Failed to create the pixel shader for the pipeline state object {}!", aDescription.Name);
+			spdlog::error("Failed to create the pixel shader for the pipeline state object {}!", aDescription.Name);
 			hasErrored = true;
 		}
 		else
@@ -457,7 +454,7 @@ bool RenderHardwareInterface::CreatePipelineStateObject(const PipelineStateDescr
 
 		if (FAILED(result))
 		{
-			LOG(RhiLog, Error, "Failed to create input layout for pipeline state object {}!", aDescription.Name);
+			spdlog::error("Failed to create input layout for pipeline state object {}!", aDescription.Name);
 			hasErrored = true;
 		}
 		else
@@ -492,7 +489,7 @@ bool RenderHardwareInterface::CreatePipelineStateObject(const PipelineStateDescr
 
 		if (FAILED(result))
 		{
-			LOG(RhiLog, Error, "Failed to create rasterizer state for pipeline state object {}!", aDescription.Name);
+			spdlog::error("Failed to create rasterizer state for pipeline state object {}!", aDescription.Name);
 			hasErrored = true;
 		}
 		else
@@ -535,7 +532,7 @@ bool RenderHardwareInterface::CreatePipelineStateObject(const PipelineStateDescr
 
 			if (FAILED(result)) 
 			{
-				LOG(RhiLog, Error, "Failed to create aplha blend state for pipeline state object {}!", aDescription.Name);
+				spdlog::error("Failed to create aplha blend state for pipeline state object {}!", aDescription.Name);
 				hasErrored = true;
 			}
 			else 
@@ -569,7 +566,7 @@ bool RenderHardwareInterface::CreatePipelineStateObject(const PipelineStateDescr
 
 			if (FAILED(result))
 			{
-				LOG(RhiLog, Error, "Failed to create additive blend state for pipeline state object {}!", aDescription.Name);
+				spdlog::error("Failed to create additive blend state for pipeline state object {}!", aDescription.Name);
 				hasErrored = true;
 			}
 			else
@@ -581,7 +578,7 @@ bool RenderHardwareInterface::CreatePipelineStateObject(const PipelineStateDescr
 		}
 		default:
 		{
-			LOG(RhiLog, Error, "Unsupported blend mode provided for pipeline state object {}!", aDescription.Name);
+			spdlog::error("Unsupported blend mode provided for pipeline state object {}!", aDescription.Name);
 			hasErrored = true;
 			break;
 		}
@@ -601,7 +598,7 @@ bool RenderHardwareInterface::CreateCommandList(std::string_view aName, Graphics
 
 	if (FAILED(result))
 	{
-		LOG(RhiLog, Error, "Failed to create command list!");
+		spdlog::error("Failed to create command list!");
 		return false;
 	}
 
@@ -625,7 +622,7 @@ bool RenderHardwareInterface::CreateTexture(std::string_view aName, const uint8_
 
 	if (FAILED(result))
 	{
-		LOG(RhiLog, Error, "Failed to load Texture {}!", aName);
+		spdlog::error("Failed to load Texture {}!", aName);
 		return false;
 	}
 
@@ -661,7 +658,7 @@ bool RenderHardwareInterface::CreateTexture(std::string_view aName, unsigned aWi
 	HRESULT result = myDevice->CreateTexture2D(&desc, nullptr, &texture);
 	if (FAILED(result))
 	{
-		LOG(RhiLog, Error, "Failed to create the texture {}!", aName);
+		spdlog::error("Failed to create the texture {}!", aName);
 		return false;
 	}
 
@@ -675,7 +672,7 @@ bool RenderHardwareInterface::CreateTexture(std::string_view aName, unsigned aWi
 			result = myDevice->CreateRenderTargetView(texture.Get(), nullptr, &outTexture.myRTV);
 			if (FAILED(result))
 			{
-				LOG(RhiLog, Error, "Failed to create the render target view for texture {}!", aName);
+				spdlog::error("Failed to create the render target view for texture {}!", aName);
 				return false;
 			}
 
@@ -688,7 +685,7 @@ bool RenderHardwareInterface::CreateTexture(std::string_view aName, unsigned aWi
 			result = myDevice->CreateShaderResourceView(texture.Get(), nullptr, &outTexture.mySRV);
 			if (FAILED(result))
 			{
-				LOG(RhiLog, Error, "Failed to create the shader resource view for texture {}!", aName);
+				spdlog::error("Failed to create the shader resource view for texture {}!", aName);
 				return false;
 			}
 
@@ -703,7 +700,7 @@ bool RenderHardwareInterface::CreateTexture(std::string_view aName, unsigned aWi
 			result = myDevice->CreateDepthStencilView(texture.Get(), nullptr, &outTexture.myDSV);
 			if (FAILED(result))
 			{
-				LOG(RhiLog, Error, "Failed to create the depth stencil view for texture {}!", aName);
+				spdlog::error("Failed to create the depth stencil view for texture {}!", aName);
 				return false;
 			}
 
@@ -740,7 +737,7 @@ bool RenderHardwareInterface::CreateSampler(const SamplerDescription& aDescripti
 	const HRESULT result = myDevice->CreateSamplerState(&samplerDesc, &outSampler.mySampler);
 	if (FAILED(result))
 	{
-		LOG(RhiLog, Error, "Failed to create Sampler State {}!", aDescription.Name);
+		spdlog::error("Failed to create Sampler State {}!", aDescription.Name);
 		return false;
 	}
 
@@ -773,7 +770,7 @@ bool RenderHardwareInterface::CreateDepthStencil(std::string_view aName, unsigne
 	result = myDevice->CreateTexture2D(&depthDesc, nullptr, &depthTexture);
 	if (FAILED(result))
 	{
-		LOG(RhiLog, Error, "Failed to create depth stencil!");
+		spdlog::error("Failed to create depth stencil!");
 		return false;
 	}
 
@@ -788,7 +785,7 @@ bool RenderHardwareInterface::CreateDepthStencil(std::string_view aName, unsigne
 	result = myDevice->CreateDepthStencilView(depthTexture.Get(), &dsvDesc, &outDepthStencil.myDSV);
 	if (FAILED(result))
 	{
-		LOG(RhiLog, Error, "Failed to create depth stencil view!");
+		spdlog::error("Failed to create depth stencil view!");
 		return false;
 	}
 
@@ -804,7 +801,7 @@ bool RenderHardwareInterface::CreateDepthStencil(std::string_view aName, unsigne
 	result = myDevice->CreateShaderResourceView(depthTexture.Get(), &srvDesc, &outDepthStencil.mySRV);
 	if (FAILED(result))
 	{
-		LOG(RhiLog, Error, "Failed to create depth stencil shader resource view!");
+		spdlog::error("Failed to create depth stencil shader resource view!");
 		return false;
 	}
 
@@ -864,7 +861,7 @@ bool RenderHardwareInterface::CreateGBuffer(std::string_view aName, unsigned aWi
 		HRESULT result = myDevice->CreateTexture2D(&desc, nullptr, &texture);
 		if (FAILED(result))
 		{
-			LOG(RhiLog, Error, "Failed to create the GBuffer {} channel!", aName, info.Name);
+			spdlog::error("Failed to create the GBuffer {} channel!", aName, info.Name);
 			return false;
 		}
 		const std::string textureName = std::format("{}_{}_T2D", aName, info.Name);
@@ -874,7 +871,7 @@ bool RenderHardwareInterface::CreateGBuffer(std::string_view aName, unsigned aWi
 		result = myDevice->CreateRenderTargetView(texture.Get(), nullptr, &rtv);
 		if (FAILED(result))
 		{
-			LOG(RhiLog, Error, "Failed to create the GBuffer {} channel!", aName, info.Name);
+			spdlog::error("Failed to create the GBuffer {} channel!", aName, info.Name);
 			return false;
 		}
 
@@ -885,7 +882,7 @@ bool RenderHardwareInterface::CreateGBuffer(std::string_view aName, unsigned aWi
 		result = myDevice->CreateShaderResourceView(texture.Get(), nullptr, &srv);
 		if (FAILED(result))
 		{
-			LOG(RhiLog, Error, "Failed to create the GBuffer {} channel!", aName, info.Name);
+			spdlog::error("Failed to create the GBuffer {} channel!", aName, info.Name);
 			return false;
 		}
 
@@ -935,7 +932,7 @@ bool RenderHardwareInterface::CompileShader(ShaderType aShaderType, const std::f
 
 	if (shaderSource.empty())
 	{
-		LOG(RhiLog, Error, "Unable to load shader {}!", aPath.string());
+		spdlog::error("Unable to load shader {}!", aPath.string());
 		return false;
 	}
 
@@ -956,7 +953,7 @@ bool RenderHardwareInterface::CompileShader(ShaderType aShaderType, const std::f
 			shaderTarget = "cs_5_0";
 			break;
 		default:
-			LOG(RhiLog, Error, "Unknown shader type specified when loading {}!", aPath.string());
+			spdlog::error("Unknown shader type specified when loading {}!", aPath.string());
 			return false;
 	}
 
@@ -991,8 +988,8 @@ bool RenderHardwareInterface::CompileShader(ShaderType aShaderType, const std::f
 	if (FAILED(result))
 	{
 		const std::string message = static_cast<const char*>(errorMessages->GetBufferPointer());
-		LOG(RhiLog, Error, "Shader compilation failed!");
-		LOG(RhiLog, Error, "Error: {}", message);
+		spdlog::error("Shader compilation failed!");
+		spdlog::error("Error: {}", message);
 		return false;
 	}
 

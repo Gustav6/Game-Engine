@@ -15,7 +15,7 @@ void LightDrawer::Submit(const SceneLight& aSceneLight)
 
 	if (aSceneLight.LightData == nullptr || aSceneLight.LightData->Type != LightType::Directional && aSceneLight.ShadowMap == nullptr)
 	{
-		GELOG(Error, "Light was submitted with invalid data!");
+		spdlog::error("Light was submitted with invalid data!");
 		return;
 	}
 

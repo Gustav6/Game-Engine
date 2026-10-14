@@ -1,6 +1,6 @@
 ﻿#include "Application.h"
 
-DEFINE_LOG_CATEGORY(LogModelViewer);
+#include "Ensure.h"
 
 std::filesystem::path GetExecutableDirectory()
 {

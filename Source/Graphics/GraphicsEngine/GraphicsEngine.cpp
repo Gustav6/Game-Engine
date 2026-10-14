@@ -75,7 +75,7 @@ bool GraphicsEngine::Initialize(HWND aWindowHandle, const std::filesystem::path&
 {
 	if (!std::filesystem::exists(aContentRoot))
 	{
-		GELOG(Fatal, "Content root dir is not a valid path! Provided root was {}.", aContentRoot.string());
+		spdlog::critical("Content root dir is not a valid path! Provided root was {}.", aContentRoot.string());
 		return false;
 	}
 
@@ -83,7 +83,7 @@ bool GraphicsEngine::Initialize(HWND aWindowHandle, const std::filesystem::path&
 	
 	if (!std::filesystem::exists(myShaderRoot))
 	{
-		GELOG(Fatal, "Shader root dir is not a valid path! Provided root was {}.", myShaderRoot.string());
+		spdlog::critical("Shader root dir is not a valid path! Provided root was {}.", myShaderRoot.string());
 		return false;
 	}
 
@@ -179,8 +179,6 @@ FrameStats GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const S
 
 	FrameStats frameStats;
 
-	// TODO : Cull objects that are outside the provided cameras frustum
-
 	{
 		inoutCommandList.BeginEvent("Clear Backbuffers");
 
@@ -246,7 +244,7 @@ FrameStats GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const S
 				{
 					case MaterialBlendMode::None:
 					{
-						GELOG(Error, "Mesh {} has a invalid Material Blend Mode setting!", drawCall.Mesh->GetName());
+						spdlog::error("Mesh {} has a invalid Material Blend Mode setting!", drawCall.Mesh->GetName());
 						break;
 					}
 					case MaterialBlendMode::Opaque:
@@ -261,7 +259,7 @@ FrameStats GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const S
 					}
 					default:
 					{
-						GELOG(Error, "Mesh {} has a invalid Material Blend Mode setting!", drawCall.Mesh->GetName());
+						spdlog::error("Mesh {} has a invalid Material Blend Mode setting!", drawCall.Mesh->GetName());
 						break;
 					}
 				}
@@ -370,6 +368,7 @@ FrameStats GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const S
 		myScreenSpaceRenderPass->Execute(inoutCommandList, screenSpaceItems, targets, context);
 	}
 
+	frameStats.PipelineSwitches = inoutCommandList.GetPipelineSwitcheCounter();
 	return frameStats;
 }
 
@@ -513,6 +512,7 @@ bool GraphicsEngine::InitializeRenderResources()
 
 		if (!myRHI->CreateSampler(samplerDesc, *sampler))
 		{
+			spdlog::critical("Failed to create Trilinear Wrap sampler!");
 			return false;
 		}
 
@@ -533,6 +533,7 @@ bool GraphicsEngine::InitializeRenderResources()
 
 		if (!myRHI->CreateSampler(samplerDesc, *sampler))
 		{
+			spdlog::critical("Failed to create Shadow sampler!");
 			return false;
 		}
 
@@ -552,6 +553,7 @@ bool GraphicsEngine::InitializeRenderResources()
 
 		if (!myRHI->CreateSampler(samplerDesc, *sampler))
 		{
+			spdlog::critical("Failed to create LUT sampler!");
 			return false;
 		}
 
@@ -570,6 +572,7 @@ bool GraphicsEngine::InitializeRenderResources()
 
 		if (!myRHI->CreateSampler(samplerDesc, *sampler))
 		{
+			spdlog::critical("Failed to create Trilinear Clamp sampler!");
 			return false;
 		}
 
@@ -591,7 +594,7 @@ bool GraphicsEngine::InitializeRenderResources()
 
 		if (!myRHI->CreatePipelineStateObject(lutPSODesc, lutPSO))
 		{
-			GELOG(Error, "Failed to create LUT pipeline state object!");
+			spdlog::critical("Failed to create LUT pipeline state object!");
 			return false;
 		}
 
@@ -599,7 +602,7 @@ bool GraphicsEngine::InitializeRenderResources()
 
 		if (!myRHI->CreateTexture("BRDF_LUT", 512, 512, 1, ResourceFormat::R16G16_FLOAT, ResourceBindFlag_ShaderResource | ResourceBindFlag_RenderTarget, *myLUTTexture))
 		{
-			GELOG(Error, "Failed to create BRDF LUT texture!");
+			spdlog::critical("Failed to create BRDF LUT texture!");
 			return false;
 		}
 
@@ -607,7 +610,7 @@ bool GraphicsEngine::InitializeRenderResources()
 
 		if (!myRHI->CreateCommandList("LUT Init", initCommandList))
 		{
-			GELOG(Error, "Failed to create LUT init command list!");
+			spdlog::critical("Failed to create LUT init command list!");
 			return false;
 		}
 
@@ -627,7 +630,7 @@ bool GraphicsEngine::InitializeRenderResources()
 
 		if (!myRHI->CreateTexture("HDRBuffer", clientSize.x, clientSize.y, 1, ResourceFormat::R16G16B16A16_FLOAT, ResourceBindFlag_ShaderResource | ResourceBindFlag_RenderTarget, *myHDRBuffer))
 		{
-			GELOG(Error, "Failed to create HDR buffer texture!");
+			spdlog::critical("Failed to create HDR buffer texture!");
 			return false;
 		}
 	}

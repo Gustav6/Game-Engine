@@ -10,10 +10,6 @@
 
 #include "Logger/Logger.h"
 
-DECLARE_LOG_CATEGORY_WITH_NAME(LogSprite, SPRITE, Verbose);
-
-DEFINE_LOG_CATEGORY(LogSprite);
-
 const SpriteSharedData& SpriteAsset::GetData() const
 {
 	return *myData;
@@ -25,7 +21,7 @@ bool SpriteAsset::Load(const std::filesystem::path& aPath)
 
 	if (!GraphicsEngine::Get().CreateTexture(aPath, myData->Texture))
 	{
-		LOG(LogSprite, Error, "Could not create a sprite texture for {}!", aPath.string());
+		spdlog::error("Could not create a sprite texture for {}!", aPath.string());
 		return false;
 	}
 

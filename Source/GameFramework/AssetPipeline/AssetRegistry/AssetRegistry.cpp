@@ -14,8 +14,6 @@
 #include "ensure.h"
 #include "tgafbx/Importer.h"
 
-DEFINE_LOG_CATEGORY(LogAssetRegistry);
-
 AssetRegistry& AssetRegistry::Get()
 {
     static AssetRegistry myInstance;
@@ -40,7 +38,7 @@ bool AssetRegistry::Initialize(std::filesystem::path aWorkingDirectory)
 
     if (!std::filesystem::exists(myWorkingDirectory))
     {
-        LOG(LogAssetRegistry, Fatal, "Content root dir is not a valid path! Provided root was {}.", aWorkingDirectory.string());
+        spdlog::critical("Content root dir is not a valid path! Provided root was {}.", aWorkingDirectory.string());
         return false;
     }
 

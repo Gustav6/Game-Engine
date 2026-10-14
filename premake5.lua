@@ -8,6 +8,9 @@ workspace "GameProject"
     cppdialect "C++20"
     systemversion "latest"
     toolset "v145"
+    
+    defines { "SPDLOG_COMPILED_LIB", "FMT_UNICODE=0" }
+    externalwarnings "Off"
 
 filter { "platforms:x64" }
     system "Windows"

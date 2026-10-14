@@ -1,6 +1,8 @@
 #include "GraphicsEngine.pch.h"
 #include "GraphicsResourceFactory.h"
 
+#include <fstream>
+
 #include "GraphicsEngine/RHI/RenderHardwareInterface.h"
 
 #include "JsonWrapper.h"
@@ -21,7 +23,7 @@ bool GraphicsResourceFactory::CreateTexture(RenderHardwareInterface& aRHI, const
 {
 	if (!std::filesystem::exists(aPath))
 	{
-		GELOG(Error, "Failed to load Texture {}! File not found!", aPath.string());
+		spdlog::error("Failed to load Texture {}! File not found!", aPath.string());
 		return false;
 	}
 
@@ -29,7 +31,7 @@ bool GraphicsResourceFactory::CreateTexture(RenderHardwareInterface& aRHI, const
 
 	if (!file)
 	{
-		GELOG(Error, "Failed to load Texture {}! Could not open file!", aPath.string());
+		spdlog::error("Failed to load Texture {}! Could not open file!", aPath.string());
 		return false;
 	}
 
@@ -49,7 +51,7 @@ bool GraphicsResourceFactory::CreateFontAsset(RenderHardwareInterface& aRHI, con
 
 	if (!fontData.IsValid())
 	{
-		GELOG(Error, "Failed to read font JSON [{}]!", aFontPath.string());
+		spdlog::error("Failed to read font JSON [{}]!", aFontPath.string());
 		return false;
 	}
 
@@ -57,7 +59,7 @@ bool GraphicsResourceFactory::CreateFontAsset(RenderHardwareInterface& aRHI, con
 
 	if (!atlasSettings.IsValid())
 	{
-		GELOG(Error, "Font JSON is missing [atlas]!");
+		spdlog::error("Font JSON is missing [atlas]!");
 		return false;
 	}
 
@@ -68,7 +70,7 @@ bool GraphicsResourceFactory::CreateFontAsset(RenderHardwareInterface& aRHI, con
 
 	if (!metricsSettings.IsValid())
 	{
-		GELOG(Error, "Font JSON is missing [metrics]!");
+		spdlog::error("Font JSON is missing [metrics]!");
 		return false;
 	}
 
@@ -80,7 +82,7 @@ bool GraphicsResourceFactory::CreateFontAsset(RenderHardwareInterface& aRHI, con
 
 	if (glyphs.empty())
 	{
-		GELOG(Error, "Font JSON contains no glyphs [{}]!", aFontPath.string());
+		spdlog::error("Font JSON contains no glyphs [{}]!", aFontPath.string());
 		return false;
 	}
 

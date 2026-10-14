@@ -1,5 +1,8 @@
 ﻿#include "GraphicsEngine.pch.h"
 #include "MaterialShaderIncludeHandler.h"
+
+#include <fstream>
+
 #include "d3dcompiler.h"
 
 using namespace Microsoft::WRL;

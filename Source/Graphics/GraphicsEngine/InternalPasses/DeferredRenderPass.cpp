@@ -60,7 +60,7 @@ bool DeferredRenderPass::Initialize(RenderHardwareInterface& aRHI)
 
 		if (!aRHI.CreatePipelineStateObject(deferredDirLightDesc, *myDeferredAmbientPSO))
 		{
-			GELOG(Error, "Failed to create deferred ambient light pipeline state object!");
+			spdlog::critical("Failed to create deferred ambient light pipeline state object!");
 			return false;
 		}
 	}
@@ -80,7 +80,7 @@ bool DeferredRenderPass::Initialize(RenderHardwareInterface& aRHI)
 
 		if (!aRHI.CreatePipelineStateObject(deferredDirLightDesc, *myDeferredDirPSO))
 		{
-			GELOG(Error, "Failed to create deferred directional light pipeline state object!");
+			spdlog::critical("Failed to create deferred directional light pipeline state object!");
 			return false;
 		}
 	}
@@ -100,7 +100,7 @@ bool DeferredRenderPass::Initialize(RenderHardwareInterface& aRHI)
 
 		if (!aRHI.CreatePipelineStateObject(deferredSpotLightDesc, *myDeferredSpotPSO))
 		{
-			GELOG(Error, "Failed to create deferred spot light pipeline state object!");
+			spdlog::critical("Failed to create deferred spot light pipeline state object!");
 			return false;
 		}
 	}
@@ -120,7 +120,7 @@ bool DeferredRenderPass::Initialize(RenderHardwareInterface& aRHI)
 
 		if (!aRHI.CreatePipelineStateObject(deferredPointLightDesc, *myDeferredPointPSO))
 		{
-			GELOG(Error, "Failed to create deferred point light pipeline state object!");
+			spdlog::critical("Failed to create deferred point light pipeline state object!");
 			return false;
 		}
 	}

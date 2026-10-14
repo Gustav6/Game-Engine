@@ -111,7 +111,7 @@ bool DrawCallSubmitter::PrepareMeshForRendering(const Mesh& aMesh, RenderHardwar
 	{
 		if (!aRHI.CreateVertexBuffer(aMesh.myName, aMesh.myVertices, aMesh.myVertexBuffer))
 		{
-			GELOG(Warning, "Could not prepare mesh {}! Vertex Buffer could not be created!", aMesh.myName);
+			spdlog::warn("Could not prepare mesh {}! Vertex Buffer could not be created!", aMesh.myName);
 			return false;
 		}
 	}
@@ -120,7 +120,7 @@ bool DrawCallSubmitter::PrepareMeshForRendering(const Mesh& aMesh, RenderHardwar
 	{
 		if (!aRHI.CreateIndexBuffer(aMesh.myName, aMesh.myIndices, aMesh.myIndexBuffer))
 		{
-			GELOG(Warning, "Could not prepare mesh {}! Index Buffer could not be created!", aMesh.myName);
+			spdlog::warn("Could not prepare mesh {}! Index Buffer could not be created!", aMesh.myName);
 			return false;
 		}
 	}

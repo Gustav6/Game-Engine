@@ -1,12 +1,8 @@
 #include "JsonWrapper.h"
 
-#include "yyjson.h"
+#include "yyjson/yyjson.h"
 
 #include "Logger/Logger.h"
-
-DECLARE_LOG_CATEGORY_WITH_NAME(JSONLog, JSON, Verbose);
-
-DEFINE_LOG_CATEGORY(JSONLog);
 
 JsonData::JsonData()
 {
@@ -22,7 +18,7 @@ JsonData::JsonData(const std::filesystem::path& aJsonPath)
 
 	if (!std::filesystem::exists(aJsonPath))
 	{
-		LOG(JSONLog, Error, "File does not exist [{}]!", aJsonPath.string());
+		spdlog::error("File does not exist [{}]!", aJsonPath.string());
 		return;
 	}
 
@@ -32,7 +28,7 @@ JsonData::JsonData(const std::filesystem::path& aJsonPath)
 
 	if (error.code)
 	{
-		LOG(JSONLog, Error, "Could not read json [{}]! Error [{}] : [{}] at position: [{}]!", aJsonPath.string(), error.code, error.msg, error.pos);
+		spdlog::error("Could not read json [{}]! Error [{}] : [{}] at position: [{}]!", aJsonPath.string(), error.code, error.msg, error.pos);
 		return;
 	}
 
@@ -64,13 +60,13 @@ bool JsonData::GetBool(const char* aName) const
 
 	if (data == nullptr)
 	{
-		LOG(JSONLog, Warning, "Key [{}] not found in [{}]!", aName, myPath.string());
+		spdlog::warn("Key [{}] not found in [{}]!", aName, myPath.string());
 		return false;
 	}
 
 	if (!yyjson_is_bool(data))
 	{
-		LOG(JSONLog, Warning, "Key [{}] exists but is not a bool, type: [{}] in [{}]!", aName, yyjson_get_type_desc(data), myPath.string());
+		spdlog::warn("Key [{}] exists but is not a bool, type: [{}] in [{}]!", aName, yyjson_get_type_desc(data), myPath.string());
 		return false;
 	}
 
@@ -83,13 +79,13 @@ int JsonData::GetInt(const char* aName) const
 
 	if (data == nullptr)
 	{
-		LOG(JSONLog, Warning, "Key [{}] not found in [{}]!", aName, myPath.string());
+		spdlog::warn("Key [{}] not found in [{}]!", aName, myPath.string());
 		return 0;
 	}
 
 	if (!yyjson_is_int(data))
 	{
-		LOG(JSONLog, Warning, "Key [{}] exists but is not a int, type: [{}] in [{}]!", aName, yyjson_get_type_desc(data), myPath.string());
+		spdlog::warn("Key [{}] exists but is not a int, type: [{}] in [{}]!", aName, yyjson_get_type_desc(data), myPath.string());
 		return 0;
 	}
 
@@ -102,13 +98,13 @@ unsigned int JsonData::GetUnsigned(const char* aName) const
 
 	if (data == nullptr)
 	{
-		LOG(JSONLog, Warning, "Key [{}] not found in [{}]!", aName, myPath.string());
+		spdlog::warn("Key [{}] not found in [{}]!", aName, myPath.string());
 		return 0;
 	}
 
 	if (!yyjson_is_uint(data))
 	{
-		LOG(JSONLog, Warning, "Key [{}] exists but is not a int, type: [{}] in [{}]!", aName, yyjson_get_type_desc(data), myPath.string());
+		spdlog::warn("Key [{}] exists but is not an unsigned int, type: [{}] in [{}]!", aName, yyjson_get_type_desc(data), myPath.string());
 		return 0;
 	}
 
@@ -121,13 +117,13 @@ float JsonData::GetFloat(const char* aName) const
 
 	if (data == nullptr)
 	{
-		LOG(JSONLog, Warning, "Key [{}] not found in [{}]!", aName, myPath.string());
+		spdlog::warn("Key [{}] not found in [{}]!", aName, myPath.string());
 		return 0.0f;
 	}
 
 	if (!yyjson_is_num(data))
 	{
-		LOG(JSONLog, Warning, "Key [{}] exists but is not a float / double, type: [{}] in [{}]!", aName, yyjson_get_type_desc(data), myPath.string());
+		spdlog::warn("Key [{}] exists but is not a float / double, type: [{}] in [{}]!", aName, yyjson_get_type_desc(data), myPath.string());
 		return 0.0f;
 	}
 
@@ -140,13 +136,13 @@ double JsonData::GetDouble(const char* aName) const
 
 	if (data == nullptr)
 	{
-		LOG(JSONLog, Warning, "Key [{}] not found in [{}]!", aName, myPath.string());
+		spdlog::warn("Key [{}] not found in [{}]!", aName, myPath.string());
 		return 0.0f;
 	}
 
 	if (!yyjson_is_num(data))
 	{
-		LOG(JSONLog, Warning, "Key [{}] exists but is not a double, type: [{}] in [{}]!", aName, yyjson_get_type_desc(data), myPath.string());
+		spdlog::warn("Key [{}] exists but is not a double, type: [{}] in [{}]!", aName, yyjson_get_type_desc(data), myPath.string());
 		return 0.0f;
 	}
 
@@ -159,13 +155,13 @@ std::string JsonData::GetString(const char* aName) const
 
 	if (data == nullptr)
 	{
-		LOG(JSONLog, Warning, "Key [{}] not found in [{}]!", aName, myPath.string());
+		spdlog::warn("Key [{}] not found in [{}]!", aName, myPath.string());
 		return "";
 	}
 
 	if (!yyjson_is_str(data))
 	{
-		LOG(JSONLog, Warning, "Key [{}] exists but is not a string, type: [{}] in [{}]!", aName, yyjson_get_type_desc(data), myPath.string());
+		spdlog::warn("Key [{}] exists but is not a string, type: [{}] in [{}]!", aName, yyjson_get_type_desc(data), myPath.string());
 		return "";
 	}
 
@@ -178,14 +174,14 @@ JsonData JsonData::GetObjectValue(const char* aName) const
 
 	if (object == nullptr)
 	{
-		LOG(JSONLog, Warning, "Key [{}] not found in [{}]!", aName, myPath.string());
+		spdlog::warn("Key [{}] not found in [{}]!", aName, myPath.string());
 
 		return JsonData();
 	}
 
 	if (!yyjson_is_obj(object))
 	{
-		LOG(JSONLog, Warning, "Key [{}] exists but is not an object, type: [{}] in [{}]!", aName, yyjson_get_type_desc(object), myPath.string());
+		spdlog::warn("Key [{}] exists but is not an object, type: [{}] in [{}]!", aName, yyjson_get_type_desc(object), myPath.string());
 
 		return JsonData();
 	}
@@ -201,13 +197,13 @@ std::vector<bool> JsonData::GetBoolArray(const char* aName) const
 
 	if (data == nullptr)
 	{
-		LOG(JSONLog, Warning, "Key [{}] not found in [{}]!", aName, myPath.string());
+		spdlog::warn("Key [{}] not found in [{}]!", aName, myPath.string());
 		return values;
 	}
 
 	if (!yyjson_is_arr(data))
 	{
-		LOG(JSONLog, Warning, "Key [{}] is not an array in [{}]!", aName, myPath.string());
+		spdlog::warn("Key [{}] is not an array in [{}]!", aName, myPath.string());
 		return values;
 	}
 
@@ -222,7 +218,7 @@ std::vector<bool> JsonData::GetBoolArray(const char* aName) const
 		}
 		else
 		{
-			LOG(JSONLog, Warning, "Array [{}] contains a non-bool value in [{}]!", aName, myPath.string());
+			spdlog::warn("Array [{}] contains a non-bool value in [{}]!", aName, myPath.string());
 		}
 	}
 
@@ -237,13 +233,13 @@ std::vector<int> JsonData::GetIntArray(const char* aName) const
 
 	if (data == nullptr)
 	{
-		LOG(JSONLog, Warning, "Key [{}] not found in [{}]!", aName, myPath.string());
+		spdlog::warn("Key [{}] not found in [{}]!", aName, myPath.string());
 		return values;
 	}
 
 	if (!yyjson_is_arr(data))
 	{
-		LOG(JSONLog, Warning, "Key [{}] is not an array in [{}]!", aName, myPath.string());
+		spdlog::warn("Key [{}] is not an array in [{}]!", aName, myPath.string());
 		return values;
 	}
 
@@ -258,7 +254,7 @@ std::vector<int> JsonData::GetIntArray(const char* aName) const
 		}
 		else
 		{
-			LOG(JSONLog, Warning, "Array [{}] contains a non-integer value in [{}]!", aName, myPath.string());
+			spdlog::warn("Array [{}] contains a non-integer value in [{}]!", aName, myPath.string());
 		}
 	}
 
@@ -273,13 +269,13 @@ std::vector<unsigned int> JsonData::GetUnsignedArray(const char* aName) const
 
 	if (data == nullptr)
 	{
-		LOG(JSONLog, Warning, "Key [{}] not found in [{}]!", aName, myPath.string());
+		spdlog::warn("Key [{}] not found in [{}]!", aName, myPath.string());
 		return values;
 	}
 
 	if (!yyjson_is_arr(data))
 	{
-		LOG(JSONLog, Warning, "Key [{}] is not an array in [{}]!", aName, myPath.string());
+		spdlog::warn("Key [{}] is not an array in [{}]!", aName, myPath.string());
 		return values;
 	}
 
@@ -294,7 +290,7 @@ std::vector<unsigned int> JsonData::GetUnsignedArray(const char* aName) const
 		}
 		else
 		{
-			LOG(JSONLog, Warning, "Array [{}] contains a non-integer value in [{}]!", aName, myPath.string());
+			spdlog::warn("Array [{}] contains a non-unsigned-integer value in [{}]!", aName, myPath.string());
 		}
 	}
 
@@ -309,13 +305,13 @@ std::vector<float> JsonData::GetFloatArray(const char* aName) const
 
 	if (data == nullptr)
 	{
-		LOG(JSONLog, Warning, "Key [{}] not found in [{}]!", aName, myPath.string());
+		spdlog::warn("Key [{}] not found in [{}]!", aName, myPath.string());
 		return values;
 	}
 
 	if (!yyjson_is_arr(data))
 	{
-		LOG(JSONLog, Warning, "Key [{}] is not an array in [{}]!", aName, myPath.string());
+		spdlog::warn("Key [{}] is not an array in [{}]!", aName, myPath.string());
 		return values;
 	}
 
@@ -330,7 +326,7 @@ std::vector<float> JsonData::GetFloatArray(const char* aName) const
 		}
 		else
 		{
-			LOG(JSONLog, Warning, "Array [{}] contains a non-float / double value in [{}]!", aName, myPath.string());
+			spdlog::warn("Array [{}] contains a non-float / double value in [{}]!", aName, myPath.string());
 		}
 	}
 
@@ -345,13 +341,13 @@ std::vector<double> JsonData::GetDoubleArray(const char* aName) const
 
 	if (data == nullptr)
 	{
-		LOG(JSONLog, Warning, "Key [{}] not found in [{}]!", aName, myPath.string());
+		spdlog::warn("Key [{}] not found in [{}]!", aName, myPath.string());
 		return values;
 	}
 
 	if (!yyjson_is_arr(data))
 	{
-		LOG(JSONLog, Warning, "Key [{}] is not an array in [{}]!", aName, myPath.string());
+		spdlog::warn("Key [{}] is not an array in [{}]!", aName, myPath.string());
 		return values;
 	}
 
@@ -366,7 +362,7 @@ std::vector<double> JsonData::GetDoubleArray(const char* aName) const
 		}
 		else
 		{
-			LOG(JSONLog, Warning, "Array [{}] contains a non-double value in [{}]!", aName, myPath.string());
+			spdlog::warn("Array [{}] contains a non-double value in [{}]!", aName, myPath.string());
 		}
 	}
 
@@ -381,13 +377,13 @@ std::vector<std::string> JsonData::GetStringArray(const char* aName) const
 
 	if (data == nullptr)
 	{
-		LOG(JSONLog, Warning, "Key [{}] not found in [{}]!", aName, myPath.string());
+		spdlog::warn("Key [{}] not found in [{}]!", aName, myPath.string());
 		return values;
 	}
 
 	if (!yyjson_is_arr(data))
 	{
-		LOG(JSONLog, Warning, "Key [{}] is not an array in [{}]!", aName, myPath.string());
+		spdlog::warn("Key [{}] is not an array in [{}]!", aName, myPath.string());
 		return values;
 	}
 
@@ -402,7 +398,7 @@ std::vector<std::string> JsonData::GetStringArray(const char* aName) const
 		}
 		else
 		{
-			LOG(JSONLog, Warning, "Array [{}] contains a non-string value in [{}]!", aName, myPath.string());
+			spdlog::warn("Array [{}] contains a non-string value in [{}]!", aName, myPath.string());
 		}
 	}
 
@@ -417,13 +413,13 @@ std::vector<JsonData> JsonData::GetObjectValueArray(const char* aName) const
 
 	if (data == nullptr)
 	{
-		LOG(JSONLog, Warning, "Key [{}] not found in [{}]!", aName, myPath.string());
+		spdlog::warn("Key [{}] not found in [{}]!", aName, myPath.string());
 		return values;
 	}
 
 	if (!yyjson_is_arr(data))
 	{
-		LOG(JSONLog, Warning, "Key [{}] is not an array in [{}]!", aName, myPath.string());
+		spdlog::warn("Key [{}] is not an array in [{}]!", aName, myPath.string());
 		return values;
 	}
 
@@ -440,7 +436,7 @@ std::vector<JsonData> JsonData::GetObjectValueArray(const char* aName) const
 		}
 		else
 		{
-			LOG(JSONLog, Warning, "Array [{}] contains a non-object value in [{}]!", aName, myPath.string());
+			spdlog::warn("Array [{}] contains a non-object value in [{}]!", aName, myPath.string());
 		}
 	}
 
@@ -579,7 +575,7 @@ JsonWriter::JsonWriter(const std::filesystem::path& aDestination)
 
 	myDocument = yyjson_mut_doc_new(NULL);
 
-	if (myDocument != nullptr) 
+	if (myDocument != nullptr)
 	{
 		myRoot = yyjson_mut_obj(myDocument);
 
@@ -587,6 +583,14 @@ JsonWriter::JsonWriter(const std::filesystem::path& aDestination)
 		{
 			yyjson_mut_doc_set_root(myDocument, myRoot);
 		}
+		else
+		{
+			spdlog::error("Could not create root object for json [{}]!", myDestination.string());
+		}
+	}
+	else
+	{
+		spdlog::error("Could not create json document for [{}]!", myDestination.string());
 	}
 }
 
@@ -607,24 +611,25 @@ bool JsonWriter::IsValid() const
 
 void JsonWriter::Save()
 {
-	if (myDocument == nullptr) 
+	if (myDocument == nullptr)
 	{
+		spdlog::error("Cannot save json [{}], document is invalid!", myDestination.string());
 		return;
 	}
-	
+
 	yyjson_mut_val* object = yyjson_mut_doc_get_root(myDocument);
 
 	yyjson_mut_obj_iter iter;
 	yyjson_mut_obj_iter_init(object, &iter);
-	yyjson_mut_val *key, *val;
-	while ((key = yyjson_mut_obj_iter_next(&iter))) 
+	yyjson_mut_val* key, * val;
+	while ((key = yyjson_mut_obj_iter_next(&iter)))
 	{
 		val = yyjson_mut_obj_iter_get_val(key);
 
-		if (yyjson_mut_is_null(val)) 
+		if (yyjson_mut_is_null(val))
 		{
+			spdlog::warn("Removing null value for key [{}] when saving [{}]!", yyjson_mut_get_str(key), myDestination.string());
 			yyjson_mut_obj_iter_remove(&iter);
-			// TODO: Log here
 		}
 	}
 
@@ -634,7 +639,7 @@ void JsonWriter::Save()
 	{
 		if (error.code)
 		{
-			LOG(JSONLog, Error, "Could not write json [{}]! Error [{}] : [{}]!", myDestination.string(), error.code, error.msg);
+			spdlog::error("Could not write json [{}]! Error [{}] : [{}]!", myDestination.string(), error.code, error.msg);
 		}
 	}
 }
@@ -648,7 +653,7 @@ void JsonWriter::Clear()
 
 	myDocument = yyjson_mut_doc_new(nullptr);
 
-	if (myDocument != nullptr) 
+	if (myDocument != nullptr)
 	{
 		myRoot = yyjson_mut_obj(myDocument);
 
@@ -656,14 +661,14 @@ void JsonWriter::Clear()
 		{
 			yyjson_mut_doc_set_root(myDocument, myRoot);
 		}
-		else 
+		else
 		{
-			// TODO: Log here
+			spdlog::error("Could not create root object for json [{}]!", myDestination.string());
 		}
 	}
-	else 
+	else
 	{
-		// TODO: Log here
+		spdlog::error("Could not create json document for [{}]!", myDestination.string());
 	}
 }
 

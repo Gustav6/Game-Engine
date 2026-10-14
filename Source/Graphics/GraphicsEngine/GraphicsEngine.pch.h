@@ -31,12 +31,4 @@
 #include "Ensure.h"
 #include "StringHelpers.h"
 
-#if _DEBUG
-DECLARE_LOG_CATEGORY_WITH_NAME(LogGraphicsEngine, GraphicsEngine, Verbose);
-#else
-DECLARE_LOG_CATEGORY_WITH_NAME(LogGraphicsEngine, GraphicsEngine, Warning);
-#endif
-
-#define GELOG(Verbosity, Message, ...) LOG(LogGraphicsEngine, Verbosity, Message, ##__VA_ARGS__)
-
 #endif //PCH_H

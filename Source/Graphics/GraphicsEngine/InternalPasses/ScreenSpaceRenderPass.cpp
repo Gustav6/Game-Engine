@@ -72,7 +72,7 @@ bool ScreenSpaceRenderPass::Initialize(RenderHardwareInterface& aRHI)
 
 		if (!aRHI.CreatePipelineStateObject(fontPSODesc, *myFontPSO))
 		{
-			GELOG(Error, "Failed to create Font pipeline state object!");
+			spdlog::critical("Failed to create Font pipeline state object!");
 			return false;
 		}
 	}
@@ -92,7 +92,7 @@ bool ScreenSpaceRenderPass::Initialize(RenderHardwareInterface& aRHI)
 
 		if (!aRHI.CreatePipelineStateObject(spritePSODesc, *mySpritePSO))
 		{
-			GELOG(Error, "Failed to create Sprite pipeline state object!");
+			spdlog::critical("Failed to create Sprite pipeline state object!");
 			return false;
 		}
 	}

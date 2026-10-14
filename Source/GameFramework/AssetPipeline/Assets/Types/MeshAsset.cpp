@@ -24,10 +24,6 @@
 
 #include "Logger/Logger.h"
 
-DECLARE_LOG_CATEGORY_WITH_NAME(LogMesh, MESH, Verbose);
-
-DEFINE_LOG_CATEGORY(LogMesh);
-
 MeshAsset::MeshAsset()
 {
     myMesh = std::make_unique<Mesh>();
@@ -55,27 +51,27 @@ bool MeshAsset::Load(const std::filesystem::path& aPath)
         {
             case TGA::FBX::FbxImportResult::InternalError:
             {
-                LOG(LogMesh, Error, "Could not load mesh [{}] : Internal FBX importer error!", pathString);
+                spdlog::error("Could not load mesh [{}] : Internal FBX importer error!", pathString);
                 break;
             }
             case TGA::FBX::FbxImportResult::NotInitialized:
             {
-                LOG(LogMesh, Error, "Could not load mesh [{}] : FBX importer is not initialized!", pathString);
+                spdlog::error("Could not load mesh [{}] : FBX importer is not initialized!", pathString);
                 break;
             }
             case TGA::FBX::FbxImportResult::FileNotFound:
             {
-                LOG(LogMesh, Error, "Could not load mesh [{}] : File was not found!", pathString);
+                spdlog::error("Could not load mesh [{}] : File was not found!", pathString);
                 break;
             }
             case TGA::FBX::FbxImportResult::NoMeshData:
             {
-                LOG(LogMesh, Error, "Could not load mesh [{}] : No mesh data found in file!", pathString);
+                spdlog::error("Could not load mesh [{}] : No mesh data found in file!", pathString);
                 break;
             }
             default:
             {
-                LOG(LogMesh, Error, "Could not load mesh [{}] : Unknown error!", pathString);
+                spdlog::error("Could not load mesh [{}] : Unknown error!", pathString);
                 break;
             }
         }
@@ -93,37 +89,37 @@ bool MeshAsset::Load(const std::filesystem::path& aPath)
             {
                 case TGA::FBX::FbxImportWarning::TooManySkinWeights:
                 {
-                    LOG(LogMesh, Warning, "Mesh [{}] : Vertices had too many skin weights and were truncated!", pathString);
+                    spdlog::warn("Mesh [{}] : Vertices had too many skin weights and were truncated!", pathString);
                     break;
                 }
                 case TGA::FBX::FbxImportWarning::MissingSkinWeights:
                 {
-                    LOG(LogMesh, Warning, "Mesh [{}] : Vertices are missing skin weights!", pathString);
+                    spdlog::warn("Mesh [{}] : Vertices are missing skin weights!", pathString);
                     break;
                 }
                 case TGA::FBX::FbxImportWarning::NoUVCoordinates:
                 {
-                    LOG(LogMesh, Warning, "Mesh [{}] : Surfaces have no UV coordinates!", pathString);
+                    spdlog::warn("Mesh [{}] : Surfaces have no UV coordinates!", pathString);
                     break;
                 }
                 case TGA::FBX::FbxImportWarning::GenerateNormalsFailed:
                 {
-                    LOG(LogMesh, Warning, "Mesh [{}] : Failed to generate normals for surfaces!", pathString);
+                    spdlog::warn("Mesh [{}] : Failed to generate normals for surfaces!", pathString);
                     break;
                 }
                 case TGA::FBX::FbxImportWarning::CannotTriangulate:
                 {
-                    LOG(LogMesh, Warning, "Mesh [{}] : Could not triangulate polygons!", pathString);
+                    spdlog::warn("Mesh [{}] : Could not triangulate polygons!", pathString);
                     break;
                 }
                 case TGA::FBX::FbxImportWarning::DuplicateBoneNames:
                 {
-                    LOG(LogMesh, Warning, "Mesh [{}] : Duplicate bone names detected!", pathString);
+                    spdlog::warn("Mesh [{}] : Duplicate bone names detected!", pathString);
                     break;
                 }
                 default:
                 {
-                    LOG(LogMesh, Warning, "Mesh [{}] : Unknown warning!", pathString);
+                    spdlog::warn("Mesh [{}] : Unknown warning!", pathString);
                     break;
                 }
             }

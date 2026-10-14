@@ -63,11 +63,15 @@ public:
 	bool IsOverrideActive(PipelineStages aOverride) const;
 	void ClearOverridePipelineState();
 
+	unsigned int GetPipelineSwitcheCounter() const;
+
 private:
 	std::unique_ptr<PipelineStateObject> myOverridePipelineState;
-	PipelineStages myCurrentOverrides = PipelineStage_None;
+	PipelineStages myCurrentOverrides;
 
 	std::string myName;
+
+	mutable unsigned int myPipelineSwitcheCounter;
 
 	Microsoft::WRL::ComPtr<struct ID3D11DeviceContext> myContext;
 	Microsoft::WRL::ComPtr<struct ID3D11CommandList> myCommandList;

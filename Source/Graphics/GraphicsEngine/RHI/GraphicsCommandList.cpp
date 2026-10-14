@@ -8,11 +8,12 @@
 
 #include "PipelineStateObject.h"
 
-DECLARE_LOG_CATEGORY_WITH_NAME(CmdLog, CommandList, Verbose);
+GraphicsCommandList::GraphicsCommandList()
+{
+	myCurrentOverrides = PipelineStage_None;
+	myPipelineSwitcheCounter = 0;
+}
 
-DEFINE_LOG_CATEGORY(CmdLog);
-
-GraphicsCommandList::GraphicsCommandList() = default;
 GraphicsCommandList::~GraphicsCommandList() = default;
 
 GraphicsCommandList::GraphicsCommandList(GraphicsCommandList&& aOther) noexcept
@@ -48,6 +49,8 @@ void GraphicsCommandList::FinishCommandList()
 void GraphicsCommandList::ResetCommandList()
 {
 	myCommandList.Reset();
+
+	myPipelineSwitcheCounter = 0;
 }
 
 void GraphicsCommandList::ClearRenderTarget(const Texture& aTarget) const
@@ -154,13 +157,13 @@ bool GraphicsCommandList::UpdateConstantBuffer(const Buffer& aConstantBuffer, co
 
 	if (!aConstantBuffer.IsValid() || aConstantBuffer.myType != BufferType::ConstantBuffer)
 	{
-		LOG(CmdLog, Error, "Failed to update constant buffer! Buffer is either null or invalid type!");
+		spdlog::error("Failed to update constant buffer! Buffer is either null or invalid type!");
 		return false;
 	}
 
 	if (aBufferDataSize > aConstantBuffer.mySize)
 	{
-		LOG(CmdLog, Error, "Failed to update constant buffer {}! Data provided is larger than buffer capacity!", aConstantBuffer.myName);
+		spdlog::error("Failed to update constant buffer {}! Data provided is larger than buffer capacity!", aConstantBuffer.myName);
 		return false;
 	}
 
@@ -170,7 +173,7 @@ bool GraphicsCommandList::UpdateConstantBuffer(const Buffer& aConstantBuffer, co
 
 	if (FAILED(result))
 	{
-		LOG(CmdLog, Error, "Failed to update constant buffer {}! Failed to map buffer!", aConstantBuffer.myName);
+		spdlog::error("Failed to update constant buffer {}! Failed to map buffer!", aConstantBuffer.myName);
 		return false;
 	}
 
@@ -184,19 +187,19 @@ bool GraphicsCommandList::UpdateVertexBuffer(const Buffer& aVertexBuffer, const 
 {
 	if (!aVertexBuffer.IsValid() )
 	{
-		LOG(CmdLog, Error, "Failed to update Vertex buffer! Buffer is either null!");
+		spdlog::error("Failed to update Vertex buffer! Buffer is either null!");
 		return false;
 	}
 
 	if (aVertices.empty())
 	{
-		LOG(CmdLog, Error, "Failed to update Vertex buffer {}! Data provided is larger than buffer capacity!", aVertexBuffer.myName);
+		spdlog::error("Failed to update Vertex buffer {}! Data provided is larger than buffer capacity!", aVertexBuffer.myName);
 		return false;
 	}
 
 	if (aVertexBuffer.myType != BufferType::VertexBuffer)
 	{
-		LOG(CmdLog, Error, "Failed to update Vertex buffer! Buffer  invalid type!");
+		spdlog::error("Failed to update Vertex buffer! Buffer  invalid type!");
 		return false;
 	}
 
@@ -285,6 +288,8 @@ void GraphicsCommandList::SetPipelineStateObject(const PipelineStateObject& aPSO
 {
 	ensure(!IsReadyForExecution());
 
+	myPipelineSwitcheCounter++;
+
 	if (IsOverrideActive(PipelineStage_VertexShader))
 	{
 		myContext->VSSetShader(myOverridePipelineState->myVertexShader.Get(), nullptr, 0);
@@ -341,7 +346,7 @@ void GraphicsCommandList::SetShaderResource(const Texture* aTexture, unsigned in
 {
 	if (aTexture == nullptr)
 	{
-		LOG(CmdLog, Error, "Tried to bind a shader resource which was null!");
+		spdlog::error("Tried to bind a shader resource which was null!");
 		return;
 	}
 
@@ -349,7 +354,7 @@ void GraphicsCommandList::SetShaderResource(const Texture* aTexture, unsigned in
 
 	if (srv == nullptr)
 	{
-		LOG(CmdLog, Error, "Tried to bind a shader resource with a null SRV!");
+		spdlog::error("Tried to bind a shader resource with a null SRV!");
 		return;
 	}
 
@@ -485,4 +490,9 @@ void GraphicsCommandList::ClearOverridePipelineState()
 {
 	myOverridePipelineState = nullptr;
 	myCurrentOverrides = PipelineStage_None;
+}
+
+unsigned int GraphicsCommandList::GetPipelineSwitcheCounter() const
+{
+	return myPipelineSwitcheCounter;
 }

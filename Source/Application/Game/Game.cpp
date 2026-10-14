@@ -56,7 +56,7 @@ bool Game::Initialize(SIZE aWindowSize, WNDPROC aWindowProcess, LPCWSTR aWindowT
 	// TODO: Read or create a settings json file.
 	// Should contain vsync flag and content directory.
 
-	std::filesystem::path workingDirectory = GetExecutableDirectory().parent_path().parent_path() / "Content";;
+	std::filesystem::path workingDirectory = GetExecutableDirectory().parent_path() / "Content";;
 
 	AssetRegistry::Get().RegisterAssetType<MeshAsset>({ ".fbx" });
 	AssetRegistry::Get().RegisterAssetType<AnimationAsset>({ ".fbx" });
@@ -67,7 +67,7 @@ bool Game::Initialize(SIZE aWindowSize, WNDPROC aWindowProcess, LPCWSTR aWindowT
 
 	if (!AssetRegistry::Get().Initialize(workingDirectory))
 	{
-		return false;
+		throw std::runtime_error("AssetRegistry failed to initialize!");
 	}
 
 	Application.InputManager.SetWindowHandle(myMainWindowHandle);
@@ -102,17 +102,17 @@ bool Game::Initialize(SIZE aWindowSize, WNDPROC aWindowProcess, LPCWSTR aWindowT
 		nullptr
 	);
 
-	MVLOG(Log, "Ready!");
+	spdlog::info("Ready!");
 
 	// Graphics Init
 	{
-		MVLOG(Log, "Initializing Graphics Engine...");
+		spdlog::info("Initializing Graphics Engine...");
 
 		GraphicsEngine& GE = GraphicsEngine::Get();
 
 		if (!GE.Initialize(myMainWindowHandle, workingDirectory))
 		{
- 			return false;
+			throw std::runtime_error("Graphics Engine failed to initialize!");
 		}
 
 #ifdef IMGUI_ENABLE

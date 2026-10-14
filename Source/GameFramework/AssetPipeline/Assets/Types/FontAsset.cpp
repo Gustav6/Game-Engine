@@ -9,10 +9,6 @@
 
 #include "Logger/Logger.h"
 
-DECLARE_LOG_CATEGORY_WITH_NAME(LogFont, FONT, Verbose);
-
-DEFINE_LOG_CATEGORY(LogFont);
-
 const Font& FontAsset::GetFont() const
 {
 	return *myFont;
@@ -46,7 +42,7 @@ bool FontAsset::Load(const std::filesystem::path& aPath)
 
 	if (!GraphicsEngine::Get().CreateFontAsset(fontPath, atlasPath, *myFont))
 	{
-		LOG(LogFont, Error, "Failed to create font [{}]!", aPath.string());
+		spdlog::error("Failed to create font [{}]!", aPath.string());
 
 		return false;
 	}

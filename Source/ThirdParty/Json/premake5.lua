@@ -15,7 +15,7 @@ project "Json"
     }
 
     externalincludedirs {
-        "%{wks.location}/ThirdParty/Source/yyjson",
+        "%{wks.location}/ThirdParty/Source"
     }
     
     files { 

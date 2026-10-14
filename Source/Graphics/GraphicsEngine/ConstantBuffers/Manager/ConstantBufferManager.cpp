@@ -18,26 +18,32 @@ bool ConstantBufferManager::Initialize(RenderHardwareInterface& aRHI)
 {
 	if (!CreateConstantBuffer<FrameBuffer>(aRHI, ConstantBuffer::FrameBuffer, "FrameBuffer"))
 	{
+		spdlog::critical("Failed to create Frame Buffer!");
 		return false;
 	}
 	if (!CreateConstantBuffer<ObjectBuffer>(aRHI, ConstantBuffer::ObjectBuffer, "ObjectBuffer"))
 	{
+		spdlog::critical("Failed to create Object Buffer!");
 		return false;
 	}
 	if (!CreateConstantBuffer<AnimationBuffer>(aRHI, ConstantBuffer::AnimationBuffer, "AnimationBuffer"))
 	{
+		spdlog::critical("Failed to create Animation Buffer!");
 		return false;
 	}
 	if (!CreateConstantBuffer<LightBuffer>(aRHI, ConstantBuffer::LightBuffer, "LightBuffer"))
 	{
+		spdlog::critical("Failed to create Light Buffer!");
 		return false;
 	}
 	if (!CreateConstantBuffer<CascadeBuffer>(aRHI, ConstantBuffer::CascadeBuffer, "CascadeBuffer"))
 	{
+		spdlog::critical("Failed to create Cascade Buffer!");
 		return false;
 	}
 	if (!CreateConstantBuffer(aRHI, ConstantBuffer::MaterialBuffer, "MaterialBuffer", Material::MATERIAL_BUFFER_SIZE))
 	{
+		spdlog::critical("Failed to create Material Buffer!");
 		return false;
 	}
 
@@ -62,7 +68,7 @@ bool ConstantBufferManager::UpdateAndSetConstantBuffer(GraphicsCommandList& inou
 {
 	if (!myConstantBuffers.contains(aBufferID))
 	{
-		GELOG(Warning, "Requested constant buffer update failed because this buffer does not exist!");
+		spdlog::warn("Requested constant buffer update failed because this buffer does not exist!");
 		return false;
 	}
 

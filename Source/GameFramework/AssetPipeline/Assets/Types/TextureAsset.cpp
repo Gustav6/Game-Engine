@@ -9,12 +9,6 @@
 
 #include "Logger/Logger.h"
 
-DECLARE_LOG_CATEGORY_WITH_NAME(LogTexture, TEXTURE, Verbose);
-
-DEFINE_LOG_CATEGORY(LogTexture);
-
-#include "Logger/Logger.h"
-
 TextureAsset::~TextureAsset() = default;
 
 const std::shared_ptr<Texture>& TextureAsset::GetTexture() const
@@ -28,7 +22,7 @@ bool TextureAsset::Load(const std::filesystem::path& aPath)
 
     if (!GraphicsEngine::Get().CreateTexture(aPath, *myTexture))
     {
-        LOG(LogTexture, Error, "Could not create a texture for {}!", aPath.string());
+        spdlog::error("Could not create a texture for {}!", aPath.string());
         return false;
     }
 
