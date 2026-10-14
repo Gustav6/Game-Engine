@@ -74,12 +74,11 @@ void Camera::SetResolution(CommonUtilities::Vector2ui aResolution)
 
 	const float aspectRatio = static_cast<float>(myResolution.x) / static_cast<float>(myResolution.y);
 
-	const float fov = GetFovInRadians();
+	const float fov = GetFovInDegrees();
 
 	myFrustum = CommonUtilities::Frustum<float>(fov, myNearPlane, myFarPlane, aspectRatio);
 
 	myProjection = CommonUtilities::Matrix4x4f::CreatePerspectiveProjection(fov, myNearPlane, myFarPlane, aspectRatio);
-
 }
 
 CommonUtilities::Vector2ui Camera::GetResolution() const

@@ -51,6 +51,7 @@ namespace CommonUtilities
 			Vector3<T> GetUp() const;
 			Vector3<T> GetRight() const;
 			Vector3<T> GetTranslation() const;
+			Vector3<T> GetScaling() const;
 
 			Matrix4x4<T> GetInverse() const;
 			Matrix4x4<T> GetFastInverse() const;
@@ -464,6 +465,12 @@ namespace CommonUtilities
 	inline Vector3<T> Matrix4x4<T>::GetTranslation() const
 	{
 		return Vector3<T>(myData[12], myData[13], myData[14]);
+	}
+
+	template <typename T>
+	Vector3<T> Matrix4x4<T>::GetScaling() const
+	{
+		return Vector3<T>(myData[0],myData[5],myData[10]);
 	}
 
 	template<typename T>

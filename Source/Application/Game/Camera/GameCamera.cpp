@@ -14,6 +14,7 @@ GameCamera& GameCamera::GetInstance()
 void GameCamera::Init(float aHorizontalFov, float aNearPlane, float aFarPlane, CommonUtilities::Vector2ui aResolution)
 {
 	myCamera = std::make_unique<Camera>(aHorizontalFov, aNearPlane, aFarPlane, aResolution);
+	myCamera->UpdateFrustum(GetTransform().GetWorldMatrix());
 	myCamerasMoveSpeed = 400;
 }
 

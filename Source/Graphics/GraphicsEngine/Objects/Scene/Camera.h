@@ -29,7 +29,6 @@ private:
 
 	float myNearPlane;
 	float myFarPlane;
-	float myFovInDegrees;
 
 	CommonUtilities::Vector2ui myResolution;
 };

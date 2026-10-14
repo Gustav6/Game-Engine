@@ -4,6 +4,7 @@
 #include "CommonUtilities/Math/Matrix4x4.hpp"
 #include "CommonUtilities/Math/Vector3.hpp"
 #include "CommonUtilities/Math/Vector4.hpp"
+#include "CommonUtilities/Collision/Intersection.hpp"
 
 #include "Objects/Mesh/Mesh.h"
 
@@ -58,6 +59,8 @@
 #include <tracy/core/Tracy.hpp>
 
 #include "InternalPasses/DebugRenderPass.h"
+
+#include "Objects/Scene/Camera.h"
 
 GraphicsEngine::GraphicsEngine() = default;
 GraphicsEngine::~GraphicsEngine() = default;
@@ -202,6 +205,24 @@ FrameStats GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const S
 
 	for (const auto& drawCall : MeshDrawer::Get().GetMeshDrawCalls())
 	{
+		const CommonUtilities::Sphere<float>& boundingSphere = drawCall.Mesh->GetBoundingSphere();
+		const CommonUtilities::Matrix4x4f& transform = drawCall.Transform;
+
+		const CommonUtilities::Vector3f scale = transform.GetScaling();
+		const float maxScale = std::max({ scale.x, scale.y, scale.z });
+
+		const CommonUtilities::Vector4f transformedCenter = boundingSphere.GetCenter().ToXYZ1() * transform;
+
+		const CommonUtilities::Sphere<float> worldSphere(transformedCenter.ToXYZ(),boundingSphere.GetRadius() * maxScale);
+
+		if (!CommonUtilities::IntersectionSphereFrustum(worldSphere, aCamera.RenderCamera.GetFrustum()))
+		{
+			frameStats.CulledObjects++;
+			continue;
+		}
+
+		frameStats.VisibleObjects++;
+
 		for (unsigned int e = 0; e < drawCall.Mesh->myElements.size(); e++)
 		{
 			unsigned int materialIndex = drawCall.Mesh->myElements[e].MaterialIndex;
@@ -223,6 +244,11 @@ FrameStats GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const S
 			{
 				switch (material->GetBlendMode())
 				{
+					case MaterialBlendMode::None:
+					{
+						GELOG(Error, "Mesh {} has a invalid Material Blend Mode setting!", drawCall.Mesh->GetName());
+						break;
+					}
 					case MaterialBlendMode::Opaque:
 					{
 						myDeferredItems.push_back(item);

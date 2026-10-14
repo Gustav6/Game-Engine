@@ -34,7 +34,7 @@ namespace CommonUtilities
 
 		union 
 		{
-			PlaneVolume<T> planeVolume;
+			Plane<T> planes[6];
 
 			struct
 			{
@@ -64,8 +64,6 @@ namespace CommonUtilities
 		Vector3<T> GetCenterInWorldSpace(const Matrix4x4<T>& aInverseViewProjection) const;
 
 		bool IsInside(const Vector3<T>& aPoint);
-		bool IsInside(const Sphere<T>& aSphere);
-		bool IsInside(const AABB3D<T>& aAABB);
 
 	private:
 		T myFov;
@@ -168,16 +166,17 @@ namespace CommonUtilities
 		const Vector3<T> up = aCameraTransform.GetUp();
 		const Vector3<T> right = aCameraTransform.GetRight();
 
-		const T farPlaneHalfHeight = myZFar * std::tan(myFov * static_cast<T>(0.5));
-		const T farPlaneHalfWidth = farPlaneHalfHeight * myAspectRatio;
+		const T farPlaneHalfWidth = myZFar * std::tan(myFov * static_cast<T>(0.5));
+		const T farPlaneHalfHeight = farPlaneHalfWidth / myAspectRatio;
 		const Vector3<T> frontMultFar = myZFar * forward;
 
-		nearPlane	= Plane<T>(position + forward * myZNear, forward);
-		farPlane	= Plane<T>(position + forward * myZFar, -forward);
-		rightPlane	= Plane<T>(position, Vector3<T>::Cross(frontMultFar - right * farPlaneHalfWidth, up));
-		leftPlane	= Plane<T>(position, Vector3<T>::Cross(up, frontMultFar + right * farPlaneHalfWidth));
-		topPlane	= Plane<T>(position, Vector3<T>::Cross(right, frontMultFar - up * farPlaneHalfHeight));
-		bottomPlane = Plane<T>(position, Vector3<T>::Cross(frontMultFar + up * farPlaneHalfHeight, right));
+		nearPlane = Plane<T>(position + forward * myZNear, -forward);
+		farPlane = Plane<T>(position + forward * myZFar, forward);
+
+		leftPlane = Plane<T>(position, Vector3<T>::Cross(frontMultFar - right * farPlaneHalfWidth, up).GetNormalized());
+		rightPlane = Plane<T>(position, Vector3<T>::Cross(up, frontMultFar + right * farPlaneHalfWidth).GetNormalized());
+		bottomPlane = Plane<T>(position, Vector3<T>::Cross(right, frontMultFar - up * farPlaneHalfHeight).GetNormalized());
+		topPlane = Plane<T>(position, Vector3<T>::Cross(frontMultFar + up * farPlaneHalfHeight, right).GetNormalized());
 	}
 
 	template<typename T>
@@ -237,30 +236,15 @@ namespace CommonUtilities
 	template<typename T>
 	inline bool Frustum<T>::IsInside(const Vector3<T>& aPoint)
 	{
-		return planeVolume.IsInside(aPoint);
-	}
-
-	template<typename T>
-	inline bool Frustum<T>::IsInside(const Sphere<T>& aSphere)
-	{
-		for (const Plane<T>& plane : planeVolume)
+		for (int i = 0; i < 6; ++i)
 		{
-			const T distance = Vector3<T>::Dot(aSphere.GetCenter() - plane.GetPoint(), plane.GetNormal());
-
-			if (distance < -aSphere.GetRadius())
+			if (!planes[i].IsInside(aPoint))
 			{
 				return false;
 			}
 		}
 
 		return true;
-	}
-
-	// TODO: Implement this function to check if an AABB is inside the frustum
-	template<typename T>
-	inline bool Frustum<T>::IsInside(const AABB3D<T>& aAABB)
-	{
-		return false;
 	}
 }
 

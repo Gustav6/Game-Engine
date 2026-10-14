@@ -1,11 +1,12 @@
 #pragma once
 
-#include "MathUtils.hpp"
 #include "Plane.hpp"
 #include "Ray.hpp"
 #include "Sphere.hpp"
 #include "AABB3D.hpp"
-#include "PlaneVolume.hpp"
+#include "Frustum.hpp"
+
+#include "../Math/MathUtils.hpp"
 
 namespace CommonUtilities
 {
@@ -345,13 +346,13 @@ namespace CommonUtilities
 	}
 
 	template<typename T>
-	bool IntersectionSpherePlaneVolume(const Sphere<T>& aSphere, const PlaneVolume<T>& aPlaneVolume)
+	bool IntersectionSphereFrustum(const Sphere<T>& aSphere, const Frustum<T>& aFrustum)
 	{
-		for (const Plane<T>& plane : aPlaneVolume.GetPlanes())
+		for (const Plane<T>& plane : aFrustum.planes)
 		{
 			const T distance = Vector3<T>::Dot(aSphere.GetCenter() - plane.GetPoint(), plane.GetNormal());
 
-			if (distance < -aSphere.GetRadius())
+			if (distance > aSphere.GetRadius())
 			{
 				return false;
 			}
@@ -360,10 +361,113 @@ namespace CommonUtilities
 		return true;
 	}
 
-	// TODO : Implement collision method for AABB and PlaneVolume
 	template<typename T>
-	bool IntersectionAABBPlaneVolume(const AABB3D<T>& aAABB, const PlaneVolume<T>& aPlaneVolume)
+	bool IntersectionAABBFrustum(const AABB3D<T>& aAABB, const Frustum<T>& aFrustum, const Matrix4x4<T>& aInverseViewProjection)
 	{
+		// Reference:
+		// https://iquilezles.org/articles/frustumcorrect/
+
+		const Vector3<T>& aabbMin = aAABB.GetMin();
+		const Vector3<T>& aabbMax = aAABB.GetMax();
+
+		Vector3<T> corners[8] =
+		{
+			Vector3<T>(aabbMin.x, aabbMin.y, aabbMin.z),
+			Vector3<T>(aabbMax.x, aabbMin.y, aabbMin.z),
+			Vector3<T>(aabbMin.x, aabbMax.y, aabbMin.z),
+			Vector3<T>(aabbMax.x, aabbMax.y, aabbMin.z),
+			Vector3<T>(aabbMin.x, aabbMin.y, aabbMax.z),
+			Vector3<T>(aabbMax.x, aabbMin.y, aabbMax.z),
+			Vector3<T>(aabbMin.x, aabbMax.y, aabbMax.z),
+			Vector3<T>(aabbMax.x, aabbMax.y, aabbMax.z)
+		};
+
+		int out = 0;
+
+		for (const auto& plane : aFrustum.planes)
+		{
+			out = 0;
+
+			for (auto& corner : corners)
+			{
+				out += plane.IsInside(corner) ? 0 : 1;
+			}
+
+			if (out == 8)
+			{
+				return false;
+			}
+		}
+
+		std::vector<Vector4<T>> frustumCorners = aFrustum.GetCornersInWorldSpace(aInverseViewProjection);
+
+		out = 0;
+		for (const auto& corner : frustumCorners)
+		{
+			out += ((corner.x > aabbMax.x) ? 1 : 0);
+
+			if (out == 8)
+			{
+				return false;
+			}
+		}
+
+		out = 0;
+		for (const auto& corner : frustumCorners)
+		{
+			out += ((corner.x < aabbMin.x) ? 1 : 0);
+
+			if (out == 8)
+			{
+				return false;
+			}
+		}
+
+		out = 0;
+		for (const auto& corner : frustumCorners)
+		{
+			out += ((corner.y > aabbMax.y) ? 1 : 0);
+
+			if (out == 8)
+			{
+				return false;
+			}
+		}
+
+		out = 0;
+		for (const auto& corner : frustumCorners)
+		{
+			out += ((corner.y < aabbMin.y) ? 1 : 0);
+
+			if (out == 8)
+			{
+				return false;
+			}
+		}
+
+		out = 0;
+		for (const auto& corner : frustumCorners)
+		{
+			out += ((corner.z > aabbMax.z) ? 1 : 0);
+
+			if (out == 8)
+			{
+				return false;
+			}
+		}
+
+		out = 0;
+		for (const auto& corner : frustumCorners)
+		{
+			out += ((corner.z < aabbMin.z) ? 1 : 0);
+
+			if (out == 8)
+			{
+				return false;
+			}
+		}
+
 		return true;
 	}
+
 }
