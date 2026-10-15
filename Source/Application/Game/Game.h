@@ -46,10 +46,10 @@
 
 #include <memory>
 
-struct RenderScene;
-
 class GraphicsCommandList;
 class Actor;
+
+struct FrameStats;
 
 #ifdef IMGUI_ENABLE
 class ImGuiLayer;
@@ -68,6 +68,8 @@ private:
 	void LoadScene();
 	void UpdateScene(float aDeltaTime);
 	void RenderScene();
+
+	void DrawDebugSettings(const FrameStats& aFrameStats);
 
 	std::unique_ptr<GraphicsCommandList> myGraphicsCommandList;
 

@@ -46,7 +46,6 @@ struct ID3D11DeviceContext;
 
 class RenderOverlay;
 
-// TODO: Fill these stats in render
 struct FrameStats
 {
 	unsigned int DrawCallCount = 0;
@@ -74,10 +73,10 @@ public:
 	FrameStats Render(GraphicsCommandList& inoutCommandList, const SceneCamera& aCamera);
 	void Present() const;
 
-	void ToggleBloom();
+	void SetBloomEnabled(bool aBloomEnabled);
 
-	void CycleDebugRenderMode(int aDirection);
-	void CycleToNextTonemap(int aDirection);
+	void SetDebugRenderMode(DebugRenderMode aDebugRenderMode);
+	void SetTonemap(ToneMapper aToneMapper);
 
 	CommonUtilities::Vector2ui GetClientSize() const;
 

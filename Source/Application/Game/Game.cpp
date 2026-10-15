@@ -39,7 +39,7 @@
 #include "GamePipeline/Components/Registry/ComponentRegistryManager.h"
 
 #include "Camera/GameCamera.h"
-#include "GraphicsEngine/Core/RenderEnums.h"
+#include "Json/JsonWrapper.h"
 
 #include "Logger/Logger.h"
 
@@ -56,7 +56,32 @@ bool Game::Initialize(SIZE aWindowSize, WNDPROC aWindowProcess, LPCWSTR aWindowT
 	// TODO: Read or create a settings json file.
 	// Should contain vsync flag and content directory.
 
-	std::filesystem::path workingDirectory = GetExecutableDirectory().parent_path().parent_path() / "Content";;
+	//std::filesystem::path settingsPath = GetExecutableDirectory() / "Settings.json";
+
+	//if (!std::filesystem::exists(settingsPath))
+	//{
+	//	JsonWriter writer = Json::Write(settingsPath);
+
+	//	if (!writer.AddString("ContentPath", "/../Content"))
+	//	{
+	//		throw std::runtime_error("Failed to create settings file!");
+	//	}
+
+	//	writer.Save();
+	//}
+
+	//JsonData settings = Json::Read(settingsPath);
+
+	//if (settings.HasKey("ContentPath"))
+	//{
+	//	Application.ContentPath = settings.GetString("ContentPath");
+	//}
+	//else
+	//{
+	//	throw std::runtime_error("Settings has no content path set!");
+	//}
+
+	Application.ContentPath = GetExecutableDirectory().parent_path().parent_path() / "Content";
 
 	AssetRegistry::Get().RegisterAssetType<MeshAsset>({ ".fbx" });
 	AssetRegistry::Get().RegisterAssetType<AnimationAsset>({ ".fbx" });
@@ -65,7 +90,7 @@ bool Game::Initialize(SIZE aWindowSize, WNDPROC aWindowProcess, LPCWSTR aWindowT
 	AssetRegistry::Get().RegisterAssetType<FontAsset>({ ".json" });
 	AssetRegistry::Get().RegisterAssetType<SpriteAsset>({ ".dds" });
 
-	if (!AssetRegistry::Get().Initialize(workingDirectory))
+	if (!AssetRegistry::Get().Initialize(Application.ContentPath))
 	{
 		throw std::runtime_error("AssetRegistry failed to initialize!");
 	}
@@ -110,7 +135,7 @@ bool Game::Initialize(SIZE aWindowSize, WNDPROC aWindowProcess, LPCWSTR aWindowT
 
 		GraphicsEngine& GE = GraphicsEngine::Get();
 
-		if (!GE.Initialize(myMainWindowHandle, workingDirectory))
+		if (!GE.Initialize(myMainWindowHandle, Application.ContentPath))
 		{
 			throw std::runtime_error("Graphics Engine failed to initialize!");
 		}
@@ -193,127 +218,9 @@ int Game::Run()
 			};
 
 			FrameStats frameStats = GE.Render(*myGraphicsCommandList, camera);
-			
-#ifdef IMGUI_ENABLE
-			ImGui::PushFont(nullptr, 28.0f);
-			ImGui::Begin("Debug");
-
-			if (ImGui::CollapsingHeader("Frame Info", ImGuiTreeNodeFlags_DefaultOpen))
-			{
-				ImGui::Text("FPS: %.1f", ImGui::GetIO().Framerate);
-				ImGui::Text("DrawCallCount: %u", frameStats.DrawCallCount);
-				ImGui::Text("PipelineSwitches: %u", frameStats.PipelineSwitches);
-				ImGui::Text("VisibleObjects: %u", frameStats.VisibleObjects);
-				ImGui::Text("CulledObjects: %u", frameStats.CulledObjects);
-			}
-
-			if (ImGui::CollapsingHeader("Settings", ImGuiTreeNodeFlags_DefaultOpen))
-			{
-				RenderSettings settings = GraphicsEngine::Get().GetSettings();
-
-				switch (settings.DebugRenderMode)
-				{
-					case DebugRenderMode::None:
-					{
-						ImGui::Text("DebugRenderMode: None");
-						break;
-					}
-					case DebugRenderMode::sRGB:
-					{
-						ImGui::Text("DebugRenderMode: SRGB");
-						break;
-					}
-					case DebugRenderMode::Roughness:
-					{
-						ImGui::Text("DebugRenderMode: Roughness");
-						break;
-					}
-					case DebugRenderMode::Metalness:
-					{
-						ImGui::Text("DebugRenderMode: Metalness");
-						break;
-					}
-					case DebugRenderMode::AmbientOcclusionTexture:
-					{
-						ImGui::Text("DebugRenderMode: AO (Texture)");
-						break;
-					}
-					case DebugRenderMode::AmbientOcclusionScreenSpace:
-					{
-						ImGui::Text("DebugRenderMode: AO (Screen Space)");
-						break;
-					}
-					case DebugRenderMode::NormalsTangentSpace:
-					{
-						ImGui::Text("DebugRenderMode: Normals (Tangent Space)");
-						break;
-					}
-					case DebugRenderMode::NormalsWorldSpace:
-					{
-						ImGui::Text("DebugRenderMode: Normals (World Space)");
-						break;
-					}
-					case DebugRenderMode::Shadows:
-					{
-						ImGui::Text("DebugRenderMode: Shadows");
-						break;
-					}
-					default:
-					{
-						break;
-					}
-				}
-
-				switch (settings.ToneMapper)
-				{
-					case ToneMapper::None:
-					{
-						ImGui::Text("ToneMapper: None");
-						break;
-					}
-					case ToneMapper::Aces:
-					{
-						ImGui::Text("ToneMapper: Aces");
-						break;
-					}
-					case ToneMapper::Lottes:
-					{
-						ImGui::Text("ToneMapper: Lottes");
-						break;
-					}
-					case ToneMapper::Unreal:
-					{
-						ImGui::Text("ToneMapper: Unreal");
-						break;
-					}
-					default:
-					{
-						break;
-					}
-				}
-
-				if (settings.BloomEnabled)
-				{
-					ImGui::Text("Bloom: Enabled");
-				}
-				else
-				{
-					ImGui::Text("Bloom: Disabled");
-				}
-
-				if (settings.VSyncEnabled)
-				{
-					ImGui::Text("VSync: Enabled");
-				}
-				else
-				{
-					ImGui::Text("VSync: Disabled");
-				}
-			}
-
-			ImGui::End();
-			ImGui::PopFont();
-#endif
+		
+			DrawDebugSettings(frameStats);
+	
 			myGraphicsCommandList->FinishCommandList();
 
 			GE.ExecuteCommandList(*myGraphicsCommandList);
@@ -591,19 +498,40 @@ void Game::UpdateScene(float aDeltaTime)
 
 	if (Application.InputManager.IsKeyPressed(KeyCode::F5))
 	{
-		GraphicsEngine::Get().CycleDebugRenderMode(-1);
+		int nextDebugRenderMode = static_cast<int>(GraphicsEngine::Get().GetSettings().DebugRenderMode) - 1;
+
+		if (nextDebugRenderMode < 0)
+		{
+			nextDebugRenderMode = static_cast<int>(DebugRenderMode::MAX) - 1;
+		}
+
+		GraphicsEngine::Get().SetDebugRenderMode(static_cast<DebugRenderMode>(nextDebugRenderMode));
 	}
 	if (Application.InputManager.IsKeyPressed(KeyCode::F6))
 	{
-		GraphicsEngine::Get().CycleDebugRenderMode(1);
+		int nextDebugRenderMode = static_cast<int>(GraphicsEngine::Get().GetSettings().DebugRenderMode) + 1;
+
+		if (nextDebugRenderMode >= static_cast<int>(DebugRenderMode::MAX))
+		{
+			nextDebugRenderMode = 0;
+		}
+
+		GraphicsEngine::Get().SetDebugRenderMode(static_cast<DebugRenderMode>(nextDebugRenderMode));
 	}
 	if (Application.InputManager.IsKeyPressed(KeyCode::F7))
 	{
-		GraphicsEngine::Get().CycleToNextTonemap(1);
+		int nextToneMappingOperator = static_cast<int>(GraphicsEngine::Get().GetSettings().ToneMapper) + 1;
+
+		if (nextToneMappingOperator >= static_cast<int>(ToneMapper::MAX))
+		{
+			nextToneMappingOperator = 0;
+		}
+
+		GraphicsEngine::Get().SetTonemap(static_cast<ToneMapper>(nextToneMappingOperator));
 	}
 	if (Application.InputManager.IsKeyPressed(KeyCode::F8))
 	{
-		GraphicsEngine::Get().ToggleBloom();
+		GraphicsEngine::Get().SetBloomEnabled(!GraphicsEngine::Get().GetSettings().BloomEnabled);
 	}
 
 	if (Application.InputManager.IsKeyReleased(KeyCode::Escape))
@@ -615,4 +543,88 @@ void Game::UpdateScene(float aDeltaTime)
 void Game::RenderScene()
 {
 	GameWorld::Get().Render();
+}
+
+void Game::DrawDebugSettings(const FrameStats& aFrameStats)
+{
+#ifdef IMGUI_ENABLE
+	ImGui::PushFont(nullptr, 18.0f);
+	ImGui::Begin("Debug");
+
+	if (ImGui::CollapsingHeader("Frame Info", ImGuiTreeNodeFlags_DefaultOpen))
+	{
+		ImGui::Text("FPS: %.1f", ImGui::GetIO().Framerate);
+		ImGui::Text("DrawCallCount: %u", aFrameStats.DrawCallCount);
+		ImGui::Text("PipelineSwitches: %u", aFrameStats.PipelineSwitches);
+		ImGui::Text("VisibleObjects: %u", aFrameStats.VisibleObjects);
+		ImGui::Text("CulledObjects: %u", aFrameStats.CulledObjects);
+	}
+
+	if (ImGui::CollapsingHeader("Settings", ImGuiTreeNodeFlags_DefaultOpen))
+	{
+		RenderSettings settings = GraphicsEngine::Get().GetSettings();
+
+		const char* debugRenderModes[] =
+		{
+			"None",
+			"sRGB",
+			"Roughness",
+			"Metalness",
+			"AO (Texture)",
+			"AO (Screen Space)",
+			"Normals (Tangent Space)",
+			"Normals (World Space)",
+			"Shadows"
+		};
+
+		int debugRenderMode = static_cast<int>(settings.DebugRenderMode);
+
+		if (ImGui::Combo("Debug Render Mode", &debugRenderMode, debugRenderModes,IM_ARRAYSIZE(debugRenderModes)))
+		{
+			settings.DebugRenderMode = static_cast<DebugRenderMode>(debugRenderMode);
+
+			GraphicsEngine::Get().SetSettings(settings);
+		}
+
+		ImGui::Separator();
+
+		const char* toneMappers[] =
+		{
+			"None",
+			"ACES",
+			"Lottes",
+			"Unreal"
+		};
+
+		int toneMapper = static_cast<int>(settings.ToneMapper);
+
+		if (ImGui::Combo("Tone Mapper", &toneMapper, toneMappers,IM_ARRAYSIZE(toneMappers)))
+		{
+			settings.ToneMapper = static_cast<ToneMapper>(toneMapper);
+
+			GraphicsEngine::Get().SetSettings(settings);
+		}
+
+		ImGui::Separator();
+
+		bool bloomEnabled = settings.BloomEnabled;
+
+		if (ImGui::Checkbox("Bloom", &bloomEnabled))
+		{
+			settings.BloomEnabled = bloomEnabled;
+			GraphicsEngine::Get().SetSettings(settings);
+		}
+
+		bool vsyncEnabled = settings.VSyncEnabled;
+
+		if (ImGui::Checkbox("VSync", &vsyncEnabled))
+		{
+			settings.VSyncEnabled = vsyncEnabled;
+			GraphicsEngine::Get().SetSettings(settings);
+		}
+	}
+
+	ImGui::End();
+	ImGui::PopFont();
+#endif
 }

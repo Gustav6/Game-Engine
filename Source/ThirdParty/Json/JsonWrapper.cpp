@@ -699,7 +699,7 @@ bool JsonWriter::AddDouble(const char* aKey, double aValue) const
 
 bool JsonWriter::AddString(const char* aKey, const std::string& aValue) const
 {
-	return yyjson_mut_obj_add_str(myDocument, myRoot, aKey, aValue.c_str());
+	return yyjson_mut_obj_add_strn(myDocument, myRoot, aKey, aValue.data(), aValue.size());
 }
 
 const std::filesystem::path& JsonWriter::GetDestination() const

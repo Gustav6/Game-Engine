@@ -392,42 +392,20 @@ void GraphicsEngine::Present() const
 	myRHI->Present();
 }
 
-void GraphicsEngine::ToggleBloom()
+void GraphicsEngine::SetBloomEnabled(bool aBloomEnabled)
 {
-	myRenderSettings.BloomEnabled = !myRenderSettings.BloomEnabled;
+	myRenderSettings.BloomEnabled = aBloomEnabled;
 	myScreenSpaceEffectPass->SetBloomStatus(myRenderSettings.BloomEnabled);
 }
 
-void GraphicsEngine::CycleDebugRenderMode(int aDirection)
+void GraphicsEngine::SetDebugRenderMode(DebugRenderMode aDebugRenderMode)
 {
-	int nextDebugRenderMode = static_cast<int>(myRenderSettings.DebugRenderMode) + aDirection;
-
-	if (nextDebugRenderMode >= static_cast<int>(DebugRenderMode::MAX))
-	{
-		nextDebugRenderMode = 0;
-	}
-	else if (nextDebugRenderMode < 0)
-	{
-		nextDebugRenderMode = static_cast<int>(DebugRenderMode::MAX) - 1;
-	}
-
-	myRenderSettings.DebugRenderMode = static_cast<DebugRenderMode>(nextDebugRenderMode);
+	myRenderSettings.DebugRenderMode = aDebugRenderMode;
 }
 
-void GraphicsEngine::CycleToNextTonemap(int aDirection)
+void GraphicsEngine::SetTonemap(ToneMapper aToneMapper)
 {
-	int nextToneMappingOperator = static_cast<int>(myRenderSettings.ToneMapper) + aDirection;
-
-	if (nextToneMappingOperator >= static_cast<int>(ToneMapper::MAX))
-	{
-		nextToneMappingOperator = 0;
-	}
-	else if (nextToneMappingOperator < 0)
-	{
-		nextToneMappingOperator = static_cast<int>(ToneMapper::MAX) - 1;
-	}
-
-	myRenderSettings.ToneMapper = static_cast<ToneMapper>(nextToneMappingOperator);
+	myRenderSettings.ToneMapper = aToneMapper;
 }
 
 CommonUtilities::Vector2ui GraphicsEngine::GetClientSize() const
@@ -500,7 +478,9 @@ void GraphicsEngine::ClearRenderOverlay()
 
 void GraphicsEngine::SetSettings(const RenderSettings& aSettings)
 {
-	myRenderSettings = aSettings;
+	SetBloomEnabled(aSettings.BloomEnabled);
+	SetDebugRenderMode(aSettings.DebugRenderMode);
+	SetTonemap(aSettings.ToneMapper);
 }
 
 const RenderSettings& GraphicsEngine::GetSettings() const

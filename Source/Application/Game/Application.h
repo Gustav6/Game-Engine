@@ -12,6 +12,7 @@ struct ApplicationData
 	CommonUtilities::Input InputManager;
 	CommonUtilities::Timer TimeManager;
 	WindowManager WindowManager;
+	std::filesystem::path ContentPath;
 };
 
 inline ApplicationData Application;
