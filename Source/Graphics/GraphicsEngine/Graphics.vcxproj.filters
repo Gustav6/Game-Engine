@@ -155,6 +155,9 @@
     <ClInclude Include="InternalOperations\DDSTextureLoader11.h">
       <Filter>InternalOperations</Filter>
     </ClInclude>
+    <ClInclude Include="InternalOperations\PostProcessFilters.h">
+      <Filter>InternalOperations</Filter>
+    </ClInclude>
     <ClInclude Include="InternalPasses\DebugRenderPass.h">
       <Filter>InternalPasses</Filter>
     </ClInclude>
@@ -307,6 +310,9 @@
     <ClCompile Include="GraphicsEngine.cpp" />
     <ClCompile Include="GraphicsEngine.pch.cpp" />
     <ClCompile Include="InternalOperations\DDSTextureLoader11.cpp">
+      <Filter>InternalOperations</Filter>
+    </ClCompile>
+    <ClCompile Include="InternalOperations\PostProcessFilters.cpp">
       <Filter>InternalOperations</Filter>
     </ClCompile>
     <ClCompile Include="InternalPasses\DebugRenderPass.cpp">

@@ -40,21 +40,19 @@ float4 main(FullscreenVertex aInput) : SV_TARGET
     Light light = LB_Lights[0];
     
     float3 radiance = float3(0, 0, 0);
-    float pixelDistance = length(worldPositionPixel.xyz - FB_CameraPosition);
-
     uint cascadeIndex;
                 
-    if (pixelDistance < CB_CascadeFarPlanes.x)
+    if (normalPixel.w < CB_CascadeFarPlanes.x)
     {
         //radiance = float3(1, 0, 0);
         cascadeIndex = 0;
     }
-    else if (pixelDistance < CB_CascadeFarPlanes.y)
+    else if (normalPixel.w < CB_CascadeFarPlanes.y)
     {
         //radiance = float3(0, 1, 0);
         cascadeIndex = 1;
     }
-    else if (pixelDistance < CB_CascadeFarPlanes.z)
+    else if (normalPixel.w < CB_CascadeFarPlanes.z)
     {
         //radiance = float3(0, 0, 1);
         cascadeIndex = 2;

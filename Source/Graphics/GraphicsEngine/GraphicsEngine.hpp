@@ -29,6 +29,7 @@ class ScreenSpaceRenderPass;
 class ShadowRenderPass;
 class ScreenSpaceEffectPass;
 class DebugRenderPass;
+class PostProcessFilters;
 
 struct RenderItem;
 struct SceneCamera;
@@ -114,6 +115,7 @@ private:
 	std::unique_ptr<RenderHardwareInterface> myRHI;
 
 	std::unique_ptr<BuiltinAssets> myBuiltinAssets;
+	std::unique_ptr<PostProcessFilters> myPostProcessFilters;
 	std::unique_ptr<MaterialShaderRegistry> myMaterialShaderRegistry;
 	std::unique_ptr<ConstantBufferManager> myConstantBufferManager;
 

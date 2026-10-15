@@ -58,6 +58,8 @@
 
 #include <tracy/core/Tracy.hpp>
 
+#include "InternalOperations/PostProcessFilters.h"
+
 #include "InternalPasses/DebugRenderPass.h"
 
 #include "Objects/Scene/Camera.h"
@@ -103,6 +105,13 @@ bool GraphicsEngine::Initialize(HWND aWindowHandle, const std::filesystem::path&
 	myBuiltinAssets = std::make_unique<BuiltinAssets>();
 
 	if (!myBuiltinAssets->Initialize(*this, *myRHI))
+	{
+		return false;
+	}
+
+	myPostProcessFilters = std::make_unique<PostProcessFilters>();
+
+	if (!myPostProcessFilters->Initialize(*myRHI))
 	{
 		return false;
 	}
@@ -334,6 +343,7 @@ FrameStats GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const S
 		.ConstantBuffers = myConstantBufferManager.get(),
 		.RHI = myRHI.get(),
 		.BuiltinAssets = myBuiltinAssets.get(),
+		.PostProcessFilters = myPostProcessFilters.get(),
 		.Camera = &aCamera,
 		.RenderSettings = &myRenderSettings,
 		.CascadeShadows = &myShadowRenderPass->GetCascades()
@@ -341,8 +351,6 @@ FrameStats GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const S
 		
 	myShadowRenderPass->Execute(inoutCommandList, myShadowItems, context);
 
-	//// TODO: Run SSAO Before Lights
-	
 	inoutCommandList.BeginEvent("Main Pass");
 	{
 		FrameTargets targets =
@@ -368,7 +376,8 @@ FrameStats GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const S
 		myScreenSpaceRenderPass->Execute(inoutCommandList, screenSpaceItems, targets, context);
 	}
 
-	frameStats.PipelineSwitches = inoutCommandList.GetPipelineSwitcheCounter();
+	frameStats.PipelineSwitches = inoutCommandList.GetPipelineSwitchCount();
+	frameStats.DrawCallCount = inoutCommandList.GetDrawCallCount();
 	return frameStats;
 }
 

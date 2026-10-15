@@ -63,7 +63,8 @@ public:
 	bool IsOverrideActive(PipelineStages aOverride) const;
 	void ClearOverridePipelineState();
 
-	unsigned int GetPipelineSwitcheCounter() const;
+	unsigned int GetPipelineSwitchCount() const;
+	unsigned int GetDrawCallCount() const;
 
 private:
 	std::unique_ptr<PipelineStateObject> myOverridePipelineState;
@@ -71,7 +72,8 @@ private:
 
 	std::string myName;
 
-	mutable unsigned int myPipelineSwitcheCounter;
+	mutable unsigned int myPipelineSwitchCounter;
+	mutable unsigned int myDrawCallCounter;
 
 	Microsoft::WRL::ComPtr<struct ID3D11DeviceContext> myContext;
 	Microsoft::WRL::ComPtr<struct ID3D11CommandList> myCommandList;

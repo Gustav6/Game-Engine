@@ -8,6 +8,8 @@ Texture2D GBufferMaterial : register(t2);
 Texture2D GBufferEmission : register(t3);
 Texture2D GBufferWorldPosition : register(t4);
 
+Texture2D SSAO_Texture : register(t97);
+
 float4 main(FullscreenVertex aInput) : SV_TARGET
 {
     const float4 albedoPixel = GBufferAlbedo.Sample(TrilinearClamp, aInput.UV);
@@ -22,18 +24,19 @@ float4 main(FullscreenVertex aInput) : SV_TARGET
     {
         return albedoPixel;
     }
-    
+
     const float4 normalPixel = GBufferWorldNormalDepth.Sample(TrilinearClamp, aInput.UV);
     const float4 materialPixel = GBufferMaterial.Sample(TrilinearClamp, aInput.UV);
     const float4 worldPositionPixel = GBufferWorldPosition.Sample(TrilinearClamp, aInput.UV);
     const float4 emissionPixel = GBufferEmission.Sample(TrilinearClamp, aInput.UV);
     
+    const float ssaoPixel = SSAO_Texture.Sample(TrilinearClamp, aInput.UV);
+    
+    //float occlusion = min(materialPixel.r, ssaoPixel);
+
     float occlusion = materialPixel.r;
     float roughness = materialPixel.g;
     float metalness = materialPixel.b;
-    
-    // This is used later in the course: 
-    // const float4 vertexNormalPixel = GBufferVertexNormal.Sample ( TrilinearClamp , input.UV ); 
     
     const float3 specularColor = lerp((float3) 0.04f, albedoPixel.rgb, metalness);
     const float3 diffuseColor = lerp((float3) 0.00f, albedoPixel.rgb, 1 - metalness);

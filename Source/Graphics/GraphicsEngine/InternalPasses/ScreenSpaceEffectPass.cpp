@@ -30,29 +30,11 @@
 
 #include <tracy/core/Tracy.hpp>
 
+#include "InternalOperations/PostProcessFilters.h"
+
 bool ScreenSpaceEffectPass::Initialize(RenderHardwareInterface& aRHI)
 {
 	myBloomEnabled = true;
-
-	// SSAO PSO
-	{
-		PipelineStateDescription SSAOPSODesc = {};
-		SSAOPSODesc.Name = "SSAOPSO";
-		SSAOPSODesc.BlendMode = BlendMode::Opaque;
-		SSAOPSODesc.Topology = Topology::TriangleStrip;
-		SSAOPSODesc.VertexShader.ByteCode = INTERNAL_Fullscreen_VS_ByteCode;
-		SSAOPSODesc.VertexShader.ByteCodeSize = sizeof(INTERNAL_Fullscreen_VS_ByteCode);
-		SSAOPSODesc.PixelShader.ByteCode = INTERNAL_SSAO_PS_ByteCode;
-		SSAOPSODesc.PixelShader.ByteCodeSize = sizeof(INTERNAL_SSAO_PS_ByteCode);
-
-		mySSAOPSO = std::make_unique<PipelineStateObject>();
-
-		if (!aRHI.CreatePipelineStateObject(SSAOPSODesc, *mySSAOPSO))
-		{
-			spdlog::critical("Failed to create SSAO pipeline state object!");
-			return false;
-		}
-	}
 
 	// Tonemap PSO
 	{
@@ -74,26 +56,6 @@ bool ScreenSpaceEffectPass::Initialize(RenderHardwareInterface& aRHI)
 		}
 	}
 
-	// Resample PSO
-	{
-		PipelineStateDescription resamplePSODesc = {};
-		resamplePSODesc.Name = "ResamplePSO";
-		resamplePSODesc.BlendMode = BlendMode::Opaque;
-		resamplePSODesc.Topology = Topology::TriangleStrip;
-		resamplePSODesc.VertexShader.ByteCode = INTERNAL_Fullscreen_VS_ByteCode;
-		resamplePSODesc.VertexShader.ByteCodeSize = sizeof(INTERNAL_Fullscreen_VS_ByteCode);
-		resamplePSODesc.PixelShader.ByteCode = INTERNAL_Resample_PS_ByteCode;
-		resamplePSODesc.PixelShader.ByteCodeSize = sizeof(INTERNAL_Resample_PS_ByteCode);
-
-		myResamplePSO = std::make_unique<PipelineStateObject>();
-
-		if (!aRHI.CreatePipelineStateObject(resamplePSODesc, *myResamplePSO))
-		{
-			spdlog::critical("Failed to create Resample pipeline state object!");
-			return false;
-		}
-	}
-
 	// Scene Luminance PSO
 	{
 		PipelineStateDescription sceneLuminancePSODesc = {};
@@ -110,46 +72,6 @@ bool ScreenSpaceEffectPass::Initialize(RenderHardwareInterface& aRHI)
 		if (!aRHI.CreatePipelineStateObject(sceneLuminancePSODesc, *myLuminancePSO))
 		{
 			spdlog::critical("Failed to create Scene Luminance pipeline state object!");
-			return false;
-		}
-	}
-
-	// Gaussian blur horizontal PSO
-	{
-		PipelineStateDescription gaussianBlurPSODesc = {};
-		gaussianBlurPSODesc.Name = "GaussianBlurPSO";
-		gaussianBlurPSODesc.BlendMode = BlendMode::Opaque;
-		gaussianBlurPSODesc.Topology = Topology::TriangleStrip;
-		gaussianBlurPSODesc.VertexShader.ByteCode = INTERNAL_Fullscreen_VS_ByteCode;
-		gaussianBlurPSODesc.VertexShader.ByteCodeSize = sizeof(INTERNAL_Fullscreen_VS_ByteCode);
-		gaussianBlurPSODesc.PixelShader.ByteCode = INTERNAL_GaussianBlurH_PS_ByteCode;
-		gaussianBlurPSODesc.PixelShader.ByteCodeSize = sizeof(INTERNAL_GaussianBlurH_PS_ByteCode);
-
-		myGaussianBlurHorizontalPSO = std::make_unique<PipelineStateObject>();
-
-		if (!aRHI.CreatePipelineStateObject(gaussianBlurPSODesc, *myGaussianBlurHorizontalPSO))
-		{
-			spdlog::critical("Failed to create Gaussian blur pipeline state object!");
-			return false;
-		}
-	}
-
-	// Gaussian blur vertical PSO
-	{
-		PipelineStateDescription gaussianBlurPSODesc = {};
-		gaussianBlurPSODesc.Name = "GaussianBlurPSO";
-		gaussianBlurPSODesc.BlendMode = BlendMode::Opaque;
-		gaussianBlurPSODesc.Topology = Topology::TriangleStrip;
-		gaussianBlurPSODesc.VertexShader.ByteCode = INTERNAL_Fullscreen_VS_ByteCode;
-		gaussianBlurPSODesc.VertexShader.ByteCodeSize = sizeof(INTERNAL_Fullscreen_VS_ByteCode);
-		gaussianBlurPSODesc.PixelShader.ByteCode = INTERNAL_GaussianBlurV_PS_ByteCode;
-		gaussianBlurPSODesc.PixelShader.ByteCodeSize = sizeof(INTERNAL_GaussianBlurV_PS_ByteCode);
-
-		myGaussianBlurVerticalPSO = std::make_unique<PipelineStateObject>();
-
-		if (!aRHI.CreatePipelineStateObject(gaussianBlurPSODesc, *myGaussianBlurVerticalPSO))
-		{
-			spdlog::critical("Failed to create Gaussian blur pipeline state object!");
 			return false;
 		}
 	}
@@ -314,89 +236,16 @@ void ScreenSpaceEffectPass::BloomPass(
 	}
 	inoutCommandList.EndEvent();
 
-	inoutCommandList.BeginEvent("Downsample Half Size");
-	{
-		inoutCommandList.SetRenderTarget(myResampleHalfSize.get(), nullptr);
+	aContext.PostProcessFilters->Resample(inoutCommandList, *mySceneLuminance, *myResampleHalfSize);
+	aContext.PostProcessFilters->Resample(inoutCommandList, *myResampleHalfSize, *myResampleQuarterSize1);
 
-		inoutCommandList.SetShaderResource(mySceneLuminance.get(), 0, PipelineStage_PixelShader);
-		inoutCommandList.SetPipelineStateObject(*myResamplePSO);
-		inoutCommandList.Draw(4);
-	}
-	inoutCommandList.EndEvent();
+	aContext.PostProcessFilters->BlurHorizontal(inoutCommandList, *myResampleQuarterSize1, *myBlurredTexture);
+	aContext.PostProcessFilters->BlurVertical(inoutCommandList, *myBlurredTexture, *myResampleQuarterSize2);
+	aContext.PostProcessFilters->BlurHorizontal(inoutCommandList, *myResampleQuarterSize2, *myResampleQuarterSize1);
+	aContext.PostProcessFilters->BlurVertical(inoutCommandList, *myResampleQuarterSize1, *myBlurredTexture);
 
-	inoutCommandList.BeginEvent("Downsample Quarter Size");
-	{
-		inoutCommandList.SetRenderTarget(myResampleQuarterSize1.get(), nullptr);
-
-		inoutCommandList.SetShaderResource(myResampleHalfSize.get(), 0, PipelineStage_PixelShader);
-		inoutCommandList.SetPipelineStateObject(*myResamplePSO);
-		inoutCommandList.Draw(4);
-	}
-	inoutCommandList.EndEvent();
-
-	inoutCommandList.BeginEvent("Gaussian Blur");
-	{
-		inoutCommandList.BeginEvent("Horizontal Blur");
-		{
-			inoutCommandList.SetRenderTarget(myBlurredTexture.get(), nullptr);
-
-			inoutCommandList.SetShaderResource(myResampleQuarterSize1.get(), 0, PipelineStage_PixelShader);
-			inoutCommandList.SetPipelineStateObject(*myGaussianBlurHorizontalPSO);
-			inoutCommandList.Draw(4);
-		}
-		inoutCommandList.EndEvent();
-
-		inoutCommandList.BeginEvent("Vertical Blur");
-		{
-			inoutCommandList.SetRenderTarget(myResampleQuarterSize2.get(), nullptr);
-
-			inoutCommandList.SetShaderResource(myBlurredTexture.get(), 0, PipelineStage_PixelShader);
-			inoutCommandList.SetPipelineStateObject(*myGaussianBlurVerticalPSO);
-			inoutCommandList.Draw(4);
-		}
-		inoutCommandList.EndEvent();
-
-		inoutCommandList.BeginEvent("Horizontal Blur");
-		{
-			inoutCommandList.SetRenderTarget(myResampleQuarterSize1.get(), nullptr);
-
-			inoutCommandList.SetShaderResource(myResampleQuarterSize2.get(), 0, PipelineStage_PixelShader);
-			inoutCommandList.SetPipelineStateObject(*myGaussianBlurHorizontalPSO);
-			inoutCommandList.Draw(4);
-		}
-		inoutCommandList.EndEvent();
-
-		inoutCommandList.BeginEvent("Vertical Blur");
-		{
-			inoutCommandList.SetRenderTarget(myBlurredTexture.get(), nullptr);
-
-			inoutCommandList.SetShaderResource(myResampleQuarterSize1.get(), 0, PipelineStage_PixelShader);
-			inoutCommandList.SetPipelineStateObject(*myGaussianBlurVerticalPSO);
-			inoutCommandList.Draw(4);
-		}
-		inoutCommandList.EndEvent();
-	}
-	inoutCommandList.EndEvent();
-
-	inoutCommandList.BeginEvent("Horizontal Half Size");
-	{
-		inoutCommandList.SetRenderTarget(myResampleHalfSize.get(), nullptr);
-
-		inoutCommandList.SetShaderResource(myBlurredTexture.get(), 0, PipelineStage_PixelShader);
-		inoutCommandList.SetPipelineStateObject(*myResamplePSO);
-		inoutCommandList.Draw(4);
-	}
-	inoutCommandList.EndEvent();
-
-	inoutCommandList.BeginEvent("Horizontal Full Size");
-	{
-		inoutCommandList.SetRenderTarget(myBloomTexture.get(), nullptr);
-
-		inoutCommandList.SetShaderResource(myResampleHalfSize.get(), 0, PipelineStage_PixelShader);
-		inoutCommandList.SetPipelineStateObject(*myResamplePSO);
-		inoutCommandList.Draw(4);
-	}
-	inoutCommandList.EndEvent();
+	aContext.PostProcessFilters->Resample(inoutCommandList, *myBlurredTexture, *myResampleHalfSize);
+	aContext.PostProcessFilters->Resample(inoutCommandList, *myResampleHalfSize, *myBloomTexture);
 
 	inoutCommandList.BeginEvent("Apply Bloom");
 	{

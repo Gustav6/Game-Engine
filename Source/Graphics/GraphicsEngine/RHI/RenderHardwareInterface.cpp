@@ -830,7 +830,7 @@ bool RenderHardwareInterface::CreateGBuffer(std::string_view aName, unsigned aWi
 	// If there's a mismatch you will get very strange behavior.
 	std::vector<GBufferTextureInfo> textureInfos = {
 		{ "Albedo", DXGI_FORMAT_R8G8B8A8_UNORM },
-		{ "Normal", DXGI_FORMAT_R16G16B16A16_SNORM },
+		{ "Normal", DXGI_FORMAT_R16G16B16A16_FLOAT },
 		{ "Surface", DXGI_FORMAT_R8G8B8A8_UNORM },
 		{ "Emission", DXGI_FORMAT_R16G16B16A16_FLOAT },
 		{ "WorldPosition", DXGI_FORMAT_R32G32B32A32_FLOAT }

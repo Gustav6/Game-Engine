@@ -31,6 +31,7 @@
 #include "PointLighting_PS.h"
 #include "AmbientLighting_PS.h"
 #include "Fullscreen_VS.h"
+#include "SSAO_PS.h"
 
 #include <tracy/core/Tracy.hpp>
 
@@ -60,7 +61,7 @@ bool DeferredRenderPass::Initialize(RenderHardwareInterface& aRHI)
 
 		if (!aRHI.CreatePipelineStateObject(deferredDirLightDesc, *myDeferredAmbientPSO))
 		{
-			spdlog::critical("Failed to create deferred ambient light pipeline state object!");
+			spdlog::critical("Failed to create Deferred Ambient light pipeline state object!");
 			return false;
 		}
 	}
@@ -80,7 +81,7 @@ bool DeferredRenderPass::Initialize(RenderHardwareInterface& aRHI)
 
 		if (!aRHI.CreatePipelineStateObject(deferredDirLightDesc, *myDeferredDirPSO))
 		{
-			spdlog::critical("Failed to create deferred directional light pipeline state object!");
+			spdlog::critical("Failed to create Deferred Directional light pipeline state object!");
 			return false;
 		}
 	}
@@ -100,7 +101,7 @@ bool DeferredRenderPass::Initialize(RenderHardwareInterface& aRHI)
 
 		if (!aRHI.CreatePipelineStateObject(deferredSpotLightDesc, *myDeferredSpotPSO))
 		{
-			spdlog::critical("Failed to create deferred spot light pipeline state object!");
+			spdlog::critical("Failed to create Deferred Spot light pipeline state object!");
 			return false;
 		}
 	}
@@ -120,7 +121,27 @@ bool DeferredRenderPass::Initialize(RenderHardwareInterface& aRHI)
 
 		if (!aRHI.CreatePipelineStateObject(deferredPointLightDesc, *myDeferredPointPSO))
 		{
-			spdlog::critical("Failed to create deferred point light pipeline state object!");
+			spdlog::critical("Failed to create Deferred Point light pipeline state object!");
+			return false;
+		}
+	}
+
+	// SSAO PSO
+	{
+		PipelineStateDescription ssaoDesc;
+		ssaoDesc.Name = "SSAO";
+		ssaoDesc.VertexShader.ByteCode = INTERNAL_Fullscreen_VS_ByteCode;
+		ssaoDesc.VertexShader.ByteCodeSize = sizeof(INTERNAL_Fullscreen_VS_ByteCode);
+		ssaoDesc.PixelShader.ByteCode = INTERNAL_SSAO_PS_ByteCode;
+		ssaoDesc.PixelShader.ByteCodeSize = sizeof(INTERNAL_SSAO_PS_ByteCode);
+		ssaoDesc.BlendMode = BlendMode::Additive;
+		ssaoDesc.Topology = Topology::TriangleStrip;
+
+		mySSAOPSO = std::make_unique<PipelineStateObject>();
+
+		if (!aRHI.CreatePipelineStateObject(ssaoDesc, *mySSAOPSO))
+		{
+			spdlog::critical("Failed to create SSAO pipeline state object!");
 			return false;
 		}
 	}
@@ -130,6 +151,19 @@ bool DeferredRenderPass::Initialize(RenderHardwareInterface& aRHI)
 	for (size_t t = 0; t < GBuffer::NUM_GBUFFER_TARGETS; t++)
 	{
 		myGBufferTextures.emplace_back(&myGBuffer->GetTextures()[t]);
+	}
+
+	// SSAO Texture
+	{
+		mySSAOTexture = std::make_unique<Texture>();
+
+		CommonUtilities::Vector2ui clientSize = aRHI.GetClientSize();
+
+		if (!aRHI.CreateTexture("SSAO", clientSize.x, clientSize.y, 1, ResourceFormat::R16_FLOAT, ResourceBindFlag_ShaderResource | ResourceBindFlag_RenderTarget, *mySSAOTexture))
+		{
+			spdlog::critical("Failed to create SSAO texture!");
+			return false;
+		}
 	}
 
 	return true;
@@ -179,8 +213,16 @@ void DeferredRenderPass::Execute(
 				inoutCommandList.SetShaderResources(myGBufferTextures.data(), myGBufferTextures.size(), 0, PipelineStage_PixelShader);
 			}
 
-
 			inoutCommandList.BeginEvent("Ambient Light");
+
+			// SSAO Here
+			//inoutCommandList.SetRenderTarget(mySSAOTexture.get(), nullptr);
+
+			//inoutCommandList.SetPipelineStateObject(*mySSAOPSO);
+			//inoutCommandList.Draw(4);
+
+			//inoutCommandList.SetShaderResource(mySSAOTexture.get(), 97, PipelineStage_PixelShader);
+
 			inoutCommandList.SetPipelineStateObject(*myDeferredAmbientPSO);
 			inoutCommandList.Draw(4);
 			inoutCommandList.EndEvent();

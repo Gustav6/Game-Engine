@@ -56,7 +56,7 @@ bool Game::Initialize(SIZE aWindowSize, WNDPROC aWindowProcess, LPCWSTR aWindowT
 	// TODO: Read or create a settings json file.
 	// Should contain vsync flag and content directory.
 
-	std::filesystem::path workingDirectory = GetExecutableDirectory().parent_path() / "Content";;
+	std::filesystem::path workingDirectory = GetExecutableDirectory().parent_path().parent_path() / "Content";;
 
 	AssetRegistry::Get().RegisterAssetType<MeshAsset>({ ".fbx" });
 	AssetRegistry::Get().RegisterAssetType<AnimationAsset>({ ".fbx" });

@@ -29,9 +29,12 @@ private:
     std::unique_ptr<PipelineStateObject> myDeferredDirPSO;
     std::unique_ptr<PipelineStateObject> myDeferredSpotPSO;
     std::unique_ptr<PipelineStateObject> myDeferredPointPSO;
+    std::unique_ptr<PipelineStateObject> mySSAOPSO;
 
     std::unique_ptr<GBuffer> myGBuffer;
 
     std::vector<const Texture*> myGBufferTextures;
+
+    std::unique_ptr<Texture> mySSAOTexture;
 };
 

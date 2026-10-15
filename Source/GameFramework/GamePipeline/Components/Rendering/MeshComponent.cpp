@@ -51,8 +51,7 @@ void MeshComponent::Render()
 
 	MeshDrawer::Get().Submit(drawCall);
 
-#ifdef _DEBUG
-	{
+	/*{
 		const CommonUtilities::Matrix4x4f& world = myOwner->GetTransform().GetWorldMatrix();
 		const CommonUtilities::Vector3f worldScale = myOwner->GetTransform().GetScale();
 
@@ -121,8 +120,7 @@ void MeshComponent::Render()
 
 			DebugDrawer::Get().DrawSphere(radius, position, { 1.f, 1.f, 0.f, 1.f });
 		}
-	}
-#endif
+	}*/
 }
 
 Skeleton* MeshComponent::GetSkeleton() const

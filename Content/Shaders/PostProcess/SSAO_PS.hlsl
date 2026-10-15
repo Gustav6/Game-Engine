@@ -49,7 +49,7 @@ float3 GetViewSpacePosition(float2 aUV)
 {
     float3 position;
 
-    position.z = GBufferWorldNormalDepth.Sample(TrilinearClamp, aUV).a;
+    position.z = GBufferWorldNormalDepth.Sample(TrilinearClamp, aUV).a; // Normalize to -1 to 1 because its the actual depth
     position.x = ((2 * aUV.x - 1) * position.z) / FB_Projection._11;
     position.y = ((1 - 2 * aUV.y) * position.z) / FB_Projection._22;
 
@@ -67,7 +67,7 @@ float3 GetViewSpaceNormal(float2 aUV)
 
 float4 main(FullscreenVertex aVertex) : SV_Target
 {
-    const float3 r = float3(0, 0, 0);
+    const float3 r = float3(0.25f, 0.5f, 0.0f); // TODO : Change random vector?
 
     const float3 N = GetViewSpaceNormal(aVertex.UV);
     const float3 T = normalize(r - N * dot(r, N));
@@ -98,7 +98,7 @@ float4 main(FullscreenVertex aVertex) : SV_Target
         occlusion += (stepDepth <= kernelPos.z - bias ? 1.0f : 0.0f) * range;
     }
 
-    occlusion = 1.0f - (occlusion / (float) SSAO_KernelSize);
+    occlusion = 1.0f - (occlusion / (float)SSAO_KernelSize);
 
     return occlusion;
 }

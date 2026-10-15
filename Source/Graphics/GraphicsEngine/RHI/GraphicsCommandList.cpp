@@ -11,7 +11,7 @@
 GraphicsCommandList::GraphicsCommandList()
 {
 	myCurrentOverrides = PipelineStage_None;
-	myPipelineSwitcheCounter = 0;
+	myPipelineSwitchCounter = 0;
 }
 
 GraphicsCommandList::~GraphicsCommandList() = default;
@@ -50,7 +50,8 @@ void GraphicsCommandList::ResetCommandList()
 {
 	myCommandList.Reset();
 
-	myPipelineSwitcheCounter = 0;
+	myPipelineSwitchCounter = 0;
+	myDrawCallCounter = 0;
 }
 
 void GraphicsCommandList::ClearRenderTarget(const Texture& aTarget) const
@@ -288,7 +289,7 @@ void GraphicsCommandList::SetPipelineStateObject(const PipelineStateObject& aPSO
 {
 	ensure(!IsReadyForExecution());
 
-	myPipelineSwitcheCounter++;
+	myPipelineSwitchCounter++;
 
 	if (IsOverrideActive(PipelineStage_VertexShader))
 	{
@@ -429,6 +430,8 @@ void GraphicsCommandList::Draw(unsigned aNumVertices) const
 	ensure(!IsReadyForExecution());
 
 	myContext->Draw(aNumVertices, 0);
+
+	myDrawCallCounter++;
 }
 
 void GraphicsCommandList::DrawSpecificVertices(unsigned aNumVertices, unsigned aFirstVertexIndex) const
@@ -436,6 +439,8 @@ void GraphicsCommandList::DrawSpecificVertices(unsigned aNumVertices, unsigned a
 	ensure(!IsReadyForExecution());
 
 	myContext->Draw(aNumVertices, aFirstVertexIndex);
+
+	myDrawCallCounter++;
 }
 
 void GraphicsCommandList::DrawIndexed(unsigned aIndexCount, unsigned aIndexOffset) const
@@ -443,6 +448,8 @@ void GraphicsCommandList::DrawIndexed(unsigned aIndexCount, unsigned aIndexOffse
 	ensure(!IsReadyForExecution());
 
 	myContext->DrawIndexed(aIndexCount, aIndexOffset, 0);
+
+	myDrawCallCounter++;
 }
 
 void GraphicsCommandList::SetMarker(std::string_view aMarker) const
@@ -492,7 +499,12 @@ void GraphicsCommandList::ClearOverridePipelineState()
 	myCurrentOverrides = PipelineStage_None;
 }
 
-unsigned int GraphicsCommandList::GetPipelineSwitcheCounter() const
+unsigned int GraphicsCommandList::GetPipelineSwitchCount() const
 {
-	return myPipelineSwitcheCounter;
+	return myPipelineSwitchCounter;
+}
+
+unsigned int GraphicsCommandList::GetDrawCallCount() const
+{
+	return myDrawCallCounter;
 }

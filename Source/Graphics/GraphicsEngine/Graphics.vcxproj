@@ -223,6 +223,7 @@ xcopy /E /I /R /Y /D "%SHADERSRC%" "%SHADERDEST%"</Command>
     <ClInclude Include="GraphicsEngine.hpp" />
     <ClInclude Include="GraphicsEngine.pch.h" />
     <ClInclude Include="InternalOperations\DDSTextureLoader11.h" />
+    <ClInclude Include="InternalOperations\PostProcessFilters.h" />
     <ClInclude Include="InternalPasses\DebugRenderPass.h" />
     <ClInclude Include="InternalPasses\DeferredRenderPass.h" />
     <ClInclude Include="InternalPasses\ForwardRenderPass.h" />
@@ -279,6 +280,7 @@ xcopy /E /I /R /Y /D "%SHADERSRC%" "%SHADERDEST%"</Command>
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="InternalOperations\DDSTextureLoader11.cpp" />
+    <ClCompile Include="InternalOperations\PostProcessFilters.cpp" />
     <ClCompile Include="InternalPasses\DebugRenderPass.cpp" />
     <ClCompile Include="InternalPasses\DeferredRenderPass.cpp" />
     <ClCompile Include="InternalPasses\ForwardRenderPass.cpp" />

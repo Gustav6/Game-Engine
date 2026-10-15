@@ -99,21 +99,19 @@ float4 main(VStoPS aPixel) : SV_TARGET
         {
             case 0:
             {
-                float pixelDistance = length(parameters.WorldPosition.xyz - FB_CameraPosition);
-
                 uint cascadeIndex;
                 
-                if (pixelDistance < CB_CascadeFarPlanes.x)
+                if (aPixel.ViewDepth < CB_CascadeFarPlanes.x)
                 {
                     //radiance = float3(1, 0, 0);
                     cascadeIndex = 0;
                 }
-                else if (pixelDistance < CB_CascadeFarPlanes.y)
+                else if (aPixel.ViewDepth < CB_CascadeFarPlanes.y)
                 {
                     //radiance = float3(0, 1, 0);
                     cascadeIndex = 1;
                 }
-                else if (pixelDistance < CB_CascadeFarPlanes.z)
+                else if (aPixel.ViewDepth < CB_CascadeFarPlanes.z)
                 {
                     //radiance = float3(0, 0, 1);
                     cascadeIndex = 2;
