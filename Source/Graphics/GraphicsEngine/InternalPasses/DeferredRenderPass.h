@@ -24,6 +24,8 @@ public:
         RenderContext& aContext
     );
 
+    void SetSSAOStatus(bool aEnabled);
+
 private:
     std::unique_ptr<PipelineStateObject> myDeferredAmbientPSO;
     std::unique_ptr<PipelineStateObject> myDeferredDirPSO;
@@ -35,6 +37,8 @@ private:
 
     std::vector<const Texture*> myGBufferTextures;
 
-    std::unique_ptr<Texture> mySSAOTexture;
+    std::unique_ptr<Texture> myHalfSizeSSAOTexture;
+
+    bool mySSAOEnabled;
 };
 

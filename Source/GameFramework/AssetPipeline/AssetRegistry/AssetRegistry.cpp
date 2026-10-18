@@ -38,7 +38,7 @@ bool AssetRegistry::Initialize(std::filesystem::path aWorkingDirectory)
 
     if (!std::filesystem::exists(myWorkingDirectory))
     {
-        spdlog::critical("Content root dir is not a valid path! Provided root was {}.", aWorkingDirectory.string());
+        SPDLOG_CRITICAL("Content root dir is not a valid path! Provided root was {}.", aWorkingDirectory.string());
         return false;
     }
 

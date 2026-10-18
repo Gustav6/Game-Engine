@@ -6,6 +6,9 @@
 #include "GraphicsEngine/Objects/Scene/Light.h"
 
 #include "GraphicsEngine/Drawers/LightDrawer.h"
+#include "GraphicsEngine/Drawers/DebugDrawer.h"
+
+#include "Managers/DebugSettingsManager.h"
 
 PointLightComponent::PointLightComponent(Actor* aOwner)
 	: LightComponent(aOwner)
@@ -24,6 +27,14 @@ void PointLightComponent::Render()
 	};
 
 	LightDrawer::Get().Submit(light);
+
+
+#ifndef _RETAIL
+	if (DebugSettingsManager::Get().GetSettings().LightGizmosDebugDrawEnabled)
+	{
+		DebugDrawer::Get().DrawSphere(myData.Radius, myTransform.GetTranslation(), DebugSettingsManager::Get().GetSettings().LightGizmoColor);
+	}
+#endif
 }
 
 void PointLightComponent::SetRadius(float aRadius)

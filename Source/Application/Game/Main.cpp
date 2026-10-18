@@ -83,7 +83,7 @@ int GuardedMain()
      * read your strings in the same format, and always treat them as byte blocks, you'll be fine.
      */
 
-    spdlog::info("ModelViewer starting...");
+    SPDLOG_INFO("ModelViewer starting...");
 
     constexpr SIZE windowSize = { 1920, 1080 };
     constexpr LPCWSTR windowTitle = L"AGP Modelviewer"; // L"" denotes "I want this to be a wide-string".
@@ -118,7 +118,7 @@ int APIENTRY wWinMain(
 	        message = str::acp_to_utf8(message);
         }
 
-        spdlog::critical("Fatal error: {}", message);
+        SPDLOG_CRITICAL("Fatal error: {}", message);
         spdlog::default_logger()->flush();
 
         MessageBoxW(nullptr, string_helpers::utf8_to_wide(message).c_str(), L"Fatal Error", MB_OK | MB_ICONERROR);

@@ -23,7 +23,6 @@
       <Filter>Camera</Filter>
     </ClInclude>
     <ClInclude Include="Game.h" />
-    <ClInclude Include="WindowManager.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
@@ -37,7 +36,6 @@
     </ClCompile>
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="WindowManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="Materials\BaseMaterial.hlsli">

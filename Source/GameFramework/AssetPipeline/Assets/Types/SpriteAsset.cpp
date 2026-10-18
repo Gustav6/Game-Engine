@@ -21,7 +21,7 @@ bool SpriteAsset::Load(const std::filesystem::path& aPath)
 
 	if (!GraphicsEngine::Get().CreateTexture(aPath, myData->Texture))
 	{
-		spdlog::error("Could not create a sprite texture for {}!", aPath.string());
+		SPDLOG_ERROR("Could not create a sprite texture for {}!", aPath.string());
 		return false;
 	}
 

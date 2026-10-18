@@ -50,6 +50,7 @@ namespace CommonUtilities
 			Vector3<T> GetForward() const;
 			Vector3<T> GetUp() const;
 			Vector3<T> GetRight() const;
+
 			Vector3<T> GetTranslation() const;
 			Vector3<T> GetScaling() const;
 

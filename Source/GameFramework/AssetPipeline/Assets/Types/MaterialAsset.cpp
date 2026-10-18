@@ -34,11 +34,11 @@ const std::shared_ptr<MaterialInterface>& MaterialAsset::GetMaterial() const
 
 bool MaterialAsset::Load(const std::filesystem::path& aPath)
 {
-    JsonData materialData = Json::Read(aPath);
+    Json::Data materialData = Json::Read(aPath);
 
     if (!materialData.IsValid())
     {
-        spdlog::error("Failed to read material JSON [{}]", aPath.string());
+        SPDLOG_ERROR("Failed to read material JSON [{}]", aPath.string());
         return false;
     }
 
@@ -50,11 +50,11 @@ bool MaterialAsset::Load(const std::filesystem::path& aPath)
     return LoadMasterData(materialData);
 }
 
-bool MaterialAsset::Construct(const JsonData& aMaterialData)
+bool MaterialAsset::Construct(const Json::Data& aMaterialData)
 {
     if (!aMaterialData.IsValid())
     {
-        spdlog::error("Cannot construct material from invalid JSON data!");
+        SPDLOG_ERROR("Cannot construct material from invalid JSON data!");
         return false;
     }
 
@@ -66,7 +66,7 @@ bool MaterialAsset::Construct(const JsonData& aMaterialData)
     return LoadMasterData(aMaterialData);
 }
 
-bool MaterialAsset::LoadInstanceData(const JsonData& aMaterialData)
+bool MaterialAsset::LoadInstanceData(const Json::Data& aMaterialData)
 {
     bool hasErrord = false;
 
@@ -74,12 +74,10 @@ bool MaterialAsset::LoadInstanceData(const JsonData& aMaterialData)
 
     if (materialName.empty())
     {
-        spdlog::warn("Constructed material has no name, using placeholder");
+        SPDLOG_WARN("Constructed material has no name, using placeholder");
         materialName = "NO NAME GIVEN";
         hasErrord = true;
     }
-
-    //LOG_GROUP(LogAssetRegistry, Verbose, "Instance Material");
 
     std::string parent = aMaterialData.GetString("Parent");
 
@@ -92,22 +90,20 @@ bool MaterialAsset::LoadInstanceData(const JsonData& aMaterialData)
 
     if (masterMaterialAsset == nullptr)
     {
-        spdlog::error("Material [{}] failed to get master material [{}]!", materialName, parent);
+        SPDLOG_ERROR("Material [{}] failed to get master material [{}]!", materialName, parent);
         hasErrord = true;
     }
     else
     {
         std::shared_ptr<MaterialInstance> instance = MaterialInstance::Create(materialName, masterMaterialAsset->GetMaterial());
 
-        //LOG_GROUP(MaterialLog, Verbose, "Instance Parameters");
-
         if (aMaterialData.HasKey("Parameters"))
         {
-            std::vector<JsonData> parameters = aMaterialData.GetObjectValueArray("Parameters");
+            std::vector<Json::Data> parameters = aMaterialData.GetDataObjectArray("Parameters");
 
             if (parameters.empty())
             {
-                spdlog::error("Material has no Parameters [{}]!", materialName);
+                SPDLOG_ERROR("Material has no Parameters [{}]!", materialName);
                 hasErrord = true;
             }
 
@@ -115,7 +111,7 @@ bool MaterialAsset::LoadInstanceData(const JsonData& aMaterialData)
         }
         else
         {
-            spdlog::error("Material has no Parameters [{}]!", materialName);
+            SPDLOG_ERROR("Material has no Parameters [{}]!", materialName);
             hasErrord = true;
         }
 
@@ -125,7 +121,7 @@ bool MaterialAsset::LoadInstanceData(const JsonData& aMaterialData)
     return !hasErrord;
 }
 
-bool MaterialAsset::LoadMasterData(const JsonData& aMaterialData)
+bool MaterialAsset::LoadMasterData(const Json::Data& aMaterialData)
 {
     bool hasErrord = false;
 
@@ -133,26 +129,22 @@ bool MaterialAsset::LoadMasterData(const JsonData& aMaterialData)
 
     if (materialName.empty())
     {
-        spdlog::warn("Constructed material has no name, using placeholder");
+        SPDLOG_WARN("Constructed material has no name, using placeholder");
         materialName = "NO NAME GIVEN";
         hasErrord = true;
     }
-
-    //LOG_GROUP(MaterialLog, Verbose, "Master Material");
 
     MaterialDescription desc;
     desc.Name = materialName;
 
     {
-        //LOG_GROUP(MaterialLog, Verbose, "Master Settings");
-
         if (aMaterialData.HasKey("Domain"))
         {
             desc.Domain = static_cast<MaterialDomain>(aMaterialData.GetInt("Domain") + 1);
         }
         else
         {
-            spdlog::error("Material has no Domain [{}]!", materialName);
+            SPDLOG_ERROR("Material has no Domain [{}]!", materialName);
             hasErrord = true;
         }
 
@@ -162,7 +154,7 @@ bool MaterialAsset::LoadMasterData(const JsonData& aMaterialData)
         }
         else
         {
-            spdlog::error("Material has no Shading Model [{}]!", materialName);
+            SPDLOG_ERROR("Material has no Shading Model [{}]!", materialName);
             hasErrord = true;
         }
 
@@ -172,7 +164,7 @@ bool MaterialAsset::LoadMasterData(const JsonData& aMaterialData)
         }
         else
         {
-            spdlog::error("Material has no Blend Mode [{}]!", materialName);
+            SPDLOG_ERROR("Material has no Blend Mode [{}]!", materialName);
             hasErrord = true;
         }
     }
@@ -183,20 +175,18 @@ bool MaterialAsset::LoadMasterData(const JsonData& aMaterialData)
 
     if (!GraphicsEngine::Get().CreateMaterial(desc, *material))
     {
-        spdlog::error("Failed to create material [{}]!", materialName);
+        SPDLOG_ERROR("Failed to create material [{}]!", materialName);
         hasErrord = true;
     }
     else
     {
-        //LOG_GROUP(MaterialLog, Verbose, "Master Parameters");
-
         if (aMaterialData.HasKey("Parameters"))
         {
-            std::vector<JsonData> parameters = aMaterialData.GetObjectValueArray("Parameters");
+            std::vector<Json::Data> parameters = aMaterialData.GetDataObjectArray("Parameters");
 
             if (parameters.empty())
             {
-                spdlog::error("Material has no Parameters [{}]!", materialName);
+                SPDLOG_ERROR("Material has no Parameters [{}]!", materialName);
                 hasErrord = true;
             }
 
@@ -204,7 +194,7 @@ bool MaterialAsset::LoadMasterData(const JsonData& aMaterialData)
         }
         else
         {
-            spdlog::error("Material has no Parameters [{}]!", materialName);
+            SPDLOG_ERROR("Material has no Parameters [{}]!", materialName);
             hasErrord = true;
         }
     }
@@ -214,7 +204,7 @@ bool MaterialAsset::LoadMasterData(const JsonData& aMaterialData)
     return !hasErrord;
 }
 
-void MaterialAsset::PushParameters(const std::vector<JsonData>& aMaterialParameters, MaterialInterface* aMaterialInstance)
+void MaterialAsset::PushParameters(const std::vector<Json::Data>& aMaterialParameters, MaterialInterface* aMaterialInstance)
 {
 	for (const auto& parameter : aMaterialParameters)
 	{
@@ -237,11 +227,11 @@ void MaterialAsset::PushParameters(const std::vector<JsonData>& aMaterialParamet
             }
 			case ParameterType::Texture:
 			{   
-				JsonData parameterData = parameter.GetObjectValue("Value");
+				Json::Data parameterData = parameter.GetDataObject("Value");
 
                 if (!parameterData.HasKey("Name"))
                 {
-                    spdlog::warn("Texture parameter [{}] has no texture Name, skipping", parameterName);
+                    SPDLOG_WARN("Texture parameter [{}] has no texture Name, skipping", parameterName);
                     break;
                 }
 
@@ -251,7 +241,7 @@ void MaterialAsset::PushParameters(const std::vector<JsonData>& aMaterialParamet
 
                 if (textureAsset == nullptr)
                 {
-                    spdlog::warn("Texture parameter [{}] could not load texture [{}]", parameterName, textureName);
+                    SPDLOG_WARN("Texture parameter [{}] could not load texture [{}]", parameterName, textureName);
                     break;
                 }
 
@@ -285,14 +275,14 @@ void MaterialAsset::PushParameters(const std::vector<JsonData>& aMaterialParamet
                 }
                 else
                 {
-                    spdlog::warn("Texture [{}] has unknown suffix [{}]!", textureName, suffix);
+                    SPDLOG_WARN("Texture [{}] has unknown suffix [{}]!", textureName, suffix);
                 }
 
 				break;
 			}
 			default:
 			{
-                spdlog::error("Non handled parameter type found [{}], Parameter [{}]!", type, aMaterialInstance->GetName());
+                SPDLOG_ERROR("Non handled parameter type found [{}], Parameter [{}]!", type, aMaterialInstance->GetName());
 				break;
 			}
 		}

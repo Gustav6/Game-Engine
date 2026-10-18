@@ -36,11 +36,11 @@ bool UnrealSceneAsset::Load(const std::filesystem::path& aPath)
 {
 	ZoneScopedN("Load Unreal Scene")
 
-	JsonData unrealSceneData = Json::Read(aPath);
+	Json::Data unrealSceneData = Json::Read(aPath);
 
 	if (!unrealSceneData.IsValid())
 	{
-		spdlog::error("Failed to load Scene from JSON [{}]", aPath.string());
+		SPDLOG_ERROR("Failed to load Scene from JSON [{}]", aPath.string());
 		return false;
 	}
 
@@ -48,9 +48,7 @@ bool UnrealSceneAsset::Load(const std::filesystem::path& aPath)
 
 	if (unrealSceneData.HasKey("MasterMaterials"))
 	{
-		//LOG_GROUP(LogUnreal, Verbose, "Master Materials");
-
-		std::vector<JsonData> jsonMaterials = unrealSceneData.GetObjectValueArray("MasterMaterials");
+		std::vector<Json::Data> jsonMaterials = unrealSceneData.GetDataObjectArray("MasterMaterials");
 
 		for (const auto& masterMaterial : jsonMaterials)
 		{
@@ -61,7 +59,7 @@ bool UnrealSceneAsset::Load(const std::filesystem::path& aPath)
 	}
 	else
 	{
-		spdlog::warn("No Master Materials found in scene [{}]. Scene might be empty", aPath.string());
+		SPDLOG_WARN("No Master Materials found in scene [{}]. Scene might be empty", aPath.string());
 	}
 
 
@@ -69,9 +67,7 @@ bool UnrealSceneAsset::Load(const std::filesystem::path& aPath)
 
 	if (unrealSceneData.HasKey("Actors"))
 	{
-		//LOG_GROUP(LogUnreal, Verbose, "Actors");
-
-		std::vector<JsonData> jsonActors = unrealSceneData.GetObjectValueArray("Actors");
+		std::vector<Json::Data> jsonActors = unrealSceneData.GetDataObjectArray("Actors");
 
 		for (const auto& jsonActor : jsonActors)
 		{
@@ -83,9 +79,7 @@ bool UnrealSceneAsset::Load(const std::filesystem::path& aPath)
 
 			actor->GetTransform() = UnrealToDirectX(matrix);
 
-			//LOG_GROUP(LogUnreal, Verbose, "Actor [{}] Loaded to the Scene!", actorName);
-
-			std::vector<JsonData> jsonComponents = jsonActor.GetObjectValueArray("Components");
+			std::vector<Json::Data> jsonComponents = jsonActor.GetDataObjectArray("Components");
 
 			for (auto& jsonComponent : jsonComponents)
 			{
@@ -99,8 +93,6 @@ bool UnrealSceneAsset::Load(const std::filesystem::path& aPath)
 					}
 					case ComponentType::StaticMeshComponent:
 					{
-						//LOG_GROUP(LogUnreal, Verbose, "Component [StaticMesh]");
-
 						std::shared_ptr<MeshAsset> mesh = AssetRegistry::Get().GetAsset<MeshAsset>(jsonComponent.GetString("Mesh"));
 
 						if (mesh == nullptr)
@@ -111,11 +103,11 @@ bool UnrealSceneAsset::Load(const std::filesystem::path& aPath)
 						MeshComponent* meshComponent = actor->AddComponent<MeshComponent>();
 						meshComponent->SetMesh(mesh);
 
-						std::vector<JsonData> materials = jsonComponent.GetObjectValueArray("Materials");
+						std::vector<Json::Data> materials = jsonComponent.GetDataObjectArray("Materials");
 
 						if (materials.empty())
 						{
-							spdlog::error("Mesh has no material set [{}]!", actorName);
+							SPDLOG_ERROR("Mesh has no material set [{}]!", actorName);
 						}
 						else
 						{
@@ -129,7 +121,7 @@ bool UnrealSceneAsset::Load(const std::filesystem::path& aPath)
 								}
 								else
 								{
-									spdlog::error("Material had no name for actor [{}]!", actorName);
+									SPDLOG_ERROR("Material had no name for actor [{}]!", actorName);
 									materialName = "NO NAME GIVEN";
 								}
 
@@ -141,8 +133,6 @@ bool UnrealSceneAsset::Load(const std::filesystem::path& aPath)
 					}
 					case ComponentType::SkeletalMeshComponent:
 					{
-						//LOG_GROUP(LogUnreal, Verbose, "Component [SkeletalMesh]");
-
 						std::shared_ptr<MeshAsset> mesh = AssetRegistry::Get().GetAsset<MeshAsset>(jsonComponent.GetString("Mesh"));
 
 						if (mesh == nullptr)
@@ -153,11 +143,11 @@ bool UnrealSceneAsset::Load(const std::filesystem::path& aPath)
 						MeshComponent* meshComponent = actor->AddComponent<MeshComponent>();
 						meshComponent->SetMesh(mesh);
 
-						std::vector<JsonData> materials = jsonComponent.GetObjectValueArray("Materials");
+						std::vector<Json::Data> materials = jsonComponent.GetDataObjectArray("Materials");
 
 						if (materials.empty())
 						{
-							spdlog::error("Mesh has no material set [{}]!", actorName);
+							SPDLOG_ERROR("Mesh has no material set [{}]!", actorName);
 						}
 						else
 						{
@@ -171,7 +161,7 @@ bool UnrealSceneAsset::Load(const std::filesystem::path& aPath)
 								}
 								else
 								{
-									spdlog::error("Material had no name for actor [{}]!", actorName);
+									SPDLOG_ERROR("Material had no name for actor [{}]!", actorName);
 									materialName = "NO NAME GIVEN";
 								}
 
@@ -193,21 +183,19 @@ bool UnrealSceneAsset::Load(const std::filesystem::path& aPath)
 					}
 					case ComponentType::PointLightComponent:
 					{
-						//LOG_GROUP(LogUnreal, Verbose, "Component [PointLight]");
-
 						if (!jsonComponent.HasKey("Color"))
 						{
-							spdlog::error("Point Light has no Color [{}]!", actorName);
+							SPDLOG_ERROR("Point Light has no Color [{}]!", actorName);
 							break;
 						}
 						if (!jsonComponent.HasKey("Intensity"))
 						{
-							spdlog::error("Point Light has no Intensity [{}]!", actorName);
+							SPDLOG_ERROR("Point Light has no Intensity [{}]!", actorName);
 							break;
 						}
 						if (!jsonComponent.HasKey("AttenuationRadius"))
 						{
-							spdlog::error("Point Light has no Attenuation Radius [{}]!", actorName);
+							SPDLOG_ERROR("Point Light has no Attenuation Radius [{}]!", actorName);
 							break;
 						}
 
@@ -225,31 +213,29 @@ bool UnrealSceneAsset::Load(const std::filesystem::path& aPath)
 					}
 					case ComponentType::SpotLightComponent:
 					{
-						//LOG_GROUP(LogUnreal, Verbose, "Component [SpotLight]");
-
 						if (!jsonComponent.HasKey("Color"))
 						{
-							spdlog::error("Spot Light has no Color [{}]!", actorName);
+							SPDLOG_ERROR("Spot Light has no Color [{}]!", actorName);
 							break;
 						}
 						if (!jsonComponent.HasKey("Intensity"))
 						{
-							spdlog::error("Spot Light has no Intensity [{}]!", actorName);
+							SPDLOG_ERROR("Spot Light has no Intensity [{}]!", actorName);
 							break;
 						}
 						if (!jsonComponent.HasKey("AttenuationRadius"))
 						{
-							spdlog::error("Spot Light has no Attenuation Radius [{}]!", actorName);
+							SPDLOG_ERROR("Spot Light has no Attenuation Radius [{}]!", actorName);
 							break;
 						}
 						if (!jsonComponent.HasKey("InnerConeAngle"))
 						{
-							spdlog::error("Spot Light has no Inner Cone Angle [{}]!", actorName);
+							SPDLOG_ERROR("Spot Light has no Inner Cone Angle [{}]!", actorName);
 							break;
 						}
 						if (!jsonComponent.HasKey("OuterConeAngle"))
 						{
-							spdlog::error("Spot Light has no Outer Cone Angle [{}]!", actorName);
+							SPDLOG_ERROR("Spot Light has no Outer Cone Angle [{}]!", actorName);
 							break;
 						}
 
@@ -269,16 +255,14 @@ bool UnrealSceneAsset::Load(const std::filesystem::path& aPath)
 					}
 					case ComponentType::DirectionalLightComponent:
 					{
-						//LOG_GROUP(LogUnreal, Verbose, "Component [DirectionalLight]");
-
 						if (!jsonComponent.HasKey("Color"))
 						{
-							spdlog::error("Directional Light has no Color [{}]!", actorName);
+							SPDLOG_ERROR("Directional Light has no Color [{}]!", actorName);
 							break;
 						}
 						if (!jsonComponent.HasKey("Intensity"))
 						{
-							spdlog::error("Directional Light has no Intensity [{}]!", actorName);
+							SPDLOG_ERROR("Directional Light has no Intensity [{}]!", actorName);
 							break;
 						}
 
@@ -295,14 +279,10 @@ bool UnrealSceneAsset::Load(const std::filesystem::path& aPath)
 					}
 					case ComponentType::BoxComponent:
 					{
-						//LOG_GROUP(LogUnreal, Verbose, "Component [BoxComponent]");
-
 						break;
 					}
 					case ComponentType::SphereComponent:
 					{
-						//LOG_GROUP(LogUnreal, Verbose, "Component [SphereComponent]");
-
 						break;
 					}
 					case ComponentType::CapsuleComponent:
@@ -324,7 +304,7 @@ bool UnrealSceneAsset::Load(const std::filesystem::path& aPath)
 	}
 	else
 	{
-		spdlog::warn("No Actors found in scene [{}]. Scene might be empty", aPath.string());
+		SPDLOG_WARN("No Actors found in scene [{}]. Scene might be empty", aPath.string());
 	}
 
 	return true;

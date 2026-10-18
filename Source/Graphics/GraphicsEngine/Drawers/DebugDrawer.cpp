@@ -17,7 +17,7 @@ void DebugDrawer::Submit(const WireMeshDrawCall& aDrawCall)
 {
 	if (aDrawCall.Mesh == nullptr)
 	{
-		spdlog::error("Mesh was submitted with invalid data!");
+		SPDLOG_ERROR("Mesh was submitted with invalid data!");
 		return;
 	}
 
@@ -106,6 +106,20 @@ void DebugDrawer::DrawSphere(
 
 		myLineDrawCalls.emplace_back(from, to, aColor);
 	}
+}
+
+void DebugDrawer::DrawCone(
+	float aRadius, 
+	float aHeight, 
+	const CommonUtilities::Vector3f& aPosition,
+	const CommonUtilities::Vector3f& aDirection, 
+	const CommonUtilities::Vector4f& aColor)
+{
+	aRadius;
+	aHeight;
+	aPosition;
+	aDirection;
+	aColor;
 }
 
 const std::vector<WireMeshDrawCall>& DebugDrawer::GetMeshDrawCalls() const

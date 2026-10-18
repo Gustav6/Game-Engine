@@ -42,6 +42,13 @@ public:
 		const CommonUtilities::Vector3f& aPosition,
 		const CommonUtilities::Vector4f& aColor = { 1.f, 1.f, 1.f, 1.f });
 
+	void DrawCone(
+		float aRadius,
+		float aHeight,
+		const CommonUtilities::Vector3f& aPosition,
+		const CommonUtilities::Vector3f& aDirection,
+		const CommonUtilities::Vector4f& aColor = { 1.f, 1.f, 1.f, 1.f });
+
     const std::vector<WireMeshDrawCall>& GetMeshDrawCalls() const;
     const std::vector<LineDrawCall>& GetLineDrawCalls() const;
 

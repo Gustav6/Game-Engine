@@ -13,7 +13,7 @@ class BoxColliderComponent : public Component
 public:
 	BoxColliderComponent(Actor* aOwner);
 	
-#ifdef _DEBUG
+#ifndef _RETAIL
 	void Render() override;
 #endif
 

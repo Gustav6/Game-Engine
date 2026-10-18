@@ -3,8 +3,8 @@
 #include <filesystem>
 
 #include "AssetPipeline/Assets/Base/Asset.h"
+#include "Json/JsonWrapper.h"
 
-class JsonData;
 class MaterialInterface;
 
 class MaterialAsset : public Asset
@@ -18,11 +18,11 @@ protected:
 	bool Load(const std::filesystem::path& aPath) override;
 
 private:
-	bool Construct(const JsonData& aMaterialData);
+	bool Construct(const Json::Data& aMaterialData);
 
-	bool LoadInstanceData(const JsonData& aMaterialData);
-	bool LoadMasterData(const JsonData& aMaterialData);
-	void PushParameters(const std::vector<JsonData>& aMaterialParameters, MaterialInterface* aMaterialInstance);
+	bool LoadInstanceData(const Json::Data& aMaterialData);
+	bool LoadMasterData(const Json::Data& aMaterialData);
+	void PushParameters(const std::vector<Json::Data>& aMaterialParameters, MaterialInterface* aMaterialInstance);
 
 	std::shared_ptr<MaterialInterface> myMaterial;
 };

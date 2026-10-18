@@ -42,7 +42,7 @@ bool FontAsset::Load(const std::filesystem::path& aPath)
 
 	if (!GraphicsEngine::Get().CreateFontAsset(fontPath, atlasPath, *myFont))
 	{
-		spdlog::error("Failed to create font [{}]!", aPath.string());
+		SPDLOG_ERROR("Failed to create font [{}]!", aPath.string());
 
 		return false;
 	}

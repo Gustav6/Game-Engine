@@ -43,6 +43,9 @@
     <Filter Include="GamePipeline\World">
       <UniqueIdentifier>{ECBFCC95-D8A3-8DEB-4104-883E2D07786D}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Managers">
+      <UniqueIdentifier>{B34CFEBD-9F19-59C9-C832-4771B45E8E57}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AssetPipeline\AssetRegistry\AssetRegistry.h">
@@ -121,6 +124,12 @@
     <ClInclude Include="GamePipeline\World\GameWorld.h">
       <Filter>GamePipeline\World</Filter>
     </ClInclude>
+    <ClInclude Include="Managers\DebugSettingsManager.h">
+      <Filter>Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="Managers\WindowManager.h">
+      <Filter>Managers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AssetPipeline\AssetRegistry\AssetRegistry.cpp">
@@ -198,6 +207,12 @@
     </ClCompile>
     <ClCompile Include="GamePipeline\World\GameWorld.cpp">
       <Filter>GamePipeline\World</Filter>
+    </ClCompile>
+    <ClCompile Include="Managers\DebugSettingsManager.cpp">
+      <Filter>Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="Managers\WindowManager.cpp">
+      <Filter>Managers</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

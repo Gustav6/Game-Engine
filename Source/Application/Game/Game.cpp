@@ -38,6 +38,8 @@
 
 #include "GamePipeline/Components/Registry/ComponentRegistryManager.h"
 
+#include "Managers/DebugSettingsManager.h"
+
 #include "Camera/GameCamera.h"
 #include "Json/JsonWrapper.h"
 
@@ -53,35 +55,30 @@ Game::~Game() = default;
 
 bool Game::Initialize(SIZE aWindowSize, WNDPROC aWindowProcess, LPCWSTR aWindowTitle)
 {
-	// TODO: Read or create a settings json file.
-	// Should contain vsync flag and content directory.
+	const std::filesystem::path settingsPath = GetExecutableDirectory() / "Settings.json";
 
-	//std::filesystem::path settingsPath = GetExecutableDirectory() / "Settings.json";
+	if (!std::filesystem::exists(settingsPath))
+	{
+		Json::Writer writer = Json::Write(settingsPath, Json::WriteFlag_Pretty);
 
-	//if (!std::filesystem::exists(settingsPath))
-	//{
-	//	JsonWriter writer = Json::Write(settingsPath);
+		if (!writer.SetString("ContentPath", "../../Content"))
+		{
+			throw std::runtime_error("Failed to create settings file!");
+		}
 
-	//	if (!writer.AddString("ContentPath", "/../Content"))
-	//	{
-	//		throw std::runtime_error("Failed to create settings file!");
-	//	}
+		writer.Save();
+	}
 
-	//	writer.Save();
-	//}
+	Json::Data settings = Json::Read(settingsPath);
 
-	//JsonData settings = Json::Read(settingsPath);
-
-	//if (settings.HasKey("ContentPath"))
-	//{
-	//	Application.ContentPath = settings.GetString("ContentPath");
-	//}
-	//else
-	//{
-	//	throw std::runtime_error("Settings has no content path set!");
-	//}
-
-	Application.ContentPath = GetExecutableDirectory().parent_path().parent_path() / "Content";
+	if (settings.HasKey("ContentPath"))
+	{
+		Application.ContentPath = GetExecutableDirectory()/ settings.GetString("ContentPath");
+	}
+	else
+	{
+		throw std::runtime_error("Application settings has no content path set!");
+	}
 
 	AssetRegistry::Get().RegisterAssetType<MeshAsset>({ ".fbx" });
 	AssetRegistry::Get().RegisterAssetType<AnimationAsset>({ ".fbx" });
@@ -127,11 +124,11 @@ bool Game::Initialize(SIZE aWindowSize, WNDPROC aWindowProcess, LPCWSTR aWindowT
 		nullptr
 	);
 
-	spdlog::info("Ready!");
+	SPDLOG_INFO("Ready!");
 
 	// Graphics Init
 	{
-		spdlog::info("Initializing Graphics Engine...");
+		SPDLOG_INFO("Initializing Graphics Engine...");
 
 		GraphicsEngine& GE = GraphicsEngine::Get();
 
@@ -394,7 +391,7 @@ void Game::LoadScene()
 	    pointLight->SetPosition({ -200.0f, 150.0f, 0.0f });
 		pointLight->SetColor({ 1.0f, 0.95f, 0.85f });
 	    pointLight->SetIntensity(750000.0f);
-	    pointLight->SetRadius(900.0f);
+	    pointLight->SetRadius(500.0f);
 	    pointLight->SetShadowMapSize({ 512, 512 });
 
 	    myPointLightObject = GameWorld::Get().AddActor(std::move(object));
@@ -545,7 +542,7 @@ void Game::RenderScene()
 	GameWorld::Get().Render();
 }
 
-void Game::DrawDebugSettings(const FrameStats& aFrameStats)
+void Game::DrawDebugSettings([[maybe_unused]] const FrameStats& aFrameStats)
 {
 #ifdef IMGUI_ENABLE
 	ImGui::PushFont(nullptr, 18.0f);
@@ -560,7 +557,7 @@ void Game::DrawDebugSettings(const FrameStats& aFrameStats)
 		ImGui::Text("CulledObjects: %u", aFrameStats.CulledObjects);
 	}
 
-	if (ImGui::CollapsingHeader("Settings", ImGuiTreeNodeFlags_DefaultOpen))
+	if (ImGui::CollapsingHeader("Render Settings", ImGuiTreeNodeFlags_DefaultOpen))
 	{
 		RenderSettings settings = GraphicsEngine::Get().GetSettings();
 
@@ -582,8 +579,6 @@ void Game::DrawDebugSettings(const FrameStats& aFrameStats)
 		if (ImGui::Combo("Debug Render Mode", &debugRenderMode, debugRenderModes,IM_ARRAYSIZE(debugRenderModes)))
 		{
 			settings.DebugRenderMode = static_cast<DebugRenderMode>(debugRenderMode);
-
-			GraphicsEngine::Get().SetSettings(settings);
 		}
 
 		ImGui::Separator();
@@ -601,27 +596,39 @@ void Game::DrawDebugSettings(const FrameStats& aFrameStats)
 		if (ImGui::Combo("Tone Mapper", &toneMapper, toneMappers,IM_ARRAYSIZE(toneMappers)))
 		{
 			settings.ToneMapper = static_cast<ToneMapper>(toneMapper);
-
-			GraphicsEngine::Get().SetSettings(settings);
 		}
 
 		ImGui::Separator();
 
-		bool bloomEnabled = settings.BloomEnabled;
+		ImGui::Checkbox("Bloom", &settings.BloomEnabled);
+		ImGui::Checkbox("SSAO", &settings.SSAOEnabled);
+		ImGui::Checkbox("VSync", &settings.VSyncEnabled);
 
-		if (ImGui::Checkbox("Bloom", &bloomEnabled))
-		{
-			settings.BloomEnabled = bloomEnabled;
-			GraphicsEngine::Get().SetSettings(settings);
-		}
+		GraphicsEngine::Get().SetSettings(settings);
+	}
 
-		bool vsyncEnabled = settings.VSyncEnabled;
+	if (ImGui::CollapsingHeader("Debug Settings", ImGuiTreeNodeFlags_DefaultOpen))
+	{
+		DebugSettings settings = DebugSettingsManager::Get().GetSettings();
 
-		if (ImGui::Checkbox("VSync", &vsyncEnabled))
-		{
-			settings.VSyncEnabled = vsyncEnabled;
-			GraphicsEngine::Get().SetSettings(settings);
-		}
+		ImGui::Checkbox("Draw Physics Colliders", &settings.ColliderDebugDrawEnabled);
+		ImGui::ColorEdit4("Collider Color", settings.ColliderColor.values);
+
+		ImGui::Separator();
+
+		ImGui::Checkbox("Draw Mesh Bounding Box", &settings.MeshDebugDrawBoxEnabled);
+		ImGui::ColorEdit4("Bounding Box Color", settings.MeshBoundingBoxColor.values);
+
+		ImGui::Separator();
+
+		ImGui::Checkbox("Draw Mesh Bounding Sphere", &settings.MeshDebugDrawSphereEnabled);
+		ImGui::ColorEdit4("Bounding Sphere Color", settings.MeshBoundingSphereColor.values);
+
+		ImGui::Separator();
+		ImGui::Checkbox("Draw Light Gizmos", &settings.LightGizmosDebugDrawEnabled);
+		ImGui::ColorEdit4("Gizmo Color", settings.LightGizmoColor.values);
+
+		DebugSettingsManager::Get().SetSettings(settings);
 	}
 
 	ImGui::End();

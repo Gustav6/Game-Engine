@@ -39,32 +39,32 @@ bool AnimationAsset::Load(const std::filesystem::path& aPath)
         {
             case TGA::FBX::FbxImportResult::InternalError:
             {
-                spdlog::error("Could not load animation [{}] : Internal FBX importer error!", pathString);
+                SPDLOG_ERROR("Could not load animation [{}] : Internal FBX importer error!", pathString);
                 break;
             }
             case TGA::FBX::FbxImportResult::NotInitialized:
             {
-                spdlog::error("Could not load animation [{}] : FBX importer is not initialized!", pathString);
+                SPDLOG_ERROR("Could not load animation [{}] : FBX importer is not initialized!", pathString);
                 break;
             }
             case TGA::FBX::FbxImportResult::FileNotFound:
             {
-                spdlog::error("Could not load animation [{}] : File not found!", pathString);
+                SPDLOG_ERROR("Could not load animation [{}] : File not found!", pathString);
                 break;
             }
             case TGA::FBX::FbxImportResult::NoSkeletonData:
             {
-                spdlog::error("Could not load animation [{}] : No skeleton data found in file!", pathString);
+                SPDLOG_ERROR("Could not load animation [{}] : No skeleton data found in file!", pathString);
                 break;
             }
             case TGA::FBX::FbxImportResult::NoAnimationData:
             {
-                spdlog::error("Could not load animation [{}] : No animation data found in file!", pathString);
+                SPDLOG_ERROR("Could not load animation [{}] : No animation data found in file!", pathString);
                 break;
             }
             default:
             {
-                spdlog::error("Could not load animation [{}] : Unknown error!", pathString);
+                SPDLOG_ERROR("Could not load animation [{}] : Unknown error!", pathString);
                 break;
             }
         }
@@ -82,22 +82,22 @@ bool AnimationAsset::Load(const std::filesystem::path& aPath)
             {
                 case TGA::FBX::FbxImportWarning::TooManySkinWeights:
                 {
-                    spdlog::warn("Animation [{}] : vertices had too many skin weights and were truncated!", pathString);
+                    SPDLOG_WARN("Animation [{}] : vertices had too many skin weights and were truncated!", pathString);
                     break;
                 }
                 case TGA::FBX::FbxImportWarning::MissingSkinWeights:
                 {
-                    spdlog::warn("Animation [{}] : vertices are missing skin weights!", pathString);
+                    SPDLOG_WARN("Animation [{}] : vertices are missing skin weights!", pathString);
                     break;
                 }
                 case TGA::FBX::FbxImportWarning::DuplicateBoneNames:
                 {
-                    spdlog::warn("Animation [{}] : duplicate bone names detected, skinning may be incorrect!", pathString);
+                    SPDLOG_WARN("Animation [{}] : duplicate bone names detected, skinning may be incorrect!", pathString);
                     break;
                 }
                 default:
                 {
-                    spdlog::warn("Animation [{}] : Unknown warning!", pathString);
+                    SPDLOG_WARN("Animation [{}] : Unknown warning!", pathString);
                     break;
                 }
             }

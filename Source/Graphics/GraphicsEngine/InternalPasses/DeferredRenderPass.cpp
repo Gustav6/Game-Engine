@@ -37,6 +37,8 @@
 
 bool DeferredRenderPass::Initialize(RenderHardwareInterface& aRHI)
 {
+	mySSAOEnabled = true;
+
 	// GBuffer
 	{
 		myGBuffer = std::make_unique<GBuffer>();
@@ -61,7 +63,7 @@ bool DeferredRenderPass::Initialize(RenderHardwareInterface& aRHI)
 
 		if (!aRHI.CreatePipelineStateObject(deferredDirLightDesc, *myDeferredAmbientPSO))
 		{
-			spdlog::critical("Failed to create Deferred Ambient light pipeline state object!");
+			SPDLOG_CRITICAL("Failed to create Deferred Ambient light pipeline state object!");
 			return false;
 		}
 	}
@@ -81,7 +83,7 @@ bool DeferredRenderPass::Initialize(RenderHardwareInterface& aRHI)
 
 		if (!aRHI.CreatePipelineStateObject(deferredDirLightDesc, *myDeferredDirPSO))
 		{
-			spdlog::critical("Failed to create Deferred Directional light pipeline state object!");
+			SPDLOG_CRITICAL("Failed to create Deferred Directional light pipeline state object!");
 			return false;
 		}
 	}
@@ -101,7 +103,7 @@ bool DeferredRenderPass::Initialize(RenderHardwareInterface& aRHI)
 
 		if (!aRHI.CreatePipelineStateObject(deferredSpotLightDesc, *myDeferredSpotPSO))
 		{
-			spdlog::critical("Failed to create Deferred Spot light pipeline state object!");
+			SPDLOG_CRITICAL("Failed to create Deferred Spot light pipeline state object!");
 			return false;
 		}
 	}
@@ -121,7 +123,7 @@ bool DeferredRenderPass::Initialize(RenderHardwareInterface& aRHI)
 
 		if (!aRHI.CreatePipelineStateObject(deferredPointLightDesc, *myDeferredPointPSO))
 		{
-			spdlog::critical("Failed to create Deferred Point light pipeline state object!");
+			SPDLOG_CRITICAL("Failed to create Deferred Point light pipeline state object!");
 			return false;
 		}
 	}
@@ -141,7 +143,7 @@ bool DeferredRenderPass::Initialize(RenderHardwareInterface& aRHI)
 
 		if (!aRHI.CreatePipelineStateObject(ssaoDesc, *mySSAOPSO))
 		{
-			spdlog::critical("Failed to create SSAO pipeline state object!");
+			SPDLOG_CRITICAL("Failed to create SSAO pipeline state object!");
 			return false;
 		}
 	}
@@ -155,13 +157,13 @@ bool DeferredRenderPass::Initialize(RenderHardwareInterface& aRHI)
 
 	// SSAO Texture
 	{
-		mySSAOTexture = std::make_unique<Texture>();
+		myHalfSizeSSAOTexture = std::make_unique<Texture>();
 
-		CommonUtilities::Vector2ui clientSize = aRHI.GetClientSize();
+		CommonUtilities::Vector2ui bufferSize = aRHI.GetClientSize() / 2u;
 
-		if (!aRHI.CreateTexture("SSAO", clientSize.x, clientSize.y, 1, ResourceFormat::R16_FLOAT, ResourceBindFlag_ShaderResource | ResourceBindFlag_RenderTarget, *mySSAOTexture))
+		if (!aRHI.CreateTexture("SSAO", bufferSize.x, bufferSize.y, 1, ResourceFormat::R32_FLOAT, ResourceBindFlag_ShaderResource | ResourceBindFlag_RenderTarget, *myHalfSizeSSAOTexture))
 		{
-			spdlog::critical("Failed to create SSAO texture!");
+			SPDLOG_CRITICAL("Failed to create SSAO texture!");
 			return false;
 		}
 	}
@@ -183,6 +185,10 @@ void DeferredRenderPass::Execute(
 
 	inoutCommandList.BeginEvent("Clear GBuffer");
 	inoutCommandList.ClearRenderTargets(myGBuffer->GetTextures(), GBuffer::NUM_GBUFFER_TARGETS);
+	inoutCommandList.EndEvent();
+
+	inoutCommandList.BeginEvent("Clear SSAO");
+	inoutCommandList.ClearRenderTarget(*myHalfSizeSSAOTexture);
 	inoutCommandList.EndEvent();
 
 	FrameBuffer frameBuffer;
@@ -215,13 +221,16 @@ void DeferredRenderPass::Execute(
 
 			inoutCommandList.BeginEvent("Ambient Light");
 
-			// SSAO Here
-			//inoutCommandList.SetRenderTarget(mySSAOTexture.get(), nullptr);
+			if (mySSAOEnabled)
+			{
+				inoutCommandList.SetRenderTarget(myHalfSizeSSAOTexture.get(), nullptr);
 
-			//inoutCommandList.SetPipelineStateObject(*mySSAOPSO);
-			//inoutCommandList.Draw(4);
+				inoutCommandList.SetPipelineStateObject(*mySSAOPSO);
+				inoutCommandList.Draw(4);
 
-			//inoutCommandList.SetShaderResource(mySSAOTexture.get(), 97, PipelineStage_PixelShader);
+				inoutCommandList.SetRenderTarget(aFrameTargets.RenderTarget, nullptr);
+				inoutCommandList.SetShaderResource(myHalfSizeSSAOTexture.get(), 97, PipelineStage_PixelShader);
+			}
 
 			inoutCommandList.SetPipelineStateObject(*myDeferredAmbientPSO);
 			inoutCommandList.Draw(4);
@@ -291,4 +300,9 @@ void DeferredRenderPass::Execute(
 	}
 
 	inoutCommandList.EndEvent();
+}
+
+void DeferredRenderPass::SetSSAOStatus(bool aEnabled)
+{
+	mySSAOEnabled = aEnabled;
 }

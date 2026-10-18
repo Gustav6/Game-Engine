@@ -3,6 +3,7 @@
 #include <filesystem>
 #include <string>
 #include <vector>
+#include <cstdint>
 
 // More info can be found at their repo:
 // https://github.com/ibireme/yyjson 
@@ -12,105 +13,156 @@ struct yyjson_val;
 struct yyjson_mut_doc;
 struct yyjson_mut_val;
 
-enum class JsonValueType
+namespace Json
 {
-	Unknown,
-	Bool,
-	Int,
-	Unsigned,
-	Float,
-	String,
-	Array,
-	Object
-};
+	enum class ValueType
+	{
+		Unknown,
+		Bool,
+		Int,
+		Unsigned,
+		Float,
+		String,
+		Array,
+		Object
+	};
 
-/*
-* The data class represents a classic object in json.
-* @return
-*/
-class JsonData
-{
-public:
-	JsonData(const std::filesystem::path& aJsonPath);
+	/*
+	* The data class represents a classic object in json.
+	* @return
+	*/
 
-	bool IsValid() const;
+	enum ReadFlag_
+	{
+		ReadFlag_None = 0,
+		ReadFlag_Insitu = 1 << 0,
+		ReadFlag_StopWhenDone = 1 << 1,
+		ReadFlag_AllowTrailingCommas = 1 << 2,
+		ReadFlag_AllowComments = 1 << 3,
+		ReadFlag_AllowInfAndNan = 1 << 4,
+		ReadFlag_NumberAsRaw = 1 << 5,
+		ReadFlag_AllowInvalidUnicode = 1 << 6,
+		ReadFlag_BignumAsRaw = 1 << 7,
+		ReadFlag_AllowBom = 1 << 8,
+		ReadFlag_AllowExtNumber = 1 << 9,
+		ReadFlag_AllowExtEscape = 1 << 10,
+		ReadFlag_AllowExtWhitespace = 1 << 11,
+		ReadFlag_AllowSingleQuotedStr = 1 << 12,
+		ReadFlag_AllowUnquotedKey = 1 << 13
+	};
 
-	bool GetBool(const char* aName) const;
-	int GetInt(const char* aName) const;
-	unsigned int GetUnsigned(const char* aName) const;
-	float GetFloat(const char* aName) const;
-	double GetDouble(const char* aName) const;
-	std::string GetString(const char* aName) const;
-	JsonData GetObjectValue(const char* aName) const;
+	typedef std::uint32_t ReadFlags;
 
-	std::vector<bool> GetBoolArray(const char* aName) const;
-	std::vector<int> GetIntArray(const char* aName) const;
-	std::vector<unsigned int> GetUnsignedArray(const char* aName) const;
-	std::vector<float> GetFloatArray(const char* aName) const;
-	std::vector<double> GetDoubleArray(const char* aName) const;
-	std::vector<std::string> GetStringArray(const char* aName) const;
-	std::vector<JsonData> GetObjectValueArray(const char* aName) const;
+	class Data
+	{
+	public:
+		Data(const std::filesystem::path& aJsonPath, ReadFlags aFlags);
 
-	std::vector<std::string> GetKeys() const;
+		bool IsValid() const;
 
-	JsonValueType GetType(const char* aName) const;
-	JsonValueType GetArrayType(const char* aName) const;
+		bool GetBool(const char* aName) const;
+		int GetInt(const char* aName) const;
+		unsigned int GetUnsigned(const char* aName) const;
+		float GetFloat(const char* aName) const;
+		double GetDouble(const char* aName) const;
+		std::string GetString(const char* aName) const;
+		Data GetDataObject(const char* aName) const;
 
-	bool HasKey(const char* aName) const;
+		std::vector<bool> GetBoolArray(const char* aName) const;
+		std::vector<int> GetIntArray(const char* aName) const;
+		std::vector<unsigned int> GetUnsignedArray(const char* aName) const;
+		std::vector<float> GetFloatArray(const char* aName) const;
+		std::vector<double> GetDoubleArray(const char* aName) const;
+		std::vector<std::string> GetStringArray(const char* aName) const;
+		std::vector<Data> GetDataObjectArray(const char* aName) const;
 
-	const std::filesystem::path& GetPath() const;
+		[[nodiscard]] std::vector<std::string> GetKeys() const;
 
-private:
-	JsonData();
-	JsonData(std::shared_ptr<yyjson_doc> aDocument, yyjson_val* aValue, std::filesystem::path aPath);
+		ValueType GetType(const char* aName) const;
 
-	std::shared_ptr<yyjson_doc> myDocument;
-	yyjson_val* myRoot;
+		/*
+		* Note the returned type only reflects the first element in the array.
+		* @return
+		*/
+		ValueType GetArrayType(const char* aName) const;
 
-	std::filesystem::path myPath;
-};
+		bool HasKey(const char* aName) const;
 
-class JsonWriter
-{
-public:
-	JsonWriter(const std::filesystem::path& aDestination);
-	~JsonWriter();
+		const std::filesystem::path& GetPath() const;
 
-	bool IsValid() const;
+	private:
+		Data();
+		Data(const std::shared_ptr<yyjson_doc>& aDocument, yyjson_val* aValue, const std::filesystem::path& aPath);
 
-	void Save();
-	void Clear();
-	
-	bool BeginObject(const char* aKey);
-	bool EndObject();
+		std::shared_ptr<yyjson_doc> myDocument;
+		yyjson_val* myRoot;
 
-	bool AddBool(const char* aKey, bool aValue) const;
-	bool AddInt(const char* aKey, int aValue) const;
-	bool AddUnsigned(const char* aKey, unsigned int aValue) const;
-	bool AddFloat(const char* aKey, float aValue) const;
-	bool AddDouble(const char* aKey, double aValue) const;
-	bool AddString(const char* aKey, const std::string& aValue) const;
-	
-	bool AddBoolArray(const char* aKey, const std::vector<bool>& aValues) const;
-	bool AddIntArray(const char* aKey, const std::vector<int>& aValues) const;
-	bool AddUnsignedArray(const char* aKey, const std::vector<unsigned int>& aValues) const;
-	bool AddFloatArray(const char* aKey, const std::vector<float>& aValues) const;
-	bool AddDoubleArray(const char* aKey, const std::vector<double>& aValues) const;
-	bool AddStringArray(const char* aKey, const std::vector<std::string>& aValues) const;
+		std::filesystem::path myPath;
+	};
 
-	const std::filesystem::path& GetDestination() const;
+	/*
+	* The writer class represents a wrapper to write to a json file.
+	* @return
+	*/
 
-private:
-	yyjson_mut_doc* myDocument;
-	yyjson_mut_val* myRoot;
+	enum WriteFlag_
+	{
+		WriteFlag_None = 0,
+		WriteFlag_Pretty = 1 << 0,
+		WriteFlag_PrettyTwoSpaces = 1 << 1,
+		WriteFlag_PrettyTabs = 1 << 2,
+		WriteFlag_EscapeUnicode = 1 << 3,
+		WriteFlag_LowercaseHex = 1 << 4,
+		WriteFlag_EscapeSlashes = 1 << 5,
+		WriteFlag_AllowInfAndNan = 1 << 6,
+		WriteFlag_InfAndNanAsNull = 1 << 7,
+		WriteFlag_AllowInvalidUnicode = 1 << 8,
+		WriteFlag_NewlineAtEnd = 1 << 9,
+		WriteFlag_FpToFloat = 1 << 10
+	};
 
-	std::filesystem::path myDestination;
-};
+	typedef std::uint32_t WriteFlags;
 
-class Json
-{
-public:
-	static JsonData Read(const std::filesystem::path& aJsonPath);
-	static JsonWriter Write(const std::filesystem::path& aJsonDestination);
-};
+	class Writer
+	{
+	public:
+		Writer(const std::filesystem::path& aDestination, WriteFlags aFlags);
+		~Writer();
 
+		bool IsValid() const;
+
+		void Save() const;
+		void Clear();
+
+		// TODO: Implement
+		bool BeginObject(const char* aKey);
+		bool EndObject();
+
+		bool SetBool(const char* aKey, bool aValue) const;
+		bool SetInt(const char* aKey, int aValue) const;
+		bool SetUnsigned(const char* aKey, unsigned int aValue) const;
+		bool SetFloat(const char* aKey, float aValue) const;
+		bool SetDouble(const char* aKey, double aValue) const;
+		bool SetString(const char* aKey, const std::string& aValue) const;
+
+		// TODO: Implement
+		bool SetBoolArray(const char* aKey, const std::vector<bool>& aValues) const;
+		bool SetIntArray(const char* aKey, const std::vector<int>& aValues) const;
+		bool SetUnsignedArray(const char* aKey, const std::vector<unsigned int>& aValues) const;
+		bool SetFloatArray(const char* aKey, const std::vector<float>& aValues) const;
+		bool SetDoubleArray(const char* aKey, const std::vector<double>& aValues) const;
+		bool SetStringArray(const char* aKey, const std::vector<std::string>& aValues) const;
+
+		const std::filesystem::path& GetDestination() const;
+
+	private:
+		yyjson_mut_doc* myDocument;
+		yyjson_mut_val* myRoot;
+
+		std::filesystem::path myDestination;
+		WriteFlags myWriteFlags;
+	};
+
+	Data Read(const std::filesystem::path& aJsonPath, ReadFlags aFlags = ReadFlag_None);
+	Writer Write(const std::filesystem::path& aJsonDestination, WriteFlags aFlags = WriteFlag_None);
+}

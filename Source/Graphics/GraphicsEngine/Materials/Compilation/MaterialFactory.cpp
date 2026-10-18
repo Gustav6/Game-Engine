@@ -25,25 +25,25 @@ bool MaterialFactory::Create(
 
 	if (aDescription.BlendMode == MaterialBlendMode::None)
 	{
-		spdlog::error("Material {} has invalid Blend Mode setting!", aDescription.Name);
+		SPDLOG_ERROR("Material {} has invalid Blend Mode setting!", aDescription.Name);
 		return false;
 	}
 
 	if (aDescription.Domain == MaterialDomain::None)
 	{
-		spdlog::error("Material {} has invalid Material Domain setting!", aDescription.Name);
+		SPDLOG_ERROR("Material {} has invalid Material Domain setting!", aDescription.Name);
 		return false;
 	}
 
 	if (aDescription.ShadingModel == ShadingModel::None)
 	{
-		spdlog::error("Material {} has invalid Shading Model setting!", aDescription.Name);
+		SPDLOG_ERROR("Material {} has invalid Shading Model setting!", aDescription.Name);
 		return false;
 	}
 
 	if (aDescription.Name.empty())
 	{
-		spdlog::error("Material {} has no given name!", aDescription.Name);
+		SPDLOG_ERROR("Material {} has no given name!", aDescription.Name);
 		return false;
 	}
 
@@ -220,7 +220,7 @@ void MaterialFactory::CreateMaterialTextureSlots(const RHIShaderReflectionInfo& 
 
 		if (inoutMaterial.myTexturesSlotNameToIndex.contains(lowerName) && inoutMaterial.myTexturesSlotNameToIndex.at(lowerName) != shaderTextureSlot.BindPoint)
 		{
-			spdlog::warn("Found texture {} in multiple places when setting up material. Only the first instance will be used!", shaderTextureSlot.Name);
+			SPDLOG_WARN("Found texture {} in multiple places when setting up material. Only the first instance will be used!", shaderTextureSlot.Name);
 			continue;
 		}
 

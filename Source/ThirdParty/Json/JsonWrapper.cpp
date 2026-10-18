@@ -4,13 +4,13 @@
 
 #include "Logger/Logger.h"
 
-JsonData::JsonData()
+Json::Data::Data()
 {
 	myRoot = nullptr;
 	myDocument = nullptr;
 }
 
-JsonData::JsonData(const std::filesystem::path& aJsonPath)
+Json::Data::Data(const std::filesystem::path& aJsonPath, ReadFlags aFlags)
 {
 	myRoot = nullptr;
 	myDocument = nullptr;
@@ -18,17 +18,17 @@ JsonData::JsonData(const std::filesystem::path& aJsonPath)
 
 	if (!std::filesystem::exists(aJsonPath))
 	{
-		spdlog::error("File does not exist [{}]!", aJsonPath.string());
+		SPDLOG_ERROR("File does not exist [{}]!", aJsonPath.string());
 		return;
 	}
 
 	yyjson_read_err error;
 
-	yyjson_doc* document = yyjson_read_file(aJsonPath.string().c_str(), 0, nullptr, &error);
+	yyjson_doc* document = yyjson_read_file(aJsonPath.string().c_str(), aFlags, nullptr, &error);
 
 	if (error.code)
 	{
-		spdlog::error("Could not read json [{}]! Error [{}] : [{}] at position: [{}]!", aJsonPath.string(), error.code, error.msg, error.pos);
+		SPDLOG_ERROR("Could not read json [{}]! Error [{}] : [{}] at position: [{}]!", aJsonPath.string(), error.code, error.msg, error.pos);
 		return;
 	}
 
@@ -37,14 +37,14 @@ JsonData::JsonData(const std::filesystem::path& aJsonPath)
 	myRoot = yyjson_doc_get_root(myDocument.get());
 }
 
-JsonData::JsonData(std::shared_ptr<yyjson_doc> aDocument, yyjson_val* aValue, std::filesystem::path aPath)
+Json::Data::Data(const std::shared_ptr<yyjson_doc>& aDocument, yyjson_val* aValue, const std::filesystem::path& aPath)
 {
 	myDocument = aDocument;
 	myRoot = aValue;
 	myPath = aPath;
 }
 
-bool JsonData::IsValid() const
+bool Json::Data::IsValid() const
 {
 	if (myRoot == nullptr || myDocument == nullptr)
 	{
@@ -54,142 +54,142 @@ bool JsonData::IsValid() const
 	return true;
 }
 
-bool JsonData::GetBool(const char* aName) const
+bool Json::Data::GetBool(const char* aName) const
 {
 	yyjson_val* data = yyjson_obj_get(myRoot, aName);
 
 	if (data == nullptr)
 	{
-		spdlog::warn("Key [{}] not found in [{}]!", aName, myPath.string());
+		SPDLOG_WARN("Key [{}] not found in [{}]!", aName, myPath.string());
 		return false;
 	}
 
 	if (!yyjson_is_bool(data))
 	{
-		spdlog::warn("Key [{}] exists but is not a bool, type: [{}] in [{}]!", aName, yyjson_get_type_desc(data), myPath.string());
+		SPDLOG_WARN("Key [{}] exists but is not a bool, type: [{}] in [{}]!", aName, yyjson_get_type_desc(data), myPath.string());
 		return false;
 	}
 
 	return yyjson_get_bool(data);
 }
 
-int JsonData::GetInt(const char* aName) const
+int Json::Data::GetInt(const char* aName) const
 {
 	yyjson_val* data = yyjson_obj_get(myRoot, aName);
 
 	if (data == nullptr)
 	{
-		spdlog::warn("Key [{}] not found in [{}]!", aName, myPath.string());
+		SPDLOG_WARN("Key [{}] not found in [{}]!", aName, myPath.string());
 		return 0;
 	}
 
 	if (!yyjson_is_int(data))
 	{
-		spdlog::warn("Key [{}] exists but is not a int, type: [{}] in [{}]!", aName, yyjson_get_type_desc(data), myPath.string());
+		SPDLOG_WARN("Key [{}] exists but is not a int, type: [{}] in [{}]!", aName, yyjson_get_type_desc(data), myPath.string());
 		return 0;
 	}
 
 	return yyjson_get_int(data);
 }
 
-unsigned int JsonData::GetUnsigned(const char* aName) const
+unsigned int Json::Data::GetUnsigned(const char* aName) const
 {
 	yyjson_val* data = yyjson_obj_get(myRoot, aName);
 
 	if (data == nullptr)
 	{
-		spdlog::warn("Key [{}] not found in [{}]!", aName, myPath.string());
+		SPDLOG_WARN("Key [{}] not found in [{}]!", aName, myPath.string());
 		return 0;
 	}
 
 	if (!yyjson_is_uint(data))
 	{
-		spdlog::warn("Key [{}] exists but is not an unsigned int, type: [{}] in [{}]!", aName, yyjson_get_type_desc(data), myPath.string());
+		SPDLOG_WARN("Key [{}] exists but is not an unsigned int, type: [{}] in [{}]!", aName, yyjson_get_type_desc(data), myPath.string());
 		return 0;
 	}
 
 	return static_cast<unsigned int>(yyjson_get_uint(data));
 }
 
-float JsonData::GetFloat(const char* aName) const
+float Json::Data::GetFloat(const char* aName) const
 {
 	yyjson_val* data = yyjson_obj_get(myRoot, aName);
 
 	if (data == nullptr)
 	{
-		spdlog::warn("Key [{}] not found in [{}]!", aName, myPath.string());
+		SPDLOG_WARN("Key [{}] not found in [{}]!", aName, myPath.string());
 		return 0.0f;
 	}
 
 	if (!yyjson_is_num(data))
 	{
-		spdlog::warn("Key [{}] exists but is not a float / double, type: [{}] in [{}]!", aName, yyjson_get_type_desc(data), myPath.string());
+		SPDLOG_WARN("Key [{}] exists but is not a float / double, type: [{}] in [{}]!", aName, yyjson_get_type_desc(data), myPath.string());
 		return 0.0f;
 	}
 
 	return static_cast<float>(yyjson_get_num(data));
 }
 
-double JsonData::GetDouble(const char* aName) const
+double Json::Data::GetDouble(const char* aName) const
 {
 	yyjson_val* data = yyjson_obj_get(myRoot, aName);
 
 	if (data == nullptr)
 	{
-		spdlog::warn("Key [{}] not found in [{}]!", aName, myPath.string());
+		SPDLOG_WARN("Key [{}] not found in [{}]!", aName, myPath.string());
 		return 0.0f;
 	}
 
 	if (!yyjson_is_num(data))
 	{
-		spdlog::warn("Key [{}] exists but is not a double, type: [{}] in [{}]!", aName, yyjson_get_type_desc(data), myPath.string());
+		SPDLOG_WARN("Key [{}] exists but is not a double, type: [{}] in [{}]!", aName, yyjson_get_type_desc(data), myPath.string());
 		return 0.0f;
 	}
 
 	return yyjson_get_num(data);
 }
 
-std::string JsonData::GetString(const char* aName) const
+std::string Json::Data::GetString(const char* aName) const
 {
 	yyjson_val* data = yyjson_obj_get(myRoot, aName);
 
 	if (data == nullptr)
 	{
-		spdlog::warn("Key [{}] not found in [{}]!", aName, myPath.string());
+		SPDLOG_WARN("Key [{}] not found in [{}]!", aName, myPath.string());
 		return "";
 	}
 
 	if (!yyjson_is_str(data))
 	{
-		spdlog::warn("Key [{}] exists but is not a string, type: [{}] in [{}]!", aName, yyjson_get_type_desc(data), myPath.string());
+		SPDLOG_WARN("Key [{}] exists but is not a string, type: [{}] in [{}]!", aName, yyjson_get_type_desc(data), myPath.string());
 		return "";
 	}
 
 	return yyjson_get_str(data);
 }
 
-JsonData JsonData::GetObjectValue(const char* aName) const
+Json::Data Json::Data::GetDataObject(const char* aName) const
 {
 	yyjson_val* object = yyjson_obj_get(myRoot, aName);
 
 	if (object == nullptr)
 	{
-		spdlog::warn("Key [{}] not found in [{}]!", aName, myPath.string());
+		SPDLOG_WARN("Key [{}] not found in [{}]!", aName, myPath.string());
 
-		return JsonData();
+		return Data();
 	}
 
 	if (!yyjson_is_obj(object))
 	{
-		spdlog::warn("Key [{}] exists but is not an object, type: [{}] in [{}]!", aName, yyjson_get_type_desc(object), myPath.string());
+		SPDLOG_WARN("Key [{}] exists but is not an object, type: [{}] in [{}]!", aName, yyjson_get_type_desc(object), myPath.string());
 
-		return JsonData();
+		return Data();
 	}
 
-	return JsonData(myDocument, object, myPath);
+	return Data(myDocument, object, myPath);
 }
 
-std::vector<bool> JsonData::GetBoolArray(const char* aName) const
+std::vector<bool> Json::Data::GetBoolArray(const char* aName) const
 {
 	std::vector<bool> values;
 
@@ -197,13 +197,13 @@ std::vector<bool> JsonData::GetBoolArray(const char* aName) const
 
 	if (data == nullptr)
 	{
-		spdlog::warn("Key [{}] not found in [{}]!", aName, myPath.string());
+		SPDLOG_WARN("Key [{}] not found in [{}]!", aName, myPath.string());
 		return values;
 	}
 
 	if (!yyjson_is_arr(data))
 	{
-		spdlog::warn("Key [{}] is not an array in [{}]!", aName, myPath.string());
+		SPDLOG_WARN("Key [{}] is not an array in [{}]!", aName, myPath.string());
 		return values;
 	}
 
@@ -218,14 +218,14 @@ std::vector<bool> JsonData::GetBoolArray(const char* aName) const
 		}
 		else
 		{
-			spdlog::warn("Array [{}] contains a non-bool value in [{}]!", aName, myPath.string());
+			SPDLOG_WARN("Array [{}] contains a non-bool value in [{}]!", aName, myPath.string());
 		}
 	}
 
 	return values;
 }
 
-std::vector<int> JsonData::GetIntArray(const char* aName) const
+std::vector<int> Json::Data::GetIntArray(const char* aName) const
 {
 	std::vector<int> values;
 
@@ -233,13 +233,13 @@ std::vector<int> JsonData::GetIntArray(const char* aName) const
 
 	if (data == nullptr)
 	{
-		spdlog::warn("Key [{}] not found in [{}]!", aName, myPath.string());
+		SPDLOG_WARN("Key [{}] not found in [{}]!", aName, myPath.string());
 		return values;
 	}
 
 	if (!yyjson_is_arr(data))
 	{
-		spdlog::warn("Key [{}] is not an array in [{}]!", aName, myPath.string());
+		SPDLOG_WARN("Key [{}] is not an array in [{}]!", aName, myPath.string());
 		return values;
 	}
 
@@ -254,14 +254,14 @@ std::vector<int> JsonData::GetIntArray(const char* aName) const
 		}
 		else
 		{
-			spdlog::warn("Array [{}] contains a non-integer value in [{}]!", aName, myPath.string());
+			SPDLOG_WARN("Array [{}] contains a non-integer value in [{}]!", aName, myPath.string());
 		}
 	}
 
 	return values;
 }
 
-std::vector<unsigned int> JsonData::GetUnsignedArray(const char* aName) const
+std::vector<unsigned int> Json::Data::GetUnsignedArray(const char* aName) const
 {
 	std::vector<unsigned int> values;
 
@@ -269,13 +269,13 @@ std::vector<unsigned int> JsonData::GetUnsignedArray(const char* aName) const
 
 	if (data == nullptr)
 	{
-		spdlog::warn("Key [{}] not found in [{}]!", aName, myPath.string());
+		SPDLOG_WARN("Key [{}] not found in [{}]!", aName, myPath.string());
 		return values;
 	}
 
 	if (!yyjson_is_arr(data))
 	{
-		spdlog::warn("Key [{}] is not an array in [{}]!", aName, myPath.string());
+		SPDLOG_WARN("Key [{}] is not an array in [{}]!", aName, myPath.string());
 		return values;
 	}
 
@@ -290,14 +290,14 @@ std::vector<unsigned int> JsonData::GetUnsignedArray(const char* aName) const
 		}
 		else
 		{
-			spdlog::warn("Array [{}] contains a non-unsigned-integer value in [{}]!", aName, myPath.string());
+			SPDLOG_WARN("Array [{}] contains a non-unsigned-integer value in [{}]!", aName, myPath.string());
 		}
 	}
 
 	return values;
 }
 
-std::vector<float> JsonData::GetFloatArray(const char* aName) const
+std::vector<float> Json::Data::GetFloatArray(const char* aName) const
 {
 	std::vector<float> values;
 
@@ -305,13 +305,13 @@ std::vector<float> JsonData::GetFloatArray(const char* aName) const
 
 	if (data == nullptr)
 	{
-		spdlog::warn("Key [{}] not found in [{}]!", aName, myPath.string());
+		SPDLOG_WARN("Key [{}] not found in [{}]!", aName, myPath.string());
 		return values;
 	}
 
 	if (!yyjson_is_arr(data))
 	{
-		spdlog::warn("Key [{}] is not an array in [{}]!", aName, myPath.string());
+		SPDLOG_WARN("Key [{}] is not an array in [{}]!", aName, myPath.string());
 		return values;
 	}
 
@@ -326,14 +326,14 @@ std::vector<float> JsonData::GetFloatArray(const char* aName) const
 		}
 		else
 		{
-			spdlog::warn("Array [{}] contains a non-float / double value in [{}]!", aName, myPath.string());
+			SPDLOG_WARN("Array [{}] contains a non-float / double value in [{}]!", aName, myPath.string());
 		}
 	}
 
 	return values;
 }
 
-std::vector<double> JsonData::GetDoubleArray(const char* aName) const
+std::vector<double> Json::Data::GetDoubleArray(const char* aName) const
 {
 	std::vector<double> values;
 
@@ -341,13 +341,13 @@ std::vector<double> JsonData::GetDoubleArray(const char* aName) const
 
 	if (data == nullptr)
 	{
-		spdlog::warn("Key [{}] not found in [{}]!", aName, myPath.string());
+		SPDLOG_WARN("Key [{}] not found in [{}]!", aName, myPath.string());
 		return values;
 	}
 
 	if (!yyjson_is_arr(data))
 	{
-		spdlog::warn("Key [{}] is not an array in [{}]!", aName, myPath.string());
+		SPDLOG_WARN("Key [{}] is not an array in [{}]!", aName, myPath.string());
 		return values;
 	}
 
@@ -362,14 +362,14 @@ std::vector<double> JsonData::GetDoubleArray(const char* aName) const
 		}
 		else
 		{
-			spdlog::warn("Array [{}] contains a non-double value in [{}]!", aName, myPath.string());
+			SPDLOG_WARN("Array [{}] contains a non-double value in [{}]!", aName, myPath.string());
 		}
 	}
 
 	return values;
 }
 
-std::vector<std::string> JsonData::GetStringArray(const char* aName) const
+std::vector<std::string> Json::Data::GetStringArray(const char* aName) const
 {
 	std::vector<std::string> values;
 
@@ -377,13 +377,13 @@ std::vector<std::string> JsonData::GetStringArray(const char* aName) const
 
 	if (data == nullptr)
 	{
-		spdlog::warn("Key [{}] not found in [{}]!", aName, myPath.string());
+		SPDLOG_WARN("Key [{}] not found in [{}]!", aName, myPath.string());
 		return values;
 	}
 
 	if (!yyjson_is_arr(data))
 	{
-		spdlog::warn("Key [{}] is not an array in [{}]!", aName, myPath.string());
+		SPDLOG_WARN("Key [{}] is not an array in [{}]!", aName, myPath.string());
 		return values;
 	}
 
@@ -398,28 +398,28 @@ std::vector<std::string> JsonData::GetStringArray(const char* aName) const
 		}
 		else
 		{
-			spdlog::warn("Array [{}] contains a non-string value in [{}]!", aName, myPath.string());
+			SPDLOG_WARN("Array [{}] contains a non-string value in [{}]!", aName, myPath.string());
 		}
 	}
 
 	return values;
 }
 
-std::vector<JsonData> JsonData::GetObjectValueArray(const char* aName) const
+std::vector<Json::Data> Json::Data::GetDataObjectArray(const char* aName) const
 {
-	std::vector<JsonData> values;
+	std::vector<Data> values;
 
 	yyjson_val* data = yyjson_obj_get(myRoot, aName);
 
 	if (data == nullptr)
 	{
-		spdlog::warn("Key [{}] not found in [{}]!", aName, myPath.string());
+		SPDLOG_WARN("Key [{}] not found in [{}]!", aName, myPath.string());
 		return values;
 	}
 
 	if (!yyjson_is_arr(data))
 	{
-		spdlog::warn("Key [{}] is not an array in [{}]!", aName, myPath.string());
+		SPDLOG_WARN("Key [{}] is not an array in [{}]!", aName, myPath.string());
 		return values;
 	}
 
@@ -430,20 +430,20 @@ std::vector<JsonData> JsonData::GetObjectValueArray(const char* aName) const
 	{
 		if (yyjson_is_obj(value))
 		{
-			JsonData objectData(myDocument, value, myPath);
+			Data objectData(myDocument, value, myPath);
 
 			values.emplace_back(std::move(objectData));
 		}
 		else
 		{
-			spdlog::warn("Array [{}] contains a non-object value in [{}]!", aName, myPath.string());
+			SPDLOG_WARN("Array [{}] contains a non-object value in [{}]!", aName, myPath.string());
 		}
 	}
 
 	return values;
 }
 
-std::vector<std::string> JsonData::GetKeys() const
+std::vector<std::string> Json::Data::GetKeys() const
 {
 	std::vector<std::string> keys;
 
@@ -465,96 +465,96 @@ std::vector<std::string> JsonData::GetKeys() const
 	return keys;
 }
 
-JsonValueType JsonData::GetType(const char* aName) const
+Json::ValueType Json::Data::GetType(const char* aName) const
 {
 	yyjson_val* data = yyjson_obj_get(myRoot, aName);
 
 	if (data == nullptr)
 	{
-		return JsonValueType::Unknown;
+		return Json::ValueType::Unknown;
 	}
 
 	if (yyjson_is_bool(data))
 	{
-		return JsonValueType::Bool;
+		return Json::ValueType::Bool;
 	}
 	if (yyjson_is_int(data))
 	{
-		return JsonValueType::Int;
+		return Json::ValueType::Int;
 	}
 	if (yyjson_is_uint(data))
 	{
-		return JsonValueType::Unsigned;
+		return Json::ValueType::Unsigned;
 	}
 	if (yyjson_is_num(data))
 	{
-		return JsonValueType::Float;
+		return Json::ValueType::Float;
 	}
 	if (yyjson_is_str(data))
 	{
-		return JsonValueType::String;
+		return Json::ValueType::String;
 	}
 	if (yyjson_is_arr(data))
 	{
-		return JsonValueType::Array;
+		return Json::ValueType::Array;
 	}
 	if (yyjson_is_obj(data))
 	{
-		return JsonValueType::Object;
+		return Json::ValueType::Object;
 	}
 
-	return JsonValueType::Unknown;
+	return Json::ValueType::Unknown;
 }
 
-JsonValueType JsonData::GetArrayType(const char* aName) const
+Json::ValueType Json::Data::GetArrayType(const char* aName) const
 {
 	yyjson_val* data = yyjson_obj_get(myRoot, aName);
 
 	if (data == nullptr || !yyjson_is_arr(data))
 	{
-		return JsonValueType::Unknown;
+		return Json::ValueType::Unknown;
 	}
 
 	yyjson_val* value = yyjson_arr_get_first(data);
 
 	if (value == nullptr)
 	{
-		return JsonValueType::Unknown;
+		return Json::ValueType::Unknown;
 	}
 
 	if (yyjson_is_bool(value))
 	{
-		return JsonValueType::Bool;
+		return Json::ValueType::Bool;
 	}
 	if (yyjson_is_int(value))
 	{
-		return JsonValueType::Int;
+		return Json::ValueType::Int;
 	}
 	if (yyjson_is_uint(value))
 	{
-		return JsonValueType::Unsigned;
+		return Json::ValueType::Unsigned;
 	}
 	if (yyjson_is_num(value))
 	{
-		return JsonValueType::Float;
+		return Json::ValueType::Float;
 	}
 	if (yyjson_is_str(value))
 	{
-		return JsonValueType::String;
+		return Json::ValueType::String;
 	}
 	if (yyjson_is_arr(value))
 	{
-		return JsonValueType::Array;
+		return Json::ValueType::Array;
 	}
 	if (yyjson_is_obj(value))
 	{
-		return JsonValueType::Object;
+		return Json::ValueType::Object;
 	}
 
-	return JsonValueType::Unknown;
+	return Json::ValueType::Unknown;
 }
 
-bool JsonData::HasKey(const char* aName) const
+bool Json::Data::HasKey(const char* aName) const
 {
 	if (yyjson_obj_get(myRoot, aName) != nullptr)
 	{
@@ -564,16 +564,17 @@ bool JsonData::HasKey(const char* aName) const
 	return false;
 }
 
-const std::filesystem::path& JsonData::GetPath() const
+const std::filesystem::path& Json::Data::GetPath() const
 {
 	return myPath;
 }
 
-JsonWriter::JsonWriter(const std::filesystem::path& aDestination)
+Json::Writer::Writer(const std::filesystem::path& aDestination, WriteFlags aFlags)
 {
 	myDestination = aDestination;
+	myWriteFlags = aFlags;
 
-	myDocument = yyjson_mut_doc_new(NULL);
+	myDocument = yyjson_mut_doc_new(nullptr);
 
 	if (myDocument != nullptr)
 	{
@@ -585,21 +586,21 @@ JsonWriter::JsonWriter(const std::filesystem::path& aDestination)
 		}
 		else
 		{
-			spdlog::error("Could not create root object for json [{}]!", myDestination.string());
+			SPDLOG_ERROR("Could not create root object for json [{}]!", myDestination.string());
 		}
 	}
 	else
 	{
-		spdlog::error("Could not create json document for [{}]!", myDestination.string());
+		SPDLOG_ERROR("Could not create json document for [{}]!", myDestination.string());
 	}
 }
 
-JsonWriter::~JsonWriter()
+Json::Writer::~Writer()
 {
 	yyjson_mut_doc_free(myDocument);
 }
 
-bool JsonWriter::IsValid() const
+bool Json::Writer::IsValid() const
 {
 	if (myRoot == nullptr || myDocument == nullptr)
 	{
@@ -609,11 +610,11 @@ bool JsonWriter::IsValid() const
 	return true;
 }
 
-void JsonWriter::Save()
+void Json::Writer::Save() const
 {
 	if (myDocument == nullptr)
 	{
-		spdlog::error("Cannot save json [{}], document is invalid!", myDestination.string());
+		SPDLOG_ERROR("Cannot save json [{}], document is invalid!", myDestination.string());
 		return;
 	}
 
@@ -621,30 +622,30 @@ void JsonWriter::Save()
 
 	yyjson_mut_obj_iter iter;
 	yyjson_mut_obj_iter_init(object, &iter);
-	yyjson_mut_val* key, * val;
+	yyjson_mut_val* key;
 	while ((key = yyjson_mut_obj_iter_next(&iter)))
 	{
-		val = yyjson_mut_obj_iter_get_val(key);
+		yyjson_mut_val* val = yyjson_mut_obj_iter_get_val(key);
 
 		if (yyjson_mut_is_null(val))
 		{
-			spdlog::warn("Removing null value for key [{}] when saving [{}]!", yyjson_mut_get_str(key), myDestination.string());
+			SPDLOG_WARN("Removing null value for key [{}] when saving [{}]!", yyjson_mut_get_str(key), myDestination.string());
 			yyjson_mut_obj_iter_remove(&iter);
 		}
 	}
 
 	yyjson_write_err error;
 
-	if (!yyjson_mut_write_file(myDestination.string().c_str(), myDocument, YYJSON_WRITE_NOFLAG, NULL, &error))
+	if (!yyjson_mut_write_file(myDestination.string().c_str(), myDocument, myWriteFlags, nullptr, &error))
 	{
 		if (error.code)
 		{
-			spdlog::error("Could not write json [{}]! Error [{}] : [{}]!", myDestination.string(), error.code, error.msg);
+			SPDLOG_ERROR("Could not write json [{}]! Error [{}] : [{}]!", myDestination.string(), error.code, error.msg);
 		}
 	}
 }
 
-void JsonWriter::Clear()
+void Json::Writer::Clear()
 {
 	if (myDocument != nullptr)
 	{
@@ -663,56 +664,192 @@ void JsonWriter::Clear()
 		}
 		else
 		{
-			spdlog::error("Could not create root object for json [{}]!", myDestination.string());
+			SPDLOG_ERROR("Could not create root object for json [{}]!", myDestination.string());
 		}
 	}
 	else
 	{
-		spdlog::error("Could not create json document for [{}]!", myDestination.string());
+		SPDLOG_ERROR("Could not create json document for [{}]!", myDestination.string());
 	}
 }
 
-bool JsonWriter::AddBool(const char* aKey, bool aValue) const
+//bool Json::Writer::BeginObject(const char* aKey)
+//{
+//	return true;
+//}
+//
+//bool Json::Writer::EndObject()
+//{
+//	return true;
+//}
+
+bool Json::Writer::SetBool(const char* aKey, bool aValue) const
 {
-	return yyjson_mut_obj_add_bool(myDocument, myRoot, aKey, aValue);
+	if (!IsValid())
+	{
+		SPDLOG_ERROR("Could not set Bool for [{}], Writer is not valid!", myDestination.string());
+		return false;
+	}
+
+	yyjson_mut_val* key = yyjson_mut_str(myDocument, aKey);
+	yyjson_mut_val* value = yyjson_mut_bool(myDocument, aValue);
+
+	if (key == nullptr || value == nullptr)
+	{
+		SPDLOG_ERROR("Could not allocate Bool for [{}]!", myDestination.string());
+		return false;
+	}
+
+	if (yyjson_mut_obj_put(myRoot, key, value))
+	{
+		return true;
+	}
+
+	SPDLOG_ERROR("Could not set Bool for [{}]!", myDestination.string());
+	return false;
 }
 
-bool JsonWriter::AddInt(const char* aKey, int aValue) const
+bool Json::Writer::SetInt(const char* aKey, int aValue) const
 {
-	return yyjson_mut_obj_add_int(myDocument, myRoot, aKey, aValue);
+	if (!IsValid())
+	{
+		SPDLOG_ERROR("Could not set Int for [{}], Writer is not valid!", myDestination.string());
+		return false;
+	}
+
+	yyjson_mut_val* key = yyjson_mut_str(myDocument, aKey);
+	yyjson_mut_val* value = yyjson_mut_int(myDocument, aValue);
+
+	if (key == nullptr || value == nullptr)
+	{
+		SPDLOG_ERROR("Could not allocate Int for [{}]!", myDestination.string());
+		return false;
+	}
+
+	if (yyjson_mut_obj_put(myRoot, key, value))
+	{
+		return true;
+	}
+
+	SPDLOG_ERROR("Could not set Int for [{}]!", myDestination.string());
+	return false;
 }
 
-bool JsonWriter::AddUnsigned(const char* aKey, unsigned int aValue) const
+bool Json::Writer::SetUnsigned(const char* aKey, unsigned int aValue) const
 {
-	return yyjson_mut_obj_add_uint(myDocument, myRoot, aKey, aValue);
+	if (!IsValid())
+	{
+		SPDLOG_ERROR("Could not set Unsigned Int for [{}], Writer is not valid!", myDestination.string());
+		return false;
+	}
+
+	yyjson_mut_val* key = yyjson_mut_str(myDocument, aKey);
+	yyjson_mut_val* value = yyjson_mut_uint(myDocument, aValue);
+
+	if (key == nullptr || value == nullptr)
+	{
+		SPDLOG_ERROR("Could not allocate Unsigned Int for [{}]!", myDestination.string());
+		return false;
+	}
+
+	if (yyjson_mut_obj_put(myRoot, key, value))
+	{
+		return true;
+	}
+
+	SPDLOG_ERROR("Could not set Unsigned Int for [{}]!", myDestination.string());
+	return false;
 }
 
-bool JsonWriter::AddFloat(const char* aKey, float aValue) const
+bool Json::Writer::SetFloat(const char* aKey, float aValue) const
 {
-	return yyjson_mut_obj_add_float(myDocument, myRoot, aKey, aValue);
+	if (!IsValid())
+	{
+		SPDLOG_ERROR("Could not set Float for [{}], Writer is not valid!", myDestination.string());
+		return false;
+	}
+
+	yyjson_mut_val* key = yyjson_mut_str(myDocument, aKey);
+	yyjson_mut_val* value = yyjson_mut_float(myDocument, aValue);
+
+	if (key == nullptr || value == nullptr)
+	{
+		SPDLOG_ERROR("Could not allocate Float for [{}]!", myDestination.string());
+		return false;
+	}
+
+	if (yyjson_mut_obj_put(myRoot, key, value))
+	{
+		return true;
+	}
+
+	SPDLOG_ERROR("Could not set Float to [{}]!", myDestination.string());
+	return false;
 }
 
-bool JsonWriter::AddDouble(const char* aKey, double aValue) const
+bool Json::Writer::SetDouble(const char* aKey, double aValue) const
 {
-	return yyjson_mut_obj_add_double(myDocument, myRoot, aKey, aValue);
+	if (!IsValid())
+	{
+		SPDLOG_ERROR("Could not set Double for [{}], Writer is not valid!", myDestination.string());
+		return false;
+	}
+
+	yyjson_mut_val* key = yyjson_mut_str(myDocument, aKey);
+	yyjson_mut_val* value = yyjson_mut_double(myDocument, aValue);
+
+	if (key == nullptr || value == nullptr)
+	{
+		SPDLOG_ERROR("Could not allocate Double for [{}]!", myDestination.string());
+		return false;
+	}
+
+	if (yyjson_mut_obj_put(myRoot, key, value))
+	{
+		return true;
+	}
+
+	SPDLOG_ERROR("Could not set Double to [{}]!", myDestination.string());
+	return false;
 }
 
-bool JsonWriter::AddString(const char* aKey, const std::string& aValue) const
+bool Json::Writer::SetString(const char* aKey, const std::string& aValue) const
 {
-	return yyjson_mut_obj_add_strn(myDocument, myRoot, aKey, aValue.data(), aValue.size());
+	if (!IsValid())
+	{
+		SPDLOG_ERROR("Could not set String for [{}], Writer is not valid!", myDestination.string());
+		return false;
+	}
+
+	yyjson_mut_val* key = yyjson_mut_str(myDocument, aKey);
+	yyjson_mut_val* value = yyjson_mut_strncpy(myDocument, aValue.data(), aValue.size());
+
+	if (key == nullptr || value == nullptr)
+	{
+		SPDLOG_ERROR("Could not allocate String for [{}]!", myDestination.string());
+		return false;
+	}
+
+	if (yyjson_mut_obj_put(myRoot, key, value))
+	{
+		return true;
+	}
+
+	SPDLOG_ERROR("Could not set String to [{}]!", myDestination.string());
+	return false;
 }
 
-const std::filesystem::path& JsonWriter::GetDestination() const
+const std::filesystem::path& Json::Writer::GetDestination() const
 {
 	return myDestination;
 }
 
-JsonData Json::Read(const std::filesystem::path& aJsonPath)
+Json::Data Json::Read(const std::filesystem::path& aJsonPath, ReadFlags aFlags)
 {
-	return { aJsonPath };
+	return { aJsonPath, aFlags };
 }
 
-JsonWriter Json::Write(const std::filesystem::path& aJsonDestination)
+Json::Writer Json::Write(const std::filesystem::path& aJsonDestination, WriteFlags aFlags)
 {
-	return { aJsonDestination };
+	return { aJsonDestination, aFlags };
 }

@@ -158,13 +158,13 @@ bool GraphicsCommandList::UpdateConstantBuffer(const Buffer& aConstantBuffer, co
 
 	if (!aConstantBuffer.IsValid() || aConstantBuffer.myType != BufferType::ConstantBuffer)
 	{
-		spdlog::error("Failed to update constant buffer! Buffer is either null or invalid type!");
+		SPDLOG_ERROR("Failed to update constant buffer! Buffer is either null or invalid type!");
 		return false;
 	}
 
 	if (aBufferDataSize > aConstantBuffer.mySize)
 	{
-		spdlog::error("Failed to update constant buffer {}! Data provided is larger than buffer capacity!", aConstantBuffer.myName);
+		SPDLOG_ERROR("Failed to update constant buffer {}! Data provided is larger than buffer capacity!", aConstantBuffer.myName);
 		return false;
 	}
 
@@ -174,7 +174,7 @@ bool GraphicsCommandList::UpdateConstantBuffer(const Buffer& aConstantBuffer, co
 
 	if (FAILED(result))
 	{
-		spdlog::error("Failed to update constant buffer {}! Failed to map buffer!", aConstantBuffer.myName);
+		SPDLOG_ERROR("Failed to update constant buffer {}! Failed to map buffer!", aConstantBuffer.myName);
 		return false;
 	}
 
@@ -188,19 +188,19 @@ bool GraphicsCommandList::UpdateVertexBuffer(const Buffer& aVertexBuffer, const 
 {
 	if (!aVertexBuffer.IsValid() )
 	{
-		spdlog::error("Failed to update Vertex buffer! Buffer is either null!");
+		SPDLOG_ERROR("Failed to update Vertex buffer! Buffer is either null!");
 		return false;
 	}
 
 	if (aVertices.empty())
 	{
-		spdlog::error("Failed to update Vertex buffer {}! Data provided is larger than buffer capacity!", aVertexBuffer.myName);
+		SPDLOG_ERROR("Failed to update Vertex buffer {}! Data provided is larger than buffer capacity!", aVertexBuffer.myName);
 		return false;
 	}
 
 	if (aVertexBuffer.myType != BufferType::VertexBuffer)
 	{
-		spdlog::error("Failed to update Vertex buffer! Buffer  invalid type!");
+		SPDLOG_ERROR("Failed to update Vertex buffer! Buffer  invalid type!");
 		return false;
 	}
 
@@ -347,7 +347,7 @@ void GraphicsCommandList::SetShaderResource(const Texture* aTexture, unsigned in
 {
 	if (aTexture == nullptr)
 	{
-		spdlog::error("Tried to bind a shader resource which was null!");
+		SPDLOG_ERROR("Tried to bind a shader resource which was null!");
 		return;
 	}
 
@@ -355,7 +355,7 @@ void GraphicsCommandList::SetShaderResource(const Texture* aTexture, unsigned in
 
 	if (srv == nullptr)
 	{
-		spdlog::error("Tried to bind a shader resource with a null SRV!");
+		SPDLOG_ERROR("Tried to bind a shader resource with a null SRV!");
 		return;
 	}
 

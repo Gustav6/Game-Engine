@@ -14,6 +14,8 @@
 #include "GraphicsEngine/Drawers/MeshDrawer.h"
 #include "GraphicsEngine/Drawers/DebugDrawer.h"
 
+#include "Managers/DebugSettingsManager.h"
+
 #include "Ensure.h"
 
 MeshComponent::MeshComponent(Actor* aOwner)
@@ -51,7 +53,9 @@ void MeshComponent::Render()
 
 	MeshDrawer::Get().Submit(drawCall);
 
-	/*{
+#ifndef _RETAIL
+	if (DebugSettingsManager::Get().GetSettings().MeshDebugDrawBoxEnabled)
+	{
 		const CommonUtilities::Matrix4x4f& world = myOwner->GetTransform().GetWorldMatrix();
 		const CommonUtilities::Vector3f worldScale = myOwner->GetTransform().GetScale();
 
@@ -103,24 +107,29 @@ void MeshComponent::Render()
 				maxPoint = { std::max(maxPoint.x, transformedPoint.x), std::max(maxPoint.y, transformedPoint.y), std::max(maxPoint.z, transformedPoint.z) };
 			}
 
-			DebugDrawer::Get().DrawBox(minPoint, maxPoint, { 1.f, 1.f, 0.f, 1.f });
+			DebugDrawer::Get().DrawBox(minPoint, maxPoint, DebugSettingsManager::Get().GetSettings().MeshBoundingBoxColor);
 		}
-		
-		{
-			const CommonUtilities::Sphere<float>& sphere = myMeshAsset->GetMesh().GetBoundingSphere();
+	}
 
-			const float scale = std::max({ std::abs(worldScale.x), std::abs(worldScale.y), std::abs(worldScale.z) });
-			const float radius = sphere.GetRadius() * scale;
-			
-			const CommonUtilities::Vector4f local = sphere.GetCenter().ToXYZ1();
+	if (DebugSettingsManager::Get().GetSettings().MeshDebugDrawSphereEnabled)
+	{
+		const CommonUtilities::Matrix4x4f& world = myOwner->GetTransform().GetWorldMatrix();
+		const CommonUtilities::Vector3f worldScale = myOwner->GetTransform().GetScale();
 
-			const CommonUtilities::Vector4f transformedPoint = local * world;
+		const CommonUtilities::Sphere<float>& sphere = myMeshAsset->GetMesh().GetBoundingSphere();
 
-			CommonUtilities::Vector3f position = transformedPoint.ToXYZ();
+		const float scale = std::max({ std::abs(worldScale.x), std::abs(worldScale.y), std::abs(worldScale.z) });
+		const float radius = sphere.GetRadius() * scale;
 
-			DebugDrawer::Get().DrawSphere(radius, position, { 1.f, 1.f, 0.f, 1.f });
-		}
-	}*/
+		const CommonUtilities::Vector4f local = sphere.GetCenter().ToXYZ1();
+
+		const CommonUtilities::Vector4f transformedPoint = local * world;
+
+		CommonUtilities::Vector3f position = transformedPoint.ToXYZ();
+
+		DebugDrawer::Get().DrawSphere(radius, position, DebugSettingsManager::Get().GetSettings().MeshBoundingSphereColor);
+	}
+#endif
 }
 
 Skeleton* MeshComponent::GetSkeleton() const

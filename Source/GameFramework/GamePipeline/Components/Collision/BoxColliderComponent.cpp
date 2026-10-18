@@ -3,22 +3,26 @@
 
 #include "GamePipeline/World/Actor.hpp"
 
+#include "Managers/DebugSettingsManager.h"
 #include "GraphicsEngine/Drawers/DebugDrawer.h"
 
 BoxColliderComponent::BoxColliderComponent(Actor* aOwner)
 	: Component(aOwner)
 { }
 
-#ifdef _DEBUG
+#ifndef _RETAIL
 void BoxColliderComponent::Render()
 {
-	const CommonUtilities::Vector3f worldScale = myOwner->GetTransform().GetScale();
-	const CommonUtilities::Vector3f worldPosition = myOwner->GetTransform().GetPosition();
+	if (DebugSettingsManager::Get().GetSettings().ColliderDebugDrawEnabled)
+	{
+		const CommonUtilities::Vector3f worldScale = myOwner->GetTransform().GetScale();
+		const CommonUtilities::Vector3f worldPosition = myOwner->GetTransform().GetPosition();
 
-	const CommonUtilities::Vector3f minPoint = myCollider.GetMin() * worldScale + worldPosition;
-	const CommonUtilities::Vector3f maxPoint = myCollider.GetMax() * worldScale + worldPosition;
+		const CommonUtilities::Vector3f minPoint = myCollider.GetMin() * worldScale + worldPosition;
+		const CommonUtilities::Vector3f maxPoint = myCollider.GetMax() * worldScale + worldPosition;
 
-	DebugDrawer::Get().DrawBox(minPoint, maxPoint, { 0.f, 1.f, 0.f, 1.f });
+		DebugDrawer::Get().DrawBox(minPoint, maxPoint, DebugSettingsManager::Get().GetSettings().ColliderColor);
+	}
 }
 #endif
 

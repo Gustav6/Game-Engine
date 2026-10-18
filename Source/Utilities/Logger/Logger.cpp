@@ -10,13 +10,28 @@
 #include <spdlog/sinks/stdout_color_sinks.h>
 #include <spdlog/sinks/msvc_sink.h>
 #include <spdlog/sinks/basic_file_sink.h>
+#include <spdlog/sinks/null_sink.h>
 
 void Logger::Init()
 {
-    if (spdlog::get("engine") != nullptr)
+    if (spdlog::get("application") != nullptr)
     {
         return;
     }
+
+#ifdef _RETAIL
+
+    auto logger = std::make_shared<spdlog::logger>(
+        "application",
+        std::make_shared<spdlog::sinks::null_sink_mt>());
+
+    logger->set_level(spdlog::level::off);
+
+    spdlog::register_logger(logger);
+    spdlog::set_default_logger(logger);
+    return;
+
+#else
 
     wchar_t buf[MAX_PATH];
     DWORD len = GetModuleFileNameW(NULL, buf, MAX_PATH);
@@ -36,19 +51,15 @@ void Logger::Init()
     auto console = std::make_shared<spdlog::sinks::stdout_color_sink_mt>();
     auto debugger = std::make_shared<spdlog::sinks::msvc_sink_mt>();
 
-    auto allFile = std::make_shared<spdlog::sinks::basic_file_sink_mt>((logDirectory / "all.log").string(), true);
-    auto warnFile = std::make_shared<spdlog::sinks::basic_file_sink_mt>((logDirectory / "warnings.log").string(), true);
-    auto errFile = std::make_shared<spdlog::sinks::basic_file_sink_mt>((logDirectory / "errors.log").string(), true);
-    auto criticalFile = std::make_shared<spdlog::sinks::basic_file_sink_mt>((logDirectory / "critical.log").string(), true);
+    auto aplicationLogs = std::make_shared<spdlog::sinks::basic_file_sink_mt>((logDirectory / "application.log").string(), true);
+    auto diagnosticsLogs = std::make_shared<spdlog::sinks::basic_file_sink_mt>((logDirectory / "diagnostics.log").string(), true);
 
-    allFile->set_level(spdlog::level::trace);
-    warnFile->set_level(spdlog::level::warn);
-    errFile->set_level(spdlog::level::err);
-    criticalFile->set_level(spdlog::level::critical);
+    aplicationLogs->set_level(spdlog::level::trace);
+    diagnosticsLogs->set_level(spdlog::level::warn);
 
     auto logger = std::make_shared<spdlog::async_logger>(
-        "engine",
-        spdlog::sinks_init_list{ console, allFile, warnFile, errFile, criticalFile, debugger },
+        "application",
+        spdlog::sinks_init_list{ console, aplicationLogs, diagnosticsLogs, debugger },
         spdlog::thread_pool(),
         spdlog::async_overflow_policy::block);
 
@@ -58,11 +69,12 @@ void Logger::Init()
     spdlog::register_logger(logger);
     spdlog::set_default_logger(logger);
     spdlog::flush_on(spdlog::level::err); 
-	
-	spdlog::flush_every(std::chrono::seconds(3));
+
+#endif
 }
 
 void Logger::Shutdown()
 {
+    spdlog::drop_all();
     spdlog::shutdown();
 }

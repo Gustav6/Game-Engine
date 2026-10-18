@@ -9,6 +9,9 @@
 #include "GraphicsEngine/Objects/Scene/Light.h"
 
 #include "GraphicsEngine/Drawers/LightDrawer.h"
+#include "GraphicsEngine/Drawers/DebugDrawer.h"
+
+#include "Managers/DebugSettingsManager.h"
 
 SpotLightComponent::SpotLightComponent(Actor* aOwner)
 	: LightComponent(aOwner)
@@ -29,6 +32,19 @@ void SpotLightComponent::Render()
 	};
 
 	LightDrawer::Get().Submit(light);
+
+#ifndef _RETAIL
+    if (DebugSettingsManager::Get().GetSettings().LightGizmosDebugDrawEnabled)
+    {
+        const float height = myData.Radius;
+
+        const float cosOuter = myData.CosOuterCone;
+        const float sinOuter = std::sqrt(std::max(0.f, 1.f - cosOuter * cosOuter));
+        const float coneRadius = height * (sinOuter / cosOuter);
+
+        DebugDrawer::Get().DrawCone(coneRadius, height, myTransform.GetTranslation(), myTransform.GetForward(), DebugSettingsManager::Get().GetSettings().LightGizmoColor);
+    }
+#endif
 }
 
 void SpotLightComponent::SetDirection(const CommonUtilities::Vector3f & aDirection)

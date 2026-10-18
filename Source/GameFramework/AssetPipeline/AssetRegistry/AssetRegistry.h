@@ -46,7 +46,7 @@ public:
 
 		if (assetEntry == myAssets.end())
 		{
-			spdlog::error("Type [{}], Asset Name [{}], Is not contained within the content folder!", typeName, aAssetName);
+			SPDLOG_ERROR("Type [{}], Asset Name [{}], Is not contained within the content folder!", typeName, aAssetName);
 			return nullptr;
 		}
 
@@ -64,23 +64,23 @@ public:
 
 		if (extensionEntry == myFileExtensionToAssetTypeMap.end() || !extensionEntry->second.contains(std::type_index(typeid(AssetType))))
 		{
-			spdlog::error("Asset Name [{}], Extension [{}], Was never registered for type {}!", aAssetName, extension, typeName);
+			SPDLOG_ERROR("Asset Name [{}], Extension [{}], Was never registered for type {}!", aAssetName, extension, typeName);
 			return nullptr;
 		}
 
-		spdlog::info("Loading Type [{}], Asset Name [{}], Extension [{}]", typeName, aAssetName, extension);
+		SPDLOG_INFO("Loading Type [{}], Asset Name [{}], Extension [{}]", typeName, aAssetName, extension);
 
 		std::shared_ptr<AssetType> asset = std::make_shared<AssetType>();
 
 		if (!asset->Load(assetInformation.Path))
 		{
-			spdlog::error("Failed to load!");
+			SPDLOG_ERROR("Failed to load!");
 			return nullptr;
 		}
 
 		assetInformation.Asset = asset;
 
-		spdlog::info("Loaded successfully!");
+		SPDLOG_INFO("Loaded successfully!");
 
 		return asset;
 	}
@@ -102,13 +102,11 @@ public:
 
 		const std::string_view typeName = RemoveTypePrefix(typeid(AssetType).name());
 
-		//LOG_GROUP(LogAssetRegistry, Verbose, "Constructing Type [{}], Asset Name [{}]", typeName, aAssetName);
-
 		std::shared_ptr<AssetType> asset = std::make_shared<AssetType>();
 
 		if (!asset->Construct(std::forward<Args>(args)...))
 		{
-			spdlog::error("Failed to construct!");
+			SPDLOG_ERROR("Failed to construct!");
 			return nullptr;
 		}
 
@@ -125,7 +123,7 @@ public:
 			myAssets.emplace(lowerName, AssetInformation{ .Path = {}, .Asset = asset });
 		}
 
-		spdlog::info("Constructed successfully!");
+		SPDLOG_INFO("Constructed successfully!");
 
 		return asset;
 	}

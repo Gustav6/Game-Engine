@@ -3,6 +3,8 @@
 
 #include "GamePipeline/World/Actor.hpp"
 
+
+#include "Managers/DebugSettingsManager.h"
 #include "GraphicsEngine/Drawers/DebugDrawer.h"
 
 
@@ -10,19 +12,22 @@ SphereColliderComponent::SphereColliderComponent(Actor* aOwner)
 	: Component(aOwner)
 { }
 
-#ifdef _DEBUG
+#ifndef _RETAIL
 void SphereColliderComponent::Render()
 {
-	const CommonUtilities::Vector3f worldScale = myOwner->GetTransform().GetScale();
-	const CommonUtilities::Vector3f worldPosition = myOwner->GetTransform().GetPosition();
+	if (DebugSettingsManager::Get().GetSettings().ColliderDebugDrawEnabled)
+	{
+		const CommonUtilities::Vector3f worldScale = myOwner->GetTransform().GetScale();
+		const CommonUtilities::Vector3f worldPosition = myOwner->GetTransform().GetPosition();
 
-	const float scale = std::max({ std::abs(worldScale.x), std::abs(worldScale.y), std::abs(worldScale.z) });
+		const float scale = std::max({ std::abs(worldScale.x), std::abs(worldScale.y), std::abs(worldScale.z) });
 
-	const float radius = myCollider.GetRadius() * scale;
+		const float radius = myCollider.GetRadius() * scale;
 
-	const CommonUtilities::Vector3f position = myCollider.GetCenter() + worldPosition;
+		const CommonUtilities::Vector3f position = myCollider.GetCenter() + worldPosition;
 
-	DebugDrawer::Get().DrawSphere(radius, position, { 1.f, 1.f, 0.f, 1.f });
+		DebugDrawer::Get().DrawSphere(radius, position, DebugSettingsManager::Get().GetSettings().ColliderColor);
+	}
 }
 #endif
 

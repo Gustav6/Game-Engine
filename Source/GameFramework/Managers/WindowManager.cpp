@@ -1,3 +1,4 @@
+#include "GameFramework.pch.h"
 #include "WindowManager.h"
 
 void WindowManager::SetResolution(unsigned int aWidth, unsigned int aHeight)

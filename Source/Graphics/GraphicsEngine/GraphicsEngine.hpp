@@ -59,6 +59,7 @@ struct RenderSettings
 	DebugRenderMode DebugRenderMode;
 	ToneMapper ToneMapper;
 	bool BloomEnabled = true;
+	bool SSAOEnabled = true;
 	bool VSyncEnabled = false;
 };
 
@@ -73,7 +74,8 @@ public:
 	FrameStats Render(GraphicsCommandList& inoutCommandList, const SceneCamera& aCamera);
 	void Present() const;
 
-	void SetBloomEnabled(bool aBloomEnabled);
+	void SetBloomEnabled(bool aEnabled);
+	void SetSSAOEnabled(bool aEnabled);
 
 	void SetDebugRenderMode(DebugRenderMode aDebugRenderMode);
 	void SetTonemap(ToneMapper aToneMapper);

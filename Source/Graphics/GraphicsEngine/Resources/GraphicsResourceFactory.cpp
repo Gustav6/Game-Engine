@@ -23,7 +23,7 @@ bool GraphicsResourceFactory::CreateTexture(RenderHardwareInterface& aRHI, const
 {
 	if (!std::filesystem::exists(aPath))
 	{
-		spdlog::error("Failed to load Texture {}! File not found!", aPath.string());
+		SPDLOG_ERROR("Failed to load Texture {}! File not found!", aPath.string());
 		return false;
 	}
 
@@ -31,7 +31,7 @@ bool GraphicsResourceFactory::CreateTexture(RenderHardwareInterface& aRHI, const
 
 	if (!file)
 	{
-		spdlog::error("Failed to load Texture {}! Could not open file!", aPath.string());
+		SPDLOG_ERROR("Failed to load Texture {}! Could not open file!", aPath.string());
 		return false;
 	}
 
@@ -47,30 +47,30 @@ bool GraphicsResourceFactory::CreateTexture(RenderHardwareInterface& aRHI, const
 
 bool GraphicsResourceFactory::CreateFontAsset(RenderHardwareInterface& aRHI, const std::filesystem::path& aFontPath, const std::filesystem::path& aFontAtlasPath, Font& outFont)
 {
-	JsonData fontData = Json::Read(aFontPath);
+	Json::Data fontData = Json::Read(aFontPath);
 
 	if (!fontData.IsValid())
 	{
-		spdlog::error("Failed to read font JSON [{}]!", aFontPath.string());
+		SPDLOG_ERROR("Failed to read font JSON [{}]!", aFontPath.string());
 		return false;
 	}
 
-	JsonData atlasSettings = fontData.GetObjectValue("atlas");
+	Json::Data atlasSettings = fontData.GetDataObject("atlas");
 
 	if (!atlasSettings.IsValid())
 	{
-		spdlog::error("Font JSON is missing [atlas]!");
+		SPDLOG_ERROR("Font JSON is missing [atlas]!");
 		return false;
 	}
 
 	float width = static_cast<float>(atlasSettings.GetUnsigned("width"));
 	float height = static_cast<float>(atlasSettings.GetUnsigned("height"));
 
-	JsonData metricsSettings = fontData.GetObjectValue("metrics");
+	Json::Data metricsSettings = fontData.GetDataObject("metrics");
 
 	if (!metricsSettings.IsValid())
 	{
-		spdlog::error("Font JSON is missing [metrics]!");
+		SPDLOG_ERROR("Font JSON is missing [metrics]!");
 		return false;
 	}
 
@@ -78,15 +78,15 @@ bool GraphicsResourceFactory::CreateFontAsset(RenderHardwareInterface& aRHI, con
 	outFont.myAscender = metricsSettings.GetFloat("ascender");
 	outFont.myDescender = metricsSettings.GetFloat("descender");
 
-	const std::vector<JsonData> glyphs = fontData.GetObjectValueArray("glyphs");
+	const std::vector<Json::Data> glyphs = fontData.GetDataObjectArray("glyphs");
 
 	if (glyphs.empty())
 	{
-		spdlog::error("Font JSON contains no glyphs [{}]!", aFontPath.string());
+		SPDLOG_ERROR("Font JSON contains no glyphs [{}]!", aFontPath.string());
 		return false;
 	}
 
-	for (const JsonData& glyphData : glyphs)
+	for (const Json::Data& glyphData : glyphs)
 	{
 		Font::Glyph glyph = {};
 
@@ -95,7 +95,7 @@ bool GraphicsResourceFactory::CreateFontAsset(RenderHardwareInterface& aRHI, con
 
 		if (glyphData.HasKey("planeBounds"))
 		{
-			JsonData planeBounds = glyphData.GetObjectValue("planeBounds");
+			Json::Data planeBounds = glyphData.GetDataObject("planeBounds");
 
 			glyph.PlaneBounds.Left = planeBounds.GetFloat("left");
 			glyph.PlaneBounds.Bottom = planeBounds.GetFloat("bottom");
@@ -105,7 +105,7 @@ bool GraphicsResourceFactory::CreateFontAsset(RenderHardwareInterface& aRHI, con
 
 		if (glyphData.HasKey("atlasBounds"))
 		{
-			JsonData atlasBounds = glyphData.GetObjectValue("atlasBounds");
+			Json::Data atlasBounds = glyphData.GetDataObject("atlasBounds");
 
 			glyph.AtlasBounds.Left = atlasBounds.GetFloat("left") / width;
 			glyph.AtlasBounds.Bottom = atlasBounds.GetFloat("bottom") / height;

@@ -51,27 +51,27 @@ bool MeshAsset::Load(const std::filesystem::path& aPath)
         {
             case TGA::FBX::FbxImportResult::InternalError:
             {
-                spdlog::error("Could not load mesh [{}] : Internal FBX importer error!", pathString);
+                SPDLOG_ERROR("Could not load mesh [{}] : Internal FBX importer error!", pathString);
                 break;
             }
             case TGA::FBX::FbxImportResult::NotInitialized:
             {
-                spdlog::error("Could not load mesh [{}] : FBX importer is not initialized!", pathString);
+                SPDLOG_ERROR("Could not load mesh [{}] : FBX importer is not initialized!", pathString);
                 break;
             }
             case TGA::FBX::FbxImportResult::FileNotFound:
             {
-                spdlog::error("Could not load mesh [{}] : File was not found!", pathString);
+                SPDLOG_ERROR("Could not load mesh [{}] : File was not found!", pathString);
                 break;
             }
             case TGA::FBX::FbxImportResult::NoMeshData:
             {
-                spdlog::error("Could not load mesh [{}] : No mesh data found in file!", pathString);
+                SPDLOG_ERROR("Could not load mesh [{}] : No mesh data found in file!", pathString);
                 break;
             }
             default:
             {
-                spdlog::error("Could not load mesh [{}] : Unknown error!", pathString);
+                SPDLOG_ERROR("Could not load mesh [{}] : Unknown error!", pathString);
                 break;
             }
         }
@@ -89,37 +89,37 @@ bool MeshAsset::Load(const std::filesystem::path& aPath)
             {
                 case TGA::FBX::FbxImportWarning::TooManySkinWeights:
                 {
-                    spdlog::warn("Mesh [{}] : Vertices had too many skin weights and were truncated!", pathString);
+                    SPDLOG_WARN("Mesh [{}] : Vertices had too many skin weights and were truncated!", pathString);
                     break;
                 }
                 case TGA::FBX::FbxImportWarning::MissingSkinWeights:
                 {
-                    spdlog::warn("Mesh [{}] : Vertices are missing skin weights!", pathString);
+                    SPDLOG_WARN("Mesh [{}] : Vertices are missing skin weights!", pathString);
                     break;
                 }
                 case TGA::FBX::FbxImportWarning::NoUVCoordinates:
                 {
-                    spdlog::warn("Mesh [{}] : Surfaces have no UV coordinates!", pathString);
+                    SPDLOG_WARN("Mesh [{}] : Surfaces have no UV coordinates!", pathString);
                     break;
                 }
                 case TGA::FBX::FbxImportWarning::GenerateNormalsFailed:
                 {
-                    spdlog::warn("Mesh [{}] : Failed to generate normals for surfaces!", pathString);
+                    SPDLOG_WARN("Mesh [{}] : Failed to generate normals for surfaces!", pathString);
                     break;
                 }
                 case TGA::FBX::FbxImportWarning::CannotTriangulate:
                 {
-                    spdlog::warn("Mesh [{}] : Could not triangulate polygons!", pathString);
+                    SPDLOG_WARN("Mesh [{}] : Could not triangulate polygons!", pathString);
                     break;
                 }
                 case TGA::FBX::FbxImportWarning::DuplicateBoneNames:
                 {
-                    spdlog::warn("Mesh [{}] : Duplicate bone names detected!", pathString);
+                    SPDLOG_WARN("Mesh [{}] : Duplicate bone names detected!", pathString);
                     break;
                 }
                 default:
                 {
-                    spdlog::warn("Mesh [{}] : Unknown warning!", pathString);
+                    SPDLOG_WARN("Mesh [{}] : Unknown warning!", pathString);
                     break;
                 }
             }

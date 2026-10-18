@@ -5,13 +5,10 @@
 #include "CommonUtilities/Input/Input.h"
 #include "CommonUtilities/Time/Timer.h"
 
-#include "WindowManager.h"
-
 struct ApplicationData
 {
 	CommonUtilities::Input InputManager;
 	CommonUtilities::Timer TimeManager;
-	WindowManager WindowManager;
 	std::filesystem::path ContentPath;
 };
 

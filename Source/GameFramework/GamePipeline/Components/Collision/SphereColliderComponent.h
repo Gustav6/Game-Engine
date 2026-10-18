@@ -13,7 +13,7 @@ class SphereColliderComponent : public Component
 public:
 	SphereColliderComponent(Actor* aOwner);
 
-#ifdef _DEBUG
+#ifndef _RETAIL
 	void Render() override;
 #endif
 

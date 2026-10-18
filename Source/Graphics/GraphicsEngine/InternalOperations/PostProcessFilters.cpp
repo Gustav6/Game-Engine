@@ -27,7 +27,7 @@ bool PostProcessFilters::Initialize(RenderHardwareInterface& aRHI)
 
 		if (!aRHI.CreatePipelineStateObject(resamplePSODesc, *myResamplePSO))
 		{
-			spdlog::critical("Failed to create Resample pipeline state object!");
+			SPDLOG_CRITICAL("Failed to create Resample pipeline state object!");
 			return false;
 		}
 	}
@@ -46,7 +46,7 @@ bool PostProcessFilters::Initialize(RenderHardwareInterface& aRHI)
 
 		if (!aRHI.CreatePipelineStateObject(gaussianBlurPSODesc, *myBlurHorizontalPSO))
 		{
-			spdlog::critical("Failed to create Horizontal blur pipeline state object!");
+			SPDLOG_CRITICAL("Failed to create Horizontal blur pipeline state object!");
 			return false;
 		}
 	}
@@ -66,7 +66,7 @@ bool PostProcessFilters::Initialize(RenderHardwareInterface& aRHI)
 
 		if (!aRHI.CreatePipelineStateObject(gaussianBlurPSODesc, *myBlurVerticalPSO))
 		{
-			spdlog::critical("Failed to create Vertical blur pipeline state object!");
+			SPDLOG_CRITICAL("Failed to create Vertical blur pipeline state object!");
 			return false;
 		}
 	}

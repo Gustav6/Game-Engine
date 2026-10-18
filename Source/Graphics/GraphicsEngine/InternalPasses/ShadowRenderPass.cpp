@@ -51,7 +51,7 @@ bool ShadowRenderPass::Initialize(RenderHardwareInterface& aRHI)
 
 		if (!aRHI.CreatePipelineStateObject(shadowPSODesc, *myShadowPSO))
 		{
-			spdlog::critical("Failed to create Shadow pipeline state object!");
+			SPDLOG_CRITICAL("Failed to create Shadow pipeline state object!");
 			return false;
 		}
 	}
@@ -67,7 +67,7 @@ bool ShadowRenderPass::Initialize(RenderHardwareInterface& aRHI)
 
 		if (!aRHI.CreatePipelineStateObject(shadowCubePSODesc, *myShadowCubePSO))
 		{
-			spdlog::critical("Failed to create Shadow Cube pipeline state object!");
+			SPDLOG_CRITICAL("Failed to create Shadow Cube pipeline state object!");
 			return false;
 		}
 	}

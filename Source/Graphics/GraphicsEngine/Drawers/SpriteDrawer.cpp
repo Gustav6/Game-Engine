@@ -13,7 +13,7 @@ void SpriteDrawer::Submit(const SpriteDrawCall& aDrawCall)
 {
 	if (aDrawCall.SpriteSharedData == nullptr || aDrawCall.SpriteInstanceData == nullptr)
 	{
-		spdlog::error("Sprite was submitted with invalid data!");
+		SPDLOG_ERROR("Sprite was submitted with invalid data!");
 		return;
 	}
 

@@ -49,7 +49,7 @@ float3 GetViewSpacePosition(float2 aUV)
 {
     float3 position;
 
-    position.z = GBufferWorldNormalDepth.Sample(TrilinearClamp, aUV).a; // Normalize to -1 to 1 because its the actual depth
+    position.z = GBufferWorldNormalDepth.Sample(TrilinearClamp, aUV).a; // Normalize to -1 to 1 because it's the actual depth
     position.x = ((2 * aUV.x - 1) * position.z) / FB_Projection._11;
     position.y = ((1 - 2 * aUV.y) * position.z) / FB_Projection._22;
 
@@ -78,8 +78,8 @@ float4 main(FullscreenVertex aVertex) : SV_Target
     float3 pos = GetViewSpacePosition(aVertex.UV);
 
     float occlusion = 0.0f;
-    float radius = 0.5f;
-    float bias = 0.025f;
+    float radius = 50.0f;
+    float bias = 2.0f;
 
     for (uint i = 0; i < SSAO_KernelSize; ++i)
     {

@@ -22,7 +22,7 @@ bool TextureAsset::Load(const std::filesystem::path& aPath)
 
     if (!GraphicsEngine::Get().CreateTexture(aPath, *myTexture))
     {
-        spdlog::error("Could not create a texture for {}!", aPath.string());
+        SPDLOG_ERROR("Could not create a texture for {}!", aPath.string());
         return false;
     }
 

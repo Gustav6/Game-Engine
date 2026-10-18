@@ -11,7 +11,7 @@ void MeshDrawer::Submit(const MeshDrawCall& aDrawCall)
 {
 	if (aDrawCall.Mesh == nullptr)
 	{
-		spdlog::error("Mesh was submitted with invalid data!");
+		SPDLOG_ERROR("Mesh was submitted with invalid data!");
 		return;
 	}
 

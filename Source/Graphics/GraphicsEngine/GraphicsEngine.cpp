@@ -77,7 +77,7 @@ bool GraphicsEngine::Initialize(HWND aWindowHandle, const std::filesystem::path&
 {
 	if (!std::filesystem::exists(aContentRoot))
 	{
-		spdlog::critical("Content root dir is not a valid path! Provided root was {}.", aContentRoot.string());
+		SPDLOG_CRITICAL("Content root dir is not a valid path! Provided root was {}.", aContentRoot.string());
 		return false;
 	}
 
@@ -85,7 +85,7 @@ bool GraphicsEngine::Initialize(HWND aWindowHandle, const std::filesystem::path&
 	
 	if (!std::filesystem::exists(myShaderRoot))
 	{
-		spdlog::critical("Shader root dir is not a valid path! Provided root was {}.", myShaderRoot.string());
+		SPDLOG_CRITICAL("Shader root dir is not a valid path! Provided root was {}.", myShaderRoot.string());
 		return false;
 	}
 
@@ -253,7 +253,7 @@ FrameStats GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const S
 				{
 					case MaterialBlendMode::None:
 					{
-						spdlog::error("Mesh {} has a invalid Material Blend Mode setting!", drawCall.Mesh->GetName());
+						SPDLOG_ERROR("Mesh {} has a invalid Material Blend Mode setting!", drawCall.Mesh->GetName());
 						break;
 					}
 					case MaterialBlendMode::Opaque:
@@ -268,7 +268,7 @@ FrameStats GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const S
 					}
 					default:
 					{
-						spdlog::error("Mesh {} has a invalid Material Blend Mode setting!", drawCall.Mesh->GetName());
+						SPDLOG_ERROR("Mesh {} has a invalid Material Blend Mode setting!", drawCall.Mesh->GetName());
 						break;
 					}
 				}
@@ -392,10 +392,16 @@ void GraphicsEngine::Present() const
 	myRHI->Present();
 }
 
-void GraphicsEngine::SetBloomEnabled(bool aBloomEnabled)
+void GraphicsEngine::SetBloomEnabled(bool aEnabled)
 {
-	myRenderSettings.BloomEnabled = aBloomEnabled;
+	myRenderSettings.BloomEnabled = aEnabled;
 	myScreenSpaceEffectPass->SetBloomStatus(myRenderSettings.BloomEnabled);
+}
+
+void GraphicsEngine::SetSSAOEnabled(bool aEnabled)
+{
+	myRenderSettings.SSAOEnabled = aEnabled;
+	myDeferredRenderPass->SetSSAOStatus(myRenderSettings.SSAOEnabled);
 }
 
 void GraphicsEngine::SetDebugRenderMode(DebugRenderMode aDebugRenderMode)
@@ -479,6 +485,7 @@ void GraphicsEngine::ClearRenderOverlay()
 void GraphicsEngine::SetSettings(const RenderSettings& aSettings)
 {
 	SetBloomEnabled(aSettings.BloomEnabled);
+	SetSSAOEnabled(aSettings.SSAOEnabled);
 	SetDebugRenderMode(aSettings.DebugRenderMode);
 	SetTonemap(aSettings.ToneMapper);
 }
@@ -501,7 +508,7 @@ bool GraphicsEngine::InitializeRenderResources()
 
 		if (!myRHI->CreateSampler(samplerDesc, *sampler))
 		{
-			spdlog::critical("Failed to create Trilinear Wrap sampler!");
+			SPDLOG_CRITICAL("Failed to create Trilinear Wrap sampler!");
 			return false;
 		}
 
@@ -522,7 +529,7 @@ bool GraphicsEngine::InitializeRenderResources()
 
 		if (!myRHI->CreateSampler(samplerDesc, *sampler))
 		{
-			spdlog::critical("Failed to create Shadow sampler!");
+			SPDLOG_CRITICAL("Failed to create Shadow sampler!");
 			return false;
 		}
 
@@ -542,7 +549,7 @@ bool GraphicsEngine::InitializeRenderResources()
 
 		if (!myRHI->CreateSampler(samplerDesc, *sampler))
 		{
-			spdlog::critical("Failed to create LUT sampler!");
+			SPDLOG_CRITICAL("Failed to create LUT sampler!");
 			return false;
 		}
 
@@ -561,7 +568,7 @@ bool GraphicsEngine::InitializeRenderResources()
 
 		if (!myRHI->CreateSampler(samplerDesc, *sampler))
 		{
-			spdlog::critical("Failed to create Trilinear Clamp sampler!");
+			SPDLOG_CRITICAL("Failed to create Trilinear Clamp sampler!");
 			return false;
 		}
 
@@ -583,7 +590,7 @@ bool GraphicsEngine::InitializeRenderResources()
 
 		if (!myRHI->CreatePipelineStateObject(lutPSODesc, lutPSO))
 		{
-			spdlog::critical("Failed to create LUT pipeline state object!");
+			SPDLOG_CRITICAL("Failed to create LUT pipeline state object!");
 			return false;
 		}
 
@@ -591,7 +598,7 @@ bool GraphicsEngine::InitializeRenderResources()
 
 		if (!myRHI->CreateTexture("BRDF_LUT", 512, 512, 1, ResourceFormat::R16G16_FLOAT, ResourceBindFlag_ShaderResource | ResourceBindFlag_RenderTarget, *myLUTTexture))
 		{
-			spdlog::critical("Failed to create BRDF LUT texture!");
+			SPDLOG_CRITICAL("Failed to create BRDF LUT texture!");
 			return false;
 		}
 
@@ -599,7 +606,7 @@ bool GraphicsEngine::InitializeRenderResources()
 
 		if (!myRHI->CreateCommandList("LUT Init", initCommandList))
 		{
-			spdlog::critical("Failed to create LUT init command list!");
+			SPDLOG_CRITICAL("Failed to create LUT init command list!");
 			return false;
 		}
 
@@ -619,7 +626,7 @@ bool GraphicsEngine::InitializeRenderResources()
 
 		if (!myRHI->CreateTexture("HDRBuffer", clientSize.x, clientSize.y, 1, ResourceFormat::R16G16B16A16_FLOAT, ResourceBindFlag_ShaderResource | ResourceBindFlag_RenderTarget, *myHDRBuffer))
 		{
-			spdlog::critical("Failed to create HDR buffer texture!");
+			SPDLOG_CRITICAL("Failed to create HDR buffer texture!");
 			return false;
 		}
 	}

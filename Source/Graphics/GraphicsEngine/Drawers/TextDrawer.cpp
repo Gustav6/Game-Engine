@@ -13,7 +13,7 @@ void TextDrawer::Submit(const TextDrawCall& aDrawCall)
 {
 	if (aDrawCall.Text == nullptr || aDrawCall.Font == nullptr)
 	{
-		spdlog::error("Text was submitted with invalid data!");
+		SPDLOG_ERROR("Text was submitted with invalid data!");
 		return;
 	}
 

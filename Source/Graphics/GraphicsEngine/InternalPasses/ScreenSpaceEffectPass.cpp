@@ -51,7 +51,7 @@ bool ScreenSpaceEffectPass::Initialize(RenderHardwareInterface& aRHI)
 
 		if (!aRHI.CreatePipelineStateObject(tonemapPSODesc, *myTonemapPSO))
 		{
-			spdlog::critical("Failed to create Tonemap pipeline state object!");
+			SPDLOG_CRITICAL("Failed to create Tonemap pipeline state object!");
 			return false;
 		}
 	}
@@ -71,7 +71,7 @@ bool ScreenSpaceEffectPass::Initialize(RenderHardwareInterface& aRHI)
 
 		if (!aRHI.CreatePipelineStateObject(sceneLuminancePSODesc, *myLuminancePSO))
 		{
-			spdlog::critical("Failed to create Scene Luminance pipeline state object!");
+			SPDLOG_CRITICAL("Failed to create Scene Luminance pipeline state object!");
 			return false;
 		}
 	}
@@ -91,7 +91,7 @@ bool ScreenSpaceEffectPass::Initialize(RenderHardwareInterface& aRHI)
 
 		if (!aRHI.CreatePipelineStateObject(bloomPSODesc, *myBloomPSO))
 		{
-			spdlog::critical("Failed to create Bloom pipeline state object!");
+			SPDLOG_CRITICAL("Failed to create Bloom pipeline state object!");
 			return false;
 		}
 	}
@@ -104,7 +104,7 @@ bool ScreenSpaceEffectPass::Initialize(RenderHardwareInterface& aRHI)
 
 		if (!aRHI.CreateTexture("SceneLuminance", clientSize.x, clientSize.y, 1, ResourceFormat::R16G16B16A16_FLOAT, ResourceBindFlag_ShaderResource | ResourceBindFlag_RenderTarget, *mySceneLuminance))
 		{
-			spdlog::critical("Failed to create Scene Luminance texture!");
+			SPDLOG_CRITICAL("Failed to create Scene Luminance texture!");
 			return false;
 		}
 	}
@@ -117,7 +117,7 @@ bool ScreenSpaceEffectPass::Initialize(RenderHardwareInterface& aRHI)
 
 		if (!aRHI.CreateTexture("FullscreenBuffer", bufferSize.x, bufferSize.y, 1, ResourceFormat::R16G16B16A16_FLOAT, ResourceBindFlag_ShaderResource | ResourceBindFlag_RenderTarget, *myResampleFullSize))
 		{
-			spdlog::critical("Failed to create Fullscreen Buffer texture!");
+			SPDLOG_CRITICAL("Failed to create Fullscreen Buffer texture!");
 			return false;
 		}
 	}
@@ -130,7 +130,7 @@ bool ScreenSpaceEffectPass::Initialize(RenderHardwareInterface& aRHI)
 
 		if (!aRHI.CreateTexture("HalfScreenBuffer", bufferSize.x, bufferSize.y, 1, ResourceFormat::R16G16B16A16_FLOAT, ResourceBindFlag_ShaderResource | ResourceBindFlag_RenderTarget, *myResampleHalfSize))
 		{
-			spdlog::critical("Failed to create Half Screen Buffer texture!");
+			SPDLOG_CRITICAL("Failed to create Half Screen Buffer texture!");
 			return false;
 		}
 	}
@@ -144,12 +144,12 @@ bool ScreenSpaceEffectPass::Initialize(RenderHardwareInterface& aRHI)
 
 		if (!aRHI.CreateTexture("QuarterScreenBuffer", bufferSize.x, bufferSize.y, 1, ResourceFormat::R16G16B16A16_FLOAT, ResourceBindFlag_ShaderResource | ResourceBindFlag_RenderTarget, *myResampleQuarterSize1))
 		{
-			spdlog::critical("Failed to create Quarter Screen Buffer texture!");
+			SPDLOG_CRITICAL("Failed to create Quarter Screen Buffer texture!");
 			return false;
 		}
 		if (!aRHI.CreateTexture("QuarterScreenBuffer", bufferSize.x, bufferSize.y, 1, ResourceFormat::R16G16B16A16_FLOAT, ResourceBindFlag_ShaderResource | ResourceBindFlag_RenderTarget, *myResampleQuarterSize2))
 		{
-			spdlog::critical("Failed to create Quarter Screen Buffer texture!");
+			SPDLOG_CRITICAL("Failed to create Quarter Screen Buffer texture!");
 			return false;
 		}
 	}
@@ -162,7 +162,7 @@ bool ScreenSpaceEffectPass::Initialize(RenderHardwareInterface& aRHI)
 
 		if (!aRHI.CreateTexture("QuarterBlurred", bufferSize.x, bufferSize.y, 1, ResourceFormat::R16G16B16A16_FLOAT, ResourceBindFlag_ShaderResource | ResourceBindFlag_RenderTarget, *myBlurredTexture))
 		{
-			spdlog::critical("Failed to create Quarter Blurred Screen Buffer texture!");
+			SPDLOG_CRITICAL("Failed to create Quarter Blurred Screen Buffer texture!");
 			return false;
 		}
 	}
@@ -175,7 +175,7 @@ bool ScreenSpaceEffectPass::Initialize(RenderHardwareInterface& aRHI)
 
 		if (!aRHI.CreateTexture("BloomBuffer", bufferSize.x, bufferSize.y, 1, ResourceFormat::R16G16B16A16_FLOAT, ResourceBindFlag_ShaderResource | ResourceBindFlag_RenderTarget, *myBloomTexture))
 		{
-			spdlog::critical("Failed to create Bloom Buffer texture!");
+			SPDLOG_CRITICAL("Failed to create Bloom Buffer texture!");
 			return false;
 		}
 	}

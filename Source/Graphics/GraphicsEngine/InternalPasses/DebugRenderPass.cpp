@@ -51,7 +51,7 @@ bool DebugRenderPass::Initialize(RenderHardwareInterface& aRHI)
 
 		if (!aRHI.CreatePipelineStateObject(wireframePSODesc, *myDebugPSO))
 		{
-			spdlog::critical("Failed to create Wireframe pipeline state object!");
+			SPDLOG_CRITICAL("Failed to create Wireframe pipeline state object!");
 			return false;
 		}
 	}
@@ -71,7 +71,7 @@ bool DebugRenderPass::Initialize(RenderHardwareInterface& aRHI)
 
 		if (!aRHI.CreatePipelineStateObject(linePSODesc, *myLinePSO))
 		{
-			spdlog::critical("Failed to create Line pipeline state object!");
+			SPDLOG_CRITICAL("Failed to create Line pipeline state object!");
 			return false;
 		}
 	}
@@ -84,6 +84,11 @@ void DebugRenderPass::Execute(
 	FrameTargets& aFrameTargets,
 	RenderContext& aContext)
 {
+	if (aContext.RenderSettings->DebugRenderMode != DebugRenderMode::None)
+	{
+		return;
+	}
+
 	inoutCommandList.BeginEvent("Debug Render");
 
 	inoutCommandList.SetRenderTarget(aFrameTargets.RenderTarget, aFrameTargets.DepthBuffer);
@@ -129,7 +134,7 @@ void DebugRenderPass::RenderWireMeshes(GraphicsCommandList& inoutCommandList, Re
 			{
 				if (!aContext.RHI->CreateVertexBuffer(mesh.myName, mesh.myVertices, mesh.myVertexBuffer))
 				{
-					spdlog::warn("Could not prepare mesh {}! Vertex Buffer could not be created!", mesh.myName);
+					SPDLOG_WARN("Could not prepare mesh {}! Vertex Buffer could not be created!", mesh.myName);
 					continue;
 				}
 			}
@@ -138,7 +143,7 @@ void DebugRenderPass::RenderWireMeshes(GraphicsCommandList& inoutCommandList, Re
 			{
 				if (!aContext.RHI->CreateIndexBuffer(mesh.myName, mesh.myIndices, mesh.myIndexBuffer))
 				{
-					spdlog::warn("Could not prepare mesh {}! Index Buffer could not be created!", mesh.myName);
+					SPDLOG_WARN("Could not prepare mesh {}! Index Buffer could not be created!", mesh.myName);
 					continue;
 				}
 			}
