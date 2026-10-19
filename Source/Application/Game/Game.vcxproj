@@ -169,6 +169,8 @@
     <ClInclude Include="Application.h" />
     <ClInclude Include="Camera\GameCamera.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="GameState\GameStateMachine.h" />
+    <ClInclude Include="GameState\States\InGameState.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
@@ -177,21 +179,23 @@
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="Camera\GameCamera.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="GameState\GameStateMachine.cpp" />
+    <ClCompile Include="GameState\States\InGameState.cpp" />
     <ClCompile Include="Main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="Materials\BaseMaterial.hlsli">
       <FileType>Document</FileType>
-      <Command>if not exist "$(SolutionDir)Content\Shaders" mkdir "$(SolutionDir)Content\Shaders"
-copy /Y "%(FullPath)" "$(SolutionDir)Content\Shaders\%(Filename)%(Extension)"</Command>
-      <Outputs>$(SolutionDir)Content/Shaders/BaseMaterial.hlsli</Outputs>
+      <Command>if not exist "$(SolutionDir)Shaders" mkdir "$(SolutionDir)Shaders"
+copy /Y "%(FullPath)" "$(SolutionDir)Shaders\%(Filename)%(Extension)"</Command>
+      <Outputs>$(SolutionDir)Shaders/BaseMaterial.hlsli</Outputs>
       <Message>Copying %(Identity)</Message>
     </CustomBuild>
-    <CustomBuild Include="Materials\BlendMaterial.hlsli">
+    <CustomBuild Include="Materials\MaterialFunctions.hlsli">
       <FileType>Document</FileType>
-      <Command>if not exist "$(SolutionDir)Content\Shaders" mkdir "$(SolutionDir)Content\Shaders"
-copy /Y "%(FullPath)" "$(SolutionDir)Content\Shaders\%(Filename)%(Extension)"</Command>
-      <Outputs>$(SolutionDir)Content/Shaders/BlendMaterial.hlsli</Outputs>
+      <Command>if not exist "$(SolutionDir)Shaders" mkdir "$(SolutionDir)Shaders"
+copy /Y "%(FullPath)" "$(SolutionDir)Shaders\%(Filename)%(Extension)"</Command>
+      <Outputs>$(SolutionDir)Shaders/MaterialFunctions.hlsli</Outputs>
       <Message>Copying %(Identity)</Message>
     </CustomBuild>
   </ItemGroup>

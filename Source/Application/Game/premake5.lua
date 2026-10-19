@@ -66,10 +66,10 @@ project "Game"
     filter "files:**.hlsl or files:**.hlsli"
         buildmessage "Copying %{file.relpath}"
         buildcommands {
-            'if not exist "$(SolutionDir)Content\\Shaders" mkdir "$(SolutionDir)Content\\Shaders"',
-            'copy /Y "%{file.abspath}" "$(SolutionDir)Content\\Shaders\\%{file.name}"'
+            'if not exist "$(SolutionDir)Shaders" mkdir "$(SolutionDir)Shaders"',
+            'copy /Y "%{file.abspath}" "$(SolutionDir)Shaders\\%{file.name}"'
         }
-        buildoutputs { "$(SolutionDir)Content\\Shaders\\%{file.name}" }
+        buildoutputs { "$(SolutionDir)Shaders\\%{file.name}" }
         
     filter {}
 

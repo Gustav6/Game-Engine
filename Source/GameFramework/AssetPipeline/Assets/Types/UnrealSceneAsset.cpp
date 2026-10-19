@@ -40,7 +40,7 @@ bool UnrealSceneAsset::Load(const std::filesystem::path& aPath)
 
 	if (!unrealSceneData.IsValid())
 	{
-		SPDLOG_ERROR("Failed to load Scene from JSON [{}]", aPath.string());
+		spdlog::error("Failed to load Scene from JSON [{}]", aPath.string());
 		return false;
 	}
 
@@ -54,12 +54,12 @@ bool UnrealSceneAsset::Load(const std::filesystem::path& aPath)
 		{
 			std::string name = masterMaterial.GetString("Name");
 
-			myMasterMaterials.emplace_back(AssetRegistry::Get().ConstructAsset<MaterialAsset>(name, masterMaterial));
+			myMasterMaterials.emplace_back(AssetRegistry::Get().ConstructAsset<MaterialAsset>(name, masterMaterial, MaterialType::Unreal));
 		}
 	}
 	else
 	{
-		SPDLOG_WARN("No Master Materials found in scene [{}]. Scene might be empty", aPath.string());
+		spdlog::warn("No Master Materials found in scene [{}]. Scene might be empty", aPath.string());
 	}
 
 
@@ -79,6 +79,8 @@ bool UnrealSceneAsset::Load(const std::filesystem::path& aPath)
 
 			actor->GetTransform() = UnrealToDirectX(matrix);
 
+			//LOG_GROUP(LogUnreal, Verbose, "Actor [{}] Loaded to the Scene!", actorName);
+
 			std::vector<Json::Data> jsonComponents = jsonActor.GetDataObjectArray("Components");
 
 			for (auto& jsonComponent : jsonComponents)
@@ -93,6 +95,8 @@ bool UnrealSceneAsset::Load(const std::filesystem::path& aPath)
 					}
 					case ComponentType::StaticMeshComponent:
 					{
+						//LOG_GROUP(LogUnreal, Verbose, "Component [StaticMesh]");
+
 						std::shared_ptr<MeshAsset> mesh = AssetRegistry::Get().GetAsset<MeshAsset>(jsonComponent.GetString("Mesh"));
 
 						if (mesh == nullptr)
@@ -107,7 +111,7 @@ bool UnrealSceneAsset::Load(const std::filesystem::path& aPath)
 
 						if (materials.empty())
 						{
-							SPDLOG_ERROR("Mesh has no material set [{}]!", actorName);
+							spdlog::error("Mesh has no material set [{}]!", actorName);
 						}
 						else
 						{
@@ -121,11 +125,11 @@ bool UnrealSceneAsset::Load(const std::filesystem::path& aPath)
 								}
 								else
 								{
-									SPDLOG_ERROR("Material had no name for actor [{}]!", actorName);
+									spdlog::error("Material had no name for actor [{}]!", actorName);
 									materialName = "NO NAME GIVEN";
 								}
 
-								meshComponent->SetMaterial(i, AssetRegistry::Get().ConstructAsset<MaterialAsset>(materialName, materials[i]));
+								meshComponent->SetMaterial(i, AssetRegistry::Get().ConstructAsset<MaterialAsset>(materialName, materials[i], MaterialType::Unreal));
 							}
 						}
 
@@ -133,6 +137,8 @@ bool UnrealSceneAsset::Load(const std::filesystem::path& aPath)
 					}
 					case ComponentType::SkeletalMeshComponent:
 					{
+						//LOG_GROUP(LogUnreal, Verbose, "Component [SkeletalMesh]");
+
 						std::shared_ptr<MeshAsset> mesh = AssetRegistry::Get().GetAsset<MeshAsset>(jsonComponent.GetString("Mesh"));
 
 						if (mesh == nullptr)
@@ -147,37 +153,22 @@ bool UnrealSceneAsset::Load(const std::filesystem::path& aPath)
 
 						if (materials.empty())
 						{
-							SPDLOG_ERROR("Mesh has no material set [{}]!", actorName);
+							spdlog::error("Mesh has no material set [{}]!", actorName);
 						}
 						else
 						{
 							for (unsigned int i = 0; i < materials.size(); i++)
 							{
-								std::string materialName;
+								std::string materialName = "NO NAME GIVEN";
 
 								if (materials[i].HasKey("Name"))
 								{
 									materialName = materials[i].GetString("Name");
 								}
-								else
-								{
-									SPDLOG_ERROR("Material had no name for actor [{}]!", actorName);
-									materialName = "NO NAME GIVEN";
-								}
 
-								meshComponent->SetMaterial(i, AssetRegistry::Get().ConstructAsset<MaterialAsset>(materialName, materials[i]));
+								meshComponent->SetMaterial(i, AssetRegistry::Get().ConstructAsset<MaterialAsset>(materialName, materials[i], MaterialType::Unreal));
 							}
 						}
-
-						AnimationComponent* animationComponent = actor->AddComponent<AnimationComponent>(meshComponent->GetSkeleton());
-
-						AnimationEntry idleAnimation =
-						{
-							.AnimationAsset = AssetRegistry::Get().GetAsset<AnimationAsset>("A_swampGrass"),
-							.ShouldLoop = true
-						};
-
-						animationComponent->AddAnimation("Idle", idleAnimation);
 
 						break;
 					}
@@ -185,17 +176,17 @@ bool UnrealSceneAsset::Load(const std::filesystem::path& aPath)
 					{
 						if (!jsonComponent.HasKey("Color"))
 						{
-							SPDLOG_ERROR("Point Light has no Color [{}]!", actorName);
+							spdlog::error("Point Light has no Color [{}]!", actorName);
 							break;
 						}
 						if (!jsonComponent.HasKey("Intensity"))
 						{
-							SPDLOG_ERROR("Point Light has no Intensity [{}]!", actorName);
+							spdlog::error("Point Light has no Intensity [{}]!", actorName);
 							break;
 						}
 						if (!jsonComponent.HasKey("AttenuationRadius"))
 						{
-							SPDLOG_ERROR("Point Light has no Attenuation Radius [{}]!", actorName);
+							spdlog::error("Point Light has no Attenuation Radius [{}]!", actorName);
 							break;
 						}
 
@@ -215,27 +206,27 @@ bool UnrealSceneAsset::Load(const std::filesystem::path& aPath)
 					{
 						if (!jsonComponent.HasKey("Color"))
 						{
-							SPDLOG_ERROR("Spot Light has no Color [{}]!", actorName);
+							spdlog::error("Spot Light has no Color [{}]!", actorName);
 							break;
 						}
 						if (!jsonComponent.HasKey("Intensity"))
 						{
-							SPDLOG_ERROR("Spot Light has no Intensity [{}]!", actorName);
+							spdlog::error("Spot Light has no Intensity [{}]!", actorName);
 							break;
 						}
 						if (!jsonComponent.HasKey("AttenuationRadius"))
 						{
-							SPDLOG_ERROR("Spot Light has no Attenuation Radius [{}]!", actorName);
+							spdlog::error("Spot Light has no Attenuation Radius [{}]!", actorName);
 							break;
 						}
 						if (!jsonComponent.HasKey("InnerConeAngle"))
 						{
-							SPDLOG_ERROR("Spot Light has no Inner Cone Angle [{}]!", actorName);
+							spdlog::error("Spot Light has no Inner Cone Angle [{}]!", actorName);
 							break;
 						}
 						if (!jsonComponent.HasKey("OuterConeAngle"))
 						{
-							SPDLOG_ERROR("Spot Light has no Outer Cone Angle [{}]!", actorName);
+							spdlog::error("Spot Light has no Outer Cone Angle [{}]!", actorName);
 							break;
 						}
 
@@ -257,12 +248,12 @@ bool UnrealSceneAsset::Load(const std::filesystem::path& aPath)
 					{
 						if (!jsonComponent.HasKey("Color"))
 						{
-							SPDLOG_ERROR("Directional Light has no Color [{}]!", actorName);
+							spdlog::error("Directional Light has no Color [{}]!", actorName);
 							break;
 						}
 						if (!jsonComponent.HasKey("Intensity"))
 						{
-							SPDLOG_ERROR("Directional Light has no Intensity [{}]!", actorName);
+							spdlog::error("Directional Light has no Intensity [{}]!", actorName);
 							break;
 						}
 
@@ -298,13 +289,13 @@ bool UnrealSceneAsset::Load(const std::filesystem::path& aPath)
 						break;
 				}
 			}
-
+			
 			myActors.push_back(std::move(actor));
 		}
 	}
 	else
 	{
-		SPDLOG_WARN("No Actors found in scene [{}]. Scene might be empty", aPath.string());
+		spdlog::warn("No Actors found in scene [{}]. Scene might be empty", aPath.string());
 	}
 
 	return true;

@@ -27,10 +27,6 @@ namespace Logger
 
 
 
-
-
-
-
 /*
  * Basic Logger by Daniel Borgshamar @ TGA
  * ---------------------------------------

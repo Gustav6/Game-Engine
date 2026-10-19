@@ -2,8 +2,6 @@
 
 #include <filesystem>
 
-#include "Ensure.h"
-
 #include "MaterialInterface.h"
 #include "GraphicsEngine/RHI/PipelineStateObject.h"
 
@@ -17,6 +15,8 @@ struct MaterialDescription
 	MaterialDomain Domain = MaterialDomain::None;
 	ShadingModel ShadingModel = ShadingModel::None;
 	MaterialBlendMode BlendMode = MaterialBlendMode::None;
+	MaterialLayout Layout = MaterialLayout::None;
+	MaterialFeatureFlags Features = FeatureFlag_None;
 
 	std::filesystem::path MaterialShaderCode;
 };
@@ -31,6 +31,8 @@ public:
 	MaterialDomain GetDomain() const override { return myDescription.Domain; }
 	ShadingModel GetShadingModel() const override { return myDescription.ShadingModel; }
 	MaterialBlendMode GetBlendMode() const override { return myDescription.BlendMode; }
+	MaterialLayout GetLayout() const override { return myDescription.Layout; }
+	MaterialFeatureFlags GetFeatures() const override { return myDescription.Features; }
 
 	const PipelineStateObject& GetPSO() const override { return myPSO; }
 	
@@ -76,6 +78,8 @@ public:
 	MaterialDomain GetDomain() const override { return myParentMaterial->GetDomain(); }
 	ShadingModel GetShadingModel() const override { return myParentMaterial->GetShadingModel(); }
 	MaterialBlendMode GetBlendMode() const override { return myParentMaterial->GetBlendMode(); }
+	MaterialLayout GetLayout() const override { return myParentMaterial->GetLayout(); }
+	MaterialFeatureFlags GetFeatures() const override { return myParentMaterial->GetFeatures(); }
 
 	const PipelineStateObject& GetPSO() const override { return myParentMaterial->GetPSO(); }
 	

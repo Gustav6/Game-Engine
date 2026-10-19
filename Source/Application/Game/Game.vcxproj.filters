@@ -4,6 +4,12 @@
     <Filter Include="Camera">
       <UniqueIdentifier>{CE7141AB-BA13-6C81-A3CE-7FD58F0FF3D1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameState">
+      <UniqueIdentifier>{A0AAD57D-0C15-8AF4-5553-3B9AC1FC6749}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameState\States">
+      <UniqueIdentifier>{6310AF48-4F09-CE9A-783B-B31F6493ADA6}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Materials">
       <UniqueIdentifier>{67E8C255-D352-77CC-1C91-2872883A5521}</UniqueIdentifier>
     </Filter>
@@ -23,6 +29,12 @@
       <Filter>Camera</Filter>
     </ClInclude>
     <ClInclude Include="Game.h" />
+    <ClInclude Include="GameState\GameStateMachine.h">
+      <Filter>GameState</Filter>
+    </ClInclude>
+    <ClInclude Include="GameState\States\InGameState.h">
+      <Filter>GameState\States</Filter>
+    </ClInclude>
     <ClInclude Include="resource.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
@@ -35,13 +47,19 @@
       <Filter>Camera</Filter>
     </ClCompile>
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="GameState\GameStateMachine.cpp">
+      <Filter>GameState</Filter>
+    </ClCompile>
+    <ClCompile Include="GameState\States\InGameState.cpp">
+      <Filter>GameState\States</Filter>
+    </ClCompile>
     <ClCompile Include="Main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="Materials\BaseMaterial.hlsli">
       <Filter>Materials</Filter>
     </CustomBuild>
-    <CustomBuild Include="Materials\BlendMaterial.hlsli">
+    <CustomBuild Include="Materials\MaterialFunctions.hlsli">
       <Filter>Materials</Filter>
     </CustomBuild>
   </ItemGroup>

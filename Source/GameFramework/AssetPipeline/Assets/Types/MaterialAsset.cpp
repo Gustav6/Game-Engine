@@ -44,13 +44,13 @@ bool MaterialAsset::Load(const std::filesystem::path& aPath)
 
     if (materialData.HasKey("Parent"))
     {
-        return LoadInstanceData(materialData);
+        return LoadUnrealInstanceData(materialData);
     }
 
-    return LoadMasterData(materialData);
+    return LoadUnrealMasterData(materialData);
 }
 
-bool MaterialAsset::Construct(const Json::Data& aMaterialData)
+bool MaterialAsset::Construct(const Json::Data& aMaterialData, MaterialType)
 {
     if (!aMaterialData.IsValid())
     {
@@ -60,13 +60,13 @@ bool MaterialAsset::Construct(const Json::Data& aMaterialData)
 
     if (aMaterialData.HasKey("Parent"))
     {
-        return LoadInstanceData(aMaterialData);
+        return LoadUnrealInstanceData(aMaterialData);
     }
 
-    return LoadMasterData(aMaterialData);
+    return LoadUnrealMasterData(aMaterialData);
 }
 
-bool MaterialAsset::LoadInstanceData(const Json::Data& aMaterialData)
+bool MaterialAsset::LoadUnrealInstanceData(const Json::Data& aMaterialData)
 {
     bool hasErrord = false;
 
@@ -88,7 +88,7 @@ bool MaterialAsset::LoadInstanceData(const Json::Data& aMaterialData)
 
     std::shared_ptr<MaterialAsset> masterMaterialAsset = AssetRegistry::Get().GetAsset<MaterialAsset>(parent);
 
-    if (masterMaterialAsset == nullptr)
+    if (masterMaterialAsset == nullptr || masterMaterialAsset->GetMaterial() == nullptr)
     {
         SPDLOG_ERROR("Material [{}] failed to get master material [{}]!", materialName, parent);
         hasErrord = true;
@@ -97,23 +97,14 @@ bool MaterialAsset::LoadInstanceData(const Json::Data& aMaterialData)
     {
         std::shared_ptr<MaterialInstance> instance = MaterialInstance::Create(materialName, masterMaterialAsset->GetMaterial());
 
-        if (aMaterialData.HasKey("Parameters"))
-        {
-            std::vector<Json::Data> parameters = aMaterialData.GetDataObjectArray("Parameters");
+        std::vector<Json::Data> parameters = aMaterialData.GetDataObjectArray("Parameters");
 
-            if (parameters.empty())
-            {
-                SPDLOG_ERROR("Material has no Parameters [{}]!", materialName);
-                hasErrord = true;
-            }
-
-            PushParameters(parameters, instance.get());
-        }
-        else
+        if (parameters.empty())
         {
-            SPDLOG_ERROR("Material has no Parameters [{}]!", materialName);
-            hasErrord = true;
+            SPDLOG_WARN("Material has no Parameters [{}]!", materialName);
         }
+
+        PushParameters(parameters, instance.get(), masterMaterialAsset->GetMaterial()->GetLayout());
 
         myMaterial = std::move(instance);
     }
@@ -121,7 +112,7 @@ bool MaterialAsset::LoadInstanceData(const Json::Data& aMaterialData)
     return !hasErrord;
 }
 
-bool MaterialAsset::LoadMasterData(const Json::Data& aMaterialData)
+bool MaterialAsset::LoadUnrealMasterData(const Json::Data& aMaterialData)
 {
     bool hasErrord = false;
 
@@ -134,8 +125,11 @@ bool MaterialAsset::LoadMasterData(const Json::Data& aMaterialData)
         hasErrord = true;
     }
 
+    std::vector<Json::Data> parameters = aMaterialData.GetDataObjectArray("Parameters");
+
     MaterialDescription desc;
     desc.Name = materialName;
+    desc.Layout = GetMaterialLayout(parameters);
 
     {
         if (aMaterialData.HasKey("Domain"))
@@ -169,7 +163,8 @@ bool MaterialAsset::LoadMasterData(const Json::Data& aMaterialData)
         }
     }
 
-    desc.MaterialShaderCode = AssetRegistry::Get().GetWorkingDirectory() / "Shaders/BaseMaterial.hlsli";
+    // TODO: Add the ability to choose material code.
+    //desc.MaterialShaderCode = AssetRegistry::Get().GetWorkingDirectory() / "Shaders/BaseMaterial.hlsli";
 
     std::shared_ptr<Material> material = std::make_shared<Material>();
 
@@ -178,38 +173,25 @@ bool MaterialAsset::LoadMasterData(const Json::Data& aMaterialData)
         SPDLOG_ERROR("Failed to create material [{}]!", materialName);
         hasErrord = true;
     }
-    else
+
+    if (parameters.empty())
     {
-        if (aMaterialData.HasKey("Parameters"))
-        {
-            std::vector<Json::Data> parameters = aMaterialData.GetDataObjectArray("Parameters");
-
-            if (parameters.empty())
-            {
-                SPDLOG_ERROR("Material has no Parameters [{}]!", materialName);
-                hasErrord = true;
-            }
-
-            PushParameters(parameters, material.get());
-        }
-        else
-        {
-            SPDLOG_ERROR("Material has no Parameters [{}]!", materialName);
-            hasErrord = true;
-        }
+        SPDLOG_WARN("Material has no Parameters [{}]!", materialName);
     }
+
+    PushParameters(parameters, material.get(), desc.Layout);
 
     myMaterial = std::move(material);
 
     return !hasErrord;
 }
 
-void MaterialAsset::PushParameters(const std::vector<Json::Data>& aMaterialParameters, MaterialInterface* aMaterialInstance)
+void MaterialAsset::PushParameters(const std::vector<Json::Data>& aMaterialParameters, MaterialInterface* aMaterialInstance, MaterialLayout aLayout)
 {
 	for (const auto& parameter : aMaterialParameters)
 	{
-		std::string parameterName = parameter.GetString("Name");
-        int type = parameter.GetInt("Type");
+		const std::string parameterName = parameter.GetString("Name");
+        const int type = parameter.GetInt("Type");
 
 		switch (static_cast<ParameterType>(type))
 		{
@@ -231,7 +213,7 @@ void MaterialAsset::PushParameters(const std::vector<Json::Data>& aMaterialParam
 
                 if (!parameterData.HasKey("Name"))
                 {
-                    SPDLOG_WARN("Texture parameter [{}] has no texture Name, skipping", parameterName);
+                    SPDLOG_WARN("Texture parameter [{}] has no texture Name, skipping!", parameterName);
                     break;
                 }
 
@@ -241,50 +223,134 @@ void MaterialAsset::PushParameters(const std::vector<Json::Data>& aMaterialParam
 
                 if (textureAsset == nullptr)
                 {
-                    SPDLOG_WARN("Texture parameter [{}] could not load texture [{}]", parameterName, textureName);
+                    SPDLOG_WARN("Texture parameter [{}] could not load texture [{}]!", parameterName, textureName);
                     break;
                 }
 
-                std::string suffix = {};
+                myPersistentTextureList.emplace_back(textureAsset);
 
-                size_t pos = textureName.rfind('_');
+				switch (aLayout)
+				{
+					case MaterialLayout::PBR:
+					{
+                        std::string suffix = {};
 
-                if (pos != std::string::npos)
-                {
-                    suffix = textureName.substr(pos + 1);
-                }
+                        size_t pos = textureName.rfind('_');
 
-                std::string lowerCaseSuffix = suffix;
-                std::ranges::transform(lowerCaseSuffix, lowerCaseSuffix.begin(), tolower);
+                        if (pos != std::string::npos)
+                        {
+                            suffix = textureName.substr(pos + 1);
+                        }
 
-                if (lowerCaseSuffix == "c")
-                {
-                    aMaterialInstance->SetTexture(0, textureAsset->GetTexture());
-                }
-                else if (lowerCaseSuffix == "n")
-                {
-                    aMaterialInstance->SetTexture(1, textureAsset->GetTexture());
-                }
-                else if (lowerCaseSuffix == "orm")
-                {
-                    aMaterialInstance->SetTexture(2, textureAsset->GetTexture());
-                }
-                else if (lowerCaseSuffix == "fx")
-                {
-                    aMaterialInstance->SetTexture(3, textureAsset->GetTexture());
-                }
-                else
-                {
-                    SPDLOG_WARN("Texture [{}] has unknown suffix [{}]!", textureName, suffix);
-                }
+                        std::ranges::transform(suffix, suffix.begin(), tolower);
 
+                        if (suffix == "c")
+                        {
+                            aMaterialInstance->SetTexture(0, textureAsset->GetTexture());
+                            break;
+                        }
+                        if (suffix == "n")
+                        {
+                            aMaterialInstance->SetTexture(1, textureAsset->GetTexture());
+                            break;
+                        }
+                        if (suffix == "orm")
+                        {
+                            aMaterialInstance->SetTexture(2, textureAsset->GetTexture());
+                            break;
+                        }
+                        if (suffix == "fx")
+                        {
+                            aMaterialInstance->SetTexture(3, textureAsset->GetTexture());
+                            break;
+                        }
+
+                        SPDLOG_WARN("Texture [{}] has unknown suffix [{}]!", textureName, suffix);
+
+						break;
+					}
+                    case MaterialLayout::Splat:
+                    {
+                        const unsigned int slot = aMaterialInstance->GetTextureSlotByName(parameterName);
+
+                        if (slot != std::numeric_limits<unsigned int>::max())
+                        {
+                            aMaterialInstance->SetTexture(slot, textureAsset->GetTexture());
+                        }
+                        else
+                        {
+                            SPDLOG_WARN("No shader texture slot found for parameter [{}]", parameterName);
+                        }
+
+                        break;
+                    }
+                    default:
+                    {
+                        SPDLOG_WARN("Material has invalid layout [{}]!", aMaterialInstance->GetName());
+	                    break;
+                    }
+				}
+                
 				break;
 			}
+            case ParameterType::StaticSwitch:
+            {
+                SPDLOG_ERROR("STATIC SWITCH [{}]", parameterName);
+                break;
+            }
 			default:
 			{
-                SPDLOG_ERROR("Non handled parameter type found [{}], Parameter [{}]!", type, aMaterialInstance->GetName());
+                SPDLOG_ERROR("Non handled parameter type found [{}], Parameter [{}]!", type, parameterName);
 				break;
 			}
 		}
 	}
+}
+
+MaterialLayout MaterialAsset::GetMaterialLayout(const std::vector<Json::Data>& parameters)
+{
+    for (const auto& parameter : parameters)
+    {
+        const int type = parameter.GetInt("Type");
+
+        if (static_cast<ParameterType>(type) != ParameterType::Texture)
+        {
+            continue;
+        }
+
+        std::string parameterName = parameter.GetString("Name");
+
+        std::ranges::transform(parameterName, parameterName.begin(), tolower);
+
+        if (parameterName == "splatmap")
+        {
+            return MaterialLayout::Splat;
+        }
+
+        const Json::Data value = parameter.GetDataObject("Value");
+
+        if (value.HasKey("Name"))
+        {
+            const std::string textureName = value.GetString("Name");
+
+            std::string suffix = {};
+
+            size_t pos = textureName.rfind('_');
+
+            if (pos == std::string::npos)
+            {
+                continue;
+            }
+
+            suffix = textureName.substr(pos + 1);
+            std::ranges::transform(suffix, suffix.begin(), tolower);
+
+            if (suffix == "spm")
+            {
+                return MaterialLayout::Splat;
+            }
+        }
+    }
+
+    return MaterialLayout::PBR;
 }

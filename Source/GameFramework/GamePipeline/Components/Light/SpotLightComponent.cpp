@@ -38,10 +38,11 @@ void SpotLightComponent::Render()
     {
         const float height = myData.Radius;
 
-        const float cosOuter = myData.CosOuterCone;
+        const float cosOuter = std::max(myData.CosOuterCone, 0.0001f);
         const float sinOuter = std::sqrt(std::max(0.f, 1.f - cosOuter * cosOuter));
         const float coneRadius = height * (sinOuter / cosOuter);
 
+        DebugDrawer::Get().DrawCross(25, myTransform.GetTranslation(), DebugSettingsManager::Get().GetSettings().LightGizmoColor);
         DebugDrawer::Get().DrawCone(coneRadius, height, myTransform.GetTranslation(), myTransform.GetForward(), DebugSettingsManager::Get().GetSettings().LightGizmoColor);
     }
 #endif

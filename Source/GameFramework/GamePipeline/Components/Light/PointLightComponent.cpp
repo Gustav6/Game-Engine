@@ -32,6 +32,7 @@ void PointLightComponent::Render()
 #ifndef _RETAIL
 	if (DebugSettingsManager::Get().GetSettings().LightGizmosDebugDrawEnabled)
 	{
+		DebugDrawer::Get().DrawCross(25, myTransform.GetTranslation(), DebugSettingsManager::Get().GetSettings().LightGizmoColor);
 		DebugDrawer::Get().DrawSphere(myData.Radius, myTransform.GetTranslation(), DebugSettingsManager::Get().GetSettings().LightGizmoColor);
 	}
 #endif

@@ -88,6 +88,9 @@
     <Filter Include="Shaders\Include\Shadows">
       <UniqueIdentifier>{4A2D7150-B664-B9E7-BF6E-1D0B2B25E0E0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shaders\Include\SurfaceLayout">
+      <UniqueIdentifier>{58DE926C-C4F6-7996-8DA3-0930F97A0E30}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Shaders\PostProcess">
       <UniqueIdentifier>{A335500E-0F97-2D1C-9804-74CE046564DB}</UniqueIdentifier>
     </Filter>
@@ -516,6 +519,15 @@
     </None>
     <None Include="Shaders\Include\Shadows\Shadow.hlsli">
       <Filter>Shaders\Include\Shadows</Filter>
+    </None>
+    <None Include="Shaders\Include\SurfaceLayout\SurfaceLayout.hlsli">
+      <Filter>Shaders\Include\SurfaceLayout</Filter>
+    </None>
+    <None Include="Shaders\Include\SurfaceLayout\SurfacePBR.hlsli">
+      <Filter>Shaders\Include\SurfaceLayout</Filter>
+    </None>
+    <None Include="Shaders\Include\SurfaceLayout\SurfaceSplat.hlsli">
+      <Filter>Shaders\Include\SurfaceLayout</Filter>
     </None>
   </ItemGroup>
 </Project>

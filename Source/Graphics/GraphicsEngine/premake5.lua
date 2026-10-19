@@ -72,13 +72,10 @@ project "Graphics"
 
     filter {}
     
-    postbuildmessage "Copying Shaders to Content Dir"
+    postbuildmessage "Copying Shaders"
     postbuildcommands {
-        'set "CONTENTROOT=$(SolutionDir)Content"',
         'set "SHADERSRC=$(ProjectDir)Shaders"',
-        'set "SHADERDEST=%CONTENTROOT%\\Shaders"',
-        '',
-        'IF NOT EXIST "%CONTENTROOT%" ( mkdir "%CONTENTROOT%" )',
+        'set "SHADERDEST=$(SolutionDir)Shaders"',
         'IF NOT EXIST "%SHADERDEST%" ( mkdir "%SHADERDEST%" )',
         'xcopy /E /I /R /Y /D "%SHADERSRC%" "%SHADERDEST%"'
     }

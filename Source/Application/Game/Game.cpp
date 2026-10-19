@@ -16,16 +16,9 @@
 #include "AssetPipeline/Assets/Types/TextureAsset.h"
 #include "AssetPipeline/Assets/Types/FontAsset.h"
 #include "AssetPipeline/Assets/Types/SpriteAsset.h"
+#include "AssetPipeline/Assets/Types/UnrealSceneAsset.h"
 
-#include "GamePipeline/Components/Rendering/MeshComponent.h"
-#include "GamePipeline/Components/Rendering/AnimationComponent.h"
-#include "GamePipeline/Components/Rendering/TextComponent.h"
-#include "GamePipeline/Components/Rendering/SpriteComponent.h"
-#include "GamePipeline/Components/Light/DirectionlLightComponent.h"
-#include "GamePipeline/Components/Light/PointLightComponent.h"
-#include "GamePipeline/Components/Light/SpotLightComponent.h"
-#include "GamePipeline/Components/Collision/BoxColliderComponent.h"
-#include "GamePipeline/Components/Collision/SphereColliderComponent.h"
+#include "GameState/GameStateMachine.h"
 
 #include "GamePipeline/World/Actor.hpp"
 #include "GamePipeline/World/GameWorld.h"
@@ -41,6 +34,7 @@
 #include "Managers/DebugSettingsManager.h"
 
 #include "Camera/GameCamera.h"
+#include "GameState/GameStateMachine.h"
 #include "Json/JsonWrapper.h"
 
 #include "Logger/Logger.h"
@@ -65,6 +59,10 @@ bool Game::Initialize(SIZE aWindowSize, WNDPROC aWindowProcess, LPCWSTR aWindowT
 		{
 			throw std::runtime_error("Failed to create settings file!");
 		}
+		if (!writer.SetString("ShaderPath", "../../Shaders"))
+		{
+			throw std::runtime_error("Failed to create settings file!");
+		}
 
 		writer.Save();
 	}
@@ -84,8 +82,9 @@ bool Game::Initialize(SIZE aWindowSize, WNDPROC aWindowProcess, LPCWSTR aWindowT
 	AssetRegistry::Get().RegisterAssetType<AnimationAsset>({ ".fbx" });
 	AssetRegistry::Get().RegisterAssetType<MaterialAsset>({ ".json" });
 	AssetRegistry::Get().RegisterAssetType<TextureAsset>({ ".dds" });
-	AssetRegistry::Get().RegisterAssetType<FontAsset>({ ".json" });
+	AssetRegistry::Get().RegisterAssetType<FontAsset>({ ".dds",".json" });
 	AssetRegistry::Get().RegisterAssetType<SpriteAsset>({ ".dds" });
+	AssetRegistry::Get().RegisterAssetType<UnrealSceneAsset>({ ".json" });
 
 	if (!AssetRegistry::Get().Initialize(Application.ContentPath))
 	{
@@ -132,15 +131,23 @@ bool Game::Initialize(SIZE aWindowSize, WNDPROC aWindowProcess, LPCWSTR aWindowT
 
 		GraphicsEngine& GE = GraphicsEngine::Get();
 
-		if (!GE.Initialize(myMainWindowHandle, Application.ContentPath))
+		if (settings.HasKey("ShaderPath"))
 		{
-			throw std::runtime_error("Graphics Engine failed to initialize!");
+			std::filesystem::path shaderRoot = GetExecutableDirectory() / settings.GetString("ShaderPath");
+
+			if (!GE.Initialize(myMainWindowHandle, shaderRoot))
+			{
+				throw std::runtime_error("Graphics Engine failed to initialize!");
+			}
+		}
+		else
+		{
+			throw std::runtime_error("Application settings has no shader path set!");
 		}
 
-#ifdef IMGUI_ENABLE
-		myImGuiLayer = std::make_unique<ImGuiLayer>(myMainWindowHandle);
-		GE.SetRenderOverlay(myImGuiLayer.get());
-#endif
+		myGraphicsCommandList = std::make_unique<GraphicsCommandList>();
+
+		GE.CreateCommandList("ModelViewer", *myGraphicsCommandList);
 
 		std::shared_ptr<TextureAsset> environmentTexture = AssetRegistry::Get().GetAsset<TextureAsset>("T_Shipyard_cm");
 
@@ -149,12 +156,22 @@ bool Game::Initialize(SIZE aWindowSize, WNDPROC aWindowProcess, LPCWSTR aWindowT
 			GE.SetEnvironmentTexture(environmentTexture->GetTexture());
 		}
 
-		myGraphicsCommandList = std::make_unique<GraphicsCommandList>();
-
-		GE.CreateCommandList("ModelViewer", *myGraphicsCommandList);
+#ifdef IMGUI_ENABLE
+		myImGuiLayer = std::make_unique<ImGuiLayer>(myMainWindowHandle);
+		GE.SetRenderOverlay(myImGuiLayer.get());
+#endif
 	}
 
-	LoadScene();
+	{
+		GameCamera& gameCamera = GameCamera::GetInstance();
+		gameCamera.Init(90.0f, 1.0f, 10000.0f, GraphicsEngine::Get().GetClientSize());
+	}
+
+	{
+		myStateMachine = std::make_unique<GameStateMachine>();
+		myStateMachine->Initialize();
+		myStateMachine->ChangeState(GameStateType::InGame);
+	}
 
 	// Show our program window and give it focus.
 	ShowWindow(myMainWindowHandle, SW_SHOW);
@@ -216,7 +233,7 @@ int Game::Run()
 
 			FrameStats frameStats = GE.Render(*myGraphicsCommandList, camera);
 		
-			DrawDebugSettings(frameStats);
+			DrawImGuiLayer(frameStats);
 	
 			myGraphicsCommandList->FinishCommandList();
 
@@ -232,317 +249,19 @@ int Game::Run()
 	return 0;
 }
 
-void Game::LoadScene()
+void Game::UpdateScene(float aDeltaTime) const
 {
-	{
-		GameCamera& gameCamera = GameCamera::GetInstance();
-		gameCamera.Init(90.0f, 1.0f, 10000.0f, GraphicsEngine::Get().GetClientSize());
-	}
-
-	{
-	    std::unique_ptr<Actor> object = std::make_unique<Actor>();
-
-	    MeshComponent* meshComponent = object->AddComponent<MeshComponent>();
-
-	    meshComponent->SetMesh(AssetRegistry::Get().GetAsset<MeshAsset>("SM_Color_Checker"));
-	    meshComponent->SetMaterial(0, AssetRegistry::Get().GetAsset<MaterialAsset>("SMColorChecker"));
-
-	    object->GetTransform().Translate({ -400, 40, 0 });
-
-		GameWorld::Get().AddActor(std::move(object));
-	}
-
-	{
-	    std::unique_ptr<Actor> object = std::make_unique<Actor>();
-
-		MeshComponent* meshComponent = object->AddComponent<MeshComponent>();
-
-	    meshComponent->SetMesh(AssetRegistry::Get().GetAsset<MeshAsset>("SM_Chest"));
-	    meshComponent->SetMaterial(0, AssetRegistry::Get().GetAsset<MaterialAsset>("ChestMaterial"));
-
-	    object->GetTransform().Rotate(CommonUtilities::Vector3f{ 0, -180, 0 });
-	    object->GetTransform().Translate({ 200, 0, 400 });
-		
-		GameWorld::Get().AddActor(std::move(object));
-	}
-
-	{
-	    std::unique_ptr<Actor> object = std::make_unique<Actor>();
-
-		MeshComponent* meshComponent = object->AddComponent<MeshComponent>();
-
-	    meshComponent->SetMesh(AssetRegistry::Get().GetAsset<MeshAsset>("Unit_Plane"));
-	    meshComponent->SetMaterial(0, AssetRegistry::Get().GetAsset<MaterialAsset>("BaseMaterial"));
-
-	    object->GetTransform().SetScale({ 2000, 2000, 2000 });
-
-		GameWorld::Get().AddActor(std::move(object));
-	}
-
-	{
-	    std::unique_ptr<Actor> object = std::make_unique<Actor>();
-
-		MeshComponent* meshComponent = object->AddComponent<MeshComponent>();
-
-	    meshComponent->SetMesh(AssetRegistry::Get().GetAsset<MeshAsset>("Unit_Cube"));
-	    meshComponent->SetMaterial(0, AssetRegistry::Get().GetAsset<MaterialAsset>("BaseMaterial"));
-
-	    object->GetTransform().Translate({ 0, 50, 0 });
-	    object->GetTransform().SetScale({ 100, 100, 100 });
-
-		GameWorld::Get().AddActor(std::move(object));
-	}
-
-	{
-	    std::unique_ptr<Actor> object = std::make_unique<Actor>();
-
-		MeshComponent* meshComponent = object->AddComponent<MeshComponent>();
-
-	    meshComponent->SetMesh(AssetRegistry::Get().GetAsset<MeshAsset>("Unit_Cube"));
-	    meshComponent->SetMaterial(0, AssetRegistry::Get().GetAsset<MaterialAsset>("BaseMaterial"));
-
-		// TODO: Inspect rotation with multiple axis
-	    object->GetTransform().SetEulerRotation({ 45.0f, 0.0f, 0.0f });
-	    object->GetTransform().Translate({ -200, 100, 400 });
-	    object->GetTransform().SetScale({ 100, 100, 100 });
-
-		GameWorld::Get().AddActor(std::move(object));
-	}
-
-	{
-		std::unique_ptr<Actor> object = std::make_unique<Actor>();
-
-		MeshComponent* meshComponent = object->AddComponent<MeshComponent>();
-
-		meshComponent->SetMesh(AssetRegistry::Get().GetAsset<MeshAsset>("Unit_Sphere"));
-		meshComponent->SetMaterial(0, AssetRegistry::Get().GetAsset<MaterialAsset>("BaseMaterial"));
-
-		object->GetTransform().Translate({ 0, 50, -200 });
-		object->GetTransform().SetScale({ 100, 100, 100 });
-
-		GameWorld::Get().AddActor(std::move(object));
-	}
-
-	{
-	    std::unique_ptr<Actor> object = std::make_unique<Actor>();
-
-	    object->GetTransform().Translate({ 200, 0, 0 });
-
-		MeshComponent* meshComponent = object->AddComponent<MeshComponent>();
-
-	    meshComponent->SetMesh(AssetRegistry::Get().GetAsset<MeshAsset>("SK_C_TGA_Bro"));
-	    meshComponent->SetMaterial(0, AssetRegistry::Get().GetAsset<MaterialAsset>("TGABroMaterial"));
-
-	    AnimationComponent* animationComponent = object->AddComponent<AnimationComponent>(meshComponent->GetSkeleton());
-
-	    AnimationEntry breathingAnimation =
-	    {
-	        .AnimationAsset = AssetRegistry::Get().GetAsset<AnimationAsset>("A_C_TGA_Bro_Idle_Breathing"),
-	        .ShouldLoop = true
-	    };
-	    AnimationEntry waveAnimation =
-	    {
-	        .AnimationAsset = AssetRegistry::Get().GetAsset<AnimationAsset>("A_C_TGA_Bro_Idle_Wave"),
-	        .ShouldLoop = false
-	    };
-	    AnimationEntry runAnimation =
-	    {
-	        .AnimationAsset = AssetRegistry::Get().GetAsset<AnimationAsset>("A_C_TGA_Bro_Run"),
-	        .ShouldLoop = true
-	    };
-	    AnimationEntry walkAnimation =
-	    {
-	        .AnimationAsset = AssetRegistry::Get().GetAsset<AnimationAsset>("A_C_TGA_Bro_Walk"),
-	        .ShouldLoop = true
-	    };
-
-	    animationComponent->AddAnimation("Breathing", breathingAnimation);
-	    animationComponent->AddAnimation("Wave", waveAnimation);
-	    animationComponent->AddAnimation("Run", runAnimation);
-	    animationComponent->AddAnimation("Walk", walkAnimation);
-	    
-		BoxColliderComponent* boxColliderComponent = object->AddComponent<BoxColliderComponent>();
-
-		boxColliderComponent->SetSize({ 64, 128, 64 });
-		boxColliderComponent->SetOffset({ 0, 64, 0 });
-
-	    myAnimatedObject = GameWorld::Get().AddActor(std::move(object));
-	}
-
-	{
-	    std::unique_ptr<Actor> object = std::make_unique<Actor>();
-
-	    DirectionalLightComponent* directionalLight = object->AddComponent<DirectionalLightComponent>();
-
-	    directionalLight->SetColor({ 1.0f, 0.95f, 0.85f });
-	    directionalLight->SetIntensity(1.0f);
-	    directionalLight->SetDirection({ 0.0f, -0.75f, 1.0f });
-
-	    myDirectionLightObject = GameWorld::Get().AddActor(std::move(object));
-	}
-
-	{
-	    std::unique_ptr<Actor> object = std::make_unique<Actor>();
-
-	    object->Disable();
-
-	    PointLightComponent* pointLight = object->AddComponent<PointLightComponent>();
-
-	    pointLight->SetPosition({ -200.0f, 150.0f, 0.0f });
-		pointLight->SetColor({ 1.0f, 0.95f, 0.85f });
-	    pointLight->SetIntensity(750000.0f);
-	    pointLight->SetRadius(500.0f);
-	    pointLight->SetShadowMapSize({ 512, 512 });
-
-	    myPointLightObject = GameWorld::Get().AddActor(std::move(object));
-	}
-
-	{
-	    std::unique_ptr<Actor> object = std::make_unique<Actor>();
-
-	    object->Disable();
-
-	    SpotLightComponent* spotLight = object->AddComponent<SpotLightComponent>();
-
-	    spotLight->SetPosition({ 0.0f, 50.0f, -200.0f });
-		spotLight->SetColor({ 1.0f, 0.95f, 0.85f });
-	    spotLight->SetIntensity(1000000.0f);
-	    spotLight->SetRadius(1000.0f);
-	    spotLight->SetDirection({ 0.0f, 0.0f, 1.0f });
-	    spotLight->SetCone(0.0f, 0.7f);
-	    spotLight->SetShadowMapSize({ 512, 512 });
-
-	    mySpotLightObject = GameWorld::Get().AddActor(std::move(object));
-	}
-
-	/*{
-		std::unique_ptr<Actor> object = std::make_unique<Actor>();
-
-		TextComponent* text = object->AddComponent<TextComponent>();
-
-		text->SetFont(AssetRegistry::Get().GetAsset<FontAsset>("CascadiaCode_M"));
-		text->SetText("SHREK");
-		text->SetSize(36);
-
-		GameWorld::Get().AddActor(std::move(object));
-	}*/
-
-	/*{
-		std::unique_ptr<Actor> object = std::make_unique<Actor>();
-
-		SpriteComponent* sprite = object->AddComponent<SpriteComponent>();
-
-		sprite->SetSprite(AssetRegistry::Get().GetAsset<SpriteAsset>("ShrekSprite"));
-		sprite->SetSize({ 512, 512 });
-		sprite->SetPosition({ 512, 512 });
-
-		GameWorld::Get().AddActor(std::move(object));
-	}*/
-}
-
-void Game::UpdateScene(float aDeltaTime)
-{
-	GameWorld::Get().Update(aDeltaTime);
 	GameCamera::GetInstance().Update(aDeltaTime);
 
-	// TODO: TEMP
-	if (Application.InputManager.IsKeyPressed(KeyCode::D1))
-	{
-		myAnimatedObject->GetComponent<AnimationComponent>()->PlayAnimation("Walk", true);
-		myAnimatedObject->GetComponent<AnimationComponent>()->PlayAnimation("Wave", false);
-	}
-	if (Application.InputManager.IsKeyPressed(KeyCode::D2))
-	{
-		myAnimatedObject->GetComponent<AnimationComponent>()->PlayAnimation("Run", true);
-	}
-	if (Application.InputManager.IsKeyPressed(KeyCode::D3))
-	{
-		myAnimatedObject->GetComponent<AnimationComponent>()->PlayAnimation("Breathing", true);
-	}
-	if (Application.InputManager.IsKeyPressed(KeyCode::D4))
-	{
-		if (myDirectionLightObject->GetIsEnabled())
-		{
-			myDirectionLightObject->Disable();
-		}
-		else
-		{
-			myDirectionLightObject->Enable();
-		}
-	}
-	if (Application.InputManager.IsKeyPressed(KeyCode::D5))
-	{
-		if (myPointLightObject->GetIsEnabled())
-		{
-			myPointLightObject->Disable();
-		}
-		else
-		{
-			myPointLightObject->Enable();
-		}
-	}
-	if (Application.InputManager.IsKeyPressed(KeyCode::D6))
-	{
-		if (mySpotLightObject->GetIsEnabled())
-		{
-			mySpotLightObject->Disable();
-		}
-		else
-		{
-			mySpotLightObject->Enable();
-		}
-	}
-
-	if (Application.InputManager.IsKeyPressed(KeyCode::F5))
-	{
-		int nextDebugRenderMode = static_cast<int>(GraphicsEngine::Get().GetSettings().DebugRenderMode) - 1;
-
-		if (nextDebugRenderMode < 0)
-		{
-			nextDebugRenderMode = static_cast<int>(DebugRenderMode::MAX) - 1;
-		}
-
-		GraphicsEngine::Get().SetDebugRenderMode(static_cast<DebugRenderMode>(nextDebugRenderMode));
-	}
-	if (Application.InputManager.IsKeyPressed(KeyCode::F6))
-	{
-		int nextDebugRenderMode = static_cast<int>(GraphicsEngine::Get().GetSettings().DebugRenderMode) + 1;
-
-		if (nextDebugRenderMode >= static_cast<int>(DebugRenderMode::MAX))
-		{
-			nextDebugRenderMode = 0;
-		}
-
-		GraphicsEngine::Get().SetDebugRenderMode(static_cast<DebugRenderMode>(nextDebugRenderMode));
-	}
-	if (Application.InputManager.IsKeyPressed(KeyCode::F7))
-	{
-		int nextToneMappingOperator = static_cast<int>(GraphicsEngine::Get().GetSettings().ToneMapper) + 1;
-
-		if (nextToneMappingOperator >= static_cast<int>(ToneMapper::MAX))
-		{
-			nextToneMappingOperator = 0;
-		}
-
-		GraphicsEngine::Get().SetTonemap(static_cast<ToneMapper>(nextToneMappingOperator));
-	}
-	if (Application.InputManager.IsKeyPressed(KeyCode::F8))
-	{
-		GraphicsEngine::Get().SetBloomEnabled(!GraphicsEngine::Get().GetSettings().BloomEnabled);
-	}
-
-	if (Application.InputManager.IsKeyReleased(KeyCode::Escape))
-	{
-		PostQuitMessage(0);
-	}
+	myStateMachine->Update(aDeltaTime);
 }
 
-void Game::RenderScene()
+void Game::RenderScene() const
 {
-	GameWorld::Get().Render();
+	myStateMachine->Render();
 }
 
-void Game::DrawDebugSettings([[maybe_unused]] const FrameStats& aFrameStats)
+void Game::DrawImGuiLayer([[maybe_unused]] const FrameStats& aFrameStats)
 {
 #ifdef IMGUI_ENABLE
 	ImGui::PushFont(nullptr, 18.0f);

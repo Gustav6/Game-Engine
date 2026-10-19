@@ -47,7 +47,7 @@
 #include <memory>
 
 class GraphicsCommandList;
-class Actor;
+class GameStateMachine;
 
 struct FrameStats;
 
@@ -65,22 +65,17 @@ public:
 	int Run();
 
 private:
-	void LoadScene();
-	void UpdateScene(float aDeltaTime);
-	void RenderScene();
+	void UpdateScene(float aDeltaTime) const;
+	void RenderScene() const;
 
-	void DrawDebugSettings(const FrameStats& aFrameStats);
+	void DrawImGuiLayer(const FrameStats& aFrameStats);
 
 	std::unique_ptr<GraphicsCommandList> myGraphicsCommandList;
+	std::unique_ptr<GameStateMachine> myStateMachine;
 
 	HWND myMainWindowHandle = nullptr;
 
 	bool myIsRunning = false;
-
-	Actor* myAnimatedObject = nullptr;
-	Actor* myDirectionLightObject = nullptr;
-	Actor* myPointLightObject = nullptr;
-	Actor* mySpotLightObject = nullptr;
 
 #ifdef IMGUI_ENABLE
 	std::unique_ptr<ImGuiLayer> myImGuiLayer;

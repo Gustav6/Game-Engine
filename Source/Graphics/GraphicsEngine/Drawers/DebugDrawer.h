@@ -12,16 +12,16 @@ class Mesh;
 
 struct WireMeshDrawCall
 {
-    const Mesh* Mesh = nullptr;
-    CommonUtilities::Matrix4x4f Transform;
-    CommonUtilities::Vector4f Color = { 1.f, 1.f, 1.f, 1.f };
-}; 
+	const Mesh* Mesh = nullptr;
+	CommonUtilities::Matrix4x4f Transform;
+	CommonUtilities::Vector4f Color = { 1.f, 1.f, 1.f, 1.f };
+};
 
 struct LineDrawCall
 {
-    CommonUtilities::Vector3f Start;
-    CommonUtilities::Vector3f End;
-    CommonUtilities::Vector4f Color = { 1.f, 1.f, 1.f, 1.f };
+	CommonUtilities::Vector3f Start;
+	CommonUtilities::Vector3f End;
+	CommonUtilities::Vector4f Color = { 1.f, 1.f, 1.f, 1.f };
 };
 
 class DebugDrawer
@@ -29,8 +29,20 @@ class DebugDrawer
 public:
     static DebugDrawer& Get();
 
-    void Submit(const WireMeshDrawCall& aDrawCall);
-    void Submit(const LineDrawCall& aDrawCall);
+    void DrawWireframe(
+		const CommonUtilities::Matrix4x4f& aTransform,
+		const Mesh* aMesh = nullptr,
+		const CommonUtilities::Vector4f& aColor = { 1.f, 1.f, 1.f, 1.f });
+
+    void DrawLine(
+    	const CommonUtilities::Vector3f& aStart,
+		const CommonUtilities::Vector3f& aEnd,
+		const CommonUtilities::Vector4f& aColor = { 1.f, 1.f, 1.f, 1.f });
+
+	void DrawCross(
+		float aExtent,
+		const CommonUtilities::Vector3f& aPosition,
+		const CommonUtilities::Vector4f& aColor = { 1.f, 1.f, 1.f, 1.f });
 
 	void DrawBox(
 		const CommonUtilities::Vector3f& aMin,
@@ -49,7 +61,7 @@ public:
 		const CommonUtilities::Vector3f& aDirection,
 		const CommonUtilities::Vector4f& aColor = { 1.f, 1.f, 1.f, 1.f });
 
-    const std::vector<WireMeshDrawCall>& GetMeshDrawCalls() const;
+    const std::vector<WireMeshDrawCall>& GetWireframeDrawCalls() const;
     const std::vector<LineDrawCall>& GetLineDrawCalls() const;
 
     void Clear();

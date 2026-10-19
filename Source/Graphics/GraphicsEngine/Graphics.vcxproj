@@ -104,14 +104,11 @@
     <ProjectReference>
     </ProjectReference>
     <PostBuildEvent>
-      <Command>set "CONTENTROOT=$(SolutionDir)Content"
-set "SHADERSRC=$(ProjectDir)Shaders"
-set "SHADERDEST=%CONTENTROOT%\Shaders"
-
-IF NOT EXIST "%CONTENTROOT%" ( mkdir "%CONTENTROOT%" )
+      <Command>set "SHADERSRC=$(ProjectDir)Shaders"
+set "SHADERDEST=$(SolutionDir)Shaders"
 IF NOT EXIST "%SHADERDEST%" ( mkdir "%SHADERDEST%" )
 xcopy /E /I /R /Y /D "%SHADERSRC%" "%SHADERDEST%"</Command>
-      <Message>Copying Shaders to Content Dir</Message>
+      <Message>Copying Shaders</Message>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -149,14 +146,11 @@ xcopy /E /I /R /Y /D "%SHADERSRC%" "%SHADERDEST%"</Command>
     <ProjectReference>
     </ProjectReference>
     <PostBuildEvent>
-      <Command>set "CONTENTROOT=$(SolutionDir)Content"
-set "SHADERSRC=$(ProjectDir)Shaders"
-set "SHADERDEST=%CONTENTROOT%\Shaders"
-
-IF NOT EXIST "%CONTENTROOT%" ( mkdir "%CONTENTROOT%" )
+      <Command>set "SHADERSRC=$(ProjectDir)Shaders"
+set "SHADERDEST=$(SolutionDir)Shaders"
 IF NOT EXIST "%SHADERDEST%" ( mkdir "%SHADERDEST%" )
 xcopy /E /I /R /Y /D "%SHADERSRC%" "%SHADERDEST%"</Command>
-      <Message>Copying Shaders to Content Dir</Message>
+      <Message>Copying Shaders</Message>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Retail|x64'">
@@ -192,14 +186,11 @@ xcopy /E /I /R /Y /D "%SHADERSRC%" "%SHADERDEST%"</Command>
     <ProjectReference>
     </ProjectReference>
     <PostBuildEvent>
-      <Command>set "CONTENTROOT=$(SolutionDir)Content"
-set "SHADERSRC=$(ProjectDir)Shaders"
-set "SHADERDEST=%CONTENTROOT%\Shaders"
-
-IF NOT EXIST "%CONTENTROOT%" ( mkdir "%CONTENTROOT%" )
+      <Command>set "SHADERSRC=$(ProjectDir)Shaders"
+set "SHADERDEST=$(SolutionDir)Shaders"
 IF NOT EXIST "%SHADERDEST%" ( mkdir "%SHADERDEST%" )
 xcopy /E /I /R /Y /D "%SHADERSRC%" "%SHADERDEST%"</Command>
-      <Message>Copying Shaders to Content Dir</Message>
+      <Message>Copying Shaders</Message>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -519,6 +510,9 @@ xcopy /E /I /R /Y /D "%SHADERSRC%" "%SHADERDEST%"</Command>
     <None Include="Shaders\Include\PostProcess\Tonemap.hlsli" />
     <None Include="Shaders\Include\Shadows\PoissonDisks.hlsli" />
     <None Include="Shaders\Include\Shadows\Shadow.hlsli" />
+    <None Include="Shaders\Include\SurfaceLayout\SurfaceLayout.hlsli" />
+    <None Include="Shaders\Include\SurfaceLayout\SurfacePBR.hlsli" />
+    <None Include="Shaders\Include\SurfaceLayout\SurfaceSplat.hlsli" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Utilities\CommonUtilities\CommonUtilities.vcxproj">

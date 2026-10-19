@@ -13,24 +13,49 @@ DebugDrawer& DebugDrawer::Get()
 	return myInstance;
 }
 
-void DebugDrawer::Submit(const WireMeshDrawCall& aDrawCall)
+void DebugDrawer::DrawWireframe(
+	const CommonUtilities::Matrix4x4f& aTransform,
+	const Mesh* aMesh,
+	const CommonUtilities::Vector4f& aColor)
 {
-	if (aDrawCall.Mesh == nullptr)
+	if (aMesh == nullptr)
 	{
 		SPDLOG_ERROR("Mesh was submitted with invalid data!");
 		return;
 	}
 
-	myWireDrawCalls.emplace_back(aDrawCall);
+	myWireDrawCalls.emplace_back(aMesh, aTransform, aColor);
 }
-void DebugDrawer::Submit(const LineDrawCall& aDrawCall)
+void DebugDrawer::DrawLine(
+	const CommonUtilities::Vector3f& aStart,
+	const CommonUtilities::Vector3f& aEnd,
+	const CommonUtilities::Vector4f& aColor)
 {
-	if (aDrawCall.Start == aDrawCall.End)
+	if (aStart == aEnd)
 	{
 		return;
 	}
 
-	myLineDrawCalls.emplace_back(aDrawCall);
+	myLineDrawCalls.emplace_back(aStart, aEnd, aColor);
+}
+
+void DebugDrawer::DrawCross(
+	float aExtent, 
+	const CommonUtilities::Vector3f& aPosition,
+	const CommonUtilities::Vector4f& aColor)
+{
+	if (aExtent <= 0.0f)
+	{
+		return;
+	}
+
+	const CommonUtilities::Vector3f x = { aExtent, 0.0f, 0.0f };
+	const CommonUtilities::Vector3f y = { 0.0f, aExtent, 0.0f };
+	const CommonUtilities::Vector3f z = { 0.0f, 0.0f, aExtent };
+
+	myLineDrawCalls.emplace_back(aPosition - x, aPosition + x, aColor);
+	myLineDrawCalls.emplace_back(aPosition - y, aPosition + y, aColor);
+	myLineDrawCalls.emplace_back(aPosition - z, aPosition + z, aColor);
 }
 
 void DebugDrawer::DrawBox( 
@@ -115,14 +140,55 @@ void DebugDrawer::DrawCone(
 	const CommonUtilities::Vector3f& aDirection, 
 	const CommonUtilities::Vector4f& aColor)
 {
-	aRadius;
-	aHeight;
-	aPosition;
-	aDirection;
-	aColor;
+	constexpr int amountOfSegments = 24;
+	constexpr float twoPi = 2.0f * CommonUtilities::Math::PI<float>;
+	constexpr int spokeEvery = 3;
+
+	if (aRadius <= 0.0f || aHeight <= 0.0f)
+	{
+		return;
+	}
+
+	if (aDirection.LengthSqr() < 0.000001f)
+	{
+		return;
+	}
+
+	const CommonUtilities::Vector3f forward = aDirection.GetNormalized();
+
+	CommonUtilities::Vector3f temp = { 0.0f, 1.0f, 0.0f };
+
+	if (std::abs(CommonUtilities::Vector3f::Dot(forward, temp)) > 0.99f)
+	{
+		temp = { 1.0f, 0.0f, 0.0f };
+	}
+
+	const CommonUtilities::Vector3f right = CommonUtilities::Vector3f::Cross(temp, forward).GetNormalized();
+	const CommonUtilities::Vector3f up = CommonUtilities::Vector3f::Cross(forward, right);
+
+	const CommonUtilities::Vector3f apex = aPosition;
+	const CommonUtilities::Vector3f baseCenter = aPosition + forward * aHeight;
+
+	CommonUtilities::Vector3f previous = baseCenter + right * aRadius;
+
+	for (int i = 1; i <= amountOfSegments; ++i)
+	{
+		const float angle = twoPi * static_cast<float>(i) / static_cast<float>(amountOfSegments);
+
+		const CommonUtilities::Vector3f current = baseCenter + right * (std::cos(angle) * aRadius) + up * (std::sin(angle) * aRadius);
+
+		myLineDrawCalls.emplace_back(previous, current, aColor);
+
+		if (i % spokeEvery == 0)
+		{
+			myLineDrawCalls.emplace_back(apex, current, aColor);
+		}
+
+		previous = current;
+	}
 }
 
-const std::vector<WireMeshDrawCall>& DebugDrawer::GetMeshDrawCalls() const
+const std::vector<WireMeshDrawCall>& DebugDrawer::GetWireframeDrawCalls() const
 {
 	return myWireDrawCalls;
 }

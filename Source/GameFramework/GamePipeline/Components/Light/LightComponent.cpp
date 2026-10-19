@@ -60,7 +60,7 @@ void LightComponent::SetShadowMapSize(const CommonUtilities::Vector2ui& aSize)
 	{
 		myData.ShadowMapSize = aSize;
 
-		if (myData.ShadowMapSize.x == myData.ShadowMapSize.y == 0)
+		if (myData.ShadowMapSize.x == 0 || myData.ShadowMapSize.y == 0)
 		{
 			myShadowMap = nullptr;
 			return;

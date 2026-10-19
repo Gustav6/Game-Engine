@@ -47,26 +47,47 @@ bool MaterialFactory::Create(
 		return false;
 	}
 
+	std::vector<std::pair<std::string, std::string>> materialMacros;
+
+	switch (aDescription.Layout)
+	{
+		case MaterialLayout::PBR:
+		{
+			materialMacros.emplace_back("MATERIAL_LAYOUT_PBR", "1");
+			break;
+		}
+		case MaterialLayout::Splat:
+		{
+			materialMacros.emplace_back("MATERIAL_LAYOUT_SPLAT", "1");
+			break;
+		}
+		default:
+		{
+			SPDLOG_ERROR("Material {} has an invalid Layout!", aDescription.Name);
+			return false;
+		}
+	}
+
+	std::filesystem::path materialProgramPath;
+
+	if (aDescription.MaterialShaderCode.empty())
+	{
+		materialProgramPath = aShaderRoot / "Include" / "Core" / "Material.hlsli";
+	}
+	else
+	{
+		materialProgramPath = aDescription.MaterialShaderCode;
+	}
+
 	{
 		std::filesystem::path shaderProgramPath;
 
 		shaderProgramPath = aShaderRegistry.GetDomainShader(aDescription.Domain);
 
 		const std::filesystem::path shaderRoot = aShaderRoot / "Include";
-		std::filesystem::path materialProgramPath;
-
-		if (aDescription.MaterialShaderCode.empty())
-		{
-			materialProgramPath = aShaderRoot / "Include" / "Core" / "Material.hlsli";
-		}
-		else
-		{
-			materialProgramPath = aDescription.MaterialShaderCode;
-		}
-
 		MaterialShaderIncludeHandler handler(shaderRoot, shaderProgramPath, materialProgramPath);
 
-		if (!aRHI.CompileShader(ShaderType::VertexShader, shaderProgramPath, &handler, true, materialVS))
+		if (!aRHI.CompileShader(ShaderType::VertexShader, shaderProgramPath, &handler, true, materialVS, materialMacros))
 		{
 			return false;
 		}
@@ -75,47 +96,47 @@ bool MaterialFactory::Create(
 	{
 		std::filesystem::path shaderProgramPath;
 
-		if (aDescription.ShadingModel == ShadingModel::Unlit)
+		switch (aDescription.ShadingModel)
 		{
-			shaderProgramPath = aShaderRegistry.GetShadingModelShader(aDescription.ShadingModel);
-		}
-		else
-		{
-			switch (aDescription.BlendMode)
+			case ShadingModel::Unlit:
 			{
-				case MaterialBlendMode::Opaque:
+				shaderProgramPath = aShaderRegistry.GetShadingModelShader(aDescription.ShadingModel);
+				break;
+			}
+			case ShadingModel::Lit:
+			{
+				switch (aDescription.BlendMode)
 				{
-					shaderProgramPath = aShaderRoot / "Deferred" / "GBuffer_PS.hlsl";
-					break;
+					case MaterialBlendMode::Opaque:
+					{
+						shaderProgramPath = aShaderRoot / "Deferred" / "GBuffer_PS.hlsl";
+						break;
+					}
+					case MaterialBlendMode::Alpha:
+					{
+						shaderProgramPath = aShaderRegistry.GetShadingModelShader(aDescription.ShadingModel);
+						break;
+					}
+					default:
+					{
+						// TODO: Log error
+						break;
+					}
 				}
-				case MaterialBlendMode::Alpha:
-				{
-					shaderProgramPath = aShaderRegistry.GetShadingModelShader(aDescription.ShadingModel);
-					break;
-				}
-				default:
-				{
-					// TODO: Log error
-					break;
-				}
+
+				break;
+			}
+			default:
+			{
+				// TODO: Log error
+				break;
 			}
 		}
 
 		const std::filesystem::path shaderRoot = aShaderRoot / "Include";
-		std::filesystem::path materialProgramPath;
-
-		if (aDescription.MaterialShaderCode.empty())
-		{
-			materialProgramPath = aShaderRoot / "Include" / "Core" / "Material.hlsli";
-		}
-		else
-		{
-			materialProgramPath = aDescription.MaterialShaderCode;
-		}
-
 		MaterialShaderIncludeHandler handler(shaderRoot, shaderProgramPath, materialProgramPath);
 
-		if (!aRHI.CompileShader(ShaderType::PixelShader, shaderProgramPath, &handler, true, materialPS))
+		if (!aRHI.CompileShader(ShaderType::PixelShader, shaderProgramPath, &handler, true, materialPS, materialMacros))
 		{
 			return false;
 		}

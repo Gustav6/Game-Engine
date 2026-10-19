@@ -24,6 +24,7 @@ bool BuiltinAssets::Initialize(GraphicsEngine& aGraphicsEngine, RenderHardwareIn
 		defaultMatDesc.Domain = MaterialDomain::Surface;
 		defaultMatDesc.ShadingModel = ShadingModel::Unlit;
 		defaultMatDesc.BlendMode = MaterialBlendMode::Opaque;
+		defaultMatDesc.Layout = MaterialLayout::PBR;
 
 		if (!aGraphicsEngine.CreateMaterial(defaultMatDesc, *myDefaultMaterial))
 		{
@@ -77,4 +78,19 @@ bool BuiltinAssets::Initialize(GraphicsEngine& aGraphicsEngine, RenderHardwareIn
 const Material& BuiltinAssets::GetDefaultMaterial() const
 {
 	return *myDefaultMaterial;
+}
+
+const Texture& BuiltinAssets::GetDefaultAlbedoTexture() const
+{
+	return *myDefaultAlbedoTexture;
+}
+
+const Texture& BuiltinAssets::GetDefaultNormalTexture() const
+{
+	return *myDefaultNormalTexture;
+}
+
+const Texture& BuiltinAssets::GetDefaultEmissionTexture() const
+{
+	return *myDefaultEmissionTexture;
 }

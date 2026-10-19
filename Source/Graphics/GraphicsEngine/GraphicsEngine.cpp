@@ -73,16 +73,10 @@ GraphicsEngine& GraphicsEngine::Get()
 	return myInstance;
 }
 
-bool GraphicsEngine::Initialize(HWND aWindowHandle, const std::filesystem::path& aContentRoot)
+bool GraphicsEngine::Initialize(HWND aWindowHandle, const std::filesystem::path& aShaderRoot)
 {
-	if (!std::filesystem::exists(aContentRoot))
-	{
-		SPDLOG_CRITICAL("Content root dir is not a valid path! Provided root was {}.", aContentRoot.string());
-		return false;
-	}
+	myShaderRoot = std::filesystem::absolute(aShaderRoot);
 
-	myShaderRoot = aContentRoot / "Shaders";
-	
 	if (!std::filesystem::exists(myShaderRoot))
 	{
 		SPDLOG_CRITICAL("Shader root dir is not a valid path! Provided root was {}.", myShaderRoot.string());

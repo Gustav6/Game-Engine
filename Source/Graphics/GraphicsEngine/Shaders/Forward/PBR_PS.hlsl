@@ -1,14 +1,14 @@
 #include "../Include/Core/Common.hlsli"
 #include "../Include/Core/Material.hlsli"
-#include "../Include/Core/Samplers.hlsli"
 #include "../Include/Shadows/Shadow.hlsli"
 #include "../Include/Lighting/PBRFunctions.hlsli"
 #include "../Include/Lighting/Light.hlsli"
 
-Texture2D AlbedoTexture : register(t0);
-Texture2D NormalTexture : register(t1);
-Texture2D MaterialTexture : register(t2);
-Texture2D EmissionTexture : register(t3);
+#ifdef MATERIAL_LAYOUT_SPLAT
+#include "../Include/SurfaceLayout/SurfaceSplat.hlsli"
+#else
+#include "../Include/SurfaceLayout/SurfacePBR.hlsli"
+#endif
 
 float4 main(VStoPS aPixel) : SV_TARGET
 {
@@ -22,74 +22,60 @@ float4 main(VStoPS aPixel) : SV_TARGET
     parameters.Metalness = 0;
     
     Material_Pixel(parameters);
+    
+#ifdef MATERIAL_LAYOUT_SPLAT
+    SurfaceData surface = EvaluateSurface(aPixel, aPixel.UV0);
+#else
+    SurfaceData surface = EvaluateSurface(aPixel, aPixel.UV0);
+#endif
 
-    const float4 albedoMap = AlbedoTexture.Sample(TrilinearWrap, parameters.UV0);
-    const float4 normalMap = NormalTexture.Sample(TrilinearWrap, parameters.UV0);
-    const float4 materialMap = MaterialTexture.Sample(TrilinearWrap, parameters.UV0);
-    const float4 emissionMap = EmissionTexture.Sample(TrilinearWrap, parameters.UV0);
-
-    if (albedoMap.a < 0.05f)
+    if (surface.Albedo.a < 0.05f)
     {
         discard;
     }
     
-    float2 unpackedNormal = normalMap.xy * 2.0 - 1.0;
-    
-    float3 normal = normalize(float3(unpackedNormal, sqrt(saturate(1.0 - dot(unpackedNormal, unpackedNormal)))));
-
-    const float3x3 TBN = float3x3(
-        normalize(aPixel.Tangent),
-        normalize(aPixel.BiNormal),
-        normalize(aPixel.Normal)
-    );
-
-    normal = normalize(mul(normal, TBN));
-    
-    float3 emission = emissionMap.r * albedoMap.rgb * 50;
-    
-    parameters.PixelColor = albedoMap;
-    parameters.WorldPosition = aPixel.WorldPosition;
-    parameters.PixelNormal = normal;
-    parameters.UV0 = aPixel.UV0;
-    parameters.Occlusion = materialMap.r;
-    parameters.Roughness = materialMap.g;
-    parameters.Metalness = materialMap.b;
-    
-    Material_Pixel(parameters);
-    
     switch (FB_TypeOfRenderPass)
     {
         case 0:
+            parameters.PixelColor = surface.Albedo;
+            parameters.WorldPosition = aPixel.WorldPosition;
+            parameters.PixelNormal = surface.WorldNormal;
+            parameters.UV0 = aPixel.UV0;
+            parameters.Occlusion = surface.Occlusion;
+            parameters.Roughness = surface.Roughness;
+            parameters.Metalness = surface.Metalness;
+    
+            Material_Pixel(parameters);
             break;
         case 1: // sRGB pass
-            return float4(albedoMap.r, albedoMap.g, albedoMap.b, 1.0f);
-        case 2: // Rougness pass
-            return float4(materialMap.g, materialMap.g, materialMap.g, 1.0f);
+            return float4(surface.Albedo.rgb, 1.0f);
+        case 2: // Roughness pass
+            return float4(surface.Roughness, surface.Roughness, surface.Roughness, 1.0f);
         case 3: // Metalness pass
-            return float4(materialMap.b, materialMap.b, materialMap.b, 1.0f);
+            return float4(surface.Metalness, surface.Metalness, surface.Metalness, 1.0f);
         case 4: // Ambient Occlusion texture pass
-            return float4(materialMap.r, materialMap.r, materialMap.r, 1.0f);
+            return float4(surface.Occlusion, surface.Occlusion, surface.Occlusion, 1.0f);
         case 5: // Ambient Occlusion screen space pass
             return float4(1.0f, 1.0f, 1.0f, 1.0f); // TODO : FIX
         case 6: // Normals tangent space pass
-            return float4(normalMap.xy, 0.0f, 1.0f);
+            return float4(surface.NormalMapXY, 0.0f, 1.0f);
         case 7: // Normals world space pass
-            return float4(normal, 1.0f);
+            return float4(surface.WorldNormal, 1.0f);
         case 8: // Shadows pass
-            parameters.PixelColor = float4(0.5f, 0.5f, 0.5f, 1.0f);
-            parameters.Roughness = 1.0f;
+            surface.Albedo = float4(0.5f, 0.5f, 0.5f, 1.0f);
+            surface.Roughness = 1.0f;
             break;
         default:
             break;
     }
 
-    const float3 specularColor = lerp((float3) 0.04f, parameters.PixelColor.rgb, parameters.Metalness);
-    const float3 diffuseColor = lerp((float3) 0.00f, parameters.PixelColor.rgb, 1 - parameters.Metalness);
-    const float3 pixelView = normalize(FB_CameraPosition - parameters.WorldPosition.xyz);
+    const float3 specularColor = lerp((float3) 0.04f, surface.Albedo.rgb, surface.Metalness);
+    const float3 diffuseColor = lerp((float3) 0.00f, surface.Albedo.rgb, 1 - surface.Metalness);
+    const float3 pixelView = normalize(FB_CameraPosition - aPixel.WorldPosition.xyz);
     
     const int envNumMips = GetNumMips(EnvCubeTexture) - 1;
     
-    float3 radiance = CalculateAmbientContribution(parameters.PixelNormal, pixelView, specularColor, diffuseColor, envNumMips, parameters.Roughness, parameters.Occlusion);
+    float3 radiance = CalculateAmbientContribution(surface.WorldNormal, pixelView, specularColor, diffuseColor, envNumMips, surface.Roughness, surface.Occlusion);
     
     for (uint l = 0; l < LB_NumActiveLights; ++l)
     {
@@ -124,16 +110,16 @@ float4 main(VStoPS aPixel) : SV_TARGET
                 
                 float3 lightContribution = CalculateDirectionalLightContribution(
                     light,
-                    parameters.PixelNormal,
+                    surface.WorldNormal,
                     pixelView,
                     specularColor,
                     diffuseColor,
-                    parameters.Roughness
+                    surface.Roughness
                 );
                 
                 float shadowFactor = CalculateDirectionalLightShadowFactor(
                     cascadeIndex,
-                    parameters.WorldPosition
+                    aPixel.WorldPosition
                 );
                 
                 radiance += lightContribution * shadowFactor;
@@ -144,12 +130,12 @@ float4 main(VStoPS aPixel) : SV_TARGET
             {
                 float3 lightContribution = CalculatePointLightContribution(
                     light,
-                    parameters.PixelNormal,
-                    parameters.WorldPosition.xyz,
+                    surface.WorldNormal,
+                    aPixel.WorldPosition.xyz,
                     pixelView,
                     specularColor,
                     diffuseColor,
-                    parameters.Roughness
+                    surface.Roughness
                 );
                 
                 float shadowFactor = CalculatePointLightShadowFactor(
@@ -166,19 +152,19 @@ float4 main(VStoPS aPixel) : SV_TARGET
             {
                 float3 lightContribution = CalculateSpotLightContribution(
                     light,
-                    parameters.PixelNormal,
-                    parameters.WorldPosition.xyz,
+                    surface.WorldNormal,
+                    aPixel.WorldPosition.xyz,
                     pixelView,
                     specularColor,
                     diffuseColor,
-                    parameters.Roughness
+                    surface.Roughness
                 );
                 
                 float shadowFactor = CalculateSpotLightShadowFactor(
                     light,
                     light.ShadowIndex,
-                    parameters.WorldPosition,
-                    parameters.PixelNormal
+                    aPixel.WorldPosition,
+                    surface.WorldNormal
                 );
                
                 radiance += lightContribution * shadowFactor;
@@ -190,7 +176,7 @@ float4 main(VStoPS aPixel) : SV_TARGET
         }
     }
     
-    radiance += emission;
+    radiance += surface.Emission;
    
-    return float4(radiance, parameters.PixelColor.a);
+    return float4(radiance, surface.Albedo.a);
 }

@@ -109,7 +109,7 @@ void DebugRenderPass::Execute(
 
 void DebugRenderPass::RenderWireMeshes(GraphicsCommandList& inoutCommandList, RenderContext& aContext)
 {
-	const std::vector<WireMeshDrawCall>& wireCalls = DebugDrawer::Get().GetMeshDrawCalls();
+	const std::vector<WireMeshDrawCall>& wireCalls = DebugDrawer::Get().GetWireframeDrawCalls();
 
 	if (wireCalls.empty())
 	{

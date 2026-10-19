@@ -6,6 +6,8 @@
 #include <vector>
 #include <memory>
 
+#include "Ensure.h"
+
 #include "MaterialHelpers.h"
 
 class PipelineStateObject;
@@ -43,6 +45,22 @@ enum class MaterialBlendMode : uint8_t
 	Alpha
 };
 
+enum class MaterialLayout : uint8_t
+{
+	None,
+	PBR,
+	Splat
+};
+
+enum FeatureFlag_ : uint8_t
+{
+	FeatureFlag_None = 0,
+	FeatureFlag_ColorTint = 1u << 0,
+	FeatureFlag_Tiling = 1u << 1,
+};
+
+typedef uint8_t MaterialFeatureFlags;
+
 /**
  * Generic Interface for Material-like objects.
  * Provides a concrete method of communication with both Material and MaterialInstance
@@ -77,6 +95,8 @@ public:
 	virtual MaterialDomain GetDomain() const = 0;
 	virtual ShadingModel GetShadingModel() const = 0;
 	virtual MaterialBlendMode GetBlendMode() const = 0;
+	virtual MaterialLayout GetLayout() const = 0;
+	virtual MaterialFeatureFlags GetFeatures() const = 0;
 
 	virtual const PipelineStateObject& GetPSO() const = 0;
 

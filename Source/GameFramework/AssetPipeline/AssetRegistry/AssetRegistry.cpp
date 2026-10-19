@@ -27,14 +27,14 @@ bool AssetRegistry::Initialize(std::filesystem::path aWorkingDirectory)
 {
 	ensure(myAssets.empty());
 
-    myWorkingDirectory = std::filesystem::absolute(aWorkingDirectory);
-
     TGA::FBX::Importer::InitImporter();
 
     InitUnitAxes();
     InitUnitCube();
     InitUnitSphere();
 	InitUnitPlane();
+
+    myWorkingDirectory = std::filesystem::absolute(aWorkingDirectory);
 
     if (!std::filesystem::exists(myWorkingDirectory))
     {

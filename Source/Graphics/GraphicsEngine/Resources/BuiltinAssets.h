@@ -13,6 +13,9 @@ public:
     bool Initialize(GraphicsEngine& aGraphicsEngine, RenderHardwareInterface& aRHI);
 
     const Material& GetDefaultMaterial() const;
+    const Texture& GetDefaultAlbedoTexture() const;
+    const Texture& GetDefaultNormalTexture() const;
+    const Texture& GetDefaultEmissionTexture() const;
 
 private:
     std::unique_ptr<Material> myDefaultMaterial;

@@ -25,6 +25,8 @@ class GBuffer;
 struct ID3DInclude;
 class Shader;
 
+enum class MaterialLayout : uint8_t;
+
 class RenderHardwareInterface
 {
 public:
@@ -53,7 +55,7 @@ public:
 
 	void Present() const;
 
-	bool CompileShader(ShaderType aShaderType, const std::filesystem::path& aPath, ID3DInclude* aIncludeHandler, bool aCompileDebug, Shader& outShader) const;
+	bool CompileShader(ShaderType aShaderType, const std::filesystem::path& aPath, ID3DInclude* aIncludeHandler, bool aCompileDebug, Shader& outShader, const std::vector<std::pair<std::string, std::string>>& aAdditionalMacros = {}) const;
 
 	ID3D11Device* GetDevice() const;
 	ID3D11DeviceContext* GetContext() const;

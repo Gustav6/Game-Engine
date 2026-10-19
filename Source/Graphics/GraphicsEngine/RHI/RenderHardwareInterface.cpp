@@ -922,7 +922,7 @@ void RenderHardwareInterface::Present() const
 	}
 }
 
-bool RenderHardwareInterface::CompileShader(ShaderType aShaderType, const std::filesystem::path& aPath, ID3DInclude* aIncludeHandler, bool aCompileDebug, Shader& outShader) const
+bool RenderHardwareInterface::CompileShader(ShaderType aShaderType, const std::filesystem::path& aPath, ID3DInclude* aIncludeHandler, bool aCompileDebug, Shader& outShader, const std::vector<std::pair<std::string, std::string>>& aAdditionalMacros) const
 {
 	std::ifstream codeFile(aPath, std::ios::binary);
 	std::ostringstream codeFileStream;
@@ -964,6 +964,11 @@ bool RenderHardwareInterface::CompileShader(ShaderType aShaderType, const std::f
 	{
 		shaderMacros.emplace_back(D3D_SHADER_MACRO{ .Name = "_DEBUG", .Definition = "1" });
 		shaderFlags |= D3DCOMPILE_DEBUG;
+	}
+
+	for (const auto& [name, definition] : aAdditionalMacros)
+	{
+		shaderMacros.emplace_back(name.c_str(), definition.c_str());
 	}
 
 	shaderMacros.emplace_back(D3D_SHADER_MACRO{ .Name = nullptr, .Definition = nullptr });
