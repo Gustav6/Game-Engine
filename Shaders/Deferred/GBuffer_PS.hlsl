@@ -61,7 +61,7 @@ GBufferOutput main(VStoPS aPixel)
             result.Albedo = float4(surface.Occlusion, surface.Occlusion, surface.Occlusion, 1.0f);
             break;
         case 5: // Ambient Occlusion screen space pass
-            result.Albedo = float4(1.0f, 1.0f, 1.0f, 1.0f); // TODO : FIX
+            result.Albedo = float4(0, 0, 0, 1);
             break;
         case 6: // Normals tangent space pass
             result.Albedo = float4(surface.NormalMapXY, 0.0f, 1.0f);

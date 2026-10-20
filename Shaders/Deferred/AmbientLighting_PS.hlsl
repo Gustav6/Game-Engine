@@ -20,11 +20,6 @@ float4 main(FullscreenVertex aInput) : SV_TARGET
         discard;
     }
     
-    if (FB_TypeOfRenderPass != 0 && FB_TypeOfRenderPass != 8)
-    {
-        return albedoPixel;
-    }
-
     const float4 normalPixel = GBufferWorldNormalDepth.Sample(TrilinearClamp, aInput.UV);
     const float4 materialPixel = GBufferMaterial.Sample(TrilinearClamp, aInput.UV);
     const float4 worldPositionPixel = GBufferWorldPosition.Sample(TrilinearClamp, aInput.UV);
@@ -35,12 +30,22 @@ float4 main(FullscreenVertex aInput) : SV_TARGET
     if (FB_SSAOFlag)
     {
         const float ssaoPixel = SSAO_Texture.Sample(TrilinearClamp, aInput.UV);
-
+            
         occlusion = min(materialPixel.r, ssaoPixel);
     }
     else
     {
         occlusion = materialPixel.r;
+    }
+
+    if (FB_TypeOfRenderPass > 0 && FB_TypeOfRenderPass < 8)
+    {
+        if (FB_TypeOfRenderPass == 5)
+        {
+            return float4(occlusion, occlusion, occlusion, 1);
+        }
+        
+        return albedoPixel;
     }
 
     float roughness = materialPixel.g;

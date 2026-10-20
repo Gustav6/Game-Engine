@@ -22,6 +22,7 @@
 
 #include "GamePipeline/World/Actor.hpp"
 #include "GamePipeline/World/GameWorld.h"
+#include "GamePipeline/Components/Registry/ComponentRegistryManager.h"
 
 #include "GraphicsEngine/GraphicsEngine.hpp"
 #include "GraphicsEngine/Core/RenderEnums.h"
@@ -29,11 +30,11 @@
 #include "GraphicsEngine/Core/SceneCamera.h"
 #include "GraphicsEngine/RHI/GraphicsCommandList.h"
 
-#include "GamePipeline/Components/Registry/ComponentRegistryManager.h"
-
 #include "Managers/DebugSettingsManager.h"
+#include "Managers/WindowManager.h"
 
 #include "Camera/GameCamera.h"
+
 #include "GameState/GameStateMachine.h"
 #include "Json/JsonWrapper.h"
 
@@ -122,6 +123,8 @@ bool Game::Initialize(SIZE aWindowSize, WNDPROC aWindowProcess, LPCWSTR aWindowT
 		nullptr, nullptr, nullptr,
 		nullptr
 	);
+
+	WindowManager::Get().SetWindowHandle(myMainWindowHandle);
 
 	SPDLOG_INFO("Ready!");
 
@@ -265,92 +268,140 @@ void Game::DrawImGuiLayer([[maybe_unused]] const FrameStats& aFrameStats)
 {
 #ifdef IMGUI_ENABLE
 	ImGui::PushFont(nullptr, 18.0f);
-	ImGui::Begin("Debug");
 
-	if (ImGui::CollapsingHeader("Frame Info", ImGuiTreeNodeFlags_DefaultOpen))
+	if (myShowDebugWindow)
 	{
-		ImGui::Text("FPS: %.1f", ImGui::GetIO().Framerate);
-		ImGui::Text("DrawCallCount: %u", aFrameStats.DrawCallCount);
-		ImGui::Text("PipelineSwitches: %u", aFrameStats.PipelineSwitches);
-		ImGui::Text("VisibleObjects: %u", aFrameStats.VisibleObjects);
-		ImGui::Text("CulledObjects: %u", aFrameStats.CulledObjects);
-	}
+		ImGui::Begin("Debug", &myShowDebugWindow, ImGuiWindowFlags_AlwaysAutoResize);
 
-	if (ImGui::CollapsingHeader("Render Settings", ImGuiTreeNodeFlags_DefaultOpen))
-	{
-		RenderSettings settings = GraphicsEngine::Get().GetSettings();
-
-		const char* debugRenderModes[] =
+		if (ImGui::CollapsingHeader("Frame Info"))
 		{
-			"None",
-			"sRGB",
-			"Roughness",
-			"Metalness",
-			"AO (Texture)",
-			"AO (Screen Space)",
-			"Normals (Tangent Space)",
-			"Normals (World Space)",
-			"Shadows"
-		};
-
-		int debugRenderMode = static_cast<int>(settings.DebugRenderMode);
-
-		if (ImGui::Combo("Debug Render Mode", &debugRenderMode, debugRenderModes,IM_ARRAYSIZE(debugRenderModes)))
-		{
-			settings.DebugRenderMode = static_cast<DebugRenderMode>(debugRenderMode);
+			ImGui::Text("FPS: %.1f", ImGui::GetIO().Framerate);
+			ImGui::Text("DrawCallCount: %u", aFrameStats.DrawCallCount);
+			ImGui::Text("PipelineSwitches: %u", aFrameStats.PipelineSwitches);
+			ImGui::Text("VisibleObjects: %u", aFrameStats.VisibleObjects);
+			ImGui::Text("CulledObjects: %u", aFrameStats.CulledObjects);
 		}
 
-		ImGui::Separator();
-
-		const char* toneMappers[] =
+		if (ImGui::CollapsingHeader("Render Settings"))
 		{
-			"None",
-			"ACES",
-			"Lottes",
-			"Unreal"
-		};
+			RenderSettings settings = GraphicsEngine::Get().GetSettings();
 
-		int toneMapper = static_cast<int>(settings.ToneMapper);
+			const char* debugRenderModes[] =
+			{
+				"None",
+				"sRGB",
+				"Roughness",
+				"Metalness",
+				"AO (Texture)",
+				"AO (Screen Space)",
+				"Normals (Tangent Space)",
+				"Normals (World Space)",
+				"Shadows"
+			};
 
-		if (ImGui::Combo("Tone Mapper", &toneMapper, toneMappers,IM_ARRAYSIZE(toneMappers)))
-		{
-			settings.ToneMapper = static_cast<ToneMapper>(toneMapper);
+			int debugRenderMode = static_cast<int>(settings.DebugRenderMode);
+
+			if (ImGui::Combo("Debug Render Mode", &debugRenderMode, debugRenderModes, IM_ARRAYSIZE(debugRenderModes)))
+			{
+				settings.DebugRenderMode = static_cast<DebugRenderMode>(debugRenderMode);
+			}
+
+			ImGui::Separator();
+
+			const char* toneMappers[] =
+			{
+				"None",
+				"ACES",
+				"Lottes",
+				"Unreal"
+			};
+
+			int toneMapper = static_cast<int>(settings.ToneMapper);
+
+			if (ImGui::Combo("Tone Mapper", &toneMapper, toneMappers, IM_ARRAYSIZE(toneMappers)))
+			{
+				settings.ToneMapper = static_cast<ToneMapper>(toneMapper);
+			}
+
+			ImGui::Separator();
+
+			ImGui::Checkbox("Bloom", &settings.BloomEnabled);
+			ImGui::Checkbox("SSAO", &settings.SSAOEnabled);
+			ImGui::Checkbox("VSync", &settings.VSyncEnabled);
+
+			GraphicsEngine::Get().SetSettings(settings);
 		}
 
-		ImGui::Separator();
+		if (ImGui::CollapsingHeader("Debug Settings"))
+		{
+			DebugSettings settings = DebugSettingsManager::Get().GetSettings();
 
-		ImGui::Checkbox("Bloom", &settings.BloomEnabled);
-		ImGui::Checkbox("SSAO", &settings.SSAOEnabled);
-		ImGui::Checkbox("VSync", &settings.VSyncEnabled);
+			ImGui::Checkbox("Draw Physics Colliders", &settings.ColliderDebugDrawEnabled);
+			ImGui::ColorEdit4("Collider Color", settings.ColliderColor.values);
 
-		GraphicsEngine::Get().SetSettings(settings);
+			ImGui::Separator();
+
+			ImGui::Checkbox("Draw Mesh Bounding Box", &settings.MeshDebugDrawBoxEnabled);
+			ImGui::ColorEdit4("Bounding Box Color", settings.MeshBoundingBoxColor.values);
+
+			ImGui::Separator();
+
+			ImGui::Checkbox("Draw Mesh Bounding Sphere", &settings.MeshDebugDrawSphereEnabled);
+			ImGui::ColorEdit4("Bounding Sphere Color", settings.MeshBoundingSphereColor.values);
+
+			ImGui::Separator();
+			ImGui::Checkbox("Draw Light Gizmos", &settings.LightGizmosDebugDrawEnabled);
+			ImGui::ColorEdit4("Gizmo Color", settings.LightGizmoColor.values);
+
+			DebugSettingsManager::Get().SetSettings(settings);
+		}
+
+		ImGui::End();
 	}
 
-	if (ImGui::CollapsingHeader("Debug Settings", ImGuiTreeNodeFlags_DefaultOpen))
+	if (myShowLevelSelectorWindow)
 	{
-		DebugSettings settings = DebugSettingsManager::Get().GetSettings();
+		ImGui::Begin("Level selector", &myShowLevelSelectorWindow, ImGuiWindowFlags_AlwaysAutoResize);
 
-		ImGui::Checkbox("Draw Physics Colliders", &settings.ColliderDebugDrawEnabled);
-		ImGui::ColorEdit4("Collider Color", settings.ColliderColor.values);
+		std::filesystem::path sceneRoot = std::filesystem::absolute(Application.ContentPath / "Scenes");
 
-		ImGui::Separator();
+		if (std::filesystem::exists(sceneRoot))
+		{
+			for (const auto& item : std::filesystem::recursive_directory_iterator(sceneRoot))
+			{
+				if (item.is_regular_file() && item.path().has_extension())
+				{
+					std::string lowerCaseFileExtension = item.path().extension().string();
+					std::ranges::transform(lowerCaseFileExtension, lowerCaseFileExtension.begin(), tolower);
 
-		ImGui::Checkbox("Draw Mesh Bounding Box", &settings.MeshDebugDrawBoxEnabled);
-		ImGui::ColorEdit4("Bounding Box Color", settings.MeshBoundingBoxColor.values);
+					if (lowerCaseFileExtension == ".json")
+					{
+						const std::string name = item.path().stem().string();
 
-		ImGui::Separator();
+						if (ImGui::Selectable(name.c_str()))
+						{
+							std::shared_ptr<UnrealSceneAsset> scene = AssetRegistry::Get().GetAsset<UnrealSceneAsset>(name);
 
-		ImGui::Checkbox("Draw Mesh Bounding Sphere", &settings.MeshDebugDrawSphereEnabled);
-		ImGui::ColorEdit4("Bounding Sphere Color", settings.MeshBoundingSphereColor.values);
+							if (scene != nullptr)
+							{
+								GameWorld::Get().Clear();
+								GameWorld::Get().AddActors(std::move(scene->GetSceneActors()));
 
-		ImGui::Separator();
-		ImGui::Checkbox("Draw Light Gizmos", &settings.LightGizmosDebugDrawEnabled);
-		ImGui::ColorEdit4("Gizmo Color", settings.LightGizmoColor.values);
+								// TODO : Load nav mesh, maybe move the whole block to a scene manager class?
+							}
+							else
+							{
+								SPDLOG_ERROR("Failed to load unreal scene [{}]!", name);
+							}
+						}
+					}
+				}
+			}
+		}
 
-		DebugSettingsManager::Get().SetSettings(settings);
+		ImGui::End();
 	}
 
-	ImGui::End();
 	ImGui::PopFont();
 #endif
 }

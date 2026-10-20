@@ -271,17 +271,17 @@ void InGameState::LoadTestScene()
 		GameWorld::Get().AddActor(std::move(object));
 	}*/
 
-	{
-		std::unique_ptr<Actor> object = std::make_unique<Actor>();
+	//{
+	//	std::unique_ptr<Actor> object = std::make_unique<Actor>();
 
-		SpriteComponent* sprite = object->AddComponent<SpriteComponent>();
+	//	SpriteComponent* sprite = object->AddComponent<SpriteComponent>();
 
-		sprite->SetSprite(AssetRegistry::Get().GetAsset<SpriteAsset>("ShrekSprite"));
-		sprite->SetSize({ 512, 512 });
-		sprite->SetPosition({ 512, 512 });
+	//	sprite->SetSprite(AssetRegistry::Get().GetAsset<SpriteAsset>("ShrekSprite"));
+	//	sprite->SetSize({ 512, 512 });
+	//	sprite->SetPosition({ 512, 512 });
 
-		GameWorld::Get().AddActor(std::move(object));
-	}
+	//	GameWorld::Get().AddActor(std::move(object));
+	//}
 
 	myEnableTestBinds = true;
 }

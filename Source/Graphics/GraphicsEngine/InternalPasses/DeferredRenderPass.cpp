@@ -243,11 +243,19 @@ void DeferredRenderPass::Execute(
 				inoutCommandList.SetPipelineStateObject(*mySSAOPSO);
 				inoutCommandList.Draw(4);
 
-				aContext.PostProcessFilters->BlurHorizontal(inoutCommandList, *myHalfSizeSSAOTexture, *myHalfSizeBlurHSSAOTexture);
-				aContext.PostProcessFilters->BlurVertical(inoutCommandList, *myHalfSizeBlurHSSAOTexture, *myHalfSizeBlurVSSAOTexture);
+				if (aContext.RenderSettings->DebugRenderMode == DebugRenderMode::None)
+				{
+					aContext.PostProcessFilters->BlurHorizontal(inoutCommandList, *myHalfSizeSSAOTexture, *myHalfSizeBlurHSSAOTexture);
+					aContext.PostProcessFilters->BlurVertical(inoutCommandList, *myHalfSizeBlurHSSAOTexture, *myHalfSizeBlurVSSAOTexture);
 
-				inoutCommandList.SetRenderTarget(aFrameTargets.RenderTarget, nullptr);
-				inoutCommandList.SetShaderResource(myHalfSizeBlurVSSAOTexture.get(), 97, PipelineStage_PixelShader);
+					inoutCommandList.SetRenderTarget(aFrameTargets.RenderTarget, nullptr);
+					inoutCommandList.SetShaderResource(myHalfSizeBlurVSSAOTexture.get(), 97, PipelineStage_PixelShader);
+				}
+				else
+				{
+					inoutCommandList.SetRenderTarget(aFrameTargets.RenderTarget, nullptr);
+					inoutCommandList.SetShaderResource(myHalfSizeSSAOTexture.get(), 97, PipelineStage_PixelShader);
+				}
 			}
 
 			// GBuffer set resources

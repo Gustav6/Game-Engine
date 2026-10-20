@@ -14,12 +14,34 @@ void GameWorld::Update(float aDeltaTime)
 {
 	ComponentRegistryManager::Get().Update(aDeltaTime);
 
+	for (auto& actor : myQueuedActors)
+	{
+		myActors.emplace_back(std::move(actor));
+	}
+	myQueuedActors.clear();
+
 	for (const auto& actor : myActors)
 	{
+		if (actor->GetIsDestroyed())
+		{
+			continue;
+		}
+
 		actor->Update(aDeltaTime);
 	}
-
-	// TODO: Run "destroy loop" only if any object has been marked as destroyed this frame.
+	
+	for (auto it = myActors.begin(); it != myActors.end();)
+	{
+		if (*it && (*it)->GetIsDestroyed())
+		{
+			(*it)->Destroy();
+			it = myActors.erase(it);
+		}
+		else
+		{
+			++it;
+		}
+	}
 }
 
 void GameWorld::Render()
@@ -29,8 +51,10 @@ void GameWorld::Render()
 
 void GameWorld::Clear()
 {
-	ComponentRegistryManager::Get().Clear();
-	myActors.clear();
+	for (auto& actor : myActors)
+	{
+		actor->Destroy();
+	}
 }
 
 Actor* GameWorld::AddActor(std::unique_ptr<Actor> aActor)
@@ -46,7 +70,7 @@ void GameWorld::AddActors(std::vector<std::unique_ptr<Actor>> aActors)
 {
 	for (auto& actor : aActors)
 	{
-		myActors.emplace_back(std::move(actor));
+		myQueuedActors.emplace_back(std::move(actor));
 	}
 }
 

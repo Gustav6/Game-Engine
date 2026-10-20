@@ -22,4 +22,5 @@ public:
 
 private:
     std::vector<std::unique_ptr<Actor>> myActors;
+    std::vector<std::unique_ptr<Actor>> myQueuedActors;
 };

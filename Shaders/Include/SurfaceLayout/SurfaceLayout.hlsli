@@ -16,7 +16,7 @@ float3 DecodeNormal(float4 aNormalSample, float3x3 aTBN)
 {
     const float2 unpackedNormal = aNormalSample.xy * 2.0 - 1.0;
     
-    const float3 tangentNormal = normalize(float3(unpackedNormal, sqrt(saturate(1.0 - dot(unpackedNormal, unpackedNormal)))));
+    const float3 tangentNormal = float3(unpackedNormal, sqrt(saturate(1.0 - dot(unpackedNormal, unpackedNormal))));
     
     return normalize(mul(tangentNormal, aTBN));
 }

@@ -27,7 +27,8 @@ SurfaceData EvaluateSurface(VStoPS aPixel, float2 aUV)
         normalize(aPixel.Normal)
     );
     
-    float4 Mask = SplatMap.Sample(TrilinearWrap, aUV); // Eller SampleLevel med 0 som Mip. Beror på. Artistic choice.
+    float4 Mask = SplatMap.Sample(TrilinearClamp, aUV);
+    Mask /= max(dot(Mask, 1.0f), 1e-5f);
     
     float4 A_Albedo = BaseColor_01.Sample(TrilinearWrap, aUV);
     float4 A_Normal = Normal_01.Sample(TrilinearWrap, aUV);

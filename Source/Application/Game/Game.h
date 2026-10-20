@@ -79,5 +79,8 @@ private:
 
 #ifdef IMGUI_ENABLE
 	std::unique_ptr<ImGuiLayer> myImGuiLayer;
+
+	bool myShowDebugWindow = true;
+	bool myShowLevelSelectorWindow = true;
 #endif
 };
