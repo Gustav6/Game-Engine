@@ -31,9 +31,11 @@
 
 #include <tracy/core/Tracy.hpp>
 
+constexpr size_t MaxLineVertexPerDraw = 1000;
+
 bool DebugRenderPass::Initialize(RenderHardwareInterface& aRHI)
 {
-	aRHI.CreateDynamicVertexBuffer("LineRenderer", sizeof(LineVertex), 1000, myLineVertexBuffer);
+	aRHI.CreateDynamicVertexBuffer("LineRenderer", sizeof(LineVertex), MaxLineVertexPerDraw, myLineVertexBuffer);
 
 	// Wireframe Mesh PSO
 	{
@@ -184,14 +186,22 @@ void DebugRenderPass::RenderLines(GraphicsCommandList& inoutCommandList, RenderC
 		myLineVertices.push_back({ { call.End.x,   call.End.y,   call.End.z,   1.f }, call.Color });
 	}
 
-	if (!inoutCommandList.UpdateDynamicVertexBuffer(
-		myLineVertexBuffer,
-		myLineVertices.data(),
-		myLineVertices.size() * sizeof(LineVertex)))
-	{
-		return;
-	}
-
 	inoutCommandList.SetVertexBuffer(&myLineVertexBuffer);
-	inoutCommandList.DrawSpecificVertices(static_cast<unsigned int>(myLineVertices.size()), 0);
+
+	const size_t totalVertices = myLineVertices.size();
+
+	for (size_t offset = 0; offset < totalVertices; offset += MaxLineVertexPerDraw)
+	{
+		const size_t count = std::min(MaxLineVertexPerDraw, totalVertices - offset);
+
+		if (!inoutCommandList.UpdateDynamicVertexBuffer(
+			myLineVertexBuffer,
+			myLineVertices.data() + offset,
+			count * sizeof(LineVertex)))
+		{
+			return;
+		}
+
+		inoutCommandList.DrawSpecificVertices(static_cast<unsigned int>(count), 0);
+	}
 }

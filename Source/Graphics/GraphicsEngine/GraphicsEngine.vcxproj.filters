@@ -1,0 +1,452 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="ConstantBuffers">
+      <UniqueIdentifier>{3CBE0720-A849-75E4-B15A-F8D81D65D1E4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ConstantBuffers\Manager">
+      <UniqueIdentifier>{6676AC51-D2AD-F4E8-DBB7-580C476E1BE2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core">
+      <UniqueIdentifier>{2EB4837C-1AEB-840D-C3D7-6A10AFED000F}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Drawers">
+      <UniqueIdentifier>{1D1F4287-89FE-C022-9216-4CF9FE742784}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="InternalOperations">
+      <UniqueIdentifier>{E6796B3A-D25D-2C90-3BBE-26E327C11612}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="InternalPasses">
+      <UniqueIdentifier>{F1CBCF72-DD99-C378-C62D-349FB29A9FDD}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="InternalPasses\Shared">
+      <UniqueIdentifier>{F73DD5DC-63AA-90D7-2C9E-283598C9B23F}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Materials">
+      <UniqueIdentifier>{67E8C255-D352-77CC-1C91-2872883A5521}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Materials\Compilation">
+      <UniqueIdentifier>{353E9848-A1AA-5343-6A9E-EBA0D6C975AB}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Objects">
+      <UniqueIdentifier>{CF2649B1-3B06-C84C-441E-5323B07C2EAE}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Objects\GPU">
+      <UniqueIdentifier>{CAF428EC-36AA-A1E1-BF9E-9BB82B5398E5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Objects\Mesh">
+      <UniqueIdentifier>{EB354B71-D798-DA15-801E-13CC6C60A698}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Objects\Scene">
+      <UniqueIdentifier>{2C331D9B-98F3-98D1-612E-E24ECDADDDAD}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Objects\Text">
+      <UniqueIdentifier>{430D4F71-2F70-DE15-D8F5-16CCC437AA98}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="RHI">
+      <UniqueIdentifier>{4819880B-B422-887C-3D9E-9E7CA9A6937C}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources">
+      <UniqueIdentifier>{000BCD17-6C75-818E-B5B3-3234215D5FE3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources\Textures">
+      <UniqueIdentifier>{D33C360A-BF20-F75F-2881-F1B21484E1E1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources\Textures\Albedo">
+      <UniqueIdentifier>{4978079B-B53A-3B25-FEEA-C9B16AEC1303}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources\Textures\Normal">
+      <UniqueIdentifier>{ABB999B9-177C-CD43-602C-5CD0CC2DA621}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders">
+      <UniqueIdentifier>{EFAC8DF2-5B8C-0C8E-64A4-9764D00273EF}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders\Material">
+      <UniqueIdentifier>{6DD8FDB3-59D1-1C06-8203-028B6E5BFC11}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders\Material\Include">
+      <UniqueIdentifier>{C0849754-ACA9-E6D4-D5F4-CB64C178E5F2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty">
+      <UniqueIdentifier>{107145F9-FC28-8746-6530-60A251072237}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty\Source">
+      <UniqueIdentifier>{10AD61F8-7CC3-5F8E-C53A-EBAF31903016}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty\Source\tracy">
+      <UniqueIdentifier>{22F6E85D-8E2D-31F5-9737-951803EE57EE}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ConstantBuffers\AnimationBuffer.h">
+      <Filter>ConstantBuffers</Filter>
+    </ClInclude>
+    <ClInclude Include="ConstantBuffers\CascadeBuffer.h">
+      <Filter>ConstantBuffers</Filter>
+    </ClInclude>
+    <ClInclude Include="ConstantBuffers\FrameBuffer.h">
+      <Filter>ConstantBuffers</Filter>
+    </ClInclude>
+    <ClInclude Include="ConstantBuffers\LightBuffer.h">
+      <Filter>ConstantBuffers</Filter>
+    </ClInclude>
+    <ClInclude Include="ConstantBuffers\Manager\ConstantBufferManager.h">
+      <Filter>ConstantBuffers\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="ConstantBuffers\ObjectBuffer.h">
+      <Filter>ConstantBuffers</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\ConstantBufferID.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\DebugRenderMode.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\FrameTargets.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\RenderContext.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\RenderItem.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\SceneCamera.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\SpriteRenderResources.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Drawers\LightDrawer.h">
+      <Filter>Drawers</Filter>
+    </ClInclude>
+    <ClInclude Include="Drawers\MeshDrawer.h">
+      <Filter>Drawers</Filter>
+    </ClInclude>
+    <ClInclude Include="Drawers\SpriteDrawer.h">
+      <Filter>Drawers</Filter>
+    </ClInclude>
+    <ClInclude Include="Drawers\TextDrawer.h">
+      <Filter>Drawers</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphicsEngine.hpp" />
+    <ClInclude Include="GraphicsEngine.pch.h" />
+    <ClInclude Include="InternalOperations\DDSTextureLoader11.h">
+      <Filter>InternalOperations</Filter>
+    </ClInclude>
+    <ClInclude Include="InternalPasses\DeferredRenderPass.h">
+      <Filter>InternalPasses</Filter>
+    </ClInclude>
+    <ClInclude Include="InternalPasses\ForwardRenderPass.h">
+      <Filter>InternalPasses</Filter>
+    </ClInclude>
+    <ClInclude Include="InternalPasses\ScreenSpaceRenderPass.h">
+      <Filter>InternalPasses</Filter>
+    </ClInclude>
+    <ClInclude Include="InternalPasses\ShadowRenderPass.h">
+      <Filter>InternalPasses</Filter>
+    </ClInclude>
+    <ClInclude Include="InternalPasses\Shared\DrawCallSubmitter.h">
+      <Filter>InternalPasses\Shared</Filter>
+    </ClInclude>
+    <ClInclude Include="Materials\Compilation\MaterialFactory.h">
+      <Filter>Materials\Compilation</Filter>
+    </ClInclude>
+    <ClInclude Include="Materials\Compilation\MaterialShaderRegistry.h">
+      <Filter>Materials\Compilation</Filter>
+    </ClInclude>
+    <ClInclude Include="Materials\Material.h">
+      <Filter>Materials</Filter>
+    </ClInclude>
+    <ClInclude Include="Materials\MaterialHelpers.h">
+      <Filter>Materials</Filter>
+    </ClInclude>
+    <ClInclude Include="Materials\MaterialInterface.h">
+      <Filter>Materials</Filter>
+    </ClInclude>
+    <ClInclude Include="Materials\MaterialShaderIncludeHandler.h">
+      <Filter>Materials</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\GPU\Buffer.h">
+      <Filter>Objects\GPU</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\GPU\GBuffer.h">
+      <Filter>Objects\GPU</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\GPU\Sampler.h">
+      <Filter>Objects\GPU</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\GPU\Shader.h">
+      <Filter>Objects\GPU</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\GPU\Texture.h">
+      <Filter>Objects\GPU</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\GPU\Vertex.h">
+      <Filter>Objects\GPU</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\Mesh\Animation.h">
+      <Filter>Objects\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\Mesh\Mesh.h">
+      <Filter>Objects\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\Mesh\Skeleton.h">
+      <Filter>Objects\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\Scene\Camera.h">
+      <Filter>Objects\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\Scene\Light.h">
+      <Filter>Objects\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\Sprite.h">
+      <Filter>Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\Text\Font.h">
+      <Filter>Objects\Text</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\Text\Text.h">
+      <Filter>Objects\Text</Filter>
+    </ClInclude>
+    <ClInclude Include="RHI\GraphicsCommandList.h">
+      <Filter>RHI</Filter>
+    </ClInclude>
+    <ClInclude Include="RHI\PipelineStateObject.h">
+      <Filter>RHI</Filter>
+    </ClInclude>
+    <ClInclude Include="RHI\RHIShaderReflectionInfo.h">
+      <Filter>RHI</Filter>
+    </ClInclude>
+    <ClInclude Include="RHI\RHIStructs.h">
+      <Filter>RHI</Filter>
+    </ClInclude>
+    <ClInclude Include="RHI\RenderHardwareInterface.h">
+      <Filter>RHI</Filter>
+    </ClInclude>
+    <ClInclude Include="Resources\BuiltinAssets.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="Resources\GraphicsResourceFactory.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="Resources\Textures\Albedo\Default_C.h">
+      <Filter>Resources\Textures\Albedo</Filter>
+    </ClInclude>
+    <ClInclude Include="Resources\Textures\Normal\Default_N.h">
+      <Filter>Resources\Textures\Normal</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\ThirdParty\Source\tracy\TracyClient.cpp">
+      <Filter>ThirdParty\Source\tracy</Filter>
+    </ClCompile>
+    <ClCompile Include="ConstantBuffers\AnimationBuffer.cpp">
+      <Filter>ConstantBuffers</Filter>
+    </ClCompile>
+    <ClCompile Include="ConstantBuffers\CascadeBuffer.cpp">
+      <Filter>ConstantBuffers</Filter>
+    </ClCompile>
+    <ClCompile Include="ConstantBuffers\FrameBuffer.cpp">
+      <Filter>ConstantBuffers</Filter>
+    </ClCompile>
+    <ClCompile Include="ConstantBuffers\LightBuffer.cpp">
+      <Filter>ConstantBuffers</Filter>
+    </ClCompile>
+    <ClCompile Include="ConstantBuffers\Manager\ConstantBufferManager.cpp">
+      <Filter>ConstantBuffers\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="ConstantBuffers\ObjectBuffer.cpp">
+      <Filter>ConstantBuffers</Filter>
+    </ClCompile>
+    <ClCompile Include="Drawers\LightDrawer.cpp">
+      <Filter>Drawers</Filter>
+    </ClCompile>
+    <ClCompile Include="Drawers\MeshDrawer.cpp">
+      <Filter>Drawers</Filter>
+    </ClCompile>
+    <ClCompile Include="Drawers\SpriteDrawer.cpp">
+      <Filter>Drawers</Filter>
+    </ClCompile>
+    <ClCompile Include="Drawers\TextDrawer.cpp">
+      <Filter>Drawers</Filter>
+    </ClCompile>
+    <ClCompile Include="GraphicsEngine.cpp" />
+    <ClCompile Include="GraphicsEngine.pch.cpp" />
+    <ClCompile Include="InternalOperations\DDSTextureLoader11.cpp">
+      <Filter>InternalOperations</Filter>
+    </ClCompile>
+    <ClCompile Include="InternalPasses\DeferredRenderPass.cpp">
+      <Filter>InternalPasses</Filter>
+    </ClCompile>
+    <ClCompile Include="InternalPasses\ForwardRenderPass.cpp">
+      <Filter>InternalPasses</Filter>
+    </ClCompile>
+    <ClCompile Include="InternalPasses\ScreenSpaceRenderPass.cpp">
+      <Filter>InternalPasses</Filter>
+    </ClCompile>
+    <ClCompile Include="InternalPasses\ShadowRenderPass.cpp">
+      <Filter>InternalPasses</Filter>
+    </ClCompile>
+    <ClCompile Include="InternalPasses\Shared\DrawCallSubmitter.cpp">
+      <Filter>InternalPasses\Shared</Filter>
+    </ClCompile>
+    <ClCompile Include="Materials\Compilation\MaterialFactory.cpp">
+      <Filter>Materials\Compilation</Filter>
+    </ClCompile>
+    <ClCompile Include="Materials\Compilation\MaterialShaderRegistry.cpp">
+      <Filter>Materials\Compilation</Filter>
+    </ClCompile>
+    <ClCompile Include="Materials\Material.cpp">
+      <Filter>Materials</Filter>
+    </ClCompile>
+    <ClCompile Include="Materials\MaterialInterface.cpp">
+      <Filter>Materials</Filter>
+    </ClCompile>
+    <ClCompile Include="Materials\MaterialShaderIncludeHandler.cpp">
+      <Filter>Materials</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\GPU\Buffer.cpp">
+      <Filter>Objects\GPU</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\GPU\GBuffer.cpp">
+      <Filter>Objects\GPU</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\GPU\Sampler.cpp">
+      <Filter>Objects\GPU</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\GPU\Shader.cpp">
+      <Filter>Objects\GPU</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\GPU\Texture.cpp">
+      <Filter>Objects\GPU</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\GPU\Vertex.cpp">
+      <Filter>Objects\GPU</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\Mesh\Animation.cpp">
+      <Filter>Objects\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\Mesh\Mesh.cpp">
+      <Filter>Objects\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\Mesh\Skeleton.cpp">
+      <Filter>Objects\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\Scene\Camera.cpp">
+      <Filter>Objects\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\Scene\Light.cpp">
+      <Filter>Objects\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\Sprite.cpp">
+      <Filter>Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\Text\Font.cpp">
+      <Filter>Objects\Text</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\Text\Text.cpp">
+      <Filter>Objects\Text</Filter>
+    </ClCompile>
+    <ClCompile Include="RHI\GraphicsCommandList.cpp">
+      <Filter>RHI</Filter>
+    </ClCompile>
+    <ClCompile Include="RHI\PipelineStateObject.cpp">
+      <Filter>RHI</Filter>
+    </ClCompile>
+    <ClCompile Include="RHI\RHIShaderReflectionInfo.cpp">
+      <Filter>RHI</Filter>
+    </ClCompile>
+    <ClCompile Include="RHI\RenderHardwareInterface.cpp">
+      <Filter>RHI</Filter>
+    </ClCompile>
+    <ClCompile Include="Resources\BuiltinAssets.cpp">
+      <Filter>Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="Resources\GraphicsResourceFactory.cpp">
+      <Filter>Resources</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="Shaders\Material\BRDF_LUT_PS.hlsl">
+      <Filter>Shaders\Material</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Material\Deferred_Ambient_PS.hlsl">
+      <Filter>Shaders\Material</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Material\Deferred_DirLight_PS.hlsl">
+      <Filter>Shaders\Material</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Material\Deferred_PointLight_PS.hlsl">
+      <Filter>Shaders\Material</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Material\Deferred_SpotLight_PS.hlsl">
+      <Filter>Shaders\Material</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Material\FontMaterial_PS.hlsl">
+      <Filter>Shaders\Material</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Material\FontMaterial_VS.hlsl">
+      <Filter>Shaders\Material</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Material\FullTexture_VS.hlsl">
+      <Filter>Shaders\Material</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Material\GBuffer_PS.hlsl">
+      <Filter>Shaders\Material</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Material\Lambert_PS.hlsl">
+      <Filter>Shaders\Material</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Material\PBL_PS.hlsl">
+      <Filter>Shaders\Material</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Material\ShadowCube_GS.hlsl">
+      <Filter>Shaders\Material</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Material\Sprite_PS.hlsl">
+      <Filter>Shaders\Material</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Material\Sprite_VS.hlsl">
+      <Filter>Shaders\Material</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Material\Surface_VS.hlsl">
+      <Filter>Shaders\Material</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Material\Unlit_PS.hlsl">
+      <Filter>Shaders\Material</Filter>
+    </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Shaders\Material\Include\Common.hlsli">
+      <Filter>Shaders\Material\Include</Filter>
+    </None>
+    <None Include="Shaders\Material\Include\LUTFunctions.hlsli">
+      <Filter>Shaders\Material\Include</Filter>
+    </None>
+    <None Include="Shaders\Material\Include\Lambert_Functions.hlsli">
+      <Filter>Shaders\Material\Include</Filter>
+    </None>
+    <None Include="Shaders\Material\Include\Light.hlsli">
+      <Filter>Shaders\Material\Include</Filter>
+    </None>
+    <None Include="Shaders\Material\Include\Material.hlsli">
+      <Filter>Shaders\Material\Include</Filter>
+    </None>
+    <None Include="Shaders\Material\Include\MaterialParameters.hlsli">
+      <Filter>Shaders\Material\Include</Filter>
+    </None>
+    <None Include="Shaders\Material\Include\PBL_Functions.hlsli">
+      <Filter>Shaders\Material\Include</Filter>
+    </None>
+    <None Include="Shaders\Material\Include\PoissonDisks.hlsli">
+      <Filter>Shaders\Material\Include</Filter>
+    </None>
+    <None Include="Shaders\Material\Include\Samplers.hlsli">
+      <Filter>Shaders\Material\Include</Filter>
+    </None>
+    <None Include="Shaders\Material\Include\Shadow.hlsli">
+      <Filter>Shaders\Material\Include</Filter>
+    </None>
+  </ItemGroup>
+</Project>

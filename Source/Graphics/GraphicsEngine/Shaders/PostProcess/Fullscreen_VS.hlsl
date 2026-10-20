@@ -1,4 +1,4 @@
-#include "Common.hlsli"
+#include "../Include/Core/Common.hlsli"
 
 // This shades takes in a Vertex Index which is given 
 // by the Draw command. It will be looped for each 

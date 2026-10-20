@@ -138,6 +138,9 @@
     <ClInclude Include="Core\SceneCamera.h">
       <Filter>Core</Filter>
     </ClInclude>
+    <ClInclude Include="Core\SpriteRenderResources.h">
+      <Filter>Core</Filter>
+    </ClInclude>
     <ClInclude Include="Drawers\DebugDrawer.h">
       <Filter>Drawers</Filter>
     </ClInclude>
@@ -440,9 +443,6 @@
     <FxCompile Include="Shaders\Geometry\Surface_VS.hlsl">
       <Filter>Shaders\Geometry</Filter>
     </FxCompile>
-    <FxCompile Include="Shaders\Include\Core\Fullscreen_VS.hlsl">
-      <Filter>Shaders\Include\Core</Filter>
-    </FxCompile>
     <FxCompile Include="Shaders\Line_PS.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>
@@ -453,6 +453,9 @@
       <Filter>Shaders\PostProcess</Filter>
     </FxCompile>
     <FxCompile Include="Shaders\PostProcess\Bloom_PS.hlsl">
+      <Filter>Shaders\PostProcess</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\PostProcess\Fullscreen_VS.hlsl">
       <Filter>Shaders\PostProcess</Filter>
     </FxCompile>
     <FxCompile Include="Shaders\PostProcess\GaussianBlurH_PS.hlsl">

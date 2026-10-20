@@ -20,7 +20,7 @@ bool BuiltinAssets::Initialize(GraphicsEngine& aGraphicsEngine, RenderHardwareIn
 		myDefaultMaterial = std::make_unique<Material>();
 
 		MaterialDescription defaultMatDesc;
-		defaultMatDesc.Name = "Default Mesh Material";
+		defaultMatDesc.Name = "Default_Material";
 		defaultMatDesc.Domain = MaterialDomain::Surface;
 		defaultMatDesc.ShadingModel = ShadingModel::Unlit;
 		defaultMatDesc.BlendMode = MaterialBlendMode::Opaque;
@@ -29,6 +29,24 @@ bool BuiltinAssets::Initialize(GraphicsEngine& aGraphicsEngine, RenderHardwareIn
 		if (!aGraphicsEngine.CreateMaterial(defaultMatDesc, *myDefaultMaterial))
 		{
 			SPDLOG_CRITICAL("Failed to create default mesh material!");
+			return false;
+		}
+	}
+
+	// Sprite Material
+	{
+		myDefaultSpriteMaterial = std::make_unique<Material>();
+
+		MaterialDescription defaultMatDesc;
+		defaultMatDesc.Name = "Default_Sprite_Material";
+		defaultMatDesc.Domain = MaterialDomain::Surface;
+		defaultMatDesc.ShadingModel = ShadingModel::Unlit;
+		defaultMatDesc.BlendMode = MaterialBlendMode::Alpha;
+		defaultMatDesc.Layout = MaterialLayout::PBR;
+
+		if (!aGraphicsEngine.CreateMaterial(defaultMatDesc, *myDefaultSpriteMaterial))
+		{
+			SPDLOG_CRITICAL("Failed to create default sprite material!");
 			return false;
 		}
 	}
@@ -78,6 +96,11 @@ bool BuiltinAssets::Initialize(GraphicsEngine& aGraphicsEngine, RenderHardwareIn
 const Material& BuiltinAssets::GetDefaultMaterial() const
 {
 	return *myDefaultMaterial;
+}
+
+const Material& BuiltinAssets::GetDefaultSpriteMaterial() const
+{
+	return *myDefaultSpriteMaterial;
 }
 
 const Texture& BuiltinAssets::GetDefaultAlbedoTexture() const

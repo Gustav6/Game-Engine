@@ -43,6 +43,8 @@
 
 #include <tracy/core/Tracy.hpp>
 
+constexpr size_t MaxSpriteVertexPerDraw = 1000;
+
 bool ScreenSpaceRenderPass::Initialize(RenderHardwareInterface& aRHI)
 {
 	constexpr float designWidth = 1920.0f;
@@ -55,7 +57,7 @@ bool ScreenSpaceRenderPass::Initialize(RenderHardwareInterface& aRHI)
 	mySpriteProjection(4, 1) = -1.0f;
 	mySpriteProjection(4, 2) = 1.0f;
 
-	aRHI.CreateDynamicVertexBuffer("SpriteRenderer", sizeof(Vertex), 10000, mySpriteVertexBuffer);
+	aRHI.CreateDynamicVertexBuffer("SpriteRenderer", sizeof(Vertex), MaxSpriteVertexPerDraw, mySpriteVertexBuffer);
 
 	// Font PSO
 	{
@@ -271,7 +273,7 @@ void ScreenSpaceRenderPass::RenderSprite(
 
 	if (material == nullptr)
 	{
-		material = &aContext.BuiltinAssets->GetDefaultMaterial();
+		material = &aContext.BuiltinAssets->GetDefaultSpriteMaterial();
 	}
 
 	if (material->HasParameters())
@@ -286,14 +288,22 @@ void ScreenSpaceRenderPass::RenderSprite(
 
 	inoutCommandList.SetPipelineStateObject(material->GetPSO());
 
-	if (!inoutCommandList.UpdateDynamicVertexBuffer(
-		mySpriteVertexBuffer,
-		mySpriteVertices.data(),
-		mySpriteVertices.size() * sizeof(Vertex)))
-	{
-		return;
-	}
-
 	inoutCommandList.SetVertexBuffer(&mySpriteVertexBuffer);
-	inoutCommandList.DrawSpecificVertices(static_cast<unsigned int>(mySpriteVertices.size()), 0);
+
+	const size_t totalVertices = mySpriteVertices.size();
+
+	for (size_t offset = 0; offset < totalVertices; offset += MaxSpriteVertexPerDraw)
+	{
+		const size_t count = std::min(MaxSpriteVertexPerDraw, totalVertices - offset);
+
+		if (!inoutCommandList.UpdateDynamicVertexBuffer(
+			mySpriteVertexBuffer,
+			mySpriteVertices.data() + offset,
+			count * sizeof(Vertex)))
+		{
+			return;
+		}
+
+		inoutCommandList.DrawSpecificVertices(static_cast<unsigned int>(count), 0);
+	}
 }
