@@ -38,7 +38,7 @@ public:
 	void SetRenderTargets(const Texture* aTargetList, unsigned aNumTargets, const Texture* aDepthStencil) const;
 
 	bool UpdateConstantBuffer(const Buffer& aConstantBuffer, const void* aBufferData, size_t aBufferDataSize) const;
-	bool UpdateVertexBuffer(const Buffer& aVertexBuffer, const std::vector<Vertex>& aVertices) const;
+	bool UpdateDynamicVertexBuffer(const Buffer& aBuffer, const void* aBufferData, size_t aBufferDataSize) const;
 
 	void SetVertexBuffer(const Buffer* aBuffer) const;
 	void SetIndexBuffer(const Buffer* aBuffer) const;

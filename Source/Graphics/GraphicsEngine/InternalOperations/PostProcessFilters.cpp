@@ -95,8 +95,8 @@ void PostProcessFilters::BlurHorizontal(GraphicsCommandList& inoutCommandList, T
 	{
 		inoutCommandList.SetRenderTarget(&aDestination, nullptr);
 
-		inoutCommandList.SetShaderResource(&aSource, 0, PipelineStage_PixelShader);
 		inoutCommandList.SetPipelineStateObject(*myBlurHorizontalPSO);
+		inoutCommandList.SetShaderResource(&aSource, 0, PipelineStage_PixelShader);
 		inoutCommandList.Draw(4);
 	}
 	inoutCommandList.EndEvent();
@@ -108,8 +108,8 @@ void PostProcessFilters::BlurVertical(GraphicsCommandList& inoutCommandList, Tex
 	{
 		inoutCommandList.SetRenderTarget(&aDestination, nullptr);
 
-		inoutCommandList.SetShaderResource(&aSource, 0, PipelineStage_PixelShader);
 		inoutCommandList.SetPipelineStateObject(*myBlurVerticalPSO);
+		inoutCommandList.SetShaderResource(&aSource, 0, PipelineStage_PixelShader);
 		inoutCommandList.Draw(4);
 	}
 	inoutCommandList.EndEvent();

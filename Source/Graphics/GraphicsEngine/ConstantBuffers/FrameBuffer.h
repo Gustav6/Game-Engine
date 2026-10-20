@@ -10,5 +10,6 @@ struct FrameBuffer
 	CommonUtilities::Vector3f CameraPosition;
 	unsigned int TypeOfRenderPass = 0;
 	unsigned int TypeOfTonemap = 0;
-	CommonUtilities::Vector3f _padding;
+	unsigned int SSAOFlag = 0;
+	CommonUtilities::Vector2f _padding;
 };

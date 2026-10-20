@@ -30,11 +30,19 @@ float4 main(FullscreenVertex aInput) : SV_TARGET
     const float4 worldPositionPixel = GBufferWorldPosition.Sample(TrilinearClamp, aInput.UV);
     const float4 emissionPixel = GBufferEmission.Sample(TrilinearClamp, aInput.UV);
     
-    const float ssaoPixel = SSAO_Texture.Sample(TrilinearClamp, aInput.UV);
-    
-    //float occlusion = min(materialPixel.r, ssaoPixel);
+    float occlusion;
 
-    float occlusion = materialPixel.r;
+    if (FB_SSAOFlag)
+    {
+        const float ssaoPixel = SSAO_Texture.Sample(TrilinearClamp, aInput.UV);
+
+        occlusion = min(materialPixel.r, ssaoPixel);
+    }
+    else
+    {
+        occlusion = materialPixel.r;
+    }
+
     float roughness = materialPixel.g;
     float metalness = materialPixel.b;
     

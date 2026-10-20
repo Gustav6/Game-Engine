@@ -49,7 +49,7 @@ float3 GetViewSpacePosition(float2 aUV)
 {
     float3 position;
 
-    position.z = GBufferWorldNormalDepth.Sample(TrilinearClamp, aUV).a; // Normalize to -1 to 1 because it's the actual depth
+    position.z = GBufferWorldNormalDepth.Sample(TrilinearClamp, aUV).a / 65535.0f;
     position.x = ((2 * aUV.x - 1) * position.z) / FB_Projection._11;
     position.y = ((1 - 2 * aUV.y) * position.z) / FB_Projection._22;
 

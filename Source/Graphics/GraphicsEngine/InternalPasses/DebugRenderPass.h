@@ -30,6 +30,6 @@ private:
 	std::unique_ptr<PipelineStateObject> myDebugPSO;
 	std::unique_ptr<PipelineStateObject> myLinePSO;
 
-    std::vector<Vertex> myLineVertices;
+    std::vector<LineVertex> myLineVertices;
     Buffer myLineVertexBuffer;
 };

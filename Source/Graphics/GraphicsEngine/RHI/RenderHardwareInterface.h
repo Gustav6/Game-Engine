@@ -41,7 +41,7 @@ public:
 	bool CreateIndexBuffer(std::string_view aName, const std::vector<unsigned>& aIndexList, Buffer& outBuffer) const;
 	bool CreateConstantBuffer(std::string_view aName, size_t aSize, Buffer& outBuffer) const;
 
-	bool CreateDynamicVertexBuffer(std::string_view aName, unsigned int aMaxVertexCount, Buffer& outBuffer) const;
+	bool CreateDynamicVertexBuffer(std::string_view aName, size_t aVertexSize, size_t aCapacity, Buffer& outBuffer) const;
 
 	bool CreatePipelineStateObject(const PipelineStateDescription& aDescription, PipelineStateObject& outPSO) const;
 	bool CreateCommandList(std::string_view aName, GraphicsCommandList& outCommandList) const;

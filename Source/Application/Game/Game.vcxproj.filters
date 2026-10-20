@@ -59,6 +59,9 @@
     <CustomBuild Include="Materials\BaseMaterial.hlsli">
       <Filter>Materials</Filter>
     </CustomBuild>
+    <CustomBuild Include="Materials\BlendMaterial.hlsli">
+      <Filter>Materials</Filter>
+    </CustomBuild>
     <CustomBuild Include="Materials\MaterialFunctions.hlsli">
       <Filter>Materials</Filter>
     </CustomBuild>

@@ -42,8 +42,8 @@ void InGameState::Initialize()
 
 void InGameState::Enter()
 {
-	LoadUnrealScene("LVL_DioramaBlockout_Level");
-	//LoadTestScene();
+	//LoadUnrealScene("LVL_DioramaBlockout_Level");
+	LoadTestScene();
 }
 
 void InGameState::Update(float aDeltaTime)
@@ -271,7 +271,7 @@ void InGameState::LoadTestScene()
 		GameWorld::Get().AddActor(std::move(object));
 	}*/
 
-	/*{
+	{
 		std::unique_ptr<Actor> object = std::make_unique<Actor>();
 
 		SpriteComponent* sprite = object->AddComponent<SpriteComponent>();
@@ -281,7 +281,7 @@ void InGameState::LoadTestScene()
 		sprite->SetPosition({ 512, 512 });
 
 		GameWorld::Get().AddActor(std::move(object));
-	}*/
+	}
 
 	myEnableTestBinds = true;
 }

@@ -18,6 +18,7 @@ enum class BufferType : uint8_t
 	VertexBuffer,
 	IndexBuffer,
 	ConstantBuffer,
+	DynamicVertexBuffer
 };
 
 enum class Topology : unsigned int

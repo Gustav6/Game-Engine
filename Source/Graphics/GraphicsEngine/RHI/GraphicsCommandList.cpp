@@ -184,45 +184,34 @@ bool GraphicsCommandList::UpdateConstantBuffer(const Buffer& aConstantBuffer, co
 	return true;
 }
 
-bool GraphicsCommandList::UpdateVertexBuffer(const Buffer& aVertexBuffer, const std::vector<Vertex>& aVertices) const
+bool GraphicsCommandList::UpdateDynamicVertexBuffer(const Buffer& aBuffer, const void* aBufferData, size_t aBufferDataSize) const
 {
-	if (!aVertexBuffer.IsValid() )
+	ensure(!IsReadyForExecution());
+
+	if (!aBuffer.IsValid() || aBuffer.myType != BufferType::DynamicVertexBuffer)
 	{
-		SPDLOG_ERROR("Failed to update Vertex buffer! Buffer is either null!");
+		SPDLOG_ERROR("Failed to update Vertex buffer! Buffer is either null or has invalid type!");
 		return false;
 	}
 
-	if (aVertices.empty())
+	if(aBufferDataSize > aBuffer.mySize)
 	{
-		SPDLOG_ERROR("Failed to update Vertex buffer {}! Data provided is larger than buffer capacity!", aVertexBuffer.myName);
+		SPDLOG_ERROR("Failed to update Vertex buffer {}! Data provided is larger than buffer capacity!", aBuffer.myName);
 		return false;
 	}
 
-	if (aVertexBuffer.myType != BufferType::VertexBuffer)
-	{
-		SPDLOG_ERROR("Failed to update Vertex buffer! Buffer  invalid type!");
-		return false;
-	}
+	D3D11_MAPPED_SUBRESOURCE bufferResource = {};
 
-	const size_t dataSize = sizeof(Vertex) * aVertices.size();
-
-	if (dataSize > aVertexBuffer.mySize)
-	{
-		return false;
-	}
-
-	D3D11_MAPPED_SUBRESOURCE mappedResource = {};
-
-	const HRESULT result = myContext->Map(aVertexBuffer.myBuffer.Get(),	0, D3D11_MAP_WRITE_DISCARD,	0, &mappedResource);
+	const HRESULT result = myContext->Map(aBuffer.myBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &bufferResource);
 
 	if (FAILED(result))
 	{
+		SPDLOG_ERROR("Failed to update constant buffer {}! Failed to map buffer!", aBuffer.myName);
 		return false;
 	}
 
-	memcpy(mappedResource.pData, aVertices.data(), dataSize);
-
-	myContext->Unmap(aVertexBuffer.myBuffer.Get(), 0);
+	memcpy_s(bufferResource.pData, aBuffer.mySize, aBufferData, aBufferDataSize);
+	myContext->Unmap(aBuffer.myBuffer.Get(), 0);
 
 	return true;
 }

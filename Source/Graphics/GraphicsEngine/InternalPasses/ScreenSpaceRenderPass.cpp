@@ -55,7 +55,7 @@ bool ScreenSpaceRenderPass::Initialize(RenderHardwareInterface& aRHI)
 	mySpriteProjection(4, 1) = -1.0f;
 	mySpriteProjection(4, 2) = 1.0f;
 
-	aRHI.CreateDynamicVertexBuffer("SpriteRenderer", 10000, mySpriteVertexBuffer);
+	aRHI.CreateDynamicVertexBuffer("SpriteRenderer", sizeof(Vertex), 10000, mySpriteVertexBuffer);
 
 	// Font PSO
 	{
@@ -286,7 +286,14 @@ void ScreenSpaceRenderPass::RenderSprite(
 
 	inoutCommandList.SetPipelineStateObject(material->GetPSO());
 
-	inoutCommandList.UpdateVertexBuffer(mySpriteVertexBuffer, mySpriteVertices);
+	if (!inoutCommandList.UpdateDynamicVertexBuffer(
+		mySpriteVertexBuffer,
+		mySpriteVertices.data(),
+		mySpriteVertices.size() * sizeof(Vertex)))
+	{
+		return;
+	}
+
 	inoutCommandList.SetVertexBuffer(&mySpriteVertexBuffer);
 	inoutCommandList.DrawSpecificVertices(static_cast<unsigned int>(mySpriteVertices.size()), 0);
 }

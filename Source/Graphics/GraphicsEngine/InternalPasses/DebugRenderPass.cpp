@@ -33,7 +33,7 @@
 
 bool DebugRenderPass::Initialize(RenderHardwareInterface& aRHI)
 {
-	aRHI.CreateDynamicVertexBuffer("LineRenderer", 10000, myLineVertexBuffer);
+	aRHI.CreateDynamicVertexBuffer("LineRenderer", sizeof(LineVertex), 1000, myLineVertexBuffer);
 
 	// Wireframe Mesh PSO
 	{
@@ -64,7 +64,7 @@ bool DebugRenderPass::Initialize(RenderHardwareInterface& aRHI)
 		linePSODesc.VertexShader.ByteCodeSize = sizeof(INTERNAL_Line_VS_ByteCode);
 		linePSODesc.PixelShader.ByteCode = INTERNAL_Line_PS_ByteCode;
 		linePSODesc.PixelShader.ByteCodeSize = sizeof(INTERNAL_Line_PS_ByteCode);
-		linePSODesc.InputLayoutElements = Vertex::LineDescription;
+		linePSODesc.InputLayoutElements = LineVertex::Description;
 		linePSODesc.Topology = Topology::LineList;
 
 		myLinePSO = std::make_unique<PipelineStateObject>();
@@ -184,7 +184,10 @@ void DebugRenderPass::RenderLines(GraphicsCommandList& inoutCommandList, RenderC
 		myLineVertices.push_back({ { call.End.x,   call.End.y,   call.End.z,   1.f }, call.Color });
 	}
 
-	if (!inoutCommandList.UpdateVertexBuffer(myLineVertexBuffer, myLineVertices))
+	if (!inoutCommandList.UpdateDynamicVertexBuffer(
+		myLineVertexBuffer,
+		myLineVertices.data(),
+		myLineVertices.size() * sizeof(LineVertex)))
 	{
 		return;
 	}

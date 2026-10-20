@@ -38,6 +38,8 @@ private:
     std::vector<const Texture*> myGBufferTextures;
 
     std::unique_ptr<Texture> myHalfSizeSSAOTexture;
+    std::unique_ptr<Texture> myHalfSizeBlurVSSAOTexture;
+    std::unique_ptr<Texture> myHalfSizeBlurHSSAOTexture;
 
     bool mySSAOEnabled;
 };

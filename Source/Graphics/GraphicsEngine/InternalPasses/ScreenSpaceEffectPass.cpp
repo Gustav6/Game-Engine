@@ -20,11 +20,7 @@
 #include "Fullscreen_VS.h"
 #include "Tonemap_PS.h"
 #include "SceneLuminance_PS.h"
-#include "Resample_PS.h"
 #include "Bloom_PS.h"
-#include "GaussianBlurH_PS.h"
-#include "GaussianBlurV_PS.h"
-#include "SSAO_PS.h"
 
 #include "Core/RenderContext.h"
 

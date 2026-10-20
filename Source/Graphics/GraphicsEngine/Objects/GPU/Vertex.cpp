@@ -10,11 +10,22 @@ const std::vector<VertexElementDescription> Vertex::Description =
 	{ "UV", 0, DXGI_FORMAT_R32G32_FLOAT },
 	{ "UV", 1, DXGI_FORMAT_R32G32_FLOAT },
 	{ "NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT },
-	{ "TANGENT", 0, DXGI_FORMAT_R32G32B32_FLOAT },
+	{ "TANGENT", 0, DXGI_FORMAT_R32G32B32_FLOAT }
 }; 
 
-const std::vector<VertexElementDescription> Vertex::LineDescription =
+const std::vector<VertexElementDescription> LineVertex::Description =
 {
 	{ "POSITION", 0, DXGI_FORMAT_R32G32B32A32_FLOAT },
-	{ "COLOR",    0, DXGI_FORMAT_R32G32B32A32_FLOAT },
+	{ "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT }
+};
+
+const std::vector<VertexElementDescription> ParticleVertex::Description =
+{
+	{ "POSITION", 0, DXGI_FORMAT_R32G32B32A32_FLOAT },
+	{ "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT },
+	{ "VELOCITY", 0, DXGI_FORMAT_R32G32B32_FLOAT },
+	{ "LIFETIME", 0, DXGI_FORMAT_R32_FLOAT },
+	{ "ANGLE", 0, DXGI_FORMAT_R32_FLOAT },
+	{ "SIZE", 0, DXGI_FORMAT_R32G32_FLOAT },
+	{ "CHANNELMASK", 0, DXGI_FORMAT_R32G32B32A32_FLOAT }
 };

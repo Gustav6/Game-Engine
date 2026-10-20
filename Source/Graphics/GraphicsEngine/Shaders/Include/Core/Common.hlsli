@@ -21,6 +21,17 @@ struct LineVertex
     float4 Color : COLOR;
 };
 
+struct ParticleVertex
+{
+    float4 Position : POSITION;
+    float4 Color : COLOR;
+    float3 Velocity : VELOCITY;
+    float LifeTime : LIFETIME;
+    float Angle : ANGLE;
+    float2 Size : SIZE;
+    float4 ChannelMask : CHANNELMASK;
+};
+
 struct GBufferOutput
 {
     float4 Albedo : SV_TARGET0;
@@ -56,7 +67,8 @@ cbuffer FrameBuffer : register(b0)
     float3 FB_CameraPosition;
     uint FB_TypeOfRenderPass;
     uint FB_TypeOfTonemap;
-    float3 _FB_Padding;
+    uint FB_SSAOFlag;
+    float2 _FB_Padding;
 }
 
 cbuffer ObjectBuffer : register(b1)

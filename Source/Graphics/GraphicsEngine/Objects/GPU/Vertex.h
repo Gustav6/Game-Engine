@@ -19,5 +19,25 @@ struct Vertex
 	CommonUtilities::Vector3f Tangent = { 0, 0, 0 };
 
 	static const std::vector<VertexElementDescription> Description;
-	static const std::vector<VertexElementDescription> LineDescription;
+};
+
+struct LineVertex
+{
+	CommonUtilities::Vector4f Position = { 0, 0, 0, 1 };
+	CommonUtilities::Vector4f Color = { 1, 1, 1, 1 };
+
+	static const std::vector<VertexElementDescription> Description;
+};
+
+struct ParticleVertex
+{
+	CommonUtilities::Vector4f Position;
+	CommonUtilities::Vector4f Color;
+	CommonUtilities::Vector3f Velocity;
+	float Lifetime;
+	float Angle;
+	CommonUtilities::Vector2f Size;
+	CommonUtilities::Vector4f ChannelMask;
+
+	static const std::vector<VertexElementDescription> Description;
 };

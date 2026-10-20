@@ -326,39 +326,27 @@ bool RenderHardwareInterface::CreateConstantBuffer(std::string_view aName, size_
 	return true;
 }
 
-bool RenderHardwareInterface::CreateDynamicVertexBuffer(std::string_view aName, unsigned int aMaxVertexCount, Buffer& outBuffer) const
+bool RenderHardwareInterface::CreateDynamicVertexBuffer(std::string_view aName, size_t aVertexSize, size_t aCapacity, Buffer& outBuffer) const
 {
-	if (aMaxVertexCount == 0)
-	{
-		SPDLOG_ERROR("Failed to create dynamic vertex buffer for {}! Max vertex count is 0", aName);
-
-		return false;
-	}
-
-	D3D11_BUFFER_DESC desc = {};
-
-	desc.Usage = D3D11_USAGE_DYNAMIC;
-	desc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-	desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-	desc.ByteWidth = static_cast<unsigned int>(sizeof(Vertex) * aMaxVertexCount);
-
-	const HRESULT result = myDevice->CreateBuffer(&desc, nullptr, &outBuffer.myBuffer);
-
+	D3D11_BUFFER_DESC vxBufferDesc = {};
+	vxBufferDesc.ByteWidth = static_cast <unsigned >(aCapacity * aVertexSize);
+	vxBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
+	vxBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+	vxBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+	const HRESULT result = myDevice->CreateBuffer(&vxBufferDesc, nullptr, &outBuffer.myBuffer);
+	
 	if (FAILED(result))
 	{
-		SPDLOG_ERROR("Failed to create dynamic vertex buffer for {}!",	aName);
-
-		return false;
+		SPDLOG_ERROR("Failed to create dynamic vertex buffer {}!" , aName);
+		return false ;
 	}
 
-	const std::string bufferName = std::format("{}_Dynamic_VX", aName);
-
-	SetObjectName(outBuffer.myBuffer, bufferName);
-
+	SetObjectName(outBuffer.myBuffer, aName);
+	outBuffer.myType = BufferType::DynamicVertexBuffer;
 	outBuffer.myName = aName;
-	outBuffer.mySize = desc.ByteWidth;
-	outBuffer.myStride = sizeof(Vertex);
-	outBuffer.myType = BufferType::VertexBuffer;
+	outBuffer.mySize = vxBufferDesc.ByteWidth;
+
+	outBuffer.myStride = static_cast<unsigned>(aVertexSize);
 
 	return true;
 }

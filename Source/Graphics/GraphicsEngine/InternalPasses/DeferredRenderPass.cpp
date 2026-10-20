@@ -10,6 +10,8 @@
 #include "GraphicsEngine/Core/RenderContext.h"
 #include "GraphicsEngine/Core/RenderEnums.h"
 
+#include "GraphicsEngine/InternalOperations/PostProcessFilters.h"
+
 #include "GraphicsEngine/RHI/RenderHardwareInterface.h"
 
 #include "GraphicsEngine/ConstantBuffers/LightBuffer.h"
@@ -155,7 +157,7 @@ bool DeferredRenderPass::Initialize(RenderHardwareInterface& aRHI)
 		myGBufferTextures.emplace_back(&myGBuffer->GetTextures()[t]);
 	}
 
-	// SSAO Texture
+	// SSAO Textures
 	{
 		myHalfSizeSSAOTexture = std::make_unique<Texture>();
 
@@ -164,6 +166,22 @@ bool DeferredRenderPass::Initialize(RenderHardwareInterface& aRHI)
 		if (!aRHI.CreateTexture("SSAO", bufferSize.x, bufferSize.y, 1, ResourceFormat::R32_FLOAT, ResourceBindFlag_ShaderResource | ResourceBindFlag_RenderTarget, *myHalfSizeSSAOTexture))
 		{
 			SPDLOG_CRITICAL("Failed to create SSAO texture!");
+			return false;
+		}
+
+		myHalfSizeBlurVSSAOTexture = std::make_unique<Texture>();
+
+		if (!aRHI.CreateTexture("SSAO_Blurred_V", bufferSize.x, bufferSize.y, 1, ResourceFormat::R32_FLOAT, ResourceBindFlag_ShaderResource | ResourceBindFlag_RenderTarget, *myHalfSizeBlurVSSAOTexture))
+		{
+			SPDLOG_CRITICAL("Failed to create SSAO Blurred texture!");
+			return false;
+		}
+
+		myHalfSizeBlurHSSAOTexture = std::make_unique<Texture>();
+
+		if (!aRHI.CreateTexture("SSAO_Blurred_H", bufferSize.x, bufferSize.y, 1, ResourceFormat::R32_FLOAT, ResourceBindFlag_ShaderResource | ResourceBindFlag_RenderTarget, *myHalfSizeBlurHSSAOTexture))
+		{
+			SPDLOG_CRITICAL("Failed to create SSAO Blurred texture!");
 			return false;
 		}
 	}
@@ -196,6 +214,7 @@ void DeferredRenderPass::Execute(
 	frameBuffer.Projection = aContext.Camera->RenderCamera.GetProjection();
 	frameBuffer.CameraPosition = aContext.Camera->Transform.GetTranslation();
 	frameBuffer.TypeOfRenderPass = static_cast<unsigned int>(aContext.RenderSettings->DebugRenderMode);
+	frameBuffer.SSAOFlag = mySSAOEnabled;
 
 	aContext.ConstantBuffers->UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::FrameBuffer, frameBuffer, 0, PipelineStage_VertexShader | PipelineStage_PixelShader);
 
@@ -214,22 +233,26 @@ void DeferredRenderPass::Execute(
 		{
 			inoutCommandList.SetRenderTarget(aFrameTargets.RenderTarget, nullptr);
 
-			// GBuffer set resources
-			{
-				inoutCommandList.SetShaderResources(myGBufferTextures.data(), myGBufferTextures.size(), 0, PipelineStage_PixelShader);
-			}
-
 			inoutCommandList.BeginEvent("Ambient Light");
 
 			if (mySSAOEnabled)
 			{
 				inoutCommandList.SetRenderTarget(myHalfSizeSSAOTexture.get(), nullptr);
+				inoutCommandList.SetShaderResource(myGBufferTextures[1], 1, PipelineStage_PixelShader);
 
 				inoutCommandList.SetPipelineStateObject(*mySSAOPSO);
 				inoutCommandList.Draw(4);
 
+				aContext.PostProcessFilters->BlurHorizontal(inoutCommandList, *myHalfSizeSSAOTexture, *myHalfSizeBlurHSSAOTexture);
+				aContext.PostProcessFilters->BlurVertical(inoutCommandList, *myHalfSizeBlurHSSAOTexture, *myHalfSizeBlurVSSAOTexture);
+
 				inoutCommandList.SetRenderTarget(aFrameTargets.RenderTarget, nullptr);
-				inoutCommandList.SetShaderResource(myHalfSizeSSAOTexture.get(), 97, PipelineStage_PixelShader);
+				inoutCommandList.SetShaderResource(myHalfSizeBlurVSSAOTexture.get(), 97, PipelineStage_PixelShader);
+			}
+
+			// GBuffer set resources
+			{
+				inoutCommandList.SetShaderResources(myGBufferTextures.data(), myGBufferTextures.size(), 0, PipelineStage_PixelShader);
 			}
 
 			inoutCommandList.SetPipelineStateObject(*myDeferredAmbientPSO);
