@@ -1,6 +1,7 @@
 #include "GameFramework.pch.h"
 #include "AssetRegistry.h"
 
+#include "EngineContext.h"
 #include "AssetPipeline/Assets/Types/MeshAsset.h"
 
 #include "CommonUtilities/Collision/Sphere.hpp"
@@ -23,7 +24,7 @@ AssetRegistry& AssetRegistry::Get()
 AssetRegistry::AssetRegistry() = default;
 AssetRegistry::~AssetRegistry() = default;
 
-bool AssetRegistry::Initialize(std::filesystem::path aWorkingDirectory)
+bool AssetRegistry::Initialize()
 {
 	ensure(myAssets.empty());
 
@@ -34,11 +35,11 @@ bool AssetRegistry::Initialize(std::filesystem::path aWorkingDirectory)
     InitUnitSphere();
 	InitUnitPlane();
 
-    myWorkingDirectory = std::filesystem::absolute(aWorkingDirectory);
+    myWorkingDirectory = std::filesystem::absolute(EngineContext.ContentPath);
 
     if (!std::filesystem::exists(myWorkingDirectory))
     {
-        SPDLOG_CRITICAL("Content root dir is not a valid path! Provided root was {}.", aWorkingDirectory.string());
+        SPDLOG_CRITICAL("Content root dir is not a valid path! Root is [{}].", EngineContext.ContentPath.string());
         return false;
     }
 

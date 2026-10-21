@@ -1,6 +1,6 @@
 #include "InGameState.h"
 
-#include "Application.h"
+#include "EngineContext.h"
 
 #include "AssetPipeline/AssetRegistry/AssetRegistry.h"
 
@@ -288,20 +288,20 @@ void InGameState::LoadTestScene()
 
 void InGameState::UpdateTestBinds()
 {
-	if (Application.InputManager.IsKeyPressed(KeyCode::D1))
+	if (EngineContext.InputManager.IsKeyPressed(KeyCode::D1))
 	{
 		myAnimatedObject->GetComponent<AnimationComponent>()->PlayAnimation("Walk", true);
 		myAnimatedObject->GetComponent<AnimationComponent>()->PlayAnimation("Wave", false);
 	}
-	if (Application.InputManager.IsKeyPressed(KeyCode::D2))
+	if (EngineContext.InputManager.IsKeyPressed(KeyCode::D2))
 	{
 		myAnimatedObject->GetComponent<AnimationComponent>()->PlayAnimation("Run", true);
 	}
-	if (Application.InputManager.IsKeyPressed(KeyCode::D3))
+	if (EngineContext.InputManager.IsKeyPressed(KeyCode::D3))
 	{
 		myAnimatedObject->GetComponent<AnimationComponent>()->PlayAnimation("Breathing", true);
 	}
-	if (Application.InputManager.IsKeyPressed(KeyCode::D4))
+	if (EngineContext.InputManager.IsKeyPressed(KeyCode::D4))
 	{
 		if (myDirectionLightObject->GetIsEnabled())
 		{
@@ -312,7 +312,7 @@ void InGameState::UpdateTestBinds()
 			myDirectionLightObject->Enable();
 		}
 	}
-	if (Application.InputManager.IsKeyPressed(KeyCode::D5))
+	if (EngineContext.InputManager.IsKeyPressed(KeyCode::D5))
 	{
 		if (myPointLightObject->GetIsEnabled())
 		{
@@ -323,7 +323,7 @@ void InGameState::UpdateTestBinds()
 			myPointLightObject->Enable();
 		}
 	}
-	if (Application.InputManager.IsKeyPressed(KeyCode::D6))
+	if (EngineContext.InputManager.IsKeyPressed(KeyCode::D6))
 	{
 		if (mySpotLightObject->GetIsEnabled())
 		{
@@ -338,7 +338,7 @@ void InGameState::UpdateTestBinds()
 
 void InGameState::UpdateGraphicsDebugBinds()
 {
-	if (Application.InputManager.IsKeyPressed(KeyCode::F5))
+	if (EngineContext.InputManager.IsKeyPressed(KeyCode::F5))
 	{
 		int nextDebugRenderMode = static_cast<int>(GraphicsEngine::Get().GetSettings().DebugRenderMode) - 1;
 
@@ -350,7 +350,7 @@ void InGameState::UpdateGraphicsDebugBinds()
 		GraphicsEngine::Get().SetDebugRenderMode(static_cast<DebugRenderMode>(nextDebugRenderMode));
 	}
 
-	if (Application.InputManager.IsKeyPressed(KeyCode::F6))
+	if (EngineContext.InputManager.IsKeyPressed(KeyCode::F6))
 	{
 		int nextDebugRenderMode = static_cast<int>(GraphicsEngine::Get().GetSettings().DebugRenderMode) + 1;
 
@@ -362,7 +362,7 @@ void InGameState::UpdateGraphicsDebugBinds()
 		GraphicsEngine::Get().SetDebugRenderMode(static_cast<DebugRenderMode>(nextDebugRenderMode));
 	}
 
-	if (Application.InputManager.IsKeyPressed(KeyCode::F7))
+	if (EngineContext.InputManager.IsKeyPressed(KeyCode::F7))
 	{
 		int nextToneMappingOperator = static_cast<int>(GraphicsEngine::Get().GetSettings().ToneMapper) + 1;
 
@@ -374,7 +374,7 @@ void InGameState::UpdateGraphicsDebugBinds()
 		GraphicsEngine::Get().SetTonemap(static_cast<ToneMapper>(nextToneMappingOperator));
 	}
 
-	if (Application.InputManager.IsKeyPressed(KeyCode::F8))
+	if (EngineContext.InputManager.IsKeyPressed(KeyCode::F8))
 	{
 		GraphicsEngine::Get().SetBloomEnabled(!GraphicsEngine::Get().GetSettings().BloomEnabled);
 	}

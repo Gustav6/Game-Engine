@@ -1,6 +1,9 @@
 #include "CommonUtilities.pch.h"
 #include "Input.h"
 
+#define	WIN32_LEAN_AND_MEAN
+#include <windowsx.h>
+
 namespace CommonUtilities
 {
 	Input::Input()
@@ -93,7 +96,7 @@ namespace CommonUtilities
 			}
 			case WM_MOUSEMOVE:
 			{
-				myCursorTentativePosition = { static_cast<float>(aLParam & 0xFFFF), static_cast<float>((aLParam >> 16) & 0xFFFF) };
+				myCursorTentativePosition = { static_cast<float>(GET_X_LPARAM(aLParam)), static_cast<float>(GET_Y_LPARAM(aLParam)) };
 
 				return true;
 			}
@@ -288,22 +291,40 @@ namespace CommonUtilities
 		ClipCursor(nullptr);
 	}
 
+	POINT Input::GetClientCenter() const
+	{
+		RECT clientRect;
+		GetClientRect(myHWND, &clientRect);
+
+		return
+		{
+			(clientRect.right - clientRect.left) / 2,
+			(clientRect.bottom - clientRect.top) / 2
+		};
+	}
+
 	/// <summary>
 	/// Will center the cursor to the middle of the application window
 	/// </summary>
 	void Input::CenterCursor() const
 	{
-		RECT clientRect;
-		GetClientRect(myHWND, &clientRect);
-
-		POINT center = 
-		{
-			.x = (clientRect.right - clientRect.left) / 2,
-			.y = (clientRect.bottom - clientRect.top) / 2
-		};
-
+		POINT center = GetClientCenter();
 		ClientToScreen(myHWND, &center);
-
 		SetCursorPos(center.x, center.y);
+	}
+
+	Vector2f Input::GetCapturedMouseDelta() const
+	{
+		POINT position;
+		if (!GetCursorPos(&position))
+		{
+			return Vector2f::Zero;
+		}
+
+		ScreenToClient(myHWND, &position);
+		const POINT center = GetClientCenter();
+
+		return { static_cast<float>(position.x - center.x), static_cast<float>(position.y - center.y) };
+
 	}
 }

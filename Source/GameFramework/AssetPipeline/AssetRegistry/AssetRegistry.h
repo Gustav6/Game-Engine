@@ -28,7 +28,7 @@ public:
 	AssetRegistry();
 	~AssetRegistry();
 
-	bool Initialize(std::filesystem::path aWorkingDirectory);
+	bool Initialize();
 	void UnInitialize();
 
 	const std::filesystem::path& GetWorkingDirectory() const;

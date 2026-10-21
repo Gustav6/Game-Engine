@@ -6,7 +6,7 @@
 #include <vector>
 #include <memory>
 
-#include "Application.h"
+#include "EngineContext.h"
 
 #include "AssetPipeline/AssetRegistry/AssetRegistry.h"
 
@@ -72,11 +72,11 @@ bool Game::Initialize(SIZE aWindowSize, WNDPROC aWindowProcess, LPCWSTR aWindowT
 
 	if (settings.HasKey("ContentPath"))
 	{
-		Application.ContentPath = GetExecutableDirectory()/ settings.GetString("ContentPath");
+		EngineContext.ContentPath = GetExecutableDirectory()/ settings.GetString("ContentPath");
 	}
 	else
 	{
-		throw std::runtime_error("Application settings has no content path set!");
+		throw std::runtime_error("EngineContext settings has no content path set!");
 	}
 
 	AssetRegistry::Get().RegisterAssetType<MeshAsset>({ ".fbx" });
@@ -87,12 +87,10 @@ bool Game::Initialize(SIZE aWindowSize, WNDPROC aWindowProcess, LPCWSTR aWindowT
 	AssetRegistry::Get().RegisterAssetType<SpriteAsset>({ ".dds" });
 	AssetRegistry::Get().RegisterAssetType<UnrealSceneAsset>({ ".json" });
 
-	if (!AssetRegistry::Get().Initialize(Application.ContentPath))
+	if (!AssetRegistry::Get().Initialize())
 	{
 		throw std::runtime_error("AssetRegistry failed to initialize!");
 	}
-
-	Application.InputManager.SetWindowHandle(myMainWindowHandle);
 
 	constexpr LPCWSTR windowClassName = L"ModelViewerMainWindow";
 
@@ -124,6 +122,7 @@ bool Game::Initialize(SIZE aWindowSize, WNDPROC aWindowProcess, LPCWSTR aWindowT
 		nullptr
 	);
 
+	EngineContext.InputManager.SetWindowHandle(myMainWindowHandle);
 	WindowManager::Get().SetWindowHandle(myMainWindowHandle);
 
 	SPDLOG_INFO("Ready!");
@@ -145,12 +144,12 @@ bool Game::Initialize(SIZE aWindowSize, WNDPROC aWindowProcess, LPCWSTR aWindowT
 		}
 		else
 		{
-			throw std::runtime_error("Application settings has no shader path set!");
+			throw std::runtime_error("EngineContext settings has no shader path set!");
 		}
 
 		myGraphicsCommandList = std::make_unique<GraphicsCommandList>();
 
-		GE.CreateCommandList("ModelViewer", *myGraphicsCommandList);
+		GE.CreateCommandList("Application", *myGraphicsCommandList);
 
 		std::shared_ptr<TextureAsset> environmentTexture = AssetRegistry::Get().GetAsset<TextureAsset>("T_Shipyard_cm");
 
@@ -197,7 +196,7 @@ int Game::Run()
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
 
-			Application.InputManager.UpdateEvents(msg.message, msg.wParam, msg.lParam);
+			EngineContext.InputManager.UpdateEvents(msg.message, msg.wParam, msg.lParam);
 
 			switch (msg.message)
 			{
@@ -211,10 +210,10 @@ int Game::Run()
 			}
 		}
 
-		Application.TimeManager.Update();
-		Application.InputManager.UpdateInput();
+		EngineContext.TimeManager.Update();
+		EngineContext.InputManager.UpdateInput();
 
-		float deltaTime = Application.TimeManager.GetDeltaTime();
+		const float deltaTime = EngineContext.TimeManager.GetDeltaTime();
 
 		UpdateScene(deltaTime);
 
@@ -363,7 +362,7 @@ void Game::DrawImGuiLayer([[maybe_unused]] const FrameStats& aFrameStats)
 	{
 		ImGui::Begin("Level selector", &myShowLevelSelectorWindow, ImGuiWindowFlags_AlwaysAutoResize);
 
-		std::filesystem::path sceneRoot = std::filesystem::absolute(Application.ContentPath / "Scenes");
+		std::filesystem::path sceneRoot = std::filesystem::absolute(EngineContext.ContentPath / "Scenes");
 
 		if (std::filesystem::exists(sceneRoot))
 		{

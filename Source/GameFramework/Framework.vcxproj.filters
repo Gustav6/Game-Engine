@@ -48,6 +48,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="EngineContext.h" />
     <ClInclude Include="AssetPipeline\AssetRegistry\AssetRegistry.h">
       <Filter>AssetPipeline\AssetRegistry</Filter>
     </ClInclude>
@@ -106,6 +107,9 @@
     <ClInclude Include="GamePipeline\Components\Rendering\AnimationComponent.h">
       <Filter>GamePipeline\Components\Rendering</Filter>
     </ClInclude>
+    <ClInclude Include="GamePipeline\Components\Rendering\CameraComponent.h">
+      <Filter>GamePipeline\Components\Rendering</Filter>
+    </ClInclude>
     <ClInclude Include="GamePipeline\Components\Rendering\MeshComponent.h">
       <Filter>GamePipeline\Components\Rendering</Filter>
     </ClInclude>
@@ -132,6 +136,7 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="EngineContext.cpp" />
     <ClCompile Include="AssetPipeline\AssetRegistry\AssetRegistry.cpp">
       <Filter>AssetPipeline\AssetRegistry</Filter>
     </ClCompile>
@@ -188,6 +193,9 @@
       <Filter>GamePipeline\Components\Registry</Filter>
     </ClCompile>
     <ClCompile Include="GamePipeline\Components\Rendering\AnimationComponent.cpp">
+      <Filter>GamePipeline\Components\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="GamePipeline\Components\Rendering\CameraComponent.cpp">
       <Filter>GamePipeline\Components\Rendering</Filter>
     </ClCompile>
     <ClCompile Include="GamePipeline\Components\Rendering\MeshComponent.cpp">

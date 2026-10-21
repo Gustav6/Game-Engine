@@ -24,7 +24,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Application.h" />
     <ClInclude Include="Camera\GameCamera.h">
       <Filter>Camera</Filter>
     </ClInclude>
@@ -42,7 +41,6 @@
     <ClCompile Include="..\..\..\ThirdParty\Source\tracy\TracyClient.cpp">
       <Filter>ThirdParty\Source\tracy</Filter>
     </ClCompile>
-    <ClCompile Include="Application.cpp" />
     <ClCompile Include="Camera\GameCamera.cpp">
       <Filter>Camera</Filter>
     </ClCompile>

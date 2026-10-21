@@ -206,49 +206,53 @@ namespace CommonUtilities
 {
 	class Input
 	{
-		public:
-			Input();
+	public:
+		Input();
 
-			void SetWindowHandle(HWND aWindowHandle);
+		void SetWindowHandle(HWND aWindowHandle);
 
-			void UpdateInput();
+		void UpdateInput();
 
-			bool UpdateEvents(unsigned int aMessage, u64 aWParam, s64 aLParam);
+		bool UpdateEvents(unsigned int aMessage, u64 aWParam, s64 aLParam);
 
-			bool IsAnyKeyDown() const;
-			bool IsAnyKeyPressed() const;
-			bool IsAnyKeyReleased() const;
+		bool IsAnyKeyDown() const;
+		bool IsAnyKeyPressed() const;
+		bool IsAnyKeyReleased() const;
 
-			bool IsKeyDown(const KeyCode aKeyCode) const;
-			bool IsKeyPressed(const KeyCode aKeyCode) const;
-			bool IsKeyReleased(const KeyCode aKeyCode) const;
+		bool IsKeyDown(const KeyCode aKeyCode) const;
+		bool IsKeyPressed(const KeyCode aKeyCode) const;
+		bool IsKeyReleased(const KeyCode aKeyCode) const;
 
-			Vector2f GetMousePosition() const;
-			Vector2f GetMousePositionAbsolute() const;
-			Vector2f GetMousePositionDelta() const;
+		Vector2f GetMousePosition() const;
+		Vector2f GetMousePositionAbsolute() const;
+		Vector2f GetMousePositionDelta() const;
 
-			int GetScrollWheelDelta() const;
+		int GetScrollWheelDelta() const;
 
-			void ShowMouse() const;
-			void HideMouse() const;
+		void ShowMouse() const;
+		void HideMouse() const;
 
-			void CaptureMouse() const;
-			void ReleaseMouse() const;
+		void CaptureMouse() const;
+		void ReleaseMouse() const;
 
-			void CenterCursor() const;
+		POINT GetClientCenter() const;
 
-		private:
-			HWND myHWND;
+		void CenterCursor() const;
+		
+		Vector2f GetCapturedMouseDelta() const;
 
-			std::bitset<static_cast<size_t>(KeyCode::Count)> myKeysCurrentState;
-			std::bitset<static_cast<size_t>(KeyCode::Count)> myKeysPreviousState;
-			std::bitset<static_cast<size_t>(KeyCode::Count)> myKeysTentativeState;
+	private:
+		HWND myHWND;
 
-			Vector2f myCursorCurrentPosition;
-			Vector2f myCursorPreviousPosition;
-			Vector2f myCursorTentativePosition;
+		std::bitset<static_cast<size_t>(KeyCode::Count)> myKeysCurrentState;
+		std::bitset<static_cast<size_t>(KeyCode::Count)> myKeysPreviousState;
+		std::bitset<static_cast<size_t>(KeyCode::Count)> myKeysTentativeState;
 
-			int myScrollWheelDelta;
-			int myScrollWheelTentative;
+		Vector2f myCursorCurrentPosition;
+		Vector2f myCursorPreviousPosition;
+		Vector2f myCursorTentativePosition;
+
+		int myScrollWheelDelta;
+		int myScrollWheelTentative;
 	};
 }

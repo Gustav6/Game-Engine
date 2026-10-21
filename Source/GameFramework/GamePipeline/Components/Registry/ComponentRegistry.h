@@ -1,13 +1,12 @@
 #pragma once
 
-#include <memory>
 #include <vector>
 #include <unordered_map>
 
 #include "GamePipeline/Components/Base/Component.h"
 
-// TODO: Store the components so their owner can be found via the same index.
-// TODO: Find a way to avoid looking up the enabled flag for the actors.
+// TODO: Change vector usages and save components in chunks!
+// Source : https://github.com/mattreecebentley/plf_hive
 
 class Actor;
 

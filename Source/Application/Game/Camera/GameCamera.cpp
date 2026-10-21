@@ -2,7 +2,7 @@
 
 #include "GraphicsEngine/Objects/Scene/Camera.h"
 
-#include "Application.h"
+#include "EngineContext.h"
 
 
 GameCamera& GameCamera::GetInstance()
@@ -20,58 +20,59 @@ void GameCamera::Init(float aHorizontalFov, float aNearPlane, float aFarPlane, C
 
 void GameCamera::Update(float aDeltaTime)
 {
-	if (Application.InputManager.IsKeyDown(KeyCode::W))
+	if (EngineContext.InputManager.IsKeyDown(KeyCode::W))
 	{
 		GetTransform().Translate(GetTransform().GetForward() * myCamerasMoveSpeed * aDeltaTime);
 		UpdateFrustum();
 	}
 
-	if (Application.InputManager.IsKeyDown(KeyCode::A))
+	if (EngineContext.InputManager.IsKeyDown(KeyCode::A))
 	{
 		GetTransform().Translate(-GetTransform().GetRight() * myCamerasMoveSpeed * aDeltaTime);
 		UpdateFrustum();
 	}
 
-	if (Application.InputManager.IsKeyDown(KeyCode::S))
+	if (EngineContext.InputManager.IsKeyDown(KeyCode::S))
 	{
 		GetTransform().Translate(-GetTransform().GetForward() * myCamerasMoveSpeed * aDeltaTime);
 		UpdateFrustum();
 	}
 
-	if (Application.InputManager.IsKeyDown(KeyCode::D))
+	if (EngineContext.InputManager.IsKeyDown(KeyCode::D))
 	{
 		GetTransform().Translate(GetTransform().GetRight() * myCamerasMoveSpeed * aDeltaTime);
 		UpdateFrustum();
 	}
 
-	if (Application.InputManager.IsKeyDown(KeyCode::Space))
+	if (EngineContext.InputManager.IsKeyDown(KeyCode::Space))
 	{
 		GetTransform().Translate(GetTransform().GetUp() * myCamerasMoveSpeed * aDeltaTime);
 		UpdateFrustum();
 	}
 
-	if (Application.InputManager.IsKeyDown(KeyCode::Control))
+	if (EngineContext.InputManager.IsKeyDown(KeyCode::Control))
 	{
 		GetTransform().Translate(-GetTransform().GetUp() * myCamerasMoveSpeed * aDeltaTime);
 		UpdateFrustum();
 	}
 
-	if (Application.InputManager.IsKeyPressed(KeyCode::RMB))
+	if (EngineContext.InputManager.IsKeyPressed(KeyCode::RMB))
 	{
-		Application.InputManager.CaptureMouse();
-		Application.InputManager.HideMouse();
+		EngineContext.InputManager.CaptureMouse();
+		EngineContext.InputManager.HideMouse();
+		EngineContext.InputManager.CenterCursor();
 	}
-	else if (Application.InputManager.IsKeyReleased(KeyCode::RMB))
+	else if (EngineContext.InputManager.IsKeyReleased(KeyCode::RMB))
 	{
-		Application.InputManager.ReleaseMouse();
-		Application.InputManager.ShowMouse();
+		EngineContext.InputManager.ReleaseMouse();
+		EngineContext.InputManager.ShowMouse();
 	}
 
-	if (Application.InputManager.IsKeyDown(KeyCode::RMB))
+	if (EngineContext.InputManager.IsKeyDown(KeyCode::RMB))
 	{
+		const CommonUtilities::Vector2f mouseDelta = EngineContext.InputManager.GetCapturedMouseDelta();
+
 		constexpr float sensitivity = 0.2f;
-
-		CommonUtilities::Vector2f mouseDelta = Application.InputManager.GetMousePositionDelta();
 
 		float yaw = mouseDelta.x * sensitivity;
 		float pitch = mouseDelta.y * sensitivity;
@@ -82,6 +83,8 @@ void GameCamera::Update(float aDeltaTime)
 		GetTransform().Rotate(pitchQuat, false);
 		GetTransform().Rotate(yawQuat, true);
 		UpdateFrustum();
+
+		EngineContext.InputManager.CenterCursor();
 	}
 }
 

@@ -1,9 +1,13 @@
-﻿#include "Application.h"
+﻿#include "GameFramework.pch.h"
+#include "EngineContext.h"
 
 #include "Ensure.h"
 
 std::filesystem::path GetExecutableDirectory()
 {
+    // Source:
+	// https://learn.microsoft.com/en-us/windows/win32/api/libloaderapi/nf-libloaderapi-getmodulefilenamew
+
     wchar_t buf[MAX_PATH];
     DWORD len = GetModuleFileNameW(NULL, buf, MAX_PATH);
 
