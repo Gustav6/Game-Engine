@@ -20,7 +20,8 @@ filter { "platforms:x64" }
 -- For Debug configuration, we want to set the _DEBUG #define flag and turn on symbol generation.
 filter "configurations:Debug"
     multiprocessorcompile "On"
-    defines { "_DEBUG", "IMGUI_ENABLE", "TRACY_ENABLE", "TRACY_ON_DEMAND", "ENABLE_FILE_WATCHER" }
+    --defines { "_DEBUG", "IMGUI_ENABLE", "TRACY_ENABLE", "TRACY_ON_DEMAND", "ENABLE_FILE_WATCHER" }
+    defines { "_DEBUG", "IMGUI_ENABLE", "ENABLE_FILE_WATCHER" }
     symbols "On"
 
 -- Generate symbols in release mode so we can debug the release build if needed.

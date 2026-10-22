@@ -95,63 +95,63 @@ int GuardedMain()
     return game.Run();
 }
 
-void CreateMiniDump(EXCEPTION_POINTERS* pep)
-{
-    // Source:
-    // https://www.debuginfo.com/articles/effminidumps.html#introduction
-
-    HANDLE hFile = CreateFile(_T("MiniDump.dmp"), GENERIC_READ | GENERIC_WRITE,
-        0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr);
-
-    if ((hFile != nullptr) && (hFile != INVALID_HANDLE_VALUE))
-    {
-        MINIDUMP_EXCEPTION_INFORMATION mdei;
-
-        mdei.ThreadId = GetCurrentThreadId();
-        mdei.ExceptionPointers = pep;
-        mdei.ClientPointers = FALSE;
-
-        MINIDUMP_TYPE mdt = static_cast<MINIDUMP_TYPE>
-    	(
-    		MiniDumpWithIndirectlyReferencedMemory |
-            MiniDumpWithDataSegs |
-            MiniDumpWithHandleData |
-            MiniDumpWithThreadInfo
-        );
-
-        BOOL rv = MiniDumpWriteDump(GetCurrentProcess(), GetCurrentProcessId(),
-            hFile, mdt, (pep != nullptr) ? &mdei : nullptr, nullptr, nullptr);
-
-        if (!rv)
-            _tprintf(_T("MiniDumpWriteDump failed. Error: %u \n"), GetLastError());
-        else
-            _tprintf(_T("Minidump created.\n"));
-
-        CloseHandle(hFile);
-    }
-    else
-    {
-        _tprintf(_T("CreateFile failed. Error: %u \n"), GetLastError());
-    }
-}
-
-static LONG DumpFilter(EXCEPTION_POINTERS* pep)
-{
-    CreateMiniDump(pep);
-    return EXCEPTION_CONTINUE_SEARCH;
-}
-
-static int GuardedMainWithDump()
-{
-    __try
-    {
-        return GuardedMain();
-    }
-    __except (DumpFilter(GetExceptionInformation()))
-    {
-        return -1;
-    }
-}
+//void CreateMiniDump(EXCEPTION_POINTERS* pep)
+//{
+//    // Source:
+//    // https://www.debuginfo.com/articles/effminidumps.html#introduction
+//
+//    HANDLE hFile = CreateFile(_T("MiniDump.dmp"), GENERIC_READ | GENERIC_WRITE,
+//        0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr);
+//
+//    if ((hFile != nullptr) && (hFile != INVALID_HANDLE_VALUE))
+//    {
+//        MINIDUMP_EXCEPTION_INFORMATION mdei;
+//
+//        mdei.ThreadId = GetCurrentThreadId();
+//        mdei.ExceptionPointers = pep;
+//        mdei.ClientPointers = FALSE;
+//
+//        MINIDUMP_TYPE mdt = static_cast<MINIDUMP_TYPE>
+//    	(
+//    		MiniDumpWithIndirectlyReferencedMemory |
+//            MiniDumpWithDataSegs |
+//            MiniDumpWithHandleData |
+//            MiniDumpWithThreadInfo
+//        );
+//
+//        BOOL rv = MiniDumpWriteDump(GetCurrentProcess(), GetCurrentProcessId(),
+//            hFile, mdt, (pep != nullptr) ? &mdei : nullptr, nullptr, nullptr);
+//
+//        if (!rv)
+//            _tprintf(_T("MiniDumpWriteDump failed. Error: %u \n"), GetLastError());
+//        else
+//            _tprintf(_T("Minidump created.\n"));
+//
+//        CloseHandle(hFile);
+//    }
+//    else
+//    {
+//        _tprintf(_T("CreateFile failed. Error: %u \n"), GetLastError());
+//    }
+//}
+//
+//static LONG DumpFilter(EXCEPTION_POINTERS* pep)
+//{
+//    CreateMiniDump(pep);
+//    return EXCEPTION_CONTINUE_SEARCH;
+//}
+//
+//static int GuardedMainWithDump()
+//{
+//    __try
+//    {
+//        return GuardedMain();
+//    }
+//    __except (DumpFilter(GetExceptionInformation()))
+//    {
+//        return -1;
+//    }
+//}
 
 int APIENTRY wWinMain(
 	_In_ HINSTANCE hInstance,
@@ -166,7 +166,7 @@ int APIENTRY wWinMain(
 
     try
 	{
-        return GuardedMainWithDump();
+        return GuardedMain();
 	}
     catch(const std::exception& e)
     {

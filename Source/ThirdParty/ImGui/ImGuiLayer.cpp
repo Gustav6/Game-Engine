@@ -16,7 +16,10 @@ void ImGuiLayer::OnAttach(ID3D11Device* aDevice, ID3D11DeviceContext* aContext)
 	ImGui::CreateContext();
 	ImGui::StyleColorsDark();
 	ImGui_ImplWin32_Init(myWindowHandle);
-	ImGui_ImplDX11_Init(aDevice, aContext);
+	ImGui_ImplDX11_Init(aDevice, aContext); 
+	
+	ImGuiIO& io = ImGui::GetIO();
+	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 }
 
 void ImGuiLayer::OnDetach()
@@ -30,7 +33,9 @@ void ImGuiLayer::BeginFrame()
 {
 	ImGui_ImplDX11_NewFrame();
 	ImGui_ImplWin32_NewFrame();
-	ImGui::NewFrame();
+	ImGui::NewFrame(); 
+
+	ImGui::DockSpaceOverViewport(0, ImGui::GetMainViewport(), ImGuiDockNodeFlags_PassthruCentralNode);
 }
 
 void ImGuiLayer::Render()

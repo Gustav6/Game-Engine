@@ -235,7 +235,9 @@ int Game::Run()
 
 			FrameStats frameStats = GE.Render(*myGraphicsCommandList, camera);
 		
+#ifdef IMGUI_ENABLE
 			DrawImGuiLayer(frameStats);
+#endif
 	
 			myGraphicsCommandList->FinishCommandList();
 
@@ -264,16 +266,16 @@ void Game::RenderScene() const
 	myStateMachine->Render();
 }
 
-void Game::DrawImGuiLayer([[maybe_unused]] const FrameStats& aFrameStats)
-{
 #ifdef IMGUI_ENABLE
+void Game::DrawImGuiLayer(const FrameStats& aFrameStats)
+{
 	ImGui::PushFont(nullptr, 18.0f);
 
 	ImGui::ShowDemoWindow();
 
 	if (myShowDebugWindow)
 	{
-		ImGui::Begin("Debug", &myShowDebugWindow, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoBackground);
+		ImGui::Begin("Debug", &myShowDebugWindow, ImGuiWindowFlags_AlwaysAutoResize);
 
 		if (ImGui::CollapsingHeader("Frame Info"))
 		{
@@ -405,12 +407,11 @@ void Game::DrawImGuiLayer([[maybe_unused]] const FrameStats& aFrameStats)
 	}
 
 	{
-		ImGuiWindowFlags flags =
-			ImGuiWindowFlags_AlwaysAutoResize;
+		ImGuiWindowFlags flags = ImGuiWindowFlags_None;
 
 		ImGui::Begin("Scene Hierarchy", nullptr, flags);
 
-		for (const auto& actor : GameWorld::Get().GetActors())
+		for (auto& actor : GameWorld::Get().GetActors())
 		{
 			if (actor->GetParent() == nullptr)
 			{
@@ -422,12 +423,16 @@ void Game::DrawImGuiLayer([[maybe_unused]] const FrameStats& aFrameStats)
 	}
 
 	ImGui::PopFont();
-#endif
 }
+#endif
 
-void Game::DrawActorNode(const Actor* aActor)
+#ifdef IMGUI_ENABLE
+void Game::DrawActorNode(Actor* aActor)
 {
-	ImGuiTreeNodeFlags flags = ImGuiBackendFlags_None;
+	ImGuiTreeNodeFlags flags =
+		ImGuiTreeNodeFlags_OpenOnArrow |
+		ImGuiTreeNodeFlags_OpenOnDoubleClick |
+		ImGuiTreeNodeFlags_SpanAvailWidth;
 
 	if (aActor->GetChildren().empty())
 	{
@@ -454,3 +459,4 @@ void Game::DrawActorNode(const Actor* aActor)
 		ImGui::TreePop();
 	}
 }
+#endif

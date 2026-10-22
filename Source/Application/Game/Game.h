@@ -69,8 +69,6 @@ private:
 	void UpdateScene(float aDeltaTime) const;
 	void RenderScene() const;
 
-	void DrawImGuiLayer(const FrameStats& aFrameStats);
-
 	std::unique_ptr<GraphicsCommandList> myGraphicsCommandList;
 	std::unique_ptr<GameStateMachine> myStateMachine;
 
@@ -84,6 +82,7 @@ private:
 	bool myShowDebugWindow = true;
 	bool myShowLevelSelectorWindow = true;
 
-	void DrawActorNode(const Actor* aActor);
+	void DrawImGuiLayer(const FrameStats& aFrameStats);
+	void DrawActorNode(Actor* aActor);
 #endif
 };
