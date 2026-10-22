@@ -47,7 +47,7 @@ void DrawCallSubmitter::RenderDrawCalls(
 
 		if (material == nullptr)
 		{
-			material = &aContext.BuiltinAssets->GetDefaultMaterial();
+			material = aContext.BuiltinAssets->GetDefaultMaterial();
 		}
 
 		inoutCommandList.BeginEvent(mesh.GetName());

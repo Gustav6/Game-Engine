@@ -69,6 +69,7 @@ public:
 	static GraphicsEngine& Get();
 
 	bool Initialize(HWND aWindowHandle, const std::filesystem::path& aContentRoot);
+	void Shutdown();
 
 	void BeginFrame() const;
 	FrameStats Render(GraphicsCommandList& inoutCommandList, const SceneCamera& aCamera);

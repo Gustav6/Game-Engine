@@ -245,8 +245,9 @@ int Game::Run()
 	}
 
 	// Cleanup
-	AssetRegistry::Get().UnInitialize();
+	AssetRegistry::Get().Shutdown();
 	ComponentRegistryManager::Get().Shutdown();
+	GraphicsEngine::Get().Shutdown();
 
 	return 0;
 }
@@ -268,9 +269,11 @@ void Game::DrawImGuiLayer([[maybe_unused]] const FrameStats& aFrameStats)
 #ifdef IMGUI_ENABLE
 	ImGui::PushFont(nullptr, 18.0f);
 
+	ImGui::ShowDemoWindow();
+
 	if (myShowDebugWindow)
 	{
-		ImGui::Begin("Debug", &myShowDebugWindow, ImGuiWindowFlags_AlwaysAutoResize);
+		ImGui::Begin("Debug", &myShowDebugWindow, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoBackground);
 
 		if (ImGui::CollapsingHeader("Frame Info"))
 		{
@@ -360,7 +363,7 @@ void Game::DrawImGuiLayer([[maybe_unused]] const FrameStats& aFrameStats)
 
 	if (myShowLevelSelectorWindow)
 	{
-		ImGui::Begin("Level selector", &myShowLevelSelectorWindow, ImGuiWindowFlags_AlwaysAutoResize);
+		ImGui::Begin("Level Selector", &myShowLevelSelectorWindow, ImGuiWindowFlags_AlwaysAutoResize);
 
 		std::filesystem::path sceneRoot = std::filesystem::absolute(EngineContext.ContentPath / "Scenes");
 
@@ -401,6 +404,53 @@ void Game::DrawImGuiLayer([[maybe_unused]] const FrameStats& aFrameStats)
 		ImGui::End();
 	}
 
+	{
+		ImGuiWindowFlags flags =
+			ImGuiWindowFlags_AlwaysAutoResize;
+
+		ImGui::Begin("Scene Hierarchy", nullptr, flags);
+
+		for (const auto& actor : GameWorld::Get().GetActors())
+		{
+			if (actor->GetParent() == nullptr)
+			{
+				DrawActorNode(actor.get());
+			}
+		}
+
+		ImGui::End();
+	}
+
 	ImGui::PopFont();
 #endif
+}
+
+void Game::DrawActorNode(const Actor* aActor)
+{
+	ImGuiTreeNodeFlags flags = ImGuiBackendFlags_None;
+
+	if (aActor->GetChildren().empty())
+	{
+		flags |= ImGuiTreeNodeFlags_Leaf;
+	}
+	else
+	{
+		flags |= ImGuiTreeNodeFlags_OpenOnArrow;
+	}
+
+	if (ImGui::TreeNodeEx(aActor, flags, "%s", aActor->GetName().c_str()))
+	{
+		if (ImGui::IsItemClicked())
+		{
+			// Open window to inspect actor
+			std::cout << aActor->GetName() << std::endl;
+		}
+
+		for (const auto& child : aActor->GetChildren())
+		{
+			DrawActorNode(child);
+		}    
+		
+		ImGui::TreePop();
+	}
 }

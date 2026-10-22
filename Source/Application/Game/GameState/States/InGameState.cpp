@@ -83,6 +83,8 @@ void InGameState::LoadUnrealScene(const char* aSceneName)
 
 void InGameState::LoadTestScene()
 {
+	Actor* temp = nullptr;
+
 	{
 		std::unique_ptr<Actor> object = std::make_unique<Actor>();
 
@@ -93,7 +95,9 @@ void InGameState::LoadTestScene()
 
 		object->GetTransform().Translate({ -400, 40, 0 });
 
-		GameWorld::Get().AddActor(std::move(object));
+		object->SetName("Color_Checker");
+
+		temp = GameWorld::Get().AddActor(std::move(object));
 	}
 
 	{
@@ -107,7 +111,11 @@ void InGameState::LoadTestScene()
 		object->GetTransform().Rotate(CommonUtilities::Vector3f{ 0, -180, 0 });
 		object->GetTransform().Translate({ 200, 0, 400 });
 
-		GameWorld::Get().AddActor(std::move(object));
+		object->SetName("Chest");
+
+		object->SetParent(temp);
+
+		temp = GameWorld::Get().AddActor(std::move(object));
 	}
 
 	{
@@ -119,6 +127,10 @@ void InGameState::LoadTestScene()
 		meshComponent->SetMaterial(0, AssetRegistry::Get().GetAsset<MaterialAsset>("BaseMaterial"));
 
 		object->GetTransform().SetScale({ 2000, 2000, 2000 });
+
+		object->SetName("Unit_Plane");
+
+		object->SetParent(temp);
 
 		GameWorld::Get().AddActor(std::move(object));
 	}
@@ -134,6 +146,8 @@ void InGameState::LoadTestScene()
 		object->GetTransform().Translate({ 0, 50, 0 });
 		object->GetTransform().SetScale({ 100, 100, 100 });
 
+		object->SetName("Unit_Cube");
+
 		GameWorld::Get().AddActor(std::move(object));
 	}
 
@@ -144,6 +158,8 @@ void InGameState::LoadTestScene()
 
 		meshComponent->SetMesh(AssetRegistry::Get().GetAsset<MeshAsset>("Unit_Cube"));
 		meshComponent->SetMaterial(0, AssetRegistry::Get().GetAsset<MaterialAsset>("BaseMaterial"));
+
+		object->SetName("Unit_Cube");
 
 		// TODO: Inspect rotation with multiple axis
 		object->GetTransform().SetEulerRotation({ 45.0f, 0.0f, 0.0f });
@@ -163,6 +179,8 @@ void InGameState::LoadTestScene()
 
 		object->GetTransform().Translate({ -200, 50, -200 });
 		object->GetTransform().SetScale({ 100, 100, 100 });
+
+		object->SetName("Unit_Sphere");
 
 		GameWorld::Get().AddActor(std::move(object));
 	}
@@ -210,6 +228,8 @@ void InGameState::LoadTestScene()
 		boxColliderComponent->SetSize({ 64, 128, 64 });
 		boxColliderComponent->SetOffset({ 0, 64, 0 });
 
+		object->SetName("TGA_Bro");
+
 		myAnimatedObject = GameWorld::Get().AddActor(std::move(object));
 	}
 
@@ -221,6 +241,8 @@ void InGameState::LoadTestScene()
 		directionalLight->SetColor({ 1.0f, 0.95f, 0.85f });
 		directionalLight->SetIntensity(1.0f);
 		directionalLight->SetDirection({ 0.0f, -0.75f, 1.0f });
+
+		object->SetName("Directional_Light");
 
 		myDirectionLightObject = GameWorld::Get().AddActor(std::move(object));
 	}
@@ -237,6 +259,8 @@ void InGameState::LoadTestScene()
 		pointLight->SetIntensity(750000.0f);
 		pointLight->SetRadius(500.0f);
 		pointLight->SetShadowMapSize({ 512, 512 });
+
+		object->SetName("Point_Light");
 
 		myPointLightObject = GameWorld::Get().AddActor(std::move(object));
 	}
@@ -255,6 +279,8 @@ void InGameState::LoadTestScene()
 		spotLight->SetDirection({ 0.0f, -1.0f, 0.0f });
 		spotLight->SetCone(0.1f, 0.5f);
 		spotLight->SetShadowMapSize({ 512, 512 });
+
+		object->SetName("Spot_Light");
 
 		mySpotLightObject = GameWorld::Get().AddActor(std::move(object));
 	}

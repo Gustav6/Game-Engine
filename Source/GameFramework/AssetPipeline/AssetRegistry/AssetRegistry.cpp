@@ -66,7 +66,7 @@ bool AssetRegistry::Initialize()
     return true;
 }
 
-void AssetRegistry::UnInitialize()
+void AssetRegistry::Shutdown()
 {
     TGA::FBX::Importer::UninitImporter();
     myAssets.clear();

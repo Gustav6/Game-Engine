@@ -29,7 +29,7 @@ public:
 	~AssetRegistry();
 
 	bool Initialize();
-	void UnInitialize();
+	void Shutdown();
 
 	const std::filesystem::path& GetWorkingDirectory() const;
 

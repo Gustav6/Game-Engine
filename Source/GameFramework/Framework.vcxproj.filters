@@ -48,7 +48,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="EngineContext.h" />
     <ClInclude Include="AssetPipeline\AssetRegistry\AssetRegistry.h">
       <Filter>AssetPipeline\AssetRegistry</Filter>
     </ClInclude>
@@ -76,6 +75,7 @@
     <ClInclude Include="AssetPipeline\Assets\Types\UnrealSceneAsset.h">
       <Filter>AssetPipeline\Assets\Types</Filter>
     </ClInclude>
+    <ClInclude Include="EngineContext.h" />
     <ClInclude Include="GameFramework.pch.h" />
     <ClInclude Include="GamePipeline\Components\Base\Component.h">
       <Filter>GamePipeline\Components\Base</Filter>
@@ -107,9 +107,6 @@
     <ClInclude Include="GamePipeline\Components\Rendering\AnimationComponent.h">
       <Filter>GamePipeline\Components\Rendering</Filter>
     </ClInclude>
-    <ClInclude Include="GamePipeline\Components\Rendering\CameraComponent.h">
-      <Filter>GamePipeline\Components\Rendering</Filter>
-    </ClInclude>
     <ClInclude Include="GamePipeline\Components\Rendering\MeshComponent.h">
       <Filter>GamePipeline\Components\Rendering</Filter>
     </ClInclude>
@@ -136,7 +133,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="EngineContext.cpp" />
     <ClCompile Include="AssetPipeline\AssetRegistry\AssetRegistry.cpp">
       <Filter>AssetPipeline\AssetRegistry</Filter>
     </ClCompile>
@@ -164,6 +160,7 @@
     <ClCompile Include="AssetPipeline\Assets\Types\UnrealSceneAsset.cpp">
       <Filter>AssetPipeline\Assets\Types</Filter>
     </ClCompile>
+    <ClCompile Include="EngineContext.cpp" />
     <ClCompile Include="GameFramework.pch.cpp" />
     <ClCompile Include="GamePipeline\Components\Base\Component.cpp">
       <Filter>GamePipeline\Components\Base</Filter>
@@ -193,9 +190,6 @@
       <Filter>GamePipeline\Components\Registry</Filter>
     </ClCompile>
     <ClCompile Include="GamePipeline\Components\Rendering\AnimationComponent.cpp">
-      <Filter>GamePipeline\Components\Rendering</Filter>
-    </ClCompile>
-    <ClCompile Include="GamePipeline\Components\Rendering\CameraComponent.cpp">
       <Filter>GamePipeline\Components\Rendering</Filter>
     </ClCompile>
     <ClCompile Include="GamePipeline\Components\Rendering\MeshComponent.cpp">

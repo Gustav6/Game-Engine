@@ -46,6 +46,7 @@
 
 #include <memory>
 
+class Actor;
 class GraphicsCommandList;
 class GameStateMachine;
 
@@ -82,5 +83,7 @@ private:
 
 	bool myShowDebugWindow = true;
 	bool myShowLevelSelectorWindow = true;
+
+	void DrawActorNode(const Actor* aActor);
 #endif
 };

@@ -22,9 +22,22 @@ using namespace Microsoft::WRL;
 RenderHardwareInterface::RenderHardwareInterface() 
 {
 	myWindowHandle = nullptr;
+	myVsyncEnabled = false;
 }
 
-RenderHardwareInterface::~RenderHardwareInterface() = default;
+RenderHardwareInterface::~RenderHardwareInterface()
+{
+	if (myContext)
+	{
+		myContext->ClearState();
+		myContext->Flush();
+	}
+
+	if (mySwapChain)
+	{
+		mySwapChain->SetFullscreenState(FALSE, nullptr);
+	}
+}
 
 bool RenderHardwareInterface::Initialize(HWND aWindowHandle, bool aEnableDebug, Texture& outBackBuffer, Texture& outDepthStencil, bool aEnableVsync)
 {

@@ -53,8 +53,24 @@ public:
 	void Disable();
 	bool GetIsEnabled() const;
 
+	void SetName(const std::string& aName);
+	const std::string& GetName() const;
+
+	void SetParent(Actor* aParent);
+	Actor* GetParent() const;
+
+	void AddChild(Actor* aChild);
+	const std::vector<Actor*>& GetChildren() const;
+
+	void RemoveChild(Actor* aChild);
+
 private:
+	Actor* myParent;
+	std::vector<Actor*> myChildren;
+
 	Transform myTransform;
+
+	std::string myName;
 
 	bool myIsDestroyed;
 	bool myIsEnabled;

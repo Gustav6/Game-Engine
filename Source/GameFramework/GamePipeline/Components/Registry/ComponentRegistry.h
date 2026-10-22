@@ -5,8 +5,7 @@
 
 #include "GamePipeline/Components/Base/Component.h"
 
-// TODO: Change vector usages and save components in chunks!
-// Source : https://github.com/mattreecebentley/plf_hive
+#include "plfhive/plf_hive.h"
 
 class Actor;
 
@@ -27,15 +26,18 @@ class ComponentRegistry : public BaseComponentRegistry
 {
 	static_assert(std::is_base_of_v<Component, T>, "T must derive from Component");
 
+	using Hive = plf::hive<T>;
+	using Iterator = Hive::iterator;
+
 public:
 	template<typename... Args>
 	T* Add(Actor* aOwner, Args&&... aArgs)
 	{
-		myComponents.emplace_back(aOwner, std::forward<Args>(aArgs)...);
+		Iterator it = myComponents.emplace(aOwner, std::forward<Args>(aArgs)...);
 
-		myOwnerToComponentLookup.emplace(aOwner, myComponents.size() - 1);
+		myOwnerToComponentLookup.emplace(aOwner, it);
 
-		return &myComponents.back();
+		return &(*it);
 	}
 
 	void Remove(Actor* aOwner) override
@@ -47,19 +49,8 @@ public:
 			return;
 		}
 
-		size_t index = it->second;
-
-		if (index != myComponents.size() - 1)
-		{
-			Actor* ownerOfSwap = myComponents.back().GetOwner();
-			myOwnerToComponentLookup.at(ownerOfSwap) = index;
-
-			std::swap(myComponents[index], myComponents.back());
-		}
-
-		myComponents.pop_back();
-
-		myOwnerToComponentLookup.erase(aOwner);
+		myComponents.erase(it->second);
+		myOwnerToComponentLookup.erase(it);
 	}
 
 	T* Get(Actor* aOwner)
@@ -71,27 +62,27 @@ public:
 			return nullptr;
 		}
 
-		return &myComponents[it->second];
+		return &(*it->second);
 	}
 
 	void Update(float aDeltaTime) override
 	{
-		for (size_t c = 0; c < myComponents.size(); c++)
+		for (T& component : myComponents)
 		{
-			if (myComponents[c].GetIsEnabled())
+			if (component.GetIsEnabled())
 			{
-				myComponents[c].Update(aDeltaTime);
+				component.Update(aDeltaTime);
 			}
 		}
 	}
 
 	void Render() override
 	{
-		for (size_t c = 0; c < myComponents.size(); c++)
+		for (T& component : myComponents)
 		{
-			if (myComponents[c].GetIsEnabled())
+			if (component.GetIsEnabled())
 			{
-				myComponents[c].Render();
+				component.Render();
 			}
 		}
 	}
@@ -108,6 +99,6 @@ public:
 	}
 
 private:
-	std::unordered_map<Actor*, size_t> myOwnerToComponentLookup;
-	std::vector<T> myComponents;
+	std::unordered_map<Actor*, Iterator> myOwnerToComponentLookup;
+	Hive myComponents;
 };

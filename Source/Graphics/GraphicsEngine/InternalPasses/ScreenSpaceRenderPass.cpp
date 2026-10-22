@@ -179,7 +179,7 @@ void ScreenSpaceRenderPass::RenderText(
 
 	if (material == nullptr)
 	{
-		material = &aContext.BuiltinAssets->GetDefaultMaterial();
+		material = aContext.BuiltinAssets->GetDefaultMaterial();
 	}
 
 	if (material->HasParameters())
@@ -273,7 +273,7 @@ void ScreenSpaceRenderPass::RenderSprite(
 
 	if (material == nullptr)
 	{
-		material = &aContext.BuiltinAssets->GetDefaultSpriteMaterial();
+		material = aContext.BuiltinAssets->GetDefaultMaterial();
 	}
 
 	if (material->HasParameters())

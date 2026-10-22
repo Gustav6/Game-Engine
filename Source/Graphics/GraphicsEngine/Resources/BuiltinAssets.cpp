@@ -33,24 +33,6 @@ bool BuiltinAssets::Initialize(GraphicsEngine& aGraphicsEngine, RenderHardwareIn
 		}
 	}
 
-	// Sprite Material
-	{
-		myDefaultSpriteMaterial = std::make_unique<Material>();
-
-		MaterialDescription defaultMatDesc;
-		defaultMatDesc.Name = "Default_Sprite_Material";
-		defaultMatDesc.Domain = MaterialDomain::Surface;
-		defaultMatDesc.ShadingModel = ShadingModel::Unlit;
-		defaultMatDesc.BlendMode = MaterialBlendMode::Alpha;
-		defaultMatDesc.Layout = MaterialLayout::PBR;
-
-		if (!aGraphicsEngine.CreateMaterial(defaultMatDesc, *myDefaultSpriteMaterial))
-		{
-			SPDLOG_CRITICAL("Failed to create default sprite material!");
-			return false;
-		}
-	}
-
 	// Albedo Texture
 	{
 		myDefaultAlbedoTexture = std::make_shared<Texture>();
@@ -93,27 +75,22 @@ bool BuiltinAssets::Initialize(GraphicsEngine& aGraphicsEngine, RenderHardwareIn
 	return true;
 }
 
-const Material& BuiltinAssets::GetDefaultMaterial() const
+const Material* BuiltinAssets::GetDefaultMaterial() const
 {
-	return *myDefaultMaterial;
+	return myDefaultMaterial.get();
 }
 
-const Material& BuiltinAssets::GetDefaultSpriteMaterial() const
+const Texture* BuiltinAssets::GetDefaultAlbedoTexture() const
 {
-	return *myDefaultSpriteMaterial;
+	return myDefaultAlbedoTexture.get();
 }
 
-const Texture& BuiltinAssets::GetDefaultAlbedoTexture() const
+const Texture* BuiltinAssets::GetDefaultNormalTexture() const
 {
-	return *myDefaultAlbedoTexture;
+	return myDefaultNormalTexture.get();
 }
 
-const Texture& BuiltinAssets::GetDefaultNormalTexture() const
+const Texture* BuiltinAssets::GetDefaultEmissionTexture() const
 {
-	return *myDefaultNormalTexture;
-}
-
-const Texture& BuiltinAssets::GetDefaultEmissionTexture() const
-{
-	return *myDefaultEmissionTexture;
+	return myDefaultEmissionTexture.get();
 }

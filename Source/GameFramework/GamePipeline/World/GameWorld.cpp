@@ -34,7 +34,6 @@ void GameWorld::Update(float aDeltaTime)
 	{
 		if (*it && (*it)->GetIsDestroyed())
 		{
-			(*it)->Destroy();
 			it = myActors.erase(it);
 		}
 		else
@@ -61,7 +60,7 @@ Actor* GameWorld::AddActor(std::unique_ptr<Actor> aActor)
 {
 	Actor* rawPointer = aActor.get();
 
-	myActors.emplace_back(std::move(aActor));
+	myQueuedActors.emplace_back(std::move(aActor));
 
 	return rawPointer;
 }

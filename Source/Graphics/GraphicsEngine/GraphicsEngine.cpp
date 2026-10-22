@@ -162,6 +162,36 @@ bool GraphicsEngine::Initialize(HWND aWindowHandle, const std::filesystem::path&
 	return true;
 }
 
+void GraphicsEngine::Shutdown()
+{
+	myRenderOverlay = nullptr;
+	myDeferredItems.clear();
+	myForwardItems.clear();
+	myShadowItems.clear();
+
+	myDebugRenderPass.reset();
+	myScreenSpaceEffectPass.reset();
+	myShadowRenderPass.reset();
+	myScreenSpaceRenderPass.reset();
+	myDeferredRenderPass.reset();
+	myForwardRenderPass.reset();
+
+	myConstantBufferManager.reset();
+	myMaterialShaderRegistry.reset();
+	myPostProcessFilters.reset();
+	myBuiltinAssets.reset();
+
+	myEnvironmentCubemap.reset();
+	myLUTTexture.reset();
+	myDepthBuffer.reset();
+	myHDRBuffer.reset();
+	myBackBuffer.reset();
+	mySamplerPointers.clear();
+	mySamplers.clear();
+
+	myRHI.reset();
+}
+
 void GraphicsEngine::BeginFrame() const
 {
 	MeshDrawer::Get().Clear();

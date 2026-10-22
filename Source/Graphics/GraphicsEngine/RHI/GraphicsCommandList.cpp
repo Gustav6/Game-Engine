@@ -14,7 +14,13 @@ GraphicsCommandList::GraphicsCommandList()
 	myPipelineSwitchCounter = 0;
 }
 
-GraphicsCommandList::~GraphicsCommandList() = default;
+GraphicsCommandList::~GraphicsCommandList()
+{
+	if (myContext)
+	{
+		myContext->ClearState();
+	}
+}
 
 GraphicsCommandList::GraphicsCommandList(GraphicsCommandList&& aOther) noexcept
 {

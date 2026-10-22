@@ -2,6 +2,7 @@
 
 #include "GameState/GameStateMachine.h"
 
+class MeshComponent;
 class Actor;
 
 class InGameState : public GameState
