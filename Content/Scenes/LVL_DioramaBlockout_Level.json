@@ -371,6 +371,41 @@
 			"ShadingModel": 1,
 			"BlendMode": 1,
 			"Parameters": []
+		},
+		{
+			"Name": "M_GreyBall",
+			"Domain": 0,
+			"ShadingModel": 1,
+			"BlendMode": 0,
+			"Parameters": []
+		},
+		{
+			"Name": "M_ChromeBall",
+			"Domain": 0,
+			"ShadingModel": 1,
+			"BlendMode": 0,
+			"Parameters": []
+		},
+		{
+			"Name": "M_ClearCoatBlack",
+			"Domain": 0,
+			"ShadingModel": 1,
+			"BlendMode": 0,
+			"Parameters": []
+		},
+		{
+			"Name": "M_ColorGrid",
+			"Domain": 0,
+			"ShadingModel": 1,
+			"BlendMode": 0,
+			"Parameters": []
+		},
+		{
+			"Name": "M_ClearCoat",
+			"Domain": 0,
+			"ShadingModel": 4,
+			"BlendMode": 0,
+			"Parameters": []
 		}
 	],
 	"Actors": [
@@ -6706,7 +6741,129 @@
 			]
 		},
 		{
-			"Name": "A_Item_Test",
+			"Name": "A_EnemyBase",
+			"Archetype": "A_EnemyBase_C",
+			"Transform": [
+				1,
+				0,
+				0,
+				0,
+				0,
+				1,
+				0,
+				0,
+				0,
+				0,
+				1,
+				0,
+				-130,
+				-1010,
+				0,
+				1
+			],
+			"Tags": [],
+			"Components": [
+				{
+					"Name": "DefaultSceneRoot",
+					"TypeID": 0,
+					"Parent": "",
+					"Tags": [],
+					"Transform": [
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1
+					]
+				},
+				{
+					"Name": "StaticMesh",
+					"TypeID": 1,
+					"Parent": "DefaultSceneRoot",
+					"Tags": [],
+					"Transform": [
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1
+					],
+					"Mesh": "SK_C_GruntEnemy_01",
+					"ContentPath": "/Game/Static_Meshes/Test/Temp_BlockoutEnemies/SK_C_GruntEnemy_01.SK_C_GruntEnemy_01",
+					"AssetImportPath": "C:/Program Files/Epic Games/UE_5.7/Engine/Binaries/Win64/SK_C_GruntEnemy_01.fbx",
+					"Materials": [
+						{
+							"Name": "WorldGridMaterial",
+							"Parent": "Self",
+							"Parameters": []
+						},
+						{
+							"Name": "WorldGridMaterial",
+							"Parent": "Self",
+							"Parameters": []
+						}
+					]
+				},
+				{
+					"Name": "SphereCollider",
+					"TypeID": 7,
+					"Parent": "DefaultSceneRoot",
+					"Tags": [],
+					"Transform": [
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						50,
+						1
+					],
+					"Radius": 50
+				}
+			],
+			"Custom":
+			{
+				"Collision Layer": "Collider: SphereCollider Enemy",
+				"Collision Mask": [
+					"Player",
+					"Enemy",
+					"Environment"
+				]
+			}
+		},
+		{
+			"Name": "A_Item_Test0",
 			"Archetype": "A_Item_Test_C",
 			"Transform": [
 				2.5,
@@ -6721,8 +6878,8 @@
 				0,
 				2.5,
 				0,
-				-40,
-				-1030,
+				90,
+				-510,
 				40,
 				1
 			],
@@ -6753,8 +6910,8 @@
 					]
 				},
 				{
-					"Name": "BoxCollider",
-					"TypeID": 6,
+					"Name": "SphereColldier",
+					"TypeID": 7,
 					"Parent": "DefaultSceneRoot",
 					"Tags": [],
 					"Transform": [
@@ -6770,17 +6927,124 @@
 						0,
 						1,
 						0,
-						-100,
+						0,
 						0,
 						0,
 						1
 					],
-					"Bounds":
-					{
-						"x": 32,
-						"y": 32,
-						"z": 32
-					}
+					"Radius": 32
+				},
+				{
+					"Name": "StaticMesh",
+					"TypeID": 1,
+					"Parent": "DefaultSceneRoot",
+					"Tags": [],
+					"Transform": [
+						1,
+						0,
+						1.6653345369377336e-16,
+						0,
+						-0,
+						1,
+						0,
+						0,
+						-1.6653345369377336e-16,
+						-0,
+						1,
+						0,
+						7.1054273576010019e-15,
+						-4.2632564145606011e-14,
+						-2.8421709430404007e-14,
+						1
+					],
+					"Mesh": "SM_ColorCalibrator",
+					"ContentPath": "/Engine/EditorMeshes/ColorCalibrator/SM_ColorCalibrator.SM_ColorCalibrator",
+					"AssetImportPath": "C:/../MISC_ArtSource/SM_ColorChecker.fbx",
+					"Materials": [
+						{
+							"Name": "M_GreyBall",
+							"Parent": "Self",
+							"Parameters": []
+						},
+						{
+							"Name": "M_ChromeBall",
+							"Parent": "Self",
+							"Parameters": []
+						},
+						{
+							"Name": "M_ClearCoatBlack",
+							"Parent": "Self",
+							"Parameters": []
+						},
+						{
+							"Name": "M_ColorGrid",
+							"Parent": "Self",
+							"Parameters": []
+						},
+						{
+							"Name": "M_ClearCoat",
+							"Parent": "Self",
+							"Parameters": []
+						}
+					]
+				}
+			],
+			"Custom":
+			{
+				"CollisionLayer": "Collider: SphereColldier Interactable",
+				"CollisionMask": [
+					"Player",
+					"Environment",
+					"Interactable"
+				]
+			}
+		},
+		{
+			"Name": "A_Item_Test1",
+			"Archetype": "A_Item_Test_C",
+			"Transform": [
+				2.5,
+				0,
+				0,
+				0,
+				0,
+				2.5,
+				0,
+				0,
+				0,
+				0,
+				2.5,
+				0,
+				80,
+				-740,
+				40,
+				1
+			],
+			"Tags": [],
+			"Components": [
+				{
+					"Name": "DefaultSceneRoot",
+					"TypeID": 0,
+					"Parent": "",
+					"Tags": [],
+					"Transform": [
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1
+					]
 				},
 				{
 					"Name": "SphereColldier",
@@ -6800,7 +7064,7 @@
 						0,
 						1,
 						0,
-						100,
+						0,
 						0,
 						0,
 						1
@@ -6808,39 +7072,97 @@
 					"Radius": 32
 				},
 				{
-					"Name": "BoxColliderRotated",
-					"TypeID": 6,
+					"Name": "StaticMesh",
+					"TypeID": 1,
 					"Parent": "DefaultSceneRoot",
 					"Tags": [],
 					"Transform": [
 						1,
 						0,
+						1.6653345369377336e-16,
 						0,
-						0,
-						0,
+						-0,
 						1,
 						0,
 						0,
-						0,
-						0,
+						-1.6653345369377336e-16,
+						-0,
 						1,
 						0,
-						0,
-						100,
-						0,
+						7.1054273576010019e-15,
+						-4.2632564145606011e-14,
+						-2.8421709430404007e-14,
 						1
 					],
-					"Bounds":
-					{
-						"x": 32,
-						"y": 32,
-						"z": 32
-					}
-				},
+					"Mesh": "SM_ColorCalibrator",
+					"ContentPath": "/Engine/EditorMeshes/ColorCalibrator/SM_ColorCalibrator.SM_ColorCalibrator",
+					"AssetImportPath": "C:/../MISC_ArtSource/SM_ColorChecker.fbx",
+					"Materials": [
+						{
+							"Name": "M_GreyBall",
+							"Parent": "Self",
+							"Parameters": []
+						},
+						{
+							"Name": "M_ChromeBall",
+							"Parent": "Self",
+							"Parameters": []
+						},
+						{
+							"Name": "M_ClearCoatBlack",
+							"Parent": "Self",
+							"Parameters": []
+						},
+						{
+							"Name": "M_ColorGrid",
+							"Parent": "Self",
+							"Parameters": []
+						},
+						{
+							"Name": "M_ClearCoat",
+							"Parent": "Self",
+							"Parameters": []
+						}
+					]
+				}
+			],
+			"Custom":
+			{
+				"CollisionLayer": "Collider: SphereColldier Interactable",
+				"CollisionMask": [
+					"Player",
+					"Environment",
+					"Interactable"
+				]
+			}
+		},
+		{
+			"Name": "A_EnemyBase2",
+			"Archetype": "A_EnemyBase_C",
+			"Transform": [
+				1,
+				0,
+				0,
+				0,
+				0,
+				1,
+				0,
+				0,
+				0,
+				0,
+				1,
+				0,
+				-50,
+				-1000,
+				0,
+				1
+			],
+			"Tags": [],
+			"Components": [
 				{
-					"Name": "BoxColliderRotated1",
-					"TypeID": 6,
-					"Parent": "DefaultSceneRoot",
+					"Name": "DefaultSceneRoot",
+					"TypeID": 0,
+					"Parent": "",
 					"Tags": [],
 					"Transform": [
 						1,
@@ -6856,16 +7178,10 @@
 						1,
 						0,
 						0,
-						-100,
+						0,
 						0,
 						1
-					],
-					"Bounds":
-					{
-						"x": 32,
-						"y": 32,
-						"z": 32
-					}
+					]
 				},
 				{
 					"Name": "StaticMesh",
@@ -6873,91 +7189,196 @@
 					"Parent": "DefaultSceneRoot",
 					"Tags": [],
 					"Transform": [
-						0.10499999765306711,
-						0,
-						1.7486012247003364e-17,
-						0,
-						-0,
-						0.10499999765306711,
+						1,
 						0,
 						0,
-						-1.7486012247003364e-17,
-						-0,
-						0.10499999765306711,
 						0,
-						7.1054273576010019e-15,
-						-4.2632564145606011e-14,
-						-2.8421709430404007e-14,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
 						1
 					],
-					"Mesh": "SM_A_Checkpoint_01",
-					"ContentPath": "/Game/Static_Meshes/Architecture/Hero_Assets/SM_A_Checkpoint_01.SM_A_Checkpoint_01",
-					"AssetImportPath": "C:/Users/maria.akerstrom/Perforce/maria.akerstrom_TGA-SG59_Content_&_Unreal_Project_2527/Content/Meshes/Architecture/Hero_Assets/SM_A_Checkpoint_01.fbx",
+					"Mesh": "SK_C_GruntEnemy_01",
+					"ContentPath": "/Game/Static_Meshes/Test/Temp_BlockoutEnemies/SK_C_GruntEnemy_01.SK_C_GruntEnemy_01",
+					"AssetImportPath": "C:/Program Files/Epic Games/UE_5.7/Engine/Binaries/Win64/SK_C_GruntEnemy_01.fbx",
 					"Materials": [
 						{
-							"Name": "MI_Altar_Respawn",
-							"Parent": "MM_Assets",
-							"Parameters": [
-								{
-									"Name": "Tiling_V",
-									"Type": 0,
-									"Value": 1
-								},
-								{
-									"Name": "Normal_Flat",
-									"Type": 0,
-									"Value": 0
-								},
-								{
-									"Name": "Color_Tint",
-									"Type": 1,
-									"Value": [
-										1,
-										1,
-										1,
-										1
-									]
-								},
-								{
-									"Name": "BaseColor",
-									"Type": 3,
-									"Value":
-									{
-										"Name": "T_Altar_01_C",
-										"Path": "/Game/Materials/Textures/T_Altar_01_C.T_Altar_01_C",
-										"AssetImportPath": "C:/Program Files/Epic Games/UE_5.7/Engine/Binaries/Win64/T_Altar_01_C.tga"
-									}
-								},
-								{
-									"Name": "ORM",
-									"Type": 3,
-									"Value":
-									{
-										"Name": "T_Altar_01_ORM",
-										"Path": "/Game/Materials/Textures/T_Altar_01_ORM.T_Altar_01_ORM",
-										"AssetImportPath": "C:/Program Files/Epic Games/UE_5.7/Engine/Binaries/Win64/T_Altar_01_ORM.tga"
-									}
-								},
-								{
-									"Name": "Normal",
-									"Type": 3,
-									"Value":
-									{
-										"Name": "T_Altar_01_N",
-										"Path": "/Game/Materials/Textures/T_Altar_01_N.T_Altar_01_N",
-										"AssetImportPath": "C:/Program Files/Epic Games/UE_5.7/Engine/Binaries/Win64/T_Altar_01_N.tga"
-									}
-								},
-								{
-									"Name": "Tiling_U",
-									"Type": 0,
-									"Value": 1
-								}
-							]
+							"Name": "WorldGridMaterial",
+							"Parent": "Self",
+							"Parameters": []
+						},
+						{
+							"Name": "WorldGridMaterial",
+							"Parent": "Self",
+							"Parameters": []
 						}
 					]
+				},
+				{
+					"Name": "SphereCollider",
+					"TypeID": 7,
+					"Parent": "DefaultSceneRoot",
+					"Tags": [],
+					"Transform": [
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						50,
+						1
+					],
+					"Radius": 50
 				}
-			]
+			],
+			"Custom":
+			{
+				"Collision Layer": "Collider: SphereCollider Enemy",
+				"Collision Mask": [
+					"Player",
+					"Enemy",
+					"Environment"
+				]
+			}
+		},
+		{
+			"Name": "A_EnemyBase3",
+			"Archetype": "A_EnemyBase_C",
+			"Transform": [
+				1,
+				0,
+				0,
+				0,
+				0,
+				1,
+				0,
+				0,
+				0,
+				0,
+				1,
+				0,
+				260,
+				-990,
+				0,
+				1
+			],
+			"Tags": [],
+			"Components": [
+				{
+					"Name": "DefaultSceneRoot",
+					"TypeID": 0,
+					"Parent": "",
+					"Tags": [],
+					"Transform": [
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1
+					]
+				},
+				{
+					"Name": "StaticMesh",
+					"TypeID": 1,
+					"Parent": "DefaultSceneRoot",
+					"Tags": [],
+					"Transform": [
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1
+					],
+					"Mesh": "SK_C_GruntEnemy_01",
+					"ContentPath": "/Game/Static_Meshes/Test/Temp_BlockoutEnemies/SK_C_GruntEnemy_01.SK_C_GruntEnemy_01",
+					"AssetImportPath": "C:/Program Files/Epic Games/UE_5.7/Engine/Binaries/Win64/SK_C_GruntEnemy_01.fbx",
+					"Materials": [
+						{
+							"Name": "WorldGridMaterial",
+							"Parent": "Self",
+							"Parameters": []
+						},
+						{
+							"Name": "WorldGridMaterial",
+							"Parent": "Self",
+							"Parameters": []
+						}
+					]
+				},
+				{
+					"Name": "SphereCollider",
+					"TypeID": 7,
+					"Parent": "DefaultSceneRoot",
+					"Tags": [],
+					"Transform": [
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						50,
+						1
+					],
+					"Radius": 50
+				}
+			],
+			"Custom":
+			{
+				"Collision Layer": "Collider: SphereCollider Enemy",
+				"Collision Mask": [
+					"Player",
+					"Enemy",
+					"Environment"
+				]
+			}
 		}
 	]
 }

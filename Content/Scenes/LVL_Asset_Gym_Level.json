@@ -10142,7 +10142,7 @@
 					],
 					"Mesh": "SK_player",
 					"ContentPath": "/Game/Skeletal_Meshes/SK_player.SK_player",
-					"AssetImportPath": "C:/Users/lukasandreas.gothbe/Perforce/P5_Lukas/Content/Meshes/Test/SK_player.fbx",
+					"AssetImportPath": "C:/Users/emelie.englund1/Desktop/emelie.englund1_Content_&_Unreal_Project/UnrealProject/P5G5/Content/Skeletal_Meshes/Skeletal meshes/SK_player.fbx",
 					"Materials": [
 						{
 							"Name": "MI_Cypress_Large_01",
@@ -10663,6 +10663,10 @@
 							"Type": "dash"
 						},
 						{
+							"Name": "A_Player_Dodge",
+							"Type": "dodge"
+						},
+						{
 							"Name": "A_player_grasp",
 							"Type": "grasp"
 						},
@@ -10709,7 +10713,7 @@
 					]
 				},
 				{
-					"Name": "SphereCollider",
+					"Name": "PlayerSphereCollider",
 					"TypeID": 7,
 					"Parent": "DefaultSceneRoot",
 					"Tags": [],
@@ -10732,15 +10736,93 @@
 						1
 					],
 					"Radius": 32
+				},
+				{
+					"Name": "DamageSphereCollider",
+					"TypeID": 7,
+					"Parent": "DefaultSceneRoot",
+					"Tags": [],
+					"Transform": [
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						110,
+						0,
+						70,
+						1
+					],
+					"Radius": 100
+				},
+				{
+					"Name": "AC_SerializeCollisionTags",
+					"TypeID": -1,
+					"CustomType": "AC_SerializeCollisionTags_C",
+					"Properties": [
+						{
+							"Name": "UberGraphFrame",
+							"Type": "FPointerToUberGraphFrame",
+							"Value":
+							{
+							}
+						},
+						{
+							"Name": "CollisionData",
+							"Type": "TArray",
+							"Value": [
+								{
+									"colliderName": "PlayerSphereCollider",
+									"collisionLayer": "Player",
+									"collisionMask": [
+										"Enemy",
+										"Environment",
+										"Trigger"
+									]
+								},
+								{
+									"colliderName": "DamageSphereCollider",
+									"collisionLayer": "Player",
+									"collisionMask": [
+										"Enemy",
+										"Environment"
+									]
+								}
+							]
+						}
+					],
+					"Tags": [],
+					"Custom":
+					{
+						"0":
+						{
+							"colliderName": "PlayerSphereCollider",
+							"collisionLayer": "Player",
+							"collisionMask": [
+								"Enemy",
+								"Environment",
+								"Trigger"
+							]
+						},
+						"1":
+						{
+							"colliderName": "DamageSphereCollider",
+							"collisionLayer": "Player",
+							"collisionMask": [
+								"Enemy",
+								"Environment"
+							]
+						}
+					}
 				}
-			],
-			"Custom":
-			{
-				"Collision tags": [
-					"player",
-					"overlapPlayer"
-				]
-			}
+			]
 		},
 		{
 			"Name": "SM_A_BoardPath_Long_01",
@@ -18109,8 +18191,8 @@
 			]
 		},
 		{
-			"Name": "A_EnemyBase",
-			"Archetype": "A_EnemyBase_C",
+			"Name": "A_Enemy_Brute",
+			"Archetype": "Actor",
 			"Transform": [
 				1,
 				0,
@@ -18124,8 +18206,2849 @@
 				0,
 				1,
 				0,
-				-900,
-				-900,
+				140,
+				-1380,
+				-150,
+				1
+			],
+			"Tags": [],
+			"Components": [
+				{
+					"Name": "DefaultSceneRoot",
+					"TypeID": 0,
+					"Parent": "",
+					"Tags": [],
+					"Transform": [
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1
+					]
+				},
+				{
+					"Name": "SK_brute",
+					"TypeID": 2,
+					"Parent": "DefaultSceneRoot",
+					"Tags": [],
+					"Transform": [
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						-1130,
+						-1750,
+						150,
+						1
+					],
+					"Mesh": "SK_BruteEnemy",
+					"ContentPath": "/Game/Skeletal_Meshes/SK_BruteEnemy.SK_BruteEnemy",
+					"AssetImportPath": "C:/Users/emelie.englund1/Desktop/emelie.englund1_Content_&_Unreal_Project/UnrealProject/P5G5/Content/Skeletal_Meshes/Skeletal meshes/SK_BruteEnemy.fbx",
+					"Materials": [
+						{
+							"Name": "MI_Cypress_Large_01",
+							"Parent": "MM_Assets_Splatmap",
+							"Parameters": [
+								{
+									"Name": "Color_Tint_02",
+									"Type": 1,
+									"Value": [
+										1,
+										1,
+										1,
+										1
+									]
+								},
+								{
+									"Name": "Tiling_V",
+									"Type": 0,
+									"Value": 1
+								},
+								{
+									"Name": "Normal_Flat_01",
+									"Type": 0,
+									"Value": 0
+								},
+								{
+									"Name": "Power_Red",
+									"Type": 0,
+									"Value": 0.49087899923324585
+								},
+								{
+									"Name": "Contrast_Red",
+									"Type": 0,
+									"Value": 0
+								},
+								{
+									"Name": "Power_Green",
+									"Type": 0,
+									"Value": 1
+								},
+								{
+									"Name": "Contrast_Green",
+									"Type": 0,
+									"Value": 0
+								},
+								{
+									"Name": "Power_Blue",
+									"Type": 0,
+									"Value": 1
+								},
+								{
+									"Name": "Contrast_Blue",
+									"Type": 0,
+									"Value": 0
+								},
+								{
+									"Name": "RVT_Falloff",
+									"Type": 0,
+									"Value": 1.0147180557250977
+								},
+								{
+									"Name": "RVT_Blend",
+									"Type": 0,
+									"Value": 205.009521484375
+								},
+								{
+									"Name": "RVT_Mask",
+									"Type": 0,
+									"Value": 1
+								},
+								{
+									"Name": "Normal_Flat",
+									"Type": 0,
+									"Value": 0
+								},
+								{
+									"Name": "Normal_Flat_04",
+									"Type": 0,
+									"Value": 0
+								},
+								{
+									"Name": "Normal_Flat_03",
+									"Type": 0,
+									"Value": 0
+								},
+								{
+									"Name": "Color_Tint_01",
+									"Type": 1,
+									"Value": [
+										1,
+										1,
+										1,
+										1
+									]
+								},
+								{
+									"Name": "Tiling_U",
+									"Type": 0,
+									"Value": 1
+								},
+								{
+									"Name": "Color_Tint_04",
+									"Type": 1,
+									"Value": [
+										1,
+										1,
+										1,
+										1
+									]
+								},
+								{
+									"Name": "Color_Tint_03",
+									"Type": 1,
+									"Value": [
+										1,
+										1,
+										1,
+										1
+									]
+								},
+								{
+									"Name": "BaseColor_01",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Cypress_Large_01_C",
+										"Path": "/Game/Materials/Textures/T_Cypress_Large_01_C.T_Cypress_Large_01_C",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Cypress_Large_01_BaseColor.tga"
+									}
+								},
+								{
+									"Name": "ORM_01",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Cypress_Large_01_ORM",
+										"Path": "/Game/Materials/Textures/T_Cypress_Large_01_ORM.T_Cypress_Large_01_ORM",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Cypress_Large_01_OcclusionRoughnessMetallic.tga"
+									}
+								},
+								{
+									"Name": "Normal_01",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Cypress_Large_01_N",
+										"Path": "/Game/Materials/Textures/T_Cypress_Large_01_N.T_Cypress_Large_01_N",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Cypress_Large_01_Normal.tga"
+									}
+								},
+								{
+									"Name": "Splatmap",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Cypress_Large_01_SPM",
+										"Path": "/Game/Materials/Textures/T_Cypress_Large_01_SPM.T_Cypress_Large_01_SPM",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Cypress_Large_01_Splatmask.tga"
+									}
+								},
+								{
+									"Name": "BaseColor_02",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Rock_01_C",
+										"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_C.T_Tiling_Rock_01_C",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_C.tga"
+									}
+								},
+								{
+									"Name": "ORM_02",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Rock_01_ORM",
+										"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_ORM.T_Tiling_Rock_01_ORM",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_ORM.tga"
+									}
+								},
+								{
+									"Name": "Normal_02",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Rock_01_N",
+										"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_N.T_Tiling_Rock_01_N",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_N.tga"
+									}
+								},
+								{
+									"Name": "BaseColor_04",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Rock_01_C",
+										"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_C.T_Tiling_Rock_01_C",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_C.tga"
+									}
+								},
+								{
+									"Name": "ORM_04",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Rock_01_ORM",
+										"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_ORM.T_Tiling_Rock_01_ORM",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_ORM.tga"
+									}
+								},
+								{
+									"Name": "Normal_04",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Rock_01_N",
+										"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_N.T_Tiling_Rock_01_N",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_N.tga"
+									}
+								},
+								{
+									"Name": "BaseColor_03",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Rock_01_C",
+										"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_C.T_Tiling_Rock_01_C",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_C.tga"
+									}
+								},
+								{
+									"Name": "ORM_03",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Rock_01_ORM",
+										"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_ORM.T_Tiling_Rock_01_ORM",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_ORM.tga"
+									}
+								},
+								{
+									"Name": "Normal_03",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Rock_01_N",
+										"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_N.T_Tiling_Rock_01_N",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_N.tga"
+									}
+								},
+								{
+									"Name": "RVT_Mask",
+									"Type": 8,
+									"Value": true
+								}
+							]
+						}
+					],
+					"Animations": [
+						{
+							"Name": "A_BruteEnemy_Attack",
+							"Type": "attack"
+						},
+						{
+							"Name": "A_BruteEnemy_Death",
+							"Type": "death"
+						},
+						{
+							"Name": "A_BruteEnemy_Hurt",
+							"Type": "hurt"
+						},
+						{
+							"Name": "A_BruteEnemy_Idle",
+							"Type": "idle"
+						},
+						{
+							"Name": "A_BruteEnemy_Walk",
+							"Type": "walk"
+						}
+					]
+				}
+			]
+		},
+		{
+			"Name": "A_Enemy_Grunt",
+			"Archetype": "Actor",
+			"Transform": [
+				1,
+				0,
+				0,
+				0,
+				0,
+				1,
+				0,
+				0,
+				0,
+				0,
+				1,
+				0,
+				-1630,
+				-3080,
+				530,
+				1
+			],
+			"Tags": [],
+			"Components": [
+				{
+					"Name": "DefaultSceneRoot",
+					"TypeID": 0,
+					"Parent": "",
+					"Tags": [],
+					"Transform": [
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1
+					]
+				},
+				{
+					"Name": "SK_grunt",
+					"TypeID": 2,
+					"Parent": "DefaultSceneRoot",
+					"Tags": [],
+					"Transform": [
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						-530,
+						1
+					],
+					"Mesh": "SK_GruntEnemy",
+					"ContentPath": "/Game/Skeletal_Meshes/SK_GruntEnemy.SK_GruntEnemy",
+					"AssetImportPath": "C:/Users/emelie.englund1/Desktop/emelie.englund1_Content_&_Unreal_Project/UnrealProject/P5G5/Content/Skeletal_Meshes/Skeletal meshes/SK_GruntEnemy.fbx",
+					"Materials": [
+						{
+							"Name": "MI_Cypress_Large_01",
+							"Parent": "MM_Assets_Splatmap",
+							"Parameters": [
+								{
+									"Name": "Color_Tint_02",
+									"Type": 1,
+									"Value": [
+										1,
+										1,
+										1,
+										1
+									]
+								},
+								{
+									"Name": "Tiling_V",
+									"Type": 0,
+									"Value": 1
+								},
+								{
+									"Name": "Normal_Flat_01",
+									"Type": 0,
+									"Value": 0
+								},
+								{
+									"Name": "Power_Red",
+									"Type": 0,
+									"Value": 0.49087899923324585
+								},
+								{
+									"Name": "Contrast_Red",
+									"Type": 0,
+									"Value": 0
+								},
+								{
+									"Name": "Power_Green",
+									"Type": 0,
+									"Value": 1
+								},
+								{
+									"Name": "Contrast_Green",
+									"Type": 0,
+									"Value": 0
+								},
+								{
+									"Name": "Power_Blue",
+									"Type": 0,
+									"Value": 1
+								},
+								{
+									"Name": "Contrast_Blue",
+									"Type": 0,
+									"Value": 0
+								},
+								{
+									"Name": "RVT_Falloff",
+									"Type": 0,
+									"Value": 1.0147180557250977
+								},
+								{
+									"Name": "RVT_Blend",
+									"Type": 0,
+									"Value": 205.009521484375
+								},
+								{
+									"Name": "RVT_Mask",
+									"Type": 0,
+									"Value": 1
+								},
+								{
+									"Name": "Normal_Flat",
+									"Type": 0,
+									"Value": 0
+								},
+								{
+									"Name": "Normal_Flat_04",
+									"Type": 0,
+									"Value": 0
+								},
+								{
+									"Name": "Normal_Flat_03",
+									"Type": 0,
+									"Value": 0
+								},
+								{
+									"Name": "Color_Tint_01",
+									"Type": 1,
+									"Value": [
+										1,
+										1,
+										1,
+										1
+									]
+								},
+								{
+									"Name": "Tiling_U",
+									"Type": 0,
+									"Value": 1
+								},
+								{
+									"Name": "Color_Tint_04",
+									"Type": 1,
+									"Value": [
+										1,
+										1,
+										1,
+										1
+									]
+								},
+								{
+									"Name": "Color_Tint_03",
+									"Type": 1,
+									"Value": [
+										1,
+										1,
+										1,
+										1
+									]
+								},
+								{
+									"Name": "BaseColor_01",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Cypress_Large_01_C",
+										"Path": "/Game/Materials/Textures/T_Cypress_Large_01_C.T_Cypress_Large_01_C",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Cypress_Large_01_BaseColor.tga"
+									}
+								},
+								{
+									"Name": "ORM_01",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Cypress_Large_01_ORM",
+										"Path": "/Game/Materials/Textures/T_Cypress_Large_01_ORM.T_Cypress_Large_01_ORM",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Cypress_Large_01_OcclusionRoughnessMetallic.tga"
+									}
+								},
+								{
+									"Name": "Normal_01",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Cypress_Large_01_N",
+										"Path": "/Game/Materials/Textures/T_Cypress_Large_01_N.T_Cypress_Large_01_N",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Cypress_Large_01_Normal.tga"
+									}
+								},
+								{
+									"Name": "Splatmap",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Cypress_Large_01_SPM",
+										"Path": "/Game/Materials/Textures/T_Cypress_Large_01_SPM.T_Cypress_Large_01_SPM",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Cypress_Large_01_Splatmask.tga"
+									}
+								},
+								{
+									"Name": "BaseColor_02",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Rock_01_C",
+										"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_C.T_Tiling_Rock_01_C",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_C.tga"
+									}
+								},
+								{
+									"Name": "ORM_02",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Rock_01_ORM",
+										"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_ORM.T_Tiling_Rock_01_ORM",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_ORM.tga"
+									}
+								},
+								{
+									"Name": "Normal_02",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Rock_01_N",
+										"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_N.T_Tiling_Rock_01_N",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_N.tga"
+									}
+								},
+								{
+									"Name": "BaseColor_04",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Rock_01_C",
+										"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_C.T_Tiling_Rock_01_C",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_C.tga"
+									}
+								},
+								{
+									"Name": "ORM_04",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Rock_01_ORM",
+										"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_ORM.T_Tiling_Rock_01_ORM",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_ORM.tga"
+									}
+								},
+								{
+									"Name": "Normal_04",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Rock_01_N",
+										"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_N.T_Tiling_Rock_01_N",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_N.tga"
+									}
+								},
+								{
+									"Name": "BaseColor_03",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Rock_01_C",
+										"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_C.T_Tiling_Rock_01_C",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_C.tga"
+									}
+								},
+								{
+									"Name": "ORM_03",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Rock_01_ORM",
+										"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_ORM.T_Tiling_Rock_01_ORM",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_ORM.tga"
+									}
+								},
+								{
+									"Name": "Normal_03",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Rock_01_N",
+										"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_N.T_Tiling_Rock_01_N",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_N.tga"
+									}
+								},
+								{
+									"Name": "RVT_Mask",
+									"Type": 8,
+									"Value": true
+								}
+							]
+						},
+						{
+							"Name": "MI_Cypress_Large_01",
+							"Parent": "MM_Assets_Splatmap",
+							"Parameters": [
+								{
+									"Name": "Color_Tint_02",
+									"Type": 1,
+									"Value": [
+										1,
+										1,
+										1,
+										1
+									]
+								},
+								{
+									"Name": "Tiling_V",
+									"Type": 0,
+									"Value": 1
+								},
+								{
+									"Name": "Normal_Flat_01",
+									"Type": 0,
+									"Value": 0
+								},
+								{
+									"Name": "Power_Red",
+									"Type": 0,
+									"Value": 0.49087899923324585
+								},
+								{
+									"Name": "Contrast_Red",
+									"Type": 0,
+									"Value": 0
+								},
+								{
+									"Name": "Power_Green",
+									"Type": 0,
+									"Value": 1
+								},
+								{
+									"Name": "Contrast_Green",
+									"Type": 0,
+									"Value": 0
+								},
+								{
+									"Name": "Power_Blue",
+									"Type": 0,
+									"Value": 1
+								},
+								{
+									"Name": "Contrast_Blue",
+									"Type": 0,
+									"Value": 0
+								},
+								{
+									"Name": "RVT_Falloff",
+									"Type": 0,
+									"Value": 1.0147180557250977
+								},
+								{
+									"Name": "RVT_Blend",
+									"Type": 0,
+									"Value": 205.009521484375
+								},
+								{
+									"Name": "RVT_Mask",
+									"Type": 0,
+									"Value": 1
+								},
+								{
+									"Name": "Normal_Flat",
+									"Type": 0,
+									"Value": 0
+								},
+								{
+									"Name": "Normal_Flat_04",
+									"Type": 0,
+									"Value": 0
+								},
+								{
+									"Name": "Normal_Flat_03",
+									"Type": 0,
+									"Value": 0
+								},
+								{
+									"Name": "Color_Tint_01",
+									"Type": 1,
+									"Value": [
+										1,
+										1,
+										1,
+										1
+									]
+								},
+								{
+									"Name": "Tiling_U",
+									"Type": 0,
+									"Value": 1
+								},
+								{
+									"Name": "Color_Tint_04",
+									"Type": 1,
+									"Value": [
+										1,
+										1,
+										1,
+										1
+									]
+								},
+								{
+									"Name": "Color_Tint_03",
+									"Type": 1,
+									"Value": [
+										1,
+										1,
+										1,
+										1
+									]
+								},
+								{
+									"Name": "BaseColor_01",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Cypress_Large_01_C",
+										"Path": "/Game/Materials/Textures/T_Cypress_Large_01_C.T_Cypress_Large_01_C",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Cypress_Large_01_BaseColor.tga"
+									}
+								},
+								{
+									"Name": "ORM_01",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Cypress_Large_01_ORM",
+										"Path": "/Game/Materials/Textures/T_Cypress_Large_01_ORM.T_Cypress_Large_01_ORM",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Cypress_Large_01_OcclusionRoughnessMetallic.tga"
+									}
+								},
+								{
+									"Name": "Normal_01",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Cypress_Large_01_N",
+										"Path": "/Game/Materials/Textures/T_Cypress_Large_01_N.T_Cypress_Large_01_N",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Cypress_Large_01_Normal.tga"
+									}
+								},
+								{
+									"Name": "Splatmap",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Cypress_Large_01_SPM",
+										"Path": "/Game/Materials/Textures/T_Cypress_Large_01_SPM.T_Cypress_Large_01_SPM",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Cypress_Large_01_Splatmask.tga"
+									}
+								},
+								{
+									"Name": "BaseColor_02",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Rock_01_C",
+										"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_C.T_Tiling_Rock_01_C",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_C.tga"
+									}
+								},
+								{
+									"Name": "ORM_02",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Rock_01_ORM",
+										"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_ORM.T_Tiling_Rock_01_ORM",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_ORM.tga"
+									}
+								},
+								{
+									"Name": "Normal_02",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Rock_01_N",
+										"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_N.T_Tiling_Rock_01_N",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_N.tga"
+									}
+								},
+								{
+									"Name": "BaseColor_04",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Rock_01_C",
+										"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_C.T_Tiling_Rock_01_C",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_C.tga"
+									}
+								},
+								{
+									"Name": "ORM_04",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Rock_01_ORM",
+										"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_ORM.T_Tiling_Rock_01_ORM",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_ORM.tga"
+									}
+								},
+								{
+									"Name": "Normal_04",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Rock_01_N",
+										"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_N.T_Tiling_Rock_01_N",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_N.tga"
+									}
+								},
+								{
+									"Name": "BaseColor_03",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Rock_01_C",
+										"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_C.T_Tiling_Rock_01_C",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_C.tga"
+									}
+								},
+								{
+									"Name": "ORM_03",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Rock_01_ORM",
+										"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_ORM.T_Tiling_Rock_01_ORM",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_ORM.tga"
+									}
+								},
+								{
+									"Name": "Normal_03",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Rock_01_N",
+										"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_N.T_Tiling_Rock_01_N",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_N.tga"
+									}
+								},
+								{
+									"Name": "RVT_Mask",
+									"Type": 8,
+									"Value": true
+								}
+							]
+						}
+					],
+					"Animations": []
+				}
+			]
+		},
+		{
+			"Name": "A_Enemy_Brute2",
+			"Archetype": "Actor",
+			"Transform": [
+				1.2167964857923153e-08,
+				-1,
+				0,
+				0,
+				1,
+				1.2167964857923153e-08,
+				-0,
+				0,
+				0,
+				0,
+				1,
+				0,
+				710,
+				-3950,
+				-150,
+				1
+			],
+			"Tags": [],
+			"Components": [
+				{
+					"Name": "DefaultSceneRoot",
+					"TypeID": 0,
+					"Parent": "",
+					"Tags": [],
+					"Transform": [
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1
+					]
+				},
+				{
+					"Name": "SK_brute",
+					"TypeID": 2,
+					"Parent": "DefaultSceneRoot",
+					"Tags": [],
+					"Transform": [
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						-1130,
+						-1750,
+						150,
+						1
+					],
+					"Mesh": "SK_BruteEnemy",
+					"ContentPath": "/Game/Skeletal_Meshes/SK_BruteEnemy.SK_BruteEnemy",
+					"AssetImportPath": "C:/Users/emelie.englund1/Desktop/emelie.englund1_Content_&_Unreal_Project/UnrealProject/P5G5/Content/Skeletal_Meshes/Skeletal meshes/SK_BruteEnemy.fbx",
+					"Materials": [
+						{
+							"Name": "MI_Cypress_Large_01",
+							"Parent": "MM_Assets_Splatmap",
+							"Parameters": [
+								{
+									"Name": "Color_Tint_02",
+									"Type": 1,
+									"Value": [
+										1,
+										1,
+										1,
+										1
+									]
+								},
+								{
+									"Name": "Tiling_V",
+									"Type": 0,
+									"Value": 1
+								},
+								{
+									"Name": "Normal_Flat_01",
+									"Type": 0,
+									"Value": 0
+								},
+								{
+									"Name": "Power_Red",
+									"Type": 0,
+									"Value": 0.49087899923324585
+								},
+								{
+									"Name": "Contrast_Red",
+									"Type": 0,
+									"Value": 0
+								},
+								{
+									"Name": "Power_Green",
+									"Type": 0,
+									"Value": 1
+								},
+								{
+									"Name": "Contrast_Green",
+									"Type": 0,
+									"Value": 0
+								},
+								{
+									"Name": "Power_Blue",
+									"Type": 0,
+									"Value": 1
+								},
+								{
+									"Name": "Contrast_Blue",
+									"Type": 0,
+									"Value": 0
+								},
+								{
+									"Name": "RVT_Falloff",
+									"Type": 0,
+									"Value": 1.0147180557250977
+								},
+								{
+									"Name": "RVT_Blend",
+									"Type": 0,
+									"Value": 205.009521484375
+								},
+								{
+									"Name": "RVT_Mask",
+									"Type": 0,
+									"Value": 1
+								},
+								{
+									"Name": "Normal_Flat",
+									"Type": 0,
+									"Value": 0
+								},
+								{
+									"Name": "Normal_Flat_04",
+									"Type": 0,
+									"Value": 0
+								},
+								{
+									"Name": "Normal_Flat_03",
+									"Type": 0,
+									"Value": 0
+								},
+								{
+									"Name": "Color_Tint_01",
+									"Type": 1,
+									"Value": [
+										1,
+										1,
+										1,
+										1
+									]
+								},
+								{
+									"Name": "Tiling_U",
+									"Type": 0,
+									"Value": 1
+								},
+								{
+									"Name": "Color_Tint_04",
+									"Type": 1,
+									"Value": [
+										1,
+										1,
+										1,
+										1
+									]
+								},
+								{
+									"Name": "Color_Tint_03",
+									"Type": 1,
+									"Value": [
+										1,
+										1,
+										1,
+										1
+									]
+								},
+								{
+									"Name": "BaseColor_01",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Cypress_Large_01_C",
+										"Path": "/Game/Materials/Textures/T_Cypress_Large_01_C.T_Cypress_Large_01_C",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Cypress_Large_01_BaseColor.tga"
+									}
+								},
+								{
+									"Name": "ORM_01",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Cypress_Large_01_ORM",
+										"Path": "/Game/Materials/Textures/T_Cypress_Large_01_ORM.T_Cypress_Large_01_ORM",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Cypress_Large_01_OcclusionRoughnessMetallic.tga"
+									}
+								},
+								{
+									"Name": "Normal_01",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Cypress_Large_01_N",
+										"Path": "/Game/Materials/Textures/T_Cypress_Large_01_N.T_Cypress_Large_01_N",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Cypress_Large_01_Normal.tga"
+									}
+								},
+								{
+									"Name": "Splatmap",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Cypress_Large_01_SPM",
+										"Path": "/Game/Materials/Textures/T_Cypress_Large_01_SPM.T_Cypress_Large_01_SPM",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Cypress_Large_01_Splatmask.tga"
+									}
+								},
+								{
+									"Name": "BaseColor_02",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Rock_01_C",
+										"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_C.T_Tiling_Rock_01_C",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_C.tga"
+									}
+								},
+								{
+									"Name": "ORM_02",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Rock_01_ORM",
+										"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_ORM.T_Tiling_Rock_01_ORM",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_ORM.tga"
+									}
+								},
+								{
+									"Name": "Normal_02",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Rock_01_N",
+										"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_N.T_Tiling_Rock_01_N",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_N.tga"
+									}
+								},
+								{
+									"Name": "BaseColor_04",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Rock_01_C",
+										"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_C.T_Tiling_Rock_01_C",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_C.tga"
+									}
+								},
+								{
+									"Name": "ORM_04",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Rock_01_ORM",
+										"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_ORM.T_Tiling_Rock_01_ORM",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_ORM.tga"
+									}
+								},
+								{
+									"Name": "Normal_04",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Rock_01_N",
+										"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_N.T_Tiling_Rock_01_N",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_N.tga"
+									}
+								},
+								{
+									"Name": "BaseColor_03",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Rock_01_C",
+										"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_C.T_Tiling_Rock_01_C",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_C.tga"
+									}
+								},
+								{
+									"Name": "ORM_03",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Rock_01_ORM",
+										"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_ORM.T_Tiling_Rock_01_ORM",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_ORM.tga"
+									}
+								},
+								{
+									"Name": "Normal_03",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Rock_01_N",
+										"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_N.T_Tiling_Rock_01_N",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_N.tga"
+									}
+								},
+								{
+									"Name": "RVT_Mask",
+									"Type": 8,
+									"Value": true
+								}
+							]
+						}
+					],
+					"Animations": [
+						{
+							"Name": "A_BruteEnemy_Attack",
+							"Type": "attack"
+						},
+						{
+							"Name": "A_BruteEnemy_Death",
+							"Type": "death"
+						},
+						{
+							"Name": "A_BruteEnemy_Hurt",
+							"Type": "hurt"
+						},
+						{
+							"Name": "A_BruteEnemy_Idle",
+							"Type": "idle"
+						},
+						{
+							"Name": "A_BruteEnemy_Walk",
+							"Type": "walk"
+						}
+					]
+				}
+			]
+		},
+		{
+			"Name": "A_Enemy_Brute3",
+			"Archetype": "Actor",
+			"Transform": [
+				1.216796519099006e-08,
+				1,
+				0,
+				0,
+				-1,
+				1.216796519099006e-08,
+				0,
+				0,
+				0,
+				-0,
+				1,
+				0,
+				-2780,
+				-1270,
+				-150,
+				1
+			],
+			"Tags": [],
+			"Components": [
+				{
+					"Name": "DefaultSceneRoot",
+					"TypeID": 0,
+					"Parent": "",
+					"Tags": [],
+					"Transform": [
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1
+					]
+				},
+				{
+					"Name": "SK_brute",
+					"TypeID": 2,
+					"Parent": "DefaultSceneRoot",
+					"Tags": [],
+					"Transform": [
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						-1130,
+						-1750,
+						150,
+						1
+					],
+					"Mesh": "SK_BruteEnemy",
+					"ContentPath": "/Game/Skeletal_Meshes/SK_BruteEnemy.SK_BruteEnemy",
+					"AssetImportPath": "C:/Users/emelie.englund1/Desktop/emelie.englund1_Content_&_Unreal_Project/UnrealProject/P5G5/Content/Skeletal_Meshes/Skeletal meshes/SK_BruteEnemy.fbx",
+					"Materials": [
+						{
+							"Name": "MI_Cypress_Large_01",
+							"Parent": "MM_Assets_Splatmap",
+							"Parameters": [
+								{
+									"Name": "Color_Tint_02",
+									"Type": 1,
+									"Value": [
+										1,
+										1,
+										1,
+										1
+									]
+								},
+								{
+									"Name": "Tiling_V",
+									"Type": 0,
+									"Value": 1
+								},
+								{
+									"Name": "Normal_Flat_01",
+									"Type": 0,
+									"Value": 0
+								},
+								{
+									"Name": "Power_Red",
+									"Type": 0,
+									"Value": 0.49087899923324585
+								},
+								{
+									"Name": "Contrast_Red",
+									"Type": 0,
+									"Value": 0
+								},
+								{
+									"Name": "Power_Green",
+									"Type": 0,
+									"Value": 1
+								},
+								{
+									"Name": "Contrast_Green",
+									"Type": 0,
+									"Value": 0
+								},
+								{
+									"Name": "Power_Blue",
+									"Type": 0,
+									"Value": 1
+								},
+								{
+									"Name": "Contrast_Blue",
+									"Type": 0,
+									"Value": 0
+								},
+								{
+									"Name": "RVT_Falloff",
+									"Type": 0,
+									"Value": 1.0147180557250977
+								},
+								{
+									"Name": "RVT_Blend",
+									"Type": 0,
+									"Value": 205.009521484375
+								},
+								{
+									"Name": "RVT_Mask",
+									"Type": 0,
+									"Value": 1
+								},
+								{
+									"Name": "Normal_Flat",
+									"Type": 0,
+									"Value": 0
+								},
+								{
+									"Name": "Normal_Flat_04",
+									"Type": 0,
+									"Value": 0
+								},
+								{
+									"Name": "Normal_Flat_03",
+									"Type": 0,
+									"Value": 0
+								},
+								{
+									"Name": "Color_Tint_01",
+									"Type": 1,
+									"Value": [
+										1,
+										1,
+										1,
+										1
+									]
+								},
+								{
+									"Name": "Tiling_U",
+									"Type": 0,
+									"Value": 1
+								},
+								{
+									"Name": "Color_Tint_04",
+									"Type": 1,
+									"Value": [
+										1,
+										1,
+										1,
+										1
+									]
+								},
+								{
+									"Name": "Color_Tint_03",
+									"Type": 1,
+									"Value": [
+										1,
+										1,
+										1,
+										1
+									]
+								},
+								{
+									"Name": "BaseColor_01",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Cypress_Large_01_C",
+										"Path": "/Game/Materials/Textures/T_Cypress_Large_01_C.T_Cypress_Large_01_C",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Cypress_Large_01_BaseColor.tga"
+									}
+								},
+								{
+									"Name": "ORM_01",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Cypress_Large_01_ORM",
+										"Path": "/Game/Materials/Textures/T_Cypress_Large_01_ORM.T_Cypress_Large_01_ORM",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Cypress_Large_01_OcclusionRoughnessMetallic.tga"
+									}
+								},
+								{
+									"Name": "Normal_01",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Cypress_Large_01_N",
+										"Path": "/Game/Materials/Textures/T_Cypress_Large_01_N.T_Cypress_Large_01_N",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Cypress_Large_01_Normal.tga"
+									}
+								},
+								{
+									"Name": "Splatmap",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Cypress_Large_01_SPM",
+										"Path": "/Game/Materials/Textures/T_Cypress_Large_01_SPM.T_Cypress_Large_01_SPM",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Cypress_Large_01_Splatmask.tga"
+									}
+								},
+								{
+									"Name": "BaseColor_02",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Rock_01_C",
+										"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_C.T_Tiling_Rock_01_C",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_C.tga"
+									}
+								},
+								{
+									"Name": "ORM_02",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Rock_01_ORM",
+										"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_ORM.T_Tiling_Rock_01_ORM",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_ORM.tga"
+									}
+								},
+								{
+									"Name": "Normal_02",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Rock_01_N",
+										"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_N.T_Tiling_Rock_01_N",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_N.tga"
+									}
+								},
+								{
+									"Name": "BaseColor_04",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Rock_01_C",
+										"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_C.T_Tiling_Rock_01_C",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_C.tga"
+									}
+								},
+								{
+									"Name": "ORM_04",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Rock_01_ORM",
+										"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_ORM.T_Tiling_Rock_01_ORM",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_ORM.tga"
+									}
+								},
+								{
+									"Name": "Normal_04",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Rock_01_N",
+										"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_N.T_Tiling_Rock_01_N",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_N.tga"
+									}
+								},
+								{
+									"Name": "BaseColor_03",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Rock_01_C",
+										"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_C.T_Tiling_Rock_01_C",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_C.tga"
+									}
+								},
+								{
+									"Name": "ORM_03",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Rock_01_ORM",
+										"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_ORM.T_Tiling_Rock_01_ORM",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_ORM.tga"
+									}
+								},
+								{
+									"Name": "Normal_03",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Rock_01_N",
+										"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_N.T_Tiling_Rock_01_N",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_N.tga"
+									}
+								},
+								{
+									"Name": "RVT_Mask",
+									"Type": 8,
+									"Value": true
+								}
+							]
+						}
+					],
+					"Animations": [
+						{
+							"Name": "A_BruteEnemy_Attack",
+							"Type": "attack"
+						},
+						{
+							"Name": "A_BruteEnemy_Death",
+							"Type": "death"
+						},
+						{
+							"Name": "A_BruteEnemy_Hurt",
+							"Type": "hurt"
+						},
+						{
+							"Name": "A_BruteEnemy_Idle",
+							"Type": "idle"
+						},
+						{
+							"Name": "A_BruteEnemy_Walk",
+							"Type": "walk"
+						}
+					]
+				}
+			]
+		},
+		{
+			"Name": "A_Enemy_Grunt2",
+			"Archetype": "Actor",
+			"Transform": [
+				1.2167965746101572e-08,
+				1,
+				0,
+				0,
+				-1,
+				1.2167965746101572e-08,
+				0,
+				0,
+				0,
+				-0,
+				1,
+				0,
+				-1630,
+				-2820,
+				530,
+				1
+			],
+			"Tags": [],
+			"Components": [
+				{
+					"Name": "DefaultSceneRoot",
+					"TypeID": 0,
+					"Parent": "",
+					"Tags": [],
+					"Transform": [
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1
+					]
+				},
+				{
+					"Name": "SK_grunt",
+					"TypeID": 2,
+					"Parent": "DefaultSceneRoot",
+					"Tags": [],
+					"Transform": [
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						-530,
+						1
+					],
+					"Mesh": "SK_GruntEnemy",
+					"ContentPath": "/Game/Skeletal_Meshes/SK_GruntEnemy.SK_GruntEnemy",
+					"AssetImportPath": "C:/Users/emelie.englund1/Desktop/emelie.englund1_Content_&_Unreal_Project/UnrealProject/P5G5/Content/Skeletal_Meshes/Skeletal meshes/SK_GruntEnemy.fbx",
+					"Materials": [
+						{
+							"Name": "MI_Cypress_Large_01",
+							"Parent": "MM_Assets_Splatmap",
+							"Parameters": [
+								{
+									"Name": "Color_Tint_02",
+									"Type": 1,
+									"Value": [
+										1,
+										1,
+										1,
+										1
+									]
+								},
+								{
+									"Name": "Tiling_V",
+									"Type": 0,
+									"Value": 1
+								},
+								{
+									"Name": "Normal_Flat_01",
+									"Type": 0,
+									"Value": 0
+								},
+								{
+									"Name": "Power_Red",
+									"Type": 0,
+									"Value": 0.49087899923324585
+								},
+								{
+									"Name": "Contrast_Red",
+									"Type": 0,
+									"Value": 0
+								},
+								{
+									"Name": "Power_Green",
+									"Type": 0,
+									"Value": 1
+								},
+								{
+									"Name": "Contrast_Green",
+									"Type": 0,
+									"Value": 0
+								},
+								{
+									"Name": "Power_Blue",
+									"Type": 0,
+									"Value": 1
+								},
+								{
+									"Name": "Contrast_Blue",
+									"Type": 0,
+									"Value": 0
+								},
+								{
+									"Name": "RVT_Falloff",
+									"Type": 0,
+									"Value": 1.0147180557250977
+								},
+								{
+									"Name": "RVT_Blend",
+									"Type": 0,
+									"Value": 205.009521484375
+								},
+								{
+									"Name": "RVT_Mask",
+									"Type": 0,
+									"Value": 1
+								},
+								{
+									"Name": "Normal_Flat",
+									"Type": 0,
+									"Value": 0
+								},
+								{
+									"Name": "Normal_Flat_04",
+									"Type": 0,
+									"Value": 0
+								},
+								{
+									"Name": "Normal_Flat_03",
+									"Type": 0,
+									"Value": 0
+								},
+								{
+									"Name": "Color_Tint_01",
+									"Type": 1,
+									"Value": [
+										1,
+										1,
+										1,
+										1
+									]
+								},
+								{
+									"Name": "Tiling_U",
+									"Type": 0,
+									"Value": 1
+								},
+								{
+									"Name": "Color_Tint_04",
+									"Type": 1,
+									"Value": [
+										1,
+										1,
+										1,
+										1
+									]
+								},
+								{
+									"Name": "Color_Tint_03",
+									"Type": 1,
+									"Value": [
+										1,
+										1,
+										1,
+										1
+									]
+								},
+								{
+									"Name": "BaseColor_01",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Cypress_Large_01_C",
+										"Path": "/Game/Materials/Textures/T_Cypress_Large_01_C.T_Cypress_Large_01_C",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Cypress_Large_01_BaseColor.tga"
+									}
+								},
+								{
+									"Name": "ORM_01",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Cypress_Large_01_ORM",
+										"Path": "/Game/Materials/Textures/T_Cypress_Large_01_ORM.T_Cypress_Large_01_ORM",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Cypress_Large_01_OcclusionRoughnessMetallic.tga"
+									}
+								},
+								{
+									"Name": "Normal_01",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Cypress_Large_01_N",
+										"Path": "/Game/Materials/Textures/T_Cypress_Large_01_N.T_Cypress_Large_01_N",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Cypress_Large_01_Normal.tga"
+									}
+								},
+								{
+									"Name": "Splatmap",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Cypress_Large_01_SPM",
+										"Path": "/Game/Materials/Textures/T_Cypress_Large_01_SPM.T_Cypress_Large_01_SPM",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Cypress_Large_01_Splatmask.tga"
+									}
+								},
+								{
+									"Name": "BaseColor_02",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Rock_01_C",
+										"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_C.T_Tiling_Rock_01_C",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_C.tga"
+									}
+								},
+								{
+									"Name": "ORM_02",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Rock_01_ORM",
+										"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_ORM.T_Tiling_Rock_01_ORM",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_ORM.tga"
+									}
+								},
+								{
+									"Name": "Normal_02",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Rock_01_N",
+										"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_N.T_Tiling_Rock_01_N",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_N.tga"
+									}
+								},
+								{
+									"Name": "BaseColor_04",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Rock_01_C",
+										"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_C.T_Tiling_Rock_01_C",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_C.tga"
+									}
+								},
+								{
+									"Name": "ORM_04",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Rock_01_ORM",
+										"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_ORM.T_Tiling_Rock_01_ORM",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_ORM.tga"
+									}
+								},
+								{
+									"Name": "Normal_04",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Rock_01_N",
+										"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_N.T_Tiling_Rock_01_N",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_N.tga"
+									}
+								},
+								{
+									"Name": "BaseColor_03",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Rock_01_C",
+										"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_C.T_Tiling_Rock_01_C",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_C.tga"
+									}
+								},
+								{
+									"Name": "ORM_03",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Rock_01_ORM",
+										"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_ORM.T_Tiling_Rock_01_ORM",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_ORM.tga"
+									}
+								},
+								{
+									"Name": "Normal_03",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Rock_01_N",
+										"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_N.T_Tiling_Rock_01_N",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_N.tga"
+									}
+								},
+								{
+									"Name": "RVT_Mask",
+									"Type": 8,
+									"Value": true
+								}
+							]
+						},
+						{
+							"Name": "MI_Cypress_Large_01",
+							"Parent": "MM_Assets_Splatmap",
+							"Parameters": [
+								{
+									"Name": "Color_Tint_02",
+									"Type": 1,
+									"Value": [
+										1,
+										1,
+										1,
+										1
+									]
+								},
+								{
+									"Name": "Tiling_V",
+									"Type": 0,
+									"Value": 1
+								},
+								{
+									"Name": "Normal_Flat_01",
+									"Type": 0,
+									"Value": 0
+								},
+								{
+									"Name": "Power_Red",
+									"Type": 0,
+									"Value": 0.49087899923324585
+								},
+								{
+									"Name": "Contrast_Red",
+									"Type": 0,
+									"Value": 0
+								},
+								{
+									"Name": "Power_Green",
+									"Type": 0,
+									"Value": 1
+								},
+								{
+									"Name": "Contrast_Green",
+									"Type": 0,
+									"Value": 0
+								},
+								{
+									"Name": "Power_Blue",
+									"Type": 0,
+									"Value": 1
+								},
+								{
+									"Name": "Contrast_Blue",
+									"Type": 0,
+									"Value": 0
+								},
+								{
+									"Name": "RVT_Falloff",
+									"Type": 0,
+									"Value": 1.0147180557250977
+								},
+								{
+									"Name": "RVT_Blend",
+									"Type": 0,
+									"Value": 205.009521484375
+								},
+								{
+									"Name": "RVT_Mask",
+									"Type": 0,
+									"Value": 1
+								},
+								{
+									"Name": "Normal_Flat",
+									"Type": 0,
+									"Value": 0
+								},
+								{
+									"Name": "Normal_Flat_04",
+									"Type": 0,
+									"Value": 0
+								},
+								{
+									"Name": "Normal_Flat_03",
+									"Type": 0,
+									"Value": 0
+								},
+								{
+									"Name": "Color_Tint_01",
+									"Type": 1,
+									"Value": [
+										1,
+										1,
+										1,
+										1
+									]
+								},
+								{
+									"Name": "Tiling_U",
+									"Type": 0,
+									"Value": 1
+								},
+								{
+									"Name": "Color_Tint_04",
+									"Type": 1,
+									"Value": [
+										1,
+										1,
+										1,
+										1
+									]
+								},
+								{
+									"Name": "Color_Tint_03",
+									"Type": 1,
+									"Value": [
+										1,
+										1,
+										1,
+										1
+									]
+								},
+								{
+									"Name": "BaseColor_01",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Cypress_Large_01_C",
+										"Path": "/Game/Materials/Textures/T_Cypress_Large_01_C.T_Cypress_Large_01_C",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Cypress_Large_01_BaseColor.tga"
+									}
+								},
+								{
+									"Name": "ORM_01",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Cypress_Large_01_ORM",
+										"Path": "/Game/Materials/Textures/T_Cypress_Large_01_ORM.T_Cypress_Large_01_ORM",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Cypress_Large_01_OcclusionRoughnessMetallic.tga"
+									}
+								},
+								{
+									"Name": "Normal_01",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Cypress_Large_01_N",
+										"Path": "/Game/Materials/Textures/T_Cypress_Large_01_N.T_Cypress_Large_01_N",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Cypress_Large_01_Normal.tga"
+									}
+								},
+								{
+									"Name": "Splatmap",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Cypress_Large_01_SPM",
+										"Path": "/Game/Materials/Textures/T_Cypress_Large_01_SPM.T_Cypress_Large_01_SPM",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Cypress_Large_01_Splatmask.tga"
+									}
+								},
+								{
+									"Name": "BaseColor_02",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Rock_01_C",
+										"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_C.T_Tiling_Rock_01_C",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_C.tga"
+									}
+								},
+								{
+									"Name": "ORM_02",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Rock_01_ORM",
+										"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_ORM.T_Tiling_Rock_01_ORM",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_ORM.tga"
+									}
+								},
+								{
+									"Name": "Normal_02",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Rock_01_N",
+										"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_N.T_Tiling_Rock_01_N",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_N.tga"
+									}
+								},
+								{
+									"Name": "BaseColor_04",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Rock_01_C",
+										"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_C.T_Tiling_Rock_01_C",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_C.tga"
+									}
+								},
+								{
+									"Name": "ORM_04",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Rock_01_ORM",
+										"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_ORM.T_Tiling_Rock_01_ORM",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_ORM.tga"
+									}
+								},
+								{
+									"Name": "Normal_04",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Rock_01_N",
+										"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_N.T_Tiling_Rock_01_N",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_N.tga"
+									}
+								},
+								{
+									"Name": "BaseColor_03",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Rock_01_C",
+										"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_C.T_Tiling_Rock_01_C",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_C.tga"
+									}
+								},
+								{
+									"Name": "ORM_03",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Rock_01_ORM",
+										"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_ORM.T_Tiling_Rock_01_ORM",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_ORM.tga"
+									}
+								},
+								{
+									"Name": "Normal_03",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Rock_01_N",
+										"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_N.T_Tiling_Rock_01_N",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_N.tga"
+									}
+								},
+								{
+									"Name": "RVT_Mask",
+									"Type": 8,
+									"Value": true
+								}
+							]
+						}
+					],
+					"Animations": []
+				}
+			]
+		},
+		{
+			"Name": "A_Enemy_Grunt3",
+			"Archetype": "Actor",
+			"Transform": [
+				6.8826357946250027e-09,
+				-1.0000000000000002,
+				0,
+				0,
+				1.0000000000000002,
+				6.8826357946250027e-09,
+				-0,
+				0,
+				0,
+				0,
+				1,
+				0,
+				-1630,
+				-2460,
+				530,
+				1
+			],
+			"Tags": [],
+			"Components": [
+				{
+					"Name": "DefaultSceneRoot",
+					"TypeID": 0,
+					"Parent": "",
+					"Tags": [],
+					"Transform": [
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1
+					]
+				},
+				{
+					"Name": "SK_grunt",
+					"TypeID": 2,
+					"Parent": "DefaultSceneRoot",
+					"Tags": [],
+					"Transform": [
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						-530,
+						1
+					],
+					"Mesh": "SK_GruntEnemy",
+					"ContentPath": "/Game/Skeletal_Meshes/SK_GruntEnemy.SK_GruntEnemy",
+					"AssetImportPath": "C:/Users/emelie.englund1/Desktop/emelie.englund1_Content_&_Unreal_Project/UnrealProject/P5G5/Content/Skeletal_Meshes/Skeletal meshes/SK_GruntEnemy.fbx",
+					"Materials": [
+						{
+							"Name": "MI_Cypress_Large_01",
+							"Parent": "MM_Assets_Splatmap",
+							"Parameters": [
+								{
+									"Name": "Color_Tint_02",
+									"Type": 1,
+									"Value": [
+										1,
+										1,
+										1,
+										1
+									]
+								},
+								{
+									"Name": "Tiling_V",
+									"Type": 0,
+									"Value": 1
+								},
+								{
+									"Name": "Normal_Flat_01",
+									"Type": 0,
+									"Value": 0
+								},
+								{
+									"Name": "Power_Red",
+									"Type": 0,
+									"Value": 0.49087899923324585
+								},
+								{
+									"Name": "Contrast_Red",
+									"Type": 0,
+									"Value": 0
+								},
+								{
+									"Name": "Power_Green",
+									"Type": 0,
+									"Value": 1
+								},
+								{
+									"Name": "Contrast_Green",
+									"Type": 0,
+									"Value": 0
+								},
+								{
+									"Name": "Power_Blue",
+									"Type": 0,
+									"Value": 1
+								},
+								{
+									"Name": "Contrast_Blue",
+									"Type": 0,
+									"Value": 0
+								},
+								{
+									"Name": "RVT_Falloff",
+									"Type": 0,
+									"Value": 1.0147180557250977
+								},
+								{
+									"Name": "RVT_Blend",
+									"Type": 0,
+									"Value": 205.009521484375
+								},
+								{
+									"Name": "RVT_Mask",
+									"Type": 0,
+									"Value": 1
+								},
+								{
+									"Name": "Normal_Flat",
+									"Type": 0,
+									"Value": 0
+								},
+								{
+									"Name": "Normal_Flat_04",
+									"Type": 0,
+									"Value": 0
+								},
+								{
+									"Name": "Normal_Flat_03",
+									"Type": 0,
+									"Value": 0
+								},
+								{
+									"Name": "Color_Tint_01",
+									"Type": 1,
+									"Value": [
+										1,
+										1,
+										1,
+										1
+									]
+								},
+								{
+									"Name": "Tiling_U",
+									"Type": 0,
+									"Value": 1
+								},
+								{
+									"Name": "Color_Tint_04",
+									"Type": 1,
+									"Value": [
+										1,
+										1,
+										1,
+										1
+									]
+								},
+								{
+									"Name": "Color_Tint_03",
+									"Type": 1,
+									"Value": [
+										1,
+										1,
+										1,
+										1
+									]
+								},
+								{
+									"Name": "BaseColor_01",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Cypress_Large_01_C",
+										"Path": "/Game/Materials/Textures/T_Cypress_Large_01_C.T_Cypress_Large_01_C",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Cypress_Large_01_BaseColor.tga"
+									}
+								},
+								{
+									"Name": "ORM_01",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Cypress_Large_01_ORM",
+										"Path": "/Game/Materials/Textures/T_Cypress_Large_01_ORM.T_Cypress_Large_01_ORM",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Cypress_Large_01_OcclusionRoughnessMetallic.tga"
+									}
+								},
+								{
+									"Name": "Normal_01",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Cypress_Large_01_N",
+										"Path": "/Game/Materials/Textures/T_Cypress_Large_01_N.T_Cypress_Large_01_N",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Cypress_Large_01_Normal.tga"
+									}
+								},
+								{
+									"Name": "Splatmap",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Cypress_Large_01_SPM",
+										"Path": "/Game/Materials/Textures/T_Cypress_Large_01_SPM.T_Cypress_Large_01_SPM",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Cypress_Large_01_Splatmask.tga"
+									}
+								},
+								{
+									"Name": "BaseColor_02",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Rock_01_C",
+										"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_C.T_Tiling_Rock_01_C",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_C.tga"
+									}
+								},
+								{
+									"Name": "ORM_02",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Rock_01_ORM",
+										"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_ORM.T_Tiling_Rock_01_ORM",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_ORM.tga"
+									}
+								},
+								{
+									"Name": "Normal_02",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Rock_01_N",
+										"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_N.T_Tiling_Rock_01_N",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_N.tga"
+									}
+								},
+								{
+									"Name": "BaseColor_04",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Rock_01_C",
+										"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_C.T_Tiling_Rock_01_C",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_C.tga"
+									}
+								},
+								{
+									"Name": "ORM_04",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Rock_01_ORM",
+										"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_ORM.T_Tiling_Rock_01_ORM",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_ORM.tga"
+									}
+								},
+								{
+									"Name": "Normal_04",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Rock_01_N",
+										"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_N.T_Tiling_Rock_01_N",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_N.tga"
+									}
+								},
+								{
+									"Name": "BaseColor_03",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Rock_01_C",
+										"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_C.T_Tiling_Rock_01_C",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_C.tga"
+									}
+								},
+								{
+									"Name": "ORM_03",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Rock_01_ORM",
+										"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_ORM.T_Tiling_Rock_01_ORM",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_ORM.tga"
+									}
+								},
+								{
+									"Name": "Normal_03",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Rock_01_N",
+										"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_N.T_Tiling_Rock_01_N",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_N.tga"
+									}
+								},
+								{
+									"Name": "RVT_Mask",
+									"Type": 8,
+									"Value": true
+								}
+							]
+						},
+						{
+							"Name": "MI_Cypress_Large_01",
+							"Parent": "MM_Assets_Splatmap",
+							"Parameters": [
+								{
+									"Name": "Color_Tint_02",
+									"Type": 1,
+									"Value": [
+										1,
+										1,
+										1,
+										1
+									]
+								},
+								{
+									"Name": "Tiling_V",
+									"Type": 0,
+									"Value": 1
+								},
+								{
+									"Name": "Normal_Flat_01",
+									"Type": 0,
+									"Value": 0
+								},
+								{
+									"Name": "Power_Red",
+									"Type": 0,
+									"Value": 0.49087899923324585
+								},
+								{
+									"Name": "Contrast_Red",
+									"Type": 0,
+									"Value": 0
+								},
+								{
+									"Name": "Power_Green",
+									"Type": 0,
+									"Value": 1
+								},
+								{
+									"Name": "Contrast_Green",
+									"Type": 0,
+									"Value": 0
+								},
+								{
+									"Name": "Power_Blue",
+									"Type": 0,
+									"Value": 1
+								},
+								{
+									"Name": "Contrast_Blue",
+									"Type": 0,
+									"Value": 0
+								},
+								{
+									"Name": "RVT_Falloff",
+									"Type": 0,
+									"Value": 1.0147180557250977
+								},
+								{
+									"Name": "RVT_Blend",
+									"Type": 0,
+									"Value": 205.009521484375
+								},
+								{
+									"Name": "RVT_Mask",
+									"Type": 0,
+									"Value": 1
+								},
+								{
+									"Name": "Normal_Flat",
+									"Type": 0,
+									"Value": 0
+								},
+								{
+									"Name": "Normal_Flat_04",
+									"Type": 0,
+									"Value": 0
+								},
+								{
+									"Name": "Normal_Flat_03",
+									"Type": 0,
+									"Value": 0
+								},
+								{
+									"Name": "Color_Tint_01",
+									"Type": 1,
+									"Value": [
+										1,
+										1,
+										1,
+										1
+									]
+								},
+								{
+									"Name": "Tiling_U",
+									"Type": 0,
+									"Value": 1
+								},
+								{
+									"Name": "Color_Tint_04",
+									"Type": 1,
+									"Value": [
+										1,
+										1,
+										1,
+										1
+									]
+								},
+								{
+									"Name": "Color_Tint_03",
+									"Type": 1,
+									"Value": [
+										1,
+										1,
+										1,
+										1
+									]
+								},
+								{
+									"Name": "BaseColor_01",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Cypress_Large_01_C",
+										"Path": "/Game/Materials/Textures/T_Cypress_Large_01_C.T_Cypress_Large_01_C",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Cypress_Large_01_BaseColor.tga"
+									}
+								},
+								{
+									"Name": "ORM_01",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Cypress_Large_01_ORM",
+										"Path": "/Game/Materials/Textures/T_Cypress_Large_01_ORM.T_Cypress_Large_01_ORM",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Cypress_Large_01_OcclusionRoughnessMetallic.tga"
+									}
+								},
+								{
+									"Name": "Normal_01",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Cypress_Large_01_N",
+										"Path": "/Game/Materials/Textures/T_Cypress_Large_01_N.T_Cypress_Large_01_N",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Cypress_Large_01_Normal.tga"
+									}
+								},
+								{
+									"Name": "Splatmap",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Cypress_Large_01_SPM",
+										"Path": "/Game/Materials/Textures/T_Cypress_Large_01_SPM.T_Cypress_Large_01_SPM",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Cypress_Large_01_Splatmask.tga"
+									}
+								},
+								{
+									"Name": "BaseColor_02",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Rock_01_C",
+										"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_C.T_Tiling_Rock_01_C",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_C.tga"
+									}
+								},
+								{
+									"Name": "ORM_02",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Rock_01_ORM",
+										"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_ORM.T_Tiling_Rock_01_ORM",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_ORM.tga"
+									}
+								},
+								{
+									"Name": "Normal_02",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Rock_01_N",
+										"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_N.T_Tiling_Rock_01_N",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_N.tga"
+									}
+								},
+								{
+									"Name": "BaseColor_04",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Rock_01_C",
+										"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_C.T_Tiling_Rock_01_C",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_C.tga"
+									}
+								},
+								{
+									"Name": "ORM_04",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Rock_01_ORM",
+										"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_ORM.T_Tiling_Rock_01_ORM",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_ORM.tga"
+									}
+								},
+								{
+									"Name": "Normal_04",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Rock_01_N",
+										"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_N.T_Tiling_Rock_01_N",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_N.tga"
+									}
+								},
+								{
+									"Name": "BaseColor_03",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Rock_01_C",
+										"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_C.T_Tiling_Rock_01_C",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_C.tga"
+									}
+								},
+								{
+									"Name": "ORM_03",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Rock_01_ORM",
+										"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_ORM.T_Tiling_Rock_01_ORM",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_ORM.tga"
+									}
+								},
+								{
+									"Name": "Normal_03",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Rock_01_N",
+										"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_N.T_Tiling_Rock_01_N",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_N.tga"
+									}
+								},
+								{
+									"Name": "RVT_Mask",
+									"Type": 8,
+									"Value": true
+								}
+							]
+						}
+					],
+					"Animations": []
+				}
+			]
+		},
+		{
+			"Name": "A_Enemy_Support",
+			"Archetype": "Actor",
+			"Transform": [
+				1,
+				0,
+				0,
+				0,
+				0,
+				1,
+				0,
+				0,
+				0,
+				0,
+				1,
+				0,
+				-2130,
+				-3140,
 				0,
 				1
 			],
@@ -18153,6 +21076,977 @@
 						0,
 						0,
 						1
+					]
+				},
+				{
+					"Name": "SK_SupportEnemy",
+					"TypeID": 2,
+					"Parent": "DefaultSceneRoot",
+					"Tags": [],
+					"Transform": [
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1
+					],
+					"Mesh": "SK_SupportEnemy",
+					"ContentPath": "/Game/Skeletal_Meshes/SK_SupportEnemy.SK_SupportEnemy",
+					"AssetImportPath": "C:/Users/emelie.englund1/Desktop/emelie.englund1_Content_&_Unreal_Project/UnrealProject/P5G5/Content/Skeletal_Meshes/Skeletal meshes/SK_SupportEnemy.fbx",
+					"Materials": [
+						{
+							"Name": "MI_Cypress_Large_01",
+							"Parent": "MM_Assets_Splatmap",
+							"Parameters": [
+								{
+									"Name": "Color_Tint_02",
+									"Type": 1,
+									"Value": [
+										1,
+										1,
+										1,
+										1
+									]
+								},
+								{
+									"Name": "Tiling_V",
+									"Type": 0,
+									"Value": 1
+								},
+								{
+									"Name": "Normal_Flat_01",
+									"Type": 0,
+									"Value": 0
+								},
+								{
+									"Name": "Power_Red",
+									"Type": 0,
+									"Value": 0.49087899923324585
+								},
+								{
+									"Name": "Contrast_Red",
+									"Type": 0,
+									"Value": 0
+								},
+								{
+									"Name": "Power_Green",
+									"Type": 0,
+									"Value": 1
+								},
+								{
+									"Name": "Contrast_Green",
+									"Type": 0,
+									"Value": 0
+								},
+								{
+									"Name": "Power_Blue",
+									"Type": 0,
+									"Value": 1
+								},
+								{
+									"Name": "Contrast_Blue",
+									"Type": 0,
+									"Value": 0
+								},
+								{
+									"Name": "RVT_Falloff",
+									"Type": 0,
+									"Value": 1.0147180557250977
+								},
+								{
+									"Name": "RVT_Blend",
+									"Type": 0,
+									"Value": 205.009521484375
+								},
+								{
+									"Name": "RVT_Mask",
+									"Type": 0,
+									"Value": 1
+								},
+								{
+									"Name": "Normal_Flat",
+									"Type": 0,
+									"Value": 0
+								},
+								{
+									"Name": "Normal_Flat_04",
+									"Type": 0,
+									"Value": 0
+								},
+								{
+									"Name": "Normal_Flat_03",
+									"Type": 0,
+									"Value": 0
+								},
+								{
+									"Name": "Color_Tint_01",
+									"Type": 1,
+									"Value": [
+										1,
+										1,
+										1,
+										1
+									]
+								},
+								{
+									"Name": "Tiling_U",
+									"Type": 0,
+									"Value": 1
+								},
+								{
+									"Name": "Color_Tint_04",
+									"Type": 1,
+									"Value": [
+										1,
+										1,
+										1,
+										1
+									]
+								},
+								{
+									"Name": "Color_Tint_03",
+									"Type": 1,
+									"Value": [
+										1,
+										1,
+										1,
+										1
+									]
+								},
+								{
+									"Name": "BaseColor_01",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Cypress_Large_01_C",
+										"Path": "/Game/Materials/Textures/T_Cypress_Large_01_C.T_Cypress_Large_01_C",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Cypress_Large_01_BaseColor.tga"
+									}
+								},
+								{
+									"Name": "ORM_01",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Cypress_Large_01_ORM",
+										"Path": "/Game/Materials/Textures/T_Cypress_Large_01_ORM.T_Cypress_Large_01_ORM",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Cypress_Large_01_OcclusionRoughnessMetallic.tga"
+									}
+								},
+								{
+									"Name": "Normal_01",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Cypress_Large_01_N",
+										"Path": "/Game/Materials/Textures/T_Cypress_Large_01_N.T_Cypress_Large_01_N",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Cypress_Large_01_Normal.tga"
+									}
+								},
+								{
+									"Name": "Splatmap",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Cypress_Large_01_SPM",
+										"Path": "/Game/Materials/Textures/T_Cypress_Large_01_SPM.T_Cypress_Large_01_SPM",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Cypress_Large_01_Splatmask.tga"
+									}
+								},
+								{
+									"Name": "BaseColor_02",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Rock_01_C",
+										"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_C.T_Tiling_Rock_01_C",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_C.tga"
+									}
+								},
+								{
+									"Name": "ORM_02",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Rock_01_ORM",
+										"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_ORM.T_Tiling_Rock_01_ORM",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_ORM.tga"
+									}
+								},
+								{
+									"Name": "Normal_02",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Rock_01_N",
+										"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_N.T_Tiling_Rock_01_N",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_N.tga"
+									}
+								},
+								{
+									"Name": "BaseColor_04",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Rock_01_C",
+										"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_C.T_Tiling_Rock_01_C",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_C.tga"
+									}
+								},
+								{
+									"Name": "ORM_04",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Rock_01_ORM",
+										"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_ORM.T_Tiling_Rock_01_ORM",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_ORM.tga"
+									}
+								},
+								{
+									"Name": "Normal_04",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Rock_01_N",
+										"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_N.T_Tiling_Rock_01_N",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_N.tga"
+									}
+								},
+								{
+									"Name": "BaseColor_03",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Rock_01_C",
+										"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_C.T_Tiling_Rock_01_C",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_C.tga"
+									}
+								},
+								{
+									"Name": "ORM_03",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Rock_01_ORM",
+										"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_ORM.T_Tiling_Rock_01_ORM",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_ORM.tga"
+									}
+								},
+								{
+									"Name": "Normal_03",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Rock_01_N",
+										"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_N.T_Tiling_Rock_01_N",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_N.tga"
+									}
+								},
+								{
+									"Name": "RVT_Mask",
+									"Type": 8,
+									"Value": true
+								}
+							]
+						}
+					],
+					"Animations": [
+						{
+							"Name": "A_SupportEnemy_Idle",
+							"Type": "idle"
+						}
+					]
+				}
+			]
+		},
+		{
+			"Name": "A_Enemy_Support2",
+			"Archetype": "Actor",
+			"Transform": [
+				1.2167965746101572e-08,
+				1,
+				0,
+				0,
+				-1,
+				1.2167965746101572e-08,
+				0,
+				0,
+				0,
+				-0,
+				1,
+				0,
+				-2130,
+				-2820,
+				0,
+				1
+			],
+			"Tags": [],
+			"Components": [
+				{
+					"Name": "DefaultSceneRoot",
+					"TypeID": 0,
+					"Parent": "",
+					"Tags": [],
+					"Transform": [
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1
+					]
+				},
+				{
+					"Name": "SK_SupportEnemy",
+					"TypeID": 2,
+					"Parent": "DefaultSceneRoot",
+					"Tags": [],
+					"Transform": [
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1
+					],
+					"Mesh": "SK_SupportEnemy",
+					"ContentPath": "/Game/Skeletal_Meshes/SK_SupportEnemy.SK_SupportEnemy",
+					"AssetImportPath": "C:/Users/emelie.englund1/Desktop/emelie.englund1_Content_&_Unreal_Project/UnrealProject/P5G5/Content/Skeletal_Meshes/Skeletal meshes/SK_SupportEnemy.fbx",
+					"Materials": [
+						{
+							"Name": "MI_Cypress_Large_01",
+							"Parent": "MM_Assets_Splatmap",
+							"Parameters": [
+								{
+									"Name": "Color_Tint_02",
+									"Type": 1,
+									"Value": [
+										1,
+										1,
+										1,
+										1
+									]
+								},
+								{
+									"Name": "Tiling_V",
+									"Type": 0,
+									"Value": 1
+								},
+								{
+									"Name": "Normal_Flat_01",
+									"Type": 0,
+									"Value": 0
+								},
+								{
+									"Name": "Power_Red",
+									"Type": 0,
+									"Value": 0.49087899923324585
+								},
+								{
+									"Name": "Contrast_Red",
+									"Type": 0,
+									"Value": 0
+								},
+								{
+									"Name": "Power_Green",
+									"Type": 0,
+									"Value": 1
+								},
+								{
+									"Name": "Contrast_Green",
+									"Type": 0,
+									"Value": 0
+								},
+								{
+									"Name": "Power_Blue",
+									"Type": 0,
+									"Value": 1
+								},
+								{
+									"Name": "Contrast_Blue",
+									"Type": 0,
+									"Value": 0
+								},
+								{
+									"Name": "RVT_Falloff",
+									"Type": 0,
+									"Value": 1.0147180557250977
+								},
+								{
+									"Name": "RVT_Blend",
+									"Type": 0,
+									"Value": 205.009521484375
+								},
+								{
+									"Name": "RVT_Mask",
+									"Type": 0,
+									"Value": 1
+								},
+								{
+									"Name": "Normal_Flat",
+									"Type": 0,
+									"Value": 0
+								},
+								{
+									"Name": "Normal_Flat_04",
+									"Type": 0,
+									"Value": 0
+								},
+								{
+									"Name": "Normal_Flat_03",
+									"Type": 0,
+									"Value": 0
+								},
+								{
+									"Name": "Color_Tint_01",
+									"Type": 1,
+									"Value": [
+										1,
+										1,
+										1,
+										1
+									]
+								},
+								{
+									"Name": "Tiling_U",
+									"Type": 0,
+									"Value": 1
+								},
+								{
+									"Name": "Color_Tint_04",
+									"Type": 1,
+									"Value": [
+										1,
+										1,
+										1,
+										1
+									]
+								},
+								{
+									"Name": "Color_Tint_03",
+									"Type": 1,
+									"Value": [
+										1,
+										1,
+										1,
+										1
+									]
+								},
+								{
+									"Name": "BaseColor_01",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Cypress_Large_01_C",
+										"Path": "/Game/Materials/Textures/T_Cypress_Large_01_C.T_Cypress_Large_01_C",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Cypress_Large_01_BaseColor.tga"
+									}
+								},
+								{
+									"Name": "ORM_01",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Cypress_Large_01_ORM",
+										"Path": "/Game/Materials/Textures/T_Cypress_Large_01_ORM.T_Cypress_Large_01_ORM",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Cypress_Large_01_OcclusionRoughnessMetallic.tga"
+									}
+								},
+								{
+									"Name": "Normal_01",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Cypress_Large_01_N",
+										"Path": "/Game/Materials/Textures/T_Cypress_Large_01_N.T_Cypress_Large_01_N",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Cypress_Large_01_Normal.tga"
+									}
+								},
+								{
+									"Name": "Splatmap",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Cypress_Large_01_SPM",
+										"Path": "/Game/Materials/Textures/T_Cypress_Large_01_SPM.T_Cypress_Large_01_SPM",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Cypress_Large_01_Splatmask.tga"
+									}
+								},
+								{
+									"Name": "BaseColor_02",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Rock_01_C",
+										"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_C.T_Tiling_Rock_01_C",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_C.tga"
+									}
+								},
+								{
+									"Name": "ORM_02",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Rock_01_ORM",
+										"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_ORM.T_Tiling_Rock_01_ORM",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_ORM.tga"
+									}
+								},
+								{
+									"Name": "Normal_02",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Rock_01_N",
+										"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_N.T_Tiling_Rock_01_N",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_N.tga"
+									}
+								},
+								{
+									"Name": "BaseColor_04",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Rock_01_C",
+										"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_C.T_Tiling_Rock_01_C",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_C.tga"
+									}
+								},
+								{
+									"Name": "ORM_04",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Rock_01_ORM",
+										"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_ORM.T_Tiling_Rock_01_ORM",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_ORM.tga"
+									}
+								},
+								{
+									"Name": "Normal_04",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Rock_01_N",
+										"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_N.T_Tiling_Rock_01_N",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_N.tga"
+									}
+								},
+								{
+									"Name": "BaseColor_03",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Rock_01_C",
+										"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_C.T_Tiling_Rock_01_C",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_C.tga"
+									}
+								},
+								{
+									"Name": "ORM_03",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Rock_01_ORM",
+										"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_ORM.T_Tiling_Rock_01_ORM",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_ORM.tga"
+									}
+								},
+								{
+									"Name": "Normal_03",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Rock_01_N",
+										"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_N.T_Tiling_Rock_01_N",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_N.tga"
+									}
+								},
+								{
+									"Name": "RVT_Mask",
+									"Type": 8,
+									"Value": true
+								}
+							]
+						}
+					],
+					"Animations": [
+						{
+							"Name": "A_SupportEnemy_Idle",
+							"Type": "idle"
+						}
+					]
+				}
+			]
+		},
+		{
+			"Name": "A_Enemy_Support3",
+			"Archetype": "Actor",
+			"Transform": [
+				1.2167964857923153e-08,
+				-1,
+				0,
+				0,
+				1,
+				1.2167964857923153e-08,
+				-0,
+				0,
+				0,
+				0,
+				1,
+				0,
+				-2130,
+				-2430,
+				0,
+				1
+			],
+			"Tags": [],
+			"Components": [
+				{
+					"Name": "DefaultSceneRoot",
+					"TypeID": 0,
+					"Parent": "",
+					"Tags": [],
+					"Transform": [
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1
+					]
+				},
+				{
+					"Name": "SK_SupportEnemy",
+					"TypeID": 2,
+					"Parent": "DefaultSceneRoot",
+					"Tags": [],
+					"Transform": [
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1,
+						0,
+						0,
+						0,
+						0,
+						1
+					],
+					"Mesh": "SK_SupportEnemy",
+					"ContentPath": "/Game/Skeletal_Meshes/SK_SupportEnemy.SK_SupportEnemy",
+					"AssetImportPath": "C:/Users/emelie.englund1/Desktop/emelie.englund1_Content_&_Unreal_Project/UnrealProject/P5G5/Content/Skeletal_Meshes/Skeletal meshes/SK_SupportEnemy.fbx",
+					"Materials": [
+						{
+							"Name": "MI_Cypress_Large_01",
+							"Parent": "MM_Assets_Splatmap",
+							"Parameters": [
+								{
+									"Name": "Color_Tint_02",
+									"Type": 1,
+									"Value": [
+										1,
+										1,
+										1,
+										1
+									]
+								},
+								{
+									"Name": "Tiling_V",
+									"Type": 0,
+									"Value": 1
+								},
+								{
+									"Name": "Normal_Flat_01",
+									"Type": 0,
+									"Value": 0
+								},
+								{
+									"Name": "Power_Red",
+									"Type": 0,
+									"Value": 0.49087899923324585
+								},
+								{
+									"Name": "Contrast_Red",
+									"Type": 0,
+									"Value": 0
+								},
+								{
+									"Name": "Power_Green",
+									"Type": 0,
+									"Value": 1
+								},
+								{
+									"Name": "Contrast_Green",
+									"Type": 0,
+									"Value": 0
+								},
+								{
+									"Name": "Power_Blue",
+									"Type": 0,
+									"Value": 1
+								},
+								{
+									"Name": "Contrast_Blue",
+									"Type": 0,
+									"Value": 0
+								},
+								{
+									"Name": "RVT_Falloff",
+									"Type": 0,
+									"Value": 1.0147180557250977
+								},
+								{
+									"Name": "RVT_Blend",
+									"Type": 0,
+									"Value": 205.009521484375
+								},
+								{
+									"Name": "RVT_Mask",
+									"Type": 0,
+									"Value": 1
+								},
+								{
+									"Name": "Normal_Flat",
+									"Type": 0,
+									"Value": 0
+								},
+								{
+									"Name": "Normal_Flat_04",
+									"Type": 0,
+									"Value": 0
+								},
+								{
+									"Name": "Normal_Flat_03",
+									"Type": 0,
+									"Value": 0
+								},
+								{
+									"Name": "Color_Tint_01",
+									"Type": 1,
+									"Value": [
+										1,
+										1,
+										1,
+										1
+									]
+								},
+								{
+									"Name": "Tiling_U",
+									"Type": 0,
+									"Value": 1
+								},
+								{
+									"Name": "Color_Tint_04",
+									"Type": 1,
+									"Value": [
+										1,
+										1,
+										1,
+										1
+									]
+								},
+								{
+									"Name": "Color_Tint_03",
+									"Type": 1,
+									"Value": [
+										1,
+										1,
+										1,
+										1
+									]
+								},
+								{
+									"Name": "BaseColor_01",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Cypress_Large_01_C",
+										"Path": "/Game/Materials/Textures/T_Cypress_Large_01_C.T_Cypress_Large_01_C",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Cypress_Large_01_BaseColor.tga"
+									}
+								},
+								{
+									"Name": "ORM_01",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Cypress_Large_01_ORM",
+										"Path": "/Game/Materials/Textures/T_Cypress_Large_01_ORM.T_Cypress_Large_01_ORM",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Cypress_Large_01_OcclusionRoughnessMetallic.tga"
+									}
+								},
+								{
+									"Name": "Normal_01",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Cypress_Large_01_N",
+										"Path": "/Game/Materials/Textures/T_Cypress_Large_01_N.T_Cypress_Large_01_N",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Cypress_Large_01_Normal.tga"
+									}
+								},
+								{
+									"Name": "Splatmap",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Cypress_Large_01_SPM",
+										"Path": "/Game/Materials/Textures/T_Cypress_Large_01_SPM.T_Cypress_Large_01_SPM",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Cypress_Large_01_Splatmask.tga"
+									}
+								},
+								{
+									"Name": "BaseColor_02",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Rock_01_C",
+										"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_C.T_Tiling_Rock_01_C",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_C.tga"
+									}
+								},
+								{
+									"Name": "ORM_02",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Rock_01_ORM",
+										"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_ORM.T_Tiling_Rock_01_ORM",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_ORM.tga"
+									}
+								},
+								{
+									"Name": "Normal_02",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Rock_01_N",
+										"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_N.T_Tiling_Rock_01_N",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_N.tga"
+									}
+								},
+								{
+									"Name": "BaseColor_04",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Rock_01_C",
+										"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_C.T_Tiling_Rock_01_C",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_C.tga"
+									}
+								},
+								{
+									"Name": "ORM_04",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Rock_01_ORM",
+										"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_ORM.T_Tiling_Rock_01_ORM",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_ORM.tga"
+									}
+								},
+								{
+									"Name": "Normal_04",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Rock_01_N",
+										"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_N.T_Tiling_Rock_01_N",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_N.tga"
+									}
+								},
+								{
+									"Name": "BaseColor_03",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Rock_01_C",
+										"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_C.T_Tiling_Rock_01_C",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_C.tga"
+									}
+								},
+								{
+									"Name": "ORM_03",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Rock_01_ORM",
+										"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_ORM.T_Tiling_Rock_01_ORM",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_ORM.tga"
+									}
+								},
+								{
+									"Name": "Normal_03",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Rock_01_N",
+										"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_N.T_Tiling_Rock_01_N",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_N.tga"
+									}
+								},
+								{
+									"Name": "RVT_Mask",
+									"Type": 8,
+									"Value": true
+								}
+							]
+						}
+					],
+					"Animations": [
+						{
+							"Name": "A_SupportEnemy_Idle",
+							"Type": "idle"
+						}
 					]
 				}
 			]
