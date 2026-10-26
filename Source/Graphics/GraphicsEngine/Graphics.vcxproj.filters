@@ -419,6 +419,12 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <FxCompile Include="Shaders\BloomDownsample_PS.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\BloomUpsample_PS.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
     <FxCompile Include="Shaders\Deferred\AmbientLighting_PS.hlsl">
       <Filter>Shaders\Deferred</Filter>
     </FxCompile>

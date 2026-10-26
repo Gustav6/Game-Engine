@@ -23,6 +23,8 @@ SurfaceData EvaluateSurface(VStoPS aPixel, float2 aUV)
         normalize(aPixel.Normal)
     );
     
+    const float emissionStrength = 50.0f;
+
     SurfaceData data;
     data.Albedo = albedo;
     data.WorldNormal = DecodeNormal(normal, TBN);
@@ -30,7 +32,7 @@ SurfaceData EvaluateSurface(VStoPS aPixel, float2 aUV)
     data.Occlusion = material.r;
     data.Roughness = material.g;
     data.Metalness = material.b;
-    data.Emission = emission.r * albedo.rgb * 50;
+    data.Emission = emission.r * albedo.rgb * emissionStrength;
     return data;
 }
 

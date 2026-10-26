@@ -27,15 +27,7 @@ bool ComponentRegistryManager::IsShutdown() const
 	return myIsShutDown;
 }
 
-void ComponentRegistryManager::RemoveAll(Actor* aOwner)
-{
-	for (auto& registry : myRegistries | std::views::values)
-	{
-		registry->Remove(aOwner);
-	}
-}
-
-std::vector<Component*> ComponentRegistryManager::GetAll(Actor* aOwner)
+std::vector<Component*> ComponentRegistryManager::GetAllComponents(Actor* aOwner)
 {
 	std::vector<Component*> components;
 	components.reserve(myRegistries.size());
@@ -49,6 +41,14 @@ std::vector<Component*> ComponentRegistryManager::GetAll(Actor* aOwner)
 	}
 
 	return components;
+}
+
+void ComponentRegistryManager::RemoveAllComponents(Actor* aOwner)
+{
+	for (auto& registry : myRegistries | std::views::values)
+	{
+		registry->Remove(aOwner);
+	}
 }
 
 void ComponentRegistryManager::Update(float aDeltaTime)

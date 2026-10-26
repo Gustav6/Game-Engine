@@ -420,6 +420,26 @@ void GraphicsCommandList::SetShaderSamplers(const Sampler* const* aSamplerList, 
 	}
 }
 
+void GraphicsCommandList::UnbindShaderResource(unsigned int aSlot, PipelineStages aStages) const
+{
+	ID3D11ShaderResourceView* nullSRV = nullptr;
+
+	if (aStages & PipelineStage_VertexShader)
+	{
+		myContext->VSSetShaderResources(aSlot, 1, &nullSRV);
+	}
+
+	if (aStages & PipelineStage_PixelShader)
+	{
+		myContext->PSSetShaderResources(aSlot, 1, &nullSRV);
+	}
+
+	if (aStages & PipelineStage_GeometryShader)
+	{
+		myContext->GSSetShaderResources(aSlot, 1, &nullSRV);
+	}
+}
+
 void GraphicsCommandList::Draw(unsigned aNumVertices) const
 {
 	ensure(!IsReadyForExecution());

@@ -80,9 +80,10 @@ private:
 	std::unique_ptr<ImGuiLayer> myImGuiLayer;
 
 	bool myShowDebugWindow = true;
-	bool myShowLevelSelectorWindow = true;
 
 	void DrawImGuiLayer(const FrameStats& aFrameStats);
 	void DrawActorNode(Actor* aActor);
+
+	Actor* mySelectedActor;
 #endif
 };

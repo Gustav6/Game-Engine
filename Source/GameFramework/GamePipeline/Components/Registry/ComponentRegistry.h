@@ -1,6 +1,5 @@
 #pragma once
 
-#include <vector>
 #include <unordered_map>
 
 #include "GamePipeline/Components/Base/Component.h"
@@ -53,18 +52,6 @@ public:
 		myOwnerToComponentLookup.erase(it);
 	}
 
-	T* Get(Actor* aOwner)
-	{
-		auto it = myOwnerToComponentLookup.find(aOwner);
-
-		if (it == myOwnerToComponentLookup.end())
-		{
-			return nullptr;
-		}
-
-		return &(*it->second);
-	}
-
 	void Update(float aDeltaTime) override
 	{
 		for (T& component : myComponents)
@@ -91,6 +78,18 @@ public:
 	{
 		myOwnerToComponentLookup.clear();
 		myComponents.clear();
+	}
+
+	T* Get(Actor* aOwner)
+	{
+		auto it = myOwnerToComponentLookup.find(aOwner);
+
+		if (it == myOwnerToComponentLookup.end())
+		{
+			return nullptr;
+		}
+
+		return &(*it->second);
 	}
 
 	Component* GetAsBase(Actor* aOwner) override

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <memory>
+#include <array>
 
 class GraphicsCommandList;
 class RenderHardwareInterface;
@@ -25,12 +26,17 @@ public:
     void SetBloomStatus(bool aEnabled);
 
 private:
-	void SSAOPass();
+	struct BloomMip
+	{
+	    CommonUtilities::Vector2ui Size;
+        std::unique_ptr<Texture> Texture;
+	};
 
     void BloomPass(
         GraphicsCommandList& inoutCommandList,
         RenderContext& aContext,
         Texture* aHDRTexture);
+
     void TonemapPass(
         GraphicsCommandList& inoutCommandList,
         RenderContext& aContext,
@@ -41,12 +47,8 @@ private:
     std::unique_ptr<PipelineStateObject> myBloomPSO;
 
     std::unique_ptr<Texture> mySceneLuminance;
-    std::unique_ptr<Texture> myResampleFullSize;
-    std::unique_ptr<Texture> myResampleHalfSize;
-    std::unique_ptr<Texture> myResampleQuarterSize1;
-    std::unique_ptr<Texture> myResampleQuarterSize2;
-    std::unique_ptr<Texture> myBlurredTexture;
-    std::unique_ptr<Texture> myBloomTexture;
+
+    std::array<BloomMip, 6> myBloomMips;
 
     bool myBloomEnabled;
 };

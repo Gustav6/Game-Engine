@@ -20,6 +20,7 @@ public:
 	float GetFovInDegrees() const;
 	float GetFovInRadians() const;
 	float GetAspectRatio() const;
+
 	void SetResolution(CommonUtilities::Vector2ui aResolution);
 	CommonUtilities::Vector2ui GetResolution() const;
 

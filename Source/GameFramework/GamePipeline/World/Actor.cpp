@@ -19,7 +19,7 @@ Actor::~Actor()
 {
 	if (!ComponentRegistryManager::Get().IsShutdown()) 
 	{
-		ComponentRegistryManager::Get().RemoveAll(this);
+		ComponentRegistryManager::Get().RemoveAllComponents(this);
 	}
 
 	for (const auto& child : myChildren)
@@ -63,7 +63,7 @@ void Actor::Enable()
 {
 	myIsEnabled = true;
 
-	for (const auto& component : ComponentRegistryManager::Get().GetAll(this))
+	for (const auto& component : ComponentRegistryManager::Get().GetAllComponents(this))
 	{
 		component->Enable();
 	}
@@ -73,7 +73,7 @@ void Actor::Disable()
 {
 	myIsEnabled = false;
 
-	for (const auto& component : ComponentRegistryManager::Get().GetAll(this))
+	for (const auto& component : ComponentRegistryManager::Get().GetAllComponents(this))
 	{
 		component->Disable();
 	}

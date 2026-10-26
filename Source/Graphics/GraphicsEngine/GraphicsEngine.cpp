@@ -600,6 +600,44 @@ bool GraphicsEngine::InitializeRenderResources()
 		mySamplerPointers.push_back(mySamplers.back().get());
 	}
 
+	// Linear Clamp
+	{
+		SamplerDescription samplerDesc;
+		samplerDesc.Name = "LinearClamp";
+		samplerDesc.AddressMode = SamplerAddressMode::Clamp;
+		samplerDesc.FilterMode = SamplerFilterMode::Linear;
+
+		std::unique_ptr<Sampler> sampler = std::make_unique<Sampler>();
+
+		if (!myRHI->CreateSampler(samplerDesc, *sampler))
+		{
+			SPDLOG_CRITICAL("Failed to create Linear Clamp sampler!");
+			return false;
+		}
+
+		mySamplers.emplace_back(std::move(sampler));
+		mySamplerPointers.push_back(mySamplers.back().get());
+	}
+
+	// Point Clamp
+	{
+		SamplerDescription samplerDesc;
+		samplerDesc.Name = "PointClamp";
+		samplerDesc.AddressMode = SamplerAddressMode::Clamp;
+		samplerDesc.FilterMode = SamplerFilterMode::Point;
+
+		std::unique_ptr<Sampler> sampler = std::make_unique<Sampler>();
+
+		if (!myRHI->CreateSampler(samplerDesc, *sampler))
+		{
+			SPDLOG_CRITICAL("Failed to create Point Clamp sampler!");
+			return false;
+		}
+
+		mySamplers.emplace_back(std::move(sampler));
+		mySamplerPointers.push_back(mySamplers.back().get());
+	}
+
 	// LUT Texture
 	{
 		PipelineStateDescription lutPSODesc = {};

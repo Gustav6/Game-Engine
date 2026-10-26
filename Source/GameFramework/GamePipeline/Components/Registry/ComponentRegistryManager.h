@@ -37,9 +37,8 @@ public:
 		return GetRegistry<T>().Get(aOwner);
 	}
 
-	void RemoveAll(Actor* aOwner);
-
-	std::vector<Component*> GetAll(Actor* aOwner);
+	std::vector<Component*> GetAllComponents(Actor* aOwner);
+	void RemoveAllComponents(Actor* aOwner);
 
 	void Update(float aDeltaTime);
 	void Render();

@@ -21,6 +21,7 @@
 #include "Tonemap_PS.h"
 #include "SceneLuminance_PS.h"
 #include "Bloom_PS.h"
+#include "BloomUpsample_PS.h"
 
 #include "Core/RenderContext.h"
 
@@ -76,7 +77,7 @@ bool ScreenSpaceEffectPass::Initialize(RenderHardwareInterface& aRHI)
 	{
 		PipelineStateDescription bloomPSODesc = {};
 		bloomPSODesc.Name = "BloomPSO";
-		bloomPSODesc.BlendMode = BlendMode::Alpha;
+		bloomPSODesc.BlendMode = BlendMode::Additive;
 		bloomPSODesc.Topology = Topology::TriangleStrip;
 		bloomPSODesc.VertexShader.ByteCode = INTERNAL_Fullscreen_VS_ByteCode;
 		bloomPSODesc.VertexShader.ByteCodeSize = sizeof(INTERNAL_Fullscreen_VS_ByteCode);
@@ -105,74 +106,26 @@ bool ScreenSpaceEffectPass::Initialize(RenderHardwareInterface& aRHI)
 		}
 	}
 
-	// Fullscreen Buffer Texture
+	// Bloom Mips
 	{
-		myResampleFullSize = std::make_unique<Texture>();
+		CommonUtilities::Vector2ui mipSize = aRHI.GetClientSize() / 2u;
 
-		CommonUtilities::Vector2ui bufferSize = aRHI.GetClientSize();
-
-		if (!aRHI.CreateTexture("FullscreenBuffer", bufferSize.x, bufferSize.y, 1, ResourceFormat::R16G16B16A16_FLOAT, ResourceBindFlag_ShaderResource | ResourceBindFlag_RenderTarget, *myResampleFullSize))
+		for (int i = 0; i < myBloomMips.size(); ++i)
 		{
-			SPDLOG_CRITICAL("Failed to create Fullscreen Buffer texture!");
-			return false;
-		}
-	}
+			myBloomMips[i].Size = mipSize;
 
-	// Half Screen Buffer Texture
-	{
-		myResampleHalfSize = std::make_unique<Texture>();
+			std::string mipName = std::format("BloomMip {}", i + 1);
 
-		CommonUtilities::Vector2ui bufferSize = aRHI.GetClientSize() / 2u;
+			myBloomMips[i].Texture = std::make_unique<Texture>();
 
-		if (!aRHI.CreateTexture("HalfScreenBuffer", bufferSize.x, bufferSize.y, 1, ResourceFormat::R16G16B16A16_FLOAT, ResourceBindFlag_ShaderResource | ResourceBindFlag_RenderTarget, *myResampleHalfSize))
-		{
-			SPDLOG_CRITICAL("Failed to create Half Screen Buffer texture!");
-			return false;
-		}
-	}
+			if (!aRHI.CreateTexture(mipName, mipSize.x, mipSize.y, 1, ResourceFormat::R16G16B16A16_FLOAT, ResourceBindFlag_ShaderResource | ResourceBindFlag_RenderTarget, *myBloomMips[i].Texture))
+			{
+				SPDLOG_CRITICAL("Failed to create Bloom Mip texture!");
+				return false;
+			}
 
-	// Quarter Screen Buffer Texture
-	{
-		myResampleQuarterSize1 = std::make_unique<Texture>();
-		myResampleQuarterSize2 = std::make_unique<Texture>();
-
-		CommonUtilities::Vector2ui bufferSize = aRHI.GetClientSize() / 4u;
-
-		if (!aRHI.CreateTexture("QuarterScreenBuffer", bufferSize.x, bufferSize.y, 1, ResourceFormat::R16G16B16A16_FLOAT, ResourceBindFlag_ShaderResource | ResourceBindFlag_RenderTarget, *myResampleQuarterSize1))
-		{
-			SPDLOG_CRITICAL("Failed to create Quarter Screen Buffer texture!");
-			return false;
-		}
-		if (!aRHI.CreateTexture("QuarterScreenBuffer", bufferSize.x, bufferSize.y, 1, ResourceFormat::R16G16B16A16_FLOAT, ResourceBindFlag_ShaderResource | ResourceBindFlag_RenderTarget, *myResampleQuarterSize2))
-		{
-			SPDLOG_CRITICAL("Failed to create Quarter Screen Buffer texture!");
-			return false;
-		}
-	}
-
-	// Quarter Screen Buffer Texture with blur
-	{
-		myBlurredTexture = std::make_unique<Texture>();
-
-		CommonUtilities::Vector2ui bufferSize = aRHI.GetClientSize() / 4u;
-
-		if (!aRHI.CreateTexture("QuarterBlurred", bufferSize.x, bufferSize.y, 1, ResourceFormat::R16G16B16A16_FLOAT, ResourceBindFlag_ShaderResource | ResourceBindFlag_RenderTarget, *myBlurredTexture))
-		{
-			SPDLOG_CRITICAL("Failed to create Quarter Blurred Screen Buffer texture!");
-			return false;
-		}
-	}
-
-	// Scene Bloom Buffer Texture
-	{
-		myBloomTexture = std::make_unique<Texture>();
-
-		CommonUtilities::Vector2ui bufferSize = aRHI.GetClientSize();
-
-		if (!aRHI.CreateTexture("BloomBuffer", bufferSize.x, bufferSize.y, 1, ResourceFormat::R16G16B16A16_FLOAT, ResourceBindFlag_ShaderResource | ResourceBindFlag_RenderTarget, *myBloomTexture))
-		{
-			SPDLOG_CRITICAL("Failed to create Bloom Buffer texture!");
-			return false;
+			mipSize.x = std::max(1u, mipSize.x / 2);
+			mipSize.y = std::max(1u, mipSize.y / 2);
 		}
 	}
 
@@ -186,8 +139,6 @@ void ScreenSpaceEffectPass::Execute(
 	Texture* aHDRTexture)
 {
 	inoutCommandList.BeginEvent("Screen Space Effects");
-
-	SSAOPass();
 
 	if (myBloomEnabled)
 	{
@@ -204,10 +155,6 @@ void ScreenSpaceEffectPass::Execute(
 void ScreenSpaceEffectPass::SetBloomStatus(bool aEnabled)
 {
 	myBloomEnabled = aEnabled;
-}
-
-void ScreenSpaceEffectPass::SSAOPass()
-{
 }
 
 void ScreenSpaceEffectPass::BloomPass(
@@ -232,22 +179,37 @@ void ScreenSpaceEffectPass::BloomPass(
 	}
 	inoutCommandList.EndEvent();
 
-	aContext.PostProcessFilters->Resample(inoutCommandList, *mySceneLuminance, *myResampleHalfSize);
-	aContext.PostProcessFilters->Resample(inoutCommandList, *myResampleHalfSize, *myResampleQuarterSize1);
+	aContext.PostProcessFilters->Downsample(
+		inoutCommandList,
+		*mySceneLuminance,
+		*myBloomMips[0].Texture);
 
-	aContext.PostProcessFilters->BlurHorizontal(inoutCommandList, *myResampleQuarterSize1, *myBlurredTexture);
-	aContext.PostProcessFilters->BlurVertical(inoutCommandList, *myBlurredTexture, *myResampleQuarterSize2);
-	aContext.PostProcessFilters->BlurHorizontal(inoutCommandList, *myResampleQuarterSize2, *myResampleQuarterSize1);
-	aContext.PostProcessFilters->BlurVertical(inoutCommandList, *myResampleQuarterSize1, *myBlurredTexture);
+	for (size_t i = 1; i < myBloomMips.size(); ++i)
+	{
+		aContext.PostProcessFilters->Downsample(
+			inoutCommandList,
+			*myBloomMips[i - 1].Texture,
+			*myBloomMips[i].Texture);
+	}
 
-	aContext.PostProcessFilters->Resample(inoutCommandList, *myBlurredTexture, *myResampleHalfSize);
-	aContext.PostProcessFilters->Resample(inoutCommandList, *myResampleHalfSize, *myBloomTexture);
+	for (int i = static_cast<int>(myBloomMips.size()) - 1; i > 0; --i)
+	{
+		const BloomMip& mip = myBloomMips[i];
+		const BloomMip& nextMip = myBloomMips[i - 1];
+
+		inoutCommandList.UnbindShaderResource(0, PipelineStage_PixelShader);
+
+		aContext.PostProcessFilters->AdditiveUpsample(
+			inoutCommandList,
+			*mip.Texture,
+			*nextMip.Texture);
+	}
 
 	inoutCommandList.BeginEvent("Apply Bloom");
 	{
 		inoutCommandList.SetRenderTarget(aHDRTexture, nullptr);
 
-		inoutCommandList.SetShaderResource(myBloomTexture.get(), 0, PipelineStage_PixelShader);
+		inoutCommandList.SetShaderResource(myBloomMips[0].Texture.get(), 0, PipelineStage_PixelShader);
 		inoutCommandList.SetPipelineStateObject(*myBloomPSO);
 		inoutCommandList.Draw(4);
 	}

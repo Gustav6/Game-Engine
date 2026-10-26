@@ -8,29 +8,51 @@
 #include <Fullscreen_VS.h>
 #include <GaussianBlurH_PS.h>
 #include <GaussianBlurV_PS.h>
-#include <Resample_PS.h>
+#include <BloomDownsample_PS.h>
+#include <BloomUpsample_PS.h>
 
 bool PostProcessFilters::Initialize(RenderHardwareInterface& aRHI)
 {
-	// Resample PSO
+	// Downsample PSO
 	{
-		PipelineStateDescription resamplePSODesc = {};
-		resamplePSODesc.Name = "ResamplePSO";
-		resamplePSODesc.BlendMode = BlendMode::Opaque;
-		resamplePSODesc.Topology = Topology::TriangleStrip;
-		resamplePSODesc.VertexShader.ByteCode = INTERNAL_Fullscreen_VS_ByteCode;
-		resamplePSODesc.VertexShader.ByteCodeSize = sizeof(INTERNAL_Fullscreen_VS_ByteCode);
-		resamplePSODesc.PixelShader.ByteCode = INTERNAL_Resample_PS_ByteCode;
-		resamplePSODesc.PixelShader.ByteCodeSize = sizeof(INTERNAL_Resample_PS_ByteCode);
+		PipelineStateDescription downsamplePSODesc = {};
+		downsamplePSODesc.Name = "DownsamplePSO";
+		downsamplePSODesc.BlendMode = BlendMode::Opaque;
+		downsamplePSODesc.Topology = Topology::TriangleStrip;
+		downsamplePSODesc.VertexShader.ByteCode = INTERNAL_Fullscreen_VS_ByteCode;
+		downsamplePSODesc.VertexShader.ByteCodeSize = sizeof(INTERNAL_Fullscreen_VS_ByteCode);
+		downsamplePSODesc.PixelShader.ByteCode = INTERNAL_BloomDownsample_PS_ByteCode;
+		downsamplePSODesc.PixelShader.ByteCodeSize = sizeof(INTERNAL_BloomDownsample_PS_ByteCode);
 
-		myResamplePSO = std::make_unique<PipelineStateObject>();
+		myDownsamplePSO = std::make_unique<PipelineStateObject>();
 
-		if (!aRHI.CreatePipelineStateObject(resamplePSODesc, *myResamplePSO))
+		if (!aRHI.CreatePipelineStateObject(downsamplePSODesc, *myDownsamplePSO))
 		{
-			SPDLOG_CRITICAL("Failed to create Resample pipeline state object!");
+			SPDLOG_CRITICAL("Failed to create Downsample pipeline state object!");
 			return false;
 		}
 	}
+
+	// Upsample PSO
+	{
+		PipelineStateDescription upsamplePSODesc = {};
+		upsamplePSODesc.Name = "UpsamplePSO";
+		upsamplePSODesc.BlendMode = BlendMode::Additive;
+		upsamplePSODesc.Topology = Topology::TriangleStrip;
+		upsamplePSODesc.VertexShader.ByteCode = INTERNAL_Fullscreen_VS_ByteCode;
+		upsamplePSODesc.VertexShader.ByteCodeSize = sizeof(INTERNAL_Fullscreen_VS_ByteCode);
+		upsamplePSODesc.PixelShader.ByteCode = INTERNAL_BloomUpsample_PS_ByteCode;
+		upsamplePSODesc.PixelShader.ByteCodeSize = sizeof(INTERNAL_BloomUpsample_PS_ByteCode);
+
+		myAdditiveUpsamplePSO = std::make_unique<PipelineStateObject>();
+
+		if (!aRHI.CreatePipelineStateObject(upsamplePSODesc, *myAdditiveUpsamplePSO))
+		{
+			SPDLOG_CRITICAL("Failed to create Upsample pipeline state object!");
+			return false;
+		}
+	}
+
 	// Gaussian blur horizontal PSO
 	{
 		PipelineStateDescription gaussianBlurPSODesc = {};
@@ -74,16 +96,27 @@ bool PostProcessFilters::Initialize(RenderHardwareInterface& aRHI)
 	return true;
 }
 
-void PostProcessFilters::Resample(GraphicsCommandList& inoutCommandList, Texture& aSource, Texture& aDestination) const
+void PostProcessFilters::Downsample(GraphicsCommandList& inoutCommandList, Texture& aSource, Texture& aDestination) const
 {
-	// TODO: Check if it's an upsample or downsample here
-
-	inoutCommandList.BeginEvent("Resample");
+	inoutCommandList.BeginEvent("Downsample");
 	{
 		inoutCommandList.SetRenderTarget(&aDestination, nullptr);
 
 		inoutCommandList.SetShaderResource(&aSource, 0, PipelineStage_PixelShader);
-		inoutCommandList.SetPipelineStateObject(*myResamplePSO);
+		inoutCommandList.SetPipelineStateObject(*myDownsamplePSO);
+		inoutCommandList.Draw(4);
+	}
+	inoutCommandList.EndEvent();
+}
+
+void PostProcessFilters::AdditiveUpsample(GraphicsCommandList& inoutCommandList, Texture& aSource, Texture& aDestination) const
+{
+	inoutCommandList.BeginEvent("Upsample");
+	{
+		inoutCommandList.SetRenderTarget(&aDestination, nullptr);
+
+		inoutCommandList.SetShaderResource(&aSource, 0, PipelineStage_PixelShader);
+		inoutCommandList.SetPipelineStateObject(*myAdditiveUpsamplePSO);
 		inoutCommandList.Draw(4);
 	}
 	inoutCommandList.EndEvent();

@@ -50,6 +50,8 @@ public:
 	void SetShaderResources(const Texture* const* aResourcesList, size_t aNumOfResources, unsigned int aStartSlot, PipelineStages aStages) const;
 	void SetShaderSamplers(const Sampler* const* aSamplerList, size_t aNumOfSamplers, unsigned int aStartSlot, PipelineStages aStages) const;
 
+	void UnbindShaderResource(unsigned int aSlot, PipelineStages aStages) const;
+
 	void Draw(unsigned aNumVertices) const;
 	void DrawSpecificVertices(unsigned aNumVertices, unsigned aFirstVertexIndex) const;
 	void DrawIndexed(unsigned aIndexCount, unsigned aIndexOffset) const;

@@ -271,7 +271,7 @@ void Game::DrawImGuiLayer(const FrameStats& aFrameStats)
 {
 	ImGui::PushFont(nullptr, 18.0f);
 
-	ImGui::ShowDemoWindow();
+	//ImGui::ShowDemoWindow();
 
 	if (myShowDebugWindow)
 	{
@@ -280,10 +280,10 @@ void Game::DrawImGuiLayer(const FrameStats& aFrameStats)
 		if (ImGui::CollapsingHeader("Frame Info"))
 		{
 			ImGui::Text("FPS: %.1f", ImGui::GetIO().Framerate);
-			ImGui::Text("DrawCallCount: %u", aFrameStats.DrawCallCount);
-			ImGui::Text("PipelineSwitches: %u", aFrameStats.PipelineSwitches);
-			ImGui::Text("VisibleObjects: %u", aFrameStats.VisibleObjects);
-			ImGui::Text("CulledObjects: %u", aFrameStats.CulledObjects);
+			ImGui::Text("Draw Call Count: %u", aFrameStats.DrawCallCount);
+			ImGui::Text("Pipeline Switches: %u", aFrameStats.PipelineSwitches);
+			ImGui::Text("Visible Objects: %u", aFrameStats.VisibleObjects);
+			ImGui::Text("Culled Objects: %u", aFrameStats.CulledObjects);
 		}
 
 		if (ImGui::CollapsingHeader("Render Settings"))
@@ -305,7 +305,9 @@ void Game::DrawImGuiLayer(const FrameStats& aFrameStats)
 
 			int debugRenderMode = static_cast<int>(settings.DebugRenderMode);
 
-			if (ImGui::Combo("Debug Render Mode", &debugRenderMode, debugRenderModes, IM_ARRAYSIZE(debugRenderModes)))
+			ImGui::Text("Debug Render Mode");
+
+			if (ImGui::Combo("##DebugRenderMode", &debugRenderMode, debugRenderModes, IM_ARRAYSIZE(debugRenderModes)))
 			{
 				settings.DebugRenderMode = static_cast<DebugRenderMode>(debugRenderMode);
 			}
@@ -322,7 +324,9 @@ void Game::DrawImGuiLayer(const FrameStats& aFrameStats)
 
 			int toneMapper = static_cast<int>(settings.ToneMapper);
 
-			if (ImGui::Combo("Tone Mapper", &toneMapper, toneMappers, IM_ARRAYSIZE(toneMappers)))
+			ImGui::Text("Tone Mapper");
+
+			if (ImGui::Combo("##ToneMapper", &toneMapper, toneMappers, IM_ARRAYSIZE(toneMappers)))
 			{
 				settings.ToneMapper = static_cast<ToneMapper>(toneMapper);
 			}
@@ -340,67 +344,97 @@ void Game::DrawImGuiLayer(const FrameStats& aFrameStats)
 		{
 			DebugSettings settings = DebugSettingsManager::Get().GetSettings();
 
-			ImGui::Checkbox("Draw Physics Colliders", &settings.ColliderDebugDrawEnabled);
-			ImGui::ColorEdit4("Collider Color", settings.ColliderColor.values);
-
-			ImGui::Separator();
-
-			ImGui::Checkbox("Draw Mesh Bounding Box", &settings.MeshDebugDrawBoxEnabled);
-			ImGui::ColorEdit4("Bounding Box Color", settings.MeshBoundingBoxColor.values);
-
-			ImGui::Separator();
-
-			ImGui::Checkbox("Draw Mesh Bounding Sphere", &settings.MeshDebugDrawSphereEnabled);
-			ImGui::ColorEdit4("Bounding Sphere Color", settings.MeshBoundingSphereColor.values);
-
-			ImGui::Separator();
-			ImGui::Checkbox("Draw Light Gizmos", &settings.LightGizmosDebugDrawEnabled);
-			ImGui::ColorEdit4("Gizmo Color", settings.LightGizmoColor.values);
-
-			DebugSettingsManager::Get().SetSettings(settings);
-		}
-
-		ImGui::End();
-	}
-
-	if (myShowLevelSelectorWindow)
-	{
-		ImGui::Begin("Level Selector", &myShowLevelSelectorWindow, ImGuiWindowFlags_AlwaysAutoResize);
-
-		std::filesystem::path sceneRoot = std::filesystem::absolute(EngineContext.ContentPath / "Scenes");
-
-		if (std::filesystem::exists(sceneRoot))
-		{
-			for (const auto& item : std::filesystem::recursive_directory_iterator(sceneRoot))
 			{
-				if (item.is_regular_file() && item.path().has_extension())
+				ImGui::Text("Physics Collider");
+
+				ImGui::Checkbox("##PhysicsCollider", &settings.ColliderDebugDrawEnabled);
+
+				ImGui::SameLine();
+
+				float* color = settings.ColliderColor.values;
+
+				if (ImGui::ColorButton("Collider Color Button", ImVec4(color[0], color[1], color[2], color[3])))
 				{
-					std::string lowerCaseFileExtension = item.path().extension().string();
-					std::ranges::transform(lowerCaseFileExtension, lowerCaseFileExtension.begin(), tolower);
+					ImGui::OpenPopup("Physics Color");
+				}
 
-					if (lowerCaseFileExtension == ".json")
-					{
-						const std::string name = item.path().stem().string();
+				if (ImGui::BeginPopup("Physics Color"))
+				{
+					ImGui::ColorPicker4("##picker", color);
+					ImGui::EndPopup();
+				}
 
-						if (ImGui::Selectable(name.c_str()))
-						{
-							std::shared_ptr<UnrealSceneAsset> scene = AssetRegistry::Get().GetAsset<UnrealSceneAsset>(name);
+				ImGui::Separator();
+			}
 
-							if (scene != nullptr)
-							{
-								GameWorld::Get().Clear();
-								GameWorld::Get().AddActors(std::move(scene->GetSceneActors()));
+			{
+				ImGui::Text("Bounding Box Collider");
 
-								// TODO : Load nav mesh, maybe move the whole block to a scene manager class?
-							}
-							else
-							{
-								SPDLOG_ERROR("Failed to load unreal scene [{}]!", name);
-							}
-						}
-					}
+				ImGui::Checkbox("##BoundingBoxCollider", &settings.MeshDebugDrawBoxEnabled);
+
+				ImGui::SameLine();
+
+				float* color = settings.MeshBoundingBoxColor.values;
+
+				if (ImGui::ColorButton("Bounding Box Color Button", ImVec4(color[0], color[1], color[2], color[3])))
+				{
+					ImGui::OpenPopup("Mesh Box Popup");
+				}
+
+				if (ImGui::BeginPopup("Mesh Box Popup"))
+				{
+					ImGui::ColorPicker4("##picker", color);
+					ImGui::EndPopup();
+				}
+
+				ImGui::Separator();
+			}
+
+			{
+				ImGui::Text("Bounding Sphere Collider");
+
+				ImGui::Checkbox("##BoundingSphereCollider", &settings.MeshDebugDrawSphereEnabled);
+
+				ImGui::SameLine();
+
+				float* color = settings.MeshBoundingSphereColor.values;
+
+				if (ImGui::ColorButton("Bounding Sphere Color Button", ImVec4(color[0], color[1], color[2], color[3])))
+				{
+					ImGui::OpenPopup("Mesh Sphere Popup");
+				}
+
+				if (ImGui::BeginPopup("Mesh Sphere Popup"))
+				{
+					ImGui::ColorPicker4("##picker", color);
+					ImGui::EndPopup();
+				}
+
+				ImGui::Separator();
+			}
+
+			{
+				ImGui::Text("Light Gizmo Collider");
+
+				ImGui::Checkbox("##LightGizmoCollider", &settings.LightGizmosDebugDrawEnabled);
+
+				ImGui::SameLine();
+
+				float* color = settings.LightGizmoColor.values;
+
+				if (ImGui::ColorButton("Light Gizmo Color Button", ImVec4(color[0], color[1], color[2], color[3])))
+				{
+					ImGui::OpenPopup("Light Gizmo Color");
+				}
+
+				if (ImGui::BeginPopup("Light Gizmo Color"))
+				{
+					ImGui::ColorPicker4("##picker", color);
+					ImGui::EndPopup();
 				}
 			}
+
+			DebugSettingsManager::Get().SetSettings(settings);
 		}
 
 		ImGui::End();
@@ -429,10 +463,7 @@ void Game::DrawImGuiLayer(const FrameStats& aFrameStats)
 #ifdef IMGUI_ENABLE
 void Game::DrawActorNode(Actor* aActor)
 {
-	ImGuiTreeNodeFlags flags =
-		ImGuiTreeNodeFlags_OpenOnArrow |
-		ImGuiTreeNodeFlags_OpenOnDoubleClick |
-		ImGuiTreeNodeFlags_SpanAvailWidth;
+	ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_DrawLinesToNodes;
 
 	if (aActor->GetChildren().empty())
 	{
@@ -443,19 +474,27 @@ void Game::DrawActorNode(Actor* aActor)
 		flags |= ImGuiTreeNodeFlags_OpenOnArrow;
 	}
 
-	if (ImGui::TreeNodeEx(aActor, flags, "%s", aActor->GetName().c_str()))
+	if (mySelectedActor == aActor)
 	{
-		if (ImGui::IsItemClicked())
-		{
-			// Open window to inspect actor
-			std::cout << aActor->GetName() << std::endl;
-		}
+		flags |= ImGuiTreeNodeFlags_Selected;
+	}
 
+	bool isOpen = ImGui::TreeNodeEx(aActor, flags, "%s", aActor->GetName().c_str());
+
+	if (ImGui::IsItemClicked())
+	{
+		mySelectedActor = aActor;
+
+		std::cout << aActor->GetName() << "\n";
+	}
+
+	if (isOpen)
+	{
 		for (const auto& child : aActor->GetChildren())
 		{
 			DrawActorNode(child);
-		}    
-		
+		}
+
 		ImGui::TreePop();
 	}
 }
