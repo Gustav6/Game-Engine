@@ -10,8 +10,7 @@ project "Game"
     includedirs {
         "%{prj.location}",
         "%{wks.location}/Source/Utilities",
-        "%{wks.location}/Source/Graphics",
-        "%{wks.location}/Source/GameFramework",
+        "%{wks.location}/Source/Engine",
         "%{wks.location}/Source/ThirdParty",
         "%{wks.location}/ThirdParty/Source"
     }
@@ -31,7 +30,7 @@ project "Game"
     links {
         "Logger",
         "Graphics",
-        "Framework",
+        "Core",
         "CommonUtilities",
         "Json",
 
@@ -49,7 +48,7 @@ project "Game"
         "CommonUtilities",
         "Logger",
         "GraphicsEngine",
-        "Framework",
+        "Core",
         "Json"
     }
 

@@ -5,7 +5,7 @@
 #include <Windows.h>
 #include <minidumpapiset.h>
 
-#include "EngineContext.h"
+#include "Core/EngineContext.h"
 #include "Game.h"
 
 #include "StringHelpers.h"

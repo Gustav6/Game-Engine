@@ -4,7 +4,7 @@
 #include "CommonUtilities/Math/Vector3.hpp"
 #include "CommonUtilities/Collision/Ray.hpp"
 
-#include "GamePipeline/World/Actor.hpp"
+#include "Core/Scene/World/Actor.hpp"
 
 class Camera;
 

@@ -5,7 +5,7 @@
 #endif
 
 #include <Windows.h>
-#include "GraphicsEngine/Core/RenderOverlay.h"
+#include "Graphics/Core/RenderOverlay.h"
 
 class ImGuiLayer : public RenderOverlay
 {

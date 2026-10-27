@@ -84,6 +84,8 @@ private:
 	void DrawImGuiLayer(const FrameStats& aFrameStats);
 	void DrawActorNode(Actor* aActor);
 
+	void PrintNodesChildren(Actor* aActor);
+
 	Actor* mySelectedActor;
 #endif
 };

@@ -46,11 +46,9 @@ group "Utilities"
     include "Source/Utilities/Logger/premake5.lua"
     include "Source/Utilities/FileWatcher/premake5.lua"
 
-group "GameFramework"
-    include "Source/GameFramework/premake5.lua"
-
-group "GraphicsEngine"
-    include "Source/Graphics/GraphicsEngine/premake5.lua"
+group "Engine"
+    include "Source/Engine/Core/premake5.lua"
+    include "Source/Engine/Graphics/premake5.lua"
 
 group "ThirdParty"
     include "Source/ThirdParty/ImGui/premake5.lua"

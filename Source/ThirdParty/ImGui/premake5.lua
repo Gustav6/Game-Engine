@@ -6,7 +6,7 @@ project "ImGui"
 
     includedirs {
         "%{prj.location}",
-        "%{wks.location}/Source/Graphics"
+        "%{wks.location}/Source/Engine"
     }
 
     externalincludedirs {

@@ -1,0 +1,235 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Retail|x64">
+      <Configuration>Retail</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{2EB4837C-1AEB-840D-C3D7-6A10AFED000F}</ProjectGuid>
+    <IgnoreWarnCompileDuplicatedFilename>true</IgnoreWarnCompileDuplicatedFilename>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>Core</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v145</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v145</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Retail|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v145</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Retail|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>$(ProjectDir)..\..\..\Lib\Debug\</OutDir>
+    <IntDir>$(ProjectDir)..\..\..\Intermediate\Core\Debug\</IntDir>
+    <TargetName>Core</TargetName>
+    <TargetExt>.lib</TargetExt>
+    <ExternalIncludePath>..\..\..\ThirdParty\Source;$(ExternalIncludePath)</ExternalIncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>$(ProjectDir)..\..\..\Lib\Release\</OutDir>
+    <IntDir>$(ProjectDir)..\..\..\Intermediate\Core\Release\</IntDir>
+    <TargetName>Core</TargetName>
+    <TargetExt>.lib</TargetExt>
+    <ExternalIncludePath>..\..\..\ThirdParty\Source;$(ExternalIncludePath)</ExternalIncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Retail|x64'">
+    <OutDir>$(ProjectDir)..\..\..\Lib\Retail\</OutDir>
+    <IntDir>$(ProjectDir)..\..\..\Intermediate\Core\Retail\</IntDir>
+    <TargetName>Core</TargetName>
+    <TargetExt>.lib</TargetExt>
+    <ExternalIncludePath>..\..\..\ThirdParty\Source;$(ExternalIncludePath)</ExternalIncludePath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>Core.pch.h</PrecompiledHeaderFile>
+      <WarningLevel>Level4</WarningLevel>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <PreprocessorDefinitions>SPDLOG_COMPILED_LIB;FMT_UNICODE=0;_DEBUG;IMGUI_ENABLE;ENABLE_FILE_WATCHER;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\..\..\Core.pch.h;..\..\Utilities;..;..\..\ThirdParty;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <Optimization>Disabled</Optimization>
+      <MinimalRebuild>false</MinimalRebuild>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <AdditionalOptions>/sdl %(AdditionalOptions)</AdditionalOptions>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <ExternalWarningLevel>TurnOffAllWarnings</ExternalWarningLevel>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+    <ProjectReference>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>Core.pch.h</PrecompiledHeaderFile>
+      <WarningLevel>Level4</WarningLevel>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <PreprocessorDefinitions>SPDLOG_COMPILED_LIB;FMT_UNICODE=0;_RELEASE;IMGUI_ENABLE;ENABLE_FILE_WATCHER;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\..\..\Core.pch.h;..\..\Utilities;..;..\..\ThirdParty;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <Optimization>Full</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <MinimalRebuild>false</MinimalRebuild>
+      <StringPooling>true</StringPooling>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <AdditionalOptions>/sdl %(AdditionalOptions)</AdditionalOptions>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <ExternalWarningLevel>TurnOffAllWarnings</ExternalWarningLevel>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+    <ProjectReference>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Retail|x64'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>Core.pch.h</PrecompiledHeaderFile>
+      <WarningLevel>Level4</WarningLevel>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <PreprocessorDefinitions>SPDLOG_COMPILED_LIB;FMT_UNICODE=0;_RETAIL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\..\..\Core.pch.h;..\..\Utilities;..;..\..\ThirdParty;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <Optimization>Full</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <MinimalRebuild>false</MinimalRebuild>
+      <StringPooling>true</StringPooling>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <AdditionalOptions>/sdl %(AdditionalOptions)</AdditionalOptions>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <ExternalWarningLevel>TurnOffAllWarnings</ExternalWarningLevel>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+    <ProjectReference>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="Assets\Base\Asset.h" />
+    <ClInclude Include="Assets\Registry\AssetRegistry.h" />
+    <ClInclude Include="Assets\Types\AnimationAsset.h" />
+    <ClInclude Include="Assets\Types\FontAsset.h" />
+    <ClInclude Include="Assets\Types\MaterialAsset.h" />
+    <ClInclude Include="Assets\Types\MeshAsset.h" />
+    <ClInclude Include="Assets\Types\SpriteAsset.h" />
+    <ClInclude Include="Assets\Types\TextureAsset.h" />
+    <ClInclude Include="Assets\Types\UnrealSceneAsset.h" />
+    <ClInclude Include="Core.pch.h" />
+    <ClInclude Include="EngineContext.h" />
+    <ClInclude Include="Managers\DebugSettingsManager.h" />
+    <ClInclude Include="Managers\WindowManager.h" />
+    <ClInclude Include="Scene\Components\Base\Component.h" />
+    <ClInclude Include="Scene\Components\Collision\BoxColliderComponent.h" />
+    <ClInclude Include="Scene\Components\Collision\SphereColliderComponent.h" />
+    <ClInclude Include="Scene\Components\Light\DirectionlLightComponent.h" />
+    <ClInclude Include="Scene\Components\Light\LightComponent.h" />
+    <ClInclude Include="Scene\Components\Light\PointLightComponent.h" />
+    <ClInclude Include="Scene\Components\Light\SpotLightComponent.h" />
+    <ClInclude Include="Scene\Components\Registry\ComponentRegistry.h" />
+    <ClInclude Include="Scene\Components\Registry\ComponentRegistryManager.h" />
+    <ClInclude Include="Scene\Components\Rendering\AnimationComponent.h" />
+    <ClInclude Include="Scene\Components\Rendering\MeshComponent.h" />
+    <ClInclude Include="Scene\Components\Rendering\SpriteComponent.h" />
+    <ClInclude Include="Scene\Components\Rendering\TextComponent.h" />
+    <ClInclude Include="Scene\Components\Transform\Transform.h" />
+    <ClInclude Include="Scene\World\Actor.hpp" />
+    <ClInclude Include="Scene\World\GameWorld.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Assets\Base\Asset.cpp" />
+    <ClCompile Include="Assets\Registry\AssetRegistry.cpp" />
+    <ClCompile Include="Assets\Types\AnimationAsset.cpp" />
+    <ClCompile Include="Assets\Types\FontAsset.cpp" />
+    <ClCompile Include="Assets\Types\MaterialAsset.cpp" />
+    <ClCompile Include="Assets\Types\MeshAsset.cpp" />
+    <ClCompile Include="Assets\Types\SpriteAsset.cpp" />
+    <ClCompile Include="Assets\Types\TextureAsset.cpp" />
+    <ClCompile Include="Assets\Types\UnrealSceneAsset.cpp" />
+    <ClCompile Include="Core.pch.cpp">
+      <PrecompiledHeader>Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="EngineContext.cpp" />
+    <ClCompile Include="Managers\DebugSettingsManager.cpp" />
+    <ClCompile Include="Managers\WindowManager.cpp" />
+    <ClCompile Include="Scene\Components\Base\Component.cpp" />
+    <ClCompile Include="Scene\Components\Collision\BoxColliderComponent.cpp" />
+    <ClCompile Include="Scene\Components\Collision\SphereColliderComponent.cpp" />
+    <ClCompile Include="Scene\Components\Light\DirectionlLightComponent.cpp" />
+    <ClCompile Include="Scene\Components\Light\LightComponent.cpp" />
+    <ClCompile Include="Scene\Components\Light\PointLightComponent.cpp" />
+    <ClCompile Include="Scene\Components\Light\SpotLightComponent.cpp" />
+    <ClCompile Include="Scene\Components\Registry\ComponentRegistry.cpp" />
+    <ClCompile Include="Scene\Components\Registry\ComponentRegistryManager.cpp" />
+    <ClCompile Include="Scene\Components\Rendering\AnimationComponent.cpp" />
+    <ClCompile Include="Scene\Components\Rendering\MeshComponent.cpp" />
+    <ClCompile Include="Scene\Components\Rendering\SpriteComponent.cpp" />
+    <ClCompile Include="Scene\Components\Rendering\TextComponent.cpp" />
+    <ClCompile Include="Scene\Components\Transform\Transform.cpp" />
+    <ClCompile Include="Scene\World\Actor.cpp" />
+    <ClCompile Include="Scene\World\GameWorld.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Utilities\CommonUtilities\CommonUtilities.vcxproj">
+      <Project>{AA29E689-16B5-534E-1FC6-D6428BD0AF4E}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Utilities\Logger\Logger.vcxproj">
+      <Project>{25F339C1-1195-6497-FA4F-78EBE690EBE7}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Graphics\Graphics.vcxproj">
+      <Project>{1653CE33-0220-293F-2B39-17E717655ECD}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\ThirdParty\Json\Json.vcxproj">
+      <Project>{7F9B877C-6BD2-880D-14BF-6E1000D5040F}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

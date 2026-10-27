@@ -2,9 +2,9 @@
 
 #include <Logger/Logger.h>
 
-#include "GraphicsEngine/Objects/Scene/Camera.h"
+#include "Graphics/Objects/Scene/Camera.h"
 
-#include "EngineContext.h"
+#include "Core/EngineContext.h"
 
 
 GameCamera& GameCamera::GetInstance()

@@ -6,32 +6,32 @@
 #include <vector>
 #include <memory>
 
-#include "EngineContext.h"
+#include "Core/EngineContext.h"
 
-#include "AssetPipeline/AssetRegistry/AssetRegistry.h"
+#include "Core/Assets/Registry/AssetRegistry.h"
 
-#include "AssetPipeline/Assets/Types/MeshAsset.h"
-#include "AssetPipeline/Assets/Types/AnimationAsset.h"
-#include "AssetPipeline/Assets/Types/MaterialAsset.h"
-#include "AssetPipeline/Assets/Types/TextureAsset.h"
-#include "AssetPipeline/Assets/Types/FontAsset.h"
-#include "AssetPipeline/Assets/Types/SpriteAsset.h"
-#include "AssetPipeline/Assets/Types/UnrealSceneAsset.h"
+#include "Core/Assets/Types/MeshAsset.h"
+#include "Core/Assets/Types/AnimationAsset.h"
+#include "Core/Assets/Types/MaterialAsset.h"
+#include "Core/Assets/Types/TextureAsset.h"
+#include "Core/Assets/Types/FontAsset.h"
+#include "Core/Assets/Types/SpriteAsset.h"
+#include "Core/Assets/Types/UnrealSceneAsset.h"
 
 #include "GameState/GameStateMachine.h"
 
-#include "GamePipeline/World/Actor.hpp"
-#include "GamePipeline/World/GameWorld.h"
-#include "GamePipeline/Components/Registry/ComponentRegistryManager.h"
+#include "Core/Scene/World/Actor.hpp"
+#include "Core/Scene/World/GameWorld.h"
+#include "Core/Scene/Components/Registry/ComponentRegistryManager.h"
 
-#include "GraphicsEngine/GraphicsEngine.hpp"
-#include "GraphicsEngine/Core/RenderEnums.h"
+#include "Graphics/GraphicsEngine.hpp"
+#include "Graphics/Core/RenderEnums.h"
 
-#include "GraphicsEngine/Core/SceneCamera.h"
-#include "GraphicsEngine/RHI/GraphicsCommandList.h"
+#include "Graphics/Core/SceneCamera.h"
+#include "Graphics/RHI/GraphicsCommandList.h"
 
-#include "Managers/DebugSettingsManager.h"
-#include "Managers/WindowManager.h"
+#include "Core/Managers/DebugSettingsManager.h"
+#include "Core/Managers/WindowManager.h"
 
 #include "Camera/GameCamera.h"
 
@@ -481,11 +481,13 @@ void Game::DrawActorNode(Actor* aActor)
 
 	bool isOpen = ImGui::TreeNodeEx(aActor, flags, "%s", aActor->GetName().c_str());
 
-	if (ImGui::IsItemClicked())
+	if (ImGui::IsItemClicked() && mySelectedActor != aActor)
 	{
 		mySelectedActor = aActor;
 
-		std::cout << aActor->GetName() << "\n";
+		std::cout << mySelectedActor->GetName() << ", Selected" << "\n";
+
+		PrintNodesChildren(mySelectedActor);
 	}
 
 	if (isOpen)
@@ -496,6 +498,16 @@ void Game::DrawActorNode(Actor* aActor)
 		}
 
 		ImGui::TreePop();
+	}
+}
+
+void Game::PrintNodesChildren(Actor* aActor)
+{
+	for (const auto& child : aActor->GetChildren())
+	{
+		std::cout << child->GetName() << ", Owned by - " << aActor->GetName() << "\n";
+
+		PrintNodesChildren(child);
 	}
 }
 #endif
