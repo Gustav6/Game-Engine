@@ -17,13 +17,6 @@
 #include <CommonUtilities/Math/Vector3.hpp>
 #include <CommonUtilities/Math/Matrix4x4.hpp>
 
-#include "tgafbx/Importer.h"
-#include "tgafbx/TgaFbxStructs.h"
-
-#include <tracy/core/Tracy.hpp>
-
-#include "Logger/Logger.h"
-
 MeshAsset::MeshAsset()
 {
     myMesh = std::make_unique<Mesh>();

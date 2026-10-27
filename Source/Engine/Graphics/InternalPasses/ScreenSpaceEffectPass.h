@@ -3,6 +3,8 @@
 #include <memory>
 #include <array>
 
+#include "CommonUtilities/Math/Vector2.hpp"
+
 class GraphicsCommandList;
 class RenderHardwareInterface;
 class PipelineStateObject;

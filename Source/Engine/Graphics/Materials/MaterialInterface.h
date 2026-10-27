@@ -52,11 +52,10 @@ enum class MaterialLayout : uint8_t
 	Splat
 };
 
-enum FeatureFlag_ : uint8_t
+enum MaterialFeatureFlag_ : uint8_t
 {
-	FeatureFlag_None = 0,
-	FeatureFlag_ColorTint = 1u << 0,
-	FeatureFlag_Tiling = 1u << 1,
+	MaterialFeatureFlag_None = 0,
+	MaterialFeatureFlag_Emission = 1u << 0
 };
 
 typedef uint8_t MaterialFeatureFlags;

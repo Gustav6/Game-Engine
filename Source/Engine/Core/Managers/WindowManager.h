@@ -1,6 +1,10 @@
 #pragma once
 
-#include "CommonUtilities/Math/Vector2.hpp"
+namespace CommonUtilities
+{
+	template <typename T>
+	class Vector2;
+}
 
 struct HWND__;
 using HWND = HWND__*;

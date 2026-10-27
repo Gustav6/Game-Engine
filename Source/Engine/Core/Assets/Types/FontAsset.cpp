@@ -5,10 +5,6 @@
 
 #include "Graphics/GraphicsEngine.hpp"
 
-#include <tracy/core/Tracy.hpp>
-
-#include "Logger/Logger.h"
-
 const Font& FontAsset::GetFont() const
 {
 	return *myFont;

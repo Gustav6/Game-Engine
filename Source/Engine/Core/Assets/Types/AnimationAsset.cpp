@@ -5,13 +5,6 @@
 
 #include <CommonUtilities/Math/Matrix4x4.hpp>
 
-#include "tgafbx/Importer.h"
-#include "tgafbx/TgaFbxStructs.h"
-
-#include <tracy/core/Tracy.hpp>
-
-#include "Logger/Logger.h"
-
 AnimationAsset::AnimationAsset()
 {
     myAnimation = std::make_unique<Animation>();

@@ -2,6 +2,7 @@
 
 #include <vector>
 
+class RenderHardwareInterface;
 class GraphicsCommandList;
 class Mesh;
 class Texture;

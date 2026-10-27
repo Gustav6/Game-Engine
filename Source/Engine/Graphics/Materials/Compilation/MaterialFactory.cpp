@@ -68,6 +68,11 @@ bool MaterialFactory::Create(
 		}
 	}
 
+	if (aDescription.Features & MaterialFeatureFlag_Emission)
+	{
+		materialMacros.emplace_back("MATERIAL_HAS_EMISSION", "1");
+	}
+
 	std::filesystem::path materialProgramPath;
 
 	if (aDescription.MaterialShaderCode.empty())

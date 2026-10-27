@@ -4,16 +4,9 @@
 #include "Core/EngineContext.h"
 #include "Core/Assets/Types/MeshAsset.h"
 
-#include "CommonUtilities/Collision/Sphere.hpp"
-#include "CommonUtilities/Collision/AABB3D.hpp"
 #include "Graphics/Objects/GPU/Vertex.h"
 #include "Graphics/Objects/Mesh/Mesh.h"
 #include "Graphics/Objects/Mesh/Skeleton.h"
-
-#include "CommonUtilities/Math/MathUtils.hpp"
-
-#include "ensure.h"
-#include "tgafbx/Importer.h"
 
 AssetRegistry& AssetRegistry::Get()
 {
@@ -35,15 +28,13 @@ bool AssetRegistry::Initialize()
     InitUnitSphere();
 	InitUnitPlane();
 
-    myWorkingDirectory = std::filesystem::absolute(EngineContext.ContentPath);
-
-    if (!std::filesystem::exists(myWorkingDirectory))
+    if (!std::filesystem::exists(EngineContext.ContentPath))
     {
         SPDLOG_CRITICAL("Content root dir is not a valid path! Root is [{}].", EngineContext.ContentPath.string());
         return false;
     }
 
-    for (const auto& item : std::filesystem::recursive_directory_iterator(myWorkingDirectory))
+    for (const auto& item : std::filesystem::recursive_directory_iterator(EngineContext.ContentPath))
     {
         if (item.is_regular_file() && item.path().has_extension())
         {
@@ -70,11 +61,6 @@ void AssetRegistry::Shutdown()
 {
     TGA::FBX::Importer::UninitImporter();
     myAssets.clear();
-}
-
-const std::filesystem::path& AssetRegistry::GetWorkingDirectory() const
-{
-    return myWorkingDirectory;
 }
 
 void AssetRegistry::RegisterAssetTypeInternal(const std::vector<std::string>& aExtensionList, std::type_index aTypeIndex)

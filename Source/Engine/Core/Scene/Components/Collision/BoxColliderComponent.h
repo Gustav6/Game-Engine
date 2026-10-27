@@ -4,8 +4,6 @@
 
 #include "CommonUtilities/Collision/AABB3D.hpp"
 
-class MeshAsset;
-
 class BoxColliderComponent : public Component
 {
 public:

@@ -16,7 +16,7 @@ struct MaterialDescription
 	ShadingModel ShadingModel = ShadingModel::None;
 	MaterialBlendMode BlendMode = MaterialBlendMode::None;
 	MaterialLayout Layout = MaterialLayout::None;
-	MaterialFeatureFlags Features = FeatureFlag_None;
+	MaterialFeatureFlags Features = MaterialFeatureFlag_None;
 
 	std::filesystem::path MaterialShaderCode;
 };

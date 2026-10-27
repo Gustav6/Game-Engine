@@ -1,6 +1,8 @@
 #include "GraphicsEngine.pch.h"
 #include "ScreenSpaceEffectPass.h"
 
+#include "GraphicsEngine.hpp"
+
 #include "Graphics/Core/RenderEnums.h"
 
 #include "Graphics/Objects/GPU/Texture.h"
@@ -15,8 +17,6 @@
 
 #include "Graphics/Core/FrameTargets.h"
 
-#include "Logger/Logger.h"
-
 #include "Fullscreen_VS.h"
 #include "Tonemap_PS.h"
 #include "SceneLuminance_PS.h"
@@ -24,8 +24,6 @@
 #include "BloomUpsample_PS.h"
 
 #include "Core/RenderContext.h"
-
-#include <tracy/core/Tracy.hpp>
 
 #include "InternalOperations/PostProcessFilters.h"
 

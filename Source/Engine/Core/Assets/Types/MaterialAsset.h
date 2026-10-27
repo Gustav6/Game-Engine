@@ -1,9 +1,11 @@
 #pragma once
 
 #include <filesystem>
+#include <vector>
 
 #include "Core/Assets/Base/Asset.h"
-#include "Json/JsonWrapper.h"
+
+#include "Wrappers/Json/JsonWrapper.h"
 
 class MaterialInterface;
 class TextureAsset;
@@ -32,9 +34,7 @@ private:
 	bool LoadUnrealInstanceData(const Json::Data& aMaterialData);
 	bool LoadUnrealMasterData(const Json::Data& aMaterialData);
 
-	void PushParameters(const std::vector<Json::Data>& aMaterialParameters, MaterialInterface* aMaterialInstance, MaterialLayout aLayout);
-
-	MaterialLayout GetMaterialLayout(const std::vector<Json::Data>& parameters);
+	void PushParameters(const std::vector<Json::Data>& aMaterialParameters, MaterialInterface* aMaterialInstance);
 
 	std::shared_ptr<MaterialInterface> myMaterial;
 	std::vector<std::shared_ptr<TextureAsset>> myPersistentTextureList;

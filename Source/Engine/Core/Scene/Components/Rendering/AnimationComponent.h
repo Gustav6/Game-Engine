@@ -7,7 +7,11 @@
 
 #include "Core/Scene/Components/Base/Component.h"
 
-#include "CommonUtilities/Math/Matrix4x4.hpp"
+namespace CommonUtilities
+{
+	template <typename T>
+	class Matrix4x4;
+}
 
 struct Animation;
 struct Skeleton;

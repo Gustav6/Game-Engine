@@ -14,7 +14,6 @@ project "Graphics"
         "%{prj.location}",
         "%{wks.location}/Source/Engine",
         "%{wks.location}/Source/Utilities/",
-        "%{wks.location}/Source/ThirdParty/Json",
         "%{wks.location}/Intermediate/GraphicsEngine/%{cfg.buildcfg}/PrecompiledShaders/"
     }
     

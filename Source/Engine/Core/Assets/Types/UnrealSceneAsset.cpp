@@ -1,8 +1,6 @@
 #include "Core.pch.h"
 #include "UnrealSceneAsset.h"
 
-#include "Json/JsonWrapper.h"
-
 #include "Core/Assets/Registry/AssetRegistry.h"
 #include "Core/Assets/Types/MeshAsset.h"
 #include "Core/Assets/Types/AnimationAsset.h"
@@ -17,10 +15,6 @@
 #include "Core/Scene/Components/Light/PointLightComponent.h"
 #include "Core/Scene/Components/Light/SpotLightComponent.h"
 #include "Core/Scene/World/Actor.hpp"
-
-#include "Logger/Logger.h"
-
-#include <tracy/core/Tracy.hpp>
 
 UnrealSceneAsset::~UnrealSceneAsset() = default;
 
@@ -76,8 +70,6 @@ bool UnrealSceneAsset::Load(const std::filesystem::path& aPath)
 
 			actor->GetTransform() = UnrealToDirectX(matrix);
 
-			//LOG_GROUP(LogUnreal, Verbose, "Actor [{}] Loaded to the Scene!", actorName);
-
 			std::vector<Json::Data> jsonComponents = jsonActor.GetDataObjectArray("Components");
 
 			for (auto& jsonComponent : jsonComponents)
@@ -92,8 +84,6 @@ bool UnrealSceneAsset::Load(const std::filesystem::path& aPath)
 					}
 					case ComponentType::StaticMeshComponent:
 					{
-						//LOG_GROUP(LogUnreal, Verbose, "Component [StaticMesh]");
-
 						std::shared_ptr<MeshAsset> mesh = AssetRegistry::Get().GetAsset<MeshAsset>(jsonComponent.GetString("Mesh"));
 
 						if (mesh == nullptr)
@@ -134,8 +124,6 @@ bool UnrealSceneAsset::Load(const std::filesystem::path& aPath)
 					}
 					case ComponentType::SkeletalMeshComponent:
 					{
-						//LOG_GROUP(LogUnreal, Verbose, "Component [SkeletalMesh]");
-
 						std::shared_ptr<MeshAsset> mesh = AssetRegistry::Get().GetAsset<MeshAsset>(jsonComponent.GetString("Mesh"));
 
 						if (mesh == nullptr)

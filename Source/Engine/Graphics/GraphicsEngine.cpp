@@ -56,8 +56,6 @@
 #include "Fullscreen_VS.h"
 #include "BRDF_LUT_PS.h"
 
-#include <tracy/core/Tracy.hpp>
-
 #include "InternalOperations/PostProcessFilters.h"
 
 #include "InternalPasses/DebugRenderPass.h"
@@ -117,7 +115,7 @@ bool GraphicsEngine::Initialize(HWND aWindowHandle, const std::filesystem::path&
 		return false;
 	}
 
-	// Init passes
+	// Initialize passes
 	{
 		myForwardRenderPass = std::make_unique<ForwardRenderPass>();
 		myDeferredRenderPass = std::make_unique<DeferredRenderPass>();
@@ -208,8 +206,6 @@ void GraphicsEngine::BeginFrame() const
 
 FrameStats GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const SceneCamera& aCamera)
 {
-	ZoneScopedN("Whole render pass");
-
 	FrameStats frameStats;
 
 	{
@@ -666,7 +662,7 @@ bool GraphicsEngine::InitializeRenderResources()
 
 		GraphicsCommandList initCommandList;
 
-		if (!myRHI->CreateCommandList("LUT Init", initCommandList))
+		if (!myRHI->CreateCommandList("LUT Initialize", initCommandList))
 		{
 			SPDLOG_CRITICAL("Failed to create LUT init command list!");
 			return false;

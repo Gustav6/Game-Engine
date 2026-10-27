@@ -34,8 +34,6 @@
 #include "Surface_VS.h"
 #include "Unlit_PS.h"
 
-#include <tracy/core/Tracy.hpp>
-
 bool ShadowRenderPass::Initialize(RenderHardwareInterface& aRHI)
 {
 	// Directional & Spot PSO
@@ -84,8 +82,6 @@ void ShadowRenderPass::Execute(
 	const std::vector<RenderItem>& aItems,
 	RenderContext& aContext)
 {
-	ZoneScopedN("Shadow render pass")
-
 	inoutCommandList.BeginEvent("Shadow Pass");
 
 	const std::vector<SceneLight>& sceneLights = LightDrawer::Get().GetSceneLights();

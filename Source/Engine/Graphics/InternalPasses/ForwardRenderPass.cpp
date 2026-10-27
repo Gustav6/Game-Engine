@@ -1,6 +1,8 @@
 #include "GraphicsEngine.pch.h"
 #include "ForwardRenderPass.h"
 
+#include "GraphicsEngine.hpp"
+
 #include "ShadowRenderPass.h"
 #include "Shared/DrawCallSubmitter.h"
 
@@ -22,7 +24,6 @@
 
 #include "Graphics/Drawers/LightDrawer.h"
 
-#include <tracy/core/Tracy.hpp>
 
 void ForwardRenderPass::Execute(
 	GraphicsCommandList& inoutCommandList,
@@ -30,8 +31,6 @@ void ForwardRenderPass::Execute(
 	FrameTargets& aFrameTargets,
 	RenderContext& aContext)
 {
-	ZoneScopedN("Forward Render Pass")
-
 	inoutCommandList.BeginEvent("Forward Render");
 
 	const std::vector<SceneLight>& sceneLights = LightDrawer::Get().GetSceneLights();

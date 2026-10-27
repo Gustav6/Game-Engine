@@ -3,9 +3,6 @@
 
 #include <cassert>
 
-#include "CommonUtilities/Math/Vector4.hpp"
-#include "CommonUtilities/Math/MathUtils.hpp"
-
 #include "Graphics/Objects/Scene/Light.h"
 
 #include "Graphics/Drawers/LightDrawer.h"

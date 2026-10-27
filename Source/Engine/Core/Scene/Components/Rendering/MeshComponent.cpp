@@ -16,8 +16,6 @@
 
 #include "Core/Managers/DebugSettingsManager.h"
 
-#include "Ensure.h"
-
 MeshComponent::MeshComponent(Actor* aOwner)
 	: Component(aOwner)
 { }

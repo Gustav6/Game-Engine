@@ -58,18 +58,21 @@
     <IntDir>$(ProjectDir)..\..\..\Intermediate\CommonUtilities\Debug\</IntDir>
     <TargetName>CommonUtilities</TargetName>
     <TargetExt>.lib</TargetExt>
+    <ExternalIncludePath>..\..\..\ThirdParty\Source;$(ExternalIncludePath)</ExternalIncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(ProjectDir)..\..\..\Lib\Release\</OutDir>
     <IntDir>$(ProjectDir)..\..\..\Intermediate\CommonUtilities\Release\</IntDir>
     <TargetName>CommonUtilities</TargetName>
     <TargetExt>.lib</TargetExt>
+    <ExternalIncludePath>..\..\..\ThirdParty\Source;$(ExternalIncludePath)</ExternalIncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Retail|x64'">
     <OutDir>$(ProjectDir)..\..\..\Lib\Retail\</OutDir>
     <IntDir>$(ProjectDir)..\..\..\Intermediate\CommonUtilities\Retail\</IntDir>
     <TargetName>CommonUtilities</TargetName>
     <TargetExt>.lib</TargetExt>
+    <ExternalIncludePath>..\..\..\ThirdParty\Source;$(ExternalIncludePath)</ExternalIncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -77,8 +80,8 @@
       <PrecompiledHeaderFile>CommonUtilities.pch.h</PrecompiledHeaderFile>
       <WarningLevel>Level4</WarningLevel>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <PreprocessorDefinitions>SPDLOG_COMPILED_LIB;FMT_UNICODE=0;_DEBUG;IMGUI_ENABLE;ENABLE_FILE_WATCHER;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>.;..;..\..\..\ThirdParty\Source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>SPDLOG_COMPILED_LIB;FMT_UNICODE=0;_DEBUG;TRACY_ENABLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>.;..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <MinimalRebuild>false</MinimalRebuild>
@@ -100,8 +103,8 @@
       <PrecompiledHeaderFile>CommonUtilities.pch.h</PrecompiledHeaderFile>
       <WarningLevel>Level4</WarningLevel>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <PreprocessorDefinitions>SPDLOG_COMPILED_LIB;FMT_UNICODE=0;_RELEASE;IMGUI_ENABLE;ENABLE_FILE_WATCHER;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>.;..;..\..\..\ThirdParty\Source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>SPDLOG_COMPILED_LIB;FMT_UNICODE=0;_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>.;..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -129,7 +132,7 @@
       <WarningLevel>Level4</WarningLevel>
       <TreatWarningAsError>true</TreatWarningAsError>
       <PreprocessorDefinitions>SPDLOG_COMPILED_LIB;FMT_UNICODE=0;_RETAIL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>.;..;..\..\..\ThirdParty\Source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -191,7 +194,7 @@
     <ClCompile Include="Time\Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Logger\Logger.vcxproj">
+    <ProjectReference Include="..\Wrappers\Logger\Logger.vcxproj">
       <Project>{25F339C1-1195-6497-FA4F-78EBE690EBE7}</Project>
     </ProjectReference>
   </ItemGroup>

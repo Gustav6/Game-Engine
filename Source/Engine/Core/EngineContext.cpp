@@ -1,8 +1,6 @@
 ﻿#include "Core.pch.h"
 #include "EngineContext.h"
 
-#include "Ensure.h"
-
 std::filesystem::path GetExecutableDirectory()
 {
     // Source:

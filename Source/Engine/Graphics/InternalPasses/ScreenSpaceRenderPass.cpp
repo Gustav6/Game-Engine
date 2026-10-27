@@ -41,8 +41,6 @@
 #include "Sprite_PS.h"
 #include "Sprite_VS.h"
 
-#include <tracy/core/Tracy.hpp>
-
 constexpr size_t MaxSpriteVertexPerDraw = 1000;
 
 bool ScreenSpaceRenderPass::Initialize(RenderHardwareInterface& aRHI)
@@ -108,8 +106,6 @@ void ScreenSpaceRenderPass::Execute(
 	FrameTargets& aFrameTargets,
 	RenderContext& aContext)
 {
-	ZoneScopedN("Screen Space Render Pass")
-
 	inoutCommandList.BeginEvent("Screen Space Render");
 
 	inoutCommandList.SetRenderTarget(aFrameTargets.RenderTarget, nullptr);

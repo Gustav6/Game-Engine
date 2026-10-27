@@ -5,28 +5,28 @@
   "BlendMode": 0,
   "Parameters": [
     {
-      "Name": "AlbedoTexture",
+      "Name": "BaseColor",
       "Type": 3,
       "Value": {
         "Name": "T_Chest_c"
       }
     },
     {
-      "Name": "NormalTexture",
+      "Name": "Normal",
       "Type": 3,
       "Value": {
         "Name": "T_Chest_n"
       }
     },
     {
-      "Name": "MaterialTexture",
+      "Name": "ORM",
       "Type": 3,
       "Value": {
         "Name": "T_Chest_orm"
       }
     },
     {
-      "Name": "EmissionTexture",
+      "Name": "Emission",
       "Type": 3,
       "Value": {
         "Name": "T_Chest_fx"

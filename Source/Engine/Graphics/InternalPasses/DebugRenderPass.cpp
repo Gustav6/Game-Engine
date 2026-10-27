@@ -1,7 +1,7 @@
 #include "GraphicsEngine.pch.h"
 #include "DebugRenderPass.h"
 
-#include "Shared/DrawCallSubmitter.h"
+#include "GraphicsEngine.hpp"
 
 #include "Graphics/Core/RenderContext.h"
 #include "Graphics/Core/SceneCamera.h"
@@ -28,8 +28,6 @@
 #include "Unlit_PS.h"
 #include "Line_PS.h"
 #include "Line_VS.h"
-
-#include <tracy/core/Tracy.hpp>
 
 constexpr size_t MaxLineVertexPerDraw = 1000;
 

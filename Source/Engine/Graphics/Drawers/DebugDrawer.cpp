@@ -5,8 +5,6 @@
 
 #include "CommonUtilities/Math/MathUtils.hpp"
 
-#include <tracy/core/Tracy.hpp>
-
 DebugDrawer& DebugDrawer::Get()
 {
 	static DebugDrawer myInstance;

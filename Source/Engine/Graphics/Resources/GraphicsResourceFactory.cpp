@@ -5,8 +5,6 @@
 
 #include "Graphics/RHI/RenderHardwareInterface.h"
 
-#include "JsonWrapper.h"
-
 #include "Graphics/Objects/Text/Font.h"
 
 bool GraphicsResourceFactory::CreateShadowMap(RenderHardwareInterface& aRHI, std::string_view aName, unsigned int aWidth, unsigned int aHeight, Texture& outShadowMap, bool aCube)

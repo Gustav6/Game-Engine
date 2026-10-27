@@ -80,8 +80,8 @@
       <PrecompiledHeaderFile>Core.pch.h</PrecompiledHeaderFile>
       <WarningLevel>Level4</WarningLevel>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <PreprocessorDefinitions>SPDLOG_COMPILED_LIB;FMT_UNICODE=0;_DEBUG;IMGUI_ENABLE;ENABLE_FILE_WATCHER;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\..\..\Core.pch.h;..\..\Utilities;..;..\..\ThirdParty;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>SPDLOG_COMPILED_LIB;FMT_UNICODE=0;_DEBUG;TRACY_ENABLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\..\Utilities;..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <MinimalRebuild>false</MinimalRebuild>
@@ -103,8 +103,8 @@
       <PrecompiledHeaderFile>Core.pch.h</PrecompiledHeaderFile>
       <WarningLevel>Level4</WarningLevel>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <PreprocessorDefinitions>SPDLOG_COMPILED_LIB;FMT_UNICODE=0;_RELEASE;IMGUI_ENABLE;ENABLE_FILE_WATCHER;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\..\..\Core.pch.h;..\..\Utilities;..;..\..\ThirdParty;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>SPDLOG_COMPILED_LIB;FMT_UNICODE=0;_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\..\Utilities;..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -132,7 +132,7 @@
       <WarningLevel>Level4</WarningLevel>
       <TreatWarningAsError>true</TreatWarningAsError>
       <PreprocessorDefinitions>SPDLOG_COMPILED_LIB;FMT_UNICODE=0;_RETAIL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\..\..\Core.pch.h;..\..\Utilities;..;..\..\ThirdParty;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\Utilities;..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -219,13 +219,13 @@
     <ProjectReference Include="..\..\Utilities\CommonUtilities\CommonUtilities.vcxproj">
       <Project>{AA29E689-16B5-534E-1FC6-D6428BD0AF4E}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\..\Utilities\Logger\Logger.vcxproj">
+    <ProjectReference Include="..\..\Utilities\Wrappers\Logger\Logger.vcxproj">
       <Project>{25F339C1-1195-6497-FA4F-78EBE690EBE7}</Project>
     </ProjectReference>
     <ProjectReference Include="..\Graphics\Graphics.vcxproj">
       <Project>{1653CE33-0220-293F-2B39-17E717655ECD}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\..\ThirdParty\Json\Json.vcxproj">
+    <ProjectReference Include="..\..\Utilities\Wrappers\Json\Json.vcxproj">
       <Project>{7F9B877C-6BD2-880D-14BF-6E1000D5040F}</Project>
     </ProjectReference>
   </ItemGroup>

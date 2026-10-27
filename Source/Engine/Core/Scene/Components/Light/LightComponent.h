@@ -4,9 +4,17 @@
 
 #include "Core/Scene/Components/Base/Component.h"
 
-#include "CommonUtilities/Math/Vector2.hpp"
-#include "CommonUtilities/Math/Vector3.hpp"
-#include "CommonUtilities/Math/Matrix4x4.hpp"
+namespace CommonUtilities
+{
+    template <typename T>
+    class Vector2;
+
+    template <typename T>
+    class Vector3;
+
+    template <typename T>
+    class Matrix4x4;
+}
 
 #include "Graphics/Objects/Scene/Light.h"
 

@@ -12,10 +12,13 @@ project "CommonUtilities"
 
     includedirs {
         "%{prj.location}",
-        "%{wks.location}/Source/Utilities",
-        "%{wks.location}/ThirdParty/Source"
+        "%{wks.location}/Source/Utilities"
     }
     
+    externalincludedirs {
+        "%{wks.location}/ThirdParty/Source"
+    }
+
     files { 
         "%{prj.location}/**.h", 
         "%{prj.location}/**.cpp", 

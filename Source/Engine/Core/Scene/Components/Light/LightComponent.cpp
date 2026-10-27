@@ -7,8 +7,6 @@
 
 #include "Graphics/Objects/GPU/Texture.h"
 
-#include "ensure.h"
-
 LightComponent::LightComponent(Actor* aOwner)
 	: Component(aOwner)
 {

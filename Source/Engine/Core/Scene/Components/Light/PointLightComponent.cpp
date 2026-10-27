@@ -1,8 +1,6 @@
 #include "Core.pch.h"
 #include "PointLightComponent.h"
 
-#include "CommonUtilities/Math/Vector4.hpp"
-
 #include "Graphics/Objects/Scene/Light.h"
 
 #include "Graphics/Drawers/LightDrawer.h"

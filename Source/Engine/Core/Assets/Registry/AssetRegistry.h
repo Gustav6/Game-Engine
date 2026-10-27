@@ -1,7 +1,6 @@
 #pragma once
 
 #include <memory>
-#include <functional>
 #include <string>
 #include <string_view>
 #include <unordered_map>
@@ -12,11 +11,9 @@
 #include <typeindex>
 #include <set>
 #include <algorithm>
-#include <format>
 
 #include "Core/Assets/Base/Asset.h"
-
-#include "Logger/Logger.h"
+#include "Wrappers/Logger/LoggerWrapper.h"
 
 // TODO: Stop using string and move to interned string.
 
@@ -30,8 +27,6 @@ public:
 
 	bool Initialize();
 	void Shutdown();
-
-	const std::filesystem::path& GetWorkingDirectory() const;
 
 	template<typename AssetType>
 	requires std::is_base_of_v<Asset, AssetType>
@@ -157,6 +152,4 @@ private:
 
 	std::unordered_map<std::string, AssetInformation> myAssets;
 	std::unordered_map<std::string, std::set<std::type_index>> myFileExtensionToAssetTypeMap;
-
-	std::filesystem::path myWorkingDirectory;
 };

@@ -6,9 +6,6 @@
 #include "Graphics/Objects/GPU/Texture.h"
 #include "Graphics/Objects/Sprite.h"
 
-#include <tracy/core/Tracy.hpp>
-
-#include "Logger/Logger.h"
 
 const SpriteSharedData& SpriteAsset::GetData() const
 {

@@ -4,8 +4,6 @@
 
 #include "CommonUtilities/Collision/Sphere.hpp"
 
-class MeshAsset;
-
 class SphereColliderComponent : public Component
 {
 public:

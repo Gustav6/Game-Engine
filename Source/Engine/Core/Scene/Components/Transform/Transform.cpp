@@ -1,8 +1,6 @@
 #include "Core.pch.h"
 #include "Transform.h"
 
-#include "CommonUtilities/Math/Vector4.hpp"
-
 Transform::Transform()
 {
 	myLocalPosition = CommonUtilities::Vector3f::Zero;

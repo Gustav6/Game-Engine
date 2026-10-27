@@ -21,8 +21,6 @@
 
 #include "Graphics/Drawers/MeshDrawer.h"
 
-#include <tracy/core/Tracy.hpp>
-
 void DrawCallSubmitter::RenderDrawCalls(
 	GraphicsCommandList& inoutCommandList,
 	const std::vector<RenderItem>& aItems,

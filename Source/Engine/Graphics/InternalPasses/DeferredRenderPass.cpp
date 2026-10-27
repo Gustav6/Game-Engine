@@ -1,6 +1,8 @@
 #include "GraphicsEngine.pch.h"
 #include "DeferredRenderPass.h"
 
+#include "GraphicsEngine.hpp"
+
 #include "ShadowRenderPass.h"
 #include "Shared/DrawCallSubmitter.h"
 
@@ -34,8 +36,6 @@
 #include "AmbientLighting_PS.h"
 #include "Fullscreen_VS.h"
 #include "SSAO_PS.h"
-
-#include <tracy/core/Tracy.hpp>
 
 bool DeferredRenderPass::Initialize(RenderHardwareInterface& aRHI)
 {
@@ -195,8 +195,6 @@ void DeferredRenderPass::Execute(
 	FrameTargets& aFrameTargets,
 	RenderContext& aContext)
 {
-	ZoneScopedN("Deferred Render Pass")
-
 	inoutCommandList.BeginEvent("Deffered Render");
 
 	const std::vector<SceneLight>& sceneLights = LightDrawer::Get().GetSceneLights();

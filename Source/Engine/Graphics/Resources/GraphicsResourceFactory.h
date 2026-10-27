@@ -9,6 +9,8 @@ class Font;
 
 enum class ResourceFormat;
 
+typedef int ResourceBindFlags;
+
 class GraphicsResourceFactory
 {
 public:

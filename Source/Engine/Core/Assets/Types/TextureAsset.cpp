@@ -5,10 +5,6 @@
 
 #include "Graphics/Objects/GPU/Texture.h"
 
-#include <tracy/core/Tracy.hpp>
-
-#include "Logger/Logger.h"
-
 TextureAsset::~TextureAsset() = default;
 
 const std::shared_ptr<Texture>& TextureAsset::GetTexture() const

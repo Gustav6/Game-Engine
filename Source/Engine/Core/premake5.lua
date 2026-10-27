@@ -12,8 +12,7 @@ project "Core"
 
     includedirs {
         "%{wks.location}/Source/Utilities",
-        "%{wks.location}/Source/Engine",
-        "%{wks.location}/Source/ThirdParty"
+        "%{wks.location}/Source/Engine"
     }
 
     externalincludedirs {
