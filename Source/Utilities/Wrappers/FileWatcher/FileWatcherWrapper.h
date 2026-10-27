@@ -34,10 +34,10 @@ namespace FileWatcher
 	void Initialize();
 	void Shutdown();
 
-	WatcherID AddWatch(const std::filesystem::path& aDirectory, Callback aCallback, bool aRecursive = true);
-	void RemoveWatch(WatcherID aID);
-	void RemoveWatch(const std::filesystem::path& aDirectory);
-	void RemoveAllWatches();
+	WatcherID AddWatcher(const std::filesystem::path& aDirectory, Callback aCallback);
+	void RemoveWatcher(WatcherID aID);
+	void RemoveWatcher(const std::filesystem::path& aDirectory);
+	void RemoveAllWatchers();
 
 	void DispatchEvents();
 }

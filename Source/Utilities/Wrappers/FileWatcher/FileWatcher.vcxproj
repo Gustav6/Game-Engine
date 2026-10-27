@@ -58,17 +58,17 @@
     <IntDir>$(ProjectDir)..\..\..\..\Intermediate\FileWatcher\Debug\</IntDir>
     <TargetName>FileWatcher</TargetName>
     <TargetExt>.lib</TargetExt>
-    <ExternalIncludePath>..\..\..\..\ThirdParty\Source\efsw\include;..\..\..\..\ThirdParty\Source\efsw\src;$(ExternalIncludePath)</ExternalIncludePath>
+    <ExternalIncludePath>..\..\..\..\ThirdParty\Source\efsw;$(ExternalIncludePath)</ExternalIncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(ProjectDir)..\..\..\..\Lib\Release\</OutDir>
     <IntDir>$(ProjectDir)..\..\..\..\Intermediate\FileWatcher\Release\</IntDir>
     <TargetName>FileWatcher</TargetName>
     <TargetExt>.lib</TargetExt>
-    <ExternalIncludePath>..\..\..\..\ThirdParty\Source\efsw\include;..\..\..\..\ThirdParty\Source\efsw\src;$(ExternalIncludePath)</ExternalIncludePath>
+    <ExternalIncludePath>..\..\..\..\ThirdParty\Source\efsw;$(ExternalIncludePath)</ExternalIncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Retail|x64'">
-    <ExternalIncludePath>..\..\..\..\ThirdParty\Source\efsw\include;..\..\..\..\ThirdParty\Source\efsw\src;$(ExternalIncludePath)</ExternalIncludePath>
+    <ExternalIncludePath>..\..\..\..\ThirdParty\Source\efsw;$(ExternalIncludePath)</ExternalIncludePath>
     <NMakeOutput>$(OutDir)FileWatcher</NMakeOutput>
     <AdditionalOptions>/sdl /std:c++20 %(AdditionalOptions)</AdditionalOptions>
   </PropertyGroup>

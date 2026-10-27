@@ -172,6 +172,7 @@
     <ClInclude Include="Scene\Components\Light\LightComponent.h" />
     <ClInclude Include="Scene\Components\Light\PointLightComponent.h" />
     <ClInclude Include="Scene\Components\Light\SpotLightComponent.h" />
+    <ClInclude Include="Scene\Components\Particles\ParticleEmitterComponent.h" />
     <ClInclude Include="Scene\Components\Registry\ComponentRegistry.h" />
     <ClInclude Include="Scene\Components\Registry\ComponentRegistryManager.h" />
     <ClInclude Include="Scene\Components\Rendering\AnimationComponent.h" />
@@ -205,6 +206,7 @@
     <ClCompile Include="Scene\Components\Light\LightComponent.cpp" />
     <ClCompile Include="Scene\Components\Light\PointLightComponent.cpp" />
     <ClCompile Include="Scene\Components\Light\SpotLightComponent.cpp" />
+    <ClCompile Include="Scene\Components\Particles\ParticleEmitterComponent.cpp" />
     <ClCompile Include="Scene\Components\Registry\ComponentRegistry.cpp" />
     <ClCompile Include="Scene\Components\Registry\ComponentRegistryManager.cpp" />
     <ClCompile Include="Scene\Components\Rendering\AnimationComponent.cpp" />

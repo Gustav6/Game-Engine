@@ -31,6 +31,9 @@
     <Filter Include="Scene\Components\Light">
       <UniqueIdentifier>{8F684477-7B62-6DC9-64CF-03DA5068D335}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Scene\Components\Particles">
+      <UniqueIdentifier>{BECD66B7-AADD-1288-1397-77A6FFC50121}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Scene\Components\Registry">
       <UniqueIdentifier>{3065CFEF-9C27-037A-E5D7-910651D9DB57}</UniqueIdentifier>
     </Filter>
@@ -100,6 +103,9 @@
     </ClInclude>
     <ClInclude Include="Scene\Components\Light\SpotLightComponent.h">
       <Filter>Scene\Components\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\Components\Particles\ParticleEmitterComponent.h">
+      <Filter>Scene\Components\Particles</Filter>
     </ClInclude>
     <ClInclude Include="Scene\Components\Registry\ComponentRegistry.h">
       <Filter>Scene\Components\Registry</Filter>
@@ -185,6 +191,9 @@
     </ClCompile>
     <ClCompile Include="Scene\Components\Light\SpotLightComponent.cpp">
       <Filter>Scene\Components\Light</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\Components\Particles\ParticleEmitterComponent.cpp">
+      <Filter>Scene\Components\Particles</Filter>
     </ClCompile>
     <ClCompile Include="Scene\Components\Registry\ComponentRegistry.cpp">
       <Filter>Scene\Components\Registry</Filter>

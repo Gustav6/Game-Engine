@@ -49,8 +49,7 @@ project "FileWatcher"
     }
     
     externalincludedirs {
-        "%{wks.location}/ThirdParty/Source/efsw/include",
-        "%{wks.location}/ThirdParty/Source/efsw/src"
+        "%{wks.location}/ThirdParty/Source/efsw",
     }
 
     files { 
