@@ -1,0 +1,29 @@
+{
+  "Name": "BlendMaterial",
+  "Domain": 0,
+  "ShadingModel": 1,
+  "BlendMode": 1,
+  "Parameters": [
+    {
+      "Name": "BaseColor",
+      "Type": 3,
+      "Value": {
+        "Name": "T_Marble_Tiles_c"
+      }
+    },
+    {
+      "Name": "Normal",
+      "Type": 3,
+      "Value": {
+        "Name": "T_Marble_Tiles_n"
+      }
+    },
+    {
+      "Name": "ORM",
+      "Type": 3,
+      "Value": {
+        "Name": "T_Marble_Tiles_orm"
+      }
+    }
+  ]
+}

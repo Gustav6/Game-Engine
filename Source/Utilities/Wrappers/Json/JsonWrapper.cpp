@@ -673,15 +673,45 @@ void Json::Writer::Clear()
 	}
 }
 
-//bool Json::Writer::BeginObject(const char* aKey)
-//{
-//	return true;
-//}
-//
-//bool Json::Writer::EndObject()
-//{
-//	return true;
-//}
+bool Json::Writer::BeginObject(const char* aKey)
+{
+	if (!IsValid())
+	{
+		SPDLOG_ERROR("Could not add Object for [{}], Writer is not valid!", myDestination.string());
+		return false;
+	}
+
+	yyjson_mut_val* object = yyjson_mut_obj(myDocument);
+	yyjson_mut_val* key = yyjson_mut_str(myDocument, aKey);
+
+	if (object == nullptr || key == nullptr)
+	{
+		SPDLOG_ERROR("Could not allocate Object for [{}]!", myDestination.string());
+		return false;
+	}
+
+	if (!yyjson_mut_obj_add(GetCurrentObject(), key, object))
+	{
+		SPDLOG_ERROR("Could not add Object for [{}]!", myDestination.string());
+		return false;
+	}
+
+	myObjectStack.push(object);
+
+	return true;
+}
+
+bool Json::Writer::EndObject()
+{
+	if (myObjectStack.empty())
+	{
+		return false;
+	}
+
+	myObjectStack.pop();
+
+	return true;
+}
 
 bool Json::Writer::SetBool(const char* aKey, bool aValue) const
 {
@@ -700,7 +730,7 @@ bool Json::Writer::SetBool(const char* aKey, bool aValue) const
 		return false;
 	}
 
-	if (yyjson_mut_obj_put(myRoot, key, value))
+	if (yyjson_mut_obj_put(GetCurrentObject(), key, value))
 	{
 		return true;
 	}
@@ -726,7 +756,7 @@ bool Json::Writer::SetInt(const char* aKey, int aValue) const
 		return false;
 	}
 
-	if (yyjson_mut_obj_put(myRoot, key, value))
+	if (yyjson_mut_obj_put(GetCurrentObject(), key, value))
 	{
 		return true;
 	}
@@ -752,7 +782,7 @@ bool Json::Writer::SetUnsigned(const char* aKey, unsigned int aValue) const
 		return false;
 	}
 
-	if (yyjson_mut_obj_put(myRoot, key, value))
+	if (yyjson_mut_obj_put(GetCurrentObject(), key, value))
 	{
 		return true;
 	}
@@ -778,7 +808,7 @@ bool Json::Writer::SetFloat(const char* aKey, float aValue) const
 		return false;
 	}
 
-	if (yyjson_mut_obj_put(myRoot, key, value))
+	if (yyjson_mut_obj_put(GetCurrentObject(), key, value))
 	{
 		return true;
 	}
@@ -804,7 +834,7 @@ bool Json::Writer::SetDouble(const char* aKey, double aValue) const
 		return false;
 	}
 
-	if (yyjson_mut_obj_put(myRoot, key, value))
+	if (yyjson_mut_obj_put(GetCurrentObject(), key, value))
 	{
 		return true;
 	}
@@ -830,7 +860,7 @@ bool Json::Writer::SetString(const char* aKey, const std::string& aValue) const
 		return false;
 	}
 
-	if (yyjson_mut_obj_put(myRoot, key, value))
+	if (yyjson_mut_obj_put(GetCurrentObject(), key, value))
 	{
 		return true;
 	}
@@ -842,6 +872,16 @@ bool Json::Writer::SetString(const char* aKey, const std::string& aValue) const
 const std::filesystem::path& Json::Writer::GetDestination() const
 {
 	return myDestination;
+}
+
+yyjson_mut_val* Json::Writer::GetCurrentObject() const
+{
+	if (myObjectStack.empty())
+	{
+		return myRoot;
+	}
+
+	return myObjectStack.top();
 }
 
 Json::Data Json::Read(const std::filesystem::path& aJsonPath, ReadFlags aFlags)

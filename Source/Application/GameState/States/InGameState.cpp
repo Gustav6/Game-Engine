@@ -41,7 +41,7 @@ void InGameState::Initialize()
 
 void InGameState::Enter()
 {
-	//LoadUnrealScene("LVL_DioramaBlockout_Level");
+	//LoadUnrealScene("LVL_DioramaBlockout");
 	LoadTestScene();
 }
 
@@ -66,9 +66,9 @@ void InGameState::Exit()
 {
 }
 
-void InGameState::LoadUnrealScene(const char* aSceneName)
+void InGameState::LoadUnrealScene(const std::string& aSceneName)
 {
-	std::shared_ptr<UnrealSceneAsset> scene = AssetRegistry::Get().GetAsset<UnrealSceneAsset>(aSceneName);
+	auto scene = AssetRegistry::Get().GetAsset<UnrealSceneAsset>(aSceneName + "_level");
 
 	if (scene != nullptr)
 	{
@@ -230,6 +230,21 @@ void InGameState::LoadTestScene()
 		object->SetName("TGA_Bro");
 
 		myAnimatedObject = GameWorld::Get().AddActor(std::move(object));
+	}
+
+	{
+		std::unique_ptr<Actor> object = std::make_unique<Actor>();
+
+		object->GetTransform().Translate({ 200, 0, -200 });
+
+		MeshComponent* meshComponent = object->AddComponent<MeshComponent>();
+
+		meshComponent->SetMesh(AssetRegistry::Get().GetAsset<MeshAsset>("SK_C_TGA_Bro"));
+		meshComponent->SetMaterial(0, AssetRegistry::Get().GetAsset<MaterialAsset>("TGABroMaterial"));
+
+		object->SetName("TGA_Bro_Temp");
+
+		GameWorld::Get().AddActor(std::move(object));
 	}
 
 	{

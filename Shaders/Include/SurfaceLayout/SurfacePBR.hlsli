@@ -17,6 +17,8 @@ SurfaceData EvaluateSurface(VStoPS aPixel, float2 aUV)
     const float4 material = ORM.Sample(TrilinearWrap, aUV);
 #ifdef MATERIAL_HAS_EMISSION
     const float4 emission = Emission.Sample(TrilinearWrap, aUV);
+    
+    const float emissionStrength = 50.0f;
 #endif
     
     const float3x3 TBN = float3x3(
@@ -24,8 +26,6 @@ SurfaceData EvaluateSurface(VStoPS aPixel, float2 aUV)
         normalize(aPixel.BiNormal),
         normalize(aPixel.Normal)
     );
-    
-    const float emissionStrength = 50.0f;
 
     SurfaceData data;
     data.Albedo = albedo;

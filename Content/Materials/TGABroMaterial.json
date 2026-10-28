@@ -24,9 +24,21 @@
       "Value": {
         "Name": "T_TGA_Bro_orm"
       }
+    },
+    {
+      "Name": "Color_Tint",
+      "Type": 1,
+      "Value": [
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "Name": "Color_Alpha",
+      "Type": 0,
+      "Value": 0.5
     }
-  ],
-  "Shader": {
-    "Code": "Shaders/BlendMaterial.hlsli"
-  }
+  ]
 }

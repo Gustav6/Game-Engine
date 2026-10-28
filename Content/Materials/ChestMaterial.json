@@ -31,9 +31,16 @@
       "Value": {
         "Name": "T_Chest_fx"
       }
+    },
+    {
+      "Name": "Color_Tint",
+      "Type": 1,
+      "Value": [
+        1,
+        1,
+        1,
+        1
+      ]
     }
-  ],
-  "Shader": {
-    "Code": "Shaders/BaseMaterial.hlsli"
-  }
+  ]
 }

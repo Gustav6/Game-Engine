@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string>
+
 #include "GameState/GameStateMachine.h"
 
 class MeshComponent;
@@ -17,7 +19,7 @@ public:
 	void Exit() override;
 
 private:
-	void LoadUnrealScene(const char* aSceneName);
+	void LoadUnrealScene(const std::string& aSceneName);
 	void LoadTestScene();
 
 	void UpdateTestBinds();

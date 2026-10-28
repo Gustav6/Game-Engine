@@ -73,6 +73,11 @@ bool MaterialFactory::Create(
 		materialMacros.emplace_back("MATERIAL_HAS_EMISSION", "1");
 	}
 
+	if (aDescription.Features & MaterialFeatureFlag_HeightMap)
+	{
+		materialMacros.emplace_back("MATERIAL_HAS_HEIGHTMAP", "1");
+	}
+
 	std::filesystem::path materialProgramPath;
 
 	if (aDescription.MaterialShaderCode.empty())

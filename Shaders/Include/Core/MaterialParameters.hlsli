@@ -12,7 +12,7 @@ struct MaterialPixelParameters
 {
     float4 PixelColor;
     float4 WorldPosition;
-    float3 PixelNormal;
+    float3 WorldNormal;
     float2 UV0;
     float Occlusion;
     float Roughness;

@@ -148,10 +148,12 @@ bool GameCamera::WorldToScreen(const CommonUtilities::Vector3f& aWorldPosition, 
 
 void GameCamera::UpdateFrustum() const
 {
-	if (myRenderCamera != nullptr)
+	if (myRenderCamera == nullptr)
 	{
-		myRenderCamera->UpdateFrustum(GetTransform().GetWorldMatrix());
+		return;
 	}
+
+	myRenderCamera->UpdateFrustum(GetTransform().GetWorldMatrix());
 }
 
 void GameCamera::UpdateFreeLook(float aDeltaTime)
@@ -159,37 +161,31 @@ void GameCamera::UpdateFreeLook(float aDeltaTime)
 	if (EngineContext.InputManager.IsKeyDown(KeyCode::W))
 	{
 		GetTransform().Translate(GetTransform().GetForward() * myCameraMoveSpeed * aDeltaTime);
-		UpdateFrustum();
 	}
 
 	if (EngineContext.InputManager.IsKeyDown(KeyCode::A))
 	{
 		GetTransform().Translate(-GetTransform().GetRight() * myCameraMoveSpeed * aDeltaTime);
-		UpdateFrustum();
 	}
 
 	if (EngineContext.InputManager.IsKeyDown(KeyCode::S))
 	{
 		GetTransform().Translate(-GetTransform().GetForward() * myCameraMoveSpeed * aDeltaTime);
-		UpdateFrustum();
 	}
 
 	if (EngineContext.InputManager.IsKeyDown(KeyCode::D))
 	{
 		GetTransform().Translate(GetTransform().GetRight() * myCameraMoveSpeed * aDeltaTime);
-		UpdateFrustum();
 	}
 
 	if (EngineContext.InputManager.IsKeyDown(KeyCode::Space))
 	{
 		GetTransform().Translate(GetTransform().GetUp() * myCameraMoveSpeed * aDeltaTime);
-		UpdateFrustum();
 	}
 
 	if (EngineContext.InputManager.IsKeyDown(KeyCode::Control))
 	{
 		GetTransform().Translate(-GetTransform().GetUp() * myCameraMoveSpeed * aDeltaTime);
-		UpdateFrustum();
 	}
 
 	if (EngineContext.InputManager.IsKeyPressed(KeyCode::RMB))
@@ -210,18 +206,19 @@ void GameCamera::UpdateFreeLook(float aDeltaTime)
 
 		constexpr float sensitivity = 0.2f;
 
-		float yaw = mouseDelta.x * sensitivity;
 		float pitch = mouseDelta.y * sensitivity;
+		float yaw = mouseDelta.x * sensitivity;
 
-		CommonUtilities::Quaternion<float> pitchQuat({ 1, 0, 0 }, pitch);
-		CommonUtilities::Quaternion<float> yawQuat({ 0, 1, 0 }, yaw);
+		CommonUtilities::Quaternion<float> pitchQuat({ 1.0f, 0.0f, 0.0f }, pitch);
+		CommonUtilities::Quaternion<float> yawQuat({ 0.0f, 1.0f, 0.0f }, yaw);
 
 		GetTransform().Rotate(pitchQuat, false);
 		GetTransform().Rotate(yawQuat, true);
-		UpdateFrustum();
 
 		EngineContext.InputManager.CenterCursor();
 	}
+
+	UpdateFrustum();
 }
 
 void GameCamera::UpdateFollowTarget(float aDeltaTime)

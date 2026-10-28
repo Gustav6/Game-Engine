@@ -9,12 +9,13 @@
 
 namespace FileWatcher
 {
-	using WatcherID = std::int64_t;
+	using WatcherID = long;
 
 	constexpr WatcherID InvalidWatchID = -1;
 
 	enum class FileAction
 	{
+		None,
 		Added,
 		Deleted,
 		Modified,
@@ -23,7 +24,7 @@ namespace FileWatcher
 
 	struct FileEvent
 	{
-		FileAction Action = FileAction::Modified;
+		FileAction Action = FileAction::None;
 		std::filesystem::path Directory;
 		std::filesystem::path FileName;
 		std::filesystem::path OldFileName; // Only set when Action == Moved

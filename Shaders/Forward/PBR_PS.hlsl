@@ -15,7 +15,7 @@ float4 main(VStoPS aPixel) : SV_TARGET
     MaterialPixelParameters parameters;
     parameters.PixelColor = 0;
     parameters.WorldPosition = 0;
-    parameters.PixelNormal = 0;
+    parameters.WorldNormal = 0;
     parameters.UV0 = aPixel.UV0;
     parameters.Occlusion = 0;
     parameters.Roughness = 0;
@@ -39,7 +39,7 @@ float4 main(VStoPS aPixel) : SV_TARGET
         case 0:
             parameters.PixelColor = surface.Albedo;
             parameters.WorldPosition = aPixel.WorldPosition;
-            parameters.PixelNormal = surface.WorldNormal;
+            parameters.WorldNormal = surface.WorldNormal;
             parameters.UV0 = aPixel.UV0;
             parameters.Occlusion = surface.Occlusion;
             parameters.Roughness = surface.Roughness;
@@ -62,20 +62,20 @@ float4 main(VStoPS aPixel) : SV_TARGET
         case 7: // Normals world space pass
             return float4(surface.WorldNormal, 1.0f);
         case 8: // Shadows pass
-            surface.Albedo = float4(0.5f, 0.5f, 0.5f, 1.0f);
-            surface.Roughness = 1.0f;
+            parameters.PixelColor = float4(0.5f, 0.5f, 0.5f, 1.0f);
+            parameters.Roughness = 1.0f;
             break;
         default:
             break;
     }
 
-    const float3 specularColor = lerp((float3) 0.04f, surface.Albedo.rgb, surface.Metalness);
-    const float3 diffuseColor = lerp((float3) 0.00f, surface.Albedo.rgb, 1 - surface.Metalness);
+    const float3 specularColor = lerp((float3) 0.04f, parameters.PixelColor.rgb, parameters.Metalness);
+    const float3 diffuseColor = lerp((float3) 0.00f, parameters.PixelColor.rgb, 1 - parameters.Metalness);
     const float3 pixelView = normalize(FB_CameraPosition - aPixel.WorldPosition.xyz);
     
     const int envNumMips = GetNumMips(EnvCubeTexture) - 1;
     
-    float3 radiance = CalculateAmbientContribution(surface.WorldNormal, pixelView, specularColor, diffuseColor, envNumMips, surface.Roughness, surface.Occlusion);
+    float3 radiance = CalculateAmbientContribution(parameters.WorldNormal, pixelView, specularColor, diffuseColor, envNumMips, parameters.Roughness, parameters.Occlusion);
     
     for (uint l = 0; l < LB_NumActiveLights; ++l)
     {
@@ -110,11 +110,11 @@ float4 main(VStoPS aPixel) : SV_TARGET
                 
                 float3 lightContribution = CalculateDirectionalLightContribution(
                     light,
-                    surface.WorldNormal,
+                    parameters.WorldNormal,
                     pixelView,
                     specularColor,
                     diffuseColor,
-                    surface.Roughness
+                    parameters.Roughness
                 );
                 
                 float shadowFactor = CalculateDirectionalLightShadowFactor(
@@ -130,12 +130,12 @@ float4 main(VStoPS aPixel) : SV_TARGET
             {
                 float3 lightContribution = CalculatePointLightContribution(
                     light,
-                    surface.WorldNormal,
+                    parameters.WorldNormal,
                     aPixel.WorldPosition.xyz,
                     pixelView,
                     specularColor,
                     diffuseColor,
-                    surface.Roughness
+                    parameters.Roughness
                 );
                 
                 float shadowFactor = CalculatePointLightShadowFactor(
@@ -152,19 +152,19 @@ float4 main(VStoPS aPixel) : SV_TARGET
             {
                 float3 lightContribution = CalculateSpotLightContribution(
                     light,
-                    surface.WorldNormal,
+                    parameters.WorldNormal,
                     aPixel.WorldPosition.xyz,
                     pixelView,
                     specularColor,
                     diffuseColor,
-                    surface.Roughness
+                    parameters.Roughness
                 );
                 
                 float shadowFactor = CalculateSpotLightShadowFactor(
                     light,
                     light.ShadowIndex,
                     aPixel.WorldPosition,
-                    surface.WorldNormal
+                    parameters.WorldNormal
                 );
                
                 radiance += lightContribution * shadowFactor;
@@ -178,5 +178,5 @@ float4 main(VStoPS aPixel) : SV_TARGET
     
     radiance += surface.Emission;
    
-    return float4(radiance, surface.Albedo.a);
+    return float4(radiance, parameters.PixelColor.a);
 }

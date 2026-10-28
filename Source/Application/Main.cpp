@@ -204,11 +204,15 @@ LRESULT CALLBACK WinProc(_In_ HWND hWnd, _In_ UINT uMsg, _In_ WPARAM wParam, _In
 	    case WM_DESTROY:
 	    {
 		    PostQuitMessage(0);
+            Logger::Shutdown();
+            FileWatcher::Shutdown();
 		    return 0;
 	    }
         case WM_CLOSE:
         {
             PostQuitMessage(0);
+            Logger::Shutdown();
+            FileWatcher::Shutdown();
             return 0;
         }
     }

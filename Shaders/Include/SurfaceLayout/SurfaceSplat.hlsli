@@ -19,6 +19,13 @@ Texture2D Normal_04 : register(t10);
 Texture2D ORM_04 : register(t11);
 Texture2D SplatMap : register(t12);
 
+#ifdef MATERIAL_HAS_HEIGHTMAP
+Texture2D Height_01 : register(t13);
+Texture2D Height_02 : register(t14);
+Texture2D Height_03 : register(t15);
+Texture2D Height_04 : register(t16);
+#endif
+
 SurfaceData EvaluateSurface(VStoPS aPixel, float2 aUV)
 {
     const float3x3 TBN = float3x3(
@@ -27,9 +34,26 @@ SurfaceData EvaluateSurface(VStoPS aPixel, float2 aUV)
         normalize(aPixel.Normal)
     );
     
-    float4 Mask = SplatMap.Sample(TrilinearClamp, aUV);
+	// TODO: Project splatmap onto landscape or something similar
+    float2 splatUV = (aPixel.WorldPosition.xz + 3150.0f) / 6300.0f;
+
+    float4 Mask = SplatMap.Sample(TrilinearClamp, splatUV);
     Mask /= max(dot(Mask, 1.0f), 1e-5f);
-    
+
+#ifdef MATERIAL_HAS_HEIGHTMAP
+    const float4 heights = float4(
+        Height_01.Sample(TrilinearWrap, aUV).r,
+        Height_02.Sample(TrilinearWrap, aUV).r,
+        Height_03.Sample(TrilinearWrap, aUV).r,
+        Height_04.Sample(TrilinearWrap, aUV).r);
+
+    const float blendContrast = 0.2f;
+	float4 weights = heights * Mask;
+    float maxWeight = max(max(weights.r, weights.g), max(weights.b, weights.a));
+    weights = max(weights - (maxWeight - blendContrast), 0.0f);
+    Mask = weights / max(dot(weights, 1.0f), 1e-5f);
+#endif
+
     float4 A_Albedo = BaseColor_01.Sample(TrilinearWrap, aUV);
     float4 A_Normal = Normal_01.Sample(TrilinearWrap, aUV);
     float4 A_Material = ORM_01.Sample(TrilinearWrap, aUV);

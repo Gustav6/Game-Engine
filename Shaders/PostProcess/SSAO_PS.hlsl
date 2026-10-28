@@ -49,7 +49,7 @@ float3 GetViewSpacePosition(float2 aUV)
 {
     float3 position;
 
-    position.z = GBufferWorldNormalDepth.Sample(TrilinearClamp, aUV).a / 65535.0f;
+    position.z = GBufferWorldNormalDepth.Sample(TrilinearClamp, aUV).a / 65535.0f; // "65535.0f" Represents the max size of a float
     position.x = ((2 * aUV.x - 1) * position.z) / FB_Projection._11;
     position.y = ((1 - 2 * aUV.y) * position.z) / FB_Projection._22;
 
@@ -94,7 +94,7 @@ float4 main(FullscreenVertex aVertex) : SV_Target
         float2 sampleUV = float2(offset.x, -offset.y) * 0.5f + 0.5f;
         const float stepDepth = GetViewSpacePosition(sampleUV).z;
 
-        const float range = smoothstep(0.0f, 1.0f, radius / abs(pos.z - stepDepth));
+        const float range = smoothstep(0.0f, 1.0f, radius / max(abs(pos.z - stepDepth), 0.0001f));
         occlusion += (stepDepth <= kernelPos.z - bias ? 1.0f : 0.0f) * range;
     }
 

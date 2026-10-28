@@ -7,6 +7,9 @@
 #include "Core/Assets/Types/MaterialAsset.h"
 #include "Core/Assets/Types/TextureAsset.h"
 
+
+#include "Graphics/Materials/MaterialInterface.h"
+
 #include "Graphics/Objects/GPU/Texture.h"
 
 #include "Core/Scene/Components/Rendering/MeshComponent.h"
@@ -64,11 +67,8 @@ bool UnrealSceneAsset::Load(const std::filesystem::path& aPath)
 		{
 			std::unique_ptr<Actor> actor = std::make_unique<Actor>();
 
-			std::string actorName = jsonActor.GetString("Name");
-
-			std::vector<float> matrix = jsonActor.GetFloatArray("Transform");
-
-			actor->GetTransform() = UnrealToDirectX(matrix);
+			actor->SetName(jsonActor.GetString("Name"));
+			actor->GetTransform() = UnrealToDirectX(jsonActor.GetFloatArray("Transform"));
 
 			std::vector<Json::Data> jsonComponents = jsonActor.GetDataObjectArray("Components");
 
@@ -98,7 +98,7 @@ bool UnrealSceneAsset::Load(const std::filesystem::path& aPath)
 
 						if (materials.empty())
 						{
-							spdlog::error("Mesh has no material set [{}]!", actorName);
+							spdlog::error("Mesh has no material set [{}]!", actor->GetName());
 						}
 						else
 						{
@@ -112,11 +112,41 @@ bool UnrealSceneAsset::Load(const std::filesystem::path& aPath)
 								}
 								else
 								{
-									spdlog::error("Material had no name for actor [{}]!", actorName);
-									materialName = "NO NAME GIVEN";
+									spdlog::error("Material has no name set, attached to [{}]!", actor->GetName());
+									materialName = actor->GetName();
 								}
 
-								meshComponent->SetMaterial(i, AssetRegistry::Get().ConstructAsset<MaterialAsset>(materialName, materials[i], MaterialType::Unreal));
+								std::shared_ptr<MaterialAsset> materialAsset = AssetRegistry::Get().ConstructAsset<MaterialAsset>(materialName, materials[i], MaterialType::Unreal);
+
+								if (materialAsset != nullptr)
+								{
+									std::shared_ptr<MaterialInterface> material = materialAsset->GetMaterial();
+
+									if (material->GetLayout() == MaterialLayout::Splat)
+									{
+										if (material->GetTexture("SplatMap") == nullptr)
+										{
+											std::string name = actor->GetName();
+
+											size_t pos = name.find('_');
+											if (pos != std::string::npos)
+											{
+												name = name.substr(pos + 1);
+											}
+
+											std::string textureName = std::format("{}_SPM", name);
+
+											std::shared_ptr<TextureAsset> textureAsset = AssetRegistry::Get().GetAsset<TextureAsset>(textureName);
+
+											if (textureAsset != nullptr)
+											{
+												material->SetTexture("SplatMap", textureAsset->GetTexture());
+											}
+										}
+									}
+								}
+
+								meshComponent->SetMaterial(i, materialAsset);
 							}
 						}
 
@@ -138,17 +168,22 @@ bool UnrealSceneAsset::Load(const std::filesystem::path& aPath)
 
 						if (materials.empty())
 						{
-							spdlog::error("Mesh has no material set [{}]!", actorName);
+							spdlog::error("Mesh has no material set [{}]!", actor->GetName());
 						}
 						else
 						{
 							for (unsigned int i = 0; i < materials.size(); i++)
 							{
-								std::string materialName = "NO NAME GIVEN";
+								std::string materialName;
 
 								if (materials[i].HasKey("Name"))
 								{
 									materialName = materials[i].GetString("Name");
+								}
+								else
+								{
+									spdlog::error("Material has no name set, attached to [{}]!", actor->GetName());
+									materialName = actor->GetName();
 								}
 
 								meshComponent->SetMaterial(i, AssetRegistry::Get().ConstructAsset<MaterialAsset>(materialName, materials[i], MaterialType::Unreal));
@@ -161,17 +196,17 @@ bool UnrealSceneAsset::Load(const std::filesystem::path& aPath)
 					{
 						if (!jsonComponent.HasKey("Color"))
 						{
-							spdlog::error("Point Light has no Color [{}]!", actorName);
+							spdlog::error("Point Light has no Color [{}]!", actor->GetName());
 							break;
 						}
 						if (!jsonComponent.HasKey("Intensity"))
 						{
-							spdlog::error("Point Light has no Intensity [{}]!", actorName);
+							spdlog::error("Point Light has no Intensity [{}]!", actor->GetName());
 							break;
 						}
 						if (!jsonComponent.HasKey("AttenuationRadius"))
 						{
-							spdlog::error("Point Light has no Attenuation Radius [{}]!", actorName);
+							spdlog::error("Point Light has no Attenuation Radius [{}]!", actor->GetName());
 							break;
 						}
 
@@ -191,27 +226,27 @@ bool UnrealSceneAsset::Load(const std::filesystem::path& aPath)
 					{
 						if (!jsonComponent.HasKey("Color"))
 						{
-							spdlog::error("Spot Light has no Color [{}]!", actorName);
+							spdlog::error("Spot Light has no Color [{}]!", actor->GetName());
 							break;
 						}
 						if (!jsonComponent.HasKey("Intensity"))
 						{
-							spdlog::error("Spot Light has no Intensity [{}]!", actorName);
+							spdlog::error("Spot Light has no Intensity [{}]!", actor->GetName());
 							break;
 						}
 						if (!jsonComponent.HasKey("AttenuationRadius"))
 						{
-							spdlog::error("Spot Light has no Attenuation Radius [{}]!", actorName);
+							spdlog::error("Spot Light has no Attenuation Radius [{}]!", actor->GetName());
 							break;
 						}
 						if (!jsonComponent.HasKey("InnerConeAngle"))
 						{
-							spdlog::error("Spot Light has no Inner Cone Angle [{}]!", actorName);
+							spdlog::error("Spot Light has no Inner Cone Angle [{}]!", actor->GetName());
 							break;
 						}
 						if (!jsonComponent.HasKey("OuterConeAngle"))
 						{
-							spdlog::error("Spot Light has no Outer Cone Angle [{}]!", actorName);
+							spdlog::error("Spot Light has no Outer Cone Angle [{}]!", actor->GetName());
 							break;
 						}
 
@@ -233,12 +268,12 @@ bool UnrealSceneAsset::Load(const std::filesystem::path& aPath)
 					{
 						if (!jsonComponent.HasKey("Color"))
 						{
-							spdlog::error("Directional Light has no Color [{}]!", actorName);
+							spdlog::error("Directional Light has no Color [{}]!", actor->GetName());
 							break;
 						}
 						if (!jsonComponent.HasKey("Intensity"))
 						{
-							spdlog::error("Directional Light has no Intensity [{}]!", actorName);
+							spdlog::error("Directional Light has no Intensity [{}]!", actor->GetName());
 							break;
 						}
 

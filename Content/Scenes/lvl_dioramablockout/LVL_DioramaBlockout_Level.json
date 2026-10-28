@@ -1,13 +1,6 @@
 {
 	"MasterMaterials": [
 		{
-			"Name": "MatineeCam_mat",
-			"Domain": 0,
-			"ShadingModel": 1,
-			"BlendMode": 0,
-			"Parameters": []
-		},
-		{
 			"Name": "MM_Assets_Splatmap",
 			"Domain": 0,
 			"ShadingModel": 1,
@@ -329,83 +322,302 @@
 			]
 		},
 		{
-			"Name": "M_VAlueTest",
-			"Domain": 0,
-			"ShadingModel": 1,
-			"BlendMode": 0,
-			"Parameters": []
-		},
-		{
-			"Name": "WorldGridMaterial",
-			"Domain": 0,
-			"ShadingModel": 1,
-			"BlendMode": 0,
-			"Parameters": []
-		},
-		{
-			"Name": "M_Instance",
+			"Name": "MM_Landscape",
 			"Domain": 0,
 			"ShadingModel": 1,
 			"BlendMode": 0,
 			"Parameters": [
 				{
-					"Name": "Color",
+					"Name": "Color_Tint_02",
 					"Type": 1,
 					"Value": [
-						0,
-						0,
-						0,
+						1,
+						1,
+						1,
 						1
 					]
 				},
 				{
-					"Name": "Roughness",
+					"Name": "Tiling_V",
+					"Type": 0,
+					"Value": 0.20000000298023224
+				},
+				{
+					"Name": "Normal_Flat_01",
+					"Type": 0,
+					"Value": 0
+				},
+				{
+					"Name": "Normal_Flat_02",
+					"Type": 0,
+					"Value": 0
+				},
+				{
+					"Name": "Normal_Flat_03",
+					"Type": 0,
+					"Value": 0
+				},
+				{
+					"Name": "Black_Point_01",
+					"Type": 0,
+					"Value": 0
+				},
+				{
+					"Name": "Grey_Point_01",
+					"Type": 0,
+					"Value": 0.5
+				},
+				{
+					"Name": "White_Point_01",
 					"Type": 0,
 					"Value": 1
+				},
+				{
+					"Name": "Black_Point_02",
+					"Type": 0,
+					"Value": 0
+				},
+				{
+					"Name": "Grey_Point_02",
+					"Type": 0,
+					"Value": 0.5
+				},
+				{
+					"Name": "White_Point_02",
+					"Type": 0,
+					"Value": 1
+				},
+				{
+					"Name": "Black_Point_03",
+					"Type": 0,
+					"Value": 0
+				},
+				{
+					"Name": "Grey_Point_03",
+					"Type": 0,
+					"Value": 0.5
+				},
+				{
+					"Name": "White_Point_03",
+					"Type": 0,
+					"Value": 1
+				},
+				{
+					"Name": "Normal_Flat_04",
+					"Type": 0,
+					"Value": 0
+				},
+				{
+					"Name": "Black_Point_04",
+					"Type": 0,
+					"Value": 0
+				},
+				{
+					"Name": "Grey_Point_04",
+					"Type": 0,
+					"Value": 0.5
+				},
+				{
+					"Name": "White_Point_04",
+					"Type": 0,
+					"Value": 1
+				},
+				{
+					"Name": "Color_Tint_01",
+					"Type": 1,
+					"Value": [
+						1,
+						1,
+						1,
+						1
+					]
+				},
+				{
+					"Name": "Tiling_U",
+					"Type": 0,
+					"Value": 0.20000000298023224
+				},
+				{
+					"Name": "Color_Tint_03",
+					"Type": 1,
+					"Value": [
+						1,
+						1,
+						1,
+						1
+					]
+				},
+				{
+					"Name": "Color_Tint_04",
+					"Type": 1,
+					"Value": [
+						1,
+						1,
+						1,
+						1
+					]
+				},
+				{
+					"Name": "BaseColor_01",
+					"Type": 3,
+					"Value":
+					{
+						"Name": "T_Tiling_Mud_01_C",
+						"Path": "/Game/Materials/Textures/T_Tiling_Mud_01_C.T_Tiling_Mud_01_C",
+						"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Mud_01_C.tga"
+					}
+				},
+				{
+					"Name": "ORM_01",
+					"Type": 3,
+					"Value":
+					{
+						"Name": "T_Tiling_Mud_01_ORM",
+						"Path": "/Game/Materials/Textures/T_Tiling_Mud_01_ORM.T_Tiling_Mud_01_ORM",
+						"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Mud_01_ORM.tga"
+					}
+				},
+				{
+					"Name": "Normal_01",
+					"Type": 3,
+					"Value":
+					{
+						"Name": "T_Tiling_Mud_01_N",
+						"Path": "/Game/Materials/Textures/T_Tiling_Mud_01_N.T_Tiling_Mud_01_N",
+						"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Mud_01_N.tga"
+					}
+				},
+				{
+					"Name": "BaseColor_02",
+					"Type": 3,
+					"Value":
+					{
+						"Name": "T_Tiling_Mud_02_C",
+						"Path": "/Game/Materials/Textures/T_Tiling_Mud_02_C.T_Tiling_Mud_02_C",
+						"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Mud_02_C.tga"
+					}
+				},
+				{
+					"Name": "ORM_02",
+					"Type": 3,
+					"Value":
+					{
+						"Name": "T_Tiling_Mud_02_ORM",
+						"Path": "/Game/Materials/Textures/T_Tiling_Mud_02_ORM.T_Tiling_Mud_02_ORM",
+						"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Mud_02_ORM.tga"
+					}
+				},
+				{
+					"Name": "Normal_02",
+					"Type": 3,
+					"Value":
+					{
+						"Name": "T_Tiling_Mud_02_N",
+						"Path": "/Game/Materials/Textures/T_Tiling_Mud_02_N.T_Tiling_Mud_02_N",
+						"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Mud_02_N.tga"
+					}
+				},
+				{
+					"Name": "BaseColor_03",
+					"Type": 3,
+					"Value":
+					{
+						"Name": "T_Tiling_Rock_01_C",
+						"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_C.T_Tiling_Rock_01_C",
+						"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_C.tga"
+					}
+				},
+				{
+					"Name": "ORM_03",
+					"Type": 3,
+					"Value":
+					{
+						"Name": "T_Tiling_Rock_01_ORM",
+						"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_ORM.T_Tiling_Rock_01_ORM",
+						"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_ORM.tga"
+					}
+				},
+				{
+					"Name": "Normal_03",
+					"Type": 3,
+					"Value":
+					{
+						"Name": "T_Tiling_Rock_01_N",
+						"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_N.T_Tiling_Rock_01_N",
+						"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_N.tga"
+					}
+				},
+				{
+					"Name": "Height_03",
+					"Type": 3,
+					"Value":
+					{
+						"Name": "T_Tiling_Rock_01_HGT",
+						"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_HGT.T_Tiling_Rock_01_HGT",
+						"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_Height.tga"
+					}
+				},
+				{
+					"Name": "Height_01",
+					"Type": 3,
+					"Value":
+					{
+						"Name": "T_Tiling_Mud_01_HGT",
+						"Path": "/Game/Materials/Textures/T_Tiling_Mud_01_HGT.T_Tiling_Mud_01_HGT",
+						"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Mud_01_Height.tga"
+					}
+				},
+				{
+					"Name": "Height_02",
+					"Type": 3,
+					"Value":
+					{
+						"Name": "T_Tiling_Mud_02_HGT",
+						"Path": "/Game/Materials/Textures/T_Tiling_Mud_02_HGT.T_Tiling_Mud_02_HGT",
+						"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Mud_02_Height.tga"
+					}
+				},
+				{
+					"Name": "BaseColor_04",
+					"Type": 3,
+					"Value":
+					{
+						"Name": "T_Tiling_Corruption_01_C",
+						"Path": "/Game/Materials/Textures/T_Tiling_Corruption_01_C.T_Tiling_Corruption_01_C",
+						"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Corruption_01_C.tga"
+					}
+				},
+				{
+					"Name": "ORM_04",
+					"Type": 3,
+					"Value":
+					{
+						"Name": "T_Tiling_Corruption_01_ORM",
+						"Path": "/Game/Materials/Textures/T_Tiling_Corruption_01_ORM.T_Tiling_Corruption_01_ORM",
+						"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Corruption_01_ORM.tga"
+					}
+				},
+				{
+					"Name": "Normal_04",
+					"Type": 3,
+					"Value":
+					{
+						"Name": "T_Tiling_Corruption_01_N",
+						"Path": "/Game/Materials/Textures/T_Tiling_Corruption_01_N.T_Tiling_Corruption_01_N",
+						"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Corruption_01_N.tga"
+					}
+				},
+				{
+					"Name": "Height_04",
+					"Type": 3,
+					"Value":
+					{
+						"Name": "T_Tiling_Corruption_01_HGT",
+						"Path": "/Game/Materials/Textures/T_Tiling_Corruption_01_HGT.T_Tiling_Corruption_01_HGT",
+						"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Corruption_01_HGT.tga"
+					}
 				}
 			]
-		},
-		{
-			"Name": "MM_SwampGrass",
-			"Domain": 0,
-			"ShadingModel": 1,
-			"BlendMode": 1,
-			"Parameters": []
-		},
-		{
-			"Name": "M_GreyBall",
-			"Domain": 0,
-			"ShadingModel": 1,
-			"BlendMode": 0,
-			"Parameters": []
-		},
-		{
-			"Name": "M_ChromeBall",
-			"Domain": 0,
-			"ShadingModel": 1,
-			"BlendMode": 0,
-			"Parameters": []
-		},
-		{
-			"Name": "M_ClearCoatBlack",
-			"Domain": 0,
-			"ShadingModel": 1,
-			"BlendMode": 0,
-			"Parameters": []
-		},
-		{
-			"Name": "M_ColorGrid",
-			"Domain": 0,
-			"ShadingModel": 1,
-			"BlendMode": 0,
-			"Parameters": []
-		},
-		{
-			"Name": "M_ClearCoat",
-			"Domain": 0,
-			"ShadingModel": 4,
-			"BlendMode": 0,
-			"Parameters": []
 		}
 	],
 	"Actors": [
@@ -580,7 +792,7 @@
 			]
 		},
 		{
-			"Name": "Diorama_Landscape",
+			"Name": "Landscape",
 			"Archetype": "Landscape",
 			"Transform": [
 				100,
@@ -1467,12 +1679,68 @@
 					],
 					"Mesh": "SM_A_StoneWallEdge_2x1x1_01",
 					"ContentPath": "/Game/Static_Meshes/Architecture/StoneKit/SM_A_StoneWallEdge_2x1x1_01.SM_A_StoneWallEdge_2x1x1_01",
-					"AssetImportPath": "C:/Users/nilsegede.scherer/Perforce/nilsegede.scherer_TGA-LD61_Content_&_Unreal_Project_9749/Content/Meshes/Architecture/Stone_Ruin_Modular_Kit/SM_A_StoneWallEdge_2x1x1_01.fbx",
+					"AssetImportPath": "C:/Users/maria.akerstrom/OneDrive - Academedia/TGA Backup/Spelprojekt/SHAPESHIFT STUDIO/P5/Modular Kit/Alpha/SM_A_StoneWallEdge_2x1x1_01.fbx",
 					"Materials": [
 						{
-							"Name": "M_VAlueTest",
-							"Parent": "Self",
-							"Parameters": []
+							"Name": "MI_Tiling_StoneRuin",
+							"Parent": "MM_Assets",
+							"Parameters": [
+								{
+									"Name": "Tiling_V",
+									"Type": 0,
+									"Value": 1
+								},
+								{
+									"Name": "Normal_Flat",
+									"Type": 0,
+									"Value": 0
+								},
+								{
+									"Name": "Color_Tint",
+									"Type": 1,
+									"Value": [
+										1,
+										1,
+										1,
+										1
+									]
+								},
+								{
+									"Name": "BaseColor",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_A_StoneRuin_2_c",
+										"Path": "/Game/Materials/Textures/T_A_StoneRuin_2_c.T_A_StoneRuin_2_c",
+										"AssetImportPath": "C:/Users/maria.akerstrom/OneDrive - Academedia/TGA Backup/Individuella Projekt/Avancerad Spelmotor/Level Creation/Textures/Painter Exports/T_A_StoneRuin_2_BaseColor.tga"
+									}
+								},
+								{
+									"Name": "ORM",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_A_StoneRuin_2_orm",
+										"Path": "/Game/Materials/Textures/T_A_StoneRuin_2_orm.T_A_StoneRuin_2_orm",
+										"AssetImportPath": "C:/Users/maria.akerstrom/OneDrive - Academedia/TGA Backup/Individuella Projekt/Avancerad Spelmotor/Level Creation/Textures/Painter Exports/T_A_StoneRuin_2_OcclusionRoughnessMetallic.tga"
+									}
+								},
+								{
+									"Name": "Normal",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_A_StoneRuin_2_n",
+										"Path": "/Game/Materials/Textures/T_A_StoneRuin_2_n.T_A_StoneRuin_2_n",
+										"AssetImportPath": "C:/Users/maria.akerstrom/OneDrive - Academedia/TGA Backup/Individuella Projekt/Avancerad Spelmotor/Level Creation/Textures/Painter Exports/T_A_StoneRuin_2_Normal.tga"
+									}
+								},
+								{
+									"Name": "Tiling_U",
+									"Type": 0,
+									"Value": 1
+								}
+							]
 						}
 					]
 				}
@@ -1553,9 +1821,65 @@
 					"AssetImportPath": "C:/Users/maria.akerstrom/Perforce/maria.akerstrom_TGA-SG59_Content_&_Unreal_Project_2527/Content/Meshes/Architecture/Stone_Ruin_Modular_Kit/SM_A_StonePillar_1x1x2_01.fbx",
 					"Materials": [
 						{
-							"Name": "M_VAlueTest",
-							"Parent": "Self",
-							"Parameters": []
+							"Name": "MI_Tiling_StoneRuin",
+							"Parent": "MM_Assets",
+							"Parameters": [
+								{
+									"Name": "Tiling_V",
+									"Type": 0,
+									"Value": 1
+								},
+								{
+									"Name": "Normal_Flat",
+									"Type": 0,
+									"Value": 0
+								},
+								{
+									"Name": "Color_Tint",
+									"Type": 1,
+									"Value": [
+										1,
+										1,
+										1,
+										1
+									]
+								},
+								{
+									"Name": "BaseColor",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_A_StoneRuin_2_c",
+										"Path": "/Game/Materials/Textures/T_A_StoneRuin_2_c.T_A_StoneRuin_2_c",
+										"AssetImportPath": "C:/Users/maria.akerstrom/OneDrive - Academedia/TGA Backup/Individuella Projekt/Avancerad Spelmotor/Level Creation/Textures/Painter Exports/T_A_StoneRuin_2_BaseColor.tga"
+									}
+								},
+								{
+									"Name": "ORM",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_A_StoneRuin_2_orm",
+										"Path": "/Game/Materials/Textures/T_A_StoneRuin_2_orm.T_A_StoneRuin_2_orm",
+										"AssetImportPath": "C:/Users/maria.akerstrom/OneDrive - Academedia/TGA Backup/Individuella Projekt/Avancerad Spelmotor/Level Creation/Textures/Painter Exports/T_A_StoneRuin_2_OcclusionRoughnessMetallic.tga"
+									}
+								},
+								{
+									"Name": "Normal",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_A_StoneRuin_2_n",
+										"Path": "/Game/Materials/Textures/T_A_StoneRuin_2_n.T_A_StoneRuin_2_n",
+										"AssetImportPath": "C:/Users/maria.akerstrom/OneDrive - Academedia/TGA Backup/Individuella Projekt/Avancerad Spelmotor/Level Creation/Textures/Painter Exports/T_A_StoneRuin_2_Normal.tga"
+									}
+								},
+								{
+									"Name": "Tiling_U",
+									"Type": 0,
+									"Value": 1
+								}
+							]
 						}
 					]
 				}
@@ -2248,8 +2572,8 @@
 				0,
 				1,
 				0,
-				-316.38792957925665,
-				171.02854923833212,
+				-306.12732352625102,
+				142.83777125288046,
 				0,
 				1
 			],
@@ -2363,8 +2687,8 @@
 				-0,
 				1,
 				0,
-				-480.67469005514084,
-				559.4892608435805,
+				-472.99519655197884,
+				506.18799088183471,
 				0,
 				1
 			],
@@ -2743,9 +3067,65 @@
 					"AssetImportPath": "C:/Users/maria.akerstrom/Perforce/maria.akerstrom_TGA-SG59_Content_&_Unreal_Project_2527/Content/Meshes/Architecture/Stone_Ruin_Modular_Kit/SM_A_StonePillar_1x1x2_01.fbx",
 					"Materials": [
 						{
-							"Name": "M_VAlueTest",
-							"Parent": "Self",
-							"Parameters": []
+							"Name": "MI_Tiling_StoneRuin",
+							"Parent": "MM_Assets",
+							"Parameters": [
+								{
+									"Name": "Tiling_V",
+									"Type": 0,
+									"Value": 1
+								},
+								{
+									"Name": "Normal_Flat",
+									"Type": 0,
+									"Value": 0
+								},
+								{
+									"Name": "Color_Tint",
+									"Type": 1,
+									"Value": [
+										1,
+										1,
+										1,
+										1
+									]
+								},
+								{
+									"Name": "BaseColor",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_A_StoneRuin_2_c",
+										"Path": "/Game/Materials/Textures/T_A_StoneRuin_2_c.T_A_StoneRuin_2_c",
+										"AssetImportPath": "C:/Users/maria.akerstrom/OneDrive - Academedia/TGA Backup/Individuella Projekt/Avancerad Spelmotor/Level Creation/Textures/Painter Exports/T_A_StoneRuin_2_BaseColor.tga"
+									}
+								},
+								{
+									"Name": "ORM",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_A_StoneRuin_2_orm",
+										"Path": "/Game/Materials/Textures/T_A_StoneRuin_2_orm.T_A_StoneRuin_2_orm",
+										"AssetImportPath": "C:/Users/maria.akerstrom/OneDrive - Academedia/TGA Backup/Individuella Projekt/Avancerad Spelmotor/Level Creation/Textures/Painter Exports/T_A_StoneRuin_2_OcclusionRoughnessMetallic.tga"
+									}
+								},
+								{
+									"Name": "Normal",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_A_StoneRuin_2_n",
+										"Path": "/Game/Materials/Textures/T_A_StoneRuin_2_n.T_A_StoneRuin_2_n",
+										"AssetImportPath": "C:/Users/maria.akerstrom/OneDrive - Academedia/TGA Backup/Individuella Projekt/Avancerad Spelmotor/Level Creation/Textures/Painter Exports/T_A_StoneRuin_2_Normal.tga"
+									}
+								},
+								{
+									"Name": "Tiling_U",
+									"Type": 0,
+									"Value": 1
+								}
+							]
 						}
 					]
 				}
@@ -2802,9 +3182,65 @@
 					"AssetImportPath": "C:/Users/maria.akerstrom/Perforce/maria.akerstrom_TGA-SG59_Content_&_Unreal_Project_2527/Content/Meshes/Architecture/Stone_Ruin_Modular_Kit/SM_A_StoneWall_4x1x1_01.fbx",
 					"Materials": [
 						{
-							"Name": "M_VAlueTest",
-							"Parent": "Self",
-							"Parameters": []
+							"Name": "MI_Tiling_StoneRuin",
+							"Parent": "MM_Assets",
+							"Parameters": [
+								{
+									"Name": "Tiling_V",
+									"Type": 0,
+									"Value": 1
+								},
+								{
+									"Name": "Normal_Flat",
+									"Type": 0,
+									"Value": 0
+								},
+								{
+									"Name": "Color_Tint",
+									"Type": 1,
+									"Value": [
+										1,
+										1,
+										1,
+										1
+									]
+								},
+								{
+									"Name": "BaseColor",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_A_StoneRuin_2_c",
+										"Path": "/Game/Materials/Textures/T_A_StoneRuin_2_c.T_A_StoneRuin_2_c",
+										"AssetImportPath": "C:/Users/maria.akerstrom/OneDrive - Academedia/TGA Backup/Individuella Projekt/Avancerad Spelmotor/Level Creation/Textures/Painter Exports/T_A_StoneRuin_2_BaseColor.tga"
+									}
+								},
+								{
+									"Name": "ORM",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_A_StoneRuin_2_orm",
+										"Path": "/Game/Materials/Textures/T_A_StoneRuin_2_orm.T_A_StoneRuin_2_orm",
+										"AssetImportPath": "C:/Users/maria.akerstrom/OneDrive - Academedia/TGA Backup/Individuella Projekt/Avancerad Spelmotor/Level Creation/Textures/Painter Exports/T_A_StoneRuin_2_OcclusionRoughnessMetallic.tga"
+									}
+								},
+								{
+									"Name": "Normal",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_A_StoneRuin_2_n",
+										"Path": "/Game/Materials/Textures/T_A_StoneRuin_2_n.T_A_StoneRuin_2_n",
+										"AssetImportPath": "C:/Users/maria.akerstrom/OneDrive - Academedia/TGA Backup/Individuella Projekt/Avancerad Spelmotor/Level Creation/Textures/Painter Exports/T_A_StoneRuin_2_Normal.tga"
+									}
+								},
+								{
+									"Name": "Tiling_U",
+									"Type": 0,
+									"Value": 1
+								}
+							]
 						}
 					]
 				}
@@ -2861,9 +3297,65 @@
 					"AssetImportPath": "C:/Users/maria.akerstrom/Perforce/maria.akerstrom_TGA-SG59_Content_&_Unreal_Project_2527/Content/Meshes/Architecture/Stone_Ruin_Modular_Kit/SM_A_StoneWall_2x1x1_01.fbx",
 					"Materials": [
 						{
-							"Name": "M_VAlueTest",
-							"Parent": "Self",
-							"Parameters": []
+							"Name": "MI_Tiling_StoneRuin",
+							"Parent": "MM_Assets",
+							"Parameters": [
+								{
+									"Name": "Tiling_V",
+									"Type": 0,
+									"Value": 1
+								},
+								{
+									"Name": "Normal_Flat",
+									"Type": 0,
+									"Value": 0
+								},
+								{
+									"Name": "Color_Tint",
+									"Type": 1,
+									"Value": [
+										1,
+										1,
+										1,
+										1
+									]
+								},
+								{
+									"Name": "BaseColor",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_A_StoneRuin_2_c",
+										"Path": "/Game/Materials/Textures/T_A_StoneRuin_2_c.T_A_StoneRuin_2_c",
+										"AssetImportPath": "C:/Users/maria.akerstrom/OneDrive - Academedia/TGA Backup/Individuella Projekt/Avancerad Spelmotor/Level Creation/Textures/Painter Exports/T_A_StoneRuin_2_BaseColor.tga"
+									}
+								},
+								{
+									"Name": "ORM",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_A_StoneRuin_2_orm",
+										"Path": "/Game/Materials/Textures/T_A_StoneRuin_2_orm.T_A_StoneRuin_2_orm",
+										"AssetImportPath": "C:/Users/maria.akerstrom/OneDrive - Academedia/TGA Backup/Individuella Projekt/Avancerad Spelmotor/Level Creation/Textures/Painter Exports/T_A_StoneRuin_2_OcclusionRoughnessMetallic.tga"
+									}
+								},
+								{
+									"Name": "Normal",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_A_StoneRuin_2_n",
+										"Path": "/Game/Materials/Textures/T_A_StoneRuin_2_n.T_A_StoneRuin_2_n",
+										"AssetImportPath": "C:/Users/maria.akerstrom/OneDrive - Academedia/TGA Backup/Individuella Projekt/Avancerad Spelmotor/Level Creation/Textures/Painter Exports/T_A_StoneRuin_2_Normal.tga"
+									}
+								},
+								{
+									"Name": "Tiling_U",
+									"Type": 0,
+									"Value": 1
+								}
+							]
 						}
 					]
 				}
@@ -2920,9 +3412,65 @@
 					"AssetImportPath": "C:/Users/maria.akerstrom/Perforce/maria.akerstrom_TGA-SG59_Content_&_Unreal_Project_2527/Content/Meshes/Architecture/Stone_Ruin_Modular_Kit/SM_A_StoneWall_2x1x1_01.fbx",
 					"Materials": [
 						{
-							"Name": "M_VAlueTest",
-							"Parent": "Self",
-							"Parameters": []
+							"Name": "MI_Tiling_StoneRuin",
+							"Parent": "MM_Assets",
+							"Parameters": [
+								{
+									"Name": "Tiling_V",
+									"Type": 0,
+									"Value": 1
+								},
+								{
+									"Name": "Normal_Flat",
+									"Type": 0,
+									"Value": 0
+								},
+								{
+									"Name": "Color_Tint",
+									"Type": 1,
+									"Value": [
+										1,
+										1,
+										1,
+										1
+									]
+								},
+								{
+									"Name": "BaseColor",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_A_StoneRuin_2_c",
+										"Path": "/Game/Materials/Textures/T_A_StoneRuin_2_c.T_A_StoneRuin_2_c",
+										"AssetImportPath": "C:/Users/maria.akerstrom/OneDrive - Academedia/TGA Backup/Individuella Projekt/Avancerad Spelmotor/Level Creation/Textures/Painter Exports/T_A_StoneRuin_2_BaseColor.tga"
+									}
+								},
+								{
+									"Name": "ORM",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_A_StoneRuin_2_orm",
+										"Path": "/Game/Materials/Textures/T_A_StoneRuin_2_orm.T_A_StoneRuin_2_orm",
+										"AssetImportPath": "C:/Users/maria.akerstrom/OneDrive - Academedia/TGA Backup/Individuella Projekt/Avancerad Spelmotor/Level Creation/Textures/Painter Exports/T_A_StoneRuin_2_OcclusionRoughnessMetallic.tga"
+									}
+								},
+								{
+									"Name": "Normal",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_A_StoneRuin_2_n",
+										"Path": "/Game/Materials/Textures/T_A_StoneRuin_2_n.T_A_StoneRuin_2_n",
+										"AssetImportPath": "C:/Users/maria.akerstrom/OneDrive - Academedia/TGA Backup/Individuella Projekt/Avancerad Spelmotor/Level Creation/Textures/Painter Exports/T_A_StoneRuin_2_Normal.tga"
+									}
+								},
+								{
+									"Name": "Tiling_U",
+									"Type": 0,
+									"Value": 1
+								}
+							]
 						}
 					]
 				}
@@ -2979,9 +3527,65 @@
 					"AssetImportPath": "C:/Users/maria.akerstrom/Perforce/maria.akerstrom_TGA-SG59_Content_&_Unreal_Project_2527/Content/Meshes/Architecture/Stone_Ruin_Modular_Kit/SM_A_StoneWall_2x1x05_01.fbx",
 					"Materials": [
 						{
-							"Name": "M_VAlueTest",
-							"Parent": "Self",
-							"Parameters": []
+							"Name": "MI_Tiling_StoneRuin",
+							"Parent": "MM_Assets",
+							"Parameters": [
+								{
+									"Name": "Tiling_V",
+									"Type": 0,
+									"Value": 1
+								},
+								{
+									"Name": "Normal_Flat",
+									"Type": 0,
+									"Value": 0
+								},
+								{
+									"Name": "Color_Tint",
+									"Type": 1,
+									"Value": [
+										1,
+										1,
+										1,
+										1
+									]
+								},
+								{
+									"Name": "BaseColor",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_A_StoneRuin_2_c",
+										"Path": "/Game/Materials/Textures/T_A_StoneRuin_2_c.T_A_StoneRuin_2_c",
+										"AssetImportPath": "C:/Users/maria.akerstrom/OneDrive - Academedia/TGA Backup/Individuella Projekt/Avancerad Spelmotor/Level Creation/Textures/Painter Exports/T_A_StoneRuin_2_BaseColor.tga"
+									}
+								},
+								{
+									"Name": "ORM",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_A_StoneRuin_2_orm",
+										"Path": "/Game/Materials/Textures/T_A_StoneRuin_2_orm.T_A_StoneRuin_2_orm",
+										"AssetImportPath": "C:/Users/maria.akerstrom/OneDrive - Academedia/TGA Backup/Individuella Projekt/Avancerad Spelmotor/Level Creation/Textures/Painter Exports/T_A_StoneRuin_2_OcclusionRoughnessMetallic.tga"
+									}
+								},
+								{
+									"Name": "Normal",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_A_StoneRuin_2_n",
+										"Path": "/Game/Materials/Textures/T_A_StoneRuin_2_n.T_A_StoneRuin_2_n",
+										"AssetImportPath": "C:/Users/maria.akerstrom/OneDrive - Academedia/TGA Backup/Individuella Projekt/Avancerad Spelmotor/Level Creation/Textures/Painter Exports/T_A_StoneRuin_2_Normal.tga"
+									}
+								},
+								{
+									"Name": "Tiling_U",
+									"Type": 0,
+									"Value": 1
+								}
+							]
 						}
 					]
 				}
@@ -3035,12 +3639,68 @@
 					],
 					"Mesh": "SM_A_StoneWallEdge_2x1x1_01",
 					"ContentPath": "/Game/Static_Meshes/Architecture/StoneKit/SM_A_StoneWallEdge_2x1x1_01.SM_A_StoneWallEdge_2x1x1_01",
-					"AssetImportPath": "C:/Users/nilsegede.scherer/Perforce/nilsegede.scherer_TGA-LD61_Content_&_Unreal_Project_9749/Content/Meshes/Architecture/Stone_Ruin_Modular_Kit/SM_A_StoneWallEdge_2x1x1_01.fbx",
+					"AssetImportPath": "C:/Users/maria.akerstrom/OneDrive - Academedia/TGA Backup/Spelprojekt/SHAPESHIFT STUDIO/P5/Modular Kit/Alpha/SM_A_StoneWallEdge_2x1x1_01.fbx",
 					"Materials": [
 						{
-							"Name": "M_VAlueTest",
-							"Parent": "Self",
-							"Parameters": []
+							"Name": "MI_Tiling_StoneRuin",
+							"Parent": "MM_Assets",
+							"Parameters": [
+								{
+									"Name": "Tiling_V",
+									"Type": 0,
+									"Value": 1
+								},
+								{
+									"Name": "Normal_Flat",
+									"Type": 0,
+									"Value": 0
+								},
+								{
+									"Name": "Color_Tint",
+									"Type": 1,
+									"Value": [
+										1,
+										1,
+										1,
+										1
+									]
+								},
+								{
+									"Name": "BaseColor",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_A_StoneRuin_2_c",
+										"Path": "/Game/Materials/Textures/T_A_StoneRuin_2_c.T_A_StoneRuin_2_c",
+										"AssetImportPath": "C:/Users/maria.akerstrom/OneDrive - Academedia/TGA Backup/Individuella Projekt/Avancerad Spelmotor/Level Creation/Textures/Painter Exports/T_A_StoneRuin_2_BaseColor.tga"
+									}
+								},
+								{
+									"Name": "ORM",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_A_StoneRuin_2_orm",
+										"Path": "/Game/Materials/Textures/T_A_StoneRuin_2_orm.T_A_StoneRuin_2_orm",
+										"AssetImportPath": "C:/Users/maria.akerstrom/OneDrive - Academedia/TGA Backup/Individuella Projekt/Avancerad Spelmotor/Level Creation/Textures/Painter Exports/T_A_StoneRuin_2_OcclusionRoughnessMetallic.tga"
+									}
+								},
+								{
+									"Name": "Normal",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_A_StoneRuin_2_n",
+										"Path": "/Game/Materials/Textures/T_A_StoneRuin_2_n.T_A_StoneRuin_2_n",
+										"AssetImportPath": "C:/Users/maria.akerstrom/OneDrive - Academedia/TGA Backup/Individuella Projekt/Avancerad Spelmotor/Level Creation/Textures/Painter Exports/T_A_StoneRuin_2_Normal.tga"
+									}
+								},
+								{
+									"Name": "Tiling_U",
+									"Type": 0,
+									"Value": 1
+								}
+							]
 						}
 					]
 				}
@@ -3097,9 +3757,65 @@
 					"AssetImportPath": "C:/Users/maria.akerstrom/Perforce/maria.akerstrom_TGA-SG59_Content_&_Unreal_Project_2527/Content/Meshes/Architecture/Stone_Ruin_Modular_Kit/SM_A_StoneWall_2x1x1_01.fbx",
 					"Materials": [
 						{
-							"Name": "M_VAlueTest",
-							"Parent": "Self",
-							"Parameters": []
+							"Name": "MI_Tiling_StoneRuin",
+							"Parent": "MM_Assets",
+							"Parameters": [
+								{
+									"Name": "Tiling_V",
+									"Type": 0,
+									"Value": 1
+								},
+								{
+									"Name": "Normal_Flat",
+									"Type": 0,
+									"Value": 0
+								},
+								{
+									"Name": "Color_Tint",
+									"Type": 1,
+									"Value": [
+										1,
+										1,
+										1,
+										1
+									]
+								},
+								{
+									"Name": "BaseColor",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_A_StoneRuin_2_c",
+										"Path": "/Game/Materials/Textures/T_A_StoneRuin_2_c.T_A_StoneRuin_2_c",
+										"AssetImportPath": "C:/Users/maria.akerstrom/OneDrive - Academedia/TGA Backup/Individuella Projekt/Avancerad Spelmotor/Level Creation/Textures/Painter Exports/T_A_StoneRuin_2_BaseColor.tga"
+									}
+								},
+								{
+									"Name": "ORM",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_A_StoneRuin_2_orm",
+										"Path": "/Game/Materials/Textures/T_A_StoneRuin_2_orm.T_A_StoneRuin_2_orm",
+										"AssetImportPath": "C:/Users/maria.akerstrom/OneDrive - Academedia/TGA Backup/Individuella Projekt/Avancerad Spelmotor/Level Creation/Textures/Painter Exports/T_A_StoneRuin_2_OcclusionRoughnessMetallic.tga"
+									}
+								},
+								{
+									"Name": "Normal",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_A_StoneRuin_2_n",
+										"Path": "/Game/Materials/Textures/T_A_StoneRuin_2_n.T_A_StoneRuin_2_n",
+										"AssetImportPath": "C:/Users/maria.akerstrom/OneDrive - Academedia/TGA Backup/Individuella Projekt/Avancerad Spelmotor/Level Creation/Textures/Painter Exports/T_A_StoneRuin_2_Normal.tga"
+									}
+								},
+								{
+									"Name": "Tiling_U",
+									"Type": 0,
+									"Value": 1
+								}
+							]
 						}
 					]
 				}
@@ -3683,7 +4399,7 @@
 			]
 		},
 		{
-			"Name": "Landscape",
+			"Name": "Diorama_Landscape",
 			"Archetype": "StaticMeshActor",
 			"Transform": [
 				1.216796519099006e-08,
@@ -3733,994 +4449,300 @@
 					"AssetImportPath": "C:/Users/lukasandreas.gothbe/Perforce/P5_Lukas/Content/Meshes/Test/Landscape.fbx",
 					"Materials": [
 						{
-							"Name": "WorldGridMaterial",
-							"Parent": "Self",
-							"Parameters": []
-						}
-					]
-				}
-			]
-		},
-		{
-			"Name": "WaterCube",
-			"Archetype": "StaticMeshActor",
-			"Transform": [
-				-62.999999999999972,
-				-1.5331633000373896e-06,
-				0,
-				0,
-				1.5331633000373896e-06,
-				-62.999999999999972,
-				-0,
-				0,
-				0,
-				0,
-				1,
-				0,
-				-3147.7761730000002,
-				-3150.1234119999999,
-				-105,
-				1
-			],
-			"Tags": [],
-			"Components": [
-				{
-					"Name": "StaticMeshComponent0",
-					"TypeID": 1,
-					"Parent": "",
-					"Tags": [],
-					"Transform": [
-						1,
-						0,
-						0,
-						0,
-						0,
-						1,
-						0,
-						0,
-						0,
-						0,
-						1,
-						0,
-						0,
-						0,
-						0,
-						1
-					],
-					"Mesh": "WaterCube",
-					"ContentPath": "/Game/Static_Meshes/Test/WaterCube.WaterCube",
-					"AssetImportPath": "C:/Users/nilsegede.scherer/Perforce/nilsegede.scherer_TGA-LD61_Content_&_Unreal_Project_9749/Content/Meshes/Test/WaterCube.fbx",
-					"Materials": [
-						{
-							"Name": "M_Blockout_Water",
-							"Parent": "M_Instance",
+							"Name": "MI_Ground_Lvl_1_2",
+							"Parent": "MM_Landscape",
 							"Parameters": [
 								{
-									"Name": "Color",
+									"Name": "Color_Tint_02",
 									"Type": 1,
 									"Value": [
-										0.016627000644803047,
-										0.020833000540733337,
-										0.012261000461876392,
+										1,
+										1,
+										1,
 										1
 									]
 								},
 								{
-									"Name": "Roughness",
+									"Name": "Tiling_V",
 									"Type": 0,
 									"Value": 0.20000000298023224
+								},
+								{
+									"Name": "Normal_Flat_01",
+									"Type": 0,
+									"Value": 0
+								},
+								{
+									"Name": "Normal_Flat_02",
+									"Type": 0,
+									"Value": 0
+								},
+								{
+									"Name": "Normal_Flat_03",
+									"Type": 0,
+									"Value": 0
+								},
+								{
+									"Name": "Black_Point_01",
+									"Type": 0,
+									"Value": 0
+								},
+								{
+									"Name": "Grey_Point_01",
+									"Type": 0,
+									"Value": -2
+								},
+								{
+									"Name": "White_Point_01",
+									"Type": 0,
+									"Value": 2
+								},
+								{
+									"Name": "Black_Point_02",
+									"Type": 0,
+									"Value": 5
+								},
+								{
+									"Name": "Grey_Point_02",
+									"Type": 0,
+									"Value": 2
+								},
+								{
+									"Name": "White_Point_02",
+									"Type": 0,
+									"Value": 1
+								},
+								{
+									"Name": "Black_Point_03",
+									"Type": 0,
+									"Value": 1
+								},
+								{
+									"Name": "Grey_Point_03",
+									"Type": 0,
+									"Value": 0.5
+								},
+								{
+									"Name": "White_Point_03",
+									"Type": 0,
+									"Value": 1
+								},
+								{
+									"Name": "Normal_Flat_04",
+									"Type": 0,
+									"Value": 0
+								},
+								{
+									"Name": "Black_Point_04",
+									"Type": 0,
+									"Value": 0
+								},
+								{
+									"Name": "Grey_Point_04",
+									"Type": 0,
+									"Value": 1
+								},
+								{
+									"Name": "White_Point_04",
+									"Type": 0,
+									"Value": 1
+								},
+								{
+									"Name": "Color_Tint_01",
+									"Type": 1,
+									"Value": [
+										1,
+										1,
+										1,
+										1
+									]
+								},
+								{
+									"Name": "Tiling_U",
+									"Type": 0,
+									"Value": 0.20000000298023224
+								},
+								{
+									"Name": "Color_Tint_03",
+									"Type": 1,
+									"Value": [
+										1,
+										1,
+										1,
+										1
+									]
+								},
+								{
+									"Name": "Color_Tint_04",
+									"Type": 1,
+									"Value": [
+										1,
+										1,
+										1,
+										1
+									]
+								},
+								{
+									"Name": "BaseColor_01",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Mud_01_C",
+										"Path": "/Game/Materials/Textures/T_Tiling_Mud_01_C.T_Tiling_Mud_01_C",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Mud_01_C.tga"
+									}
+								},
+								{
+									"Name": "ORM_01",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Mud_01_ORM",
+										"Path": "/Game/Materials/Textures/T_Tiling_Mud_01_ORM.T_Tiling_Mud_01_ORM",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Mud_01_ORM.tga"
+									}
+								},
+								{
+									"Name": "Normal_01",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Mud_01_N",
+										"Path": "/Game/Materials/Textures/T_Tiling_Mud_01_N.T_Tiling_Mud_01_N",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Mud_01_N.tga"
+									}
+								},
+								{
+									"Name": "BaseColor_02",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Mud_02_C",
+										"Path": "/Game/Materials/Textures/T_Tiling_Mud_02_C.T_Tiling_Mud_02_C",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Mud_02_C.tga"
+									}
+								},
+								{
+									"Name": "ORM_02",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Mud_02_ORM",
+										"Path": "/Game/Materials/Textures/T_Tiling_Mud_02_ORM.T_Tiling_Mud_02_ORM",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Mud_02_ORM.tga"
+									}
+								},
+								{
+									"Name": "Normal_02",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Mud_02_N",
+										"Path": "/Game/Materials/Textures/T_Tiling_Mud_02_N.T_Tiling_Mud_02_N",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Mud_02_N.tga"
+									}
+								},
+								{
+									"Name": "BaseColor_03",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Corruption_01_C",
+										"Path": "/Game/Materials/Textures/T_Tiling_Corruption_01_C.T_Tiling_Corruption_01_C",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Corruption_01_C.tga"
+									}
+								},
+								{
+									"Name": "ORM_03",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Corruption_01_ORM",
+										"Path": "/Game/Materials/Textures/T_Tiling_Corruption_01_ORM.T_Tiling_Corruption_01_ORM",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Corruption_01_ORM.tga"
+									}
+								},
+								{
+									"Name": "Normal_03",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Corruption_01_N",
+										"Path": "/Game/Materials/Textures/T_Tiling_Corruption_01_N.T_Tiling_Corruption_01_N",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Corruption_01_N.tga"
+									}
+								},
+								{
+									"Name": "Height_03",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Rock_01_HGT",
+										"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_HGT.T_Tiling_Rock_01_HGT",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_Height.tga"
+									}
+								},
+								{
+									"Name": "Height_01",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Mud_01_HGT",
+										"Path": "/Game/Materials/Textures/T_Tiling_Mud_01_HGT.T_Tiling_Mud_01_HGT",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Mud_01_Height.tga"
+									}
+								},
+								{
+									"Name": "Height_02",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Mud_02_HGT",
+										"Path": "/Game/Materials/Textures/T_Tiling_Mud_02_HGT.T_Tiling_Mud_02_HGT",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Mud_02_Height.tga"
+									}
+								},
+								{
+									"Name": "BaseColor_04",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Rock_01_C",
+										"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_C.T_Tiling_Rock_01_C",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_C.tga"
+									}
+								},
+								{
+									"Name": "ORM_04",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Rock_01_ORM",
+										"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_ORM.T_Tiling_Rock_01_ORM",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_ORM.tga"
+									}
+								},
+								{
+									"Name": "Normal_04",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Rock_01_N",
+										"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_N.T_Tiling_Rock_01_N",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_N.tga"
+									}
+								},
+								{
+									"Name": "Height_04",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Corruption_01_HGT",
+										"Path": "/Game/Materials/Textures/T_Tiling_Corruption_01_HGT.T_Tiling_Corruption_01_HGT",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Corruption_01_HGT.tga"
+									}
 								}
 							]
-						}
-					]
-				}
-			]
-		},
-		{
-			"Name": "A_swampGrass",
-			"Archetype": "SkeletalMeshActor",
-			"Transform": [
-				0.86602540581243237,
-				-0.499999996487412,
-				0,
-				0,
-				0.499999996487412,
-				0.86602540581243237,
-				-0,
-				0,
-				0,
-				0,
-				1,
-				0,
-				180,
-				-110,
-				-10,
-				1
-			],
-			"Tags": [],
-			"Components": [
-				{
-					"Name": "SkeletalMeshComponent0",
-					"TypeID": 2,
-					"Parent": "",
-					"Tags": [],
-					"Transform": [
-						1,
-						0,
-						0,
-						0,
-						0,
-						1,
-						0,
-						0,
-						0,
-						0,
-						1,
-						0,
-						0,
-						0,
-						0,
-						1
-					],
-					"Mesh": "SK_swampGrass",
-					"ContentPath": "/Game/Static_Meshes/Test/SK_swampGrass.SK_swampGrass",
-					"AssetImportPath": "C:/Users/nilsegede.scherer/Perforce/nilsegede.scherer_TGA-LD61_Content_&_Unreal_Project_9749/Content/Meshes/Test/SK_swampGrass.fbx",
-					"Materials": [
-						{
-							"Name": "MM_SwampGrass",
-							"Parent": "Self",
-							"Parameters": []
-						}
-					],
-					"Animations": [
-						{
-							"Name": "A_swampGrass",
-							"Type": "idle"
-						}
-					]
-				}
-			]
-		},
-		{
-			"Name": "A_swampGrass2",
-			"Archetype": "SkeletalMeshActor",
-			"Transform": [
-				0.34202015221889881,
-				-0.93969261754903732,
-				0,
-				0,
-				0.93969261754903732,
-				0.34202015221889881,
-				-0,
-				0,
-				0,
-				0,
-				1,
-				0,
-				254.34624305496374,
-				-168.07440179297799,
-				-10,
-				1
-			],
-			"Tags": [],
-			"Components": [
-				{
-					"Name": "SkeletalMeshComponent0",
-					"TypeID": 2,
-					"Parent": "",
-					"Tags": [],
-					"Transform": [
-						1,
-						0,
-						0,
-						0,
-						0,
-						1,
-						0,
-						0,
-						0,
-						0,
-						1,
-						0,
-						0,
-						0,
-						0,
-						1
-					],
-					"Mesh": "SK_swampGrass",
-					"ContentPath": "/Game/Static_Meshes/Test/SK_swampGrass.SK_swampGrass",
-					"AssetImportPath": "C:/Users/nilsegede.scherer/Perforce/nilsegede.scherer_TGA-LD61_Content_&_Unreal_Project_9749/Content/Meshes/Test/SK_swampGrass.fbx",
-					"Materials": [
-						{
-							"Name": "MM_SwampGrass",
-							"Parent": "Self",
-							"Parameters": []
-						}
-					],
-					"Animations": [
-						{
-							"Name": "A_swampGrass",
-							"Type": "idle"
-						}
-					]
-				}
-			]
-		},
-		{
-			"Name": "A_swampGrass3",
-			"Archetype": "SkeletalMeshActor",
-			"Transform": [
-				0.34202015972639899,
-				-0.93969261481653055,
-				0,
-				0,
-				0.93969261481653055,
-				0.34202015972639899,
-				-0,
-				0,
-				0,
-				0,
-				1,
-				0,
-				315.01168005480747,
-				-188.56109863366632,
-				-10,
-				1
-			],
-			"Tags": [],
-			"Components": [
-				{
-					"Name": "SkeletalMeshComponent0",
-					"TypeID": 2,
-					"Parent": "",
-					"Tags": [],
-					"Transform": [
-						1,
-						0,
-						0,
-						0,
-						0,
-						1,
-						0,
-						0,
-						0,
-						0,
-						1,
-						0,
-						0,
-						0,
-						0,
-						1
-					],
-					"Mesh": "SK_swampGrass",
-					"ContentPath": "/Game/Static_Meshes/Test/SK_swampGrass.SK_swampGrass",
-					"AssetImportPath": "C:/Users/nilsegede.scherer/Perforce/nilsegede.scherer_TGA-LD61_Content_&_Unreal_Project_9749/Content/Meshes/Test/SK_swampGrass.fbx",
-					"Materials": [
-						{
-							"Name": "MM_SwampGrass",
-							"Parent": "Self",
-							"Parameters": []
-						}
-					],
-					"Animations": [
-						{
-							"Name": "A_swampGrass",
-							"Type": "idle"
-						}
-					]
-				}
-			]
-		},
-		{
-			"Name": "A_swampGrass4",
-			"Archetype": "SkeletalMeshActor",
-			"Transform": [
-				0.34202015972640187,
-				-0.93969261481652955,
-				0,
-				0,
-				0.93969261481652955,
-				0.34202015972640187,
-				-0,
-				0,
-				0,
-				0,
-				1,
-				0,
-				109.10846937331331,
-				-127.10100966287433,
-				-10,
-				1
-			],
-			"Tags": [],
-			"Components": [
-				{
-					"Name": "SkeletalMeshComponent0",
-					"TypeID": 2,
-					"Parent": "",
-					"Tags": [],
-					"Transform": [
-						1,
-						0,
-						0,
-						0,
-						0,
-						1,
-						0,
-						0,
-						0,
-						0,
-						1,
-						0,
-						0,
-						0,
-						0,
-						1
-					],
-					"Mesh": "SK_swampGrass",
-					"ContentPath": "/Game/Static_Meshes/Test/SK_swampGrass.SK_swampGrass",
-					"AssetImportPath": "C:/Users/nilsegede.scherer/Perforce/nilsegede.scherer_TGA-LD61_Content_&_Unreal_Project_9749/Content/Meshes/Test/SK_swampGrass.fbx",
-					"Materials": [
-						{
-							"Name": "MM_SwampGrass",
-							"Parent": "Self",
-							"Parameters": []
-						}
-					],
-					"Animations": [
-						{
-							"Name": "A_swampGrass",
-							"Type": "idle"
-						}
-					]
-				}
-			]
-		},
-		{
-			"Name": "A_swampGrass5",
-			"Archetype": "SkeletalMeshActor",
-			"Transform": [
-				-0.93969263276661419,
-				0.34202011040894748,
-				0,
-				0,
-				-0.34202011040894748,
-				-0.93969263276661419,
-				0,
-				0,
-				0,
-				-0,
-				1,
-				0,
-				-682.4593692064758,
-				-702.47348322747189,
-				-10,
-				1
-			],
-			"Tags": [],
-			"Components": [
-				{
-					"Name": "SkeletalMeshComponent0",
-					"TypeID": 2,
-					"Parent": "",
-					"Tags": [],
-					"Transform": [
-						1,
-						0,
-						0,
-						0,
-						0,
-						1,
-						0,
-						0,
-						0,
-						0,
-						1,
-						0,
-						0,
-						0,
-						0,
-						1
-					],
-					"Mesh": "SK_swampGrass",
-					"ContentPath": "/Game/Static_Meshes/Test/SK_swampGrass.SK_swampGrass",
-					"AssetImportPath": "C:/Users/nilsegede.scherer/Perforce/nilsegede.scherer_TGA-LD61_Content_&_Unreal_Project_9749/Content/Meshes/Test/SK_swampGrass.fbx",
-					"Materials": [
-						{
-							"Name": "MM_SwampGrass",
-							"Parent": "Self",
-							"Parameters": []
-						}
-					],
-					"Animations": [
-						{
-							"Name": "A_swampGrass",
-							"Type": "idle"
-						}
-					]
-				}
-			]
-		},
-		{
-			"Name": "A_swampGrass6",
-			"Archetype": "SkeletalMeshActor",
-			"Transform": [
-				-0.93969261477457922,
-				-0.34202015984165984,
-				0,
-				0,
-				0.34202015984165984,
-				-0.93969261477457922,
-				-0,
-				0,
-				0,
-				0,
-				1,
-				0,
-				-714.92743098740084,
-				-767.77186509665796,
-				-10,
-				1
-			],
-			"Tags": [],
-			"Components": [
-				{
-					"Name": "SkeletalMeshComponent0",
-					"TypeID": 2,
-					"Parent": "",
-					"Tags": [],
-					"Transform": [
-						1,
-						0,
-						0,
-						0,
-						0,
-						1,
-						0,
-						0,
-						0,
-						0,
-						1,
-						0,
-						0,
-						0,
-						0,
-						1
-					],
-					"Mesh": "SK_swampGrass",
-					"ContentPath": "/Game/Static_Meshes/Test/SK_swampGrass.SK_swampGrass",
-					"AssetImportPath": "C:/Users/nilsegede.scherer/Perforce/nilsegede.scherer_TGA-LD61_Content_&_Unreal_Project_9749/Content/Meshes/Test/SK_swampGrass.fbx",
-					"Materials": [
-						{
-							"Name": "MM_SwampGrass",
-							"Parent": "Self",
-							"Parameters": []
-						}
-					],
-					"Animations": [
-						{
-							"Name": "A_swampGrass",
-							"Type": "idle"
-						}
-					]
-				}
-			]
-		},
-		{
-			"Name": "A_swampGrass7",
-			"Archetype": "SkeletalMeshActor",
-			"Transform": [
-				-0.93969263276661419,
-				0.34202011040894748,
-				0,
-				0,
-				-0.34202011040894748,
-				-0.93969263276661419,
-				0,
-				0,
-				0,
-				-0,
-				1,
-				0,
-				-807.20384706431685,
-				-787.39488861171708,
-				-10,
-				1
-			],
-			"Tags": [],
-			"Components": [
-				{
-					"Name": "SkeletalMeshComponent0",
-					"TypeID": 2,
-					"Parent": "",
-					"Tags": [],
-					"Transform": [
-						1,
-						0,
-						0,
-						0,
-						0,
-						1,
-						0,
-						0,
-						0,
-						0,
-						1,
-						0,
-						0,
-						0,
-						0,
-						1
-					],
-					"Mesh": "SK_swampGrass",
-					"ContentPath": "/Game/Static_Meshes/Test/SK_swampGrass.SK_swampGrass",
-					"AssetImportPath": "C:/Users/nilsegede.scherer/Perforce/nilsegede.scherer_TGA-LD61_Content_&_Unreal_Project_9749/Content/Meshes/Test/SK_swampGrass.fbx",
-					"Materials": [
-						{
-							"Name": "MM_SwampGrass",
-							"Parent": "Self",
-							"Parameters": []
-						}
-					],
-					"Animations": [
-						{
-							"Name": "A_swampGrass",
-							"Type": "idle"
-						}
-					]
-				}
-			]
-		},
-		{
-			"Name": "A_swampGrass8",
-			"Archetype": "SkeletalMeshActor",
-			"Transform": [
-				-0.93969263276661419,
-				0.34202011040894748,
-				0,
-				0,
-				-0.34202011040894748,
-				-0.93969263276661419,
-				0,
-				0,
-				0,
-				-0,
-				1,
-				0,
-				-861.89255752815563,
-				-820.69871644236082,
-				-10,
-				1
-			],
-			"Tags": [],
-			"Components": [
-				{
-					"Name": "SkeletalMeshComponent0",
-					"TypeID": 2,
-					"Parent": "",
-					"Tags": [],
-					"Transform": [
-						1,
-						0,
-						0,
-						0,
-						0,
-						1,
-						0,
-						0,
-						0,
-						0,
-						1,
-						0,
-						0,
-						0,
-						0,
-						1
-					],
-					"Mesh": "SK_swampGrass",
-					"ContentPath": "/Game/Static_Meshes/Test/SK_swampGrass.SK_swampGrass",
-					"AssetImportPath": "C:/Users/nilsegede.scherer/Perforce/nilsegede.scherer_TGA-LD61_Content_&_Unreal_Project_9749/Content/Meshes/Test/SK_swampGrass.fbx",
-					"Materials": [
-						{
-							"Name": "MM_SwampGrass",
-							"Parent": "Self",
-							"Parameters": []
-						}
-					],
-					"Animations": [
-						{
-							"Name": "A_swampGrass",
-							"Type": "idle"
-						}
-					]
-				}
-			]
-		},
-		{
-			"Name": "A_swampGrass9",
-			"Archetype": "SkeletalMeshActor",
-			"Transform": [
-				-0.64278759942360808,
-				-0.76604445173059887,
-				0,
-				0,
-				0.76604445173059887,
-				-0.64278759942360808,
-				-0,
-				0,
-				0,
-				0,
-				1,
-				0,
-				-765.11787043081847,
-				-843.14374164999015,
-				-10,
-				1
-			],
-			"Tags": [],
-			"Components": [
-				{
-					"Name": "SkeletalMeshComponent0",
-					"TypeID": 2,
-					"Parent": "",
-					"Tags": [],
-					"Transform": [
-						1,
-						0,
-						0,
-						0,
-						0,
-						1,
-						0,
-						0,
-						0,
-						0,
-						1,
-						0,
-						0,
-						0,
-						0,
-						1
-					],
-					"Mesh": "SK_swampGrass",
-					"ContentPath": "/Game/Static_Meshes/Test/SK_swampGrass.SK_swampGrass",
-					"AssetImportPath": "C:/Users/nilsegede.scherer/Perforce/nilsegede.scherer_TGA-LD61_Content_&_Unreal_Project_9749/Content/Meshes/Test/SK_swampGrass.fbx",
-					"Materials": [
-						{
-							"Name": "MM_SwampGrass",
-							"Parent": "Self",
-							"Parameters": []
-						}
-					],
-					"Animations": [
-						{
-							"Name": "A_swampGrass",
-							"Type": "idle"
-						}
-					]
-				}
-			]
-		},
-		{
-			"Name": "A_swampGrass10",
-			"Archetype": "SkeletalMeshActor",
-			"Transform": [
-				-0.64278759631654103,
-				-0.76604445433773805,
-				0,
-				0,
-				0.76604445433773805,
-				-0.64278759631654103,
-				-0,
-				0,
-				0,
-				0,
-				1,
-				0,
-				-845.95008732969154,
-				-892.80411497482885,
-				-10,
-				1
-			],
-			"Tags": [],
-			"Components": [
-				{
-					"Name": "SkeletalMeshComponent0",
-					"TypeID": 2,
-					"Parent": "",
-					"Tags": [],
-					"Transform": [
-						1,
-						0,
-						0,
-						0,
-						0,
-						1,
-						0,
-						0,
-						0,
-						0,
-						1,
-						0,
-						0,
-						0,
-						0,
-						1
-					],
-					"Mesh": "SK_swampGrass",
-					"ContentPath": "/Game/Static_Meshes/Test/SK_swampGrass.SK_swampGrass",
-					"AssetImportPath": "C:/Users/nilsegede.scherer/Perforce/nilsegede.scherer_TGA-LD61_Content_&_Unreal_Project_9749/Content/Meshes/Test/SK_swampGrass.fbx",
-					"Materials": [
-						{
-							"Name": "MM_SwampGrass",
-							"Parent": "Self",
-							"Parameters": []
-						}
-					],
-					"Animations": [
-						{
-							"Name": "A_swampGrass",
-							"Type": "idle"
-						}
-					]
-				}
-			]
-		},
-		{
-			"Name": "A_swampGrass11",
-			"Archetype": "SkeletalMeshActor",
-			"Transform": [
-				-0.64278759631654103,
-				-0.76604445433773805,
-				0,
-				0,
-				0.76604445433773805,
-				-0.64278759631654103,
-				-0,
-				0,
-				0,
-				0,
-				1,
-				0,
-				-948.26603628643545,
-				-859.16713354185526,
-				-10,
-				1
-			],
-			"Tags": [],
-			"Components": [
-				{
-					"Name": "SkeletalMeshComponent0",
-					"TypeID": 2,
-					"Parent": "",
-					"Tags": [],
-					"Transform": [
-						1,
-						0,
-						0,
-						0,
-						0,
-						1,
-						0,
-						0,
-						0,
-						0,
-						1,
-						0,
-						0,
-						0,
-						0,
-						1
-					],
-					"Mesh": "SK_swampGrass",
-					"ContentPath": "/Game/Static_Meshes/Test/SK_swampGrass.SK_swampGrass",
-					"AssetImportPath": "C:/Users/nilsegede.scherer/Perforce/nilsegede.scherer_TGA-LD61_Content_&_Unreal_Project_9749/Content/Meshes/Test/SK_swampGrass.fbx",
-					"Materials": [
-						{
-							"Name": "MM_SwampGrass",
-							"Parent": "Self",
-							"Parameters": []
-						}
-					],
-					"Animations": [
-						{
-							"Name": "A_swampGrass",
-							"Type": "idle"
-						}
-					]
-				}
-			]
-		},
-		{
-			"Name": "A_swampGrass12",
-			"Archetype": "SkeletalMeshActor",
-			"Transform": [
-				-0.17364815648442411,
-				-0.98480775674725529,
-				0,
-				0,
-				0.98480775674725529,
-				-0.17364815648442411,
-				-0,
-				0,
-				0,
-				0,
-				1,
-				0,
-				497.91756955608048,
-				-1066.2422864002265,
-				-10,
-				1
-			],
-			"Tags": [],
-			"Components": [
-				{
-					"Name": "SkeletalMeshComponent0",
-					"TypeID": 2,
-					"Parent": "",
-					"Tags": [],
-					"Transform": [
-						1,
-						0,
-						0,
-						0,
-						0,
-						1,
-						0,
-						0,
-						0,
-						0,
-						1,
-						0,
-						0,
-						0,
-						0,
-						1
-					],
-					"Mesh": "SK_swampGrass",
-					"ContentPath": "/Game/Static_Meshes/Test/SK_swampGrass.SK_swampGrass",
-					"AssetImportPath": "C:/Users/nilsegede.scherer/Perforce/nilsegede.scherer_TGA-LD61_Content_&_Unreal_Project_9749/Content/Meshes/Test/SK_swampGrass.fbx",
-					"Materials": [
-						{
-							"Name": "MM_SwampGrass",
-							"Parent": "Self",
-							"Parameters": []
-						}
-					],
-					"Animations": [
-						{
-							"Name": "A_swampGrass",
-							"Type": "idle"
-						}
-					]
-				}
-			]
-		},
-		{
-			"Name": "A_swampGrass13",
-			"Archetype": "SkeletalMeshActor",
-			"Transform": [
-				0.17364818432421913,
-				-0.98480775183834857,
-				0,
-				0,
-				0.98480775183834857,
-				0.17364818432421913,
-				-0,
-				0,
-				0,
-				0,
-				1,
-				0,
-				597.50295751778208,
-				-1058.2178880843994,
-				10,
-				1
-			],
-			"Tags": [],
-			"Components": [
-				{
-					"Name": "SkeletalMeshComponent0",
-					"TypeID": 2,
-					"Parent": "",
-					"Tags": [],
-					"Transform": [
-						1,
-						0,
-						0,
-						0,
-						0,
-						1,
-						0,
-						0,
-						0,
-						0,
-						1,
-						0,
-						0,
-						0,
-						0,
-						1
-					],
-					"Mesh": "SK_swampGrass",
-					"ContentPath": "/Game/Static_Meshes/Test/SK_swampGrass.SK_swampGrass",
-					"AssetImportPath": "C:/Users/nilsegede.scherer/Perforce/nilsegede.scherer_TGA-LD61_Content_&_Unreal_Project_9749/Content/Meshes/Test/SK_swampGrass.fbx",
-					"Materials": [
-						{
-							"Name": "MM_SwampGrass",
-							"Parent": "Self",
-							"Parameters": []
-						}
-					],
-					"Animations": [
-						{
-							"Name": "A_swampGrass",
-							"Type": "idle"
-						}
-					]
-				}
-			]
-		},
-		{
-			"Name": "A_swampGrass14",
-			"Archetype": "SkeletalMeshActor",
-			"Transform": [
-				-0.17364815648442411,
-				-0.98480775674725529,
-				0,
-				0,
-				0.98480775674725529,
-				-0.17364815648442411,
-				-0,
-				0,
-				0,
-				0,
-				1,
-				0,
-				549.92631351746763,
-				-1246.1838651777146,
-				-10,
-				1
-			],
-			"Tags": [],
-			"Components": [
-				{
-					"Name": "SkeletalMeshComponent0",
-					"TypeID": 2,
-					"Parent": "",
-					"Tags": [],
-					"Transform": [
-						1,
-						0,
-						0,
-						0,
-						0,
-						1,
-						0,
-						0,
-						0,
-						0,
-						1,
-						0,
-						0,
-						0,
-						0,
-						1
-					],
-					"Mesh": "SK_swampGrass",
-					"ContentPath": "/Game/Static_Meshes/Test/SK_swampGrass.SK_swampGrass",
-					"AssetImportPath": "C:/Users/nilsegede.scherer/Perforce/nilsegede.scherer_TGA-LD61_Content_&_Unreal_Project_9749/Content/Meshes/Test/SK_swampGrass.fbx",
-					"Materials": [
-						{
-							"Name": "MM_SwampGrass",
-							"Parent": "Self",
-							"Parameters": []
-						}
-					],
-					"Animations": [
-						{
-							"Name": "A_swampGrass",
-							"Type": "idle"
 						}
 					]
 				}
@@ -6741,128 +6763,6 @@
 			]
 		},
 		{
-			"Name": "A_EnemyBase",
-			"Archetype": "A_EnemyBase_C",
-			"Transform": [
-				1,
-				0,
-				0,
-				0,
-				0,
-				1,
-				0,
-				0,
-				0,
-				0,
-				1,
-				0,
-				-130,
-				-1010,
-				0,
-				1
-			],
-			"Tags": [],
-			"Components": [
-				{
-					"Name": "DefaultSceneRoot",
-					"TypeID": 0,
-					"Parent": "",
-					"Tags": [],
-					"Transform": [
-						1,
-						0,
-						0,
-						0,
-						0,
-						1,
-						0,
-						0,
-						0,
-						0,
-						1,
-						0,
-						0,
-						0,
-						0,
-						1
-					]
-				},
-				{
-					"Name": "StaticMesh",
-					"TypeID": 1,
-					"Parent": "DefaultSceneRoot",
-					"Tags": [],
-					"Transform": [
-						1,
-						0,
-						0,
-						0,
-						0,
-						1,
-						0,
-						0,
-						0,
-						0,
-						1,
-						0,
-						0,
-						0,
-						0,
-						1
-					],
-					"Mesh": "SK_C_GruntEnemy_01",
-					"ContentPath": "/Game/Static_Meshes/Test/Temp_BlockoutEnemies/SK_C_GruntEnemy_01.SK_C_GruntEnemy_01",
-					"AssetImportPath": "C:/Program Files/Epic Games/UE_5.7/Engine/Binaries/Win64/SK_C_GruntEnemy_01.fbx",
-					"Materials": [
-						{
-							"Name": "WorldGridMaterial",
-							"Parent": "Self",
-							"Parameters": []
-						},
-						{
-							"Name": "WorldGridMaterial",
-							"Parent": "Self",
-							"Parameters": []
-						}
-					]
-				},
-				{
-					"Name": "SphereCollider",
-					"TypeID": 7,
-					"Parent": "DefaultSceneRoot",
-					"Tags": [],
-					"Transform": [
-						1,
-						0,
-						0,
-						0,
-						0,
-						1,
-						0,
-						0,
-						0,
-						0,
-						1,
-						0,
-						0,
-						0,
-						50,
-						1
-					],
-					"Radius": 50
-				}
-			],
-			"Custom":
-			{
-				"Collision Layer": "Collider: SphereCollider Enemy",
-				"Collision Mask": [
-					"Player",
-					"Enemy",
-					"Environment"
-				]
-			}
-		},
-		{
 			"Name": "A_Item_Test0",
 			"Archetype": "A_Item_Test_C",
 			"Transform": [
@@ -7137,31 +7037,31 @@
 			}
 		},
 		{
-			"Name": "A_EnemyBase2",
-			"Archetype": "A_EnemyBase_C",
+			"Name": "Diorama_Landscape2",
+			"Archetype": "StaticMeshActor",
 			"Transform": [
+				1.7453292366909068e-08,
 				1,
 				0,
 				0,
+				-1,
+				1.7453292366909068e-08,
 				0,
 				0,
+				0,
+				-0,
 				1,
 				0,
-				0,
-				0,
-				0,
-				1,
-				0,
-				-50,
-				-1000,
+				2.6999999999999999e-05,
+				6319.9999989999997,
 				0,
 				1
 			],
 			"Tags": [],
 			"Components": [
 				{
-					"Name": "DefaultSceneRoot",
-					"TypeID": 0,
+					"Name": "StaticMeshComponent0",
+					"TypeID": 1,
 					"Parent": "",
 					"Tags": [],
 					"Transform": [
@@ -7181,108 +7081,336 @@
 						0,
 						0,
 						1
-					]
-				},
-				{
-					"Name": "StaticMesh",
-					"TypeID": 1,
-					"Parent": "DefaultSceneRoot",
-					"Tags": [],
-					"Transform": [
-						1,
-						0,
-						0,
-						0,
-						0,
-						1,
-						0,
-						0,
-						0,
-						0,
-						1,
-						0,
-						0,
-						0,
-						0,
-						1
 					],
-					"Mesh": "SK_C_GruntEnemy_01",
-					"ContentPath": "/Game/Static_Meshes/Test/Temp_BlockoutEnemies/SK_C_GruntEnemy_01.SK_C_GruntEnemy_01",
-					"AssetImportPath": "C:/Program Files/Epic Games/UE_5.7/Engine/Binaries/Win64/SK_C_GruntEnemy_01.fbx",
+					"Mesh": "Landscape",
+					"ContentPath": "/Game/Static_Meshes/Test/Landscape.Landscape",
+					"AssetImportPath": "C:/Users/lukasandreas.gothbe/Perforce/P5_Lukas/Content/Meshes/Test/Landscape.fbx",
 					"Materials": [
 						{
-							"Name": "WorldGridMaterial",
-							"Parent": "Self",
-							"Parameters": []
-						},
-						{
-							"Name": "WorldGridMaterial",
-							"Parent": "Self",
-							"Parameters": []
+							"Name": "MI_Ground_Lvl_1_2",
+							"Parent": "MM_Landscape",
+							"Parameters": [
+								{
+									"Name": "Color_Tint_02",
+									"Type": 1,
+									"Value": [
+										1,
+										1,
+										1,
+										1
+									]
+								},
+								{
+									"Name": "Tiling_V",
+									"Type": 0,
+									"Value": 0.20000000298023224
+								},
+								{
+									"Name": "Normal_Flat_01",
+									"Type": 0,
+									"Value": 0
+								},
+								{
+									"Name": "Normal_Flat_02",
+									"Type": 0,
+									"Value": 0
+								},
+								{
+									"Name": "Normal_Flat_03",
+									"Type": 0,
+									"Value": 0
+								},
+								{
+									"Name": "Black_Point_01",
+									"Type": 0,
+									"Value": 0
+								},
+								{
+									"Name": "Grey_Point_01",
+									"Type": 0,
+									"Value": -2
+								},
+								{
+									"Name": "White_Point_01",
+									"Type": 0,
+									"Value": 2
+								},
+								{
+									"Name": "Black_Point_02",
+									"Type": 0,
+									"Value": 5
+								},
+								{
+									"Name": "Grey_Point_02",
+									"Type": 0,
+									"Value": 2
+								},
+								{
+									"Name": "White_Point_02",
+									"Type": 0,
+									"Value": 1
+								},
+								{
+									"Name": "Black_Point_03",
+									"Type": 0,
+									"Value": 1
+								},
+								{
+									"Name": "Grey_Point_03",
+									"Type": 0,
+									"Value": 0.5
+								},
+								{
+									"Name": "White_Point_03",
+									"Type": 0,
+									"Value": 1
+								},
+								{
+									"Name": "Normal_Flat_04",
+									"Type": 0,
+									"Value": 0
+								},
+								{
+									"Name": "Black_Point_04",
+									"Type": 0,
+									"Value": 0
+								},
+								{
+									"Name": "Grey_Point_04",
+									"Type": 0,
+									"Value": 1
+								},
+								{
+									"Name": "White_Point_04",
+									"Type": 0,
+									"Value": 1
+								},
+								{
+									"Name": "Color_Tint_01",
+									"Type": 1,
+									"Value": [
+										1,
+										1,
+										1,
+										1
+									]
+								},
+								{
+									"Name": "Tiling_U",
+									"Type": 0,
+									"Value": 0.20000000298023224
+								},
+								{
+									"Name": "Color_Tint_03",
+									"Type": 1,
+									"Value": [
+										1,
+										1,
+										1,
+										1
+									]
+								},
+								{
+									"Name": "Color_Tint_04",
+									"Type": 1,
+									"Value": [
+										1,
+										1,
+										1,
+										1
+									]
+								},
+								{
+									"Name": "BaseColor_01",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Mud_01_C",
+										"Path": "/Game/Materials/Textures/T_Tiling_Mud_01_C.T_Tiling_Mud_01_C",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Mud_01_C.tga"
+									}
+								},
+								{
+									"Name": "ORM_01",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Mud_01_ORM",
+										"Path": "/Game/Materials/Textures/T_Tiling_Mud_01_ORM.T_Tiling_Mud_01_ORM",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Mud_01_ORM.tga"
+									}
+								},
+								{
+									"Name": "Normal_01",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Mud_01_N",
+										"Path": "/Game/Materials/Textures/T_Tiling_Mud_01_N.T_Tiling_Mud_01_N",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Mud_01_N.tga"
+									}
+								},
+								{
+									"Name": "BaseColor_02",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Mud_02_C",
+										"Path": "/Game/Materials/Textures/T_Tiling_Mud_02_C.T_Tiling_Mud_02_C",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Mud_02_C.tga"
+									}
+								},
+								{
+									"Name": "ORM_02",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Mud_02_ORM",
+										"Path": "/Game/Materials/Textures/T_Tiling_Mud_02_ORM.T_Tiling_Mud_02_ORM",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Mud_02_ORM.tga"
+									}
+								},
+								{
+									"Name": "Normal_02",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Mud_02_N",
+										"Path": "/Game/Materials/Textures/T_Tiling_Mud_02_N.T_Tiling_Mud_02_N",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Mud_02_N.tga"
+									}
+								},
+								{
+									"Name": "BaseColor_03",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Corruption_01_C",
+										"Path": "/Game/Materials/Textures/T_Tiling_Corruption_01_C.T_Tiling_Corruption_01_C",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Corruption_01_C.tga"
+									}
+								},
+								{
+									"Name": "ORM_03",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Corruption_01_ORM",
+										"Path": "/Game/Materials/Textures/T_Tiling_Corruption_01_ORM.T_Tiling_Corruption_01_ORM",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Corruption_01_ORM.tga"
+									}
+								},
+								{
+									"Name": "Normal_03",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Corruption_01_N",
+										"Path": "/Game/Materials/Textures/T_Tiling_Corruption_01_N.T_Tiling_Corruption_01_N",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Corruption_01_N.tga"
+									}
+								},
+								{
+									"Name": "Height_03",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Rock_01_HGT",
+										"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_HGT.T_Tiling_Rock_01_HGT",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_Height.tga"
+									}
+								},
+								{
+									"Name": "Height_01",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Mud_01_HGT",
+										"Path": "/Game/Materials/Textures/T_Tiling_Mud_01_HGT.T_Tiling_Mud_01_HGT",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Mud_01_Height.tga"
+									}
+								},
+								{
+									"Name": "Height_02",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Mud_02_HGT",
+										"Path": "/Game/Materials/Textures/T_Tiling_Mud_02_HGT.T_Tiling_Mud_02_HGT",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Mud_02_Height.tga"
+									}
+								},
+								{
+									"Name": "BaseColor_04",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Rock_01_C",
+										"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_C.T_Tiling_Rock_01_C",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_C.tga"
+									}
+								},
+								{
+									"Name": "ORM_04",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Rock_01_ORM",
+										"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_ORM.T_Tiling_Rock_01_ORM",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_ORM.tga"
+									}
+								},
+								{
+									"Name": "Normal_04",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Rock_01_N",
+										"Path": "/Game/Materials/Textures/T_Tiling_Rock_01_N.T_Tiling_Rock_01_N",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Rock_01_N.tga"
+									}
+								},
+								{
+									"Name": "Height_04",
+									"Type": 3,
+									"Value":
+									{
+										"Name": "T_Tiling_Corruption_01_HGT",
+										"Path": "/Game/Materials/Textures/T_Tiling_Corruption_01_HGT.T_Tiling_Corruption_01_HGT",
+										"AssetImportPath": "C:/Users/hanna.lindqvist5/Documents/School_Game_project/GP5/Textures_TGA/T_Tiling_Corruption_01_HGT.tga"
+									}
+								}
+							]
 						}
 					]
-				},
-				{
-					"Name": "SphereCollider",
-					"TypeID": 7,
-					"Parent": "DefaultSceneRoot",
-					"Tags": [],
-					"Transform": [
-						1,
-						0,
-						0,
-						0,
-						0,
-						1,
-						0,
-						0,
-						0,
-						0,
-						1,
-						0,
-						0,
-						0,
-						50,
-						1
-					],
-					"Radius": 50
 				}
-			],
-			"Custom":
-			{
-				"Collision Layer": "Collider: SphereCollider Enemy",
-				"Collision Mask": [
-					"Player",
-					"Enemy",
-					"Environment"
-				]
-			}
+			]
 		},
 		{
-			"Name": "A_EnemyBase3",
-			"Archetype": "A_EnemyBase_C",
+			"Name": "Landscape2",
+			"Archetype": "Landscape",
 			"Transform": [
-				1,
+				100,
 				0,
 				0,
 				0,
 				0,
-				1,
+				100,
 				0,
 				0,
 				0,
 				0,
-				1,
+				100,
 				0,
-				260,
-				-990,
-				0,
+				-3150.0170760000001,
+				3170.0002669999994,
+				0.020014000000000001,
 				1
 			],
 			"Tags": [],
 			"Components": [
 				{
-					"Name": "DefaultSceneRoot",
+					"Name": "RootComponent0",
 					"TypeID": 0,
 					"Parent": "",
 					"Tags": [],
@@ -7304,81 +7432,8 @@
 						0,
 						1
 					]
-				},
-				{
-					"Name": "StaticMesh",
-					"TypeID": 1,
-					"Parent": "DefaultSceneRoot",
-					"Tags": [],
-					"Transform": [
-						1,
-						0,
-						0,
-						0,
-						0,
-						1,
-						0,
-						0,
-						0,
-						0,
-						1,
-						0,
-						0,
-						0,
-						0,
-						1
-					],
-					"Mesh": "SK_C_GruntEnemy_01",
-					"ContentPath": "/Game/Static_Meshes/Test/Temp_BlockoutEnemies/SK_C_GruntEnemy_01.SK_C_GruntEnemy_01",
-					"AssetImportPath": "C:/Program Files/Epic Games/UE_5.7/Engine/Binaries/Win64/SK_C_GruntEnemy_01.fbx",
-					"Materials": [
-						{
-							"Name": "WorldGridMaterial",
-							"Parent": "Self",
-							"Parameters": []
-						},
-						{
-							"Name": "WorldGridMaterial",
-							"Parent": "Self",
-							"Parameters": []
-						}
-					]
-				},
-				{
-					"Name": "SphereCollider",
-					"TypeID": 7,
-					"Parent": "DefaultSceneRoot",
-					"Tags": [],
-					"Transform": [
-						1,
-						0,
-						0,
-						0,
-						0,
-						1,
-						0,
-						0,
-						0,
-						0,
-						1,
-						0,
-						0,
-						0,
-						50,
-						1
-					],
-					"Radius": 50
 				}
-			],
-			"Custom":
-			{
-				"Collision Layer": "Collider: SphereCollider Enemy",
-				"Collision Mask": [
-					"Player",
-					"Enemy",
-					"Environment"
-				]
-			}
+			]
 		}
 	]
 }

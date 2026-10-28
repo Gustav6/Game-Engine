@@ -22,6 +22,13 @@ enum class ToneMapper
     Aces,
     Lottes,
     Unreal,
+    AGX,
+    AGXPunchy,
+    Uncharted2,
+    Uchimura,
+    Filmic,
+    Neutral,
+    FilmicHejl,
     MAX
 };
 

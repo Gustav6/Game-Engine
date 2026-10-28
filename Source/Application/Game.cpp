@@ -320,7 +320,14 @@ void Game::DrawImGuiLayer(const FrameStats& aFrameStats)
 				"None",
 				"ACES",
 				"Lottes",
-				"Unreal"
+				"Unreal",
+				"AGX",
+				"AGXPunchy",
+				"Uncharted2",
+				"Uchimura",
+				"Filmic",
+				"Neutral",
+				"FilmicHejl"
 			};
 
 			int toneMapper = static_cast<int>(settings.ToneMapper);

@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <cstdint>
+#include <stack>
 
 // More info can be found at their repo:
 // https://github.com/ibireme/yyjson 
@@ -134,7 +135,6 @@ namespace Json
 		void Save() const;
 		void Clear();
 
-		// TODO: Implement
 		bool BeginObject(const char* aKey);
 		bool EndObject();
 
@@ -156,8 +156,12 @@ namespace Json
 		const std::filesystem::path& GetDestination() const;
 
 	private:
+		yyjson_mut_val* GetCurrentObject() const;
+
 		yyjson_mut_doc* myDocument;
 		yyjson_mut_val* myRoot;
+
+		std::stack<yyjson_mut_val*> myObjectStack;
 
 		std::filesystem::path myDestination;
 		WriteFlags myWriteFlags;

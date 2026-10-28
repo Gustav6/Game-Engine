@@ -55,7 +55,8 @@ enum class MaterialLayout : uint8_t
 enum MaterialFeatureFlag_ : uint8_t
 {
 	MaterialFeatureFlag_None = 0,
-	MaterialFeatureFlag_Emission = 1u << 0
+	MaterialFeatureFlag_Emission = 1u << 0,
+	MaterialFeatureFlag_HeightMap = 1u << 1
 };
 
 typedef uint8_t MaterialFeatureFlags;

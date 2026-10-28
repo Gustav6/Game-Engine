@@ -1,0 +1,86 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="ThirdParty">
+      <UniqueIdentifier>{107145F9-FC28-8746-6530-60A251072237}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty\Source">
+      <UniqueIdentifier>{10AD61F8-7CC3-5F8E-C53A-EBAF31903016}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty\Source\efsw">
+      <UniqueIdentifier>{34FA5312-20F4-7C64-0961-1375F5F9E2D0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty\Source\efsw\platform">
+      <UniqueIdentifier>{288D7BA7-9470-8AE7-9D73-B82309D65038}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty\Source\efsw\platform\win">
+      <UniqueIdentifier>{25AF69E7-9168-D491-1AC8-EE6B86808A01}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="FileWatcherWrapper.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\..\ThirdParty\Source\efsw\Debug.cpp">
+      <Filter>ThirdParty\Source\efsw</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\ThirdParty\Source\efsw\DirWatcherGeneric.cpp">
+      <Filter>ThirdParty\Source\efsw</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\ThirdParty\Source\efsw\DirectorySnapshot.cpp">
+      <Filter>ThirdParty\Source\efsw</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\ThirdParty\Source\efsw\DirectorySnapshotDiff.cpp">
+      <Filter>ThirdParty\Source\efsw</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\ThirdParty\Source\efsw\FileActionBatch.cpp">
+      <Filter>ThirdParty\Source\efsw</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\ThirdParty\Source\efsw\FileInfo.cpp">
+      <Filter>ThirdParty\Source\efsw</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\ThirdParty\Source\efsw\FileSystem.cpp">
+      <Filter>ThirdParty\Source\efsw</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\ThirdParty\Source\efsw\FileWatcher.cpp">
+      <Filter>ThirdParty\Source\efsw</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\ThirdParty\Source\efsw\FileWatcherCWrapper.cpp">
+      <Filter>ThirdParty\Source\efsw</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\ThirdParty\Source\efsw\FileWatcherGeneric.cpp">
+      <Filter>ThirdParty\Source\efsw</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\ThirdParty\Source\efsw\FileWatcherImpl.cpp">
+      <Filter>ThirdParty\Source\efsw</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\ThirdParty\Source\efsw\FileWatcherWin32.cpp">
+      <Filter>ThirdParty\Source\efsw</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\ThirdParty\Source\efsw\Log.cpp">
+      <Filter>ThirdParty\Source\efsw</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\ThirdParty\Source\efsw\String.cpp">
+      <Filter>ThirdParty\Source\efsw</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\ThirdParty\Source\efsw\System.cpp">
+      <Filter>ThirdParty\Source\efsw</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\ThirdParty\Source\efsw\Watcher.cpp">
+      <Filter>ThirdParty\Source\efsw</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\ThirdParty\Source\efsw\WatcherGeneric.cpp">
+      <Filter>ThirdParty\Source\efsw</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\ThirdParty\Source\efsw\WatcherWin32.cpp">
+      <Filter>ThirdParty\Source\efsw</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\ThirdParty\Source\efsw\platform\win\FileSystemImpl.cpp">
+      <Filter>ThirdParty\Source\efsw\platform\win</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\ThirdParty\Source\efsw\platform\win\SystemImpl.cpp">
+      <Filter>ThirdParty\Source\efsw\platform\win</Filter>
+    </ClCompile>
+    <ClCompile Include="FileWatcherWrapper.cpp" />
+  </ItemGroup>
+</Project>

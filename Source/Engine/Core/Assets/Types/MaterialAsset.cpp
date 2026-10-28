@@ -7,6 +7,7 @@
 #include "Core/Assets/Registry/AssetRegistry.h"
 
 #include "TextureAsset.h"
+#include "Core/EngineContext.h"
 
 enum class ParameterType
 {
@@ -70,7 +71,7 @@ bool MaterialAsset::LoadUnrealInstanceData(const Json::Data& aMaterialData)
     if (materialName.empty())
     {
         SPDLOG_WARN("Constructed material has no name, using placeholder");
-        materialName = "NO NAME GIVEN";
+        materialName = "PLACEHOLDER";
         hasErrord = true;
     }
 
@@ -116,7 +117,7 @@ bool MaterialAsset::LoadUnrealMasterData(const Json::Data& aMaterialData)
     if (materialName.empty())
     {
         SPDLOG_WARN("Constructed material has no name, using placeholder");
-        materialName = "NO NAME GIVEN";
+        materialName = "PLACEHOLDER";
         hasErrord = true;
     }
 
@@ -129,104 +130,41 @@ bool MaterialAsset::LoadUnrealMasterData(const Json::Data& aMaterialData)
 
     MaterialDescription desc;
     desc.Name = materialName;
-    desc.Layout = MaterialLayout::PBR;
+    desc.Layout = GetLayout(parameters);
+    desc.Features = GetFeatures(parameters);
 
-    for (const auto& parameter : parameters)
+    if (aMaterialData.HasKey("Domain"))
     {
-        const std::string parameterName = parameter.GetString("Name");
-        const int type = parameter.GetInt("Type");
-
-        switch (static_cast<ParameterType>(type))
-        {
-            case ParameterType::Texture:
-            {
-                std::string parameterNameLower = parameterName;
-                std::ranges::transform(parameterNameLower, parameterNameLower.begin(), tolower);
-
-                if (parameterNameLower == "splatmap")
-                {
-                    desc.Layout = MaterialLayout::Splat;
-                    break;
-                }
-                if (parameterNameLower == "Emission")
-                {
-                    desc.Features |= MaterialFeatureFlag_Emission;
-                    break;
-                }
-
-                const Json::Data value = parameter.GetDataObject("Value");
-
-                if (value.HasKey("Name"))
-                {
-                    const std::string textureName = value.GetString("Name");
-
-                    std::string suffix = {};
-
-                    size_t pos = textureName.rfind('_');
-
-                    if (pos == std::string::npos)
-                    {
-                        continue;
-                    }
-
-                    suffix = textureName.substr(pos + 1);
-                    std::ranges::transform(suffix, suffix.begin(), tolower);
-
-                    if (suffix == "spm")
-                    {
-                        desc.Layout = MaterialLayout::Splat;
-                        break;
-                    }
-                    if (suffix == "fx")
-                    {
-                        desc.Features |= MaterialFeatureFlag_Emission;
-                        break;
-                    }
-                }
-
-                break;
-            }
-            default:
-            {
-                break;
-            }
-        }
+        desc.Domain = static_cast<MaterialDomain>(aMaterialData.GetInt("Domain") + 1);
+    }
+    else
+    {
+        SPDLOG_ERROR("Material has no Domain [{}]!", materialName);
+        hasErrord = true;
     }
 
+    if (aMaterialData.HasKey("ShadingModel"))
     {
-        if (aMaterialData.HasKey("Domain"))
-        {
-            desc.Domain = static_cast<MaterialDomain>(aMaterialData.GetInt("Domain") + 1);
-        }
-        else
-        {
-            SPDLOG_ERROR("Material has no Domain [{}]!", materialName);
-            hasErrord = true;
-        }
+        desc.ShadingModel = static_cast<ShadingModel>(aMaterialData.GetInt("ShadingModel") + 1);
+    }
+    else
+    {
+        SPDLOG_ERROR("Material has no Shading Model [{}]!", materialName);
+        hasErrord = true;
+    }
 
-        if (aMaterialData.HasKey("ShadingModel"))
-        {
-            desc.ShadingModel = static_cast<ShadingModel>(aMaterialData.GetInt("ShadingModel") + 1);
-        }
-        else
-        {
-            SPDLOG_ERROR("Material has no Shading Model [{}]!", materialName);
-            hasErrord = true;
-        }
-
-        if (aMaterialData.HasKey("BlendMode"))
-        {
-            desc.BlendMode = static_cast<MaterialBlendMode>(aMaterialData.GetInt("BlendMode") + 1);
-        }
-        else
-        {
-            SPDLOG_ERROR("Material has no Blend Mode [{}]!", materialName);
-            hasErrord = true;
-        }
+    if (aMaterialData.HasKey("BlendMode"))
+    {
+        desc.BlendMode = static_cast<MaterialBlendMode>(aMaterialData.GetInt("BlendMode") + 1);
+    }
+    else
+    {
+        SPDLOG_ERROR("Material has no Blend Mode [{}]!", materialName);
+        hasErrord = true;
     }
 
     // TODO: Add the ability to choose material code.
-    //desc.MaterialShaderCode = AssetRegistry::Get().GetWorkingDirectory() / "Shaders/BaseMaterial.hlsli";
+    desc.MaterialShaderCode = EngineContext.ContentPath.parent_path() / "Shaders/BaseMaterial.hlsli";
 
     std::shared_ptr<Material> material = std::make_shared<Material>();
 
@@ -302,11 +240,6 @@ void MaterialAsset::PushParameters(const std::vector<Json::Data>& aMaterialParam
                 
 				break;
 			}
-            case ParameterType::StaticSwitch:
-            {
-                SPDLOG_ERROR("STATIC SWITCH [{}]", parameterName);
-                break;
-            }
 			default:
 			{
                 SPDLOG_ERROR("Non handled parameter type found [{}], Parameter [{}]!", type, parameterName);
@@ -314,4 +247,66 @@ void MaterialAsset::PushParameters(const std::vector<Json::Data>& aMaterialParam
 			}
 		}
 	}
+}
+
+MaterialLayout MaterialAsset::GetLayout(const std::vector<Json::Data>& aMaterialParameters)
+{
+    for (const auto& parameter : aMaterialParameters)
+    {
+        if (static_cast<ParameterType>(parameter.GetInt("Type")) != ParameterType::Texture)
+        {
+            continue;
+        }
+
+        std::string name = parameter.GetString("Name");
+        std::ranges::transform(name, name.begin(), tolower);
+
+        if (name.starts_with("basecolor_"))
+        {
+            return MaterialLayout::Splat;
+        }
+        if (name.starts_with("orm_"))
+        {
+            return MaterialLayout::Splat;
+        }
+        if (name.starts_with("normal_"))
+        {
+            return MaterialLayout::Splat;
+        }
+        if (name.starts_with("splatmap"))
+        {
+            return MaterialLayout::Splat;
+        }
+    }
+
+    return MaterialLayout::PBR;
+}
+
+uint8_t MaterialAsset::GetFeatures(const std::vector<Json::Data>& aMaterialParameters)
+{
+	MaterialFeatureFlags features = MaterialFeatureFlag_None;
+
+    for (const auto& parameter : aMaterialParameters)
+    {
+        const int type = parameter.GetInt("Type");
+
+        if (static_cast<ParameterType>(type) != ParameterType::Texture)
+        {
+            continue;
+        }
+
+        std::string name = parameter.GetString("Name");
+        std::ranges::transform(name, name.begin(), tolower);
+
+        if (name.starts_with("emission"))
+        {
+            features |= MaterialFeatureFlag_Emission;
+        }
+        if (name.starts_with("height"))
+        {
+            features |= MaterialFeatureFlag_HeightMap;
+        }
+    }
+
+    return features;
 }

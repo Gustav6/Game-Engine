@@ -230,6 +230,9 @@ FrameStats GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const S
 	myDeferredItems.clear();
 	myForwardItems.clear();
 
+	// TODO: The current setup does not take into account the shadows.
+	// Meaning that I need to cull them with their shadow region in mind.
+
 	for (const auto& drawCall : MeshDrawer::Get().GetMeshDrawCalls())
 	{
 		const CommonUtilities::Sphere<float>& boundingSphere = drawCall.Mesh->GetBoundingSphere();

@@ -58,17 +58,17 @@
     <IntDir>$(ProjectDir)..\..\..\..\Intermediate\FileWatcher\Debug\</IntDir>
     <TargetName>FileWatcher</TargetName>
     <TargetExt>.lib</TargetExt>
-    <ExternalIncludePath>..\..\..\..\ThirdParty\Source\efsw;$(ExternalIncludePath)</ExternalIncludePath>
+    <ExternalIncludePath>..\..\..\..\ThirdParty\Source;$(ExternalIncludePath)</ExternalIncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(ProjectDir)..\..\..\..\Lib\Release\</OutDir>
     <IntDir>$(ProjectDir)..\..\..\..\Intermediate\FileWatcher\Release\</IntDir>
     <TargetName>FileWatcher</TargetName>
     <TargetExt>.lib</TargetExt>
-    <ExternalIncludePath>..\..\..\..\ThirdParty\Source\efsw;$(ExternalIncludePath)</ExternalIncludePath>
+    <ExternalIncludePath>..\..\..\..\ThirdParty\Source;$(ExternalIncludePath)</ExternalIncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Retail|x64'">
-    <ExternalIncludePath>..\..\..\..\ThirdParty\Source\efsw;$(ExternalIncludePath)</ExternalIncludePath>
+    <ExternalIncludePath>..\..\..\..\ThirdParty\Source;$(ExternalIncludePath)</ExternalIncludePath>
     <NMakeOutput>$(OutDir)FileWatcher</NMakeOutput>
     <AdditionalOptions>/sdl /std:c++20 %(AdditionalOptions)</AdditionalOptions>
   </PropertyGroup>
@@ -125,6 +125,86 @@
     <ClInclude Include="FileWatcherWrapper.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\..\ThirdParty\Source\efsw\Debug.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>TurnOffAllWarnings</WarningLevel>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\ThirdParty\Source\efsw\DirWatcherGeneric.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>TurnOffAllWarnings</WarningLevel>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\ThirdParty\Source\efsw\DirectorySnapshot.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>TurnOffAllWarnings</WarningLevel>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\ThirdParty\Source\efsw\DirectorySnapshotDiff.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>TurnOffAllWarnings</WarningLevel>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\ThirdParty\Source\efsw\FileActionBatch.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>TurnOffAllWarnings</WarningLevel>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\ThirdParty\Source\efsw\FileInfo.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>TurnOffAllWarnings</WarningLevel>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\ThirdParty\Source\efsw\FileSystem.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>TurnOffAllWarnings</WarningLevel>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\ThirdParty\Source\efsw\FileWatcher.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>TurnOffAllWarnings</WarningLevel>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\ThirdParty\Source\efsw\FileWatcherCWrapper.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>TurnOffAllWarnings</WarningLevel>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\ThirdParty\Source\efsw\FileWatcherGeneric.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>TurnOffAllWarnings</WarningLevel>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\ThirdParty\Source\efsw\FileWatcherImpl.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>TurnOffAllWarnings</WarningLevel>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\ThirdParty\Source\efsw\FileWatcherWin32.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>TurnOffAllWarnings</WarningLevel>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\ThirdParty\Source\efsw\Log.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>TurnOffAllWarnings</WarningLevel>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\ThirdParty\Source\efsw\String.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>TurnOffAllWarnings</WarningLevel>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\ThirdParty\Source\efsw\System.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>TurnOffAllWarnings</WarningLevel>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\ThirdParty\Source\efsw\Watcher.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>TurnOffAllWarnings</WarningLevel>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\ThirdParty\Source\efsw\WatcherGeneric.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>TurnOffAllWarnings</WarningLevel>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\ThirdParty\Source\efsw\WatcherWin32.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>TurnOffAllWarnings</WarningLevel>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\ThirdParty\Source\efsw\platform\win\FileSystemImpl.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>TurnOffAllWarnings</WarningLevel>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\ThirdParty\Source\efsw\platform\win\SystemImpl.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>TurnOffAllWarnings</WarningLevel>
+    </ClCompile>
     <ClCompile Include="FileWatcherWrapper.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

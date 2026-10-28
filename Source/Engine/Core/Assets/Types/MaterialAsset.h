@@ -36,6 +36,9 @@ private:
 
 	void PushParameters(const std::vector<Json::Data>& aMaterialParameters, MaterialInterface* aMaterialInstance);
 
+	MaterialLayout GetLayout(const std::vector<Json::Data>& aMaterialParameters);
+	uint8_t GetFeatures(const std::vector<Json::Data>& aMaterialParameters);
+
 	std::shared_ptr<MaterialInterface> myMaterial;
 	std::vector<std::shared_ptr<TextureAsset>> myPersistentTextureList;
 };
