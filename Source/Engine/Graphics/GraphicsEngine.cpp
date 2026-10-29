@@ -232,6 +232,8 @@ FrameStats GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const S
 
 	// TODO: The current setup does not take into account the shadows.
 	// Meaning that I need to cull them with their shadow region in mind.
+	// Construct frustrum's for the lights and test them in the same way.
+	// BIG SAVE: The lights should also only use the meshes that they can see.
 
 	for (const auto& drawCall : MeshDrawer::Get().GetMeshDrawCalls())
 	{
@@ -245,58 +247,121 @@ FrameStats GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const S
 
 		const CommonUtilities::Sphere<float> worldSphere(transformedCenter.ToXYZ(),boundingSphere.GetRadius() * maxScale);
 
-		if (!CommonUtilities::IntersectionSphereFrustum(worldSphere, aCamera.RenderCamera.GetFrustum()))
+		const bool meshVisibleToCamera = CommonUtilities::IntersectionSphereFrustum(worldSphere, aCamera.RenderCamera.GetFrustum());
+
+		if (meshVisibleToCamera)
 		{
-			frameStats.CulledObjects++;
-			continue;
-		}
+			frameStats.VisibleObjects++;
 
-		frameStats.VisibleObjects++;
-
-		for (unsigned int e = 0; e < drawCall.Mesh->myElements.size(); e++)
-		{
-			unsigned int materialIndex = drawCall.Mesh->myElements[e].MaterialIndex;
-
-			const MaterialInterface* material = drawCall.Materials[materialIndex];
-
-			RenderItem item =
+			for (unsigned int e = 0; e < drawCall.Mesh->myElements.size(); e++)
 			{
-				.DrawCall = &drawCall,
-				.ElementIndex = e,
-				.MaterialIndex = materialIndex
-			};
+				unsigned int materialIndex = drawCall.Mesh->myElements[e].MaterialIndex;
 
-			if (material == nullptr)
-			{
-				myForwardItems.push_back(item);
-			}
-			else
-			{
-				switch (material->GetBlendMode())
+				const MaterialInterface* material = drawCall.Materials[materialIndex];
+
+				RenderItem item =
 				{
-					case MaterialBlendMode::None:
+					.DrawCall = &drawCall,
+					.ElementIndex = e,
+					.MaterialIndex = materialIndex
+				};
+
+				if (material == nullptr)
+				{
+					myForwardItems.push_back(item);
+				}
+				else
+				{
+					switch (material->GetBlendMode())
 					{
-						SPDLOG_ERROR("Mesh {} has a invalid Material Blend Mode setting!", drawCall.Mesh->GetName());
-						break;
-					}
-					case MaterialBlendMode::Opaque:
-					{
-						myDeferredItems.push_back(item);
-						break;
-					}
-					case MaterialBlendMode::Alpha:
-					{
-						myForwardItems.push_back(item);
-						break;
-					}
-					default:
-					{
-						SPDLOG_ERROR("Mesh {} has a invalid Material Blend Mode setting!", drawCall.Mesh->GetName());
-						break;
+						case MaterialBlendMode::None:
+						{
+							SPDLOG_ERROR("Mesh {} has a invalid Material Blend Mode setting!", drawCall.Mesh->GetName());
+							break;
+						}
+						case MaterialBlendMode::Opaque:
+						{
+							myDeferredItems.push_back(item);
+							break;
+						}
+						case MaterialBlendMode::Alpha:
+						{
+							myForwardItems.push_back(item);
+							break;
+						}
+						default:
+						{
+							SPDLOG_ERROR("Mesh {} has a invalid Material Blend Mode setting!", drawCall.Mesh->GetName());
+							break;
+						}
 					}
 				}
 			}
 		}
+		else
+		{
+			frameStats.CulledObjects++;
+		}
+
+		/*bool shadowVisibleToCamera = false;
+
+		for (const auto& light : LightDrawer::Get().GetSceneLights())
+		{
+			if (light.ShadowMap == nullptr)
+			{
+				continue;
+			}
+
+			for (unsigned int e = 0; e < drawCall.Mesh->myElements.size(); e++)
+			{
+				unsigned int materialIndex = drawCall.Mesh->myElements[e].MaterialIndex;
+
+				const MaterialInterface* material = drawCall.Materials[materialIndex];
+
+				RenderItem item =
+				{
+					.DrawCall = &drawCall,
+					.ElementIndex = e,
+					.MaterialIndex = materialIndex
+				};
+
+				switch (light.LightData->Type)
+				{
+					case LightType::Directional:
+					{
+						shadowVisibleToCamera = true;
+
+						myShadowItems.push_back(item);
+
+						break;
+					}
+					case LightType::Point:
+					{
+						shadowVisibleToCamera = true;
+
+						myShadowItems.push_back(item);
+
+						break;
+					}
+					case LightType::Spot:
+					{
+						shadowVisibleToCamera = true;
+
+						myShadowItems.push_back(item);
+
+						break;
+					}
+					default:
+						break;
+				}
+			}
+
+
+			if (shadowVisibleToCamera)
+			{
+				break;
+			}
+		}*/
 	}
 
 	myShadowItems.clear();
