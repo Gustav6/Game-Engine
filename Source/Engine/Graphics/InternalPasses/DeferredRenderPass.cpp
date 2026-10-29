@@ -169,17 +169,9 @@ bool DeferredRenderPass::Initialize(RenderHardwareInterface& aRHI)
 			return false;
 		}
 
-		myHalfSizeBlurVSSAOTexture = std::make_unique<Texture>();
+		myHalfSizeBlurSSAOTexture = std::make_unique<Texture>();
 
-		if (!aRHI.CreateTexture("SSAO_Blurred_V", bufferSize.x, bufferSize.y, 1, ResourceFormat::R32_FLOAT, ResourceBindFlag_ShaderResource | ResourceBindFlag_RenderTarget, *myHalfSizeBlurVSSAOTexture))
-		{
-			SPDLOG_CRITICAL("Failed to create SSAO Blurred texture!");
-			return false;
-		}
-
-		myHalfSizeBlurHSSAOTexture = std::make_unique<Texture>();
-
-		if (!aRHI.CreateTexture("SSAO_Blurred_H", bufferSize.x, bufferSize.y, 1, ResourceFormat::R32_FLOAT, ResourceBindFlag_ShaderResource | ResourceBindFlag_RenderTarget, *myHalfSizeBlurHSSAOTexture))
+		if (!aRHI.CreateTexture("SSAO_Blurred", bufferSize.x, bufferSize.y, 1, ResourceFormat::R32_FLOAT, ResourceBindFlag_ShaderResource | ResourceBindFlag_RenderTarget, *myHalfSizeBlurSSAOTexture))
 		{
 			SPDLOG_CRITICAL("Failed to create SSAO Blurred texture!");
 			return false;
@@ -233,27 +225,25 @@ void DeferredRenderPass::Execute(
 
 			inoutCommandList.BeginEvent("Ambient Light");
 
-			if (mySSAOEnabled)
+			// TODO: Fix DebugRenderMode::AmbientOcclusionScreenSpace
+
+			if (mySSAOEnabled && aContext.RenderSettings->DebugRenderMode == DebugRenderMode::None ||
+				aContext.RenderSettings->DebugRenderMode == DebugRenderMode::AmbientOcclusionScreenSpace)
 			{
+				inoutCommandList.BeginEvent("Render SSAO");
+
 				inoutCommandList.SetRenderTarget(myHalfSizeSSAOTexture.get(), nullptr);
-				inoutCommandList.SetShaderResource(myGBufferTextures[1], 1, PipelineStage_PixelShader);
+				inoutCommandList.SetShaderResource(myGBufferTextures[1], 0, PipelineStage_PixelShader);
 
 				inoutCommandList.SetPipelineStateObject(*mySSAOPSO);
 				inoutCommandList.Draw(4);
 
-				if (aContext.RenderSettings->DebugRenderMode == DebugRenderMode::None)
-				{
-					aContext.PostProcessFilters->BlurHorizontal(inoutCommandList, *myHalfSizeSSAOTexture, *myHalfSizeBlurHSSAOTexture);
-					aContext.PostProcessFilters->BlurVertical(inoutCommandList, *myHalfSizeBlurHSSAOTexture, *myHalfSizeBlurVSSAOTexture);
+				inoutCommandList.EndEvent();
 
-					inoutCommandList.SetRenderTarget(aFrameTargets.RenderTarget, nullptr);
-					inoutCommandList.SetShaderResource(myHalfSizeBlurVSSAOTexture.get(), 97, PipelineStage_PixelShader);
-				}
-				else
-				{
-					inoutCommandList.SetRenderTarget(aFrameTargets.RenderTarget, nullptr);
-					inoutCommandList.SetShaderResource(myHalfSizeSSAOTexture.get(), 97, PipelineStage_PixelShader);
-				}
+				aContext.PostProcessFilters->BlurDepthSSAO(inoutCommandList, *myHalfSizeSSAOTexture, *myHalfSizeBlurSSAOTexture, *myGBufferTextures[1]);
+
+				inoutCommandList.SetRenderTarget(aFrameTargets.RenderTarget, nullptr);
+				inoutCommandList.SetShaderResource(myHalfSizeBlurSSAOTexture.get(), 97, PipelineStage_PixelShader);
 			}
 
 			// GBuffer set resources

@@ -25,8 +25,18 @@ GBufferOutput main(VStoPS aPixel)
 #else
     SurfaceData surface = EvaluateSurface(aPixel, parameters.UV0);
 #endif
-
-    if (surface.Albedo.a < 0.05f)
+    
+    parameters.PixelColor = surface.Albedo;
+    parameters.WorldPosition = aPixel.WorldPosition;
+    parameters.WorldNormal = surface.WorldNormal;
+    parameters.UV0 = aPixel.UV0;
+    parameters.Occlusion = surface.Occlusion;
+    parameters.Roughness = surface.Roughness;
+    parameters.Metalness = surface.Metalness;
+    
+    Material_Pixel(parameters);
+    
+    if (parameters.PixelColor.a < 0.05f)
     {
         discard;
     }
@@ -36,16 +46,6 @@ GBufferOutput main(VStoPS aPixel)
     switch (FB_TypeOfRenderPass)
     {
         case 0:
-            parameters.PixelColor = surface.Albedo;
-            parameters.WorldPosition = aPixel.WorldPosition;
-            parameters.WorldNormal = surface.WorldNormal;
-            parameters.UV0 = aPixel.UV0;
-            parameters.Occlusion = surface.Occlusion;
-            parameters.Roughness = surface.Roughness;
-            parameters.Metalness = surface.Metalness;
-    
-            Material_Pixel(parameters);
-
             result.Albedo = float4(parameters.PixelColor.rgb, 1);
             break;
         case 1: // sRGB pass

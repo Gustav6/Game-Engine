@@ -177,14 +177,14 @@ void ScreenSpaceEffectPass::BloomPass(
 	}
 	inoutCommandList.EndEvent();
 
-	aContext.PostProcessFilters->Downsample(
+	aContext.PostProcessFilters->BloomDownsample(
 		inoutCommandList,
 		*mySceneLuminance,
 		*myBloomMips[0].Texture);
 
 	for (size_t i = 1; i < myBloomMips.size(); ++i)
 	{
-		aContext.PostProcessFilters->Downsample(
+		aContext.PostProcessFilters->BloomDownsample(
 			inoutCommandList,
 			*myBloomMips[i - 1].Texture,
 			*myBloomMips[i].Texture);
@@ -197,7 +197,7 @@ void ScreenSpaceEffectPass::BloomPass(
 
 		inoutCommandList.UnbindShaderResource(0, PipelineStage_PixelShader);
 
-		aContext.PostProcessFilters->AdditiveUpsample(
+		aContext.PostProcessFilters->BloomAdditiveUpsample(
 			inoutCommandList,
 			*mip.Texture,
 			*nextMip.Texture);

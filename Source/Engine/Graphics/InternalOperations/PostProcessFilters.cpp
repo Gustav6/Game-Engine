@@ -10,6 +10,7 @@
 #include <GaussianBlurV_PS.h>
 #include <BloomDownsample_PS.h>
 #include <BloomUpsample_PS.h>
+#include <BlurAmbientOcclusion_PS.h>
 
 bool PostProcessFilters::Initialize(RenderHardwareInterface& aRHI)
 {
@@ -93,10 +94,30 @@ bool PostProcessFilters::Initialize(RenderHardwareInterface& aRHI)
 		}
 	}
 
+	// Depth Aware SSAO PSO
+	{
+		PipelineStateDescription ssaoBlurPSODesc = {};
+		ssaoBlurPSODesc.Name = "DepthAwareBlurPSO";
+		ssaoBlurPSODesc.BlendMode = BlendMode::Opaque;
+		ssaoBlurPSODesc.Topology = Topology::TriangleStrip;
+		ssaoBlurPSODesc.VertexShader.ByteCode = INTERNAL_Fullscreen_VS_ByteCode;
+		ssaoBlurPSODesc.VertexShader.ByteCodeSize = sizeof(INTERNAL_Fullscreen_VS_ByteCode);
+		ssaoBlurPSODesc.PixelShader.ByteCode = INTERNAL_BlurAmbientOcclusion_PS_ByteCode;
+		ssaoBlurPSODesc.PixelShader.ByteCodeSize = sizeof(INTERNAL_BlurAmbientOcclusion_PS_ByteCode);
+
+		myDepthBlurSSAOPSO = std::make_unique<PipelineStateObject>();
+
+		if (!aRHI.CreatePipelineStateObject(ssaoBlurPSODesc, *myDepthBlurSSAOPSO))
+		{
+			SPDLOG_CRITICAL("Failed to create Depth Aware SSAO blur pipeline state object!");
+			return false;
+		}
+	}
+
 	return true;
 }
 
-void PostProcessFilters::Downsample(GraphicsCommandList& inoutCommandList, Texture& aSource, Texture& aDestination) const
+void PostProcessFilters::BloomDownsample(GraphicsCommandList& inoutCommandList, Texture& aSource, Texture& aDestination) const
 {
 	inoutCommandList.BeginEvent("Downsample");
 	{
@@ -109,7 +130,7 @@ void PostProcessFilters::Downsample(GraphicsCommandList& inoutCommandList, Textu
 	inoutCommandList.EndEvent();
 }
 
-void PostProcessFilters::AdditiveUpsample(GraphicsCommandList& inoutCommandList, Texture& aSource, Texture& aDestination) const
+void PostProcessFilters::BloomAdditiveUpsample(GraphicsCommandList& inoutCommandList, Texture& aSource, Texture& aDestination) const
 {
 	inoutCommandList.BeginEvent("Upsample");
 	{
@@ -143,6 +164,20 @@ void PostProcessFilters::BlurVertical(GraphicsCommandList& inoutCommandList, Tex
 
 		inoutCommandList.SetPipelineStateObject(*myBlurVerticalPSO);
 		inoutCommandList.SetShaderResource(&aSource, 0, PipelineStage_PixelShader);
+		inoutCommandList.Draw(4);
+	}
+	inoutCommandList.EndEvent();
+}
+
+void PostProcessFilters::BlurDepthSSAO(GraphicsCommandList& inoutCommandList, Texture& aSource, Texture& aDestination, const Texture& aNormalDepth) const
+{
+	inoutCommandList.BeginEvent("Depth Aware SSAO Blur");
+	{
+		inoutCommandList.SetRenderTarget(&aDestination, nullptr);
+
+		inoutCommandList.SetPipelineStateObject(*myDepthBlurSSAOPSO);
+		inoutCommandList.SetShaderResource(&aSource, 0, PipelineStage_PixelShader);
+		inoutCommandList.SetShaderResource(&aNormalDepth, 1, PipelineStage_PixelShader);
 		inoutCommandList.Draw(4);
 	}
 	inoutCommandList.EndEvent();

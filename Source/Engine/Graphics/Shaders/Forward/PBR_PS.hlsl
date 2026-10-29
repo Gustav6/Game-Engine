@@ -28,8 +28,18 @@ float4 main(VStoPS aPixel) : SV_TARGET
 #else
     SurfaceData surface = EvaluateSurface(aPixel, aPixel.UV0);
 #endif
-
-    if (surface.Albedo.a < 0.05f)
+    
+    parameters.PixelColor = surface.Albedo;
+    parameters.WorldPosition = aPixel.WorldPosition;
+    parameters.WorldNormal = surface.WorldNormal;
+    parameters.UV0 = aPixel.UV0;
+    parameters.Occlusion = surface.Occlusion;
+    parameters.Roughness = surface.Roughness;
+    parameters.Metalness = surface.Metalness;
+    
+    Material_Pixel(parameters);
+    
+    if (parameters.PixelColor.a < 0.05f)
     {
         discard;
     }
@@ -37,15 +47,6 @@ float4 main(VStoPS aPixel) : SV_TARGET
     switch (FB_TypeOfRenderPass)
     {
         case 0:
-            parameters.PixelColor = surface.Albedo;
-            parameters.WorldPosition = aPixel.WorldPosition;
-            parameters.WorldNormal = surface.WorldNormal;
-            parameters.UV0 = aPixel.UV0;
-            parameters.Occlusion = surface.Occlusion;
-            parameters.Roughness = surface.Roughness;
-            parameters.Metalness = surface.Metalness;
-    
-            Material_Pixel(parameters);
             break;
         case 1: // sRGB pass
             return float4(surface.Albedo.rgb, 1.0f);

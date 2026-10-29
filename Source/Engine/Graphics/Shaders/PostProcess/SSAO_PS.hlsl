@@ -39,11 +39,7 @@ static const float4 SSAO_Kernel[32] =
     float4(-0.4751f, 0.7281f, 0.8182f, 0.0f)
 };
 
-Texture2D GBufferAlbedo : register(t0);
-Texture2D GBufferWorldNormalDepth : register(t1);
-Texture2D GBufferMaterial : register(t2);
-Texture2D GBufferEmission : register(t3);
-Texture2D GBufferWorldPosition : register(t4);
+Texture2D GBufferWorldNormalDepth : register(t0);
 
 float3 GetViewSpacePosition(float2 aUV)
 {
