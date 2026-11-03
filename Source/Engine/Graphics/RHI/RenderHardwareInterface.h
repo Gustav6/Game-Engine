@@ -50,6 +50,7 @@ public:
 	bool CreateSampler(const SamplerDescription& aDescription, Sampler& outSampler);
 	bool CreateDepthStencil(std::string_view aName, unsigned int aWidth, unsigned int aHeight, Texture& outDepthStencil, bool aCube) const;
 	bool CreateGBuffer(std::string_view aName, unsigned aWidth, unsigned aHeight, GBuffer& outGBuffer) const;
+	bool CreateStructuredBuffer(std::string_view aName, size_t aSize, size_t aStride, Buffer& outBuffer) const;
 
 	void ExecuteCommandList(const GraphicsCommandList& aCommandList) const;
 

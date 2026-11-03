@@ -46,7 +46,8 @@ public:
 	void SetPipelineStateObject(const PipelineStateObject& aPSO, const std::string_view aMarkerLabel = {}) const;
 
 	void SetShaderResource(const Texture* aTexture, unsigned int aSlot, PipelineStages aStages) const;
-
+	
+	void SetShaderResources(const Buffer* const* aResourceList, size_t aNumResources, unsigned aStartSlot, PipelineStages aPipelineStages) const;
 	void SetShaderResources(const Texture* const* aResourcesList, size_t aNumOfResources, unsigned int aStartSlot, PipelineStages aStages) const;
 	void SetShaderSamplers(const Sampler* const* aSamplerList, size_t aNumOfSamplers, unsigned int aStartSlot, PipelineStages aStages) const;
 
@@ -55,6 +56,7 @@ public:
 	void Draw(unsigned aNumVertices) const;
 	void DrawSpecificVertices(unsigned aNumVertices, unsigned aFirstVertexIndex) const;
 	void DrawIndexed(unsigned aIndexCount, unsigned aIndexOffset) const;
+	void DrawIndexedInstanced(unsigned aIndexCount, unsigned aIndexOffset, unsigned aInstanceCount) const;
 
 	void SetMarker(std::string_view aMarker) const;
 	void BeginEvent(std::string_view aEvent) const;

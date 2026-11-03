@@ -904,6 +904,59 @@ bool RenderHardwareInterface::CreateGBuffer(std::string_view aName, unsigned aWi
 	return true;
 }
 
+bool RenderHardwareInterface::CreateStructuredBuffer(std::string_view aName, size_t aSize, size_t aStride, Buffer& outBuffer) const
+{
+	if ( aSize == 0 )
+	{
+		SPDLOG_ERROR("Failed to create structured buffer {} Size was 0!", aName);
+		return false;
+	}
+
+	if (aSize % 16 != 0) 
+	{
+		SPDLOG_ERROR("Failed to create structured buffer {} Size must be multiple of 16!", aName);
+		return false;
+	}
+
+	D3D11_BUFFER_DESC desc = {};
+	desc.Usage = D3D11_USAGE_DYNAMIC ; // We can change the contents as needed
+	desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE ;
+	desc.BindFlags = D3D11_BIND_SHADER_RESOURCE ; // We can bind this buffer as a SRV, like a Texture
+	desc.MiscFlags = D3D11_RESOURCE_MISC_BUFFER_STRUCTURED ; // Buffer type is Structured
+	desc.ByteWidth = static_cast<unsigned>(aSize); // Total size of the buffer
+	desc.StructureByteStride = static_cast<unsigned>(aStride); // Size of each item in the buffer
+
+	HRESULT result = myDevice->CreateBuffer(&desc, nullptr, &outBuffer.myBuffer);
+	if (FAILED(result))
+	{
+		SPDLOG_ERROR("Failed to create structured buffer {}!", aName);
+		return false;
+	}
+
+	SetObjectName(outBuffer.myBuffer, aName);
+	
+	outBuffer.myName = aName;
+	outBuffer.mySize = desc.ByteWidth;
+	outBuffer.myStride = desc.StructureByteStride;
+	outBuffer.myType = BufferType::StructuredBuffer;
+
+	D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc = {};
+
+	srvDesc.Format = DXGI_FORMAT_UNKNOWN; // Inget pixelformat, är ingen bild!
+	srvDesc.ViewDimension = D3D11_SRV_DIMENSION_BUFFER ; // Typen är en Buffer , inte textur
+	srvDesc.Buffer.FirstElement = 0; // Första posten
+	srvDesc.Buffer.NumElements = static_cast<unsigned>(aSize / outBuffer.myStride ); // Antalet poster i Buffern
+
+	result = myDevice->CreateShaderResourceView(outBuffer.myBuffer.Get(), &srvDesc, &outBuffer.mySRV);
+	if (FAILED(result))
+	{
+		SPDLOG_ERROR("Failed to create SRV for structured buffer {}!", aName);
+		return false;
+	}
+
+	return true;
+}
+
 void RenderHardwareInterface::ExecuteCommandList(const GraphicsCommandList& aCommandList) const
 {
 	ensure(aCommandList.IsReadyForExecution());

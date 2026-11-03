@@ -29,7 +29,7 @@ float4 main(FullscreenVertex aInput) : SV_TARGET
 
     if (FB_SSAOFlag)
     {
-        const float ssaoPixel = SSAO_Texture.Sample(TrilinearClamp, aInput.UV);
+        const float ssaoPixel = SSAO_Texture.Sample(TrilinearClamp, aInput.UV).r;
             
         occlusion = min(materialPixel.r, ssaoPixel);
     }

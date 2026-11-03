@@ -162,7 +162,7 @@ bool GraphicsCommandList::UpdateConstantBuffer(const Buffer& aConstantBuffer, co
 {
 	ensure(!IsReadyForExecution());
 
-	if (!aConstantBuffer.IsValid() || aConstantBuffer.myType != BufferType::ConstantBuffer)
+	if (!aConstantBuffer.IsValid() || aConstantBuffer.myType != BufferType::ConstantBuffer && aConstantBuffer.myType != BufferType::StructuredBuffer)
 	{
 		SPDLOG_ERROR("Failed to update constant buffer! Buffer is either null or invalid type!");
 		return false;
@@ -368,6 +368,17 @@ void GraphicsCommandList::SetShaderResource(const Texture* aTexture, unsigned in
 	}
 }
 
+void GraphicsCommandList::SetShaderResources(const Buffer* const* aResourceList, size_t aNumResources, unsigned aStartSlot, PipelineStages aPipelineStages) const
+{
+	aResourceList;
+	aNumResources;
+	aStartSlot;
+	aPipelineStages;
+    // TODO: implement
+	// Create SRV list, just like SetShaderResources for textures
+	// Set SRV list with ** SetShaderResources
+}
+
 void GraphicsCommandList::SetShaderResources(const Texture* const* aResourcesList, size_t aNumOfResources, unsigned int aStartSlot, PipelineStages aStages) const
 {
 	std::vector<ID3D11ShaderResourceView*> srvs(aNumOfResources);
@@ -463,6 +474,15 @@ void GraphicsCommandList::DrawIndexed(unsigned aIndexCount, unsigned aIndexOffse
 	ensure(!IsReadyForExecution());
 
 	myContext->DrawIndexed(aIndexCount, aIndexOffset, 0);
+
+	myDrawCallCounter++;
+}
+
+void GraphicsCommandList::DrawIndexedInstanced(unsigned aIndexCount, unsigned aIndexOffset, unsigned aInstanceCount) const
+{
+	ensure(!IsReadyForExecution());
+	
+	myContext->DrawIndexedInstanced(aIndexCount, aInstanceCount, aIndexOffset, 0, 0);
 
 	myDrawCallCounter++;
 }
