@@ -1,8 +1,8 @@
-project "Editor"
+project "Tools"
     kind "StaticLib"
 
-    pchheader "Editor.pch.h"
-    pchsource "Editor.pch.cpp"
+    pchheader "Tools.pch.h"
+    pchsource "Tools.pch.cpp"
 
     warnings "Extra"
     fatalwarnings { "All" }

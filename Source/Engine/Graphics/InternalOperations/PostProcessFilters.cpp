@@ -11,6 +11,7 @@
 #include <BloomDownsample_PS.h>
 #include <BloomUpsample_PS.h>
 #include <BlurAmbientOcclusion_PS.h>
+#include <Resample_PS.h>
 
 bool PostProcessFilters::Initialize(RenderHardwareInterface& aRHI)
 {
@@ -114,6 +115,25 @@ bool PostProcessFilters::Initialize(RenderHardwareInterface& aRHI)
 		}
 	}
 
+	{
+		PipelineStateDescription resamplePSODesc = {};
+		resamplePSODesc.Name = "ResamplePSO";
+		resamplePSODesc.BlendMode = BlendMode::Opaque;
+		resamplePSODesc.Topology = Topology::TriangleStrip;
+		resamplePSODesc.VertexShader.ByteCode = INTERNAL_Fullscreen_VS_ByteCode;
+		resamplePSODesc.VertexShader.ByteCodeSize = sizeof(INTERNAL_Fullscreen_VS_ByteCode);
+		resamplePSODesc.PixelShader.ByteCode = INTERNAL_Resample_PS_ByteCode;
+		resamplePSODesc.PixelShader.ByteCodeSize = sizeof(INTERNAL_Resample_PS_ByteCode);
+
+		myResamplePSO = std::make_unique<PipelineStateObject>();
+
+		if (!aRHI.CreatePipelineStateObject(resamplePSODesc, *myResamplePSO))
+		{
+			SPDLOG_CRITICAL("Failed to create Resample pipeline state object!");
+			return false;
+		}
+	}
+
 	return true;
 }
 
@@ -138,6 +158,18 @@ void PostProcessFilters::BloomAdditiveUpsample(GraphicsCommandList& inoutCommand
 
 		inoutCommandList.SetShaderResource(&aSource, 0, PipelineStage_PixelShader);
 		inoutCommandList.SetPipelineStateObject(*myAdditiveUpsamplePSO);
+		inoutCommandList.Draw(4);
+	}
+	inoutCommandList.EndEvent();
+}
+
+void PostProcessFilters::Resample(GraphicsCommandList& inoutCommandList, Texture& aSource, Texture& aDestination) const
+{
+	inoutCommandList.BeginEvent("Resample");
+	{
+		inoutCommandList.SetRenderTarget(&aDestination, nullptr);
+		inoutCommandList.SetShaderResource(&aSource, 0, PipelineStage_PixelShader);
+		inoutCommandList.SetPipelineStateObject(*myResamplePSO);
 		inoutCommandList.Draw(4);
 	}
 	inoutCommandList.EndEvent();

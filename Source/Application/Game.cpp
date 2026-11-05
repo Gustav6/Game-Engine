@@ -40,7 +40,7 @@
 #include "Wrappers/Logger/LoggerWrapper.h"
 
 #ifndef _RETAIL
-#include <Editor/ImGuiLayer.h>
+#include <Tools/ImGui/ImGuiLayer.h>
 #include <ImGui/imgui.h>
 #endif
 
@@ -55,11 +55,11 @@ bool Game::Initialize(SIZE aWindowSize, WNDPROC aWindowProcess, LPCWSTR aWindowT
 	{
 		Json::Writer writer = Json::Write(settingsPath, Json::WriteFlag_Pretty);
 
-		if (!writer.SetString("ContentPath", "../../Content"))
+		if (!writer.SetString("ContentRoot", "../../Content"))
 		{
 			throw std::runtime_error("Failed to create settings file!");
 		}
-		if (!writer.SetString("ShaderPath", "../../Shaders"))
+		if (!writer.SetString("ShaderRoot", "../../Shaders"))
 		{
 			throw std::runtime_error("Failed to create settings file!");
 		}
@@ -69,13 +69,22 @@ bool Game::Initialize(SIZE aWindowSize, WNDPROC aWindowProcess, LPCWSTR aWindowT
 
 	Json::Data settings = Json::Read(settingsPath);
 
-	if (settings.HasKey("ContentPath"))
+	if (settings.HasKey("ContentRoot"))
 	{
-		EngineContext.ContentPath = GetExecutableDirectory()/ settings.GetString("ContentPath");
+		EngineContext.ContentRoot = GetExecutableDirectory()/ settings.GetString("ContentRoot");
 	}
 	else
 	{
-		throw std::runtime_error("EngineContext settings has no content path set!");
+		throw std::runtime_error("EngineContext settings has no content root set!");
+	}
+
+	if (settings.HasKey("ShaderRoot"))
+	{
+		EngineContext.ShaderRoot = GetExecutableDirectory() / settings.GetString("ShaderRoot");
+	}
+	else
+	{
+		throw std::runtime_error("EngineContext settings has no shader root set!");
 	}
 
 	AssetRegistry::Get().RegisterAssetType<MeshAsset>({ ".fbx" });
@@ -132,18 +141,9 @@ bool Game::Initialize(SIZE aWindowSize, WNDPROC aWindowProcess, LPCWSTR aWindowT
 
 		GraphicsEngine& GE = GraphicsEngine::Get();
 
-		if (settings.HasKey("ShaderPath"))
+		if (!GE.Initialize(myMainWindowHandle, EngineContext.ShaderRoot))
 		{
-			std::filesystem::path shaderRoot = GetExecutableDirectory() / settings.GetString("ShaderPath");
-
-			if (!GE.Initialize(myMainWindowHandle, shaderRoot))
-			{
-				throw std::runtime_error("Graphics Engine failed to initialize!");
-			}
-		}
-		else
-		{
-			throw std::runtime_error("EngineContext settings has no shader path set!");
+			throw std::runtime_error("Graphics Engine failed to initialize!");
 		}
 
 		myGraphicsCommandList = std::make_unique<GraphicsCommandList>();

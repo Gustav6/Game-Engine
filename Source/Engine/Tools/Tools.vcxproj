@@ -1,0 +1,196 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Retail|x64">
+      <Configuration>Retail</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{16CF2D0E-82E3-55BF-4B65-F91EB73852F0}</ProjectGuid>
+    <IgnoreWarnCompileDuplicatedFilename>true</IgnoreWarnCompileDuplicatedFilename>
+    <Keyword>MakeFileProj</Keyword>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v145</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v145</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Retail|x64'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v145</PlatformToolset>
+    <OutDir>$(ProjectDir)..\..\..\Lib\Retail\</OutDir>
+    <IntDir>$(ProjectDir)..\..\..\Intermediate\Tools\Retail\</IntDir>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Retail|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>$(ProjectDir)..\..\..\Lib\Debug\</OutDir>
+    <IntDir>$(ProjectDir)..\..\..\Intermediate\Tools\Debug\</IntDir>
+    <TargetName>Tools</TargetName>
+    <TargetExt>.lib</TargetExt>
+    <ExternalIncludePath>..\..\..\ThirdParty\Source\imgui;..\..\..\ThirdParty\Source;$(ExternalIncludePath)</ExternalIncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>$(ProjectDir)..\..\..\Lib\Release\</OutDir>
+    <IntDir>$(ProjectDir)..\..\..\Intermediate\Tools\Release\</IntDir>
+    <TargetName>Tools</TargetName>
+    <TargetExt>.lib</TargetExt>
+    <ExternalIncludePath>..\..\..\ThirdParty\Source\imgui;..\..\..\ThirdParty\Source;$(ExternalIncludePath)</ExternalIncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Retail|x64'">
+    <ExternalIncludePath>..\..\..\ThirdParty\Source\imgui;..\..\..\ThirdParty\Source;$(ExternalIncludePath)</ExternalIncludePath>
+    <NMakeOutput>$(OutDir)Tools</NMakeOutput>
+    <AdditionalOptions>/sdl /std:c++20 %(AdditionalOptions)</AdditionalOptions>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>Tools.pch.h</PrecompiledHeaderFile>
+      <WarningLevel>Level4</WarningLevel>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <PreprocessorDefinitions>SPDLOG_COMPILED_LIB;FMT_UNICODE=0;_DEBUG;TRACY_ENABLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>.;..\..\Utilities;..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <Optimization>Disabled</Optimization>
+      <MinimalRebuild>false</MinimalRebuild>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <AdditionalOptions>/sdl %(AdditionalOptions)</AdditionalOptions>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <ExternalWarningLevel>TurnOffAllWarnings</ExternalWarningLevel>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+    <ProjectReference>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>Tools.pch.h</PrecompiledHeaderFile>
+      <WarningLevel>Level4</WarningLevel>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <PreprocessorDefinitions>SPDLOG_COMPILED_LIB;FMT_UNICODE=0;_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>.;..\..\Utilities;..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <Optimization>Full</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <MinimalRebuild>false</MinimalRebuild>
+      <StringPooling>true</StringPooling>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <AdditionalOptions>/sdl %(AdditionalOptions)</AdditionalOptions>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <ExternalWarningLevel>TurnOffAllWarnings</ExternalWarningLevel>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+    <ProjectReference>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="AvailableTools\AssetBrowser.h" />
+    <ClInclude Include="AvailableTools\PerformanceTool.h" />
+    <ClInclude Include="AvailableTools\RenderingTool.h" />
+    <ClInclude Include="AvailableTools\SceneHierarchy.h" />
+    <ClInclude Include="Core\ToolManager.h" />
+    <ClInclude Include="Core\ToolRegistry.h" />
+    <ClInclude Include="ImGui\ImGuiLayer.h" />
+    <ClInclude Include="Tools.pch.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\ThirdParty\Source\imgui\backends\imgui_impl_dx11.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>TurnOffAllWarnings</WarningLevel>
+    </ClCompile>
+    <ClCompile Include="..\..\..\ThirdParty\Source\imgui\backends\imgui_impl_win32.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>TurnOffAllWarnings</WarningLevel>
+    </ClCompile>
+    <ClCompile Include="..\..\..\ThirdParty\Source\imgui\imgui.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>TurnOffAllWarnings</WarningLevel>
+    </ClCompile>
+    <ClCompile Include="..\..\..\ThirdParty\Source\imgui\imgui_demo.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>TurnOffAllWarnings</WarningLevel>
+    </ClCompile>
+    <ClCompile Include="..\..\..\ThirdParty\Source\imgui\imgui_draw.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>TurnOffAllWarnings</WarningLevel>
+    </ClCompile>
+    <ClCompile Include="..\..\..\ThirdParty\Source\imgui\imgui_tables.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>TurnOffAllWarnings</WarningLevel>
+    </ClCompile>
+    <ClCompile Include="..\..\..\ThirdParty\Source\imgui\imgui_widgets.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>TurnOffAllWarnings</WarningLevel>
+    </ClCompile>
+    <ClCompile Include="AvailableTools\AssetBrowser.cpp" />
+    <ClCompile Include="AvailableTools\PerformanceTool.cpp" />
+    <ClCompile Include="AvailableTools\RenderingTool.cpp" />
+    <ClCompile Include="AvailableTools\SceneHierarchy.cpp" />
+    <ClCompile Include="Core\ToolManager.cpp" />
+    <ClCompile Include="Core\ToolRegistry.cpp" />
+    <ClCompile Include="ImGui\ImGuiLayer.cpp" />
+    <ClCompile Include="Tools.pch.cpp">
+      <PrecompiledHeader>Create</PrecompiledHeader>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Utilities\CommonUtilities\CommonUtilities.vcxproj">
+      <Project>{AA29E689-16B5-534E-1FC6-D6428BD0AF4E}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Utilities\Wrappers\Logger\Logger.vcxproj">
+      <Project>{25F339C1-1195-6497-FA4F-78EBE690EBE7}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Core\Core.vcxproj">
+      <Project>{2EB4837C-1AEB-840D-C3D7-6A10AFED000F}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Graphics\Graphics.vcxproj">
+      <Project>{1653CE33-0220-293F-2B39-17E717655ECD}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Utilities\Wrappers\Json\Json.vcxproj">
+      <Project>{7F9B877C-6BD2-880D-14BF-6E1000D5040F}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

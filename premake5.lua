@@ -52,7 +52,7 @@ group "Utilities/Wrappers"
 group "Engine"
     include "Source/Engine/Core/premake5.lua"
     include "Source/Engine/Graphics/premake5.lua"
-    include "Source/Engine/Editor/premake5.lua"
+    include "Source/Engine/Tools/premake5.lua"
 
 group "Application"
     include "Source/Application/premake5.lua"

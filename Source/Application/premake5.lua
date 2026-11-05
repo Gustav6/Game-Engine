@@ -57,12 +57,12 @@ project "Game"
     }
 
     filter "configurations:Debug"
-        links { "Editor" }
-        dependson { "Editor" }
+        links { "Tools" }
+        dependson { "Tools" }
 
     filter "configurations:Release"
-        links { "Editor" }
-        dependson { "Editor" }
+        links { "Tools" }
+        dependson { "Tools" }
 
     postbuildmessage "Copying Materials and DLLs"
 

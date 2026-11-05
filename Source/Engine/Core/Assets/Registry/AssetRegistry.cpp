@@ -28,13 +28,13 @@ bool AssetRegistry::Initialize()
     InitUnitSphere();
 	InitUnitPlane();
 
-    if (!std::filesystem::exists(EngineContext.ContentPath))
+    if (!std::filesystem::exists(EngineContext.ContentRoot))
     {
-        SPDLOG_CRITICAL("Content root dir is not a valid path! Root is [{}].", EngineContext.ContentPath.string());
+        SPDLOG_CRITICAL("Content root dir is not a valid path! Root is [{}].", EngineContext.ContentRoot.string());
         return false;
     }
 
-    for (const auto& item : std::filesystem::recursive_directory_iterator(EngineContext.ContentPath))
+    for (const auto& item : std::filesystem::recursive_directory_iterator(EngineContext.ContentRoot))
     {
         if (item.is_regular_file() && item.path().has_extension())
         {

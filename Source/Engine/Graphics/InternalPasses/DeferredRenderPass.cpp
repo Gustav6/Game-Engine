@@ -159,19 +159,28 @@ bool DeferredRenderPass::Initialize(RenderHardwareInterface& aRHI)
 
 	// SSAO Textures
 	{
+		CommonUtilities::Vector2ui clientSize = aRHI.GetClientSize();
+		CommonUtilities::Vector2ui halfClientSize = clientSize / 2u;
+
 		myHalfSizeSSAOTexture = std::make_unique<Texture>();
 
-		CommonUtilities::Vector2ui bufferSize = aRHI.GetClientSize() / 2u;
-
-		if (!aRHI.CreateTexture("SSAO", bufferSize.x, bufferSize.y, 1, ResourceFormat::R32_FLOAT, ResourceBindFlag_ShaderResource | ResourceBindFlag_RenderTarget, *myHalfSizeSSAOTexture))
+		if (!aRHI.CreateTexture("SSAO", halfClientSize.x, halfClientSize.y, 1, ResourceFormat::R32_FLOAT, ResourceBindFlag_ShaderResource | ResourceBindFlag_RenderTarget, *myHalfSizeSSAOTexture))
 		{
 			SPDLOG_CRITICAL("Failed to create SSAO texture!");
 			return false;
 		}
 
-		myHalfSizeBlurSSAOTexture = std::make_unique<Texture>();
+		myFullSizeSSAOTexture = std::make_unique<Texture>();
 
-		if (!aRHI.CreateTexture("SSAO_Blurred", bufferSize.x, bufferSize.y, 1, ResourceFormat::R32_FLOAT, ResourceBindFlag_ShaderResource | ResourceBindFlag_RenderTarget, *myHalfSizeBlurSSAOTexture))
+		if (!aRHI.CreateTexture("SSAO", clientSize.x, clientSize.y, 1, ResourceFormat::R32_FLOAT, ResourceBindFlag_ShaderResource | ResourceBindFlag_RenderTarget, *myFullSizeSSAOTexture))
+		{
+			SPDLOG_CRITICAL("Failed to create SSAO texture!");
+			return false;
+		}
+
+		myBlurSSAOTexture = std::make_unique<Texture>();
+
+		if (!aRHI.CreateTexture("SSAO_Blurred", clientSize.x, clientSize.y, 1, ResourceFormat::R32_FLOAT, ResourceBindFlag_ShaderResource | ResourceBindFlag_RenderTarget, *myBlurSSAOTexture))
 		{
 			SPDLOG_CRITICAL("Failed to create SSAO Blurred texture!");
 			return false;
@@ -225,8 +234,6 @@ void DeferredRenderPass::Execute(
 
 			inoutCommandList.BeginEvent("Ambient Light");
 
-			// TODO: Fix DebugRenderMode::AmbientOcclusionScreenSpace
-
 			if (mySSAOEnabled && aContext.RenderSettings->DebugRenderMode == DebugRenderMode::None ||
 				aContext.RenderSettings->DebugRenderMode == DebugRenderMode::AmbientOcclusionScreenSpace)
 			{
@@ -240,10 +247,12 @@ void DeferredRenderPass::Execute(
 
 				inoutCommandList.EndEvent();
 
-				aContext.PostProcessFilters->BlurDepthSSAO(inoutCommandList, *myHalfSizeSSAOTexture, *myHalfSizeBlurSSAOTexture, *myGBufferTextures[1]);
+				aContext.PostProcessFilters->Resample(inoutCommandList, *myHalfSizeSSAOTexture, *myFullSizeSSAOTexture);
+
+				aContext.PostProcessFilters->BlurDepthSSAO(inoutCommandList, *myFullSizeSSAOTexture, *myBlurSSAOTexture, *myGBufferTextures[1]);
 
 				inoutCommandList.SetRenderTarget(aFrameTargets.RenderTarget, nullptr);
-				inoutCommandList.SetShaderResource(myHalfSizeBlurSSAOTexture.get(), 97, PipelineStage_PixelShader);
+				inoutCommandList.SetShaderResource(myBlurSSAOTexture.get(), 97, PipelineStage_PixelShader);
 			}
 
 			// GBuffer set resources

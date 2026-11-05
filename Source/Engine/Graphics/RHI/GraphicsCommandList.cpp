@@ -12,6 +12,7 @@ GraphicsCommandList::GraphicsCommandList()
 {
 	myCurrentOverrides = PipelineStage_None;
 	myPipelineSwitchCounter = 0;
+	myDrawCallCounter = 0;
 }
 
 GraphicsCommandList::~GraphicsCommandList()

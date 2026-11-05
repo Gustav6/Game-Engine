@@ -164,7 +164,7 @@ bool MaterialAsset::LoadUnrealMasterData(const Json::Data& aMaterialData)
     }
 
     // TODO: Add the ability to choose material code.
-    desc.MaterialShaderCode = EngineContext.ContentPath.parent_path() / "Shaders/BaseMaterial.hlsli";
+    desc.MaterialShaderCode = EngineContext.ContentRoot.parent_path() / "Shaders/BaseMaterial.hlsli";
 
     std::shared_ptr<Material> material = std::make_shared<Material>();
 

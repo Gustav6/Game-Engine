@@ -9,7 +9,8 @@ struct EngineContext
 {
 	CommonUtilities::Input InputManager;
 	CommonUtilities::Timer TimeManager;
-	std::filesystem::path ContentPath;
+	std::filesystem::path ContentRoot;
+	std::filesystem::path ShaderRoot;
 };
 
 inline EngineContext EngineContext;
