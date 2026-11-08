@@ -8,7 +8,7 @@ class Asset
 	friend class AssetRegistry;
 
 public:
-	virtual ~Asset();
+	virtual ~Asset() = default;
 
 	const std::string& GetName() const;
 

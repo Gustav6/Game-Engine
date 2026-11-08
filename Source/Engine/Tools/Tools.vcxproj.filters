@@ -4,8 +4,14 @@
     <Filter Include="Core">
       <UniqueIdentifier>{2EB4837C-1AEB-840D-C3D7-6A10AFED000F}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Core\Interface">
+      <UniqueIdentifier>{8EAD58B1-7A7B-4CB7-630F-BDDD4F7C281C}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Custom">
       <UniqueIdentifier>{A0E5AEAC-8C87-D982-7542-EDD6618360D3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Custom\Debug">
+      <UniqueIdentifier>{16A8965E-020B-2603-AB90-5EB997D2F185}</UniqueIdentifier>
     </Filter>
     <Filter Include="Editor">
       <UniqueIdentifier>{8C1A20B0-78BC-4A86-6177-5EDA4DB8D1D6}</UniqueIdentifier>
@@ -39,19 +45,22 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Core\Interface\Tool.h">
+      <Filter>Core\Interface</Filter>
+    </ClInclude>
     <ClInclude Include="Core\ToolManager.h">
       <Filter>Core</Filter>
     </ClInclude>
     <ClInclude Include="Core\ToolRegistry.h">
       <Filter>Core</Filter>
     </ClInclude>
-    <ClInclude Include="Custom\DebugTool.h">
-      <Filter>Custom</Filter>
+    <ClInclude Include="Custom\Debug\DebugTool.h">
+      <Filter>Custom\Debug</Filter>
     </ClInclude>
     <ClInclude Include="Editor\AssetBrowser\AssetBrowser.h">
       <Filter>Editor\AssetBrowser</Filter>
     </ClInclude>
-    <ClInclude Include="Editor\Hierarchy\Hierarchy.h">
+    <ClInclude Include="Editor\Hierarchy\SceneHierarchy.h">
       <Filter>Editor\Hierarchy</Filter>
     </ClInclude>
     <ClInclude Include="Editor\Properties\PropertiesPanel.h">
@@ -64,6 +73,9 @@
       <Filter>ImGui</Filter>
     </ClInclude>
     <ClInclude Include="Tools.pch.h" />
+    <ClInclude Include="Custom\Debug\DebugInfo.h">
+      <Filter>Custom\Debug</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\ThirdParty\Source\imgui\backends\imgui_impl_dx11.cpp">
@@ -87,19 +99,22 @@
     <ClCompile Include="..\..\..\ThirdParty\Source\imgui\imgui_widgets.cpp">
       <Filter>ThirdParty\Source\imgui</Filter>
     </ClCompile>
+    <ClCompile Include="Core\Interface\Tool.cpp">
+      <Filter>Core\Interface</Filter>
+    </ClCompile>
     <ClCompile Include="Core\ToolManager.cpp">
       <Filter>Core</Filter>
     </ClCompile>
     <ClCompile Include="Core\ToolRegistry.cpp">
       <Filter>Core</Filter>
     </ClCompile>
-    <ClCompile Include="Custom\DebugTool.cpp">
-      <Filter>Custom</Filter>
+    <ClCompile Include="Custom\Debug\DebugTool.cpp">
+      <Filter>Custom\Debug</Filter>
     </ClCompile>
     <ClCompile Include="Editor\AssetBrowser\AssetBrowser.cpp">
       <Filter>Editor\AssetBrowser</Filter>
     </ClCompile>
-    <ClCompile Include="Editor\Hierarchy\Hierarchy.cpp">
+    <ClCompile Include="Editor\Hierarchy\SceneHierarchy.cpp">
       <Filter>Editor\Hierarchy</Filter>
     </ClCompile>
     <ClCompile Include="Editor\Properties\PropertiesPanel.cpp">

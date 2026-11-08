@@ -78,14 +78,5 @@ private:
 
 #ifndef _RETAIL
 	std::unique_ptr<ImGuiLayer> myImGuiLayer;
-
-	bool myShowDebugWindow = true;
-
-	void DrawImGuiLayer(const FrameStats& aFrameStats);
-	void DrawActorNode(Actor* aActor);
-
-	void PrintNodesChildren(Actor* aActor);
-
-	Actor* mySelectedActor;
 #endif
 };

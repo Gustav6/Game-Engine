@@ -40,6 +40,12 @@
 #include "Wrappers/Logger/LoggerWrapper.h"
 
 #ifndef _RETAIL
+#include <Tools/Core/ToolRegistry.h>
+#include <Tools/Core/ToolManager.h>
+
+#include <Tools/Custom/Debug/DebugTool.h>
+#include <Tools/Editor/Hierarchy/SceneHierarchy.h>
+
 #include <Tools/ImGui/ImGuiLayer.h>
 #include <ImGui/imgui.h>
 #endif
@@ -160,6 +166,11 @@ bool Game::Initialize(SIZE aWindowSize, WNDPROC aWindowProcess, LPCWSTR aWindowT
 #ifndef _RETAIL
 		myImGuiLayer = std::make_unique<ImGuiLayer>(myMainWindowHandle);
 		GE.SetRenderOverlay(myImGuiLayer.get());
+
+		ToolRegistry::Get().Initialize();
+
+		ToolManager::Get().AddTool<DebugTool>();
+		ToolManager::Get().AddTool<SceneHierarchy>();
 #endif
 	}
 
@@ -235,7 +246,19 @@ int Game::Run()
 			FrameStats frameStats = GE.Render(*myGraphicsCommandList, camera);
 
 #ifndef _RETAIL
-			DrawImGuiLayer(frameStats);
+			const DebugInfo info = 
+			{
+				.FPS = 0,
+				.FrameTime = 0,
+				.DrawCallCount = frameStats.DrawCallCount,
+				.PipelineSwitches = frameStats.PipelineSwitches,
+				.VisibleObjects = frameStats.VisibleObjects,
+				.CulledObjects = frameStats.CulledObjects
+			};
+
+			ToolManager::Get().GetTool<DebugTool>()->SetInfo(info);
+
+			ToolManager::Get().Render();
 #endif
 	
 			myGraphicsCommandList->FinishCommandList();
@@ -266,256 +289,3 @@ void Game::RenderScene() const
 {
 	myStateMachine->Render();
 }
-
-#ifndef _RETAIL
-void Game::DrawImGuiLayer(const FrameStats& aFrameStats)
-{
-	ImGui::PushFont(nullptr, 18.0f);
-
-	//ImGui::ShowDemoWindow();
-
-	if (myShowDebugWindow)
-	{
-		ImGui::Begin("Debug", &myShowDebugWindow, ImGuiWindowFlags_AlwaysAutoResize);
-
-		if (ImGui::CollapsingHeader("Frame Info"))
-		{
-			ImGui::Text("FPS: %.1f", ImGui::GetIO().Framerate);
-			ImGui::Text("Draw Call Count: %u", aFrameStats.DrawCallCount);
-			ImGui::Text("Pipeline Switches: %u", aFrameStats.PipelineSwitches);
-			ImGui::Text("Visible Objects: %u", aFrameStats.VisibleObjects);
-			ImGui::Text("Culled Objects: %u", aFrameStats.CulledObjects);
-		}
-
-		if (ImGui::CollapsingHeader("Render Settings"))
-		{
-			RenderSettings settings = GraphicsEngine::Get().GetSettings();
-
-			const char* debugRenderModes[] =
-			{
-				"None",
-				"sRGB",
-				"Roughness",
-				"Metalness",
-				"AO (Texture)",
-				"AO (Screen Space)",
-				"Normals (Tangent Space)",
-				"Normals (World Space)",
-				"Shadows"
-			};
-
-			int debugRenderMode = static_cast<int>(settings.DebugRenderMode);
-
-			ImGui::Text("Debug Render Mode");
-
-			if (ImGui::Combo("##DebugRenderMode", &debugRenderMode, debugRenderModes, IM_ARRAYSIZE(debugRenderModes)))
-			{
-				settings.DebugRenderMode = static_cast<DebugRenderMode>(debugRenderMode);
-			}
-
-			ImGui::Separator();
-
-			const char* toneMappers[] =
-			{
-				"None",
-				"ACES",
-				"Lottes",
-				"Unreal",
-				"AGX",
-				"AGXPunchy",
-				"Uncharted2",
-				"Uchimura",
-				"Filmic",
-				"Neutral",
-				"FilmicHejl"
-			};
-
-			int toneMapper = static_cast<int>(settings.ToneMapper);
-
-			ImGui::Text("Tone Mapper");
-
-			if (ImGui::Combo("##ToneMapper", &toneMapper, toneMappers, IM_ARRAYSIZE(toneMappers)))
-			{
-				settings.ToneMapper = static_cast<ToneMapper>(toneMapper);
-			}
-
-			ImGui::Separator();
-
-			ImGui::Checkbox("Bloom", &settings.BloomEnabled);
-			ImGui::Checkbox("SSAO", &settings.SSAOEnabled);
-			ImGui::Checkbox("VSync", &settings.VSyncEnabled);
-
-			GraphicsEngine::Get().SetSettings(settings);
-		}
-
-		if (ImGui::CollapsingHeader("Debug Settings"))
-		{
-			DebugSettings settings = DebugSettingsManager::Get().GetSettings();
-
-			{
-				ImGui::Text("Physics Collider");
-
-				ImGui::Checkbox("##PhysicsCollider", &settings.ColliderDebugDrawEnabled);
-
-				ImGui::SameLine();
-
-				float* color = settings.ColliderColor.values;
-
-				if (ImGui::ColorButton("Collider Color Button", ImVec4(color[0], color[1], color[2], color[3])))
-				{
-					ImGui::OpenPopup("Physics Color");
-				}
-
-				if (ImGui::BeginPopup("Physics Color"))
-				{
-					ImGui::ColorPicker4("##picker", color);
-					ImGui::EndPopup();
-				}
-
-				ImGui::Separator();
-			}
-
-			{
-				ImGui::Text("Bounding Box Collider");
-
-				ImGui::Checkbox("##BoundingBoxCollider", &settings.MeshDebugDrawBoxEnabled);
-
-				ImGui::SameLine();
-
-				float* color = settings.MeshBoundingBoxColor.values;
-
-				if (ImGui::ColorButton("Bounding Box Color Button", ImVec4(color[0], color[1], color[2], color[3])))
-				{
-					ImGui::OpenPopup("Mesh Box Popup");
-				}
-
-				if (ImGui::BeginPopup("Mesh Box Popup"))
-				{
-					ImGui::ColorPicker4("##picker", color);
-					ImGui::EndPopup();
-				}
-
-				ImGui::Separator();
-			}
-
-			{
-				ImGui::Text("Bounding Sphere Collider");
-
-				ImGui::Checkbox("##BoundingSphereCollider", &settings.MeshDebugDrawSphereEnabled);
-
-				ImGui::SameLine();
-
-				float* color = settings.MeshBoundingSphereColor.values;
-
-				if (ImGui::ColorButton("Bounding Sphere Color Button", ImVec4(color[0], color[1], color[2], color[3])))
-				{
-					ImGui::OpenPopup("Mesh Sphere Popup");
-				}
-
-				if (ImGui::BeginPopup("Mesh Sphere Popup"))
-				{
-					ImGui::ColorPicker4("##picker", color);
-					ImGui::EndPopup();
-				}
-
-				ImGui::Separator();
-			}
-
-			{
-				ImGui::Text("Light Gizmo Collider");
-
-				ImGui::Checkbox("##LightGizmoCollider", &settings.LightGizmosDebugDrawEnabled);
-
-				ImGui::SameLine();
-
-				float* color = settings.LightGizmoColor.values;
-
-				if (ImGui::ColorButton("Light Gizmo Color Button", ImVec4(color[0], color[1], color[2], color[3])))
-				{
-					ImGui::OpenPopup("Light Gizmo Color");
-				}
-
-				if (ImGui::BeginPopup("Light Gizmo Color"))
-				{
-					ImGui::ColorPicker4("##picker", color);
-					ImGui::EndPopup();
-				}
-			}
-
-			DebugSettingsManager::Get().SetSettings(settings);
-		}
-
-		ImGui::End();
-	}
-
-	{
-		ImGuiWindowFlags flags = ImGuiWindowFlags_None;
-
-		ImGui::Begin("Scene Hierarchy", nullptr, flags);
-
-		for (auto& actor : GameWorld::Get().GetActors())
-		{
-			if (actor->GetParent() == nullptr)
-			{
-				DrawActorNode(actor.get());
-			}
-		}
-
-		ImGui::End();
-	}
-
-	ImGui::PopFont();
-}
-#endif
-
-#ifndef _RETAIL
-void Game::DrawActorNode(Actor* aActor)
-{
-	ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_DrawLinesToNodes;
-
-	if (aActor->GetChildren().empty())
-	{
-		flags |= ImGuiTreeNodeFlags_Leaf;
-	}
-	else
-	{
-		flags |= ImGuiTreeNodeFlags_OpenOnArrow;
-	}
-
-	if (mySelectedActor == aActor)
-	{
-		flags |= ImGuiTreeNodeFlags_Selected;
-	}
-
-	bool isOpen = ImGui::TreeNodeEx(aActor, flags, "%s", aActor->GetName().c_str());
-
-	if (ImGui::IsItemClicked() && mySelectedActor != aActor)
-	{
-		mySelectedActor = aActor;
-
-		std::cout << mySelectedActor->GetName() << ", Selected" << "\n";
-
-		PrintNodesChildren(mySelectedActor);
-	}
-
-	if (isOpen)
-	{
-		for (const auto& child : aActor->GetChildren())
-		{
-			DrawActorNode(child);
-		}
-
-		ImGui::TreePop();
-	}
-}
-
-void Game::PrintNodesChildren(Actor* aActor)
-{
-	for (const auto& child : aActor->GetChildren())
-	{
-		std::cout << child->GetName() << ", Owned by - " << aActor->GetName() << "\n";
-
-		PrintNodesChildren(child);
-	}
-}
-#endif

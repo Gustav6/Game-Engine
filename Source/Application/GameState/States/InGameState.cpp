@@ -41,7 +41,6 @@ void InGameState::Initialize()
 
 void InGameState::Enter()
 {
-	//LoadUnrealScene("LVL_DioramaBlockout");
 	LoadTestScene();
 }
 

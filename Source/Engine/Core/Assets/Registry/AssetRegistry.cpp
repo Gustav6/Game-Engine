@@ -73,6 +73,7 @@ void AssetRegistry::RegisterAssetTypeInternal(const std::vector<std::string>& aE
         myFileExtensionToAssetTypeMap[lowerCaseFileExtension].insert(aTypeIndex);
     }
 }
+
 std::string_view AssetRegistry::RemoveTypePrefix(std::string_view aTypeName)
 {
     for (std::string_view prefix : { "class ", "struct " })
