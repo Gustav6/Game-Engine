@@ -77,11 +77,11 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>GraphicsEngine.pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile>Graphics/GraphicsEngine.pch.h</PrecompiledHeaderFile>
       <WarningLevel>Level4</WarningLevel>
       <TreatWarningAsError>true</TreatWarningAsError>
       <PreprocessorDefinitions>SPDLOG_COMPILED_LIB;FMT_UNICODE=0;_DEBUG;TRACY_ENABLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>.;..;..\..\Utilities;..\..\..\Intermediate\GraphicsEngine\Debug\PrecompiledShaders;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..;..\..\Utilities;..\..\..\Intermediate\GraphicsEngine\Debug\PrecompiledShaders;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <MinimalRebuild>false</MinimalRebuild>
@@ -114,11 +114,11 @@ xcopy /E /I /R /Y /D "%SHADERSRC%" "%SHADERDEST%"</Command>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>GraphicsEngine.pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile>Graphics/GraphicsEngine.pch.h</PrecompiledHeaderFile>
       <WarningLevel>Level4</WarningLevel>
       <TreatWarningAsError>true</TreatWarningAsError>
       <PreprocessorDefinitions>SPDLOG_COMPILED_LIB;FMT_UNICODE=0;_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>.;..;..\..\Utilities;..\..\..\Intermediate\GraphicsEngine\Release\PrecompiledShaders;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..;..\..\Utilities;..\..\..\Intermediate\GraphicsEngine\Release\PrecompiledShaders;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -156,11 +156,11 @@ xcopy /E /I /R /Y /D "%SHADERSRC%" "%SHADERDEST%"</Command>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Retail|x64'">
     <ClCompile>
       <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>GraphicsEngine.pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile>Graphics/GraphicsEngine.pch.h</PrecompiledHeaderFile>
       <WarningLevel>Level4</WarningLevel>
       <TreatWarningAsError>true</TreatWarningAsError>
       <PreprocessorDefinitions>SPDLOG_COMPILED_LIB;FMT_UNICODE=0;_RETAIL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>.;..;..\..\Utilities;..\..\..\Intermediate\GraphicsEngine\Retail\PrecompiledShaders;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..;..\..\Utilities;..\..\..\Intermediate\GraphicsEngine\Retail\PrecompiledShaders;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>

@@ -1,2 +1,2 @@
-#include "Core.pch.h"
+#include "Core/Core.pch.h"
 #include "ComponentRegistry.h"

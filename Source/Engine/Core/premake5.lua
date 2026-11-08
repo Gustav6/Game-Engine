@@ -1,8 +1,8 @@
 project "Core"
     kind "StaticLib"
-
-    pchheader "Core.pch.h"
-    pchsource "Core.pch.cpp"
+    
+    pchheader "Core/Core.pch.h"
+    pchsource "%{prj.location}/Core.pch.cpp"
 
     warnings "Extra"
     fatalwarnings { "All" }

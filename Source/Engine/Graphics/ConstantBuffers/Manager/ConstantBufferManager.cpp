@@ -1,15 +1,15 @@
-#include "GraphicsEngine.pch.h"
+#include "Graphics/GraphicsEngine.pch.h"
 #include "ConstantBufferManager.h"
 
-#include "ConstantBuffers/FrameBuffer.h"
-#include "ConstantBuffers/ObjectBuffer.h"
-#include "ConstantBuffers/AnimationBuffer.h"
-#include "ConstantBuffers/LightBuffer.h"
-#include "ConstantBuffers/CascadeBuffer.h"
+#include "Graphics/ConstantBuffers/FrameBuffer.h"
+#include "Graphics/ConstantBuffers/ObjectBuffer.h"
+#include "Graphics/ConstantBuffers/AnimationBuffer.h"
+#include "Graphics/ConstantBuffers/LightBuffer.h"
+#include "Graphics/ConstantBuffers/CascadeBuffer.h"
 
-#include "Core/RenderEnums.h"
+#include "Graphics/Core/RenderEnums.h"
 
-#include "Materials/Material.h"
+#include "Graphics/Materials/Material.h"
 
 #include "Graphics/RHI/RenderHardwareInterface.h"
 #include "Graphics/RHI/GraphicsCommandList.h"

@@ -1,4 +1,4 @@
-﻿#include "Core.pch.h"
+﻿#include "Core/Core.pch.h"
 #include "EngineContext.h"
 
 std::filesystem::path GetExecutableDirectory()

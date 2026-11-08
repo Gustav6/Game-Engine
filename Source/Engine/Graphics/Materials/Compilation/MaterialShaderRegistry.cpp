@@ -1,4 +1,4 @@
-#include "GraphicsEngine.pch.h"
+#include "Graphics/GraphicsEngine.pch.h"
 #include "MaterialShaderRegistry.h"
 
 void MaterialShaderRegistry::Initialize(const std::filesystem::path& aShaderRoot)

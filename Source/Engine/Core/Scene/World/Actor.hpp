@@ -2,7 +2,7 @@
 
 #include <string>
 
-#include "Core/Scene/Components/Transform/Transform.h"
+#include "Core/Scene/Components/Concrete/Transform/Transform.h"
 #include "Core/Scene/Components/Registry/ComponentRegistryManager.h"
 
 class Actor

@@ -4,7 +4,7 @@
 #include <string_view>
 #include <cstdint>
 
-#include "Objects/GPU/Buffer.h"
+#include "Graphics/Objects/GPU/Buffer.h"
 
 class RenderHardwareInterface;
 class GraphicsCommandList;

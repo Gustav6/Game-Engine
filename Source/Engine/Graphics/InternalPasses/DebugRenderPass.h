@@ -2,8 +2,8 @@
 
 #include <vector>
 
-#include "Objects/GPU/Buffer.h"
-#include "Objects/GPU/Vertex.h"
+#include "Graphics/Objects/GPU/Buffer.h"
+#include "Graphics/Objects/GPU/Vertex.h"
 
 class GraphicsCommandList;
 class RenderHardwareInterface;

@@ -1,9 +1,9 @@
-#include "GraphicsEngine.pch.h"
+#include "Graphics/GraphicsEngine.pch.h"
 #include "Text.h"
 
 #include "Font.h"
 
-#include "Materials/Material.h"
+#include "Graphics/Materials/Material.h"
 
 #include "Graphics/Objects/GPU/Vertex.h"
 

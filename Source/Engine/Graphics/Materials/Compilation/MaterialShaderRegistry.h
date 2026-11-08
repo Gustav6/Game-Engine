@@ -3,7 +3,7 @@
 #include <unordered_map>
 #include <filesystem>
 
-#include "Materials/Material.h"
+#include "Graphics/Materials/Material.h"
 
 class MaterialShaderRegistry
 {

@@ -1,9 +1,7 @@
-#include "GraphicsEngine.pch.h"
+#include "Graphics/GraphicsEngine.pch.h"
 #include "ScreenSpaceEffectPass.h"
 
-#include "GraphicsEngine.hpp"
-
-#include "Graphics/Core/RenderEnums.h"
+#include "Graphics/GraphicsEngine.hpp"
 
 #include "Graphics/Objects/GPU/Texture.h"
 
@@ -16,6 +14,10 @@
 #include "Graphics/ConstantBuffers/Manager/ConstantBufferManager.h"
 
 #include "Graphics/Core/FrameTargets.h"
+#include "Graphics/Core/RenderContext.h"
+#include "Graphics/Core/RenderEnums.h"
+
+#include "Graphics/InternalOperations/PostProcessFilters.h"
 
 #include "Fullscreen_VS.h"
 #include "Tonemap_PS.h"
@@ -23,9 +25,6 @@
 #include "Bloom_PS.h"
 #include "BloomUpsample_PS.h"
 
-#include "Core/RenderContext.h"
-
-#include "InternalOperations/PostProcessFilters.h"
 
 bool ScreenSpaceEffectPass::Initialize(RenderHardwareInterface& aRHI)
 {

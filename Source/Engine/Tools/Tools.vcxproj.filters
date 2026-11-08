@@ -1,11 +1,26 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="AvailableTools">
-      <UniqueIdentifier>{D7B7E8A0-C385-DCA6-AC19-4DCD9886B80B}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Core">
       <UniqueIdentifier>{2EB4837C-1AEB-840D-C3D7-6A10AFED000F}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Custom">
+      <UniqueIdentifier>{A0E5AEAC-8C87-D982-7542-EDD6618360D3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Editor">
+      <UniqueIdentifier>{8C1A20B0-78BC-4A86-6177-5EDA4DB8D1D6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Editor\AssetBrowser">
+      <UniqueIdentifier>{DF943478-4BF6-1186-D463-583840C44845}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Editor\Hierarchy">
+      <UniqueIdentifier>{1A06EE88-06FF-0CDB-2F31-F25F1B89ECE6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Editor\Properties">
+      <UniqueIdentifier>{C8195F89-3430-5D1F-7DA7-E840E9FC2DA7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Editor\Viewport">
+      <UniqueIdentifier>{3BA37F64-A72E-ED28-B03F-701D1C4A4929}</UniqueIdentifier>
     </Filter>
     <Filter Include="ImGui">
       <UniqueIdentifier>{C0FF640D-2C14-8DBE-F595-301E616989EF}</UniqueIdentifier>
@@ -24,23 +39,26 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AvailableTools\AssetBrowser.h">
-      <Filter>AvailableTools</Filter>
-    </ClInclude>
-    <ClInclude Include="AvailableTools\PerformanceTool.h">
-      <Filter>AvailableTools</Filter>
-    </ClInclude>
-    <ClInclude Include="AvailableTools\RenderingTool.h">
-      <Filter>AvailableTools</Filter>
-    </ClInclude>
-    <ClInclude Include="AvailableTools\SceneHierarchy.h">
-      <Filter>AvailableTools</Filter>
-    </ClInclude>
     <ClInclude Include="Core\ToolManager.h">
       <Filter>Core</Filter>
     </ClInclude>
     <ClInclude Include="Core\ToolRegistry.h">
       <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Custom\DebugTool.h">
+      <Filter>Custom</Filter>
+    </ClInclude>
+    <ClInclude Include="Editor\AssetBrowser\AssetBrowser.h">
+      <Filter>Editor\AssetBrowser</Filter>
+    </ClInclude>
+    <ClInclude Include="Editor\Hierarchy\Hierarchy.h">
+      <Filter>Editor\Hierarchy</Filter>
+    </ClInclude>
+    <ClInclude Include="Editor\Properties\PropertiesPanel.h">
+      <Filter>Editor\Properties</Filter>
+    </ClInclude>
+    <ClInclude Include="Editor\Viewport\Viewport.h">
+      <Filter>Editor\Viewport</Filter>
     </ClInclude>
     <ClInclude Include="ImGui\ImGuiLayer.h">
       <Filter>ImGui</Filter>
@@ -69,23 +87,26 @@
     <ClCompile Include="..\..\..\ThirdParty\Source\imgui\imgui_widgets.cpp">
       <Filter>ThirdParty\Source\imgui</Filter>
     </ClCompile>
-    <ClCompile Include="AvailableTools\AssetBrowser.cpp">
-      <Filter>AvailableTools</Filter>
-    </ClCompile>
-    <ClCompile Include="AvailableTools\PerformanceTool.cpp">
-      <Filter>AvailableTools</Filter>
-    </ClCompile>
-    <ClCompile Include="AvailableTools\RenderingTool.cpp">
-      <Filter>AvailableTools</Filter>
-    </ClCompile>
-    <ClCompile Include="AvailableTools\SceneHierarchy.cpp">
-      <Filter>AvailableTools</Filter>
-    </ClCompile>
     <ClCompile Include="Core\ToolManager.cpp">
       <Filter>Core</Filter>
     </ClCompile>
     <ClCompile Include="Core\ToolRegistry.cpp">
       <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Custom\DebugTool.cpp">
+      <Filter>Custom</Filter>
+    </ClCompile>
+    <ClCompile Include="Editor\AssetBrowser\AssetBrowser.cpp">
+      <Filter>Editor\AssetBrowser</Filter>
+    </ClCompile>
+    <ClCompile Include="Editor\Hierarchy\Hierarchy.cpp">
+      <Filter>Editor\Hierarchy</Filter>
+    </ClCompile>
+    <ClCompile Include="Editor\Properties\PropertiesPanel.cpp">
+      <Filter>Editor\Properties</Filter>
+    </ClCompile>
+    <ClCompile Include="Editor\Viewport\Viewport.cpp">
+      <Filter>Editor\Viewport</Filter>
     </ClCompile>
     <ClCompile Include="ImGui\ImGuiLayer.cpp">
       <Filter>ImGui</Filter>

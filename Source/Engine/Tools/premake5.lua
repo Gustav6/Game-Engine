@@ -1,8 +1,8 @@
 project "Tools"
     kind "StaticLib"
 
-    pchheader "Tools.pch.h"
-    pchsource "Tools.pch.cpp"
+    pchheader "Tools/Tools.pch.h"
+    pchsource "%{prj.location}/Tools.pch.cpp"
 
     warnings "Extra"
     fatalwarnings { "All" }
@@ -11,7 +11,6 @@ project "Tools"
     objdir ("%{wks.location}/Intermediate/%{prj.name}/%{cfg.buildcfg}/")
 
     includedirs {
-        "%{prj.location}",
         "%{wks.location}/Source/Utilities",
         "%{wks.location}/Source/Engine"
     }

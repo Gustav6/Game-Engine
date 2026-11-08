@@ -1,8 +1,8 @@
 project "Graphics"
     kind "StaticLib"
 
-    pchheader "GraphicsEngine.pch.h"
-    pchsource "GraphicsEngine.pch.cpp"
+    pchheader "Graphics/GraphicsEngine.pch.h"
+    pchsource "%{prj.location}/GraphicsEngine.pch.cpp"
 
     warnings "Extra"
     fatalwarnings { "All" }
@@ -11,7 +11,6 @@ project "Graphics"
     objdir ("%{wks.location}/Intermediate/%{prj.name}/%{cfg.buildcfg}/")
 
     includedirs {
-        "%{prj.location}",
         "%{wks.location}/Source/Engine",
         "%{wks.location}/Source/Utilities/",
         "%{wks.location}/Intermediate/GraphicsEngine/%{cfg.buildcfg}/PrecompiledShaders/"

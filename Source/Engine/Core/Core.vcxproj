@@ -77,7 +77,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>Core.pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile>Core/Core.pch.h</PrecompiledHeaderFile>
       <WarningLevel>Level4</WarningLevel>
       <TreatWarningAsError>true</TreatWarningAsError>
       <PreprocessorDefinitions>SPDLOG_COMPILED_LIB;FMT_UNICODE=0;_DEBUG;TRACY_ENABLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -100,7 +100,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>Core.pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile>Core/Core.pch.h</PrecompiledHeaderFile>
       <WarningLevel>Level4</WarningLevel>
       <TreatWarningAsError>true</TreatWarningAsError>
       <PreprocessorDefinitions>SPDLOG_COMPILED_LIB;FMT_UNICODE=0;_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -128,7 +128,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Retail|x64'">
     <ClCompile>
       <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>Core.pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile>Core/Core.pch.h</PrecompiledHeaderFile>
       <WarningLevel>Level4</WarningLevel>
       <TreatWarningAsError>true</TreatWarningAsError>
       <PreprocessorDefinitions>SPDLOG_COMPILED_LIB;FMT_UNICODE=0;_RETAIL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -152,68 +152,68 @@
     </ProjectReference>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Assets\Base\Asset.h" />
+    <ClInclude Include="Assets\Concrete\AnimationAsset.h" />
+    <ClInclude Include="Assets\Concrete\FontAsset.h" />
+    <ClInclude Include="Assets\Concrete\MaterialAsset.h" />
+    <ClInclude Include="Assets\Concrete\MeshAsset.h" />
+    <ClInclude Include="Assets\Concrete\SpriteAsset.h" />
+    <ClInclude Include="Assets\Concrete\TextureAsset.h" />
+    <ClInclude Include="Assets\Concrete\UnrealSceneAsset.h" />
+    <ClInclude Include="Assets\Interface\Asset.h" />
     <ClInclude Include="Assets\Registry\AssetRegistry.h" />
-    <ClInclude Include="Assets\Types\AnimationAsset.h" />
-    <ClInclude Include="Assets\Types\FontAsset.h" />
-    <ClInclude Include="Assets\Types\MaterialAsset.h" />
-    <ClInclude Include="Assets\Types\MeshAsset.h" />
-    <ClInclude Include="Assets\Types\SpriteAsset.h" />
-    <ClInclude Include="Assets\Types\TextureAsset.h" />
-    <ClInclude Include="Assets\Types\UnrealSceneAsset.h" />
     <ClInclude Include="Core.pch.h" />
     <ClInclude Include="EngineContext.h" />
     <ClInclude Include="Managers\DebugSettingsManager.h" />
     <ClInclude Include="Managers\WindowManager.h" />
-    <ClInclude Include="Scene\Components\Base\Component.h" />
-    <ClInclude Include="Scene\Components\Collision\BoxColliderComponent.h" />
-    <ClInclude Include="Scene\Components\Collision\SphereColliderComponent.h" />
-    <ClInclude Include="Scene\Components\Light\DirectionlLightComponent.h" />
-    <ClInclude Include="Scene\Components\Light\LightComponent.h" />
-    <ClInclude Include="Scene\Components\Light\PointLightComponent.h" />
-    <ClInclude Include="Scene\Components\Light\SpotLightComponent.h" />
-    <ClInclude Include="Scene\Components\Particles\ParticleEmitterComponent.h" />
+    <ClInclude Include="Scene\Components\Concrete\Collision\BoxColliderComponent.h" />
+    <ClInclude Include="Scene\Components\Concrete\Collision\SphereColliderComponent.h" />
+    <ClInclude Include="Scene\Components\Concrete\Light\DirectionlLightComponent.h" />
+    <ClInclude Include="Scene\Components\Concrete\Light\LightComponent.h" />
+    <ClInclude Include="Scene\Components\Concrete\Light\PointLightComponent.h" />
+    <ClInclude Include="Scene\Components\Concrete\Light\SpotLightComponent.h" />
+    <ClInclude Include="Scene\Components\Concrete\Particles\ParticleEmitterComponent.h" />
+    <ClInclude Include="Scene\Components\Concrete\Rendering\AnimationComponent.h" />
+    <ClInclude Include="Scene\Components\Concrete\Rendering\MeshComponent.h" />
+    <ClInclude Include="Scene\Components\Concrete\Rendering\SpriteComponent.h" />
+    <ClInclude Include="Scene\Components\Concrete\Rendering\TextComponent.h" />
+    <ClInclude Include="Scene\Components\Concrete\Transform\Transform.h" />
+    <ClInclude Include="Scene\Components\Interface\Component.h" />
     <ClInclude Include="Scene\Components\Registry\ComponentRegistry.h" />
     <ClInclude Include="Scene\Components\Registry\ComponentRegistryManager.h" />
-    <ClInclude Include="Scene\Components\Rendering\AnimationComponent.h" />
-    <ClInclude Include="Scene\Components\Rendering\MeshComponent.h" />
-    <ClInclude Include="Scene\Components\Rendering\SpriteComponent.h" />
-    <ClInclude Include="Scene\Components\Rendering\TextComponent.h" />
-    <ClInclude Include="Scene\Components\Transform\Transform.h" />
     <ClInclude Include="Scene\World\Actor.hpp" />
     <ClInclude Include="Scene\World\GameWorld.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Assets\Base\Asset.cpp" />
+    <ClCompile Include="Assets\Concrete\AnimationAsset.cpp" />
+    <ClCompile Include="Assets\Concrete\FontAsset.cpp" />
+    <ClCompile Include="Assets\Concrete\MaterialAsset.cpp" />
+    <ClCompile Include="Assets\Concrete\MeshAsset.cpp" />
+    <ClCompile Include="Assets\Concrete\SpriteAsset.cpp" />
+    <ClCompile Include="Assets\Concrete\TextureAsset.cpp" />
+    <ClCompile Include="Assets\Concrete\UnrealSceneAsset.cpp" />
+    <ClCompile Include="Assets\Interface\Asset.cpp" />
     <ClCompile Include="Assets\Registry\AssetRegistry.cpp" />
-    <ClCompile Include="Assets\Types\AnimationAsset.cpp" />
-    <ClCompile Include="Assets\Types\FontAsset.cpp" />
-    <ClCompile Include="Assets\Types\MaterialAsset.cpp" />
-    <ClCompile Include="Assets\Types\MeshAsset.cpp" />
-    <ClCompile Include="Assets\Types\SpriteAsset.cpp" />
-    <ClCompile Include="Assets\Types\TextureAsset.cpp" />
-    <ClCompile Include="Assets\Types\UnrealSceneAsset.cpp" />
     <ClCompile Include="Core.pch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="EngineContext.cpp" />
     <ClCompile Include="Managers\DebugSettingsManager.cpp" />
     <ClCompile Include="Managers\WindowManager.cpp" />
-    <ClCompile Include="Scene\Components\Base\Component.cpp" />
-    <ClCompile Include="Scene\Components\Collision\BoxColliderComponent.cpp" />
-    <ClCompile Include="Scene\Components\Collision\SphereColliderComponent.cpp" />
-    <ClCompile Include="Scene\Components\Light\DirectionlLightComponent.cpp" />
-    <ClCompile Include="Scene\Components\Light\LightComponent.cpp" />
-    <ClCompile Include="Scene\Components\Light\PointLightComponent.cpp" />
-    <ClCompile Include="Scene\Components\Light\SpotLightComponent.cpp" />
-    <ClCompile Include="Scene\Components\Particles\ParticleEmitterComponent.cpp" />
+    <ClCompile Include="Scene\Components\Concrete\Collision\BoxColliderComponent.cpp" />
+    <ClCompile Include="Scene\Components\Concrete\Collision\SphereColliderComponent.cpp" />
+    <ClCompile Include="Scene\Components\Concrete\Light\DirectionlLightComponent.cpp" />
+    <ClCompile Include="Scene\Components\Concrete\Light\LightComponent.cpp" />
+    <ClCompile Include="Scene\Components\Concrete\Light\PointLightComponent.cpp" />
+    <ClCompile Include="Scene\Components\Concrete\Light\SpotLightComponent.cpp" />
+    <ClCompile Include="Scene\Components\Concrete\Particles\ParticleEmitterComponent.cpp" />
+    <ClCompile Include="Scene\Components\Concrete\Rendering\AnimationComponent.cpp" />
+    <ClCompile Include="Scene\Components\Concrete\Rendering\MeshComponent.cpp" />
+    <ClCompile Include="Scene\Components\Concrete\Rendering\SpriteComponent.cpp" />
+    <ClCompile Include="Scene\Components\Concrete\Rendering\TextComponent.cpp" />
+    <ClCompile Include="Scene\Components\Concrete\Transform\Transform.cpp" />
+    <ClCompile Include="Scene\Components\Interface\Component.cpp" />
     <ClCompile Include="Scene\Components\Registry\ComponentRegistry.cpp" />
     <ClCompile Include="Scene\Components\Registry\ComponentRegistryManager.cpp" />
-    <ClCompile Include="Scene\Components\Rendering\AnimationComponent.cpp" />
-    <ClCompile Include="Scene\Components\Rendering\MeshComponent.cpp" />
-    <ClCompile Include="Scene\Components\Rendering\SpriteComponent.cpp" />
-    <ClCompile Include="Scene\Components\Rendering\TextComponent.cpp" />
-    <ClCompile Include="Scene\Components\Transform\Transform.cpp" />
     <ClCompile Include="Scene\World\Actor.cpp" />
     <ClCompile Include="Scene\World\GameWorld.cpp" />
   </ItemGroup>

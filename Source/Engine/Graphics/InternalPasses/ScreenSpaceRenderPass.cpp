@@ -1,4 +1,4 @@
-#include "GraphicsEngine.pch.h"
+#include "Graphics/GraphicsEngine.pch.h"
 #include "ScreenSpaceRenderPass.h"
 
 #include "CommonUtilities/Math/Matrix4x4.hpp"
@@ -12,7 +12,7 @@
 
 #include "Graphics/Resources/BuiltinAssets.h"
 
-#include "RHI/RenderHardwareInterface.h"
+#include "Graphics/RHI/RenderHardwareInterface.h"
 
 #include "Graphics/Materials/MaterialInterface.h"
 

@@ -1,4 +1,4 @@
-#include "Core.pch.h"
+#include "Core/Core.pch.h"
 #include "WindowManager.h"
 
 #define	WIN32_LEAN_AND_MEAN

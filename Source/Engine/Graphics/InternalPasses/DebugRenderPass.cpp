@@ -1,7 +1,7 @@
-#include "GraphicsEngine.pch.h"
+#include "Graphics/GraphicsEngine.pch.h"
 #include "DebugRenderPass.h"
 
-#include "GraphicsEngine.hpp"
+#include "Graphics/GraphicsEngine.hpp"
 
 #include "Graphics/Core/RenderContext.h"
 #include "Graphics/Core/SceneCamera.h"

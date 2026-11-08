@@ -1,11 +1,11 @@
-#include "GraphicsEngine.pch.h"
+#include "Graphics/GraphicsEngine.pch.h"
 #include "MaterialFactory.h"
 
-#include "../MaterialShaderIncludeHandler.h"
+#include "Graphics/Materials/MaterialShaderIncludeHandler.h"
 
 #include "MaterialShaderRegistry.h"
 
-#include "Materials/Material.h"
+#include "Graphics/Materials/Material.h"
 
 #include "Graphics/Objects/GPU/Shader.h"
 #include "Graphics/Objects/GPU/Vertex.h"

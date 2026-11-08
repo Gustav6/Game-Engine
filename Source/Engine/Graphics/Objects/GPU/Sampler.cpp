@@ -1,4 +1,4 @@
-#include "GraphicsEngine.pch.h"
+#include "Graphics/GraphicsEngine.pch.h"
 #include "Sampler.h"
 
 Sampler::Sampler() = default;

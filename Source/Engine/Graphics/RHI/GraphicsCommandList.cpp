@@ -1,10 +1,10 @@
-#include "GraphicsEngine.pch.h"
+#include "Graphics/GraphicsEngine.pch.h"
 #include "GraphicsCommandList.h"
 
-#include "Objects/GPU/Sampler.h"
-#include "Objects/GPU/Texture.h"
-#include "Objects/GPU/Buffer.h"
-#include "Objects/GPU/Vertex.h"
+#include "Graphics/Objects/GPU/Sampler.h"
+#include "Graphics/Objects/GPU/Texture.h"
+#include "Graphics/Objects/GPU/Buffer.h"
+#include "Graphics/Objects/GPU/Vertex.h"
 
 #include "PipelineStateObject.h"
 

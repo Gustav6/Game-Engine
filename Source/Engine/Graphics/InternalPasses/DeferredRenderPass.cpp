@@ -1,7 +1,7 @@
-#include "GraphicsEngine.pch.h"
+#include "Graphics/GraphicsEngine.pch.h"
 #include "DeferredRenderPass.h"
 
-#include "GraphicsEngine.hpp"
+#include "Graphics/GraphicsEngine.hpp"
 
 #include "ShadowRenderPass.h"
 #include "Shared/DrawCallSubmitter.h"

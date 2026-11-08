@@ -1,8 +1,8 @@
-#include "Core.pch.h"
+#include "Core/Core.pch.h"
 #include "AssetRegistry.h"
 
 #include "Core/EngineContext.h"
-#include "Core/Assets/Types/MeshAsset.h"
+#include "Core/Assets/Concrete/MeshAsset.h"
 
 #include "Graphics/Objects/GPU/Vertex.h"
 #include "Graphics/Objects/Mesh/Mesh.h"

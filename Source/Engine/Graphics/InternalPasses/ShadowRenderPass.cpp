@@ -1,11 +1,11 @@
-#include "GraphicsEngine.pch.h"
+#include "Graphics/GraphicsEngine.pch.h"
 #include "ShadowRenderPass.h"
 
 #include "CommonUtilities/Collision/Frustum.hpp"
 
 #include "Shared/DrawCallSubmitter.h"
 
-#include "Resources/GraphicsResourceFactory.h"
+#include "Graphics/Resources/GraphicsResourceFactory.h"
 
 #include "Graphics/Core/SceneCamera.h"
 #include "Graphics/Core/RenderContext.h"
@@ -28,7 +28,7 @@
 
 #include "Graphics/Drawers/LightDrawer.h"
 
-#include "RHI/PipelineStateObject.h"
+#include "Graphics/RHI/PipelineStateObject.h"
 
 #include "ShadowCube_GS.h"
 #include "Surface_VS.h"

@@ -1,9 +1,9 @@
-#include "GraphicsEngine.pch.h"
+#include "Graphics/GraphicsEngine.pch.h"
 #include "PostProcessFilters.h"
 
-#include "RHI/PipelineStateObject.h"
-#include "RHI/RenderHardwareInterface.h"
-#include "RHI/GraphicsCommandList.h"
+#include "Graphics/RHI/PipelineStateObject.h"
+#include "Graphics/RHI/RenderHardwareInterface.h"
+#include "Graphics/RHI/GraphicsCommandList.h"
 
 #include <Fullscreen_VS.h>
 #include <GaussianBlurH_PS.h>

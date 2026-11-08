@@ -4,14 +4,14 @@
     <Filter Include="Assets">
       <UniqueIdentifier>{3824E0A7-24C6-0A7E-0D81-1ED2F9C191CE}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Assets\Base">
-      <UniqueIdentifier>{C2E3AF13-2E99-2809-B78D-22E023421F0D}</UniqueIdentifier>
+    <Filter Include="Assets\Concrete">
+      <UniqueIdentifier>{3A600383-A6EB-7047-AFFC-F33B1B07CD47}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Assets\Interface">
+      <UniqueIdentifier>{1832A084-042B-BFD6-2D5D-A45B19B59EE2}</UniqueIdentifier>
     </Filter>
     <Filter Include="Assets\Registry">
       <UniqueIdentifier>{80BC3149-EC47-9F0D-F558-22026163FB0D}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Assets\Types">
-      <UniqueIdentifier>{DC31FF8A-C894-8E2F-711A-C7E55D5C5AB2}</UniqueIdentifier>
     </Filter>
     <Filter Include="Managers">
       <UniqueIdentifier>{B34CFEBD-9F19-59C9-C832-4771B45E8E57}</UniqueIdentifier>
@@ -22,58 +22,61 @@
     <Filter Include="Scene\Components">
       <UniqueIdentifier>{E8C60300-D4BF-2252-FDF1-07D7E949025E}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scene\Components\Base">
-      <UniqueIdentifier>{72B4F477-DE20-B072-A714-48D01340D2DA}</UniqueIdentifier>
+    <Filter Include="Scene\Components\Concrete">
+      <UniqueIdentifier>{EA08A129-56CB-D4B3-9F7B-63400B7DAD91}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scene\Components\Collision">
-      <UniqueIdentifier>{03BE30D8-EFCD-DCA8-5887-41C744B6CB41}</UniqueIdentifier>
+    <Filter Include="Scene\Components\Concrete\Collision">
+      <UniqueIdentifier>{85EA815B-F1A3-EC05-7A03-07E0E6BBA275}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scene\Components\Light">
-      <UniqueIdentifier>{8F684477-7B62-6DC9-64CF-03DA5068D335}</UniqueIdentifier>
+    <Filter Include="Scene\Components\Concrete\Light">
+      <UniqueIdentifier>{11A43FC0-7D87-4E00-868A-7C3CF2EC1451}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scene\Components\Particles">
-      <UniqueIdentifier>{BECD66B7-AADD-1288-1397-77A6FFC50121}</UniqueIdentifier>
+    <Filter Include="Scene\Components\Concrete\Particles">
+      <UniqueIdentifier>{40FAB73A-ACB3-22E5-3513-3DBFA1CBD854}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene\Components\Concrete\Rendering">
+      <UniqueIdentifier>{B77E3C7B-2338-A725-AC97-C1FF18505D95}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene\Components\Concrete\Transform">
+      <UniqueIdentifier>{358D2293-A146-8D3D-2AA6-A717965E43AD}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene\Components\Interface">
+      <UniqueIdentifier>{C8F0F2FE-B400-9FCF-1DBA-03EE09E98D68}</UniqueIdentifier>
     </Filter>
     <Filter Include="Scene\Components\Registry">
       <UniqueIdentifier>{3065CFEF-9C27-037A-E5D7-910651D9DB57}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scene\Components\Rendering">
-      <UniqueIdentifier>{3552EBF7-2162-97C8-8A1B-FCE6764A8661}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scene\Components\Transform">
-      <UniqueIdentifier>{B360D10F-9F70-7DE0-082A-E2FEF4586C79}</UniqueIdentifier>
     </Filter>
     <Filter Include="Scene\World">
       <UniqueIdentifier>{AA4CB204-1602-2BFA-9FF6-24D10BAB21FE}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Assets\Base\Asset.h">
-      <Filter>Assets\Base</Filter>
+    <ClInclude Include="Assets\Concrete\AnimationAsset.h">
+      <Filter>Assets\Concrete</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Concrete\FontAsset.h">
+      <Filter>Assets\Concrete</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Concrete\MaterialAsset.h">
+      <Filter>Assets\Concrete</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Concrete\MeshAsset.h">
+      <Filter>Assets\Concrete</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Concrete\SpriteAsset.h">
+      <Filter>Assets\Concrete</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Concrete\TextureAsset.h">
+      <Filter>Assets\Concrete</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Concrete\UnrealSceneAsset.h">
+      <Filter>Assets\Concrete</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets\Interface\Asset.h">
+      <Filter>Assets\Interface</Filter>
     </ClInclude>
     <ClInclude Include="Assets\Registry\AssetRegistry.h">
       <Filter>Assets\Registry</Filter>
-    </ClInclude>
-    <ClInclude Include="Assets\Types\AnimationAsset.h">
-      <Filter>Assets\Types</Filter>
-    </ClInclude>
-    <ClInclude Include="Assets\Types\FontAsset.h">
-      <Filter>Assets\Types</Filter>
-    </ClInclude>
-    <ClInclude Include="Assets\Types\MaterialAsset.h">
-      <Filter>Assets\Types</Filter>
-    </ClInclude>
-    <ClInclude Include="Assets\Types\MeshAsset.h">
-      <Filter>Assets\Types</Filter>
-    </ClInclude>
-    <ClInclude Include="Assets\Types\SpriteAsset.h">
-      <Filter>Assets\Types</Filter>
-    </ClInclude>
-    <ClInclude Include="Assets\Types\TextureAsset.h">
-      <Filter>Assets\Types</Filter>
-    </ClInclude>
-    <ClInclude Include="Assets\Types\UnrealSceneAsset.h">
-      <Filter>Assets\Types</Filter>
     </ClInclude>
     <ClInclude Include="Core.pch.h" />
     <ClInclude Include="EngineContext.h" />
@@ -83,50 +86,50 @@
     <ClInclude Include="Managers\WindowManager.h">
       <Filter>Managers</Filter>
     </ClInclude>
-    <ClInclude Include="Scene\Components\Base\Component.h">
-      <Filter>Scene\Components\Base</Filter>
+    <ClInclude Include="Scene\Components\Concrete\Collision\BoxColliderComponent.h">
+      <Filter>Scene\Components\Concrete\Collision</Filter>
     </ClInclude>
-    <ClInclude Include="Scene\Components\Collision\BoxColliderComponent.h">
-      <Filter>Scene\Components\Collision</Filter>
+    <ClInclude Include="Scene\Components\Concrete\Collision\SphereColliderComponent.h">
+      <Filter>Scene\Components\Concrete\Collision</Filter>
     </ClInclude>
-    <ClInclude Include="Scene\Components\Collision\SphereColliderComponent.h">
-      <Filter>Scene\Components\Collision</Filter>
+    <ClInclude Include="Scene\Components\Concrete\Light\DirectionlLightComponent.h">
+      <Filter>Scene\Components\Concrete\Light</Filter>
     </ClInclude>
-    <ClInclude Include="Scene\Components\Light\DirectionlLightComponent.h">
-      <Filter>Scene\Components\Light</Filter>
+    <ClInclude Include="Scene\Components\Concrete\Light\LightComponent.h">
+      <Filter>Scene\Components\Concrete\Light</Filter>
     </ClInclude>
-    <ClInclude Include="Scene\Components\Light\LightComponent.h">
-      <Filter>Scene\Components\Light</Filter>
+    <ClInclude Include="Scene\Components\Concrete\Light\PointLightComponent.h">
+      <Filter>Scene\Components\Concrete\Light</Filter>
     </ClInclude>
-    <ClInclude Include="Scene\Components\Light\PointLightComponent.h">
-      <Filter>Scene\Components\Light</Filter>
+    <ClInclude Include="Scene\Components\Concrete\Light\SpotLightComponent.h">
+      <Filter>Scene\Components\Concrete\Light</Filter>
     </ClInclude>
-    <ClInclude Include="Scene\Components\Light\SpotLightComponent.h">
-      <Filter>Scene\Components\Light</Filter>
+    <ClInclude Include="Scene\Components\Concrete\Particles\ParticleEmitterComponent.h">
+      <Filter>Scene\Components\Concrete\Particles</Filter>
     </ClInclude>
-    <ClInclude Include="Scene\Components\Particles\ParticleEmitterComponent.h">
-      <Filter>Scene\Components\Particles</Filter>
+    <ClInclude Include="Scene\Components\Concrete\Rendering\AnimationComponent.h">
+      <Filter>Scene\Components\Concrete\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\Components\Concrete\Rendering\MeshComponent.h">
+      <Filter>Scene\Components\Concrete\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\Components\Concrete\Rendering\SpriteComponent.h">
+      <Filter>Scene\Components\Concrete\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\Components\Concrete\Rendering\TextComponent.h">
+      <Filter>Scene\Components\Concrete\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\Components\Concrete\Transform\Transform.h">
+      <Filter>Scene\Components\Concrete\Transform</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\Components\Interface\Component.h">
+      <Filter>Scene\Components\Interface</Filter>
     </ClInclude>
     <ClInclude Include="Scene\Components\Registry\ComponentRegistry.h">
       <Filter>Scene\Components\Registry</Filter>
     </ClInclude>
     <ClInclude Include="Scene\Components\Registry\ComponentRegistryManager.h">
       <Filter>Scene\Components\Registry</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene\Components\Rendering\AnimationComponent.h">
-      <Filter>Scene\Components\Rendering</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene\Components\Rendering\MeshComponent.h">
-      <Filter>Scene\Components\Rendering</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene\Components\Rendering\SpriteComponent.h">
-      <Filter>Scene\Components\Rendering</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene\Components\Rendering\TextComponent.h">
-      <Filter>Scene\Components\Rendering</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene\Components\Transform\Transform.h">
-      <Filter>Scene\Components\Transform</Filter>
     </ClInclude>
     <ClInclude Include="Scene\World\Actor.hpp">
       <Filter>Scene\World</Filter>
@@ -136,32 +139,32 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Assets\Base\Asset.cpp">
-      <Filter>Assets\Base</Filter>
+    <ClCompile Include="Assets\Concrete\AnimationAsset.cpp">
+      <Filter>Assets\Concrete</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Concrete\FontAsset.cpp">
+      <Filter>Assets\Concrete</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Concrete\MaterialAsset.cpp">
+      <Filter>Assets\Concrete</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Concrete\MeshAsset.cpp">
+      <Filter>Assets\Concrete</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Concrete\SpriteAsset.cpp">
+      <Filter>Assets\Concrete</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Concrete\TextureAsset.cpp">
+      <Filter>Assets\Concrete</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Concrete\UnrealSceneAsset.cpp">
+      <Filter>Assets\Concrete</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets\Interface\Asset.cpp">
+      <Filter>Assets\Interface</Filter>
     </ClCompile>
     <ClCompile Include="Assets\Registry\AssetRegistry.cpp">
       <Filter>Assets\Registry</Filter>
-    </ClCompile>
-    <ClCompile Include="Assets\Types\AnimationAsset.cpp">
-      <Filter>Assets\Types</Filter>
-    </ClCompile>
-    <ClCompile Include="Assets\Types\FontAsset.cpp">
-      <Filter>Assets\Types</Filter>
-    </ClCompile>
-    <ClCompile Include="Assets\Types\MaterialAsset.cpp">
-      <Filter>Assets\Types</Filter>
-    </ClCompile>
-    <ClCompile Include="Assets\Types\MeshAsset.cpp">
-      <Filter>Assets\Types</Filter>
-    </ClCompile>
-    <ClCompile Include="Assets\Types\SpriteAsset.cpp">
-      <Filter>Assets\Types</Filter>
-    </ClCompile>
-    <ClCompile Include="Assets\Types\TextureAsset.cpp">
-      <Filter>Assets\Types</Filter>
-    </ClCompile>
-    <ClCompile Include="Assets\Types\UnrealSceneAsset.cpp">
-      <Filter>Assets\Types</Filter>
     </ClCompile>
     <ClCompile Include="Core.pch.cpp" />
     <ClCompile Include="EngineContext.cpp" />
@@ -171,50 +174,50 @@
     <ClCompile Include="Managers\WindowManager.cpp">
       <Filter>Managers</Filter>
     </ClCompile>
-    <ClCompile Include="Scene\Components\Base\Component.cpp">
-      <Filter>Scene\Components\Base</Filter>
+    <ClCompile Include="Scene\Components\Concrete\Collision\BoxColliderComponent.cpp">
+      <Filter>Scene\Components\Concrete\Collision</Filter>
     </ClCompile>
-    <ClCompile Include="Scene\Components\Collision\BoxColliderComponent.cpp">
-      <Filter>Scene\Components\Collision</Filter>
+    <ClCompile Include="Scene\Components\Concrete\Collision\SphereColliderComponent.cpp">
+      <Filter>Scene\Components\Concrete\Collision</Filter>
     </ClCompile>
-    <ClCompile Include="Scene\Components\Collision\SphereColliderComponent.cpp">
-      <Filter>Scene\Components\Collision</Filter>
+    <ClCompile Include="Scene\Components\Concrete\Light\DirectionlLightComponent.cpp">
+      <Filter>Scene\Components\Concrete\Light</Filter>
     </ClCompile>
-    <ClCompile Include="Scene\Components\Light\DirectionlLightComponent.cpp">
-      <Filter>Scene\Components\Light</Filter>
+    <ClCompile Include="Scene\Components\Concrete\Light\LightComponent.cpp">
+      <Filter>Scene\Components\Concrete\Light</Filter>
     </ClCompile>
-    <ClCompile Include="Scene\Components\Light\LightComponent.cpp">
-      <Filter>Scene\Components\Light</Filter>
+    <ClCompile Include="Scene\Components\Concrete\Light\PointLightComponent.cpp">
+      <Filter>Scene\Components\Concrete\Light</Filter>
     </ClCompile>
-    <ClCompile Include="Scene\Components\Light\PointLightComponent.cpp">
-      <Filter>Scene\Components\Light</Filter>
+    <ClCompile Include="Scene\Components\Concrete\Light\SpotLightComponent.cpp">
+      <Filter>Scene\Components\Concrete\Light</Filter>
     </ClCompile>
-    <ClCompile Include="Scene\Components\Light\SpotLightComponent.cpp">
-      <Filter>Scene\Components\Light</Filter>
+    <ClCompile Include="Scene\Components\Concrete\Particles\ParticleEmitterComponent.cpp">
+      <Filter>Scene\Components\Concrete\Particles</Filter>
     </ClCompile>
-    <ClCompile Include="Scene\Components\Particles\ParticleEmitterComponent.cpp">
-      <Filter>Scene\Components\Particles</Filter>
+    <ClCompile Include="Scene\Components\Concrete\Rendering\AnimationComponent.cpp">
+      <Filter>Scene\Components\Concrete\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\Components\Concrete\Rendering\MeshComponent.cpp">
+      <Filter>Scene\Components\Concrete\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\Components\Concrete\Rendering\SpriteComponent.cpp">
+      <Filter>Scene\Components\Concrete\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\Components\Concrete\Rendering\TextComponent.cpp">
+      <Filter>Scene\Components\Concrete\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\Components\Concrete\Transform\Transform.cpp">
+      <Filter>Scene\Components\Concrete\Transform</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\Components\Interface\Component.cpp">
+      <Filter>Scene\Components\Interface</Filter>
     </ClCompile>
     <ClCompile Include="Scene\Components\Registry\ComponentRegistry.cpp">
       <Filter>Scene\Components\Registry</Filter>
     </ClCompile>
     <ClCompile Include="Scene\Components\Registry\ComponentRegistryManager.cpp">
       <Filter>Scene\Components\Registry</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene\Components\Rendering\AnimationComponent.cpp">
-      <Filter>Scene\Components\Rendering</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene\Components\Rendering\MeshComponent.cpp">
-      <Filter>Scene\Components\Rendering</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene\Components\Rendering\SpriteComponent.cpp">
-      <Filter>Scene\Components\Rendering</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene\Components\Rendering\TextComponent.cpp">
-      <Filter>Scene\Components\Rendering</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene\Components\Transform\Transform.cpp">
-      <Filter>Scene\Components\Transform</Filter>
     </ClCompile>
     <ClCompile Include="Scene\World\Actor.cpp">
       <Filter>Scene\World</Filter>

@@ -1,9 +1,9 @@
-#include "Core.pch.h"
+#include "Core/Core.pch.h"
 #include "ComponentRegistryManager.h"
 
 #include <ranges>
 
-#include "Core/Scene/Components/Base/Component.h"
+#include "Core/Scene/Components/Interface/Component.h"
 
 ComponentRegistryManager::ComponentRegistryManager()
 {

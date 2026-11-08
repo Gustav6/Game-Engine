@@ -3,10 +3,10 @@
 #include <wrl.h>
 #include <string_view>
 #include <vector>
+#include <filesystem>
 
 #include "CommonUtilities/Math/Vector2.hpp"
-#include "RHI/RHIStructs.h"
-#include <filesystem>
+#include "Graphics/RHI/RHIStructs.h"
 
 class Sampler;
 struct SamplerDescription;

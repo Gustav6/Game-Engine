@@ -10,13 +10,13 @@
 
 #include "Core/Assets/Registry/AssetRegistry.h"
 
-#include "Core/Assets/Types/MeshAsset.h"
-#include "Core/Assets/Types/AnimationAsset.h"
-#include "Core/Assets/Types/MaterialAsset.h"
-#include "Core/Assets/Types/TextureAsset.h"
-#include "Core/Assets/Types/FontAsset.h"
-#include "Core/Assets/Types/SpriteAsset.h"
-#include "Core/Assets/Types/UnrealSceneAsset.h"
+#include "Core/Assets/Concrete/MeshAsset.h"
+#include "Core/Assets/Concrete/AnimationAsset.h"
+#include "Core/Assets/Concrete/MaterialAsset.h"
+#include "Core/Assets/Concrete/TextureAsset.h"
+#include "Core/Assets/Concrete/FontAsset.h"
+#include "Core/Assets/Concrete/SpriteAsset.h"
+#include "Core/Assets/Concrete/UnrealSceneAsset.h"
 
 #include "GameState/GameStateMachine.h"
 

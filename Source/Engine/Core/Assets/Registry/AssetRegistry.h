@@ -12,7 +12,7 @@
 #include <set>
 #include <algorithm>
 
-#include "Core/Assets/Base/Asset.h"
+#include "Core/Assets/Interface/Asset.h"
 #include "Wrappers/Logger/LoggerWrapper.h"
 
 // TODO: Stop using string and move to interned string.
