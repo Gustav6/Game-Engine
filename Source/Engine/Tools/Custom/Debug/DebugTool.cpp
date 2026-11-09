@@ -22,8 +22,8 @@ void DebugTool::Render()
 
 	if (ImGui::CollapsingHeader("Frame Info"))
 	{
-		ImGui::Text("FPS: %.1f", myInfo.FPS);
-		ImGui::Text("Frame Time: %.1f", myInfo.FrameTime);
+		ImGui::Text("FPS: %.0f", myInfo.FPS);
+		ImGui::Text("Frame Time: %.5f", myInfo.FrameTime);
 		ImGui::Text("Draw Call Count: %u", myInfo.DrawCallCount);
 		ImGui::Text("Pipeline Switches: %u", myInfo.PipelineSwitches);
 		ImGui::Text("Visible Objects: %u", myInfo.VisibleObjects);

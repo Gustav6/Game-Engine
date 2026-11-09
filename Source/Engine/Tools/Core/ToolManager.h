@@ -10,6 +10,9 @@
 #include "ToolRegistry.h"
 #include <Tools/Core/Interface/Tool.h>
 
+// TODO: Add method to set different settings such as font.
+// TODO: Add method to allow the user to set dock settings.
+
 class ToolManager
 {
 public:
@@ -20,16 +23,13 @@ public:
     void Update(float deltaTime);
     void Render();
 
-    // TODO: Add method to set different imgui setting such as font.
-    // TODO: Add method to allow the user to set dock settings for tools.
-
     template<typename ToolClass>
     requires std::is_base_of_v<Tool, ToolClass>
     bool AddTool()
     {
         const std::type_index type = typeid(ToolClass);
 
-        if (myActiveTools.contains(type))
+        if (myTools.contains(type))
         {
             return false;
         }
@@ -41,7 +41,7 @@ public:
             return false;
         }
 
-        myActiveTools.emplace(type, std::move(tool));
+        myTools.emplace(type, std::move(tool));
 
         return true;
     }
@@ -52,14 +52,14 @@ public:
     {
         const std::type_index type = typeid(ToolClass);
 
-        auto it = myActiveTools.find(type);
+        auto it = myTools.find(type);
 
-        if (it == myActiveTools.end())
+        if (it == myTools.end())
         {
             return false;
         }
 
-        myActiveTools.erase(it);
+        myTools.erase(it);
 
         return true;
     }
@@ -70,9 +70,9 @@ public:
     {
         const std::type_index type = typeid(ToolClass);
 
-        const auto it = myActiveTools.find(type);
+        const auto it = myTools.find(type);
 
-        if (it == myActiveTools.end())
+        if (it == myTools.end())
         {
             return nullptr;
         }
@@ -83,5 +83,5 @@ public:
 private:
 	ToolManager();
 
-    std::unordered_map<std::type_index, std::unique_ptr<Tool>> myActiveTools;
+    std::unordered_map<std::type_index, std::unique_ptr<Tool>> myTools;
 };

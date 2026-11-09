@@ -232,8 +232,6 @@ FrameStats GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const S
 
 	// TODO: The current setup does not take into account the shadows.
 	// Meaning that I need to cull them with their shadow region in mind.
-	// Construct frustrum's for the lights and test them in the same way.
-	// BIG SAVE: The lights should also only use the meshes that they can see.
 
 	for (const auto& drawCall : MeshDrawer::Get().GetMeshDrawCalls())
 	{

@@ -34,6 +34,7 @@ public:
 	void ClearRenderTarget(const Texture& aTarget) const;
 	void ClearRenderTargets(const Texture* aTargetList, unsigned aNumTargets) const;
 	void ClearDepthStencil(const Texture& aTarget) const;
+
 	void SetRenderTarget(const Texture* aTarget, const Texture* aDepthStencil) const;
 	void SetRenderTargets(const Texture* aTargetList, unsigned aNumTargets, const Texture* aDepthStencil) const;
 

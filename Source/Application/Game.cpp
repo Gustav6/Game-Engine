@@ -248,8 +248,8 @@ int Game::Run()
 #ifndef _RETAIL
 			const DebugInfo info = 
 			{
-				.FPS = 0,
-				.FrameTime = 0,
+				.FPS = 1.0f / deltaTime,
+				.FrameTime = deltaTime,
 				.DrawCallCount = frameStats.DrawCallCount,
 				.PipelineSwitches = frameStats.PipelineSwitches,
 				.VisibleObjects = frameStats.VisibleObjects,

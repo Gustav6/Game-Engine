@@ -41,6 +41,6 @@ private:
     std::unique_ptr<Texture> myFullSizeSSAOTexture;
     std::unique_ptr<Texture> myBlurSSAOTexture;
 
-    bool mySSAOEnabled;
+    bool mySSAOEnabled = false;
 };
 

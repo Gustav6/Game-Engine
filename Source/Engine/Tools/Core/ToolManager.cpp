@@ -14,7 +14,7 @@ ToolManager::~ToolManager() = default;
 
 void ToolManager::Update(float deltaTime)
 {
-    for (auto& tool : myActiveTools | std::views::values)
+    for (auto& tool : myTools | std::views::values)
     {
         tool->Update(deltaTime);
     }
@@ -26,7 +26,7 @@ void ToolManager::Render()
 
     //ImGui::ShowDemoWindow();
 
-    for (auto& tool : myActiveTools | std::views::values)
+    for (auto& tool : myTools | std::views::values)
     {
         tool->Render();
     }

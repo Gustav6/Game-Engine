@@ -142,5 +142,5 @@ private:
 	std::vector<RenderItem> myForwardItems;
 	std::vector<RenderItem> myShadowItems;
 
-	RenderOverlay* myRenderOverlay;
+	RenderOverlay* myRenderOverlay = nullptr;
 };

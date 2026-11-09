@@ -52,5 +52,5 @@ private:
 
     std::array<BloomMip, 6> myBloomMips;
 
-    bool myBloomEnabled;
+    bool myBloomEnabled = false;
 };
