@@ -535,6 +535,19 @@ void GraphicsCommandList::ClearOverridePipelineState()
 	myCurrentOverrides = PipelineStage_None;
 }
 
+void GraphicsCommandList::CopyRegion(const Texture& aSource, const Texture& aTarget, unsigned aX, unsigned aY, unsigned aWidth, unsigned aHeight)
+{
+	D3D11_BOX pickBox = {}; 
+	pickBox.left = aX; 
+	pickBox.right = aX + aWidth; 
+	pickBox.top = aY; 
+	pickBox.bottom = aY + aHeight;
+	pickBox.front = 0;
+	pickBox.back = 1;
+	
+	myContext->CopySubresourceRegion(aTarget.myRHITexture.Get(), 0, 0, 0, 0, aSource.myRHITexture.Get(), 0, &pickBox);
+}
+
 unsigned int GraphicsCommandList::GetPipelineSwitchCount() const
 {
 	return myPipelineSwitchCounter;

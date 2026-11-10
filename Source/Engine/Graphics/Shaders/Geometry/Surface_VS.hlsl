@@ -8,7 +8,7 @@ VStoPS main(Vertex aVertex)
     float3 vertexNormal = aVertex.Normal;
     float3 vertexTangent = aVertex.Tangent;
     
-    if (OB_HasSkinning)
+    if (OB_SkinningFlag)
     {
         float4x4 skinMatrix = 0;
         

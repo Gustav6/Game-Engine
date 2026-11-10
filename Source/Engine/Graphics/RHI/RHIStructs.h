@@ -71,6 +71,7 @@ enum class ResourceFormat
 	R8G8B8A8_UNORM = 28,
 	R16G16_FLOAT = 34,
 	R32_FLOAT = 41,
+	R32_UINT = 42,
 	R8G8_UNORM = 49,
 	R16_FLOAT = 54,
 	R8_UNORM = 61

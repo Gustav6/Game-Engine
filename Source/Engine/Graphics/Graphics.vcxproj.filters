@@ -173,6 +173,9 @@
     <ClInclude Include="InternalPasses\ForwardRenderPass.h">
       <Filter>InternalPasses</Filter>
     </ClInclude>
+    <ClInclude Include="InternalPasses\PixelPickingPass.h">
+      <Filter>InternalPasses</Filter>
+    </ClInclude>
     <ClInclude Include="InternalPasses\ScreenSpaceEffectPass.h">
       <Filter>InternalPasses</Filter>
     </ClInclude>
@@ -330,6 +333,9 @@
     <ClCompile Include="InternalPasses\ForwardRenderPass.cpp">
       <Filter>InternalPasses</Filter>
     </ClCompile>
+    <ClCompile Include="InternalPasses\PixelPickingPass.cpp">
+      <Filter>InternalPasses</Filter>
+    </ClCompile>
     <ClCompile Include="InternalPasses\ScreenSpaceEffectPass.cpp">
       <Filter>InternalPasses</Filter>
     </ClCompile>
@@ -456,6 +462,9 @@
       <Filter>Shaders</Filter>
     </FxCompile>
     <FxCompile Include="Shaders\Line_VS.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\PixelPicking_PS.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>
     <FxCompile Include="Shaders\PostProcess\BRDF_LUT_PS.hlsl">

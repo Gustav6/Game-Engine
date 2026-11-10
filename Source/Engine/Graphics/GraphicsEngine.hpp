@@ -11,6 +11,7 @@
 #include <memory>
 
 #include "CommonUtilities/Math/Vector2.hpp"
+#include "CommonUtilities/Math/Vector3.hpp"
 
 class RenderHardwareInterface;
 class GraphicsCommandList;
@@ -22,7 +23,6 @@ class Material;
 class BuiltinAssets;
 class MaterialShaderRegistry;
 class ConstantBufferManager;
-
 class ForwardRenderPass;
 class DeferredRenderPass;
 class ScreenSpaceRenderPass;
@@ -30,6 +30,7 @@ class ShadowRenderPass;
 class ScreenSpaceEffectPass;
 class DebugRenderPass;
 class PostProcessFilters;
+class PixelPickingPass;
 
 struct RenderItem;
 struct SceneCamera;
@@ -110,6 +111,8 @@ private:
 
 	bool InitializeRenderResources();
 
+	CommonUtilities::Vector3f GetPixelPickPosition(const SceneCamera& aSceneCamera, const CommonUtilities::Vector2f& aMousePosition);
+
 	std::filesystem::path myShaderRoot;
 
 	RenderSettings myRenderSettings;
@@ -127,6 +130,7 @@ private:
 	std::unique_ptr<ShadowRenderPass> myShadowRenderPass;
 	std::unique_ptr<ScreenSpaceEffectPass> myScreenSpaceEffectPass;
 	std::unique_ptr<DebugRenderPass> myDebugRenderPass;
+	std::unique_ptr<PixelPickingPass> myPixelPickingPass;
 
 	std::unique_ptr<Texture> myBackBuffer;
 	std::unique_ptr<Texture> myHDRBuffer;

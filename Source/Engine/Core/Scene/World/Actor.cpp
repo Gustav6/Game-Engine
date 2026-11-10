@@ -5,7 +5,7 @@
 
 #include "Core/Scene/Components/Registry/ComponentRegistryManager.h"
 
-Actor::Actor()
+Actor::Actor(unsigned int aID)
 {
 	myIsEnabled = true;
 	myIsDestroyed = false;
@@ -13,6 +13,8 @@ Actor::Actor()
 	myName = "";
 
 	myParent = nullptr;
+
+	myID = aID;
 }
 
 Actor::~Actor()
@@ -145,4 +147,9 @@ const std::vector<Actor*>& Actor::GetChildren() const
 void Actor::RemoveChild(Actor* aChild)
 {
 	myChildren.erase(std::ranges::remove(myChildren, aChild).begin(), myChildren.end());
+}
+
+unsigned int Actor::GetID() const
+{
+	return myID;
 }

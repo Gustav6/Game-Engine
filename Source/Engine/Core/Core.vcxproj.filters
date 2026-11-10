@@ -69,9 +69,6 @@
     <ClInclude Include="Assets\Concrete\TextureAsset.h">
       <Filter>Assets\Concrete</Filter>
     </ClInclude>
-    <ClInclude Include="Assets\Concrete\UnrealSceneAsset.h">
-      <Filter>Assets\Concrete</Filter>
-    </ClInclude>
     <ClInclude Include="Assets\Interface\Asset.h">
       <Filter>Assets\Interface</Filter>
     </ClInclude>
@@ -155,9 +152,6 @@
       <Filter>Assets\Concrete</Filter>
     </ClCompile>
     <ClCompile Include="Assets\Concrete\TextureAsset.cpp">
-      <Filter>Assets\Concrete</Filter>
-    </ClCompile>
-    <ClCompile Include="Assets\Concrete\UnrealSceneAsset.cpp">
       <Filter>Assets\Concrete</Filter>
     </ClCompile>
     <ClCompile Include="Assets\Interface\Asset.cpp">

@@ -5,6 +5,12 @@
 
 #include "Core/Scene/Components/Registry/ComponentRegistryManager.h"
 
+GameWorld::GameWorld()
+{
+	myNextIDCounter = 1;
+	myNextID.emplace_back(myNextIDCounter);
+}
+
 GameWorld& GameWorld::Get()
 {
 	static GameWorld myInstance;
@@ -35,6 +41,8 @@ void GameWorld::Update(float aDeltaTime)
 	{
 		if (*it && (*it)->GetIsDestroyed())
 		{
+			myNextID.emplace_back((*it)->GetID());
+
 			it = myActors.erase(it);
 		}
 		else
@@ -54,23 +62,6 @@ void GameWorld::Clear()
 	for (auto& actor : myActors)
 	{
 		actor->Destroy();
-	}
-}
-
-Actor* GameWorld::AddActor(std::unique_ptr<Actor> aActor)
-{
-	Actor* rawPointer = aActor.get();
-
-	myQueuedActors.emplace_back(std::move(aActor));
-
-	return rawPointer;
-}
-
-void GameWorld::AddActors(std::vector<std::unique_ptr<Actor>> aActors)
-{
-	for (auto& actor : aActors)
-	{
-		myQueuedActors.emplace_back(std::move(actor));
 	}
 }
 

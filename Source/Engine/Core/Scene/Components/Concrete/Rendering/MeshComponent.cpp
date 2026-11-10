@@ -30,7 +30,8 @@ void MeshComponent::Render()
 	MeshDrawCall drawCall =
 	{
 		.Mesh = &myMeshAsset->GetMesh(),
-		.Transform = myOwner->GetTransform().GetWorldMatrix()
+		.Transform = myOwner->GetTransform().GetWorldMatrix(),
+		.ObjectID = myOwner->GetID()
 	};
 
 	for (size_t i = 0; i < myMaterialAssets.size(); i++)

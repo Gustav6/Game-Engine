@@ -8,7 +8,7 @@
 class Actor
 {
 public:
-	Actor();
+	Actor(unsigned int aID);
 	virtual ~Actor();
 
 	Actor(const Actor&) = delete;
@@ -61,6 +61,8 @@ public:
 
 	void RemoveChild(Actor* aChild);
 
+	unsigned int GetID() const;
+
 private:
 	Actor* myParent;
 	std::vector<Actor*> myChildren;
@@ -68,6 +70,8 @@ private:
 	Transform myTransform;
 
 	std::string myName;
+
+	unsigned int myID;
 
 	bool myIsDestroyed;
 	bool myIsEnabled;

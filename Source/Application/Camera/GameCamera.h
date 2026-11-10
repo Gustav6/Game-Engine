@@ -17,7 +17,7 @@ enum class CameraMode
 class GameCamera : public Actor
 {
 public:
-	static GameCamera& GetInstance();
+	GameCamera(unsigned int aID);
 
 	void Init(float aHorizontalFov, float aNearPlane, float aFarPlane, CommonUtilities::Vector2ui aResolution);
 
@@ -32,8 +32,6 @@ public:
 	bool WorldToScreen(const CommonUtilities::Vector3f& aWorldPosition, CommonUtilities::Vector2f& outScreenPosition) const;
 
 private:
-	GameCamera() = default;
-
 	void UpdateFrustum() const;
 	void UpdateFreeLook(float aDeltaTime);
 	void UpdateFollowTarget(float aDeltaTime);

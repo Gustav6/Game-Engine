@@ -15,6 +15,7 @@ struct MeshDrawCall
     const MaterialInterface* Materials[Material::MAX_MATERIAL_TEXTURE_COUNT] = {};
     CommonUtilities::Matrix4x4f Transform;
     const CommonUtilities::Matrix4x4f* JointTransforms = nullptr;
+    unsigned int ObjectID;
 };
 
 class MeshDrawer

@@ -52,6 +52,8 @@ public:
 	bool CreateGBuffer(std::string_view aName, unsigned aWidth, unsigned aHeight, GBuffer& outGBuffer) const;
 	bool CreateStructuredBuffer(std::string_view aName, size_t aSize, size_t aStride, Buffer& outBuffer) const;
 
+	unsigned int ReadObjectId(const Texture& aTexture) const;
+
 	void ExecuteCommandList(const GraphicsCommandList& aCommandList) const;
 
 	void Present() const;

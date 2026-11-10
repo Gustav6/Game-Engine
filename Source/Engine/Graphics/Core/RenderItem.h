@@ -9,6 +9,7 @@ struct RenderItem
     const MeshDrawCall* DrawCall;
     unsigned int ElementIndex;
     unsigned int MaterialIndex;
+    unsigned int ObjectID;
 };
 
 struct ScreenSpaceItem

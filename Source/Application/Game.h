@@ -49,6 +49,7 @@
 class Actor;
 class GraphicsCommandList;
 class GameStateMachine;
+class GameCamera;
 
 struct FrameStats;
 
@@ -71,6 +72,8 @@ private:
 
 	std::unique_ptr<GraphicsCommandList> myGraphicsCommandList;
 	std::unique_ptr<GameStateMachine> myStateMachine;
+
+	GameCamera* myGameCamera;
 
 	HWND myMainWindowHandle = nullptr;
 

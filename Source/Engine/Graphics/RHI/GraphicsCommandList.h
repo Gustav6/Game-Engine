@@ -68,6 +68,8 @@ public:
 	bool IsOverrideActive(PipelineStages aOverride) const;
 	void ClearOverridePipelineState();
 
+	void CopyRegion(const Texture& aSource, const Texture& aTarget, unsigned aX, unsigned aY, unsigned aWidth, unsigned aHeight);
+
 	unsigned int GetPipelineSwitchCount() const;
 	unsigned int GetDrawCallCount() const;
 

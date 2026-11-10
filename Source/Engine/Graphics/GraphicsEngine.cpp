@@ -39,6 +39,7 @@
 #include "InternalPasses/ShadowRenderPass.h"
 #include "InternalPasses/ScreenSpaceRenderPass.h"
 #include "InternalPasses/ScreenSpaceEffectPass.h"
+#include "InternalPasses/PixelPickingPass.h"
 
 #include "Core/RenderItem.h"
 #include "Core/FrameTargets.h"
@@ -123,6 +124,7 @@ bool GraphicsEngine::Initialize(HWND aWindowHandle, const std::filesystem::path&
 		myShadowRenderPass = std::make_unique<ShadowRenderPass>();
 		myScreenSpaceEffectPass = std::make_unique<ScreenSpaceEffectPass>();
 		myDebugRenderPass = std::make_unique<DebugRenderPass>();
+		myPixelPickingPass = std::make_unique<PixelPickingPass>();
 
 		if (!myDeferredRenderPass->Initialize(*myRHI))
 		{
@@ -141,6 +143,10 @@ bool GraphicsEngine::Initialize(HWND aWindowHandle, const std::filesystem::path&
 			return false;
 		}
 		if (!myDebugRenderPass->Initialize(*myRHI))
+		{
+			return false;
+		}
+		if (!myPixelPickingPass->Initialize(*myRHI))
 		{
 			return false;
 		}
@@ -261,7 +267,8 @@ FrameStats GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const S
 				{
 					.DrawCall = &drawCall,
 					.ElementIndex = e,
-					.MaterialIndex = materialIndex
+					.MaterialIndex = materialIndex,
+					.ObjectID = drawCall.ObjectID
 				};
 
 				if (material == nullptr)
@@ -434,7 +441,7 @@ FrameStats GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const S
 		.RenderSettings = &myRenderSettings,
 		.CascadeShadows = &myShadowRenderPass->GetCascades()
 	};
-		
+
 	myShadowRenderPass->Execute(inoutCommandList, myShadowItems, context);
 
 	inoutCommandList.BeginEvent("Main Pass");
@@ -462,8 +469,28 @@ FrameStats GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const S
 		myScreenSpaceRenderPass->Execute(inoutCommandList, screenSpaceItems, targets, context);
 	}
 
+	{
+		std::vector<RenderItem> allItems;
+		allItems.reserve(myDeferredItems.size() + myForwardItems.size());
+
+		allItems.insert(
+			allItems.end(),
+			myDeferredItems.begin(),
+			myDeferredItems.end()
+		);
+
+		//allItems.insert(
+		//	allItems.end(),
+		//	myForwardItems.begin(),
+		//	myForwardItems.end()
+		//);
+
+		myPixelPickingPass->Execute(inoutCommandList, allItems, *myDepthBuffer, context);
+	}
+
 	frameStats.PipelineSwitches = inoutCommandList.GetPipelineSwitchCount();
 	frameStats.DrawCallCount = inoutCommandList.GetDrawCallCount();
+
 	return frameStats;
 }
 
@@ -755,5 +782,24 @@ bool GraphicsEngine::InitializeRenderResources()
 		}
 	}
 
+	const CommonUtilities::Vector2ui resolution = myRHI->GetClientSize();
+
+	if (resolution.x == 0 || resolution.y == 0)
+	{
+		SPDLOG_ERROR("Failed to initialize PixelPickingPass: Invalid resolution ({}x{})", resolution.x, resolution.y);
+
+		return false;
+	}
+
 	return true;
+}
+
+CommonUtilities::Vector3f GraphicsEngine::GetPixelPickPosition(const SceneCamera& aSceneCamera, const CommonUtilities::Vector2f& aMousePosition)
+{
+	float posViewAngleX = 
+		((2.0f * aMousePosition.x / aSceneCamera.RenderCamera.GetResolution().x) - 1) / aSceneCamera.RenderCamera.GetProjection()(0, 0);
+	float posViewAngleY =
+		((2.0f * aMousePosition.y / aSceneCamera.RenderCamera.GetResolution().y) - 1) / aSceneCamera.RenderCamera.GetProjection()(1, 1);
+
+	return { posViewAngleX, posViewAngleY, 1.0f };
 }

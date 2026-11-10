@@ -75,8 +75,9 @@ cbuffer ObjectBuffer : register(b1)
 {
     float4x4 OB_World;
     float4x4 OB_WorldInvT;
-    bool OB_HasSkinning;
-    float3 _OB_Padding;
+    uint OB_SkinningFlag;
+    float OB_ObjectId;
+    float2 _OB_Padding;
 }
 
 cbuffer AnimationBuffer : register(b2)

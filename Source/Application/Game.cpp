@@ -16,7 +16,6 @@
 #include "Core/Assets/Concrete/TextureAsset.h"
 #include "Core/Assets/Concrete/FontAsset.h"
 #include "Core/Assets/Concrete/SpriteAsset.h"
-#include "Core/Assets/Concrete/UnrealSceneAsset.h"
 
 #include "GameState/GameStateMachine.h"
 
@@ -99,7 +98,6 @@ bool Game::Initialize(SIZE aWindowSize, WNDPROC aWindowProcess, LPCWSTR aWindowT
 	AssetRegistry::Get().RegisterAssetType<TextureAsset>({ ".dds" });
 	AssetRegistry::Get().RegisterAssetType<FontAsset>({ ".dds",".json" });
 	AssetRegistry::Get().RegisterAssetType<SpriteAsset>({ ".dds" });
-	AssetRegistry::Get().RegisterAssetType<UnrealSceneAsset>({ ".json" });
 
 	if (!AssetRegistry::Get().Initialize())
 	{
@@ -170,13 +168,13 @@ bool Game::Initialize(SIZE aWindowSize, WNDPROC aWindowProcess, LPCWSTR aWindowT
 		ToolRegistry::Get().Initialize();
 
 		ToolManager::Get().AddTool<DebugTool>();
-		ToolManager::Get().AddTool<SceneHierarchy>();
+		//ToolManager::Get().AddTool<SceneHierarchy>();
 #endif
 	}
 
 	{
-		GameCamera& gameCamera = GameCamera::GetInstance();
-		gameCamera.Init(90.0f, 1.0f, 10000.0f, GraphicsEngine::Get().GetClientSize());
+		myGameCamera = GameWorld::Get().CreateActor<GameCamera>("Game_Camera");
+		myGameCamera->Init(90.0f, 1.0f, 10000.0f, GraphicsEngine::Get().GetClientSize());
 	}
 
 	{
@@ -239,8 +237,8 @@ int Game::Run()
 
 			SceneCamera camera =
 			{
-				.Transform = GameCamera::GetInstance().GetTransform().GetWorldMatrix(),
-				.RenderCamera = GameCamera::GetInstance().GetRenderCamera()
+				.Transform = myGameCamera->GetTransform().GetWorldMatrix(),
+				.RenderCamera = myGameCamera->GetRenderCamera()
 			};
 
 			FrameStats frameStats = GE.Render(*myGraphicsCommandList, camera);
@@ -280,8 +278,6 @@ int Game::Run()
 
 void Game::UpdateScene(float aDeltaTime) const
 {
-	GameCamera::GetInstance().Update(aDeltaTime);
-
 	myStateMachine->Update(aDeltaTime);
 }
 

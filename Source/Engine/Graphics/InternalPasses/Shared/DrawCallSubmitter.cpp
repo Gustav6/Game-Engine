@@ -57,8 +57,9 @@ void DrawCallSubmitter::RenderDrawCalls(
 		objectBuffer.World = drawCall.Transform;
 		objectBuffer.WorldInvT = (drawCall.Transform.GetInverse()).GetTranspose();
 		objectBuffer.HasSkinning = drawCall.HasSkinning;
+		objectBuffer.ObjectID = renderItem.ObjectID;
 
-		aContext.ConstantBuffers->UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::ObjectBuffer, objectBuffer, 1, PipelineStage_VertexShader);
+		aContext.ConstantBuffers->UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::ObjectBuffer, objectBuffer, 1, PipelineStage_VertexShader | PipelineStage_PixelShader);
 
 		if (drawCall.HasSkinning)
 		{

@@ -219,6 +219,7 @@ xcopy /E /I /R /Y /D "%SHADERSRC%" "%SHADERDEST%"</Command>
     <ClInclude Include="InternalPasses\DebugRenderPass.h" />
     <ClInclude Include="InternalPasses\DeferredRenderPass.h" />
     <ClInclude Include="InternalPasses\ForwardRenderPass.h" />
+    <ClInclude Include="InternalPasses\PixelPickingPass.h" />
     <ClInclude Include="InternalPasses\ScreenSpaceEffectPass.h" />
     <ClInclude Include="InternalPasses\ScreenSpaceRenderPass.h" />
     <ClInclude Include="InternalPasses\ShadowRenderPass.h" />
@@ -276,6 +277,7 @@ xcopy /E /I /R /Y /D "%SHADERSRC%" "%SHADERDEST%"</Command>
     <ClCompile Include="InternalPasses\DebugRenderPass.cpp" />
     <ClCompile Include="InternalPasses\DeferredRenderPass.cpp" />
     <ClCompile Include="InternalPasses\ForwardRenderPass.cpp" />
+    <ClCompile Include="InternalPasses\PixelPickingPass.cpp" />
     <ClCompile Include="InternalPasses\ScreenSpaceEffectPass.cpp" />
     <ClCompile Include="InternalPasses\ScreenSpaceRenderPass.cpp" />
     <ClCompile Include="InternalPasses\ShadowRenderPass.cpp" />
@@ -405,6 +407,14 @@ xcopy /E /I /R /Y /D "%SHADERSRC%" "%SHADERDEST%"</Command>
     </FxCompile>
     <FxCompile Include="Shaders\Line_VS.hlsl">
       <ShaderType>Vertex</ShaderType>
+      <VariableName>INTERNAL_%(Filename)_ByteCode</VariableName>
+      <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">../../..\Intermediate\GraphicsEngine\Debug\PrecompiledShaders\%(Filename).h</HeaderFileOutput>
+      <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../../..\Intermediate\GraphicsEngine\Release\PrecompiledShaders\%(Filename).h</HeaderFileOutput>
+      <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Retail|x64'">../../..\Intermediate\GraphicsEngine\Retail\PrecompiledShaders\%(Filename).h</HeaderFileOutput>
+      <ObjectFileOutput></ObjectFileOutput>
+    </FxCompile>
+    <FxCompile Include="Shaders\PixelPicking_PS.hlsl">
+      <ShaderType>Pixel</ShaderType>
       <VariableName>INTERNAL_%(Filename)_ByteCode</VariableName>
       <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">../../..\Intermediate\GraphicsEngine\Debug\PrecompiledShaders\%(Filename).h</HeaderFileOutput>
       <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../../..\Intermediate\GraphicsEngine\Release\PrecompiledShaders\%(Filename).h</HeaderFileOutput>

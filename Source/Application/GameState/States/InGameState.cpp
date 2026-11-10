@@ -9,7 +9,6 @@
 #include "Core/Assets/Concrete/MeshAsset.h"
 #include "Core/Assets/Concrete/AnimationAsset.h"
 #include "Core/Assets/Concrete/MaterialAsset.h"
-#include "Core/Assets/Concrete/UnrealSceneAsset.h"
 
 #include "Core/Scene/World/Actor.hpp"
 #include "Core/Scene/World/GameWorld.h"
@@ -65,26 +64,12 @@ void InGameState::Exit()
 {
 }
 
-void InGameState::LoadUnrealScene(const std::string& aSceneName)
-{
-	auto scene = AssetRegistry::Get().GetAsset<UnrealSceneAsset>(aSceneName + "_level");
-
-	if (scene != nullptr)
-	{
-		GameWorld::Get().AddActors(std::move(scene->GetSceneActors()));
-	}
-	else
-	{
-		SPDLOG_ERROR("Failed to load unreal scene [{}]!", aSceneName);
-	}
-}
-
 void InGameState::LoadTestScene()
 {
 	Actor* temp = nullptr;
 
 	{
-		std::unique_ptr<Actor> object = std::make_unique<Actor>();
+		Actor* object = GameWorld::Get().CreateActor<Actor>("Color_Checker");
 
 		MeshComponent* meshComponent = object->AddComponent<MeshComponent>();
 
@@ -92,14 +77,10 @@ void InGameState::LoadTestScene()
 		meshComponent->SetMaterial(0, AssetRegistry::Get().GetAsset<MaterialAsset>("SMColorChecker"));
 
 		object->GetTransform().Translate({ -400, 40, 0 });
-
-		object->SetName("Color_Checker");
-
-		temp = GameWorld::Get().AddActor(std::move(object));
 	}
 
 	{
-		std::unique_ptr<Actor> object = std::make_unique<Actor>();
+		Actor* object = GameWorld::Get().CreateActor<Actor>("Chest");
 
 		MeshComponent* meshComponent = object->AddComponent<MeshComponent>();
 
@@ -109,15 +90,11 @@ void InGameState::LoadTestScene()
 		object->GetTransform().Rotate(CommonUtilities::Vector3f{ 0, -180, 0 });
 		object->GetTransform().Translate({ 200, 0, 400 });
 
-		object->SetName("Chest");
-
 		object->SetParent(temp);
-
-		temp = GameWorld::Get().AddActor(std::move(object));
 	}
 
 	{
-		std::unique_ptr<Actor> object = std::make_unique<Actor>();
+		Actor* object = GameWorld::Get().CreateActor<Actor>("Unit_Plane");
 
 		MeshComponent* meshComponent = object->AddComponent<MeshComponent>();
 
@@ -126,15 +103,11 @@ void InGameState::LoadTestScene()
 
 		object->GetTransform().SetScale({ 2000, 2000, 2000 });
 
-		object->SetName("Unit_Plane");
-
 		object->SetParent(temp);
-
-		GameWorld::Get().AddActor(std::move(object));
 	}
 
 	{
-		std::unique_ptr<Actor> object = std::make_unique<Actor>();
+		Actor* object = GameWorld::Get().CreateActor<Actor>("Unit_Cube");
 
 		MeshComponent* meshComponent = object->AddComponent<MeshComponent>();
 
@@ -143,32 +116,24 @@ void InGameState::LoadTestScene()
 
 		object->GetTransform().Translate({ 0, 50, 0 });
 		object->GetTransform().SetScale({ 100, 100, 100 });
-
-		object->SetName("Unit_Cube");
-
-		GameWorld::Get().AddActor(std::move(object));
 	}
 
 	{
-		std::unique_ptr<Actor> object = std::make_unique<Actor>();
+		Actor* object = GameWorld::Get().CreateActor<Actor>("Unit_Cube");
 
 		MeshComponent* meshComponent = object->AddComponent<MeshComponent>();
 
 		meshComponent->SetMesh(AssetRegistry::Get().GetAsset<MeshAsset>("Unit_Cube"));
 		meshComponent->SetMaterial(0, AssetRegistry::Get().GetAsset<MaterialAsset>("BaseMaterial"));
 
-		object->SetName("Unit_Cube");
-
 		// TODO: Inspect rotation with multiple axis
 		object->GetTransform().SetEulerRotation({ 45.0f, 0.0f, 0.0f });
 		object->GetTransform().Translate({ -200, 100, 400 });
 		object->GetTransform().SetScale({ 100, 100, 100 });
-
-		GameWorld::Get().AddActor(std::move(object));
 	}
 
 	{
-		std::unique_ptr<Actor> object = std::make_unique<Actor>();
+		Actor* object = GameWorld::Get().CreateActor<Actor>("Unit_Sphere");
 
 		MeshComponent* meshComponent = object->AddComponent<MeshComponent>();
 
@@ -177,23 +142,19 @@ void InGameState::LoadTestScene()
 
 		object->GetTransform().Translate({ -200, 50, -200 });
 		object->GetTransform().SetScale({ 100, 100, 100 });
-
-		object->SetName("Unit_Sphere");
-
-		GameWorld::Get().AddActor(std::move(object));
 	}
 
 	{
-		std::unique_ptr<Actor> object = std::make_unique<Actor>();
+		myAnimatedObject = GameWorld::Get().CreateActor<Actor>("TGA_Bro");
 
-		object->GetTransform().Translate({ 200, 0, 0 });
+		myAnimatedObject->GetTransform().Translate({ 200, 0, 0 });
 
-		MeshComponent* meshComponent = object->AddComponent<MeshComponent>();
+		MeshComponent* meshComponent = myAnimatedObject->AddComponent<MeshComponent>();
 
 		meshComponent->SetMesh(AssetRegistry::Get().GetAsset<MeshAsset>("SK_C_TGA_Bro"));
 		meshComponent->SetMaterial(0, AssetRegistry::Get().GetAsset<MaterialAsset>("TGABroMaterial"));
 
-		AnimationComponent* animationComponent = object->AddComponent<AnimationComponent>(meshComponent->GetSkeleton());
+		AnimationComponent* animationComponent = myAnimatedObject->AddComponent<AnimationComponent>(meshComponent->GetSkeleton());
 
 		AnimationEntry breathingAnimation =
 		{
@@ -221,18 +182,14 @@ void InGameState::LoadTestScene()
 		animationComponent->AddAnimation("Run", runAnimation);
 		animationComponent->AddAnimation("Walk", walkAnimation);
 
-		BoxColliderComponent* boxColliderComponent = object->AddComponent<BoxColliderComponent>();
+		BoxColliderComponent* boxColliderComponent = myAnimatedObject->AddComponent<BoxColliderComponent>();
 
 		boxColliderComponent->SetSize({ 64, 128, 64 });
 		boxColliderComponent->SetOffset({ 0, 64, 0 });
-
-		object->SetName("TGA_Bro");
-
-		myAnimatedObject = GameWorld::Get().AddActor(std::move(object));
 	}
 
 	{
-		std::unique_ptr<Actor> object = std::make_unique<Actor>();
+		Actor* object = GameWorld::Get().CreateActor<Actor>("TGA_Bro_Temp");
 
 		object->GetTransform().Translate({ 200, 0, -200 });
 
@@ -240,50 +197,38 @@ void InGameState::LoadTestScene()
 
 		meshComponent->SetMesh(AssetRegistry::Get().GetAsset<MeshAsset>("SK_C_TGA_Bro"));
 		meshComponent->SetMaterial(0, AssetRegistry::Get().GetAsset<MaterialAsset>("TGABroMaterial"));
-
-		object->SetName("TGA_Bro_Temp");
-
-		GameWorld::Get().AddActor(std::move(object));
 	}
 
 	{
-		std::unique_ptr<Actor> object = std::make_unique<Actor>();
+		myDirectionLightObject = GameWorld::Get().CreateActor<Actor>("Directional_Light");
 
-		DirectionalLightComponent* directionalLight = object->AddComponent<DirectionalLightComponent>();
+		DirectionalLightComponent* directionalLight = myDirectionLightObject->AddComponent<DirectionalLightComponent>();
 
 		directionalLight->SetColor({ 1.0f, 0.95f, 0.85f });
 		directionalLight->SetIntensity(1.0f);
 		directionalLight->SetDirection({ 0.0f, -0.75f, 1.0f });
-
-		object->SetName("Directional_Light");
-
-		myDirectionLightObject = GameWorld::Get().AddActor(std::move(object));
 	}
 
 	{
-		std::unique_ptr<Actor> object = std::make_unique<Actor>();
+		myPointLightObject = GameWorld::Get().CreateActor<Actor>("Point_Light");
 
-		object->Disable();
+		myPointLightObject->Disable();
 
-		PointLightComponent* pointLight = object->AddComponent<PointLightComponent>();
+		PointLightComponent* pointLight = myPointLightObject->AddComponent<PointLightComponent>();
 
 		pointLight->SetPosition({ -200.0f, 150.0f, 0.0f });
 		pointLight->SetColor({ 1.0f, 0.95f, 0.85f });
 		pointLight->SetIntensity(750000.0f);
 		pointLight->SetRadius(500.0f);
 		pointLight->SetShadowMapSize({ 512, 512 });
-
-		object->SetName("Point_Light");
-
-		myPointLightObject = GameWorld::Get().AddActor(std::move(object));
 	}
 
 	{
-		std::unique_ptr<Actor> object = std::make_unique<Actor>();
+		mySpotLightObject = GameWorld::Get().CreateActor<Actor>("Spot_Light");
 
-		object->Disable();
+		mySpotLightObject->Disable();
 
-		SpotLightComponent* spotLight = object->AddComponent<SpotLightComponent>();
+		SpotLightComponent* spotLight = mySpotLightObject->AddComponent<SpotLightComponent>();
 
 		spotLight->SetPosition({ 0.0f, 350.0f, -200.0f });
 		spotLight->SetColor({ 1.0f, 0.0f, 0.0f });
@@ -292,10 +237,6 @@ void InGameState::LoadTestScene()
 		spotLight->SetDirection({ 0.0f, -1.0f, 0.0f });
 		spotLight->SetCone(0.1f, 0.5f);
 		spotLight->SetShadowMapSize({ 512, 512 });
-
-		object->SetName("Spot_Light");
-
-		mySpotLightObject = GameWorld::Get().AddActor(std::move(object));
 	}
 
 	/*{

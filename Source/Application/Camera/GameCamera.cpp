@@ -4,16 +4,15 @@
 
 #include "Wrappers/Logger/LoggerWrapper.h"
 
+#include <Core/Scene/World/GameWorld.h>
+
 #include "Graphics/Objects/Scene/Camera.h"
 
 #include "CommonUtilities/Math/Matrix4x4.hpp"
 #include "CommonUtilities/Math/Quaternion.hpp"
 
-GameCamera& GameCamera::GetInstance()
-{
-	static GameCamera instance;
-	return instance;
-}
+GameCamera::GameCamera(unsigned int aID) : Actor(aID)
+{}
 
 void GameCamera::Init(float aHorizontalFov, float aNearPlane, float aFarPlane, CommonUtilities::Vector2ui aResolution)
 {

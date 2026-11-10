@@ -19,7 +19,6 @@ public:
 	void Exit() override;
 
 private:
-	void LoadUnrealScene(const std::string& aSceneName);
 	void LoadTestScene();
 
 	void UpdateTestBinds();

@@ -54,6 +54,9 @@
     <ClInclude Include="Core\ToolRegistry.h">
       <Filter>Core</Filter>
     </ClInclude>
+    <ClInclude Include="Custom\Debug\DebugInfo.h">
+      <Filter>Custom\Debug</Filter>
+    </ClInclude>
     <ClInclude Include="Custom\Debug\DebugTool.h">
       <Filter>Custom\Debug</Filter>
     </ClInclude>
@@ -73,9 +76,6 @@
       <Filter>ImGui</Filter>
     </ClInclude>
     <ClInclude Include="Tools.pch.h" />
-    <ClInclude Include="Custom\Debug\DebugInfo.h">
-      <Filter>Custom\Debug</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\ThirdParty\Source\imgui\backends\imgui_impl_dx11.cpp">

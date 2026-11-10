@@ -158,7 +158,6 @@
     <ClInclude Include="Assets\Concrete\MeshAsset.h" />
     <ClInclude Include="Assets\Concrete\SpriteAsset.h" />
     <ClInclude Include="Assets\Concrete\TextureAsset.h" />
-    <ClInclude Include="Assets\Concrete\UnrealSceneAsset.h" />
     <ClInclude Include="Assets\Interface\Asset.h" />
     <ClInclude Include="Assets\Registry\AssetRegistry.h" />
     <ClInclude Include="Core.pch.h" />
@@ -190,7 +189,6 @@
     <ClCompile Include="Assets\Concrete\MeshAsset.cpp" />
     <ClCompile Include="Assets\Concrete\SpriteAsset.cpp" />
     <ClCompile Include="Assets\Concrete\TextureAsset.cpp" />
-    <ClCompile Include="Assets\Concrete\UnrealSceneAsset.cpp" />
     <ClCompile Include="Assets\Interface\Asset.cpp" />
     <ClCompile Include="Assets\Registry\AssetRegistry.cpp" />
     <ClCompile Include="Core.pch.cpp">

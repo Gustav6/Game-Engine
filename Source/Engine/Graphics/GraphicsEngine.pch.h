@@ -15,6 +15,7 @@
 // add headers that you want to pre-compile here
 #include <d3d11_1.h>
 #include <dxgi.h>
+#include <wrl.h>
 #include <ranges>
 #include <string>
 #include <cassert>

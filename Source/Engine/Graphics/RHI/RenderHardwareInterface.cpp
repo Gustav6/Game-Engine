@@ -616,10 +616,10 @@ bool RenderHardwareInterface::CreateTexture(std::string_view aName, const uint8_
 {
 	ensure(!aName.empty());
 
-	ComPtr<ID3D11Resource> resource;
+	ComPtr<ID3D11Resource> texture;
 	ComPtr<ID3D11ShaderResourceView> srv;
 
-	const HRESULT result = DirectX::CreateDDSTextureFromMemory(myDevice.Get(), aByteCode, aByteCodeSize, &resource, &srv);
+	const HRESULT result = DirectX::CreateDDSTextureFromMemory(myDevice.Get(), aByteCode, aByteCodeSize, &texture, &srv);
 
 	if (FAILED(result))
 	{
@@ -627,13 +627,15 @@ bool RenderHardwareInterface::CreateTexture(std::string_view aName, const uint8_
 		return false;
 	}
 
-	SetObjectName(resource, aName);
+	SetObjectName(texture, aName);
 
 	const std::string srvName = std::format("{}_SRV", aName);
 	SetObjectName(srv, srvName);
 
 	outTexture.mySRV = srv;
 	outTexture.myName = aName;
+
+	outTexture.myRHITexture = texture;
 
 	return true;
 }
@@ -716,6 +718,8 @@ bool RenderHardwareInterface::CreateTexture(std::string_view aName, unsigned aWi
 	outTexture.myViewport.Height = static_cast<float>(aHeight);
 	outTexture.myViewport.MinDepth = 0;
 	outTexture.myViewport.MaxDepth = 1;
+
+	outTexture.myRHITexture = texture;
 
 	return true;
 }
@@ -955,6 +959,30 @@ bool RenderHardwareInterface::CreateStructuredBuffer(std::string_view aName, siz
 	}
 
 	return true;
+}
+
+unsigned int RenderHardwareInterface::ReadObjectId(const Texture& aTexture) const
+{
+	std::array <unsigned char, 4> bytes = {}; 
+
+	D3D11_MAPPED_SUBRESOURCE resource = {}; 
+	const HRESULT result = myContext->Map(aTexture.myRHITexture.Get(), 0, D3D11_MAP_READ, 0, &resource); 
+	
+	if (FAILED(result)) 
+	{
+		return 0; // Invalid ObjectID 
+	}
+	
+	uint32_t objectId = 0; 
+
+	if (resource.pData != nullptr) 
+	{ 
+		objectId = *static_cast<const uint32_t*>(resource.pData); 
+	} 
+	
+	myContext->Unmap(aTexture.myRHITexture.Get(), 0); 
+	
+	return objectId;
 }
 
 void RenderHardwareInterface::ExecuteCommandList(const GraphicsCommandList& aCommandList) const
