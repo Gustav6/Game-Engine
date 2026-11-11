@@ -1,9 +1,9 @@
 #pragma once
 
-class Tool
+class ITool
 {
 public:
-	virtual ~Tool() = default;
+	virtual ~ITool() = default;
 
 	virtual void Update(float aDeltaTime) = 0;
 	virtual void Render() = 0;
@@ -12,6 +12,6 @@ public:
 	//virtual void Enable() = 0;
 
 protected:
-	Tool() = default;
+	ITool() = default;
 };
 

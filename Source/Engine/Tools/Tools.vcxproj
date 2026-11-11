@@ -124,7 +124,9 @@
     </ProjectReference>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Core\Interface\Tool.h" />
+    <ClInclude Include="Command\CommandHistory.h" />
+    <ClInclude Include="Command\Interface\ICommand.h" />
+    <ClInclude Include="Core\Interface\ITool.h" />
     <ClInclude Include="Core\ToolManager.h" />
     <ClInclude Include="Core\ToolRegistry.h" />
     <ClInclude Include="Custom\Debug\DebugInfo.h" />
@@ -165,7 +167,9 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>TurnOffAllWarnings</WarningLevel>
     </ClCompile>
-    <ClCompile Include="Core\Interface\Tool.cpp" />
+    <ClCompile Include="Command\CommandHistory.cpp" />
+    <ClCompile Include="Command\Interface\ICommand.cpp" />
+    <ClCompile Include="Core\Interface\ITool.cpp" />
     <ClCompile Include="Core\ToolManager.cpp" />
     <ClCompile Include="Core\ToolRegistry.cpp" />
     <ClCompile Include="Custom\Debug\DebugTool.cpp" />

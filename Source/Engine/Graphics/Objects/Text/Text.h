@@ -10,6 +10,8 @@
 #include "CommonUtilities/Math/Vector2.hpp"
 #include "CommonUtilities/Math/Vector4.hpp"
 
+// Change to use FontVertex instead of Vertex for text rendering
+
 struct Vertex;
 class Font;
 

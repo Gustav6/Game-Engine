@@ -1,10 +1,10 @@
 #pragma once
 
-#include <Tools/Core/Interface/Tool.h>
+#include <Tools/Core/Interface/ITool.h>
 
 class Actor;
 
-class SceneHierarchy : public Tool
+class SceneHierarchy : public ITool
 {
 public:
 	void Update(float aDeltaTime) override;

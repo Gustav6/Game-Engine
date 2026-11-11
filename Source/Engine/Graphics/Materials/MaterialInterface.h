@@ -45,6 +45,16 @@ enum class MaterialBlendMode : uint8_t
 	Alpha
 };
 
+enum class MaterialType : uint8_t
+{
+	None,
+	Surface,
+	Sprite,
+	Font,
+	Particle,
+	Line
+};
+
 enum class MaterialLayout : uint8_t
 {
 	None,

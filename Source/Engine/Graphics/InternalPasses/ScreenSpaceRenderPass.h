@@ -38,6 +38,6 @@ private:
     std::unique_ptr<PipelineStateObject> mySpritePSO;
 
     CommonUtilities::Matrix4x4f mySpriteProjection;
-    std::vector<Vertex> mySpriteVertices;
+    std::vector<SpriteVertex> mySpriteVertices;
     Buffer mySpriteVertexBuffer;
 };

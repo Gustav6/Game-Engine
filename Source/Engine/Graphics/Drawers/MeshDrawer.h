@@ -16,6 +16,7 @@ struct MeshDrawCall
     CommonUtilities::Matrix4x4f Transform;
     const CommonUtilities::Matrix4x4f* JointTransforms = nullptr;
     unsigned int ObjectID;
+    bool IsInstanced = false;
 };
 
 class MeshDrawer

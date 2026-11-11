@@ -5,6 +5,16 @@
 #include "CommonUtilities/Math/Vector4.hpp"
 #include "Graphics/RHI/RHIStructs.h"
 
+enum class VertexLayoutType : uint8_t
+{
+	None,
+	Mesh,
+	Line,
+	Particle,
+	Sprite,
+	Font
+};
+
 struct Vertex
 {
 	CommonUtilities::Vector4f Position = { 0, 0, 0, 1 };
@@ -38,6 +48,24 @@ struct ParticleVertex
 	float Angle;
 	CommonUtilities::Vector2f Size;
 	CommonUtilities::Vector4f ChannelMask;
+
+	static const std::vector<VertexElementDescription> Description;
+};
+
+struct SpriteVertex
+{
+	CommonUtilities::Vector4f Position;
+	CommonUtilities::Vector4f Color;
+	CommonUtilities::Vector2f UV;
+
+	static const std::vector<VertexElementDescription> Description;
+};
+
+struct FontVertex
+{
+	CommonUtilities::Vector3f Position;
+	CommonUtilities::Vector4f Color;
+	CommonUtilities::Vector2f UV;
 
 	static const std::vector<VertexElementDescription> Description;
 };

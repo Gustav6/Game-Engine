@@ -644,6 +644,8 @@ bool RenderHardwareInterface::CreateTexture(std::string_view aName, unsigned aWi
 {
 	ensure(!aName.empty());
 
+	const bool isStaging = (aBindFlags == ResourceBindFlag_Staging);
+
 	D3D11_TEXTURE2D_DESC desc;
 	desc.Width = aWidth;
 	desc.Height = aHeight;
@@ -652,10 +654,10 @@ bool RenderHardwareInterface::CreateTexture(std::string_view aName, unsigned aWi
 	desc.Format = static_cast<DXGI_FORMAT>(aFormat);
 	desc.SampleDesc.Count = 1;
 	desc.SampleDesc.Quality = 0;
-	desc.Usage = D3D11_USAGE_DEFAULT;
-	desc.BindFlags = static_cast<UINT>(aBindFlags);
-	desc.CPUAccessFlags = aBindFlags == ResourceBindFlag_Staging ? D3D11_CPU_ACCESS_READ : 0;
-	desc.MiscFlags = aNumMips != 1 ? D3D11_RESOURCE_MISC_GENERATE_MIPS : 0;
+	desc.Usage = isStaging ? D3D11_USAGE_STAGING : D3D11_USAGE_DEFAULT;
+	desc.BindFlags = isStaging ? 0 : static_cast<UINT>(aBindFlags);
+	desc.CPUAccessFlags = isStaging ? D3D11_CPU_ACCESS_READ : 0; 
+	desc.MiscFlags = (!isStaging && aNumMips != 1) ? D3D11_RESOURCE_MISC_GENERATE_MIPS : 0;
 
 	ComPtr<ID3D11Texture2D> texture;
 	HRESULT result = myDevice->CreateTexture2D(&desc, nullptr, &texture);
@@ -668,7 +670,7 @@ bool RenderHardwareInterface::CreateTexture(std::string_view aName, unsigned aWi
 	const std::string textureName = std::format("{}_T2D", aName);
 	SetObjectName(texture, textureName);
 
-	if (aBindFlags > 0)
+	if (!isStaging && aBindFlags > 0)
 	{
 		if (aBindFlags & ResourceBindFlag_RenderTarget)
 		{
@@ -963,14 +965,20 @@ bool RenderHardwareInterface::CreateStructuredBuffer(std::string_view aName, siz
 
 unsigned int RenderHardwareInterface::ReadObjectId(const Texture& aTexture) const
 {
+	if (!aTexture.myRHITexture)
+	{
+		return 0;
+	}
+
 	std::array <unsigned char, 4> bytes = {}; 
 
 	D3D11_MAPPED_SUBRESOURCE resource = {}; 
 	const HRESULT result = myContext->Map(aTexture.myRHITexture.Get(), 0, D3D11_MAP_READ, 0, &resource); 
 	
-	if (FAILED(result)) 
+	if (FAILED(result))
 	{
-		return 0; // Invalid ObjectID 
+		SPDLOG_ERROR("ReadObjectId: Map failed (0x{:X})", static_cast<unsigned>(result));
+		return 0;
 	}
 	
 	uint32_t objectId = 0; 

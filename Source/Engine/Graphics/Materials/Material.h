@@ -12,10 +12,13 @@ struct MaterialDescription
 {
 	std::string Name;
 
+	MaterialType Type = MaterialType::None;
+
 	MaterialDomain Domain = MaterialDomain::None;
 	ShadingModel ShadingModel = ShadingModel::None;
 	MaterialBlendMode BlendMode = MaterialBlendMode::None;
 	MaterialLayout Layout = MaterialLayout::None;
+
 	MaterialFeatureFlags Features = MaterialFeatureFlag_None;
 
 	std::filesystem::path MaterialShaderCode;

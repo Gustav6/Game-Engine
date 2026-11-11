@@ -9,6 +9,8 @@
 #include "Core/Assets/Concrete/MeshAsset.h"
 #include "Core/Assets/Concrete/AnimationAsset.h"
 #include "Core/Assets/Concrete/MaterialAsset.h"
+#include "Core/Assets/Concrete/SpriteAsset.h"
+#include "Core/Assets/Concrete/FontAsset.h"
 
 #include "Core/Scene/World/Actor.hpp"
 #include "Core/Scene/World/GameWorld.h"
@@ -69,79 +71,79 @@ void InGameState::LoadTestScene()
 	Actor* temp = nullptr;
 
 	{
-		Actor* object = GameWorld::Get().CreateActor<Actor>("Color_Checker");
+		Actor* actor = GameWorld::Get().CreateActor<Actor>("Color_Checker");
 
-		MeshComponent* meshComponent = object->AddComponent<MeshComponent>();
+		MeshComponent* meshComponent = actor->AddComponent<MeshComponent>();
 
 		meshComponent->SetMesh(AssetRegistry::Get().GetAsset<MeshAsset>("SM_Color_Checker"));
 		meshComponent->SetMaterial(0, AssetRegistry::Get().GetAsset<MaterialAsset>("SMColorChecker"));
 
-		object->GetTransform().Translate({ -400, 40, 0 });
+		actor->GetTransform().Translate({ -400, 40, 0 });
 	}
 
 	{
-		Actor* object = GameWorld::Get().CreateActor<Actor>("Chest");
+		Actor* actor = GameWorld::Get().CreateActor<Actor>("Chest");
 
-		MeshComponent* meshComponent = object->AddComponent<MeshComponent>();
+		MeshComponent* meshComponent = actor->AddComponent<MeshComponent>();
 
 		meshComponent->SetMesh(AssetRegistry::Get().GetAsset<MeshAsset>("SM_Chest"));
 		meshComponent->SetMaterial(0, AssetRegistry::Get().GetAsset<MaterialAsset>("ChestMaterial"));
 
-		object->GetTransform().Rotate(CommonUtilities::Vector3f{ 0, -180, 0 });
-		object->GetTransform().Translate({ 200, 0, 400 });
+		actor->GetTransform().Rotate(CommonUtilities::Vector3f{ 0, -180, 0 });
+		actor->GetTransform().Translate({ 200, 0, 400 });
 
-		object->SetParent(temp);
+		actor->SetParent(temp);
 	}
 
 	{
-		Actor* object = GameWorld::Get().CreateActor<Actor>("Unit_Plane");
+		Actor* actor = GameWorld::Get().CreateActor<Actor>("Unit_Plane");
 
-		MeshComponent* meshComponent = object->AddComponent<MeshComponent>();
+		MeshComponent* meshComponent = actor->AddComponent<MeshComponent>();
 
 		meshComponent->SetMesh(AssetRegistry::Get().GetAsset<MeshAsset>("Unit_Plane"));
 		meshComponent->SetMaterial(0, AssetRegistry::Get().GetAsset<MaterialAsset>("BaseMaterial"));
 
-		object->GetTransform().SetScale({ 2000, 2000, 2000 });
+		actor->GetTransform().SetScale({ 2000, 2000, 2000 });
 
-		object->SetParent(temp);
+		actor->SetParent(temp);
 	}
 
 	{
-		Actor* object = GameWorld::Get().CreateActor<Actor>("Unit_Cube");
+		Actor* actor = GameWorld::Get().CreateActor<Actor>("Unit_Cube");
 
-		MeshComponent* meshComponent = object->AddComponent<MeshComponent>();
+		MeshComponent* meshComponent = actor->AddComponent<MeshComponent>();
 
 		meshComponent->SetMesh(AssetRegistry::Get().GetAsset<MeshAsset>("Unit_Cube"));
 		meshComponent->SetMaterial(0, AssetRegistry::Get().GetAsset<MaterialAsset>("BaseMaterial"));
 
-		object->GetTransform().Translate({ 0, 50, 0 });
-		object->GetTransform().SetScale({ 100, 100, 100 });
+		actor->GetTransform().Translate({ 0, 50, 0 });
+		actor->GetTransform().SetScale({ 100, 100, 100 });
 	}
 
 	{
-		Actor* object = GameWorld::Get().CreateActor<Actor>("Unit_Cube");
+		Actor* actor = GameWorld::Get().CreateActor<Actor>("Unit_Cube");
 
-		MeshComponent* meshComponent = object->AddComponent<MeshComponent>();
+		MeshComponent* meshComponent = actor->AddComponent<MeshComponent>();
 
 		meshComponent->SetMesh(AssetRegistry::Get().GetAsset<MeshAsset>("Unit_Cube"));
 		meshComponent->SetMaterial(0, AssetRegistry::Get().GetAsset<MaterialAsset>("BaseMaterial"));
 
 		// TODO: Inspect rotation with multiple axis
-		object->GetTransform().SetEulerRotation({ 45.0f, 0.0f, 0.0f });
-		object->GetTransform().Translate({ -200, 100, 400 });
-		object->GetTransform().SetScale({ 100, 100, 100 });
+		actor->GetTransform().SetEulerRotation({ 45.0f, 0.0f, 0.0f });
+		actor->GetTransform().Translate({ -200, 100, 400 });
+		actor->GetTransform().SetScale({ 100, 100, 100 });
 	}
 
 	{
-		Actor* object = GameWorld::Get().CreateActor<Actor>("Unit_Sphere");
+		Actor* actor = GameWorld::Get().CreateActor<Actor>("Unit_Sphere");
 
-		MeshComponent* meshComponent = object->AddComponent<MeshComponent>();
+		MeshComponent* meshComponent = actor->AddComponent<MeshComponent>();
 
 		meshComponent->SetMesh(AssetRegistry::Get().GetAsset<MeshAsset>("Unit_Sphere"));
 		meshComponent->SetMaterial(0, AssetRegistry::Get().GetAsset<MaterialAsset>("BaseMaterial"));
 
-		object->GetTransform().Translate({ -200, 50, -200 });
-		object->GetTransform().SetScale({ 100, 100, 100 });
+		actor->GetTransform().Translate({ -200, 50, -200 });
+		actor->GetTransform().SetScale({ 100, 100, 100 });
 	}
 
 	{
@@ -219,10 +221,11 @@ void InGameState::LoadTestScene()
 		pointLight->SetPosition({ -200.0f, 150.0f, 0.0f });
 		pointLight->SetColor({ 1.0f, 0.95f, 0.85f });
 		pointLight->SetIntensity(750000.0f);
-		pointLight->SetRadius(500.0f);
+		pointLight->SetRadius(300.0f);
 		pointLight->SetShadowMapSize({ 512, 512 });
 	}
 
+	// check out shadows from this
 	{
 		mySpotLightObject = GameWorld::Get().CreateActor<Actor>("Spot_Light");
 
@@ -239,29 +242,25 @@ void InGameState::LoadTestScene()
 		spotLight->SetShadowMapSize({ 512, 512 });
 	}
 
-	/*{
-		std::unique_ptr<Actor> object = std::make_unique<Actor>();
+	{
+		Actor* actor = GameWorld::Get().CreateActor<Actor>("Text");
 
-		TextComponent* text = object->AddComponent<TextComponent>();
+		TextComponent* text = actor->AddComponent<TextComponent>();
 
 		text->SetFont(AssetRegistry::Get().GetAsset<FontAsset>("CascadiaCode_M"));
 		text->SetText("SHREK");
 		text->SetSize(36);
+	}
 
-		GameWorld::Get().AddActor(std::move(object));
-	}*/
+	{
+		Actor* actor = GameWorld::Get().CreateActor<Actor>("Sprite");
 
-	//{
-	//	std::unique_ptr<Actor> object = std::make_unique<Actor>();
+		SpriteComponent* sprite = actor->AddComponent<SpriteComponent>();
 
-	//	SpriteComponent* sprite = object->AddComponent<SpriteComponent>();
-
-	//	sprite->SetSprite(AssetRegistry::Get().GetAsset<SpriteAsset>("ShrekSprite"));
-	//	sprite->SetSize({ 512, 512 });
-	//	sprite->SetPosition({ 512, 512 });
-
-	//	GameWorld::Get().AddActor(std::move(object));
-	//}
+		sprite->SetSprite(AssetRegistry::Get().GetAsset<SpriteAsset>("ShrekSprite"));
+		sprite->SetSize({ 512, 512 });
+		sprite->SetPosition({ 512, 512 });
+	}
 
 	myEnableTestBinds = true;
 }

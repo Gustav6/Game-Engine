@@ -15,23 +15,70 @@
 
 bool BuiltinAssets::Initialize(GraphicsEngine& aGraphicsEngine, RenderHardwareInterface& aRHI)
 {
-	// Mesh Material
+	// Surface
+	if (!CreateDefaultMaterial(
+		aGraphicsEngine,
+		MaterialType::Surface,
+		"Default_Surface",
+		MaterialDomain::Surface,
+		ShadingModel::Lit,
+		MaterialBlendMode::Opaque,
+		MaterialLayout::PBR))
 	{
-		myDefaultMaterial = std::make_unique<Material>();
-
-		MaterialDescription defaultMatDesc;
-		defaultMatDesc.Name = "Default_Material";
-		defaultMatDesc.Domain = MaterialDomain::Surface;
-		defaultMatDesc.ShadingModel = ShadingModel::Unlit;
-		defaultMatDesc.BlendMode = MaterialBlendMode::Opaque;
-		defaultMatDesc.Layout = MaterialLayout::PBR;
-
-		if (!aGraphicsEngine.CreateMaterial(defaultMatDesc, *myDefaultMaterial))
-		{
-			SPDLOG_CRITICAL("Failed to create default mesh material!");
-			return false;
-		}
+		return false;
 	}
+
+	//// Sprite
+	//if (!CreateDefaultMaterial(
+	//	aGraphicsEngine,
+	//	MaterialType::Sprite,
+	//	"Default_Sprite",
+	//	MaterialDomain::None,
+	//	ShadingModel::None,
+	//	MaterialBlendMode::Alpha,
+	//	MaterialLayout::None))
+	//{
+	//	return false;
+	//}
+
+	//// Font
+	//if (!CreateDefaultMaterial(
+	//	aGraphicsEngine,
+	//	MaterialType::Font,
+	//	"Default_Font",
+	//	MaterialDomain::None,
+	//	ShadingModel::None,
+	//	MaterialBlendMode::Alpha,
+	//	MaterialLayout::None))
+	//{
+	//	return false;
+	//}
+
+	//// Particle
+	//if (!CreateDefaultMaterial(
+	//	aGraphicsEngine,
+	//	MaterialType::Particle,
+	//	"Default_Particle",
+	//	MaterialDomain::None,
+	//	ShadingModel::None,
+	//	MaterialBlendMode::Alpha,
+	//	MaterialLayout::None))
+	//{
+	//	return false;
+	//}
+
+	// Line
+	//if (!CreateDefaultMaterial(
+	//	aGraphicsEngine,
+	//	MaterialType::Line,
+	//	"Default_Line",
+	//	MaterialDomain::None,
+	//	ShadingModel::None,
+	//	MaterialBlendMode::Opaque,
+	//	MaterialLayout::None))
+	//{
+	//	return false;
+	//}
 
 	// Albedo Texture
 	{
@@ -43,7 +90,7 @@ bool BuiltinAssets::Initialize(GraphicsEngine& aGraphicsEngine, RenderHardwareIn
 			return false;
 		}
 
-		myDefaultMaterial->SetTexture(0, myDefaultAlbedoTexture);
+		myDefaultMaterials[static_cast<size_t>(MaterialType::Surface) - 1]->SetTexture(0, myDefaultAlbedoTexture);
 	}
 
 	// Normal Texture
@@ -56,7 +103,7 @@ bool BuiltinAssets::Initialize(GraphicsEngine& aGraphicsEngine, RenderHardwareIn
 			return false;
 		}
 
-		myDefaultMaterial->SetTexture(1, myDefaultNormalTexture);
+		myDefaultMaterials[static_cast<size_t>(MaterialType::Surface) - 1]->SetTexture(1, myDefaultNormalTexture);
 	}
 
 	// Normal Texture
@@ -69,28 +116,50 @@ bool BuiltinAssets::Initialize(GraphicsEngine& aGraphicsEngine, RenderHardwareIn
 			return false;
 		}
 
-		myDefaultMaterial->SetTexture(3, myDefaultEmissionTexture);
+		myDefaultMaterials[static_cast<size_t>(MaterialType::Surface) - 1]->SetTexture(3, myDefaultEmissionTexture);
 	}
 
 	return true;
 }
 
-const Material* BuiltinAssets::GetDefaultMaterial() const
+const Material* BuiltinAssets::GetDefaultMaterial(MaterialType aType) const
 {
-	return myDefaultMaterial.get();
+	const int index = static_cast<int>(aType);
+
+	if (index == 0 || index > myDefaultMaterials.size())
+	{
+		return nullptr;
+	}
+
+	return myDefaultMaterials[index - 1].get();
 }
 
-const Texture* BuiltinAssets::GetDefaultAlbedoTexture() const
+bool BuiltinAssets::CreateDefaultMaterial(
+	GraphicsEngine& aGraphicsEngine,
+	MaterialType aType,
+	const char* aName,
+	MaterialDomain aDomain,
+	ShadingModel aShadingModel,
+	MaterialBlendMode aBlendMode,
+	MaterialLayout aLayout)
 {
-	return myDefaultAlbedoTexture.get();
-}
+	const size_t index = static_cast<size_t>(aType) - 1;
 
-const Texture* BuiltinAssets::GetDefaultNormalTexture() const
-{
-	return myDefaultNormalTexture.get();
-}
+	myDefaultMaterials[index] = std::make_unique<Material>();
 
-const Texture* BuiltinAssets::GetDefaultEmissionTexture() const
-{
-	return myDefaultEmissionTexture.get();
+	MaterialDescription desc;
+	desc.Name = aName;
+	desc.Type = aType;
+	desc.Domain = aDomain;
+	desc.ShadingModel = aShadingModel;
+	desc.BlendMode = aBlendMode;
+	desc.Layout = aLayout;
+
+	if (!aGraphicsEngine.CreateMaterial(desc, *myDefaultMaterials[index]))
+	{
+		SPDLOG_CRITICAL("Failed to create default material [{}]!", aName);
+		return false;
+	}
+
+	return true;
 }

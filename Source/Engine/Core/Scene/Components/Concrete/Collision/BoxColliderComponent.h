@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Core/Scene/Components/Interface/Component.h"
+#include "Core/Scene/Components/Interface/IComponent.h"
 
 #include "CommonUtilities/Collision/AABB3D.hpp"
 

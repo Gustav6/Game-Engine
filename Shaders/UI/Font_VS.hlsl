@@ -12,8 +12,8 @@ VStoPS main(Vertex aVertex)
     result.Position = worldPosition;
     result.Color = aVertex.Color;
     result.UV0 = aVertex.UV0;
-    result.UV1 = aVertex.UV1;
     
+    result.UV1 = 0;
     result.WorldPosition = 0;
     result.Normal = 0;
     result.Tangent = 0;

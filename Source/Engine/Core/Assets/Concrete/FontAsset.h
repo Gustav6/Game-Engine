@@ -2,7 +2,7 @@
 
 #include <filesystem>
 
-#include "Core/Assets/Interface/Asset.h"
+#include "Core/Assets/Interface/IAsset.h"
 
 #include "Graphics/Objects/Text/Font.h"
 

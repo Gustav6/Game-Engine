@@ -69,7 +69,7 @@
     <ClInclude Include="Assets\Concrete\TextureAsset.h">
       <Filter>Assets\Concrete</Filter>
     </ClInclude>
-    <ClInclude Include="Assets\Interface\Asset.h">
+    <ClInclude Include="Assets\Interface\IAsset.h">
       <Filter>Assets\Interface</Filter>
     </ClInclude>
     <ClInclude Include="Assets\Registry\AssetRegistry.h">
@@ -119,7 +119,7 @@
     <ClInclude Include="Scene\Components\Concrete\Transform\Transform.h">
       <Filter>Scene\Components\Concrete\Transform</Filter>
     </ClInclude>
-    <ClInclude Include="Scene\Components\Interface\Component.h">
+    <ClInclude Include="Scene\Components\Interface\IComponent.h">
       <Filter>Scene\Components\Interface</Filter>
     </ClInclude>
     <ClInclude Include="Scene\Components\Registry\ComponentRegistry.h">
@@ -154,7 +154,7 @@
     <ClCompile Include="Assets\Concrete\TextureAsset.cpp">
       <Filter>Assets\Concrete</Filter>
     </ClCompile>
-    <ClCompile Include="Assets\Interface\Asset.cpp">
+    <ClCompile Include="Assets\Interface\IAsset.cpp">
       <Filter>Assets\Interface</Filter>
     </ClCompile>
     <ClCompile Include="Assets\Registry\AssetRegistry.cpp">
@@ -204,7 +204,7 @@
     <ClCompile Include="Scene\Components\Concrete\Transform\Transform.cpp">
       <Filter>Scene\Components\Concrete\Transform</Filter>
     </ClCompile>
-    <ClCompile Include="Scene\Components\Interface\Component.cpp">
+    <ClCompile Include="Scene\Components\Interface\IComponent.cpp">
       <Filter>Scene\Components\Interface</Filter>
     </ClCompile>
     <ClCompile Include="Scene\Components\Registry\ComponentRegistry.cpp">

@@ -55,7 +55,7 @@ bool ScreenSpaceRenderPass::Initialize(RenderHardwareInterface& aRHI)
 	mySpriteProjection(4, 1) = -1.0f;
 	mySpriteProjection(4, 2) = 1.0f;
 
-	aRHI.CreateDynamicVertexBuffer("SpriteRenderer", sizeof(Vertex), MaxSpriteVertexPerDraw, mySpriteVertexBuffer);
+	aRHI.CreateDynamicVertexBuffer("SpriteRenderer", sizeof(SpriteVertex), MaxSpriteVertexPerDraw, mySpriteVertexBuffer);
 
 	// Font PSO
 	{
@@ -175,7 +175,7 @@ void ScreenSpaceRenderPass::RenderText(
 
 	if (material == nullptr)
 	{
-		material = aContext.BuiltinAssets->GetDefaultMaterial();
+		material = aContext.BuiltinAssets->GetDefaultMaterial(MaterialType::Surface);
 	}
 
 	if (material->HasParameters())
@@ -227,28 +227,28 @@ void ScreenSpaceRenderPass::RenderSprite(
 	const float right = left + size.x;
 	const float bottom = top + size.y;
 
-	Vertex v0 =
+	SpriteVertex v0 =
 	{
 		.Position = { left, top, aDrawCall.SpriteInstanceData->Depth, 1.0f },
-		.UV0 = { 0.0f, 0.0f }
+		.UV = { 0.0f, 0.0f }
 	};
 
-	Vertex v1 =
+	SpriteVertex v1 =
 	{
 		.Position = { right, top, aDrawCall.SpriteInstanceData->Depth, 1.0f },
-		.UV0 = { 1.0f, 0.0f }
+		.UV = { 1.0f, 0.0f }
 	};
 
-	Vertex v2 =
+	SpriteVertex v2 =
 	{
 		.Position = { left,  bottom, aDrawCall.SpriteInstanceData->Depth, 1.0f },
-		.UV0 = { 0.0f, 1.0f }
+		.UV = { 0.0f, 1.0f }
 	};
 
-	Vertex v3 =
+	SpriteVertex v3 =
 	{
 		.Position = { right, bottom, aDrawCall.SpriteInstanceData->Depth, 1.0f },
-		.UV0 = { 1.0f, 1.0f }
+		.UV = { 1.0f, 1.0f }
 	};
 
 	v0.Color = aDrawCall.SpriteInstanceData->Color;
@@ -269,7 +269,7 @@ void ScreenSpaceRenderPass::RenderSprite(
 
 	if (material == nullptr)
 	{
-		material = aContext.BuiltinAssets->GetDefaultMaterial();
+		material = aContext.BuiltinAssets->GetDefaultMaterial(MaterialType::Surface);
 	}
 
 	if (material->HasParameters())

@@ -8,7 +8,7 @@
 #include <unordered_map>
 
 #include "ToolRegistry.h"
-#include <Tools/Core/Interface/Tool.h>
+#include <Tools/Core/Interface/ITool.h>
 
 // TODO: Add method to set different settings such as font.
 // TODO: Add method to allow the user to set dock settings.
@@ -24,7 +24,7 @@ public:
     void Render();
 
     template<typename ToolClass>
-    requires std::is_base_of_v<Tool, ToolClass>
+    requires std::is_base_of_v<ITool, ToolClass>
     bool AddTool()
     {
         const std::type_index type = typeid(ToolClass);
@@ -34,7 +34,7 @@ public:
             return false;
         }
 
-        std::unique_ptr<Tool> tool = ToolRegistry::Get().CreateTool<ToolClass>();
+        std::unique_ptr<ITool> tool = ToolRegistry::Get().CreateTool<ToolClass>();
 
         if (tool == nullptr)
         {
@@ -47,7 +47,7 @@ public:
     }
 
     template<typename ToolClass>
-    requires std::is_base_of_v<Tool, ToolClass>
+    requires std::is_base_of_v<ITool, ToolClass>
     bool RemoveTool()
     {
         const std::type_index type = typeid(ToolClass);
@@ -65,7 +65,7 @@ public:
     }
 
     template<typename ToolClass>
-    requires std::is_base_of_v<Tool, ToolClass>
+    requires std::is_base_of_v<ITool, ToolClass>
     ToolClass* GetTool() const
     {
         const std::type_index type = typeid(ToolClass);
@@ -83,5 +83,5 @@ public:
 private:
 	ToolManager();
 
-    std::unordered_map<std::type_index, std::unique_ptr<Tool>> myTools;
+    std::unordered_map<std::type_index, std::unique_ptr<ITool>> myTools;
 };

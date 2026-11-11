@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Tools/Core/Interface/Tool.h>
+#include <Tools/Core/Interface/ITool.h>
 
 #include "DebugInfo.h"
 
@@ -8,7 +8,7 @@
 // TODO: Add a graph to display frame time and FPS over time.
 // TODO: Give more context to draw call info.
 
-class DebugTool : public Tool
+class DebugTool : public ITool
 {
 public:
 	void SetInfo(const DebugInfo& aInfo);

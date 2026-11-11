@@ -8,7 +8,7 @@
 GameWorld::GameWorld()
 {
 	myNextIDCounter = 1;
-	myNextID.emplace_back(myNextIDCounter);
+	myAvailableIDs.emplace_back(myNextIDCounter);
 }
 
 GameWorld& GameWorld::Get()
@@ -41,7 +41,7 @@ void GameWorld::Update(float aDeltaTime)
 	{
 		if (*it && (*it)->GetIsDestroyed())
 		{
-			myNextID.emplace_back((*it)->GetID());
+			myAvailableIDs.emplace_back((*it)->GetID());
 
 			it = myActors.erase(it);
 		}

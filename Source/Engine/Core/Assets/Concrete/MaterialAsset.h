@@ -3,7 +3,7 @@
 #include <filesystem>
 #include <vector>
 
-#include "Core/Assets/Interface/Asset.h"
+#include "Core/Assets/Interface/IAsset.h"
 
 #include "Wrappers/Json/JsonWrapper.h"
 
@@ -11,12 +11,6 @@ class MaterialInterface;
 class TextureAsset;
 
 enum class MaterialLayout : uint8_t;
-
-enum class MaterialType
-{
-	Unreal,
-	Sprite
-};
 
 class MaterialAsset : public Asset
 {
@@ -29,7 +23,7 @@ protected:
 	bool Load(const std::filesystem::path& aPath) override;
 
 private:
-	bool Construct(const Json::Data& aMaterialData, MaterialType aMaterialType);
+	bool Construct(const Json::Data& aMaterialData);
 
 	bool LoadUnrealInstanceData(const Json::Data& aMaterialData);
 	bool LoadUnrealMasterData(const Json::Data& aMaterialData);

@@ -3,7 +3,7 @@
 #include <memory>
 #include <vector>
 
-#include "Core/Scene/Components/Interface/Component.h"
+#include "Core/Scene/Components/Interface/IComponent.h"
 
 class MeshAsset;
 class MaterialAsset;

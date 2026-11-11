@@ -2,7 +2,7 @@
 
 #include <unordered_map>
 
-#include "Core/Scene/Components/Interface/Component.h"
+#include "Core/Scene/Components/Interface/IComponent.h"
 
 #include "plfhive/plf_hive.h"
 

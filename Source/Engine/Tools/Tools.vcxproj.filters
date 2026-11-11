@@ -1,6 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
+    <Filter Include="Command">
+      <UniqueIdentifier>{24011C34-90E0-9ACF-99F8-25A605570131}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Command\Interface">
+      <UniqueIdentifier>{0426D673-703C-D409-B9B3-5F2B2509A591}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Core">
       <UniqueIdentifier>{2EB4837C-1AEB-840D-C3D7-6A10AFED000F}</UniqueIdentifier>
     </Filter>
@@ -45,7 +51,13 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Core\Interface\Tool.h">
+    <ClInclude Include="Command\CommandHistory.h">
+      <Filter>Command</Filter>
+    </ClInclude>
+    <ClInclude Include="Command\Interface\ICommand.h">
+      <Filter>Command\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Interface\ITool.h">
       <Filter>Core\Interface</Filter>
     </ClInclude>
     <ClInclude Include="Core\ToolManager.h">
@@ -99,7 +111,13 @@
     <ClCompile Include="..\..\..\ThirdParty\Source\imgui\imgui_widgets.cpp">
       <Filter>ThirdParty\Source\imgui</Filter>
     </ClCompile>
-    <ClCompile Include="Core\Interface\Tool.cpp">
+    <ClCompile Include="Command\CommandHistory.cpp">
+      <Filter>Command</Filter>
+    </ClCompile>
+    <ClCompile Include="Command\Interface\ICommand.cpp">
+      <Filter>Command\Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Interface\ITool.cpp">
       <Filter>Core\Interface</Filter>
     </ClCompile>
     <ClCompile Include="Core\ToolManager.cpp">

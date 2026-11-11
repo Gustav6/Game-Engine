@@ -168,32 +168,7 @@ bool GraphicsEngine::Initialize(HWND aWindowHandle, const std::filesystem::path&
 
 void GraphicsEngine::Shutdown()
 {
-	myRenderOverlay = nullptr;
-	myDeferredItems.clear();
-	myForwardItems.clear();
-	myShadowItems.clear();
-
-	myDebugRenderPass.reset();
-	myScreenSpaceEffectPass.reset();
-	myShadowRenderPass.reset();
-	myScreenSpaceRenderPass.reset();
-	myDeferredRenderPass.reset();
-	myForwardRenderPass.reset();
-
-	myConstantBufferManager.reset();
-	myMaterialShaderRegistry.reset();
-	myPostProcessFilters.reset();
-	myBuiltinAssets.reset();
-
-	myEnvironmentCubemap.reset();
-	myLUTTexture.reset();
-	myDepthBuffer.reset();
-	myHDRBuffer.reset();
-	myBackBuffer.reset();
-	mySamplerPointers.clear();
-	mySamplers.clear();
-
-	myRHI.reset();
+	// TODO: Handle shutdown logic here
 }
 
 void GraphicsEngine::BeginFrame() const
@@ -312,22 +287,12 @@ FrameStats GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const S
 
 		for (const auto& light : LightDrawer::Get().GetSceneLights())
 		{
-			if (light.ShadowMap == nullptr)
-			{
-				continue;
-			}
-
 			for (unsigned int e = 0; e < drawCall.Mesh->myElements.size(); e++)
 			{
-				unsigned int materialIndex = drawCall.Mesh->myElements[e].MaterialIndex;
-
-				const MaterialInterface* material = drawCall.Materials[materialIndex];
-
 				RenderItem item =
 				{
 					.DrawCall = &drawCall,
-					.ElementIndex = e,
-					.MaterialIndex = materialIndex
+					.ElementIndex = e
 				};
 
 				switch (light.LightData->Type)
@@ -360,7 +325,6 @@ FrameStats GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const S
 						break;
 				}
 			}
-
 
 			if (shadowVisibleToCamera)
 			{
@@ -485,7 +449,7 @@ FrameStats GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const S
 		//	myForwardItems.end()
 		//);
 
-		myPixelPickingPass->Execute(inoutCommandList, allItems, *myDepthBuffer, context);
+		myPixelPickingPass->Execute(inoutCommandList, allItems, context);
 	}
 
 	frameStats.PipelineSwitches = inoutCommandList.GetPipelineSwitchCount();
@@ -606,6 +570,16 @@ void GraphicsEngine::SetSettings(const RenderSettings& aSettings)
 const RenderSettings& GraphicsEngine::GetSettings() const
 {
 	return myRenderSettings;
+}
+
+void GraphicsEngine::RequestPixelPick(unsigned aX, unsigned aY)
+{
+	myPixelPickingPass->RequestPixelPick(aX, aY);
+}
+
+std::optional<unsigned> GraphicsEngine::GetPickResult()
+{
+	return myPixelPickingPass->TryGetPickResult(*myRHI);
 }
 
 bool GraphicsEngine::InitializeRenderResources()
@@ -792,14 +766,4 @@ bool GraphicsEngine::InitializeRenderResources()
 	}
 
 	return true;
-}
-
-CommonUtilities::Vector3f GraphicsEngine::GetPixelPickPosition(const SceneCamera& aSceneCamera, const CommonUtilities::Vector2f& aMousePosition)
-{
-	float posViewAngleX = 
-		((2.0f * aMousePosition.x / aSceneCamera.RenderCamera.GetResolution().x) - 1) / aSceneCamera.RenderCamera.GetProjection()(0, 0);
-	float posViewAngleY =
-		((2.0f * aMousePosition.y / aSceneCamera.RenderCamera.GetResolution().y) - 1) / aSceneCamera.RenderCamera.GetProjection()(1, 1);
-
-	return { posViewAngleX, posViewAngleY, 1.0f };
 }

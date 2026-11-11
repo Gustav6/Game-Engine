@@ -158,7 +158,7 @@
     <ClInclude Include="Assets\Concrete\MeshAsset.h" />
     <ClInclude Include="Assets\Concrete\SpriteAsset.h" />
     <ClInclude Include="Assets\Concrete\TextureAsset.h" />
-    <ClInclude Include="Assets\Interface\Asset.h" />
+    <ClInclude Include="Assets\Interface\IAsset.h" />
     <ClInclude Include="Assets\Registry\AssetRegistry.h" />
     <ClInclude Include="Core.pch.h" />
     <ClInclude Include="EngineContext.h" />
@@ -176,7 +176,7 @@
     <ClInclude Include="Scene\Components\Concrete\Rendering\SpriteComponent.h" />
     <ClInclude Include="Scene\Components\Concrete\Rendering\TextComponent.h" />
     <ClInclude Include="Scene\Components\Concrete\Transform\Transform.h" />
-    <ClInclude Include="Scene\Components\Interface\Component.h" />
+    <ClInclude Include="Scene\Components\Interface\IComponent.h" />
     <ClInclude Include="Scene\Components\Registry\ComponentRegistry.h" />
     <ClInclude Include="Scene\Components\Registry\ComponentRegistryManager.h" />
     <ClInclude Include="Scene\World\Actor.hpp" />
@@ -189,7 +189,7 @@
     <ClCompile Include="Assets\Concrete\MeshAsset.cpp" />
     <ClCompile Include="Assets\Concrete\SpriteAsset.cpp" />
     <ClCompile Include="Assets\Concrete\TextureAsset.cpp" />
-    <ClCompile Include="Assets\Interface\Asset.cpp" />
+    <ClCompile Include="Assets\Interface\IAsset.cpp" />
     <ClCompile Include="Assets\Registry\AssetRegistry.cpp" />
     <ClCompile Include="Core.pch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
@@ -209,7 +209,7 @@
     <ClCompile Include="Scene\Components\Concrete\Rendering\SpriteComponent.cpp" />
     <ClCompile Include="Scene\Components\Concrete\Rendering\TextComponent.cpp" />
     <ClCompile Include="Scene\Components\Concrete\Transform\Transform.cpp" />
-    <ClCompile Include="Scene\Components\Interface\Component.cpp" />
+    <ClCompile Include="Scene\Components\Interface\IComponent.cpp" />
     <ClCompile Include="Scene\Components\Registry\ComponentRegistry.cpp" />
     <ClCompile Include="Scene\Components\Registry\ComponentRegistryManager.cpp" />
     <ClCompile Include="Scene\World\Actor.cpp" />

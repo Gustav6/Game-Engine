@@ -1,5 +1,5 @@
 #include "Core/Core.pch.h"
-#include "Component.h"
+#include "IComponent.h"
 
 #include "Core/Scene/World/Actor.hpp"
 

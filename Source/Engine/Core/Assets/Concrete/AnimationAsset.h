@@ -3,7 +3,7 @@
 #include <filesystem>
 #include <memory>
 
-#include "Core/Assets/Interface/Asset.h"
+#include "Core/Assets/Interface/IAsset.h"
 
 struct Animation;
 

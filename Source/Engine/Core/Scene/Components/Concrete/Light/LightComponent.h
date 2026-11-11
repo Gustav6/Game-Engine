@@ -2,7 +2,7 @@
 
 #include <memory>
 
-#include "Core/Scene/Components/Interface/Component.h"
+#include "Core/Scene/Components/Interface/IComponent.h"
 
 #include "Graphics/Objects/Scene/Light.h"
 

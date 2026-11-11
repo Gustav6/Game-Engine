@@ -1,6 +1,8 @@
 #include "Graphics/GraphicsEngine.pch.h"
 #include "PixelPickingPass.h"
 
+
+
 #include "Shared/DrawCallSubmitter.h"
 
 #include "Graphics/Core/RenderItem.h"
@@ -52,7 +54,7 @@ bool PixelPickingPass::Initialize(RenderHardwareInterface& aRHI)
 
         if (!aRHI.CreateTexture("IDBuffer", resolution.x, resolution.y, 1, ResourceFormat::R32_UINT, ResourceBindFlag_RenderTarget, *myIDBuffer))
         {
-            SPDLOG_ERROR("Failed to create IDBuffer ({}x{})", resolution.x, resolution.y);
+            SPDLOG_ERROR("Failed to create IDBuffer texture!");
             return false;
         }
     }
@@ -62,19 +64,38 @@ bool PixelPickingPass::Initialize(RenderHardwareInterface& aRHI)
 
         if (!aRHI.CreateTexture("IDStagingBuffer", 1, 1, 1, ResourceFormat::R32_UINT, ResourceBindFlag_Staging, *myIDStagingBuffer))
         {
-            SPDLOG_ERROR("Failed to create IDStagingBuffer!");
+            SPDLOG_ERROR("Failed to create IDStagingBuffer texture!");
             return false;
         }
     }
 
+	{
+        myPickDepth = std::make_unique<Texture>();
+
+        if (!aRHI.CreateDepthStencil("PickDepth", resolution.x, resolution.y, *myPickDepth, false))
+        {
+            SPDLOG_ERROR("Failed to create PickDepth texture!");
+            return false;
+        }
+	}
+
     return true;
 }
 
-void PixelPickingPass::Execute(GraphicsCommandList& inoutCommandList, const std::vector<RenderItem>& aItems, Texture& aDepthBuffer, RenderContext& aContext)
+void PixelPickingPass::Execute(
+    GraphicsCommandList& inoutCommandList, 
+    const std::vector<RenderItem>& aItems, 
+    RenderContext& aContext)
 {
+    if (!myPendingPick.has_value())
+    {
+        return;
+    }
+
     inoutCommandList.BeginEvent("Pixel Picking Pass");
 
     inoutCommandList.ClearRenderTarget(*myIDBuffer);
+	inoutCommandList.ClearDepthStencil(*myPickDepth);
 
     FrameBuffer frameBuffer{};
     frameBuffer.View = aContext.Camera->Transform.GetFastInverse();
@@ -83,21 +104,47 @@ void PixelPickingPass::Execute(GraphicsCommandList& inoutCommandList, const std:
 
     aContext.ConstantBuffers->UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::FrameBuffer, frameBuffer, 0, PipelineStage_VertexShader | PipelineStage_PixelShader);
 
-    inoutCommandList.SetRenderTarget(myIDBuffer.get(), &aDepthBuffer);
+    inoutCommandList.SetRenderTarget(myIDBuffer.get(), myPickDepth.get());
     inoutCommandList.SetOverridePipelineState(*myPickingPSO, PipelineStage_PixelShader);
 
     DrawCallSubmitter::RenderDrawCalls(inoutCommandList, aItems, aContext, DrawCallFlag_BindMaterial);
 
     inoutCommandList.ClearOverridePipelineState();
+
+    const unsigned x = std::min(myPendingPick->x, static_cast<unsigned>(myIDBuffer->GetViewport().Width) - 1);
+    const unsigned y = std::min(myPendingPick->y, static_cast<unsigned>(myIDBuffer->GetViewport().Height) - 1);
+    inoutCommandList.CopyRegion(*myIDBuffer, *myIDStagingBuffer, x, y, 1, 1);
+
+    myPendingPick.reset();
+    myHasAPickResult = true;
+
     inoutCommandList.EndEvent();
 }
 
-const Texture* PixelPickingPass::GetIDBuffer() const
+void PixelPickingPass::RequestPixelPick(unsigned aX, unsigned aY)
 {
-    return myIDBuffer.get();
+    myPendingPick = CommonUtilities::Vector2ui{ aX, aY };
 }
 
-const Texture* PixelPickingPass::GetIDStagingBuffer() const
+bool PixelPickingPass::HasPendingPick() const
 {
-    return myIDStagingBuffer.get();
+    return myPendingPick.has_value();
+}
+
+std::optional<unsigned> PixelPickingPass::TryGetPickResult(const RenderHardwareInterface& aRHI)
+{
+    if (!myHasAPickResult)
+    {
+        return std::nullopt;
+    }
+
+    myHasAPickResult = false;
+
+    const unsigned id = aRHI.ReadObjectId(*myIDStagingBuffer);
+    if (id == 0)
+    {
+        return std::nullopt;
+    }
+
+    return id - 1;
 }

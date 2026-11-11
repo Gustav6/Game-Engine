@@ -5,7 +5,7 @@
 #include <unordered_map>
 #include <memory>
 
-#include "Core/Scene/Components/Interface/Component.h"
+#include "Core/Scene/Components/Interface/IComponent.h"
 
 namespace CommonUtilities
 {

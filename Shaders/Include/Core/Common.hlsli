@@ -32,6 +32,20 @@ struct ParticleVertex
     float4 ChannelMask : CHANNELMASK;
 };
 
+struct SpriteVertex
+{
+    float4 Position : POSITION;
+    float4 Color : COLOR;
+    float2 UV : UV;
+};
+
+struct FontVertex
+{
+    float4 Position : POSITION;
+    float4 Color : COLOR;
+    float2 UV : UV;
+};
+
 struct GBufferOutput
 {
     float4 Albedo : SV_TARGET0;
@@ -76,7 +90,7 @@ cbuffer ObjectBuffer : register(b1)
     float4x4 OB_World;
     float4x4 OB_WorldInvT;
     uint OB_SkinningFlag;
-    float OB_ObjectId;
+    uint OB_ObjectId;
     float2 _OB_Padding;
 }
 

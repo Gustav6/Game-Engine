@@ -19,13 +19,13 @@ public:
     requires std::is_base_of_v<Actor, ActorClass>
     ActorClass* CreateActor(const std::string& aName)
     {
-        unsigned int id = myNextID.back();
-        myNextID.pop_back();
+        unsigned int id = myAvailableIDs.back();
+        myAvailableIDs.pop_back();
 
-        if (myNextID.empty())
+        if (myAvailableIDs.empty())
         {
             myNextIDCounter++;
-            myNextID.emplace_back(myNextIDCounter);
+            myAvailableIDs.emplace_back(myNextIDCounter);
         }
 
         std::unique_ptr<ActorClass> actor = std::make_unique<ActorClass>(id);
@@ -48,6 +48,6 @@ private:
     std::vector<std::unique_ptr<Actor>> myActors;
     std::vector<std::unique_ptr<Actor>> myQueuedActors;
 
-    std::vector<unsigned int> myNextID;
+    std::vector<unsigned int> myAvailableIDs;
     unsigned int myNextIDCounter;
 };

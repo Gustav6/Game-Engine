@@ -3,6 +3,8 @@
 #include <memory>
 #include <vector>
 
+#include "CommonUtilities/Math/Vector2.hpp"
+
 class GraphicsCommandList;
 class RenderHardwareInterface;
 class PipelineStateObject;
@@ -19,14 +21,20 @@ public:
 
     bool Initialize(RenderHardwareInterface& aRHI);
 
-    void Execute(GraphicsCommandList& inoutCommandList, const std::vector<RenderItem>& aItems, Texture& aDepthBuffer, RenderContext& aContext);
+    void Execute(GraphicsCommandList& inoutCommandList, const std::vector<RenderItem>& aItems, RenderContext& aContext);
 
-    const Texture* GetIDBuffer() const;
-    const Texture* GetIDStagingBuffer() const;
+    void RequestPixelPick(unsigned aX, unsigned aY);
+    bool HasPendingPick() const;
+
+    std::optional<unsigned> TryGetPickResult(const RenderHardwareInterface& aRHI);
 
 private:
     std::unique_ptr<PipelineStateObject> myPickingPSO;
 
     std::unique_ptr<Texture> myIDBuffer;
     std::unique_ptr<Texture> myIDStagingBuffer;
+    std::unique_ptr<Texture> myPickDepth;
+
+    std::optional<CommonUtilities::Vector2ui> myPendingPick;
+    bool myHasAPickResult = false;
 };

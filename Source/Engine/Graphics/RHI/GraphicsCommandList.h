@@ -48,8 +48,8 @@ public:
 
 	void SetShaderResource(const Texture* aTexture, unsigned int aSlot, PipelineStages aStages) const;
 	
-	void SetShaderResources(const Buffer* const* aResourceList, size_t aNumResources, unsigned aStartSlot, PipelineStages aPipelineStages) const;
-	void SetShaderResources(const Texture* const* aResourcesList, size_t aNumOfResources, unsigned int aStartSlot, PipelineStages aStages) const;
+	void SetShaderResources(const Buffer* const* aResourceList, size_t aNumResources, unsigned aStartSlot, PipelineStages aStages) const;
+	void SetShaderResources(const Texture* const* aResourcesList, size_t aNumResources, unsigned int aStartSlot, PipelineStages aStages) const;
 	void SetShaderSamplers(const Sampler* const* aSamplerList, size_t aNumOfSamplers, unsigned int aStartSlot, PipelineStages aStages) const;
 
 	void UnbindShaderResource(unsigned int aSlot, PipelineStages aStages) const;

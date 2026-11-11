@@ -262,6 +262,12 @@ int Game::Run()
 			myGraphicsCommandList->FinishCommandList();
 
 			GE.ExecuteCommandList(*myGraphicsCommandList);
+
+			if (auto id = GE.GetPickResult())
+			{
+				std::cout << "Picked Object ID: " << *id << std::endl;
+			}
+
 			GE.Present();
 		}
 
@@ -279,6 +285,15 @@ int Game::Run()
 void Game::UpdateScene(float aDeltaTime) const
 {
 	myStateMachine->Update(aDeltaTime);
+
+	if (EngineContext.InputManager.IsKeyPressed(KeyCode::LMB))
+	{
+		CommonUtilities::Vector2f mousePosition = EngineContext.InputManager.GetMousePosition();
+		unsigned int mouseX = static_cast<unsigned int>(mousePosition.x);
+		unsigned int mouseY = static_cast<unsigned int>(mousePosition.y);
+
+		GraphicsEngine::Get().RequestPixelPick(mouseX, mouseY);
+	}
 }
 
 void Game::RenderScene() const

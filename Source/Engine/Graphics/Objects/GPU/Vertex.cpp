@@ -29,3 +29,17 @@ const std::vector<VertexElementDescription> ParticleVertex::Description =
 	{ "SIZE", 0, DXGI_FORMAT_R32G32_FLOAT },
 	{ "CHANNELMASK", 0, DXGI_FORMAT_R32G32B32A32_FLOAT }
 };
+
+const std::vector<VertexElementDescription> SpriteVertex::Description =
+{
+	{ "POSITION", 0, DXGI_FORMAT_R32G32B32A32_FLOAT },
+	{ "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT },
+	{ "UV", 0, DXGI_FORMAT_R32G32_FLOAT }
+};
+
+const std::vector<VertexElementDescription> FontVertex::Description =
+{
+	{ "POSITION", 0, DXGI_FORMAT_R32G32B32A32_FLOAT },
+	{ "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT },
+	{ "UV", 0, DXGI_FORMAT_R32G32_FLOAT }
+};

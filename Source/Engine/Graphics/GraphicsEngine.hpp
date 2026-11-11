@@ -64,6 +64,13 @@ struct RenderSettings
 	bool VSyncEnabled = false;
 };
 
+// This should be moved
+//struct InstanceData
+//{
+//	CommonUtilities::Matrix4x4f World;
+//	CommonUtilities::Vector4f Color;
+//};
+
 class GraphicsEngine
 {
 public:
@@ -105,13 +112,14 @@ public:
 	void SetSettings(const RenderSettings& aSettings);
 	const RenderSettings& GetSettings() const;
 
+	void RequestPixelPick(unsigned aX, unsigned aY);
+	std::optional<unsigned> GetPickResult();
+
 private:
 	GraphicsEngine();
 	~GraphicsEngine();
 
 	bool InitializeRenderResources();
-
-	CommonUtilities::Vector3f GetPixelPickPosition(const SceneCamera& aSceneCamera, const CommonUtilities::Vector2f& aMousePosition);
 
 	std::filesystem::path myShaderRoot;
 

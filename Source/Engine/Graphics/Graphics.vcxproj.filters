@@ -497,10 +497,10 @@
     <FxCompile Include="Shaders\Shadows\ShadowCube_GS.hlsl">
       <Filter>Shaders\Shadows</Filter>
     </FxCompile>
-    <FxCompile Include="Shaders\UI\FontMaterial_PS.hlsl">
+    <FxCompile Include="Shaders\UI\Font_PS.hlsl">
       <Filter>Shaders\UI</Filter>
     </FxCompile>
-    <FxCompile Include="Shaders\UI\FontMaterial_VS.hlsl">
+    <FxCompile Include="Shaders\UI\Font_VS.hlsl">
       <Filter>Shaders\UI</Filter>
     </FxCompile>
     <FxCompile Include="Shaders\UI\Sprite_PS.hlsl">

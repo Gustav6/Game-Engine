@@ -2,14 +2,13 @@
 #include "../Include/Core/MaterialParameters.hlsli"
 #include "../Include/Core/Material.hlsli"
 
-VStoPS main(Vertex aVertex)
+VStoPS main(SpriteVertex aVertex)
 {
     VStoPS result;
 	
     result.Position = mul(FB_Projection, aVertex.Position);
     result.Color = aVertex.Color;
-    result.UV0 = aVertex.UV0;
-    result.UV1 = aVertex.UV1;
+    result.UV0 = aVertex.UV;
     
     MaterialVertexParameters parameters;
     parameters.WorldPosition = result.Position;
@@ -18,6 +17,7 @@ VStoPS main(Vertex aVertex)
     
     Material_Vertex(parameters);
     
+    result.UV1 = 0;
     result.WorldPosition = 0;
     result.Normal = 0;
     result.Tangent = 0;

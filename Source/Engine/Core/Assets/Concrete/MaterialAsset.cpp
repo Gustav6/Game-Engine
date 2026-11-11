@@ -46,7 +46,7 @@ bool MaterialAsset::Load(const std::filesystem::path& aPath)
     return LoadUnrealMasterData(materialData);
 }
 
-bool MaterialAsset::Construct(const Json::Data& aMaterialData, MaterialType)
+bool MaterialAsset::Construct(const Json::Data& aMaterialData)
 {
     if (!aMaterialData.IsValid())
     {
@@ -132,6 +132,7 @@ bool MaterialAsset::LoadUnrealMasterData(const Json::Data& aMaterialData)
     desc.Name = materialName;
     desc.Layout = GetLayout(parameters);
     desc.Features = GetFeatures(parameters);
+	desc.Type = MaterialType::Surface;
 
     if (aMaterialData.HasKey("Domain"))
     {

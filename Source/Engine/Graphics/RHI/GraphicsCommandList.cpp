@@ -369,22 +369,37 @@ void GraphicsCommandList::SetShaderResource(const Texture* aTexture, unsigned in
 	}
 }
 
-void GraphicsCommandList::SetShaderResources(const Buffer* const* aResourceList, size_t aNumResources, unsigned aStartSlot, PipelineStages aPipelineStages) const
+void GraphicsCommandList::SetShaderResources(const Buffer* const* aResourceList, size_t aNumResources, unsigned aStartSlot, PipelineStages aStages) const
 {
-	aResourceList;
-	aNumResources;
-	aStartSlot;
-	aPipelineStages;
-    // TODO: implement
-	// Create SRV list, just like SetShaderResources for textures
-	// Set SRV list with ** SetShaderResources
+	std::vector<ID3D11ShaderResourceView*> srvs(aNumResources);
+
+	for (size_t t = 0; t < aNumResources; t++)
+	{
+		if (const Buffer* currentBuffer = aResourceList[t])
+		{
+			srvs[t] = currentBuffer->mySRV.Get();
+		}
+	}
+
+	if (aStages & PipelineStage_VertexShader)
+	{
+		myContext->VSSetShaderResources(aStartSlot, static_cast<unsigned>(srvs.size()), srvs.data());
+	}
+	if (aStages & PipelineStage_PixelShader)
+	{
+		myContext->PSSetShaderResources(aStartSlot, static_cast<unsigned>(srvs.size()), srvs.data());
+	}
+	if (aStages & PipelineStage_GeometryShader)
+	{
+		myContext->GSSetShaderResources(aStartSlot, static_cast<unsigned>(srvs.size()), srvs.data());
+	}
 }
 
-void GraphicsCommandList::SetShaderResources(const Texture* const* aResourcesList, size_t aNumOfResources, unsigned int aStartSlot, PipelineStages aStages) const
+void GraphicsCommandList::SetShaderResources(const Texture* const* aResourcesList, size_t aNumResources, unsigned int aStartSlot, PipelineStages aStages) const
 {
-	std::vector<ID3D11ShaderResourceView*> srvs(aNumOfResources);
+	std::vector<ID3D11ShaderResourceView*> srvs(aNumResources);
 
-	for (size_t t = 0; t < aNumOfResources; t++)
+	for (size_t t = 0; t < aNumResources; t++)
 	{
 		if (const Texture* currentTexture = aResourcesList[t])
 		{
