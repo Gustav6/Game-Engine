@@ -107,6 +107,9 @@
     <ClInclude Include="Scene\Components\Concrete\Rendering\AnimationComponent.h">
       <Filter>Scene\Components\Concrete\Rendering</Filter>
     </ClInclude>
+    <ClInclude Include="Scene\Components\Concrete\Rendering\InstancedMeshComponent.h">
+      <Filter>Scene\Components\Concrete\Rendering</Filter>
+    </ClInclude>
     <ClInclude Include="Scene\Components\Concrete\Rendering\MeshComponent.h">
       <Filter>Scene\Components\Concrete\Rendering</Filter>
     </ClInclude>
@@ -190,6 +193,9 @@
       <Filter>Scene\Components\Concrete\Particles</Filter>
     </ClCompile>
     <ClCompile Include="Scene\Components\Concrete\Rendering\AnimationComponent.cpp">
+      <Filter>Scene\Components\Concrete\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\Components\Concrete\Rendering\InstancedMeshComponent.cpp">
       <Filter>Scene\Components\Concrete\Rendering</Filter>
     </ClCompile>
     <ClCompile Include="Scene\Components\Concrete\Rendering\MeshComponent.cpp">

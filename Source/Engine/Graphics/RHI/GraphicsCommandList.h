@@ -46,6 +46,7 @@ public:
 	void SetConstantBuffer(const Buffer* aBuffer, unsigned aSlot, PipelineStages aStages) const;
 	void SetPipelineStateObject(const PipelineStateObject& aPSO, const std::string_view aMarkerLabel = {}) const;
 
+	void SetShaderResource(const Buffer* aBuffer, unsigned int aSlot, PipelineStages aStages) const;
 	void SetShaderResource(const Texture* aTexture, unsigned int aSlot, PipelineStages aStages) const;
 	
 	void SetShaderResources(const Buffer* const* aResourceList, size_t aNumResources, unsigned aStartSlot, PipelineStages aStages) const;

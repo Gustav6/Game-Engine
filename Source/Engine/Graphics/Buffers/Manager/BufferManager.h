@@ -11,7 +11,7 @@ class GraphicsCommandList;
 
 enum class ConstantBuffer : uint8_t;
 
-class ConstantBufferManager
+class BufferManager
 {
 public:
 	bool Initialize(RenderHardwareInterface& aRHI);
@@ -33,5 +33,5 @@ public:
     }
 
 private:
-    std::unordered_map<ConstantBuffer, Buffer> myConstantBuffers;
+    std::unordered_map<ConstantBuffer, Buffer> myBuffers;
 };

@@ -16,10 +16,10 @@
 
 #include "Graphics/Materials/MaterialInterface.h"
 
-#include "Graphics/ConstantBuffers/FrameBuffer.h"
-#include "Graphics/ConstantBuffers/ObjectBuffer.h"
+#include "Graphics/Buffers/FrameBuffer.h"
+#include "Graphics/Buffers/ObjectBuffer.h"
 
-#include "Graphics/ConstantBuffers/Manager/ConstantBufferManager.h"
+#include "Graphics/Buffers/Manager/BufferManager.h"
 
 #include "Graphics/Objects/GPU/Vertex.h"
 
@@ -149,7 +149,7 @@ void ScreenSpaceRenderPass::RenderText(
 	frameBuffer.Projection = aContext.Camera->RenderCamera.GetProjection();
 	frameBuffer.CameraPosition = aContext.Camera->Transform.GetTranslation();
 
-	aContext.ConstantBuffers->UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::FrameBuffer, frameBuffer, 0, PipelineStage_VertexShader | PipelineStage_PixelShader);
+	aContext.Buffers->UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::FrameBuffer, frameBuffer, 0, PipelineStage_VertexShader | PipelineStage_PixelShader);
 
 	inoutCommandList.BeginEvent(aDrawCall.Font->myName);
 
@@ -167,7 +167,7 @@ void ScreenSpaceRenderPass::RenderText(
 	objectBuffer.World = aDrawCall.Transform * pixelToNDC;
 	objectBuffer.WorldInvT = objectBuffer.World.GetFastInverse().GetTranspose();
 
-	aContext.ConstantBuffers->UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::ObjectBuffer, objectBuffer, 1, PipelineStage_VertexShader | PipelineStage_PixelShader);
+	aContext.Buffers->UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::ObjectBuffer, objectBuffer, 1, PipelineStage_VertexShader | PipelineStage_PixelShader);
 
 	inoutCommandList.SetShaderResource(&aDrawCall.Font->myAtlas, 0, PipelineStage_PixelShader);
 
@@ -185,7 +185,7 @@ void ScreenSpaceRenderPass::RenderText(
 			material->RefreshMaterialData();
 		}
 
-		aContext.ConstantBuffers->UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::MaterialBuffer, material->GetParameterDataBlock(), Material::MATERIAL_BUFFER_SIZE, 5, PipelineStage_VertexShader | PipelineStage_PixelShader);
+		aContext.Buffers->UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::MaterialBuffer, material->GetParameterDataBlock(), Material::MATERIAL_BUFFER_SIZE, 5, PipelineStage_VertexShader | PipelineStage_PixelShader);
 	}
 
 	inoutCommandList.SetPipelineStateObject(material->GetPSO());
@@ -204,7 +204,7 @@ void ScreenSpaceRenderPass::RenderSprite(
 {
 	FrameBuffer frameBuffer;
 	frameBuffer.Projection = mySpriteProjection;
-	aContext.ConstantBuffers->UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::FrameBuffer, frameBuffer, 0, PipelineStage_VertexShader | PipelineStage_PixelShader);
+	aContext.Buffers->UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::FrameBuffer, frameBuffer, 0, PipelineStage_VertexShader | PipelineStage_PixelShader);
 
 	mySpriteVertices.clear();
 
@@ -279,7 +279,7 @@ void ScreenSpaceRenderPass::RenderSprite(
 			material->RefreshMaterialData();
 		}
 
-		aContext.ConstantBuffers->UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::MaterialBuffer, material->GetParameterDataBlock(), Material::MATERIAL_BUFFER_SIZE, 5, PipelineStage_VertexShader | PipelineStage_PixelShader);
+		aContext.Buffers->UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::MaterialBuffer, material->GetParameterDataBlock(), Material::MATERIAL_BUFFER_SIZE, 5, PipelineStage_VertexShader | PipelineStage_PixelShader);
 	}
 
 	inoutCommandList.SetPipelineStateObject(material->GetPSO());

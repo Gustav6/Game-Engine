@@ -137,7 +137,7 @@ namespace
 		aShaderRefl->GetDesc(&shaderDesc);
 
 		outReflectionInfo.Type = static_cast<ShaderType>(D3D11_SHVER_GET_TYPE(shaderDesc.Version));
-		outReflectionInfo.ConstantBuffers.reserve(shaderDesc.ConstantBuffers);
+		outReflectionInfo.Buffers.reserve(shaderDesc.ConstantBuffers);
 		outReflectionInfo.Bindings.reserve(shaderDesc.BoundResources);
 
 		for (unsigned b = 0; b < shaderDesc.BoundResources; ++b)
@@ -193,7 +193,7 @@ namespace
 			//std::string lowerName = bufferInfo.Name;
 			//std::ranges::transform(lowerName, lowerName.begin(), tolower);
 			outReflectionInfo.ConstantBufferNameToIndex.emplace(bufferInfo.Name, c);
-			outReflectionInfo.ConstantBuffers.emplace_back(bufferInfo);
+			outReflectionInfo.Buffers.emplace_back(bufferInfo);
 		}
 
 		return true;

@@ -4,7 +4,7 @@
 
 class RenderHardwareInterface;
 class BuiltinAssets;
-class ConstantBufferManager;
+class BufferManager;
 class PostProcessFilters;
 
 struct ShadowCascade;
@@ -16,7 +16,7 @@ enum class ToneMapper;
 
 struct RenderContext
 {
-    ConstantBufferManager* ConstantBuffers = nullptr;
+    BufferManager* Buffers = nullptr;
     RenderHardwareInterface* RHI = nullptr;
     const BuiltinAssets* BuiltinAssets = nullptr;
     const PostProcessFilters* PostProcessFilters = nullptr;

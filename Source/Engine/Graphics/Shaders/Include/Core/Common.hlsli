@@ -81,7 +81,7 @@ cbuffer FrameBuffer : register(b0)
     float3 FB_CameraPosition;
     uint FB_TypeOfRenderPass;
     uint FB_TypeOfTonemap;
-    uint FB_SSAOFlag;
+    bool FB_SSAOFlag;
     float2 _FB_Padding;
 }
 
@@ -89,9 +89,10 @@ cbuffer ObjectBuffer : register(b1)
 {
     float4x4 OB_World;
     float4x4 OB_WorldInvT;
-    uint OB_SkinningFlag;
+    bool OB_SkinningFlag;
+    bool OB_IsInstanced;
     uint OB_ObjectId;
-    float2 _OB_Padding;
+    float _OB_Padding;
 }
 
 cbuffer AnimationBuffer : register(b2)

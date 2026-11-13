@@ -5,6 +5,7 @@
 #include "CommonUtilities/Math/Matrix4x4.hpp"
 
 #include "Graphics/Materials/Material.h"
+#include "Graphics/Buffers/InstanceDataBuffer.h"
 
 class Mesh;
 
@@ -12,11 +13,16 @@ struct MeshDrawCall
 {
     bool HasSkinning = false;
     const Mesh* Mesh = nullptr;
+
     const MaterialInterface* Materials[Material::MAX_MATERIAL_TEXTURE_COUNT] = {};
+
     CommonUtilities::Matrix4x4f Transform;
+
     const CommonUtilities::Matrix4x4f* JointTransforms = nullptr;
-    unsigned int ObjectID;
-    bool IsInstanced = false;
+
+    unsigned int ObjectID = 0;
+
+    std::vector<InstanceData> Instances;
 };
 
 class MeshDrawer

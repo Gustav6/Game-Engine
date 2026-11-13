@@ -1,11 +1,11 @@
 #include "Graphics/GraphicsEngine.pch.h"
-#include "ConstantBufferManager.h"
+#include "BufferManager.h"
 
-#include "Graphics/ConstantBuffers/FrameBuffer.h"
-#include "Graphics/ConstantBuffers/ObjectBuffer.h"
-#include "Graphics/ConstantBuffers/AnimationBuffer.h"
-#include "Graphics/ConstantBuffers/LightBuffer.h"
-#include "Graphics/ConstantBuffers/CascadeBuffer.h"
+#include "Graphics/Buffers/FrameBuffer.h"
+#include "Graphics/Buffers/ObjectBuffer.h"
+#include "Graphics/Buffers/AnimationBuffer.h"
+#include "Graphics/Buffers/LightBuffer.h"
+#include "Graphics/Buffers/CascadeBuffer.h"
 
 #include "Graphics/Core/RenderEnums.h"
 
@@ -14,7 +14,7 @@
 #include "Graphics/RHI/RenderHardwareInterface.h"
 #include "Graphics/RHI/GraphicsCommandList.h"
 
-bool ConstantBufferManager::Initialize(RenderHardwareInterface& aRHI)
+bool BufferManager::Initialize(RenderHardwareInterface& aRHI)
 {
 	if (!CreateConstantBuffer<FrameBuffer>(aRHI, ConstantBuffer::FrameBuffer, "FrameBuffer"))
 	{
@@ -50,7 +50,7 @@ bool ConstantBufferManager::Initialize(RenderHardwareInterface& aRHI)
 	return true;
 }
 
-bool ConstantBufferManager::CreateConstantBuffer(RenderHardwareInterface& aRHI, ConstantBuffer aBufferID, std::string_view aName, size_t aBufferSize)
+bool BufferManager::CreateConstantBuffer(RenderHardwareInterface& aRHI, ConstantBuffer aBufferID, std::string_view aName, size_t aBufferSize)
 {
 	Buffer buffer;
 
@@ -59,20 +59,20 @@ bool ConstantBufferManager::CreateConstantBuffer(RenderHardwareInterface& aRHI, 
 		return false;
 	}
 
-	myConstantBuffers.emplace(aBufferID, std::move(buffer));
+	myBuffers.emplace(aBufferID, std::move(buffer));
 
 	return true;
 }
 
-bool ConstantBufferManager::UpdateAndSetConstantBuffer(GraphicsCommandList& inoutCommandList, ConstantBuffer aBufferID, const void* aData, size_t aDataSize, unsigned aSlot, PipelineStages aStages) const
+bool BufferManager::UpdateAndSetConstantBuffer(GraphicsCommandList& inoutCommandList, ConstantBuffer aBufferID, const void* aData, size_t aDataSize, unsigned aSlot, PipelineStages aStages) const
 {
-	if (!myConstantBuffers.contains(aBufferID))
+	if (!myBuffers.contains(aBufferID))
 	{
 		SPDLOG_WARN("Requested constant buffer update failed because this buffer does not exist!");
 		return false;
 	}
 
-	const Buffer& buffer = myConstantBuffers.at(aBufferID);
+	const Buffer& buffer = myBuffers.at(aBufferID);
 
 	if (!inoutCommandList.UpdateConstantBuffer(buffer, aData, aDataSize))
 	{

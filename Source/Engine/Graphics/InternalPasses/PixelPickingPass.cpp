@@ -10,9 +10,10 @@
 #include "Graphics/Core/RenderEnums.h"
 #include "Graphics/Core/SceneCamera.h"
 
-#include "Graphics/ConstantBuffers/FrameBuffer.h"
-#include "Graphics/ConstantBuffers/Manager/ConstantBufferManager.h"
+#include "Graphics/Buffers/FrameBuffer.h"
+#include "Graphics/Buffers/Manager/BufferManager.h"
 
+#include "Graphics/Objects/GPU/Vertex.h"
 #include "Graphics/Objects/GPU/Texture.h"
 #include "Graphics/Objects/Scene/Camera.h"
 
@@ -23,6 +24,7 @@
 #include "Wrappers/Logger/LoggerWrapper.h"
 
 #include "PixelPicking_PS.h"
+#include "Surface_VS.h"
 
 PixelPickingPass::~PixelPickingPass() = default;
 
@@ -37,6 +39,9 @@ bool PixelPickingPass::Initialize(RenderHardwareInterface& aRHI)
         pickingPSODesc.Name = "PixelPickingPSO";
         pickingPSODesc.BlendMode = BlendMode::Opaque;
         pickingPSODesc.Topology = Topology::TriangleList;
+        pickingPSODesc.InputLayoutElements = Vertex::Description;
+        pickingPSODesc.VertexShader.ByteCode = INTERNAL_Surface_VS_ByteCode;
+        pickingPSODesc.VertexShader.ByteCodeSize = sizeof(INTERNAL_Surface_VS_ByteCode);
         pickingPSODesc.PixelShader.ByteCode = INTERNAL_PixelPicking_PS_ByteCode;
         pickingPSODesc.PixelShader.ByteCodeSize = sizeof(INTERNAL_PixelPicking_PS_ByteCode);
 
@@ -102,14 +107,12 @@ void PixelPickingPass::Execute(
     frameBuffer.Projection = aContext.Camera->RenderCamera.GetProjection();
     frameBuffer.CameraPosition = aContext.Camera->Transform.GetTranslation();
 
-    aContext.ConstantBuffers->UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::FrameBuffer, frameBuffer, 0, PipelineStage_VertexShader | PipelineStage_PixelShader);
+    aContext.Buffers->UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::FrameBuffer, frameBuffer, 0, PipelineStage_VertexShader | PipelineStage_PixelShader);
 
     inoutCommandList.SetRenderTarget(myIDBuffer.get(), myPickDepth.get());
-    inoutCommandList.SetOverridePipelineState(*myPickingPSO, PipelineStage_PixelShader);
+    inoutCommandList.SetPipelineStateObject(*myPickingPSO);
 
-    DrawCallSubmitter::RenderDrawCalls(inoutCommandList, aItems, aContext, DrawCallFlag_BindMaterial);
-
-    inoutCommandList.ClearOverridePipelineState();
+    DrawCallSubmitter::Get().RenderDrawCalls(inoutCommandList, aItems, aContext, DrawCallFlag_None);
 
     const unsigned x = std::min(myPendingPick->x, static_cast<unsigned>(myIDBuffer->GetViewport().Width) - 1);
     const unsigned y = std::min(myPendingPick->y, static_cast<unsigned>(myIDBuffer->GetViewport().Height) - 1);
@@ -146,5 +149,5 @@ std::optional<unsigned> PixelPickingPass::TryGetPickResult(const RenderHardwareI
         return std::nullopt;
     }
 
-    return id - 1;
+    return id;
 }

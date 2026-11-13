@@ -7,10 +7,11 @@
 
 #include "Graphics/Resources/BuiltinAssets.h"
 
-#include "Graphics/ConstantBuffers/ObjectBuffer.h"
-#include "Graphics/ConstantBuffers/AnimationBuffer.h"
+#include "Graphics/Buffers/ObjectBuffer.h"
+#include "Graphics/Buffers/AnimationBuffer.h"
+#include "Graphics/Buffers/InstanceDataBuffer.h"
 
-#include "Graphics/ConstantBuffers/Manager/ConstantBufferManager.h"
+#include "Graphics/Buffers/Manager/BufferManager.h"
 
 #include "Graphics/Objects/Mesh/Mesh.h"
 
@@ -21,17 +22,42 @@
 
 #include "Graphics/Drawers/MeshDrawer.h"
 
+DrawCallSubmitter& DrawCallSubmitter::Get()
+{
+	static DrawCallSubmitter myInstance;
+	return myInstance;
+}
+
+bool DrawCallSubmitter::Initialize(RenderHardwareInterface& aRHI)
+{
+	unsigned bufferSize = sizeof(InstanceData) * MAX_MESH_INSTANCES;
+	unsigned bufferStride = sizeof(InstanceData);
+
+	if (!aRHI.CreateStructuredBuffer("InstanceBuffer", bufferSize, bufferStride, *myInstanceBuffer))
+	{
+		SPDLOG_ERROR("Failed to create Instance Buffer!");
+		return false;
+	}
+
+	return true;
+}
+
+DrawCallSubmitter::DrawCallSubmitter()
+{
+	myInstanceBuffer = std::make_unique<Buffer>();
+}
+
 void DrawCallSubmitter::RenderDrawCalls(
 	GraphicsCommandList& inoutCommandList,
 	const std::vector<RenderItem>& aItems,
 	RenderContext& aContext,
 	DrawCallFlags someFlags)
 {
-	thread_local std::array<const Texture*, Material::MAX_MATERIAL_TEXTURE_COUNT> textureList;
+	thread_local std::vector<const Texture*> textureList;
 
 	for (const auto& renderItem : aItems)
 	{
-		textureList.fill(nullptr);
+		textureList.resize(Material::MAX_MATERIAL_TEXTURE_COUNT, nullptr);
 
 		const MeshDrawCall& drawCall = *renderItem.DrawCall;
 		const Mesh& mesh = *drawCall.Mesh;
@@ -57,15 +83,16 @@ void DrawCallSubmitter::RenderDrawCalls(
 		objectBuffer.World = drawCall.Transform;
 		objectBuffer.WorldInvT = (drawCall.Transform.GetInverse()).GetTranspose();
 		objectBuffer.HasSkinning = drawCall.HasSkinning;
+		objectBuffer.IsInstanced = !drawCall.Instances.empty();
 		objectBuffer.ObjectID = renderItem.ObjectID;
 
-		aContext.ConstantBuffers->UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::ObjectBuffer, objectBuffer, 1, PipelineStage_VertexShader | PipelineStage_PixelShader);
+		aContext.Buffers->UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::ObjectBuffer, objectBuffer, 1, PipelineStage_VertexShader | PipelineStage_PixelShader);
 
 		if (drawCall.HasSkinning)
 		{
 			AnimationBuffer animationBuffer;
 			memcpy(animationBuffer.JointTransforms, drawCall.JointTransforms, 128 * sizeof(CommonUtilities::Matrix4x4f));
-			aContext.ConstantBuffers->UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::AnimationBuffer, animationBuffer, 2, PipelineStage_VertexShader);
+			aContext.Buffers->UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::AnimationBuffer, animationBuffer, 2, PipelineStage_VertexShader);
 		}
 
 		if (HasDrawCallFlag(someFlags, DrawCallFlag_BindMaterial))
@@ -77,7 +104,7 @@ void DrawCallSubmitter::RenderDrawCalls(
 					material->RefreshMaterialData();
 				}
 
-				aContext.ConstantBuffers->UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::MaterialBuffer, material->GetParameterDataBlock(), Material::MATERIAL_BUFFER_SIZE, 5, PipelineStage_VertexShader | PipelineStage_PixelShader);
+				aContext.Buffers->UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::MaterialBuffer, material->GetParameterDataBlock(), Material::MATERIAL_BUFFER_SIZE, 5, PipelineStage_VertexShader | PipelineStage_PixelShader);
 			}
 
 			if (HasDrawCallFlag(someFlags, DrawCallFlag_BindTextures))
@@ -98,7 +125,28 @@ void DrawCallSubmitter::RenderDrawCalls(
 			inoutCommandList.SetPipelineStateObject(material->GetPSO());
 		}
 
-		inoutCommandList.DrawIndexed(element.NumIndices, element.IndexOffset);
+		if (drawCall.Instances.size() > 0)
+		{
+			const unsigned int instanceCount = std::min(static_cast<unsigned int>(drawCall.Instances.size()), MAX_MESH_INSTANCES);
+
+			if (instanceCount > MAX_MESH_INSTANCES)
+			{
+				SPDLOG_WARN("Too many instances submitted!");
+				continue;
+			}
+
+			inoutCommandList.UpdateConstantBuffer(*myInstanceBuffer, drawCall.Instances.data(), instanceCount * sizeof(InstanceData));
+			
+			inoutCommandList.SetShaderResource(myInstanceBuffer.get(), 20, PipelineStage_VertexShader);
+
+			inoutCommandList.DrawIndexedInstanced(element.NumIndices, element.IndexOffset, instanceCount);
+
+			inoutCommandList.UnbindShaderResource(20, PipelineStage_VertexShader);
+		}
+		else
+		{
+			inoutCommandList.DrawIndexed(element.NumIndices, element.IndexOffset);
+		}
 
 		inoutCommandList.EndEvent();
 	}

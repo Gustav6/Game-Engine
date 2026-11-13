@@ -63,7 +63,7 @@ namespace CommonUtilities
 		
 		Vector3<T> GetCenterInWorldSpace(const Matrix4x4<T>& aInverseViewProjection) const;
 
-		bool IsInside(const Vector3<T>& aPoint);
+		bool IsInside(const Vector3<T>& aPoint) const;
 
 	private:
 		T myFov;
@@ -234,7 +234,7 @@ namespace CommonUtilities
 	}
 
 	template<typename T>
-	inline bool Frustum<T>::IsInside(const Vector3<T>& aPoint)
+	inline bool Frustum<T>::IsInside(const Vector3<T>& aPoint) const
 	{
 		for (int i = 0; i < 6; ++i)
 		{

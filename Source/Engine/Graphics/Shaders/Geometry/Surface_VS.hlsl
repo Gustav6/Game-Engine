@@ -1,9 +1,28 @@
 #include "../Include/Core/Common.hlsli"
 #include "../Include/Core/Material.hlsli"
 
-VStoPS main(Vertex aVertex)
+struct InstanceData
+{
+    float4x4 World;
+    float4x4 WorldInvT;
+};
+
+StructuredBuffer<InstanceData> InstanceBuffer : register(t20);
+
+VStoPS main(Vertex aVertex, uint instanceID : SV_InstanceID)
 {
     VStoPS result;
+    
+    float4x4 world = OB_World;
+    float4x4 worldInvT = OB_WorldInvT;
+
+    if (OB_IsInstanced)
+    {
+        InstanceData instance = InstanceBuffer[instanceID];
+
+        world = instance.World;
+        worldInvT = instance.WorldInvT;
+    }
     
     float3 vertexNormal = aVertex.Normal;
     float3 vertexTangent = aVertex.Tangent;
@@ -24,13 +43,13 @@ VStoPS main(Vertex aVertex)
         vertexTangent = mul(vertexTangent, skinRotation);
     }
     
-    const float3x3 worldNormalRot = (float3x3) OB_WorldInvT;
+    const float3x3 worldNormalRot = (float3x3) worldInvT;
     
     result.Normal = normalize(mul(worldNormalRot, vertexNormal));
     result.Tangent = normalize(mul(worldNormalRot, vertexTangent));
     result.BiNormal = normalize(cross(result.Normal, result.Tangent));
     
-    const float4 worldPos = mul(OB_World, aVertex.Position);
+    const float4 worldPos = mul(world, aVertex.Position);
     
     MaterialVertexParameters parameters;
     parameters.WorldPosition = worldPos;

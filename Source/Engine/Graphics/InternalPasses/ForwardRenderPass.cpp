@@ -14,10 +14,10 @@
 
 #include "Graphics/RHI/GraphicsCommandList.h"
 
-#include "Graphics/ConstantBuffers/LightBuffer.h"
-#include "Graphics/ConstantBuffers/FrameBuffer.h"
+#include "Graphics/Buffers/LightBuffer.h"
+#include "Graphics/Buffers/FrameBuffer.h"
 
-#include "Graphics/ConstantBuffers/Manager/ConstantBufferManager.h"
+#include "Graphics/Buffers/Manager/BufferManager.h"
 
 #include "Graphics/Objects/Scene/Light.h"
 #include "Graphics/Objects/Scene/Camera.h"
@@ -43,7 +43,7 @@ void ForwardRenderPass::Execute(
 	frameBuffer.CameraPosition = aContext.Camera->Transform.GetTranslation();
 	frameBuffer.TypeOfRenderPass = static_cast<unsigned int>(aContext.RenderSettings->DebugRenderMode);
 
-	aContext.ConstantBuffers->UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::FrameBuffer, frameBuffer, 0, PipelineStage_VertexShader | PipelineStage_PixelShader);
+	aContext.Buffers->UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::FrameBuffer, frameBuffer, 0, PipelineStage_VertexShader | PipelineStage_PixelShader);
 
 	LightBuffer lightBuffer;
 	lightBuffer.NumLights = static_cast<unsigned int>(std::min(sceneLights.size(), static_cast<size_t>(MAX_LIGHTS)));
@@ -100,9 +100,9 @@ void ForwardRenderPass::Execute(
 	inoutCommandList.SetShaderResources(spotLightShadowMaps.data(), spotLightShadowMaps.size(), 104, PipelineStage_PixelShader);
 	inoutCommandList.SetShaderResources(pointLightShadowCubes.data(), pointLightShadowCubes.size(), 112, PipelineStage_PixelShader);
 
-	aContext.ConstantBuffers->UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::LightBuffer, lightBuffer, 3, PipelineStage_PixelShader);
+	aContext.Buffers->UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::LightBuffer, lightBuffer, 3, PipelineStage_PixelShader);
 
-	DrawCallSubmitter::RenderDrawCalls(inoutCommandList, aItems, aContext, DrawCallFlag_BindTextures | DrawCallFlag_BindMaterial);
+	DrawCallSubmitter::Get().RenderDrawCalls(inoutCommandList, aItems, aContext, DrawCallFlag_BindTextures | DrawCallFlag_BindMaterial);
 
 	inoutCommandList.EndEvent();
 }

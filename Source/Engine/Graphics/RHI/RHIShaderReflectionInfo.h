@@ -54,7 +54,7 @@ struct RHIShaderReflectionInfo
 		std::unordered_map<std::string, size_t> MemberNameToIndex;
 	};
 
-	std::vector<ConstantBufferInfo> ConstantBuffers;
+	std::vector<ConstantBufferInfo> Buffers;
 	std::unordered_map<std::string, size_t> ConstantBufferNameToIndex;
 
 	ShaderType Type = ShaderType::Unknown;

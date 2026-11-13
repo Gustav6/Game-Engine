@@ -16,10 +16,10 @@
 
 #include "Graphics/RHI/RenderHardwareInterface.h"
 
-#include "Graphics/ConstantBuffers/LightBuffer.h"
-#include "Graphics/ConstantBuffers/FrameBuffer.h"
+#include "Graphics/Buffers/LightBuffer.h"
+#include "Graphics/Buffers/FrameBuffer.h"
 
-#include "Graphics/ConstantBuffers/Manager/ConstantBufferManager.h"
+#include "Graphics/Buffers/Manager/BufferManager.h"
 
 #include "Graphics/Objects/GPU/GBuffer.h"
 #include "Graphics/Objects/Scene/Light.h"
@@ -215,13 +215,13 @@ void DeferredRenderPass::Execute(
 	frameBuffer.TypeOfRenderPass = static_cast<unsigned int>(aContext.RenderSettings->DebugRenderMode);
 	frameBuffer.SSAOFlag = mySSAOEnabled;
 
-	aContext.ConstantBuffers->UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::FrameBuffer, frameBuffer, 0, PipelineStage_VertexShader | PipelineStage_PixelShader);
+	aContext.Buffers->UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::FrameBuffer, frameBuffer, 0, PipelineStage_VertexShader | PipelineStage_PixelShader);
 
 	{
 		inoutCommandList.BeginEvent("Object GBuffer Render");
 
 		inoutCommandList.SetRenderTargets(myGBuffer->GetTextures(), GBuffer::NUM_GBUFFER_TARGETS, aFrameTargets.DepthBuffer);
-		DrawCallSubmitter::RenderDrawCalls(inoutCommandList, aItems, aContext, DrawCallFlag_BindTextures | DrawCallFlag_BindMaterial);
+		DrawCallSubmitter::Get().RenderDrawCalls(inoutCommandList, aItems, aContext, DrawCallFlag_BindTextures | DrawCallFlag_BindMaterial);
 
 		inoutCommandList.EndEvent();
 	}
@@ -270,7 +270,7 @@ void DeferredRenderPass::Execute(
 				{
 					LightBuffer lightBuffer;
 					lightBuffer.Lights[0] = *light.LightData;
-					aContext.ConstantBuffers->UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::LightBuffer, lightBuffer, 3, PipelineStage_PixelShader);
+					aContext.Buffers->UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::LightBuffer, lightBuffer, 3, PipelineStage_PixelShader);
 
 					switch (light.LightData->Type)
 					{

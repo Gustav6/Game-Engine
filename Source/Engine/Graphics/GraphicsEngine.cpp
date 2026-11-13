@@ -22,7 +22,7 @@
 #include "Resources/BuiltinAssets.h"
 #include "Resources/GraphicsResourceFactory.h"
 
-#include "ConstantBuffers/Manager/ConstantBufferManager.h"
+#include "Buffers/Manager/BufferManager.h"
 
 #include "RHI/GraphicsCommandList.h"
 #include "RHI/PipelineStateObject.h"
@@ -40,6 +40,8 @@
 #include "InternalPasses/ScreenSpaceRenderPass.h"
 #include "InternalPasses/ScreenSpaceEffectPass.h"
 #include "InternalPasses/PixelPickingPass.h"
+
+#include "InternalPasses/Shared/DrawCallSubmitter.h"
 
 #include "Core/RenderItem.h"
 #include "Core/FrameTargets.h"
@@ -109,9 +111,9 @@ bool GraphicsEngine::Initialize(HWND aWindowHandle, const std::filesystem::path&
 		return false;
 	}
 
-	myConstantBufferManager = std::make_unique<ConstantBufferManager>();
+	myBufferManager = std::make_unique<BufferManager>();
 
-	if (!myConstantBufferManager->Initialize(*myRHI))
+	if (!myBufferManager->Initialize(*myRHI))
 	{
 		return false;
 	}
@@ -153,6 +155,11 @@ bool GraphicsEngine::Initialize(HWND aWindowHandle, const std::filesystem::path&
 	}
 
 	if (!InitializeRenderResources())
+	{
+		return false;
+	}
+
+	if (!DrawCallSubmitter::Get().Initialize(*myRHI))
 	{
 		return false;
 	}
@@ -216,17 +223,27 @@ FrameStats GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const S
 
 	for (const auto& drawCall : MeshDrawer::Get().GetMeshDrawCalls())
 	{
-		const CommonUtilities::Sphere<float>& boundingSphere = drawCall.Mesh->GetBoundingSphere();
-		const CommonUtilities::Matrix4x4f& transform = drawCall.Transform;
+		bool meshVisibleToCamera = false;
 
-		const CommonUtilities::Vector3f scale = transform.GetScaling();
-		const float maxScale = std::max({ scale.x, scale.y, scale.z });
+		if (drawCall.Instances.empty())
+		{
+			const CommonUtilities::Sphere<float>& boundingSphere = drawCall.Mesh->GetBoundingSphere();
+			const CommonUtilities::Matrix4x4f& transform = drawCall.Transform;
 
-		const CommonUtilities::Vector4f transformedCenter = boundingSphere.GetCenter().ToXYZ1() * transform;
+			const CommonUtilities::Vector3f scale = transform.GetScaling();
+			const float maxScale = std::max({ scale.x, scale.y, scale.z });
 
-		const CommonUtilities::Sphere<float> worldSphere(transformedCenter.ToXYZ(),boundingSphere.GetRadius() * maxScale);
+			const CommonUtilities::Vector4f transformedCenter = boundingSphere.GetCenter().ToXYZ1() * transform;
 
-		const bool meshVisibleToCamera = CommonUtilities::IntersectionSphereFrustum(worldSphere, aCamera.RenderCamera.GetFrustum());
+			const CommonUtilities::Sphere<float> worldSphere(transformedCenter.ToXYZ(), boundingSphere.GetRadius() * maxScale);
+
+			meshVisibleToCamera = CommonUtilities::IntersectionSphereFrustum(worldSphere, aCamera.RenderCamera.GetFrustum());
+		}
+		else
+		{
+			// TODO: Implement frustum culling for instanced meshes.
+			meshVisibleToCamera = true;
+		}
 
 		if (meshVisibleToCamera)
 		{
@@ -397,7 +414,7 @@ FrameStats GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const S
 
 	RenderContext context =
 	{
-		.ConstantBuffers = myConstantBufferManager.get(),
+		.Buffers = myBufferManager.get(),
 		.RHI = myRHI.get(),
 		.BuiltinAssets = myBuiltinAssets.get(),
 		.PostProcessFilters = myPostProcessFilters.get(),
@@ -443,11 +460,11 @@ FrameStats GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const S
 			myDeferredItems.end()
 		);
 
-		//allItems.insert(
-		//	allItems.end(),
-		//	myForwardItems.begin(),
-		//	myForwardItems.end()
-		//);
+		allItems.insert(
+			allItems.end(),
+			myForwardItems.begin(),
+			myForwardItems.end()
+		);
 
 		myPixelPickingPass->Execute(inoutCommandList, allItems, context);
 	}
@@ -754,15 +771,6 @@ bool GraphicsEngine::InitializeRenderResources()
 			SPDLOG_CRITICAL("Failed to create HDR buffer texture!");
 			return false;
 		}
-	}
-
-	const CommonUtilities::Vector2ui resolution = myRHI->GetClientSize();
-
-	if (resolution.x == 0 || resolution.y == 0)
-	{
-		SPDLOG_ERROR("Failed to initialize PixelPickingPass: Invalid resolution ({}x{})", resolution.x, resolution.y);
-
-		return false;
 	}
 
 	return true;

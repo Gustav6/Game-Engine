@@ -10,10 +10,10 @@
 
 #include "Graphics/RHI/RenderHardwareInterface.h"
 
-#include "Graphics/ConstantBuffers/FrameBuffer.h"
-#include "Graphics/ConstantBuffers/ObjectBuffer.h"
+#include "Graphics/Buffers/FrameBuffer.h"
+#include "Graphics/Buffers/ObjectBuffer.h"
 
-#include "Graphics/ConstantBuffers/Manager/ConstantBufferManager.h"
+#include "Graphics/Buffers/Manager/BufferManager.h"
 
 #include "Graphics/RHI/GraphicsCommandList.h"
 #include "Graphics//RHI/PipelineStateObject.h"
@@ -29,11 +29,11 @@
 #include "Line_PS.h"
 #include "Line_VS.h"
 
-constexpr size_t MaxLineVertexPerDraw = 1000;
+constexpr size_t MAX_LINEVERTEX_PER_DRAWCALL = 1000;
 
 bool DebugRenderPass::Initialize(RenderHardwareInterface& aRHI)
 {
-	aRHI.CreateDynamicVertexBuffer("LineRenderer", sizeof(LineVertex), MaxLineVertexPerDraw, myLineVertexBuffer);
+	aRHI.CreateDynamicVertexBuffer("LineRenderer", sizeof(LineVertex), MAX_LINEVERTEX_PER_DRAWCALL, myLineVertexBuffer);
 
 	// Wireframe Mesh PSO
 	{
@@ -99,7 +99,7 @@ void DebugRenderPass::Execute(
 	frameBuffer.CameraPosition = aContext.Camera->Transform.GetTranslation();
 	frameBuffer.TypeOfRenderPass = static_cast<unsigned int>(aContext.RenderSettings->DebugRenderMode);
 
-	aContext.ConstantBuffers->UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::FrameBuffer, frameBuffer, 0, PipelineStage_VertexShader | PipelineStage_PixelShader);
+	aContext.Buffers->UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::FrameBuffer, frameBuffer, 0, PipelineStage_VertexShader | PipelineStage_PixelShader);
 
 	RenderWireMeshes(inoutCommandList, aContext);
 	RenderLines(inoutCommandList, aContext);
@@ -155,7 +155,7 @@ void DebugRenderPass::RenderWireMeshes(GraphicsCommandList& inoutCommandList, Re
 			objectBuffer.World = drawCall.Transform;
 			objectBuffer.WorldInvT = (drawCall.Transform.GetInverse()).GetTranspose();
 
-			aContext.ConstantBuffers->UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::ObjectBuffer, objectBuffer, 1, PipelineStage_VertexShader);
+			aContext.Buffers->UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::ObjectBuffer, objectBuffer, 1, PipelineStage_VertexShader);
 
 			inoutCommandList.DrawIndexed(element.NumIndices, element.IndexOffset);
 		}
@@ -164,8 +164,10 @@ void DebugRenderPass::RenderWireMeshes(GraphicsCommandList& inoutCommandList, Re
 	}
 }
 
-void DebugRenderPass::RenderLines(GraphicsCommandList& inoutCommandList, RenderContext&)
+void DebugRenderPass::RenderLines(GraphicsCommandList& inoutCommandList, RenderContext& aContext)
 {
+	// TODO: Make it so that when a dynamic vertex buffer is full use a new one.
+
 	const std::vector<LineDrawCall>& lineCalls = DebugDrawer::Get().GetLineDrawCalls();
 
 	if (lineCalls.empty())
@@ -176,26 +178,26 @@ void DebugRenderPass::RenderLines(GraphicsCommandList& inoutCommandList, RenderC
 	inoutCommandList.SetPipelineStateObject(*myLinePSO);
 
 	myLineVertices.clear();
-	myLineVertices.reserve(lineCalls.size() * 2);
 
 	for (const LineDrawCall& call : lineCalls)
 	{
+		if (!aContext.Camera->RenderCamera.GetFrustum().IsInside(call.End) && 
+			!aContext.Camera->RenderCamera.GetFrustum().IsInside(call.Start))
+		{
+			continue;
+		}
+
 		myLineVertices.push_back({ { call.Start.x, call.Start.y, call.Start.z, 1.f }, call.Color });
 		myLineVertices.push_back({ { call.End.x,   call.End.y,   call.End.z,   1.f }, call.Color });
 	}
 
 	inoutCommandList.SetVertexBuffer(&myLineVertexBuffer);
 
-	const size_t totalVertices = myLineVertices.size();
-
-	for (size_t offset = 0; offset < totalVertices; offset += MaxLineVertexPerDraw)
+	for (size_t offset = 0; offset < myLineVertices.size(); offset += MAX_LINEVERTEX_PER_DRAWCALL)
 	{
-		const size_t count = std::min(MaxLineVertexPerDraw, totalVertices - offset);
+		const size_t count = std::min(MAX_LINEVERTEX_PER_DRAWCALL, myLineVertices.size() - offset);
 
-		if (!inoutCommandList.UpdateDynamicVertexBuffer(
-			myLineVertexBuffer,
-			myLineVertices.data() + offset,
-			count * sizeof(LineVertex)))
+		if (!inoutCommandList.UpdateDynamicVertexBuffer(myLineVertexBuffer, myLineVertices.data() + offset, count * sizeof(LineVertex)))
 		{
 			return;
 		}

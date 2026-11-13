@@ -1,6 +1,7 @@
 #include "InGameState.h"
 
 #include "CommonUtilities/Math/Vector3.hpp"
+#include "CommonUtilities/Math/MathUtils.hpp"
 
 #include "Core/EngineContext.h"
 
@@ -19,6 +20,7 @@
 #include "Core/Scene/Components/Concrete/Rendering/AnimationComponent.h"
 #include "Core/Scene/Components/Concrete/Rendering/TextComponent.h"
 #include "Core/Scene/Components/Concrete/Rendering/SpriteComponent.h"
+#include "Core/Scene/Components/Concrete/Rendering/InstancedMeshComponent.h"
 #include "Core/Scene/Components/Concrete/Light/DirectionlLightComponent.h"
 #include "Core/Scene/Components/Concrete/Light/PointLightComponent.h"
 #include "Core/Scene/Components/Concrete/Light/SpotLightComponent.h"
@@ -69,6 +71,40 @@ void InGameState::Exit()
 void InGameState::LoadTestScene()
 {
 	Actor* temp = nullptr;
+
+	{
+		Actor* actor = GameWorld::Get().CreateActor<Actor>("Instanced_Cubes");
+
+		InstancedMeshComponent* meshComponent = actor->AddComponent<InstancedMeshComponent>();
+
+		meshComponent->SetMesh(AssetRegistry::Get().GetAsset<MeshAsset>("Unit_Cube"));
+		meshComponent->SetMaterial(0, AssetRegistry::Get().GetAsset<MaterialAsset>("BaseMaterial"));
+
+		// Max mesh instances is set to 32 in the graphics engine.
+		constexpr unsigned int instanceCount = 32;
+		constexpr float radius = 2000.0f;
+
+		for (unsigned int i = 0; i < instanceCount; i++)
+		{
+			const float angle = (2.0f * CommonUtilities::Math::PI<float> * i) / instanceCount;
+
+			const float x = std::cos(angle) * radius;
+			const float z = std::sin(angle) * radius;
+
+			CommonUtilities::Matrix4x4f world;
+
+			world.SetTranslation({ x, 100.0f, z });
+			world.SetScaling({ 100, 100, 100 });
+
+			InstanceData data =
+			{
+				.World = world,
+				.WorldInvT = world.GetInverse().GetTranspose()
+			};
+
+			meshComponent->AddInstance(data);
+		}
+	}
 
 	{
 		Actor* actor = GameWorld::Get().CreateActor<Actor>("Color_Checker");
@@ -242,7 +278,7 @@ void InGameState::LoadTestScene()
 		spotLight->SetShadowMapSize({ 512, 512 });
 	}
 
-	{
+	/*{
 		Actor* actor = GameWorld::Get().CreateActor<Actor>("Text");
 
 		TextComponent* text = actor->AddComponent<TextComponent>();
@@ -260,7 +296,7 @@ void InGameState::LoadTestScene()
 		sprite->SetSprite(AssetRegistry::Get().GetAsset<SpriteAsset>("ShrekSprite"));
 		sprite->SetSize({ 512, 512 });
 		sprite->SetPosition({ 512, 512 });
-	}
+	}*/
 
 	myEnableTestBinds = true;
 }

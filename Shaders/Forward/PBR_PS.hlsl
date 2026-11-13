@@ -61,7 +61,7 @@ float4 main(VStoPS aPixel) : SV_TARGET
         case 6: // Normals tangent space pass
             return float4(surface.NormalMapXY, 0.0f, 1.0f);
         case 7: // Normals world space pass
-            return float4(surface.WorldNormal, 1.0f);
+            return float4(surface.WorldNormal * 0.5f + 0.5f, 1.0f);
         case 8: // Shadows pass
             parameters.PixelColor = float4(0.5f, 0.5f, 0.5f, 1.0f);
             parameters.Roughness = 1.0f;

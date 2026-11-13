@@ -339,6 +339,36 @@ void GraphicsCommandList::SetPipelineStateObject(const PipelineStateObject& aPSO
 	}
 }
 
+void GraphicsCommandList::SetShaderResource(const Buffer* aBuffer, unsigned int aSlot, PipelineStages aStages) const
+{
+	if (aBuffer == nullptr)
+	{
+		SPDLOG_ERROR("Tried to bind a shader resource which was null!");
+		return;
+	}
+
+	ID3D11ShaderResourceView* srv = aBuffer->mySRV.Get();
+
+	if (srv == nullptr)
+	{
+		SPDLOG_ERROR("Tried to bind a shader resource with a null SRV!");
+		return;
+	}
+
+	if (aStages & PipelineStage_VertexShader)
+	{
+		myContext->VSSetShaderResources(aSlot, 1, &srv);
+	}
+	if (aStages & PipelineStage_PixelShader)
+	{
+		myContext->PSSetShaderResources(aSlot, 1, &srv);
+	}
+	if (aStages & PipelineStage_GeometryShader)
+	{
+		myContext->GSSetShaderResources(aSlot, 1, &srv);
+	}
+}
+
 void GraphicsCommandList::SetShaderResource(const Texture* aTexture, unsigned int aSlot, PipelineStages aStages) const
 {
 	if (aTexture == nullptr)

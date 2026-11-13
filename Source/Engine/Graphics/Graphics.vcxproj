@@ -194,12 +194,13 @@ xcopy /E /I /R /Y /D "%SHADERSRC%" "%SHADERDEST%"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="ConstantBuffers\AnimationBuffer.h" />
-    <ClInclude Include="ConstantBuffers\CascadeBuffer.h" />
-    <ClInclude Include="ConstantBuffers\FrameBuffer.h" />
-    <ClInclude Include="ConstantBuffers\LightBuffer.h" />
-    <ClInclude Include="ConstantBuffers\Manager\ConstantBufferManager.h" />
-    <ClInclude Include="ConstantBuffers\ObjectBuffer.h" />
+    <ClInclude Include="Buffers\AnimationBuffer.h" />
+    <ClInclude Include="Buffers\CascadeBuffer.h" />
+    <ClInclude Include="Buffers\FrameBuffer.h" />
+    <ClInclude Include="Buffers\InstanceDataBuffer.h" />
+    <ClInclude Include="Buffers\LightBuffer.h" />
+    <ClInclude Include="Buffers\Manager\BufferManager.h" />
+    <ClInclude Include="Buffers\ObjectBuffer.h" />
     <ClInclude Include="Core\FrameTargets.h" />
     <ClInclude Include="Core\RenderContext.h" />
     <ClInclude Include="Core\RenderEnums.h" />
@@ -233,6 +234,7 @@ xcopy /E /I /R /Y /D "%SHADERSRC%" "%SHADERDEST%"</Command>
     <ClInclude Include="Materials\MaterialTypes.h" />
     <ClInclude Include="Objects\GPU\Buffer.h" />
     <ClInclude Include="Objects\GPU\GBuffer.h" />
+    <ClInclude Include="Objects\GPU\InstanceData.h" />
     <ClInclude Include="Objects\GPU\Sampler.h" />
     <ClInclude Include="Objects\GPU\Shader.h" />
     <ClInclude Include="Objects\GPU\Texture.h" />
@@ -257,12 +259,7 @@ xcopy /E /I /R /Y /D "%SHADERSRC%" "%SHADERDEST%"</Command>
     <ClInclude Include="Resources\Textures\Normal\Default_N.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ConstantBuffers\AnimationBuffer.cpp" />
-    <ClCompile Include="ConstantBuffers\CascadeBuffer.cpp" />
-    <ClCompile Include="ConstantBuffers\FrameBuffer.cpp" />
-    <ClCompile Include="ConstantBuffers\LightBuffer.cpp" />
-    <ClCompile Include="ConstantBuffers\Manager\ConstantBufferManager.cpp" />
-    <ClCompile Include="ConstantBuffers\ObjectBuffer.cpp" />
+    <ClCompile Include="Buffers\Manager\BufferManager.cpp" />
     <ClCompile Include="Drawers\DebugDrawer.cpp" />
     <ClCompile Include="Drawers\LightDrawer.cpp" />
     <ClCompile Include="Drawers\MeshDrawer.cpp" />
@@ -289,6 +286,7 @@ xcopy /E /I /R /Y /D "%SHADERSRC%" "%SHADERDEST%"</Command>
     <ClCompile Include="Materials\MaterialShaderIncludeHandler.cpp" />
     <ClCompile Include="Objects\GPU\Buffer.cpp" />
     <ClCompile Include="Objects\GPU\GBuffer.cpp" />
+    <ClCompile Include="Objects\GPU\InstanceData.cpp" />
     <ClCompile Include="Objects\GPU\Sampler.cpp" />
     <ClCompile Include="Objects\GPU\Shader.cpp" />
     <ClCompile Include="Objects\GPU\Texture.cpp" />

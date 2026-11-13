@@ -342,7 +342,7 @@ void MaterialFactory::InitializeMaterialParameters(
         return;
     }
 
-	const RHIShaderReflectionInfo::ConstantBufferInfo& info = materialBufferSource->ConstantBuffers[materialBufferSource->ConstantBufferNameToIndex.at(std::string(materialBufferName))];
+	const RHIShaderReflectionInfo::ConstantBufferInfo& info = materialBufferSource->Buffers[materialBufferSource->ConstantBufferNameToIndex.at(std::string(materialBufferName))];
 
     for (size_t i = 0; i < info.Members.size(); i++)
     {

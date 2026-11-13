@@ -5,13 +5,13 @@
 
 #include "Graphics/Objects/GPU/Texture.h"
 
-#include "Graphics/ConstantBuffers/FrameBuffer.h"
+#include "Graphics/Buffers/FrameBuffer.h"
 
 #include "Graphics/RHI/GraphicsCommandList.h"
 #include "Graphics/RHI/RenderHardwareInterface.h"
 #include "Graphics/RHI/PipelineStateObject.h"
 
-#include "Graphics/ConstantBuffers/Manager/ConstantBufferManager.h"
+#include "Graphics/Buffers/Manager/BufferManager.h"
 
 #include "Graphics/Core/FrameTargets.h"
 #include "Graphics/Core/RenderContext.h"
@@ -233,7 +233,7 @@ void ScreenSpaceEffectPass::TonemapPass(
 		frameBuffer.TypeOfTonemap = static_cast<unsigned int>(ToneMapper::None);
 	}
 
-	aContext.ConstantBuffers->UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::FrameBuffer, frameBuffer, 0, PipelineStage_PixelShader);
+	aContext.Buffers->UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::FrameBuffer, frameBuffer, 0, PipelineStage_PixelShader);
 
 	inoutCommandList.SetShaderResource(aHDRTexture, 0, PipelineStage_PixelShader);
 	inoutCommandList.SetPipelineStateObject(*myTonemapPSO);

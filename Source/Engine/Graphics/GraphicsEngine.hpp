@@ -11,7 +11,6 @@
 #include <memory>
 
 #include "CommonUtilities/Math/Vector2.hpp"
-#include "CommonUtilities/Math/Vector3.hpp"
 
 class RenderHardwareInterface;
 class GraphicsCommandList;
@@ -22,7 +21,7 @@ class Material;
 
 class BuiltinAssets;
 class MaterialShaderRegistry;
-class ConstantBufferManager;
+class BufferManager;
 class ForwardRenderPass;
 class DeferredRenderPass;
 class ScreenSpaceRenderPass;
@@ -63,13 +62,6 @@ struct RenderSettings
 	bool SSAOEnabled = true;
 	bool VSyncEnabled = false;
 };
-
-// This should be moved
-//struct InstanceData
-//{
-//	CommonUtilities::Matrix4x4f World;
-//	CommonUtilities::Vector4f Color;
-//};
 
 class GraphicsEngine
 {
@@ -130,7 +122,7 @@ private:
 	std::unique_ptr<BuiltinAssets> myBuiltinAssets;
 	std::unique_ptr<PostProcessFilters> myPostProcessFilters;
 	std::unique_ptr<MaterialShaderRegistry> myMaterialShaderRegistry;
-	std::unique_ptr<ConstantBufferManager> myConstantBufferManager;
+	std::unique_ptr<BufferManager> myBufferManager;
 
 	std::unique_ptr<ForwardRenderPass> myForwardRenderPass;
 	std::unique_ptr<DeferredRenderPass> myDeferredRenderPass;

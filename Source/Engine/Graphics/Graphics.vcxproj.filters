@@ -1,11 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="ConstantBuffers">
-      <UniqueIdentifier>{3CBE0720-A849-75E4-B15A-F8D81D65D1E4}</UniqueIdentifier>
+    <Filter Include="Buffers">
+      <UniqueIdentifier>{92479EF4-FE26-1D90-073F-A866739D83F1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ConstantBuffers\Manager">
-      <UniqueIdentifier>{6676AC51-D2AD-F4E8-DBB7-580C476E1BE2}</UniqueIdentifier>
+    <Filter Include="Buffers\Manager">
+      <UniqueIdentifier>{BCF58916-2881-F7DA-3192-7ACF9D9C53DB}</UniqueIdentifier>
     </Filter>
     <Filter Include="Core">
       <UniqueIdentifier>{2EB4837C-1AEB-840D-C3D7-6A10AFED000F}</UniqueIdentifier>
@@ -102,23 +102,26 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ConstantBuffers\AnimationBuffer.h">
-      <Filter>ConstantBuffers</Filter>
+    <ClInclude Include="Buffers\AnimationBuffer.h">
+      <Filter>Buffers</Filter>
     </ClInclude>
-    <ClInclude Include="ConstantBuffers\CascadeBuffer.h">
-      <Filter>ConstantBuffers</Filter>
+    <ClInclude Include="Buffers\CascadeBuffer.h">
+      <Filter>Buffers</Filter>
     </ClInclude>
-    <ClInclude Include="ConstantBuffers\FrameBuffer.h">
-      <Filter>ConstantBuffers</Filter>
+    <ClInclude Include="Buffers\FrameBuffer.h">
+      <Filter>Buffers</Filter>
     </ClInclude>
-    <ClInclude Include="ConstantBuffers\LightBuffer.h">
-      <Filter>ConstantBuffers</Filter>
+    <ClInclude Include="Buffers\InstanceDataBuffer.h">
+      <Filter>Buffers</Filter>
     </ClInclude>
-    <ClInclude Include="ConstantBuffers\Manager\ConstantBufferManager.h">
-      <Filter>ConstantBuffers\Manager</Filter>
+    <ClInclude Include="Buffers\LightBuffer.h">
+      <Filter>Buffers</Filter>
     </ClInclude>
-    <ClInclude Include="ConstantBuffers\ObjectBuffer.h">
-      <Filter>ConstantBuffers</Filter>
+    <ClInclude Include="Buffers\Manager\BufferManager.h">
+      <Filter>Buffers\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="Buffers\ObjectBuffer.h">
+      <Filter>Buffers</Filter>
     </ClInclude>
     <ClInclude Include="Core\FrameTargets.h">
       <Filter>Core</Filter>
@@ -215,6 +218,9 @@
     <ClInclude Include="Objects\GPU\GBuffer.h">
       <Filter>Objects\GPU</Filter>
     </ClInclude>
+    <ClInclude Include="Objects\GPU\InstanceData.h">
+      <Filter>Objects\GPU</Filter>
+    </ClInclude>
     <ClInclude Include="Objects\GPU\Sampler.h">
       <Filter>Objects\GPU</Filter>
     </ClInclude>
@@ -283,23 +289,8 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ConstantBuffers\AnimationBuffer.cpp">
-      <Filter>ConstantBuffers</Filter>
-    </ClCompile>
-    <ClCompile Include="ConstantBuffers\CascadeBuffer.cpp">
-      <Filter>ConstantBuffers</Filter>
-    </ClCompile>
-    <ClCompile Include="ConstantBuffers\FrameBuffer.cpp">
-      <Filter>ConstantBuffers</Filter>
-    </ClCompile>
-    <ClCompile Include="ConstantBuffers\LightBuffer.cpp">
-      <Filter>ConstantBuffers</Filter>
-    </ClCompile>
-    <ClCompile Include="ConstantBuffers\Manager\ConstantBufferManager.cpp">
-      <Filter>ConstantBuffers\Manager</Filter>
-    </ClCompile>
-    <ClCompile Include="ConstantBuffers\ObjectBuffer.cpp">
-      <Filter>ConstantBuffers</Filter>
+    <ClCompile Include="Buffers\Manager\BufferManager.cpp">
+      <Filter>Buffers\Manager</Filter>
     </ClCompile>
     <ClCompile Include="Drawers\DebugDrawer.cpp">
       <Filter>Drawers</Filter>
@@ -367,6 +358,9 @@
       <Filter>Objects\GPU</Filter>
     </ClCompile>
     <ClCompile Include="Objects\GPU\GBuffer.cpp">
+      <Filter>Objects\GPU</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\GPU\InstanceData.cpp">
       <Filter>Objects\GPU</Filter>
     </ClCompile>
     <ClCompile Include="Objects\GPU\Sampler.cpp">

@@ -13,10 +13,10 @@
 
 #include "Graphics/RHI/RenderHardwareInterface.h"
 
-#include "Graphics/ConstantBuffers/FrameBuffer.h"
-#include "Graphics/ConstantBuffers/CascadeBuffer.h"
+#include "Graphics/Buffers/FrameBuffer.h"
+#include "Graphics/Buffers/CascadeBuffer.h"
 
-#include "Graphics/ConstantBuffers/Manager/ConstantBufferManager.h"
+#include "Graphics/Buffers/Manager/BufferManager.h"
 
 #include "Graphics/Objects/GPU/Texture.h"
 #include "Graphics/Objects/GPU/Vertex.h"
@@ -43,7 +43,6 @@ bool ShadowRenderPass::Initialize(RenderHardwareInterface& aRHI)
 		shadowPSODesc.InputLayoutElements = Vertex::Description;
 		shadowPSODesc.VertexShader.ByteCode = INTERNAL_Surface_VS_ByteCode;
 		shadowPSODesc.VertexShader.ByteCodeSize = sizeof(INTERNAL_Surface_VS_ByteCode);
-		shadowPSODesc.RasterizerState = RasterizerState::FillSolidCullFront;
 
 		myShadowPSO = std::make_unique<PipelineStateObject>();
 
@@ -196,9 +195,9 @@ void ShadowRenderPass::Execute(
 						inoutCommandList.ClearDepthStencil(*myCascades[c].ShadowMap);
 						inoutCommandList.SetRenderTarget(nullptr, myCascades[c].ShadowMap.get());
 
-						aContext.ConstantBuffers->UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::FrameBuffer, frameBuffer, 0, PipelineStage_VertexShader);
+						aContext.Buffers->UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::FrameBuffer, frameBuffer, 0, PipelineStage_VertexShader);
 
-						DrawCallSubmitter::RenderDrawCalls(inoutCommandList, aItems, aContext, DrawCallFlag_None);
+						DrawCallSubmitter::Get().RenderDrawCalls(inoutCommandList, aItems, aContext, DrawCallFlag_None);
 
 						inoutCommandList.EndEvent();
 					}
@@ -222,7 +221,7 @@ void ShadowRenderPass::Execute(
 				cascadeBuffer.CameraPosition = aContext.Camera->Transform.GetTranslation();
 				memcpy_s(cascadeBuffer.LightViewProjectionTextures, sizeof(CommonUtilities::Matrix4x4f) * NUM_CASCADES, lightViewProjectionTextures, sizeof(lightViewProjectionTextures));
 
-				aContext.ConstantBuffers->UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::CascadeBuffer, cascadeBuffer, 4, PipelineStage_PixelShader);
+				aContext.Buffers->UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::CascadeBuffer, cascadeBuffer, 4, PipelineStage_PixelShader);
 
 				break;
 			}
@@ -238,9 +237,9 @@ void ShadowRenderPass::Execute(
 				inoutCommandList.ClearDepthStencil(*light.ShadowMap);
 				inoutCommandList.SetRenderTarget(nullptr, light.ShadowMap);
 
-				aContext.ConstantBuffers->UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::FrameBuffer, frameBuffer, 0, PipelineStage_VertexShader);
+				aContext.Buffers->UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::FrameBuffer, frameBuffer, 0, PipelineStage_VertexShader);
 
-				DrawCallSubmitter::RenderDrawCalls(inoutCommandList, aItems, aContext, DrawCallFlag_None);
+				DrawCallSubmitter::Get().RenderDrawCalls(inoutCommandList, aItems, aContext, DrawCallFlag_None);
 
 				inoutCommandList.EndEvent();
 
@@ -260,9 +259,9 @@ void ShadowRenderPass::Execute(
 
 				inoutCommandList.SetOverridePipelineState(*myShadowCubePSO, PipelineStage_GeometryShader);
 
-				aContext.ConstantBuffers->UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::FrameBuffer, frameBuffer, 0, PipelineStage_VertexShader | PipelineStage_GeometryShader);
+				aContext.Buffers->UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::FrameBuffer, frameBuffer, 0, PipelineStage_VertexShader | PipelineStage_GeometryShader);
 
-				DrawCallSubmitter::RenderDrawCalls(inoutCommandList, aItems, aContext, DrawCallFlag_None);
+				DrawCallSubmitter::Get().RenderDrawCalls(inoutCommandList, aItems, aContext, DrawCallFlag_None);
 
 				inoutCommandList.ClearOverridePipelineState();
 

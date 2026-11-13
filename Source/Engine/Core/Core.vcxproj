@@ -172,6 +172,7 @@
     <ClInclude Include="Scene\Components\Concrete\Light\SpotLightComponent.h" />
     <ClInclude Include="Scene\Components\Concrete\Particles\ParticleEmitterComponent.h" />
     <ClInclude Include="Scene\Components\Concrete\Rendering\AnimationComponent.h" />
+    <ClInclude Include="Scene\Components\Concrete\Rendering\InstancedMeshComponent.h" />
     <ClInclude Include="Scene\Components\Concrete\Rendering\MeshComponent.h" />
     <ClInclude Include="Scene\Components\Concrete\Rendering\SpriteComponent.h" />
     <ClInclude Include="Scene\Components\Concrete\Rendering\TextComponent.h" />
@@ -205,6 +206,7 @@
     <ClCompile Include="Scene\Components\Concrete\Light\SpotLightComponent.cpp" />
     <ClCompile Include="Scene\Components\Concrete\Particles\ParticleEmitterComponent.cpp" />
     <ClCompile Include="Scene\Components\Concrete\Rendering\AnimationComponent.cpp" />
+    <ClCompile Include="Scene\Components\Concrete\Rendering\InstancedMeshComponent.cpp" />
     <ClCompile Include="Scene\Components\Concrete\Rendering\MeshComponent.cpp" />
     <ClCompile Include="Scene\Components\Concrete\Rendering\SpriteComponent.cpp" />
     <ClCompile Include="Scene\Components\Concrete\Rendering\TextComponent.cpp" />
