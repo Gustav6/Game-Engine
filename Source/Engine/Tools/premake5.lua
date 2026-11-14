@@ -33,6 +33,7 @@ project "Tools"
         "%{wks.location}/ThirdParty/Source/imgui/backends/imgui_impl_win32.cpp",
         "%{wks.location}/ThirdParty/Source/imgui/backends/imgui_impl_dx11.cpp",
         "%{wks.location}/ThirdParty/Source/imgui/imgui_demo.cpp",
+        "%{wks.location}/ThirdParty/Source/ImGuizmo/ImGuizmo.cpp"
     }
 
     filter "files:**/imgui/**.cpp"
@@ -40,6 +41,13 @@ project "Tools"
         warnings "Off"
         fatalwarnings { }
     filter {}
+	
+	filter "files:**/ImGuizmo/**.cpp"
+        enablepch "Off"
+        warnings "Off"
+        fatalwarnings { }
+    filter {}
+
 
     links {
         "CommonUtilities",

@@ -8,7 +8,7 @@ class BufferManager;
 class PostProcessFilters;
 
 struct ShadowCascade;
-struct SceneCamera;
+struct CameraData;
 struct RenderSettings;
 
 enum class DebugRenderMode;
@@ -20,7 +20,7 @@ struct RenderContext
     RenderHardwareInterface* RHI = nullptr;
     const BuiltinAssets* BuiltinAssets = nullptr;
     const PostProcessFilters* PostProcessFilters = nullptr;
-    const SceneCamera* Camera = nullptr;
+    const CameraData* Camera = nullptr;
     RenderSettings* RenderSettings = {};
     const std::array<ShadowCascade, 4>* CascadeShadows = nullptr; // NUM_CASCADES
 };

@@ -192,7 +192,7 @@ void GraphicsEngine::BeginFrame() const
 	}
 }
 
-FrameStats GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const SceneCamera& aCamera)
+FrameStats GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const CameraData& aCamera)
 {
 	FrameStats frameStats;
 

@@ -52,6 +52,7 @@ class GameStateMachine;
 class GameCamera;
 
 struct FrameStats;
+struct CameraData;
 
 #ifndef _RETAIL
 class ImGuiLayer;

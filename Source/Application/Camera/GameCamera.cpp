@@ -7,6 +7,7 @@
 #include <Core/Scene/World/GameWorld.h>
 
 #include "Graphics/Objects/Scene/Camera.h"
+#include "Graphics/Core/SceneCamera.h"
 
 #include "CommonUtilities/Math/Matrix4x4.hpp"
 #include "CommonUtilities/Math/Quaternion.hpp"
@@ -16,7 +17,8 @@ GameCamera::GameCamera(unsigned int aID) : Actor(aID)
 
 void GameCamera::Init(float aHorizontalFov, float aNearPlane, float aFarPlane, CommonUtilities::Vector2ui aResolution)
 {
-	myRenderCamera = std::make_unique<Camera>(aHorizontalFov, aNearPlane, aFarPlane, aResolution);
+	myCameraData = std::make_unique<CameraData>();
+	myCameraData->RenderCamera.SetProjection(aHorizontalFov, aNearPlane, aFarPlane, aResolution);
 	myTarget = nullptr;
 
 	UpdateFrustum();
@@ -24,7 +26,7 @@ void GameCamera::Init(float aHorizontalFov, float aNearPlane, float aFarPlane, C
 
 void GameCamera::Update(float aDeltaTime)
 {
-	if (myRenderCamera == nullptr)
+	if (myCameraData == nullptr)
 	{
 		SPDLOG_WARN("Camera Component has no render camera");
 		return;
@@ -40,6 +42,11 @@ void GameCamera::Update(float aDeltaTime)
 		case CameraMode::FollowTarget:
 		{
 			UpdateFollowTarget(aDeltaTime);
+			break;
+		}
+		case CameraMode::LookAtTarget:
+		{
+			UpdateLookAtTarget(aDeltaTime);
 			break;
 		}
 	}
@@ -63,18 +70,17 @@ void GameCamera::SetMode(CameraMode aMode)
 	}
 }
 
-const Camera& GameCamera::GetRenderCamera() const
+const CameraData& GameCamera::GetCameraData() const
 {
-	return *myRenderCamera;
+	return *myCameraData;
 }
 
 CommonUtilities::Ray<float> GameCamera::ScreenToWorldRay(const CommonUtilities::Vector2f& aScreenPosition) const
 {
 	//convert screen pos to ndc 
 
-	const float ndcX = (2.0f * (aScreenPosition.x / static_cast<float>(myRenderCamera->GetResolution().x))) - 1.0f;
-
-	const float ndcY = 1.0f - (2.0f * (aScreenPosition.y / static_cast<float>(myRenderCamera->GetResolution().y)));
+	const float ndcX = (2.0f * (aScreenPosition.x / static_cast<float>(myCameraData->RenderCamera.GetResolution().x))) - 1.0f;
+	const float ndcY = 1.0f - (2.0f * (aScreenPosition.y / static_cast<float>(myCameraData->RenderCamera.GetResolution().y)));
 
 	// Position on the far plane in clip space
 	CommonUtilities::Vector4f clipPosition =
@@ -86,7 +92,7 @@ CommonUtilities::Ray<float> GameCamera::ScreenToWorldRay(const CommonUtilities::
 	};
 
 	// Clip space -> view space
-	const CommonUtilities::Matrix4x4f inverseProjection = myRenderCamera->GetProjection().GetInverse();
+	const CommonUtilities::Matrix4x4f inverseProjection = myCameraData->RenderCamera.GetProjection().GetInverse();
 
 	CommonUtilities::Vector4f viewPosition = clipPosition * inverseProjection;
 
@@ -118,7 +124,7 @@ bool GameCamera::WorldToScreen(const CommonUtilities::Vector3f& aWorldPosition, 
 	};
 
 	const CommonUtilities::Matrix4x4f viewMatrix = GetTransform().GetWorldMatrix().GetFastInverse();
-	const CommonUtilities::Matrix4x4f& projectionMatrix = myRenderCamera->GetProjection();
+	const CommonUtilities::Matrix4x4f& projectionMatrix = myCameraData->RenderCamera.GetProjection();
 
 	CommonUtilities::Vector4f clipPosition = worldPosition * viewMatrix * projectionMatrix;
 
@@ -138,7 +144,7 @@ bool GameCamera::WorldToScreen(const CommonUtilities::Vector3f& aWorldPosition, 
 		return false;
 	}
 
-	const CommonUtilities::Vector2ui resolution = myRenderCamera->GetResolution();
+	const CommonUtilities::Vector2ui resolution = myCameraData->RenderCamera.GetResolution();
 
 	outScreenPosition.x = (ndcX + 1.0f) * 0.5f * static_cast<float>(resolution.x);
 	outScreenPosition.y = (1.0f - ndcY) * 0.5f * static_cast<float>(resolution.y);
@@ -147,12 +153,12 @@ bool GameCamera::WorldToScreen(const CommonUtilities::Vector3f& aWorldPosition, 
 
 void GameCamera::UpdateFrustum() const
 {
-	if (myRenderCamera == nullptr)
+	if (myCameraData == nullptr)
 	{
 		return;
 	}
 
-	myRenderCamera->UpdateFrustum(GetTransform().GetWorldMatrix());
+	myCameraData->RenderCamera.UpdateFrustum(GetTransform().GetWorldMatrix());
 }
 
 void GameCamera::UpdateFreeLook(float aDeltaTime)
@@ -217,6 +223,7 @@ void GameCamera::UpdateFreeLook(float aDeltaTime)
 		EngineContext.InputManager.CenterCursor();
 	}
 
+	myCameraData->Transform = GetTransform().GetWorldMatrix();
 	UpdateFrustum();
 }
 
@@ -234,7 +241,28 @@ void GameCamera::UpdateFollowTarget(float aDeltaTime)
 	const auto targetPosition = targetTransform.GetPosition();
 	const auto targetForward = targetTransform.GetForward();
 
-	const auto cameraPosition = targetPosition - targetForward * myFollowDistance + targetTransform.GetUp() * myFollowHeight;
+	const auto cameraPosition = targetPosition - targetForward * myFollowOffset.x + targetTransform.GetUp() * myFollowOffset.y;
 
+	myCameraData->Transform = GetTransform().GetWorldMatrix();
+	GetTransform().SetPosition(cameraPosition);
+}
+
+void GameCamera::UpdateLookAtTarget(float aDeltaTime)
+{
+	aDeltaTime;
+
+	if (myTarget == nullptr)
+	{
+		return;
+	}
+
+	const auto& targetTransform = myTarget->GetTransform();
+
+	const auto targetPosition = targetTransform.GetPosition();
+	const auto targetForward = targetTransform.GetForward();
+
+	const auto cameraPosition = targetPosition - targetForward * myLookAtOffset.x + targetTransform.GetUp() * myLookAtOffset.y;
+
+	myCameraData->Transform = GetTransform().GetWorldMatrix();
 	GetTransform().SetPosition(cameraPosition);
 }

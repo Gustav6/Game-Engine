@@ -1,7 +1,8 @@
 #include "Tools/Tools.pch.h"
 #include "ImGuiLayer.h"
 
-#include "imgui.h"
+#include "imgui/imgui.h"
+#include "ImGuizmo/ImGuizmo.h"
 #include "backends/imgui_impl_win32.h"
 #include "backends/imgui_impl_dx11.h"
 
@@ -15,6 +16,10 @@ ImGuiLayer::ImGuiLayer(HWND aHWND)
 void ImGuiLayer::OnAttach(ID3D11Device* aDevice, ID3D11DeviceContext* aContext)
 {
 	ImGui::CreateContext();
+
+	ImGui::SetCurrentContext(ImGui::GetCurrentContext());
+	ImGuizmo::SetImGuiContext(ImGui::GetCurrentContext());
+
 	ImGui::StyleColorsDark();
 	ImGui_ImplWin32_Init(myWindowHandle);
 	ImGui_ImplDX11_Init(aDevice, aContext); 
@@ -35,6 +40,7 @@ void ImGuiLayer::BeginFrame()
 	ImGui_ImplDX11_NewFrame();
 	ImGui_ImplWin32_NewFrame();
 	ImGui::NewFrame(); 
+	IMGUIZMO_NAMESPACE::BeginFrame();
 
 	ImGui::DockSpaceOverViewport(0, ImGui::GetMainViewport(), ImGuiDockNodeFlags_PassthruCentralNode);
 }

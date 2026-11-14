@@ -6,21 +6,25 @@
 
 #include "CommonUtilities/Math/MathUtils.hpp"
 
-Camera::Camera() = default;
-
-Camera::Camera(float aHorizontalFov, float aNearPlane, float aFarPlane, CommonUtilities::Vector2ui aResolution)
+Camera::Camera()
 {
-    assert(aNearPlane > 0.0f && aFarPlane > aNearPlane);
+	myNearPlane = 0;
+	myFarPlane = 0;
+}
 
-	myFarPlane = aFarPlane;
+void Camera::SetProjection(float aHorizontalFov, float aNearPlane, float aFarPlane, CommonUtilities::Vector2ui aResolution)
+{
+	assert(aNearPlane > 0.0f && aFarPlane > aNearPlane);
+
 	myNearPlane = aNearPlane;
+	myFarPlane = aFarPlane;
 
 	myResolution = aResolution;
 
 	float aspectRatio = static_cast<float>(aResolution.x) / static_cast<float>(aResolution.y);
 
 	myFrustum = CommonUtilities::Frustum<float>(aHorizontalFov, aNearPlane, aFarPlane, aspectRatio);
-    myProjection = CommonUtilities::Matrix4x4f::CreatePerspectiveProjection(aHorizontalFov, aNearPlane, aFarPlane, aspectRatio);
+	myProjection = CommonUtilities::Matrix4x4f::CreatePerspectiveProjection(aHorizontalFov, aNearPlane, aFarPlane, aspectRatio);
 }
 
 void Camera::UpdateFrustum(const CommonUtilities::Matrix4x4f& aWorldTransform)

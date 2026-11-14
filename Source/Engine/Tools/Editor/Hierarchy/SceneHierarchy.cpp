@@ -8,14 +8,14 @@
 #include <Core/Scene/World/Actor.hpp>
 #include <Core/Scene/World/GameWorld.h>
 
+#include <Graphics/Core/SceneCamera.h>
+#include <Graphics/Objects/Scene/Camera.h>
+
+#include <ImGuizmo/ImGuizmo.h>
+
 void SceneHierarchy::Update(float aDeltaTime)
 {
 	aDeltaTime;
-	if (mySelectedActor == nullptr)
-	{
-
-	}
-
 }
 
 void SceneHierarchy::Render()
@@ -29,8 +29,33 @@ void SceneHierarchy::Render()
 			DisplayActorNode(actor);
 		}
 	}
-	
+
 	ImGui::End();
+
+	if (myCameraReference && mySelectedActor)
+	{
+		ImGuizmo::SetOrthographic(false);
+
+		ImGuizmo::SetDrawlist(ImGui::GetBackgroundDrawList());
+
+		ImVec2 viewportPos = ImGui::GetMainViewport()->Pos;
+		ImVec2 viewportSize = ImGui::GetMainViewport()->Size;
+
+		ImGuizmo::SetRect(
+			viewportPos.x,
+			viewportPos.y,
+			viewportSize.x,
+			viewportSize.y
+		);
+
+		ImGuizmo::Manipulate(
+			myCameraReference->Transform.GetFastInverse().GetData(),
+			myCameraReference->RenderCamera.GetProjection().GetData(),
+			ImGuizmo::TRANSLATE,
+			ImGuizmo::WORLD,
+			mySelectedActor->GetTransform().GetWorldMatrix().GetData()
+		);
+	}
 }
 
 void SceneHierarchy::SetSelectedActor(Actor* aTarget)
@@ -40,6 +65,11 @@ void SceneHierarchy::SetSelectedActor(Actor* aTarget)
 	SPDLOG_INFO("Selected : {}", mySelectedActor->GetName());
 
 	DebugPrintNodesChildren(mySelectedActor);
+}
+
+void SceneHierarchy::SetCameraReference(const CameraData* aCamera)
+{
+	myCameraReference = aCamera;
 }
 
 void SceneHierarchy::DisplayActorNode(Actor* aActor)

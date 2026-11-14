@@ -8,7 +8,8 @@ class Camera
 {
 public:
 	Camera();
-	Camera(float aHorizontalFov, float aNearPlane, float aFarPlane, CommonUtilities::Vector2ui aResolution);
+
+	void SetProjection(float aHorizontalFov, float aNearPlane, float aFarPlane, CommonUtilities::Vector2ui aResolution);
 
 	void UpdateFrustum(const CommonUtilities::Matrix4x4f& aWorldTransform);
 
@@ -28,8 +29,8 @@ private:
 	CommonUtilities::Matrix4x4f myProjection;
 	CommonUtilities::Frustum<float> myFrustum;
 
+	CommonUtilities::Vector2ui myResolution;
+
 	float myNearPlane;
 	float myFarPlane;
-
-	CommonUtilities::Vector2ui myResolution;
 };

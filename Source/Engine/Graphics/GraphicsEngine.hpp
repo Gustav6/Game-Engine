@@ -32,7 +32,7 @@ class PostProcessFilters;
 class PixelPickingPass;
 
 struct RenderItem;
-struct SceneCamera;
+struct CameraData;
 struct MaterialDescription;
 
 enum class ResourceFormat;
@@ -72,7 +72,7 @@ public:
 	void Shutdown();
 
 	void BeginFrame() const;
-	FrameStats Render(GraphicsCommandList& inoutCommandList, const SceneCamera& aCamera);
+	FrameStats Render(GraphicsCommandList& inoutCommandList, const CameraData& aCamera);
 	void Present() const;
 
 	void SetBloomEnabled(bool aEnabled);

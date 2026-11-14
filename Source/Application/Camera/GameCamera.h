@@ -6,12 +6,13 @@
 
 #include "Core/Scene/World/Actor.hpp"
 
-class Camera;
+struct CameraData;
 
 enum class CameraMode
 {
 	FollowTarget,
-	FreeLook
+	FreeLook,
+	LookAtTarget,
 };
 
 class GameCamera : public Actor
@@ -26,19 +27,21 @@ public:
 	void SetTarget(const Actor* aTarget);
 	void SetMode(CameraMode aMode);
 
-	const Camera& GetRenderCamera() const;
+	const CameraData& GetCameraData() const;
 
 	CommonUtilities::Ray<float> ScreenToWorldRay(const CommonUtilities::Vector2f& aScreenPosition) const;
 	bool WorldToScreen(const CommonUtilities::Vector3f& aWorldPosition, CommonUtilities::Vector2f& outScreenPosition) const;
 
 private:
 	void UpdateFrustum() const;
+
 	void UpdateFreeLook(float aDeltaTime);
 	void UpdateFollowTarget(float aDeltaTime);
+	void UpdateLookAtTarget(float aDeltaTime);
 
 	const Actor* myTarget;
 
-	std::unique_ptr<Camera> myRenderCamera;
+	std::unique_ptr<CameraData> myCameraData;
 
 	CameraMode myMode = CameraMode::FreeLook;
 
@@ -50,6 +53,7 @@ private:
 
 	float myCameraMoveSpeed = 400.0f;
 	float myMouseSensitivity = 0.2f;
-	float myFollowDistance = 300.0f;
-	float myFollowHeight = 100.0f;
+	CommonUtilities::Vector2f myFollowOffset = { 300.0f, 300.0f };
+	CommonUtilities::Vector2f myLookAtOffset = { -300.0f, 300.0f };
+
 };

@@ -164,11 +164,6 @@ bool Game::Initialize(SIZE aWindowSize, WNDPROC aWindowProcess, LPCWSTR aWindowT
 #ifndef _RETAIL
 		myImGuiLayer = std::make_unique<ImGuiLayer>(myMainWindowHandle);
 		GE.SetRenderOverlay(myImGuiLayer.get());
-
-		ToolRegistry::Get().Initialize();
-
-		ToolManager::Get().AddTool<DebugTool>();
-		ToolManager::Get().AddTool<SceneHierarchy>();
 #endif
 	}
 
@@ -182,6 +177,17 @@ bool Game::Initialize(SIZE aWindowSize, WNDPROC aWindowProcess, LPCWSTR aWindowT
 		myStateMachine->Initialize();
 		myStateMachine->ChangeState(GameStateType::InGame);
 	}
+
+#ifndef _RETAIL
+	{
+		ToolRegistry::Get().Initialize();
+
+		ToolManager::Get().AddTool<DebugTool>(); 
+		ToolManager::Get().AddTool<SceneHierarchy>();
+
+		ToolManager::Get().GetTool<SceneHierarchy>()->SetCameraReference(&myGameCamera->GetCameraData());
+	}
+#endif
 
 	// Show our program window and give it focus.
 	ShowWindow(myMainWindowHandle, SW_SHOW);
@@ -235,13 +241,7 @@ int Game::Run()
 
 			RenderScene();
 
-			SceneCamera camera =
-			{
-				.Transform = myGameCamera->GetTransform().GetWorldMatrix(),
-				.RenderCamera = myGameCamera->GetRenderCamera()
-			};
-
-			FrameStats frameStats = GE.Render(*myGraphicsCommandList, camera);
+			FrameStats frameStats = GE.Render(*myGraphicsCommandList, myGameCamera->GetCameraData());
 
 #ifndef _RETAIL
 			const DebugInfo info = 
@@ -266,7 +266,9 @@ int Game::Run()
 #ifndef _RETAIL
 			if (auto id = GE.GetPickResult())
 			{
-				ToolManager::Get().GetTool<SceneHierarchy>()->SetSelectedActor(GameWorld::Get().GetActor(*id));
+				Actor* actor = GameWorld::Get().GetActor(*id);
+
+				ToolManager::Get().GetTool<SceneHierarchy>()->SetSelectedActor(actor);
 			}
 #endif
 			GE.Present();

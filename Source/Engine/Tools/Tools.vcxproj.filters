@@ -43,6 +43,9 @@
     <Filter Include="ThirdParty\Source">
       <UniqueIdentifier>{10AD61F8-7CC3-5F8E-C53A-EBAF31903016}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ThirdParty\Source\ImGuizmo">
+      <UniqueIdentifier>{70D18690-5CE1-3261-C59A-977FB1C921FA}</UniqueIdentifier>
+    </Filter>
     <Filter Include="ThirdParty\Source\imgui">
       <UniqueIdentifier>{7A461F5D-E67D-67F4-EF87-CB175B3E8EED}</UniqueIdentifier>
     </Filter>
@@ -90,6 +93,9 @@
     <ClInclude Include="Tools.pch.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\ThirdParty\Source\ImGuizmo\ImGuizmo.cpp">
+      <Filter>ThirdParty\Source\ImGuizmo</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\ThirdParty\Source\imgui\backends\imgui_impl_dx11.cpp">
       <Filter>ThirdParty\Source\imgui\backends</Filter>
     </ClCompile>
