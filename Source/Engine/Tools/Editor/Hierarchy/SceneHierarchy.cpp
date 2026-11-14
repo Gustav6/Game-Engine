@@ -1,9 +1,9 @@
 #include "Tools/Tools.pch.h"
 #include "SceneHierarchy.h"
 
-#include <iostream>
-
 #include <ImGui/imgui.h>
+
+#include <Wrappers/Logger/LoggerWrapper.h>
 
 #include <Core/Scene/World/Actor.hpp>
 #include <Core/Scene/World/GameWorld.h>
@@ -11,6 +11,11 @@
 void SceneHierarchy::Update(float aDeltaTime)
 {
 	aDeltaTime;
+	if (mySelectedActor == nullptr)
+	{
+
+	}
+
 }
 
 void SceneHierarchy::Render()
@@ -21,11 +26,20 @@ void SceneHierarchy::Render()
 	{
 		if (actor->GetParent() == nullptr)
 		{
-			DisplayActorNode(actor.get());
+			DisplayActorNode(actor);
 		}
 	}
 	
 	ImGui::End();
+}
+
+void SceneHierarchy::SetSelectedActor(Actor* aTarget)
+{
+	mySelectedActor = aTarget;
+
+	SPDLOG_INFO("Selected : {}", mySelectedActor->GetName());
+
+	DebugPrintNodesChildren(mySelectedActor);
 }
 
 void SceneHierarchy::DisplayActorNode(Actor* aActor)
@@ -50,11 +64,7 @@ void SceneHierarchy::DisplayActorNode(Actor* aActor)
 
 	if (ImGui::IsItemClicked() && mySelectedActor != aActor)
 	{
-		mySelectedActor = aActor;
-
-		std::cout << mySelectedActor->GetName() << ", Selected" << "\n";
-
-		DebugPrintNodesChildren(mySelectedActor);
+		SetSelectedActor(aActor);
 	}
 
 	if (isOpen)
@@ -72,7 +82,7 @@ void SceneHierarchy::DebugPrintNodesChildren(Actor* aActor)
 {
 	for (const auto& child : aActor->GetChildren())
 	{
-		std::cout << child->GetName() << ", Owned by - " << aActor->GetName() << "\n";
+		SPDLOG_INFO("Child : {}, Owned by : {}", child->GetName(), aActor->GetName());
 
 		DebugPrintNodesChildren(child);
 	}

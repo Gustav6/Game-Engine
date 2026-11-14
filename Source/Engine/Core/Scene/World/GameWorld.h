@@ -40,12 +40,15 @@ public:
         return rawPointer;
     }
 
-    const std::vector<std::unique_ptr<Actor>>& GetActors() const;
+    const std::vector<Actor*> GetActors() const;
+
+    const Actor* GetActor(unsigned int aID) const;
+    Actor* GetActor(unsigned int aID);
 
 private:
     GameWorld();
 
-    std::vector<std::unique_ptr<Actor>> myActors;
+    std::unordered_map<unsigned int, std::unique_ptr<Actor>> myActors;
     std::vector<std::unique_ptr<Actor>> myQueuedActors;
 
     std::vector<unsigned int> myAvailableIDs;

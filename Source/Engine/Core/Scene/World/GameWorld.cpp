@@ -23,11 +23,11 @@ void GameWorld::Update(float aDeltaTime)
 
 	for (auto& actor : myQueuedActors)
 	{
-		myActors.emplace_back(std::move(actor));
+		myActors.insert_or_assign(actor->GetID(), std::move(actor));
 	}
 	myQueuedActors.clear();
 
-	for (const auto& actor : myActors)
+	for (auto& actor : myActors | std::views::values)
 	{
 		if (actor->GetIsDestroyed())
 		{
@@ -39,10 +39,11 @@ void GameWorld::Update(float aDeltaTime)
 	
 	for (auto it = myActors.begin(); it != myActors.end();)
 	{
-		if (*it && (*it)->GetIsDestroyed())
-		{
-			myAvailableIDs.emplace_back((*it)->GetID());
+		auto& actor = it->second;
 
+		if (actor->GetIsDestroyed())
+		{
+			myAvailableIDs.emplace_back(it->first);
 			it = myActors.erase(it);
 		}
 		else
@@ -59,13 +60,31 @@ void GameWorld::Render()
 
 void GameWorld::Clear()
 {
-	for (auto& actor : myActors)
+	for (auto& actor : myActors | std::views::values)
 	{
 		actor->Destroy();
 	}
 }
 
-const std::vector<std::unique_ptr<Actor>>& GameWorld::GetActors() const
+const std::vector<Actor*> GameWorld::GetActors() const
 {
-	return myActors;
+	std::vector<Actor*> actors;
+	actors.reserve(myActors.size());
+
+	for (const auto& actor : myActors | std::views::values)
+	{
+		actors.emplace_back(actor.get());
+	}
+
+	return actors;
+}
+
+const Actor* GameWorld::GetActor(unsigned int aID) const
+{
+	return myActors.at(aID).get();
+}
+
+Actor* GameWorld::GetActor(unsigned int aID)
+{
+	return myActors.at(aID).get();
 }

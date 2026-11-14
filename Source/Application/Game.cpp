@@ -168,7 +168,7 @@ bool Game::Initialize(SIZE aWindowSize, WNDPROC aWindowProcess, LPCWSTR aWindowT
 		ToolRegistry::Get().Initialize();
 
 		ToolManager::Get().AddTool<DebugTool>();
-		//ToolManager::Get().AddTool<SceneHierarchy>();
+		ToolManager::Get().AddTool<SceneHierarchy>();
 #endif
 	}
 
@@ -263,11 +263,12 @@ int Game::Run()
 
 			GE.ExecuteCommandList(*myGraphicsCommandList);
 
+#ifndef _RETAIL
 			if (auto id = GE.GetPickResult())
 			{
-				std::cout << "Picked Object ID: " << *id << std::endl;
+				ToolManager::Get().GetTool<SceneHierarchy>()->SetSelectedActor(GameWorld::Get().GetActor(*id));
 			}
-
+#endif
 			GE.Present();
 		}
 

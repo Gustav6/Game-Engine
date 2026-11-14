@@ -115,6 +115,8 @@ void InGameState::LoadTestScene()
 		meshComponent->SetMaterial(0, AssetRegistry::Get().GetAsset<MaterialAsset>("SMColorChecker"));
 
 		actor->GetTransform().Translate({ -400, 40, 0 });
+
+		temp = actor;
 	}
 
 	{
@@ -129,6 +131,8 @@ void InGameState::LoadTestScene()
 		actor->GetTransform().Translate({ 200, 0, 400 });
 
 		actor->SetParent(temp);
+
+		temp = actor;
 	}
 
 	{
@@ -145,7 +149,7 @@ void InGameState::LoadTestScene()
 	}
 
 	{
-		Actor* actor = GameWorld::Get().CreateActor<Actor>("Unit_Cube");
+		Actor* actor = GameWorld::Get().CreateActor<Actor>("Unit_Cube_01");
 
 		MeshComponent* meshComponent = actor->AddComponent<MeshComponent>();
 
@@ -157,7 +161,7 @@ void InGameState::LoadTestScene()
 	}
 
 	{
-		Actor* actor = GameWorld::Get().CreateActor<Actor>("Unit_Cube");
+		Actor* actor = GameWorld::Get().CreateActor<Actor>("Unit_Cube_02");
 
 		MeshComponent* meshComponent = actor->AddComponent<MeshComponent>();
 
@@ -183,7 +187,7 @@ void InGameState::LoadTestScene()
 	}
 
 	{
-		myAnimatedObject = GameWorld::Get().CreateActor<Actor>("TGA_Bro");
+		myAnimatedObject = GameWorld::Get().CreateActor<Actor>("TGA_Bro_01");
 
 		myAnimatedObject->GetTransform().Translate({ 200, 0, 0 });
 
@@ -227,7 +231,7 @@ void InGameState::LoadTestScene()
 	}
 
 	{
-		Actor* object = GameWorld::Get().CreateActor<Actor>("TGA_Bro_Temp");
+		Actor* object = GameWorld::Get().CreateActor<Actor>("TGA_Bro_02");
 
 		object->GetTransform().Translate({ 200, 0, -200 });
 
