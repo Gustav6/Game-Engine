@@ -134,6 +134,9 @@
     <ClInclude Include="Scene\World\Actor.hpp">
       <Filter>Scene\World</Filter>
     </ClInclude>
+    <ClInclude Include="Scene\World\GameCamera.h">
+      <Filter>Scene\World</Filter>
+    </ClInclude>
     <ClInclude Include="Scene\World\GameWorld.h">
       <Filter>Scene\World</Filter>
     </ClInclude>
@@ -220,6 +223,9 @@
       <Filter>Scene\Components\Registry</Filter>
     </ClCompile>
     <ClCompile Include="Scene\World\Actor.cpp">
+      <Filter>Scene\World</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\World\GameCamera.cpp">
       <Filter>Scene\World</Filter>
     </ClCompile>
     <ClCompile Include="Scene\World\GameWorld.cpp">

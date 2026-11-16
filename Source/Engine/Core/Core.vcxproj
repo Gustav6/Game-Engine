@@ -181,6 +181,7 @@
     <ClInclude Include="Scene\Components\Registry\ComponentRegistry.h" />
     <ClInclude Include="Scene\Components\Registry\ComponentRegistryManager.h" />
     <ClInclude Include="Scene\World\Actor.hpp" />
+    <ClInclude Include="Scene\World\GameCamera.h" />
     <ClInclude Include="Scene\World\GameWorld.h" />
   </ItemGroup>
   <ItemGroup>
@@ -215,6 +216,7 @@
     <ClCompile Include="Scene\Components\Registry\ComponentRegistry.cpp" />
     <ClCompile Include="Scene\Components\Registry\ComponentRegistryManager.cpp" />
     <ClCompile Include="Scene\World\Actor.cpp" />
+    <ClCompile Include="Scene\World\GameCamera.cpp" />
     <ClCompile Include="Scene\World\GameWorld.cpp" />
   </ItemGroup>
   <ItemGroup>

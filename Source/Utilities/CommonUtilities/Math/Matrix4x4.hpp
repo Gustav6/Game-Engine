@@ -26,6 +26,7 @@ namespace CommonUtilities
 			static Matrix4x4<T> Identity;
 
 			Matrix4x4<T>();
+			Matrix4x4<T>(const T aData[16]);
 			Matrix4x4<T>(std::initializer_list<T> aMatrix);
 			Matrix4x4<T>(const Matrix3x3<T>& aMatrix);
 			Matrix4x4<T>(const Matrix4x4<T>& aMatrix) = default;
@@ -394,6 +395,27 @@ namespace CommonUtilities
 		(*this)(2, 4) = 0;
 		(*this)(3, 4) = 0;
 		(*this)(4, 4) = 1;
+	}
+
+	template<typename T>
+	inline Matrix4x4<T>::Matrix4x4(const T aData[16])
+	{
+		myData[0] = aData[0];
+		myData[1] = aData[1];
+		myData[2] = aData[2];
+		myData[3] = aData[3];
+		myData[4] = aData[4];
+		myData[5] = aData[5];
+		myData[6] = aData[6];
+		myData[7] = aData[7];
+		myData[8] = aData[8];
+		myData[9] = aData[9];
+		myData[10] = aData[10];
+		myData[11] = aData[11];
+		myData[12] = aData[12];
+		myData[13] = aData[13];
+		myData[14] = aData[14];
+		myData[15] = aData[15];
 	}
 
 	template<typename T>
@@ -807,22 +829,18 @@ namespace CommonUtilities
 	}
 
 	template<typename T>
-	inline Matrix4x4<T> Matrix4x4<T>::CreateLookAt(const Vector3<T>& aPosition, const Vector3<T>& aDirection, const Vector3<T>& aUp)
+	inline Matrix4x4<T> Matrix4x4<T>::CreateLookAt(const Vector3<T>& aPosition, const Vector3<T>& aTarget, const Vector3<T>& aUp)
 	{
-		Vector3<T> zAxis = aDirection.GetNormalized();
+		Vector3<T> zAxis = (aTarget - aPosition).GetNormalized();
 		Vector3<T> xAxis = aUp.Cross(zAxis).GetNormalized();
 		Vector3<T> yAxis = zAxis.Cross(xAxis);
 
-		T x = Vector3<T>::Dot(xAxis, aPosition);
-		T y = Vector3<T>::Dot(yAxis, aPosition);
-		T z = Vector3<T>::Dot(zAxis, aPosition);
-
 		return Matrix4x4<T>
 		{
-			xAxis.x, xAxis.y, xAxis.z, 0,
-			yAxis.x, yAxis.y, yAxis.z, 0,
-			zAxis.x, zAxis.y, zAxis.z, 0,
-			-x	   , -y		, -z	 , 1
+			xAxis.x,     xAxis.y,     xAxis.z,     0,
+			yAxis.x,     yAxis.y,     yAxis.z,     0,
+			zAxis.x,     zAxis.y,     zAxis.z,     0,
+			aPosition.x, aPosition.y, aPosition.z, 1
 		};
 	}
 

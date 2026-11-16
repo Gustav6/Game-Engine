@@ -169,7 +169,6 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Camera\GameCamera.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameState\GameStateMachine.h" />
     <ClInclude Include="GameState\States\InGameState.h" />
@@ -178,7 +177,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\ThirdParty\Source\tracy\TracyClient.cpp" />
-    <ClCompile Include="Camera\GameCamera.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameState\GameStateMachine.cpp" />
     <ClCompile Include="GameState\States\InGameState.cpp" />

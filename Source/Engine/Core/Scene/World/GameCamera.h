@@ -12,13 +12,13 @@ enum class CameraMode
 {
 	FollowTarget,
 	FreeLook,
-	LookAtTarget,
+	OrbitTarget,
 };
 
 class GameCamera : public Actor
 {
 public:
-	GameCamera(unsigned int aID);
+	GameCamera();
 
 	void Init(float aHorizontalFov, float aNearPlane, float aFarPlane, CommonUtilities::Vector2ui aResolution);
 
@@ -29,6 +29,8 @@ public:
 
 	const CameraData& GetCameraData() const;
 
+	void FocusOn(const Actor* aTarget);
+
 	CommonUtilities::Ray<float> ScreenToWorldRay(const CommonUtilities::Vector2f& aScreenPosition) const;
 	bool WorldToScreen(const CommonUtilities::Vector3f& aWorldPosition, CommonUtilities::Vector2f& outScreenPosition) const;
 
@@ -37,7 +39,7 @@ private:
 
 	void UpdateFreeLook(float aDeltaTime);
 	void UpdateFollowTarget(float aDeltaTime);
-	void UpdateLookAtTarget(float aDeltaTime);
+	void UpdateOrbitTarget(float aDeltaTime);
 
 	const Actor* myTarget;
 
@@ -45,15 +47,14 @@ private:
 
 	CameraMode myMode = CameraMode::FreeLook;
 
-	CommonUtilities::Vector3f myShakeOffset = { 0.f, 0.f, 0.f };
-
-	float myShakeIntensity = 0.f;
-	float myShakeDuration = 0.f;
-	float myShakeTimer = 0.f;
+	float myYaw;
+	float myPitch;
 
 	float myCameraMoveSpeed = 400.0f;
 	float myMouseSensitivity = 0.2f;
-	CommonUtilities::Vector2f myFollowOffset = { 300.0f, 300.0f };
-	CommonUtilities::Vector2f myLookAtOffset = { -300.0f, 300.0f };
+	CommonUtilities::Vector3f myOrbitOffset = { 300.0f, 300.0f, -300.0f };
+	CommonUtilities::Vector3f myFollowOffset = { 300.0f, 300.0f, 300.0f };
+	CommonUtilities::Vector3f myLastTargetPosition;
 
+	bool myIsDirty;
 };

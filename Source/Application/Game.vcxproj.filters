@@ -1,9 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Camera">
-      <UniqueIdentifier>{CE7141AB-BA13-6C81-A3CE-7FD58F0FF3D1}</UniqueIdentifier>
-    </Filter>
     <Filter Include="GameState">
       <UniqueIdentifier>{A0AAD57D-0C15-8AF4-5553-3B9AC1FC6749}</UniqueIdentifier>
     </Filter>
@@ -24,9 +21,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Camera\GameCamera.h">
-      <Filter>Camera</Filter>
-    </ClInclude>
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameState\GameStateMachine.h">
       <Filter>GameState</Filter>
@@ -40,9 +34,6 @@
   <ItemGroup>
     <ClCompile Include="..\..\ThirdParty\Source\tracy\TracyClient.cpp">
       <Filter>ThirdParty\Source\tracy</Filter>
-    </ClCompile>
-    <ClCompile Include="Camera\GameCamera.cpp">
-      <Filter>Camera</Filter>
     </ClCompile>
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameState\GameStateMachine.cpp">

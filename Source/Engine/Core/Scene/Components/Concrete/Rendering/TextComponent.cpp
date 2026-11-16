@@ -9,7 +9,7 @@
 #include "Graphics/Drawers/TextDrawer.h"
 
 TextComponent::TextComponent(Actor* aOwner)
-	: Component(aOwner)
+	: IComponent(aOwner)
 {
 	myIsDirty = true;
 	mySize = 12.0f;

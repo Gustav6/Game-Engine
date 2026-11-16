@@ -8,7 +8,7 @@
 #include "Graphics/Objects/GPU/Texture.h"
 
 LightComponent::LightComponent(Actor* aOwner)
-	: Component(aOwner)
+	: IComponent(aOwner)
 {
 	myShadowMap = nullptr;
 

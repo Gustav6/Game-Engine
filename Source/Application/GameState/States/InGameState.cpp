@@ -26,6 +26,7 @@
 #include "Core/Scene/Components/Concrete/Light/SpotLightComponent.h"
 #include "Core/Scene/Components/Concrete/Collision/BoxColliderComponent.h"
 #include "Core/Scene/Components/Concrete/Collision/SphereColliderComponent.h"
+#include <Core/Scene/Components/Concrete/Transform/Transform.h>
 
 #include "Graphics/GraphicsEngine.hpp"
 #include "Graphics/Core/RenderEnums.h"
@@ -108,44 +109,40 @@ void InGameState::LoadTestScene()
 
 	{
 		Actor* actor = GameWorld::Get().CreateActor<Actor>("Color_Checker");
+		temp = actor;
 
 		MeshComponent* meshComponent = actor->AddComponent<MeshComponent>();
 
 		meshComponent->SetMesh(AssetRegistry::Get().GetAsset<MeshAsset>("SM_Color_Checker"));
 		meshComponent->SetMaterial(0, AssetRegistry::Get().GetAsset<MaterialAsset>("SMColorChecker"));
 
-		actor->GetTransform().Translate({ -400, 40, 0 });
-
-		temp = actor;
+		actor->GetComponent<Transform>()->SetPosition({ -400, 40, 0 });
 	}
 
 	{
 		Actor* actor = GameWorld::Get().CreateActor<Actor>("Chest");
+		actor->SetParent(temp);
+		temp = actor;
 
 		MeshComponent* meshComponent = actor->AddComponent<MeshComponent>();
 
 		meshComponent->SetMesh(AssetRegistry::Get().GetAsset<MeshAsset>("SM_Chest"));
 		meshComponent->SetMaterial(0, AssetRegistry::Get().GetAsset<MaterialAsset>("ChestMaterial"));
 
-		actor->GetTransform().Rotate(CommonUtilities::Vector3f{ 0, -180, 0 });
-		actor->GetTransform().Translate({ 200, 0, 400 });
-
-		actor->SetParent(temp);
-
-		temp = actor;
+		actor->GetComponent<Transform>()->SetLocalEulerRotation(CommonUtilities::Vector3f{ 0, -180, 0 });
+		actor->GetComponent<Transform>()->SetPosition({ 200, 0, 400 });
 	}
 
 	{
 		Actor* actor = GameWorld::Get().CreateActor<Actor>("Unit_Plane");
+		actor->SetParent(temp);
 
 		MeshComponent* meshComponent = actor->AddComponent<MeshComponent>();
 
 		meshComponent->SetMesh(AssetRegistry::Get().GetAsset<MeshAsset>("Unit_Plane"));
 		meshComponent->SetMaterial(0, AssetRegistry::Get().GetAsset<MaterialAsset>("BaseMaterial"));
 
-		actor->GetTransform().SetScale({ 2000, 2000, 2000 });
-
-		actor->SetParent(temp);
+		actor->GetComponent<Transform>()->SetScale({ 2000, 2000, 2000 });
 	}
 
 	{
@@ -156,8 +153,8 @@ void InGameState::LoadTestScene()
 		meshComponent->SetMesh(AssetRegistry::Get().GetAsset<MeshAsset>("Unit_Cube"));
 		meshComponent->SetMaterial(0, AssetRegistry::Get().GetAsset<MaterialAsset>("BaseMaterial"));
 
-		actor->GetTransform().Translate({ 0, 50, 0 });
-		actor->GetTransform().SetScale({ 100, 100, 100 });
+		actor->GetComponent<Transform>()->SetPosition({ 0, 50, 0 });
+		actor->GetComponent<Transform>()->SetScale({ 100, 100, 100 });
 	}
 
 	{
@@ -169,9 +166,9 @@ void InGameState::LoadTestScene()
 		meshComponent->SetMaterial(0, AssetRegistry::Get().GetAsset<MaterialAsset>("BaseMaterial"));
 
 		// TODO: Inspect rotation with multiple axis
-		actor->GetTransform().SetEulerRotation({ 45.0f, 0.0f, 0.0f });
-		actor->GetTransform().Translate({ -200, 100, 400 });
-		actor->GetTransform().SetScale({ 100, 100, 100 });
+		actor->GetComponent<Transform>()->SetEulerRotation({ 45.0f, 0.0f, 0.0f });
+		actor->GetComponent<Transform>()->SetPosition({ -200, 100, 400 });
+		actor->GetComponent<Transform>()->SetScale({ 100, 100, 100 });
 	}
 
 	{
@@ -182,14 +179,14 @@ void InGameState::LoadTestScene()
 		meshComponent->SetMesh(AssetRegistry::Get().GetAsset<MeshAsset>("Unit_Sphere"));
 		meshComponent->SetMaterial(0, AssetRegistry::Get().GetAsset<MaterialAsset>("BaseMaterial"));
 
-		actor->GetTransform().Translate({ -200, 50, -200 });
-		actor->GetTransform().SetScale({ 100, 100, 100 });
+		actor->GetComponent<Transform>()->SetPosition({ -200, 50, -200 });
+		actor->GetComponent<Transform>()->SetScale({ 100, 100, 100 });
 	}
 
 	{
 		myAnimatedObject = GameWorld::Get().CreateActor<Actor>("TGA_Bro_01");
 
-		myAnimatedObject->GetTransform().Translate({ 200, 0, 0 });
+		myAnimatedObject->GetComponent<Transform>()->SetPosition({ 200, 0, 0 });
 
 		MeshComponent* meshComponent = myAnimatedObject->AddComponent<MeshComponent>();
 
@@ -233,7 +230,7 @@ void InGameState::LoadTestScene()
 	{
 		Actor* object = GameWorld::Get().CreateActor<Actor>("TGA_Bro_02");
 
-		object->GetTransform().Translate({ 200, 0, -200 });
+		object->GetComponent<Transform>()->SetPosition({ 200, 0, -200 });
 
 		MeshComponent* meshComponent = object->AddComponent<MeshComponent>();
 
@@ -307,20 +304,20 @@ void InGameState::LoadTestScene()
 
 void InGameState::UpdateTestBinds()
 {
-	if (EngineContext.InputManager.IsKeyPressed(KeyCode::D1))
+	if (GEngineContext.InputManager.IsKeyPressed(KeyCode::D1))
 	{
 		myAnimatedObject->GetComponent<AnimationComponent>()->PlayAnimation("Walk", true);
 		myAnimatedObject->GetComponent<AnimationComponent>()->PlayAnimation("Wave", false);
 	}
-	if (EngineContext.InputManager.IsKeyPressed(KeyCode::D2))
+	if (GEngineContext.InputManager.IsKeyPressed(KeyCode::D2))
 	{
 		myAnimatedObject->GetComponent<AnimationComponent>()->PlayAnimation("Run", true);
 	}
-	if (EngineContext.InputManager.IsKeyPressed(KeyCode::D3))
+	if (GEngineContext.InputManager.IsKeyPressed(KeyCode::D3))
 	{
 		myAnimatedObject->GetComponent<AnimationComponent>()->PlayAnimation("Breathing", true);
 	}
-	if (EngineContext.InputManager.IsKeyPressed(KeyCode::D4))
+	if (GEngineContext.InputManager.IsKeyPressed(KeyCode::D4))
 	{
 		if (myDirectionLightObject->GetIsEnabled())
 		{
@@ -331,7 +328,7 @@ void InGameState::UpdateTestBinds()
 			myDirectionLightObject->Enable();
 		}
 	}
-	if (EngineContext.InputManager.IsKeyPressed(KeyCode::D5))
+	if (GEngineContext.InputManager.IsKeyPressed(KeyCode::D5))
 	{
 		if (myPointLightObject->GetIsEnabled())
 		{
@@ -342,7 +339,7 @@ void InGameState::UpdateTestBinds()
 			myPointLightObject->Enable();
 		}
 	}
-	if (EngineContext.InputManager.IsKeyPressed(KeyCode::D6))
+	if (GEngineContext.InputManager.IsKeyPressed(KeyCode::D6))
 	{
 		if (mySpotLightObject->GetIsEnabled())
 		{
@@ -357,7 +354,7 @@ void InGameState::UpdateTestBinds()
 
 void InGameState::UpdateGraphicsDebugBinds()
 {
-	if (EngineContext.InputManager.IsKeyPressed(KeyCode::F5))
+	if (GEngineContext.InputManager.IsKeyPressed(KeyCode::F5))
 	{
 		int nextDebugRenderMode = static_cast<int>(GraphicsEngine::Get().GetSettings().DebugRenderMode) - 1;
 
@@ -369,7 +366,7 @@ void InGameState::UpdateGraphicsDebugBinds()
 		GraphicsEngine::Get().SetDebugRenderMode(static_cast<DebugRenderMode>(nextDebugRenderMode));
 	}
 
-	if (EngineContext.InputManager.IsKeyPressed(KeyCode::F6))
+	if (GEngineContext.InputManager.IsKeyPressed(KeyCode::F6))
 	{
 		int nextDebugRenderMode = static_cast<int>(GraphicsEngine::Get().GetSettings().DebugRenderMode) + 1;
 
@@ -381,7 +378,7 @@ void InGameState::UpdateGraphicsDebugBinds()
 		GraphicsEngine::Get().SetDebugRenderMode(static_cast<DebugRenderMode>(nextDebugRenderMode));
 	}
 
-	if (EngineContext.InputManager.IsKeyPressed(KeyCode::F7))
+	if (GEngineContext.InputManager.IsKeyPressed(KeyCode::F7))
 	{
 		int nextToneMappingOperator = static_cast<int>(GraphicsEngine::Get().GetSettings().ToneMapper) + 1;
 
@@ -393,7 +390,7 @@ void InGameState::UpdateGraphicsDebugBinds()
 		GraphicsEngine::Get().SetTonemap(static_cast<ToneMapper>(nextToneMappingOperator));
 	}
 
-	if (EngineContext.InputManager.IsKeyPressed(KeyCode::F8))
+	if (GEngineContext.InputManager.IsKeyPressed(KeyCode::F8))
 	{
 		GraphicsEngine::Get().SetBloomEnabled(!GraphicsEngine::Get().GetSettings().BloomEnabled);
 	}

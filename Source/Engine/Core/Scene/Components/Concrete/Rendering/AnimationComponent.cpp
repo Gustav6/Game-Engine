@@ -9,7 +9,7 @@
 #include "Core/Scene/World/Actor.hpp"
 
 AnimationComponent::AnimationComponent(Actor* aOwner, const Skeleton* aSkeleton)
-	: Component(aOwner)
+	: IComponent(aOwner)
 {
 	SetupJointGroups(aSkeleton);
 

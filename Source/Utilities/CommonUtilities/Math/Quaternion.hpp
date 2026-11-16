@@ -33,8 +33,7 @@ namespace CommonUtilities
 
 			Quaternion();
 			Quaternion(const T& aW, const T& aX, const T& aY, const T& aZ);
-			Quaternion(const T& aYaw, const T& aPitch, const T& aRoll);
-			Quaternion(const CommonUtilities::Vector3<T>& aYawPitchRoll);
+			Quaternion(const CommonUtilities::Vector3<T>& aEuler);
 			Quaternion(const CommonUtilities::Vector3<T>& aVector, const T aAngle);
 			Quaternion(const CommonUtilities::Matrix3x3<T>& aRotationMatrix);
 
@@ -166,35 +165,12 @@ namespace CommonUtilities
 	}
 
 	template<class T>
-	inline Quaternion<T>::Quaternion(const T & aYaw, const T & aPitch, const T & aRoll)
+	inline Quaternion<T>::Quaternion(const CommonUtilities::Vector3<T>& aEuler)
 	{
-		T cy = cos(CommonUtilities::Math::DEG_TO_RAD<T> * aYaw * T(0.5));
-		T sy = sin(CommonUtilities::Math::DEG_TO_RAD<T> * aYaw * T(0.5));
-		T cr = cos(CommonUtilities::Math::DEG_TO_RAD<T> * aRoll * T(0.5));
-		T sr = sin(CommonUtilities::Math::DEG_TO_RAD<T> * aRoll * T(0.5));
-		T cp = cos(CommonUtilities::Math::DEG_TO_RAD<T> * aPitch * T(0.5));
-		T sp = sin(CommonUtilities::Math::DEG_TO_RAD<T> * aPitch * T(0.5));
-
-		w = cy * cr * cp + sy * sr * sp;
-		x = cy * sr * cp - sy * cr * sp;
-		y = cy * cr * sp + sy * sr * cp;
-		z = sy * cr * cp - cy * sr * sp;
-	}
-
-	template<class T>
-	inline Quaternion<T>::Quaternion(const CommonUtilities::Vector3<T>& aYawPitchRoll)
-	{
-		T cx = cos(CommonUtilities::Math::DEG_TO_RAD<T> * aYawPitchRoll.x * T(0.5));
-		T cy = cos(CommonUtilities::Math::DEG_TO_RAD<T> * aYawPitchRoll.y * T(0.5));
-		T cz = cos(CommonUtilities::Math::DEG_TO_RAD<T> * aYawPitchRoll.z * T(0.5));
-		T sx = sin(CommonUtilities::Math::DEG_TO_RAD<T> * aYawPitchRoll.x * T(0.5));
-		T sy = sin(CommonUtilities::Math::DEG_TO_RAD<T> * aYawPitchRoll.y * T(0.5));
-		T sz = sin(CommonUtilities::Math::DEG_TO_RAD<T> * aYawPitchRoll.z * T(0.5));
-
-		w = cx * cy * cz + sx * sy * sz;
-		x = sx * cy * cz - cx * sy * sz;
-		y = cx * sy * cz + sx * cy * sz;
-		z = cx * cy * sz - sx * sy * cz;
+		Quaternion<T> pitch(Vector3<T>(1, 0, 0), aEuler.x);
+		Quaternion<T> yaw(Vector3<T>(0, 1, 0), aEuler.y);
+		Quaternion<T> roll(Vector3<T>(0, 0, 1), aEuler.z);
+		*this = (yaw * pitch * roll).GetNormalized();
 	}
 
 	template<class T>
@@ -309,11 +285,18 @@ namespace CommonUtilities
 	template<class T>
 	inline Vector3<T> Quaternion<T>::GetYawPitchRoll() const
 	{
-		float roll = std::atan2(T(2) * (w * x + y * z), T(1) - T(2) * (x * x + y * y));
-		float yaw = std::asin(T(2) * (w * y - z * x));
-		float pitch = std::atan2(T(2) * (w * z + x * y), T(1) - T(2) * (y * y + z * z));;
+		const T sinPitch = std::clamp(T(2) * (w * x - y * z), T(-1), T(1));
 
-		return Vector3<T>(yaw, pitch, roll);
+		const T pitch = std::asin(sinPitch);
+		const T yaw = std::atan2(T(2) * (x * z + w * y), T(1) - T(2) * (x * x + y * y));
+		const T roll = std::atan2(T(2) * (x * y + w * z), T(1) - T(2) * (x * x + z * z));
+
+		return 
+		{
+			pitch * CommonUtilities::Math::RAD_TO_DEG<float>, 
+			yaw * CommonUtilities::Math::RAD_TO_DEG<float>, 
+			roll * CommonUtilities::Math::RAD_TO_DEG<float>
+		};
 	}
 
 	template<class T>

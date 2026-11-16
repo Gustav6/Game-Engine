@@ -5,6 +5,7 @@
 
 #include "Core/Assets/Concrete/MeshAsset.h"
 #include "Core/Assets/Concrete/MaterialAsset.h"
+#include <Core/Scene/Components/Concrete/Transform/Transform.h>
 
 #include "Core/Scene/World/Actor.hpp"
 
@@ -13,7 +14,7 @@
 #include "Graphics/Drawers/MeshDrawer.h"
 
 InstancedMeshComponent::InstancedMeshComponent(Actor* aOwner)
-	: Component(aOwner)
+	: IComponent(aOwner)
 {}
 
 void InstancedMeshComponent::Render()
@@ -26,7 +27,7 @@ void InstancedMeshComponent::Render()
     MeshDrawCall drawCall =
     {
         .Mesh = &myMeshAsset->GetMesh(),
-        .Transform = myOwner->GetTransform().GetWorldMatrix(),
+        .Transform = myOwner->GetComponent<Transform>()->GetWorldMatrix(),
         .ObjectID = myOwner->GetID(),
         .Instances = myInstances
     };

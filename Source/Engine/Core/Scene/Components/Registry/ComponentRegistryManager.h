@@ -7,7 +7,7 @@
 
 #include "ComponentRegistry.h"
 
-class Component;
+class IComponent;
 
 class ComponentRegistryManager
 {
@@ -37,7 +37,20 @@ public:
 		return GetRegistry<T>().Get(aOwner);
 	}
 
-	std::vector<Component*> GetAllComponents(Actor* aOwner);
+	template<typename T>
+	const T* GetComponent(const Actor* aOwner) const
+	{
+		const ComponentRegistry<T>* registry = GetRegistry<T>();
+
+		if (registry == nullptr)
+		{
+			return nullptr;
+		}
+
+		return registry->Get(aOwner);
+	}
+
+	std::vector<IComponent*> GetAllComponents(Actor* aOwner);
 	void RemoveAllComponents(Actor* aOwner);
 
 	void Update(float aDeltaTime);
@@ -61,8 +74,23 @@ private:
 		return static_cast<ComponentRegistry<T>&>(*it->second);
 	}
 
+	template<typename T>
+	const ComponentRegistry<T>* GetRegistry() const
+	{
+		std::type_index registryType(typeid(T));
+
+		auto it = myRegistries.find(registryType);
+
+		if (it == myRegistries.end())
+		{
+			return nullptr;
+		}
+
+		return static_cast<const ComponentRegistry<T>*>(it->second.get());
+	}
+
 	bool myIsShutDown;
 
-	std::unordered_map<std::type_index, std::unique_ptr<BaseComponentRegistry>> myRegistries;
+	std::unordered_map<std::type_index, std::unique_ptr<IComponentRegistry>> myRegistries;
 };
 

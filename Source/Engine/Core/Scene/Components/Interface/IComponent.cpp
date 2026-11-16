@@ -3,28 +3,28 @@
 
 #include "Core/Scene/World/Actor.hpp"
 
-Component::Component(Actor* aOwner)
+IComponent::IComponent(Actor* aOwner)
 {
 	myOwner = aOwner;
 	myIsEnabled = aOwner->GetIsEnabled();
 }
 
-Actor* Component::GetOwner() const
+Actor* IComponent::GetOwner() const
 {
 	return myOwner;
 }
 
-void Component::Enable()
+void IComponent::Enable()
 {
 	myIsEnabled = true;
 }
 
-void Component::Disable()
+void IComponent::Disable()
 {
 	myIsEnabled = false;
 }
 
-bool Component::GetIsEnabled() const
+bool IComponent::GetIsEnabled() const
 {
 	return myIsEnabled;
 }

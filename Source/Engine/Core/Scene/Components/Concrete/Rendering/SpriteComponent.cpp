@@ -8,7 +8,7 @@
 
 
 SpriteComponent::SpriteComponent(Actor* aOwner)
-	: Component(aOwner)
+	: IComponent(aOwner)
 {
 }
 

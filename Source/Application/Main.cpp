@@ -197,8 +197,8 @@ LRESULT CALLBACK WinProc(_In_ HWND hWnd, _In_ UINT uMsg, _In_ WPARAM wParam, _In
     {
 	    case WM_KILLFOCUS:
 	    {
-            EngineContext.InputManager.ReleaseMouse();
-            EngineContext.InputManager.ShowMouse();
+            GEngineContext.InputManager.ReleaseMouse();
+            GEngineContext.InputManager.ShowMouse();
 		    break;
 	    }
 	    case WM_DESTROY:

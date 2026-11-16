@@ -2,7 +2,6 @@
 
 #include <string>
 
-#include "Core/Scene/Components/Concrete/Transform/Transform.h"
 #include "Core/Scene/Components/Registry/ComponentRegistryManager.h"
 
 class Actor
@@ -14,9 +13,6 @@ public:
 	Actor(const Actor&) = delete;
 	Actor& operator=(const Actor&) = delete;
 
-	/*
-	 * @return A pointer to the component. The pointer is only valid for the relevant scope and must not be stored for later use.
-	 */
 	template<typename T, typename... Args>
 	T* AddComponent(Args&&... args)
 	{
@@ -29,11 +25,14 @@ public:
 		ComponentRegistryManager::Get().RemoveComponent<T>(this);
 	}
 
-	/*
-	 * @return A pointer to the component. The pointer is only valid for the relevant scope and must not be stored for later use.
-	 */
 	template<typename T>
 	T* GetComponent()
+	{
+		return ComponentRegistryManager::Get().GetComponent<T>(this);
+	}
+
+	template<typename T>
+	const T* GetComponent() const
 	{
 		return ComponentRegistryManager::Get().GetComponent<T>(this);
 	}
@@ -43,9 +42,6 @@ public:
 	void Destroy();
 	bool GetIsDestroyed() const;
 
-	Transform& GetTransform();
-	const Transform& GetTransform() const;
-
 	void Enable();
 	void Disable();
 	bool GetIsEnabled() const;
@@ -53,7 +49,7 @@ public:
 	void SetName(const std::string& aName);
 	const std::string& GetName() const;
 
-	void SetParent(Actor* aParent);
+	void SetParent(Actor* aParent, bool aKeepWorldTransform = true);
 	Actor* GetParent() const;
 
 	void AddChild(Actor* aChild);
@@ -66,8 +62,6 @@ public:
 private:
 	Actor* myParent;
 	std::vector<Actor*> myChildren;
-
-	Transform myTransform;
 
 	std::string myName;
 

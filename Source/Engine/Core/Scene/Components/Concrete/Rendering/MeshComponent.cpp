@@ -15,9 +15,10 @@
 #include "Graphics/Drawers/DebugDrawer.h"
 
 #include "Core/Managers/DebugSettingsManager.h"
+#include <Core/Scene/Components/Concrete/Transform/Transform.h>
 
 MeshComponent::MeshComponent(Actor* aOwner)
-	: Component(aOwner)
+	: IComponent(aOwner)
 { }
 
 void MeshComponent::Render()
@@ -30,7 +31,7 @@ void MeshComponent::Render()
 	MeshDrawCall drawCall =
 	{
 		.Mesh = &myMeshAsset->GetMesh(),
-		.Transform = myOwner->GetTransform().GetWorldMatrix(),
+		.Transform = myOwner->GetComponent<Transform>()->GetWorldMatrix(),
 		.ObjectID = myOwner->GetID()
 	};
 
@@ -55,8 +56,8 @@ void MeshComponent::Render()
 #ifndef _RETAIL
 	if (DebugSettingsManager::Get().GetSettings().MeshDebugDrawBoxEnabled)
 	{
-		const CommonUtilities::Matrix4x4f& world = myOwner->GetTransform().GetWorldMatrix();
-		const CommonUtilities::Vector3f worldScale = myOwner->GetTransform().GetScale();
+		const CommonUtilities::Matrix4x4f& world = myOwner->GetComponent<Transform>()->GetWorldMatrix();
+		const CommonUtilities::Vector3f worldScale = myOwner->GetComponent<Transform>()->GetScale();
 
 		{
 			const CommonUtilities::AABB3D<float>& box = myMeshAsset->GetMesh().GetBoundingBox();
@@ -112,8 +113,8 @@ void MeshComponent::Render()
 
 	if (DebugSettingsManager::Get().GetSettings().MeshDebugDrawSphereEnabled)
 	{
-		const CommonUtilities::Matrix4x4f& world = myOwner->GetTransform().GetWorldMatrix();
-		const CommonUtilities::Vector3f worldScale = myOwner->GetTransform().GetScale();
+		const CommonUtilities::Matrix4x4f& world = myOwner->GetComponent<Transform>()->GetWorldMatrix();
+		const CommonUtilities::Vector3f worldScale = myOwner->GetComponent<Transform>()->GetScale();
 
 		const CommonUtilities::Sphere<float>& sphere = myMeshAsset->GetMesh().GetBoundingSphere();
 

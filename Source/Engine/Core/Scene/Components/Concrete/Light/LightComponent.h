@@ -20,7 +20,7 @@ namespace CommonUtilities
 
 class Texture;
 
-class LightComponent : public Component
+class LightComponent : public IComponent
 {
 public:
     LightComponent(Actor* aOwner);

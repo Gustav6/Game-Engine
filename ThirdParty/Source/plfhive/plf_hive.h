@@ -22,6 +22,8 @@
 #define PLF_HIVE_H
 #define __cpp_lib_hive
 
+#undef min
+#undef max
 
 #include <algorithm> // std::sort, std::swap
 #include <cstdint> // uint_least16_t etc
@@ -120,8 +122,6 @@ namespace std
 	}
 
 }
-
-
 
 namespace plf
 {

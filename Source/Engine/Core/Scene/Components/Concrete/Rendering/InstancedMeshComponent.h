@@ -12,7 +12,7 @@ class MaterialAsset;
 struct Skeleton;
 class Mesh;
 
-class InstancedMeshComponent : public Component
+class InstancedMeshComponent : public IComponent
 {
 public:
     InstancedMeshComponent(Actor* aOwner);

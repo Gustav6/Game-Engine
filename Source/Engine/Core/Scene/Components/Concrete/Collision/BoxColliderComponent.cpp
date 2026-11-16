@@ -4,10 +4,12 @@
 #include "Core/Scene/World/Actor.hpp"
 
 #include "Core/Managers/DebugSettingsManager.h"
+#include <Core/Scene/Components/Concrete/Transform/Transform.h>
+
 #include "Graphics/Drawers/DebugDrawer.h"
 
 BoxColliderComponent::BoxColliderComponent(Actor* aOwner)
-	: Component(aOwner)
+	: IComponent(aOwner)
 { }
 
 #ifndef _RETAIL
@@ -15,8 +17,8 @@ void BoxColliderComponent::Render()
 {
 	if (DebugSettingsManager::Get().GetSettings().ColliderDebugDrawEnabled)
 	{
-		const CommonUtilities::Vector3f worldScale = myOwner->GetTransform().GetScale();
-		const CommonUtilities::Vector3f worldPosition = myOwner->GetTransform().GetPosition();
+		const CommonUtilities::Vector3f worldScale = myOwner->GetComponent<Transform>()->GetScale();
+		const CommonUtilities::Vector3f worldPosition = myOwner->GetComponent<Transform>()->GetPosition();
 
 		const CommonUtilities::Vector3f minPoint = myCollider.GetMin() * worldScale + worldPosition;
 		const CommonUtilities::Vector3f maxPoint = myCollider.GetMax() * worldScale + worldPosition;

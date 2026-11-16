@@ -8,22 +8,22 @@
 
 class Actor;
 
-class BaseComponentRegistry
+class IComponentRegistry
 {
 public:
-	virtual ~BaseComponentRegistry() = default;
+	virtual ~IComponentRegistry() = default;
 
 	virtual void Update(float aDeltaTime) = 0;
 	virtual void Render() = 0;
 	virtual void Remove(Actor* aOwner) = 0;
 	virtual void Clear() = 0;
-	virtual Component* GetAsBase(Actor* aOwner) = 0;
+	virtual IComponent* GetAsBase(Actor* aOwner) = 0;
 };
 
 template<typename T>
-class ComponentRegistry : public BaseComponentRegistry
+class ComponentRegistry : public IComponentRegistry
 {
-	static_assert(std::is_base_of_v<Component, T>, "T must derive from Component");
+	static_assert(std::is_base_of_v<IComponent, T>, "T must derive from Component");
 
 	using Hive = plf::hive<T>;
 	using Iterator = Hive::iterator;
@@ -92,7 +92,19 @@ public:
 		return &(*it->second);
 	}
 
-	Component* GetAsBase(Actor* aOwner) override
+	const T* Get(const Actor* aOwner) const
+	{
+		auto it = myOwnerToComponentLookup.find(const_cast<Actor*>(aOwner));
+
+		if (it == myOwnerToComponentLookup.end())
+		{
+			return nullptr;
+		}
+
+		return &(*it->second);
+	}
+
+	IComponent* GetAsBase(Actor* aOwner) override
 	{
 		return Get(aOwner);
 	}

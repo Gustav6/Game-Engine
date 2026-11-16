@@ -1,9 +1,11 @@
 ﻿#pragma once
 
 #include <filesystem>
+#include <memory>
 
 #include "CommonUtilities/Input/Input.h"
 #include "CommonUtilities/Time/Timer.h"
+#include  "Core/Scene/World/GameCamera.h"
 
 struct EngineContext
 {
@@ -11,8 +13,9 @@ struct EngineContext
 	CommonUtilities::Timer TimeManager;
 	std::filesystem::path ContentRoot;
 	std::filesystem::path ShaderRoot;
+	std::unique_ptr<GameCamera> GameCamera = nullptr;
 };
 
-inline EngineContext EngineContext;
+inline EngineContext GEngineContext;
 
 std::filesystem::path GetExecutableDirectory();

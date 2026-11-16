@@ -13,7 +13,7 @@ class Texture;
 class MaterialAsset;
 class SpriteAsset;
 
-class SpriteComponent : public Component
+class SpriteComponent : public IComponent
 {
 public:
 	SpriteComponent(Actor* aOwner);

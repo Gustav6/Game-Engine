@@ -1,7 +1,10 @@
 #include "Core/Core.pch.h"
 #include "Transform.h"
 
-Transform::Transform()
+#include <Core/Scene/World/Actor.hpp>
+
+Transform::Transform(Actor* aOwner)
+	: IComponent(aOwner)
 {
 	myLocalPosition = CommonUtilities::Vector3f::Zero;
 	myLocalScale = CommonUtilities::Vector3f::One;
@@ -10,52 +13,23 @@ Transform::Transform()
 	myIsDirty = true;
 }
 
-Transform::Transform(const CommonUtilities::Matrix4x4f& aMatrix)
+void Transform::Translate(const CommonUtilities::Vector3f& aDelta, bool aWorldSpace)
 {
-	myLocalMatrix = aMatrix;
-
-	myLocalPosition = { aMatrix(4, 1), aMatrix(4, 2), aMatrix(4, 3) };
-
-	CommonUtilities::Vector3f right = { aMatrix(1, 1), aMatrix(1, 2), aMatrix(1, 3) };
-	CommonUtilities::Vector3f up = { aMatrix(2, 1), aMatrix(2, 2), aMatrix(2, 3) };
-	CommonUtilities::Vector3f forward = { aMatrix(3, 1), aMatrix(3, 2), aMatrix(3, 3) };
-
-	myLocalScale.x = right.Length();
-	myLocalScale.y = up.Length();
-	myLocalScale.z = forward.Length();
-
-	right.Normalize();
-	up.Normalize();
-	forward.Normalize();
-
-	CommonUtilities::Matrix3x3f rotation;
-	rotation(1, 1) = right.x;
-	rotation(1, 2) = right.y;
-	rotation(1, 3) = right.z;
-
-	rotation(2, 1) = up.x;
-	rotation(2, 2) = up.y;
-	rotation(2, 3) = up.z;
-
-	rotation(3, 1) = forward.x;
-	rotation(3, 2) = forward.y;
-	rotation(3, 3) = forward.z;
-
-	myLocalRotation = CommonUtilities::Quaternionf(rotation);
-
-	myIsDirty = false;
-}
-
-void Transform::Translate(const CommonUtilities::Vector3f& aDelta)
-{
-	SetLocalPosition(myLocalPosition + aDelta);
+	if (aWorldSpace)
+	{
+		SetPosition(GetPosition() + aDelta);
+	}
+	else
+	{
+		SetLocalPosition(myLocalPosition + aDelta);
+	}
 }
 
 void Transform::Rotate(const CommonUtilities::Quaternionf& aDelta, bool aWorldSpace)
 {
 	if (aWorldSpace)
 	{
-		SetLocalRotation((aDelta * myLocalRotation).GetNormalized());
+		SetRotation((aDelta * GetRotation()).GetNormalized());
 	}
 	else
 	{
@@ -93,16 +67,32 @@ void Transform::SetPosition(const CommonUtilities::Vector3f& aPosition)
 		1
 	};
 
-	/*GameObject* parent = myOwner->GetParent();
+	Actor* parent = myOwner->GetParent();
 
 	if (parent != nullptr)
 	{
-		Matrix4x4f parentWorldMatrix = parent->GetTransform().GetWorldMatrix();
+		CommonUtilities::Matrix4x4f parentWorldMatrix = parent->GetComponent<Transform>()->GetWorldMatrix();
 
-		Matrix4x4f inverseParentMatrix = parentWorldMatrix.GetFastInverse();
+		CommonUtilities::Vector3f scale = parentWorldMatrix.GetScaling();
+
+		CommonUtilities::Matrix4x4f inverseParentMatrix;
+
+		bool hasUnitScale =
+			std::abs(scale.x - 1.0f) < 0.0001f &&
+			std::abs(scale.y - 1.0f) < 0.0001f &&
+			std::abs(scale.z - 1.0f) < 0.0001f;
+
+		if (hasUnitScale)
+		{
+			inverseParentMatrix = parentWorldMatrix.GetFastInverse();
+		}
+		else
+		{
+			inverseParentMatrix = parentWorldMatrix.GetGeneralInverse();
+		}
 
 		localPosition = localPosition * inverseParentMatrix;
-	}*/
+	}
 
 	SetLocalPosition(CommonUtilities::Vector3f(localPosition.x, localPosition.y, localPosition.z));
 }
@@ -122,44 +112,44 @@ CommonUtilities::Quaternionf Transform::GetRotation() const
 {
 	CommonUtilities::Quaternionf worldRotation = myLocalRotation;
 
-	/*GameObject* parent = myOwner->GetParent();
+	Actor* parent = myOwner->GetParent();
 
 	if (parent != nullptr)
 	{
-		worldRotation = parent->GetTransform().GetRotation() * worldRotation;
+		worldRotation = parent->GetComponent<Transform>()->GetRotation() * worldRotation;
 		worldRotation.Normalize();
-	}*/
+	}
 
 	return worldRotation;
 }
 
 CommonUtilities::Vector3f Transform::GetEulerRotation() const
 {
-	CommonUtilities::Vector3f worldRotation = myLocalRotation.GetYawPitchRoll();
+	CommonUtilities::Quaternionf worldRotation = myLocalRotation;
 
-	/*GameObject* parent = myOwner->GetParent();
+	Actor* parent = myOwner->GetParent();
 
 	if (parent != nullptr)
 	{
-		worldRotation = parent->GetTransform().GetRotation() * worldRotation;
+		worldRotation = parent->GetComponent<Transform>()->GetRotation() * worldRotation;
 		worldRotation.Normalize();
-	}*/
+	}
 
-	return worldRotation;
+	return worldRotation.GetYawPitchRoll();
 }
 
 void Transform::SetRotation(const CommonUtilities::Quaternionf& aRotation)
 {
 	CommonUtilities::Quaternionf localRotation = aRotation;
 
-	/*GameObject* parent = myOwner->GetParent();
+	Actor* parent = myOwner->GetParent();
 
 	if (parent != nullptr)
 	{
-		localRotation = parent->GetTransform().GetRotation().GetConjugate() * localRotation;
-	}*/
+		localRotation = parent->GetComponent<Transform>()->GetRotation().GetConjugate() * localRotation;
+	}
 
-	SetLocalRotation(localRotation);
+	SetLocalRotation(localRotation.GetNormalized());
 }
 
 void Transform::SetEulerRotation(const CommonUtilities::Vector3f& aEulerRotation)
@@ -168,20 +158,20 @@ void Transform::SetEulerRotation(const CommonUtilities::Vector3f& aEulerRotation
 	CommonUtilities::Quaternionf yaw({ 0, 1, 0 }, aEulerRotation.y);
 	CommonUtilities::Quaternionf roll({ 0, 0, 1 }, aEulerRotation.z);
 
-	CommonUtilities::Quaternionf rotation = CommonUtilities::Quaternionf::Identity;
+	CommonUtilities::Quaternionf localRotation = CommonUtilities::Quaternionf::Identity;
 
-	rotation = yaw * rotation;
-	rotation = rotation * pitch;
-	rotation = rotation * roll;
+	localRotation = yaw * localRotation;
+	localRotation = localRotation * pitch;
+	localRotation = localRotation * roll;
 
-	/*GameObject* parent = myOwner->GetParent();
+	Actor* parent = myOwner->GetParent();
 
 	if (parent != nullptr)
 	{
-		localRotation = parent->GetTransform().GetRotation().GetConjugate() * localRotation;
-	}*/
+		localRotation = parent->GetComponent<Transform>()->GetRotation().GetConjugate() * localRotation;
+	}
 
-	SetLocalRotation(rotation.GetNormalized());
+	SetLocalRotation(localRotation.GetNormalized());
 }
 
 const CommonUtilities::Quaternionf& Transform::GetLocalRotation() const
@@ -210,16 +200,16 @@ CommonUtilities::Vector3f Transform::GetScale() const
 {
 	CommonUtilities::Vector3f worldScale = myLocalScale;
 
-	/*GameObject* parent = myOwner->GetParent();
+	Actor* parent = myOwner->GetParent();
 
 	if (parent != nullptr)
 	{
-		Vector3f parentScale = parent->GetTransform().GetScale();
+		CommonUtilities::Vector3f parentScale = parent->GetComponent<Transform>()->GetScale();
 
 		worldScale.x *= parentScale.x;
 		worldScale.y *= parentScale.y;
 		worldScale.z *= parentScale.z;
-	}*/
+	}
 
 	return worldScale;
 }
@@ -228,18 +218,29 @@ void Transform::SetScale(const CommonUtilities::Vector3f& aScale)
 {
 	CommonUtilities::Vector3f localScale = aScale;
 
-	/*GameObject* parent = myOwner->GetParent();
+	Actor* parent = myOwner->GetParent();
 
 	if (parent != nullptr)
 	{
-		Vector3f parentScale = parent->GetTransform().GetScale();
+		CommonUtilities::Vector3f parentScale = parent->GetComponent<Transform>()->GetScale();
 
-		assert(parentScale.x != 0 && parentScale.y != 0 && parentScale.z != 0);
+		if (std::abs(parentScale.x) < 0.0001f)
+		{
+			parentScale.x = 0.0001f;
+		}
+		if (std::abs(parentScale.y) < 0.0001f)
+		{
+			parentScale.y = 0.0001f;
+		}
+		if (std::abs(parentScale.z) < 0.0001f)
+		{
+			parentScale.z = 0.0001f;
+		}
 
 		localScale.x /= parentScale.x;
 		localScale.y /= parentScale.y;
 		localScale.z /= parentScale.z;
-	}*/
+	}
 
 	SetLocalScale(localScale);
 }
@@ -280,12 +281,12 @@ CommonUtilities::Matrix4x4f Transform::GetWorldMatrix() const
 {
 	CommonUtilities::Matrix4x4f worldMatrix = GetLocalMatrix();
 
-	/*GameObject* parent = myOwner->GetParent();
+	Actor* parent = myOwner->GetParent();
 
 	if (parent != nullptr)
 	{
-		myWorldMatrix = myWorldMatrix * parent->GetTransform().GetWorldMatrix();
-	}*/
+		worldMatrix = worldMatrix * parent->GetComponent<Transform>()->GetWorldMatrix();
+	}
 
 	return worldMatrix;
 }
@@ -333,42 +334,56 @@ const CommonUtilities::Matrix4x4f& Transform::GetLocalMatrix() const
 	return myLocalMatrix;
 }
 
-void Transform::LookAt(const CommonUtilities::Vector3<float>& aTarget)
+void Transform::SetLocalMatrix(const CommonUtilities::Matrix4x4f& aLocalMatrix)
 {
+	myLocalMatrix = aLocalMatrix;
 
-	CommonUtilities::Vector3f forward = aTarget - myLocalPosition;
+	myLocalPosition = { aLocalMatrix(4, 1), aLocalMatrix(4, 2), aLocalMatrix(4, 3) };
 
-	if (forward.LengthSqr() < 0.0001f)
-	{
-		return;
-	}
+	CommonUtilities::Vector3f right = { aLocalMatrix(1, 1), aLocalMatrix(1, 2), aLocalMatrix(1, 3) };
+	CommonUtilities::Vector3f up = { aLocalMatrix(2, 1), aLocalMatrix(2, 2), aLocalMatrix(2, 3) };
+	CommonUtilities::Vector3f forward = { aLocalMatrix(3, 1), aLocalMatrix(3, 2), aLocalMatrix(3, 3) };
 
-	forward.Normalize();
-
-	CommonUtilities::Vector3f worldUp = { 0.f, 1.f, 0.f };
-
-	if (CommonUtilities::Math::Abs(forward.Dot(worldUp)) > 0.999f)
-	{
-		worldUp = { 0.f, 0.f, 1.f };
-	}
-
-	CommonUtilities::Vector3f right = worldUp.Cross(forward);
-
-	if (right.LengthSqr() < 0.0001f)
-	{
-		return;
-	}
+	myLocalScale.x = right.Length();
+	myLocalScale.y = up.Length();
+	myLocalScale.z = forward.Length();
 
 	right.Normalize();
-
-	CommonUtilities::Vector3f up = forward.Cross(right);
 	up.Normalize();
+	forward.Normalize();
 
-	CommonUtilities::Matrix3x3<float> rot;
-	rot(1, 1) = right.x;   rot(1, 2) = right.y;   rot(1, 3) = right.z;   
-	rot(2, 1) = up.x;      rot(2, 2) = up.y;      rot(2, 3) = up.z;      
-	rot(3, 1) = forward.x; rot(3, 2) = forward.y; rot(3, 3) = forward.z;
+	CommonUtilities::Matrix3x3f rotation;
+	rotation(1, 1) = right.x;
+	rotation(1, 2) = right.y;
+	rotation(1, 3) = right.z;
 
-	SetRotation(rot);
+	rotation(2, 1) = up.x;
+	rotation(2, 2) = up.y;
+	rotation(2, 3) = up.z;
 
+	rotation(3, 1) = forward.x;
+	rotation(3, 2) = forward.y;
+	rotation(3, 3) = forward.z;
+
+	myLocalRotation = CommonUtilities::Quaternionf(rotation);
+
+	myIsDirty = false;
+}
+
+void Transform::SetWorldMatrix(const CommonUtilities::Matrix4x4f& aWorldMatrix)
+{
+	CommonUtilities::Matrix4x4f localMatrix = aWorldMatrix;
+
+	Actor* parent = myOwner->GetParent();
+
+	if (parent != nullptr)
+	{
+		Transform* parentTransform = parent->GetComponent<Transform>();
+
+		CommonUtilities::Matrix4x4f parentWorldInverse = parentTransform->GetWorldMatrix().GetGeneralInverse();
+
+		localMatrix = aWorldMatrix * parentWorldInverse;
+	}
+
+	SetLocalMatrix(localMatrix);
 }

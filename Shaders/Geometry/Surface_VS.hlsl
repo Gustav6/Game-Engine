@@ -19,8 +19,8 @@ VStoPS main(Vertex aVertex, uint instanceID : SV_InstanceID)
     if (OB_IsInstanced)
     {
         InstanceData instance = InstanceBuffer[instanceID];
-
-        world = instance.World;
+        
+        world = mul(OB_World, instance.World);
         worldInvT = instance.WorldInvT;
     }
     

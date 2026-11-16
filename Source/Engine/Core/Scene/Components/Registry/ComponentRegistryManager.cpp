@@ -27,14 +27,14 @@ bool ComponentRegistryManager::IsShutdown() const
 	return myIsShutDown;
 }
 
-std::vector<Component*> ComponentRegistryManager::GetAllComponents(Actor* aOwner)
+std::vector<IComponent*> ComponentRegistryManager::GetAllComponents(Actor* aOwner)
 {
-	std::vector<Component*> components;
+	std::vector<IComponent*> components;
 	components.reserve(myRegistries.size());
 
 	for (auto& registry : myRegistries | std::views::values)
 	{
-		if (Component* component = registry->GetAsBase(aOwner))
+		if (IComponent* component = registry->GetAsBase(aOwner))
 		{
 			components.push_back(component);
 		}

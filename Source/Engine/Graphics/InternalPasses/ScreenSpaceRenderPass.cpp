@@ -35,8 +35,8 @@
 #include "Graphics/Drawers/TextDrawer.h"
 #include "Graphics/Drawers/SpriteDrawer.h"
 
-#include "FontMaterial_PS.h"
-#include "FontMaterial_VS.h"
+#include "Font_PS.h"
+#include "Font_VS.h"
 
 #include "Sprite_PS.h"
 #include "Sprite_VS.h"
@@ -63,10 +63,10 @@ bool ScreenSpaceRenderPass::Initialize(RenderHardwareInterface& aRHI)
 		fontPSODesc.Name = "FontPSO";
 		fontPSODesc.BlendMode = BlendMode::Alpha;
 		fontPSODesc.Topology = Topology::TriangleList;
-		fontPSODesc.VertexShader.ByteCode = INTERNAL_FontMaterial_VS_ByteCode;
-		fontPSODesc.VertexShader.ByteCodeSize = sizeof(INTERNAL_FontMaterial_VS_ByteCode);
-		fontPSODesc.PixelShader.ByteCode = INTERNAL_FontMaterial_PS_ByteCode;
-		fontPSODesc.PixelShader.ByteCodeSize = sizeof(INTERNAL_FontMaterial_PS_ByteCode);
+		fontPSODesc.VertexShader.ByteCode = INTERNAL_Font_VS_ByteCode;
+		fontPSODesc.VertexShader.ByteCodeSize = sizeof(INTERNAL_Font_VS_ByteCode);
+		fontPSODesc.PixelShader.ByteCode = INTERNAL_Font_PS_ByteCode;
+		fontPSODesc.PixelShader.ByteCodeSize = sizeof(INTERNAL_Font_PS_ByteCode);
 
 		myFontPSO = std::make_unique<PipelineStateObject>();
 

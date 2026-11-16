@@ -4,7 +4,7 @@
 
 #include "CommonUtilities/Collision/AABB3D.hpp"
 
-class BoxColliderComponent : public Component
+class BoxColliderComponent : public IComponent
 {
 public:
 	BoxColliderComponent(Actor* aOwner);

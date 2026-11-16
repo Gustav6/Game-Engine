@@ -4,11 +4,13 @@
 #include "Core/Scene/World/Actor.hpp"
 
 #include "Core/Managers/DebugSettingsManager.h"
+#include <Core/Scene/Components/Concrete/Transform/Transform.h>
+
 #include "Graphics/Drawers/DebugDrawer.h"
 
 
 SphereColliderComponent::SphereColliderComponent(Actor* aOwner)
-	: Component(aOwner)
+	: IComponent(aOwner)
 { }
 
 #ifndef _RETAIL
@@ -16,8 +18,8 @@ void SphereColliderComponent::Render()
 {
 	if (DebugSettingsManager::Get().GetSettings().ColliderDebugDrawEnabled)
 	{
-		const CommonUtilities::Vector3f worldScale = myOwner->GetTransform().GetScale();
-		const CommonUtilities::Vector3f worldPosition = myOwner->GetTransform().GetPosition();
+		const CommonUtilities::Vector3f worldScale = myOwner->GetComponent<Transform>()->GetScale();
+		const CommonUtilities::Vector3f worldPosition = myOwner->GetComponent<Transform>()->GetPosition();
 
 		const float scale = std::max({ std::abs(worldScale.x), std::abs(worldScale.y), std::abs(worldScale.z) });
 

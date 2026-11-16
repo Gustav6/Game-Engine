@@ -74,8 +74,6 @@ private:
 	std::unique_ptr<GraphicsCommandList> myGraphicsCommandList;
 	std::unique_ptr<GameStateMachine> myStateMachine;
 
-	GameCamera* myGameCamera;
-
 	HWND myMainWindowHandle = nullptr;
 
 	bool myIsRunning = false;

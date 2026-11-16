@@ -1,5 +1,7 @@
 #pragma once
 
+#include <unordered_set>
+
 #include <Tools/Core/Interface/ITool.h>
 
 class Actor;
@@ -16,9 +18,27 @@ public:
 
 private:
 	void DisplayActorNode(Actor* aActor);
-	void DebugPrintNodesChildren(Actor* aActor);
+	void LogActorsChildren(Actor* aActor);
+
+	enum class Operation
+	{
+		Translate,
+		Rotate,
+		Scale
+	};
+
+	enum class Mode
+	{
+		Local,
+		World
+	};
 
 	Actor* mySelectedActor = nullptr;
 	const CameraData* myCameraReference = nullptr;
+
+	Operation myCurrentOperation = Operation::Translate;
+	Mode myCurrentMode = Mode::World;
+
+	std::unordered_set<Actor*> myActorsToOpen;
 };
 

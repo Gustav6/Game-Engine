@@ -4,6 +4,7 @@
 #include <algorithm>
 
 #include "Core/Scene/Components/Registry/ComponentRegistryManager.h"
+#include "Core/Scene/Components/Concrete/Transform/Transform.h"
 
 Actor::Actor(unsigned int aID)
 {
@@ -15,6 +16,8 @@ Actor::Actor(unsigned int aID)
 	myParent = nullptr;
 
 	myID = aID;
+
+	AddComponent<Transform>();
 }
 
 Actor::~Actor()
@@ -49,16 +52,6 @@ void Actor::Destroy()
 bool Actor::GetIsDestroyed() const
 {
 	return myIsDestroyed;
-}
-
-Transform& Actor::GetTransform()
-{
-	return myTransform;
-}
-
-const Transform& Actor::GetTransform() const
-{
-	return myTransform;
 }
 
 void Actor::Enable()
@@ -96,7 +89,7 @@ const std::string& Actor::GetName() const
 	return myName;
 }
 
-void Actor::SetParent(Actor* aParent)
+void Actor::SetParent(Actor* aParent, bool aKeepWorldTransform)
 {
 	if (myParent == aParent)
 	{
@@ -116,6 +109,13 @@ void Actor::SetParent(Actor* aParent)
 		}
 	}
 
+	CommonUtilities::Matrix4x4f worldMatrix;
+
+	if (aKeepWorldTransform)
+	{
+		worldMatrix = GetComponent<Transform>()->GetWorldMatrix();
+	}
+
 	if (myParent != nullptr)
 	{
 		myParent->RemoveChild(this);
@@ -126,6 +126,11 @@ void Actor::SetParent(Actor* aParent)
 	if (myParent != nullptr)
 	{
 		myParent->AddChild(this);
+	}
+
+	if (aKeepWorldTransform)
+	{
+		GetComponent<Transform>()->SetWorldMatrix(worldMatrix);
 	}
 }
 

@@ -1,17 +1,17 @@
 #pragma once
 
+#include <Core/Scene/Components/Interface/IComponent.h>
+
 #include "CommonUtilities/Math/Vector3.hpp"
 #include "CommonUtilities/Math/Quaternion.hpp"
 #include "CommonUtilities/Math/Matrix4x4.hpp"
 
-class Transform
+class Transform : public IComponent
 {
 public:
-	Transform();
-	Transform(const CommonUtilities::Matrix4x4f& aMatrix);
+	Transform(Actor* aOwner);
 
-	void Translate(const CommonUtilities::Vector3f& aDelta);
-
+	void Translate(const CommonUtilities::Vector3f& aDelta, bool aWorldSpace = false);
 	void Rotate(const CommonUtilities::Quaternionf& aDelta, bool aWorldSpace = false);
 	void Rotate(const CommonUtilities::Vector3f& aEulerDelta, bool aWorldSpace = false);
 
@@ -44,7 +44,8 @@ public:
 	CommonUtilities::Matrix4x4f GetWorldMatrix() const;
 	const CommonUtilities::Matrix4x4f& GetLocalMatrix() const;
 
-	void LookAt(const CommonUtilities::Vector3<float>& aTarget);
+	void SetLocalMatrix(const CommonUtilities::Matrix4x4f& aLocalMatrix);
+	void SetWorldMatrix(const CommonUtilities::Matrix4x4f& aWorldMatrix);
 
 private:
 	mutable bool myIsDirty;

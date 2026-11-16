@@ -14,7 +14,7 @@
 class FontAsset;
 class MaterialAsset;
 
-class TextComponent : public Component
+class TextComponent : public IComponent
 {
 public:
 	TextComponent(Actor* aOwner);

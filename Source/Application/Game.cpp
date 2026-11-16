@@ -32,7 +32,7 @@
 #include "Core/Managers/DebugSettingsManager.h"
 #include "Core/Managers/WindowManager.h"
 
-#include "Camera/GameCamera.h"
+#include "Core/Scene/World/GameCamera.h"
 
 #include "Wrappers/FileWatcher/FileWatcherWrapper.h"
 #include "Wrappers/Json/JsonWrapper.h"
@@ -76,7 +76,7 @@ bool Game::Initialize(SIZE aWindowSize, WNDPROC aWindowProcess, LPCWSTR aWindowT
 
 	if (settings.HasKey("ContentRoot"))
 	{
-		EngineContext.ContentRoot = GetExecutableDirectory()/ settings.GetString("ContentRoot");
+		GEngineContext.ContentRoot = GetExecutableDirectory()/ settings.GetString("ContentRoot");
 	}
 	else
 	{
@@ -85,7 +85,7 @@ bool Game::Initialize(SIZE aWindowSize, WNDPROC aWindowProcess, LPCWSTR aWindowT
 
 	if (settings.HasKey("ShaderRoot"))
 	{
-		EngineContext.ShaderRoot = GetExecutableDirectory() / settings.GetString("ShaderRoot");
+		GEngineContext.ShaderRoot = GetExecutableDirectory() / settings.GetString("ShaderRoot");
 	}
 	else
 	{
@@ -134,7 +134,7 @@ bool Game::Initialize(SIZE aWindowSize, WNDPROC aWindowProcess, LPCWSTR aWindowT
 		nullptr
 	);
 
-	EngineContext.InputManager.SetWindowHandle(myMainWindowHandle);
+	GEngineContext.InputManager.SetWindowHandle(myMainWindowHandle);
 	WindowManager::Get().SetWindowHandle(myMainWindowHandle);
 
 	SPDLOG_INFO("Ready!");
@@ -145,7 +145,7 @@ bool Game::Initialize(SIZE aWindowSize, WNDPROC aWindowProcess, LPCWSTR aWindowT
 
 		GraphicsEngine& GE = GraphicsEngine::Get();
 
-		if (!GE.Initialize(myMainWindowHandle, EngineContext.ShaderRoot))
+		if (!GE.Initialize(myMainWindowHandle, GEngineContext.ShaderRoot))
 		{
 			throw std::runtime_error("Graphics Engine failed to initialize!");
 		}
@@ -168,8 +168,8 @@ bool Game::Initialize(SIZE aWindowSize, WNDPROC aWindowProcess, LPCWSTR aWindowT
 	}
 
 	{
-		myGameCamera = GameWorld::Get().CreateActor<GameCamera>("Game_Camera");
-		myGameCamera->Init(90.0f, 1.0f, 10000.0f, GraphicsEngine::Get().GetClientSize());
+		GEngineContext.GameCamera = std::make_unique<GameCamera>();
+		GEngineContext.GameCamera->Init(90.0f, 1.0f, 10000.0f, GraphicsEngine::Get().GetClientSize());
 	}
 
 	{
@@ -185,7 +185,7 @@ bool Game::Initialize(SIZE aWindowSize, WNDPROC aWindowProcess, LPCWSTR aWindowT
 		ToolManager::Get().AddTool<DebugTool>(); 
 		ToolManager::Get().AddTool<SceneHierarchy>();
 
-		ToolManager::Get().GetTool<SceneHierarchy>()->SetCameraReference(&myGameCamera->GetCameraData());
+		ToolManager::Get().GetTool<SceneHierarchy>()->SetCameraReference(&GEngineContext.GameCamera->GetCameraData());
 	}
 #endif
 
@@ -210,7 +210,7 @@ int Game::Run()
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
 
-			EngineContext.InputManager.UpdateEvents(msg.message, msg.wParam, msg.lParam);
+			GEngineContext.InputManager.UpdateEvents(msg.message, msg.wParam, msg.lParam);
 
 			switch (msg.message)
 			{
@@ -224,12 +224,16 @@ int Game::Run()
 			}
 		}
 
-		EngineContext.TimeManager.Update();
-		EngineContext.InputManager.UpdateInput();
+		GEngineContext.TimeManager.Update();
+		GEngineContext.InputManager.UpdateInput();
 
-		const float deltaTime = EngineContext.TimeManager.GetDeltaTime();
+		const float deltaTime = GEngineContext.TimeManager.GetDeltaTime();
 
 		UpdateScene(deltaTime);
+		
+#ifndef _RETAIL
+		ToolManager::Get().Update(deltaTime);
+#endif
 
 		// Render to graphics engine and present to screen
 		{
@@ -241,7 +245,7 @@ int Game::Run()
 
 			RenderScene();
 
-			FrameStats frameStats = GE.Render(*myGraphicsCommandList, myGameCamera->GetCameraData());
+			FrameStats frameStats = GE.Render(*myGraphicsCommandList, GEngineContext.GameCamera->GetCameraData());
 
 #ifndef _RETAIL
 			const DebugInfo info = 
@@ -288,15 +292,7 @@ int Game::Run()
 void Game::UpdateScene(float aDeltaTime) const
 {
 	myStateMachine->Update(aDeltaTime);
-
-	if (EngineContext.InputManager.IsKeyPressed(KeyCode::LMB))
-	{
-		CommonUtilities::Vector2f mousePosition = EngineContext.InputManager.GetMousePosition();
-		unsigned int mouseX = static_cast<unsigned int>(mousePosition.x);
-		unsigned int mouseY = static_cast<unsigned int>(mousePosition.y);
-
-		GraphicsEngine::Get().RequestPixelPick(mouseX, mouseY);
-	}
+	GEngineContext.GameCamera->Update(aDeltaTime);
 }
 
 void Game::RenderScene() const

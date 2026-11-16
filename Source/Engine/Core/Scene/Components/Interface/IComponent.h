@@ -2,11 +2,11 @@
 
 class Actor;
 
-class Component
+class IComponent
 {
 public:
-	Component(Actor* aOwner);
-	virtual ~Component() = default;
+	IComponent(Actor* aOwner);
+	virtual ~IComponent() = default;
 
 	virtual void Update([[maybe_unused]] float aDeltaTime) {};
 	virtual void Render() {};

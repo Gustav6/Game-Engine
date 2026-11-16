@@ -7,11 +7,7 @@
 
 #include "Core/Scene/Components/Interface/IComponent.h"
 
-namespace CommonUtilities
-{
-	template <typename T>
-	class Matrix4x4;
-}
+#include <CommonUtilities/Math/Matrix4x4.hpp>
 
 struct Animation;
 struct Skeleton;
@@ -48,7 +44,7 @@ struct LayeredAnimation
 	AnimationLayer Layer;
 };
 
-class AnimationComponent : public Component
+class AnimationComponent : public IComponent
 {
 public:
 	AnimationComponent(Actor* aOwner, const Skeleton* aSkeleton);

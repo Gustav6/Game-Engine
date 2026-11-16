@@ -4,7 +4,7 @@
 
 #include "CommonUtilities/Collision/Sphere.hpp"
 
-class SphereColliderComponent : public Component
+class SphereColliderComponent : public IComponent
 {
 public:
 	SphereColliderComponent(Actor* aOwner);
