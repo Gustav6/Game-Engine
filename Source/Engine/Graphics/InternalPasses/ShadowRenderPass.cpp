@@ -186,9 +186,10 @@ void ShadowRenderPass::Execute(
 					lightViewProjectionTextures[c] = lightView * orthoProjection * CommonUtilities::Matrix4x4f::CreateNDCToTextureSpace();
 
 					{
-						FrameBuffer frameBuffer;
+						FrameBuffer frameBuffer{};
 						frameBuffer.Projection = orthoProjection;
 						frameBuffer.View = lightView;
+						frameBuffer.ViewportSize = aContext.RHI->GetClientSize();
 
 						inoutCommandList.BeginEvent(std::format("Cascade Shadow Pass {}", (c + 1)));
 
@@ -227,10 +228,11 @@ void ShadowRenderPass::Execute(
 			}
 			case LightType::Spot:
 			{
-				FrameBuffer frameBuffer;
+				FrameBuffer frameBuffer{};
 				frameBuffer.Projection = light.Projection;
 				frameBuffer.View = light.Transform.GetFastInverse();
 				frameBuffer.CameraPosition = light.Transform.GetTranslation();
+				frameBuffer.ViewportSize = aContext.RHI->GetClientSize();
 
 				inoutCommandList.BeginEvent("Spot Light Shadow Pass");
 
@@ -247,10 +249,11 @@ void ShadowRenderPass::Execute(
 			}
 			case LightType::Point:
 			{
-				FrameBuffer frameBuffer;
+				FrameBuffer frameBuffer{};
 				frameBuffer.Projection = light.Projection;
 				frameBuffer.View = light.Transform.GetFastInverse();
 				frameBuffer.CameraPosition = light.Transform.GetTranslation();
+				frameBuffer.ViewportSize = aContext.RHI->GetClientSize();
 
 				inoutCommandList.BeginEvent("Point Light Shadow Pass");
 

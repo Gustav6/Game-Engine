@@ -30,7 +30,7 @@ const std::vector<SpriteDrawCall>& SpriteDrawer::GetSpriteDrawCalls() const
 	return myDrawCalls;
 }
 
-void SpriteDrawer::Clear()
+void SpriteDrawer::BeginFrame()
 {
 	myDrawCalls.clear();
 }

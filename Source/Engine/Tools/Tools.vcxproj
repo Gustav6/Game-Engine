@@ -136,6 +136,7 @@
     <ClInclude Include="Editor\Properties\PropertiesPanel.h" />
     <ClInclude Include="Editor\Viewport\Viewport.h" />
     <ClInclude Include="ImGui\ImGuiLayer.h" />
+    <ClInclude Include="Toolbar.h" />
     <ClInclude Include="Tools.pch.h" />
   </ItemGroup>
   <ItemGroup>
@@ -182,6 +183,7 @@
     <ClCompile Include="Editor\Properties\PropertiesPanel.cpp" />
     <ClCompile Include="Editor\Viewport\Viewport.cpp" />
     <ClCompile Include="ImGui\ImGuiLayer.cpp" />
+    <ClCompile Include="Toolbar.cpp" />
     <ClCompile Include="Tools.pch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>

@@ -2,11 +2,11 @@
 
 #include <vector>
 
-#include <CommonUtilities/Math/Matrix4x4.hpp>
-
 #include "CommonUtilities/Math/Matrix4x4.hpp"
 #include "CommonUtilities/Math/Vector3.hpp"
 #include "CommonUtilities/Math/Vector4.hpp"
+
+#include <Graphics/Objects/GPU/InstanceData.h>
 
 class Mesh;
 
@@ -15,6 +15,15 @@ struct WireMeshDrawCall
 	const Mesh* Mesh = nullptr;
 	CommonUtilities::Matrix4x4f Transform;
 	CommonUtilities::Vector4f Color = { 1.f, 1.f, 1.f, 1.f };
+};
+
+struct OutlineDrawCall
+{
+	const Mesh* Mesh = nullptr;
+	CommonUtilities::Matrix4x4f Transform;
+	CommonUtilities::Vector4f Color = { 1.f, 1.f, 1.f, 1.f };
+	const InstanceData* Instances;
+	unsigned int AmountOfInstances = 0;
 };
 
 struct LineDrawCall
@@ -29,10 +38,17 @@ class DebugDrawer
 public:
     static DebugDrawer& Get();
 
-    void DrawWireframe(
+	void DrawWireframe(
 		const CommonUtilities::Matrix4x4f& aTransform,
 		const Mesh* aMesh = nullptr,
 		const CommonUtilities::Vector4f& aColor = { 1.f, 1.f, 1.f, 1.f });
+
+    void DrawMeshOutline(
+		const CommonUtilities::Matrix4x4f& aTransform,
+		const Mesh* aMesh = nullptr,
+		const CommonUtilities::Vector4f& aColor = { 1.f, 1.f, 1.f, 1.f },
+		const InstanceData* Instances = nullptr,
+		unsigned int AmountOfInstances = 0);
 
     void DrawLine(
     	const CommonUtilities::Vector3f& aStart,
@@ -63,10 +79,12 @@ public:
 
     const std::vector<WireMeshDrawCall>& GetWireframeDrawCalls() const;
     const std::vector<LineDrawCall>& GetLineDrawCalls() const;
+    const std::vector<OutlineDrawCall>& GetMeshOutlineDrawCalls() const;
 
-    void Clear();
+    void BeginFrame();
 
 private:
 	std::vector<WireMeshDrawCall> myWireDrawCalls;
 	std::vector<LineDrawCall> myLineDrawCalls;
+	std::vector<OutlineDrawCall> myOutlineDrawCalls;
 };

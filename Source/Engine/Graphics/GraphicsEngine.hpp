@@ -105,7 +105,12 @@ public:
 	const RenderSettings& GetSettings() const;
 
 	void RequestPixelPick(unsigned aX, unsigned aY);
-	std::optional<unsigned> GetPickResult();
+	
+	/**
+	 * Will return a pick result, the request pixel pick method needs to be called.
+	 * @return a unsigned int for actor ID, ID is invalid if 0 is returned.
+	 */
+	unsigned int GetPickResult();
 
 private:
 	GraphicsEngine();

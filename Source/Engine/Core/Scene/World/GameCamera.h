@@ -31,9 +31,6 @@ public:
 
 	void FocusOn(const Actor* aTarget);
 
-	CommonUtilities::Ray<float> ScreenToWorldRay(const CommonUtilities::Vector2f& aScreenPosition) const;
-	bool WorldToScreen(const CommonUtilities::Vector3f& aWorldPosition, CommonUtilities::Vector2f& outScreenPosition) const;
-
 private:
 	void UpdateFrustum() const;
 

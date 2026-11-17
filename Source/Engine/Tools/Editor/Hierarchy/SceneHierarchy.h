@@ -16,6 +16,8 @@ public:
 	void SetSelectedActor(Actor* aActor);
 	void SetCameraReference(const CameraData* aCamera);
 
+	Actor* GetSelectedActor();
+
 private:
 	void DisplayActorNode(Actor* aActor);
 	void LogActorsChildren(Actor* aActor);

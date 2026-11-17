@@ -106,6 +106,7 @@ void PixelPickingPass::Execute(
     frameBuffer.View = aContext.Camera->Transform.GetFastInverse();
     frameBuffer.Projection = aContext.Camera->RenderCamera.GetProjection();
     frameBuffer.CameraPosition = aContext.Camera->Transform.GetTranslation();
+    frameBuffer.ViewportSize = aContext.RHI->GetClientSize();
 
     aContext.Buffers->UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::FrameBuffer, frameBuffer, 0, PipelineStage_VertexShader | PipelineStage_PixelShader);
 
@@ -134,20 +135,16 @@ bool PixelPickingPass::HasPendingPick() const
     return myPendingPick.has_value();
 }
 
-std::optional<unsigned> PixelPickingPass::TryGetPickResult(const RenderHardwareInterface& aRHI)
+unsigned int PixelPickingPass::TryGetPickResult(const RenderHardwareInterface& aRHI)
 {
     if (!myHasAPickResult)
     {
-        return std::nullopt;
+        return 0;
     }
 
     myHasAPickResult = false;
 
     const unsigned id = aRHI.ReadObjectId(*myIDStagingBuffer);
-    if (id == 0)
-    {
-        return std::nullopt;
-    }
 
     return id;
 }

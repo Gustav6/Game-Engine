@@ -222,7 +222,7 @@ void ScreenSpaceEffectPass::TonemapPass(
 {
 	inoutCommandList.BeginEvent("Tonemap Pass");
 
-	FrameBuffer frameBuffer;
+	FrameBuffer frameBuffer{};
 
 	if (aContext.RenderSettings->DebugRenderMode == DebugRenderMode::None)
 	{

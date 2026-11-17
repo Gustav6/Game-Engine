@@ -132,6 +132,20 @@ void MeshComponent::Render()
 #endif
 }
 
+void MeshComponent::RenderOutline()
+{
+	if (myMeshAsset == nullptr)
+	{
+		return;
+	}
+
+	DebugDrawer::Get().DrawMeshOutline(
+		myOwner->GetComponent<Transform>()->GetWorldMatrix(),
+		&myMeshAsset->GetMesh(),
+		{ 0.0f, 1.0f, 0.0f, 1.0f }
+	);
+}
+
 Skeleton* MeshComponent::GetSkeleton() const
 {
 	if (myMeshAsset == nullptr)

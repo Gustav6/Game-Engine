@@ -24,7 +24,7 @@ public:
 
 	const std::vector<SpriteDrawCall>& GetSpriteDrawCalls() const;
 
-	void Clear();
+	void BeginFrame();
 
 private:
 	std::vector<SpriteDrawCall> myDrawCalls;

@@ -12,5 +12,5 @@ struct FrameBuffer
 	unsigned int TypeOfRenderPass = 0;
 	unsigned int TypeOfTonemap = 0;
 	unsigned int SSAOFlag = 0;
-	CommonUtilities::Vector2f _padding;
+	CommonUtilities::Vector2ui ViewportSize;
 };

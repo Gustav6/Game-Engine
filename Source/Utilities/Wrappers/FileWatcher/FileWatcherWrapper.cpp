@@ -47,8 +47,6 @@ void FileWatcher::RemoveWatcher(const std::filesystem::path& aDirectory)
 
 void FileWatcher::RemoveAllWatchers()
 {
-	// Won't matter if it's slow since it will only be called once
-
 	for (const auto& directory : Watcher->directories())
 	{
 		Watcher->removeWatch(directory);

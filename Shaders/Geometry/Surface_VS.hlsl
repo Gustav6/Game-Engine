@@ -1,12 +1,6 @@
 #include "../Include/Core/Common.hlsli"
 #include "../Include/Core/Material.hlsli"
 
-struct InstanceData
-{
-    float4x4 World;
-    float4x4 WorldInvT;
-};
-
 StructuredBuffer<InstanceData> InstanceBuffer : register(t20);
 
 VStoPS main(Vertex aVertex, uint instanceID : SV_InstanceID)

@@ -180,11 +180,11 @@ void GraphicsEngine::Shutdown()
 
 void GraphicsEngine::BeginFrame() const
 {
-	MeshDrawer::Get().Clear();
-	LightDrawer::Get().Clear();
-	TextDrawer::Get().Clear();
-	SpriteDrawer::Get().Clear();
-	DebugDrawer::Get().Clear();
+	MeshDrawer::Get().BeginFrame();
+	LightDrawer::Get().BeginFrame();
+	TextDrawer::Get().BeginFrame();
+	SpriteDrawer::Get().BeginFrame();
+	DebugDrawer::Get().BeginFrame();
 
 	if (myRenderOverlay != nullptr)
 	{
@@ -594,7 +594,7 @@ void GraphicsEngine::RequestPixelPick(unsigned aX, unsigned aY)
 	myPixelPickingPass->RequestPixelPick(aX, aY);
 }
 
-std::optional<unsigned> GraphicsEngine::GetPickResult()
+unsigned int GraphicsEngine::GetPickResult()
 {
 	return myPixelPickingPass->TryGetPickResult(*myRHI);
 }

@@ -144,10 +144,11 @@ void ScreenSpaceRenderPass::RenderText(
 
 	const CommonUtilities::Matrix4x4f pixelToNDC = scale * translation;
 
-	FrameBuffer frameBuffer;
+	FrameBuffer frameBuffer{};
 	frameBuffer.View = aContext.Camera->Transform.GetFastInverse();
 	frameBuffer.Projection = aContext.Camera->RenderCamera.GetProjection();
 	frameBuffer.CameraPosition = aContext.Camera->Transform.GetTranslation();
+	frameBuffer.ViewportSize = aContext.RHI->GetClientSize();
 
 	aContext.Buffers->UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::FrameBuffer, frameBuffer, 0, PipelineStage_VertexShader | PipelineStage_PixelShader);
 
@@ -202,8 +203,9 @@ void ScreenSpaceRenderPass::RenderSprite(
 	const SpriteDrawCall& aDrawCall, 
 	RenderContext& aContext)
 {
-	FrameBuffer frameBuffer;
+	FrameBuffer frameBuffer{};
 	frameBuffer.Projection = mySpriteProjection;
+	frameBuffer.ViewportSize = aContext.RHI->GetClientSize();
 	aContext.Buffers->UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::FrameBuffer, frameBuffer, 0, PipelineStage_VertexShader | PipelineStage_PixelShader);
 
 	mySpriteVertices.clear();

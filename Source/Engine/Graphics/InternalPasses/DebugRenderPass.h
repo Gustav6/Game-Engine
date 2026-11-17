@@ -2,12 +2,13 @@
 
 #include <vector>
 
-#include "Graphics/Objects/GPU/Buffer.h"
+
 #include "Graphics/Objects/GPU/Vertex.h"
 
 class GraphicsCommandList;
 class RenderHardwareInterface;
 class PipelineStateObject;
+class Buffer;
 
 struct RenderContext;
 struct FrameTargets;
@@ -26,10 +27,13 @@ public:
 private:
 	void RenderWireMeshes(GraphicsCommandList& inoutCommandList, RenderContext& aContext);
     void RenderLines(GraphicsCommandList& inoutCommandList, RenderContext& aContext);
+    void RenderOutlines(GraphicsCommandList& inoutCommandList, RenderContext& aContext);
 
-	std::unique_ptr<PipelineStateObject> myDebugPSO;
+	std::unique_ptr<PipelineStateObject> myMeshWireframePSO;
+    std::unique_ptr<PipelineStateObject> myMeshOutlinePSO;
 	std::unique_ptr<PipelineStateObject> myLinePSO;
 
     std::vector<LineVertex> myLineVertices;
-    Buffer myLineVertexBuffer;
+    std::unique_ptr<Buffer> myLineVertexBuffer;
+    std::unique_ptr<Buffer> myInstanceBuffer;
 };

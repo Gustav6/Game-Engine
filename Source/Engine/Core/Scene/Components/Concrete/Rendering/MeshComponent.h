@@ -16,6 +16,7 @@ public:
 	MeshComponent(Actor* aOwner);
 
 	void Render() override;
+	void RenderOutline();
 
 	Skeleton* GetSkeleton() const;
 

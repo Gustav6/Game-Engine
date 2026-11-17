@@ -18,6 +18,7 @@ public:
     InstancedMeshComponent(Actor* aOwner);
 
     void Render() override;
+    void RenderOutline();
 
     void AddInstance(const InstanceData& aInstanceData);
     void RemoveInstance(unsigned int aIndex);

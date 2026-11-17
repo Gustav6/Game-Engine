@@ -27,7 +27,7 @@ public:
 
 	const std::vector<TextDrawCall>& GetTextDrawCalls() const;
 
-	void Clear();
+	void BeginFrame();
 
 private:
 	std::vector<TextDrawCall> myDrawCalls;

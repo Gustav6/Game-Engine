@@ -27,7 +27,7 @@ const std::vector<SceneLight>& LightDrawer::GetSceneLights() const
 	return mySceneLights;
 }
 
-void LightDrawer::Clear()
+void LightDrawer::BeginFrame()
 {
 	mySceneLights.clear();
 }

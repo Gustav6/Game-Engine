@@ -25,7 +25,7 @@ const std::vector<TextDrawCall>& TextDrawer::GetTextDrawCalls() const
 	return myDrawCalls;
 }
 
-void TextDrawer::Clear()
+void TextDrawer::BeginFrame()
 {
 	myDrawCalls.clear();
 }

@@ -471,6 +471,10 @@ bool RenderHardwareInterface::CreatePipelineStateObject(const PipelineStateDescr
 
 		switch (aDescription.RasterizerState)
 		{
+			case RasterizerState::FillSolidCullNone:
+				desc.FillMode = D3D11_FILL_SOLID;
+				desc.CullMode = D3D11_CULL_NONE;
+				break;
 			case RasterizerState::FillSolidCullBack:
 				desc.FillMode = D3D11_FILL_SOLID;
 				desc.CullMode = D3D11_CULL_BACK;
@@ -482,6 +486,14 @@ bool RenderHardwareInterface::CreatePipelineStateObject(const PipelineStateDescr
 			case RasterizerState::FillWireframeCullNone:
 				desc.FillMode = D3D11_FILL_WIREFRAME;
 				desc.CullMode = D3D11_CULL_NONE;
+				break;
+			case RasterizerState::FillWireframeCullBack:
+				desc.FillMode = D3D11_FILL_WIREFRAME;
+				desc.CullMode = D3D11_CULL_BACK;
+				break;
+			case RasterizerState::FillWireframeCullFront:
+				desc.FillMode = D3D11_FILL_WIREFRAME;
+				desc.CullMode = D3D11_CULL_FRONT;
 				break;
 		}
 

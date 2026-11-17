@@ -24,6 +24,22 @@ void DebugDrawer::DrawWireframe(
 
 	myWireDrawCalls.emplace_back(aMesh, aTransform, aColor);
 }
+void DebugDrawer::DrawMeshOutline(
+	const CommonUtilities::Matrix4x4f& aTransform,
+	const Mesh* aMesh, 
+	const CommonUtilities::Vector4f& aColor,
+	const InstanceData* Instances,
+	unsigned int AmountOfInstances)
+{
+	if (aMesh == nullptr)
+	{
+		SPDLOG_ERROR("Mesh was submitted with invalid data!");
+		return;
+	}
+
+	myOutlineDrawCalls.emplace_back(aMesh, aTransform, aColor, Instances, AmountOfInstances);
+}
+
 void DebugDrawer::DrawLine(
 	const CommonUtilities::Vector3f& aStart,
 	const CommonUtilities::Vector3f& aEnd,
@@ -196,8 +212,14 @@ const std::vector<LineDrawCall>& DebugDrawer::GetLineDrawCalls() const
 	return myLineDrawCalls;
 }
 
-void DebugDrawer::Clear()
+const std::vector<OutlineDrawCall>& DebugDrawer::GetMeshOutlineDrawCalls() const
+{
+	return myOutlineDrawCalls;
+}
+
+void DebugDrawer::BeginFrame()
 {
 	myWireDrawCalls.clear();
 	myLineDrawCalls.clear();
+	myOutlineDrawCalls.clear();
 }

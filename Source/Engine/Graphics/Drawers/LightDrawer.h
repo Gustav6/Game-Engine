@@ -24,7 +24,7 @@ public:
 
     const std::vector<SceneLight>& GetSceneLights() const;
 
-    void Clear();
+    void BeginFrame();
 
 private:
     std::vector<SceneLight> mySceneLights;

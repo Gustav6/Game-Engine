@@ -12,6 +12,7 @@
 #include "Graphics/Objects/Mesh/Mesh.h"
 
 #include "Graphics/Drawers/MeshDrawer.h"
+#include "Graphics/Drawers/DebugDrawer.h"
 
 InstancedMeshComponent::InstancedMeshComponent(Actor* aOwner)
 	: IComponent(aOwner)
@@ -43,6 +44,22 @@ void InstancedMeshComponent::Render()
     MeshDrawer::Get().Submit(drawCall);
 }
 
+void InstancedMeshComponent::RenderOutline()
+{
+    if (myMeshAsset == nullptr)
+    {
+        return;
+    }
+
+    DebugDrawer::Get().DrawMeshOutline(
+        myOwner->GetComponent<Transform>()->GetWorldMatrix(),
+        &myMeshAsset->GetMesh(),
+        { 0.0f, 1.0f, 0.0f, 1.0f },
+        myInstances.data(),
+        static_cast<unsigned int>(myInstances.size())
+    );
+}
+
 void InstancedMeshComponent::AddInstance(const InstanceData& aInstanceData)
 {
 	myInstances.push_back(aInstanceData);
@@ -62,6 +79,12 @@ void InstancedMeshComponent::ClearInstances()
 void InstancedMeshComponent::SetMesh(const std::shared_ptr<MeshAsset>& aMeshAsset)
 {
     myMeshAsset = aMeshAsset;
+
+    if (myMeshAsset == nullptr)
+    {
+        return;
+    }
+
     myMaterialAssets.resize(myMeshAsset->GetMesh().GetNumMaterialSlots());
 }
 

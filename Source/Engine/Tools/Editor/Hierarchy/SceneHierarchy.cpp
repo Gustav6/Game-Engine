@@ -12,6 +12,7 @@
 
 #include <Graphics/Core/SceneCamera.h>
 #include <Graphics/Objects/Scene/Camera.h>
+#include <Graphics/Drawers/DebugDrawer.h>
 
 #include <Core/EngineContext.h>
 #include <Core/Scene/Components/Concrete/Transform/Transform.h>
@@ -19,8 +20,6 @@
 #include <Core/Scene/Components/Concrete/Rendering/InstancedMeshComponent.h>
 
 #include <ImGuizmo/ImGuizmo.h>
-
-// TODO: Open a window to show components for the selected actor.
 
 void SceneHierarchy::Update(float aDeltaTime)
 {
@@ -210,6 +209,11 @@ void SceneHierarchy::SetCameraReference(const CameraData* aCamera)
 	myCameraReference = aCamera;
 }
 
+Actor* SceneHierarchy::GetSelectedActor()
+{
+	return mySelectedActor;
+}
+
 void SceneHierarchy::DisplayActorNode(Actor* aActor)
 {
 	ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_DrawLinesToNodes;
@@ -230,7 +234,7 @@ void SceneHierarchy::DisplayActorNode(Actor* aActor)
 
 	if (myActorsToOpen.contains(aActor))
 	{
-		ImGui::SetNextItemOpen(true, ImGuiCond_Once);
+		ImGui::SetNextItemOpen(true, ImGuiCond_Always);
 	}
 
 	bool isOpen = ImGui::TreeNodeEx(aActor, flags, "%s", aActor->GetName().c_str());

@@ -90,6 +90,7 @@
     <ClInclude Include="ImGui\ImGuiLayer.h">
       <Filter>ImGui</Filter>
     </ClInclude>
+    <ClInclude Include="Toolbar.h" />
     <ClInclude Include="Tools.pch.h" />
   </ItemGroup>
   <ItemGroup>
@@ -150,6 +151,7 @@
     <ClCompile Include="ImGui\ImGuiLayer.cpp">
       <Filter>ImGui</Filter>
     </ClCompile>
+    <ClCompile Include="Toolbar.cpp" />
     <ClCompile Include="Tools.pch.cpp" />
   </ItemGroup>
 </Project>

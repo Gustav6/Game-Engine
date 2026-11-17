@@ -23,7 +23,7 @@ const std::vector<MeshDrawCall>& MeshDrawer::GetMeshDrawCalls() const
 	return myDrawCalls;
 }
 
-void MeshDrawer::Clear()
+void MeshDrawer::BeginFrame()
 {
 	myDrawCalls.clear();
 }

@@ -28,8 +28,12 @@ DrawCallSubmitter& DrawCallSubmitter::Get()
 	return myInstance;
 }
 
+DrawCallSubmitter::DrawCallSubmitter() = default;
+
 bool DrawCallSubmitter::Initialize(RenderHardwareInterface& aRHI)
 {
+	myInstanceBuffer = std::make_unique<Buffer>();
+
 	unsigned bufferSize = sizeof(InstanceData) * MAX_MESH_INSTANCES;
 	unsigned bufferStride = sizeof(InstanceData);
 
@@ -40,11 +44,6 @@ bool DrawCallSubmitter::Initialize(RenderHardwareInterface& aRHI)
 	}
 
 	return true;
-}
-
-DrawCallSubmitter::DrawCallSubmitter()
-{
-	myInstanceBuffer = std::make_unique<Buffer>();
 }
 
 void DrawCallSubmitter::RenderDrawCalls(
@@ -125,7 +124,7 @@ void DrawCallSubmitter::RenderDrawCalls(
 			inoutCommandList.SetPipelineStateObject(material->GetPSO());
 		}
 
-		if (drawCall.Instances.size() > 0)
+		if (objectBuffer.IsInstanced)
 		{
 			const unsigned int instanceCount = std::min(static_cast<unsigned int>(drawCall.Instances.size()), MAX_MESH_INSTANCES);
 

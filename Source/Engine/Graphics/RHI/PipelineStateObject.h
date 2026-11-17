@@ -12,9 +12,12 @@ struct ID3D11BlendState;
 
 enum class RasterizerState : unsigned int
 {
+	FillSolidCullNone,
 	FillSolidCullBack,
 	FillSolidCullFront,
-	FillWireframeCullNone
+	FillWireframeCullNone,
+	FillWireframeCullBack,
+	FillWireframeCullFront
 };
 
 struct PipelineStateDescription

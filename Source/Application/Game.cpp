@@ -49,6 +49,14 @@
 #include <ImGui/imgui.h>
 #endif
 
+
+// TODO: Temp
+#include <Core/Scene/Components/Concrete/Transform/Transform.h>
+#include <Core/Scene/Components/Concrete/Rendering/MeshComponent.h>
+#include <Core/Scene/Components/Concrete/Rendering/InstancedMeshComponent.h>
+#include <Graphics/Drawers/DebugDrawer.h>
+
+
 Game::Game() = default;
 Game::~Game() = default;
 
@@ -245,6 +253,27 @@ int Game::Run()
 
 			RenderScene();
 
+#ifndef _RETAIL
+			Actor* selectedActor = ToolManager::Get().GetTool<SceneHierarchy>()->GetSelectedActor();
+
+			if (selectedActor != nullptr)
+			{
+				MeshComponent* mesh = selectedActor->GetComponent<MeshComponent>();
+
+				if (mesh != nullptr)
+				{
+					mesh->RenderOutline();
+				}
+
+				InstancedMeshComponent* instancedMesh = selectedActor->GetComponent<InstancedMeshComponent>();
+
+				if (instancedMesh != nullptr)
+				{
+					instancedMesh->RenderOutline();
+				}
+			}
+
+#endif
 			FrameStats frameStats = GE.Render(*myGraphicsCommandList, GEngineContext.GameCamera->GetCameraData());
 
 #ifndef _RETAIL
@@ -268,9 +297,11 @@ int Game::Run()
 			GE.ExecuteCommandList(*myGraphicsCommandList);
 
 #ifndef _RETAIL
-			if (auto id = GE.GetPickResult())
+			unsigned int id = GE.GetPickResult();
+
+			if (id != 0)
 			{
-				Actor* actor = GameWorld::Get().GetActor(*id);
+				Actor* actor = GameWorld::Get().GetActor(id);
 
 				ToolManager::Get().GetTool<SceneHierarchy>()->SetSelectedActor(actor);
 			}

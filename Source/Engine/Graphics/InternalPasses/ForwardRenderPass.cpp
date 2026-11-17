@@ -6,6 +6,8 @@
 
 #include "Graphics/GraphicsEngine.hpp"
 
+#include <Graphics/RHI/RenderHardwareInterface.h>
+
 #include "Graphics/Core/RenderItem.h"
 #include "Graphics/Core/FrameTargets.h"
 #include "Graphics/Core/SceneCamera.h"
@@ -37,11 +39,12 @@ void ForwardRenderPass::Execute(
 
 	inoutCommandList.SetRenderTarget(aFrameTargets.RenderTarget, aFrameTargets.DepthBuffer);
 
-	FrameBuffer frameBuffer;
+	FrameBuffer frameBuffer{};
 	frameBuffer.View = aContext.Camera->Transform.GetFastInverse();
 	frameBuffer.Projection = aContext.Camera->RenderCamera.GetProjection();
 	frameBuffer.CameraPosition = aContext.Camera->Transform.GetTranslation();
 	frameBuffer.TypeOfRenderPass = static_cast<unsigned int>(aContext.RenderSettings->DebugRenderMode);
+	frameBuffer.ViewportSize = aContext.RHI->GetClientSize();
 
 	aContext.Buffers->UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::FrameBuffer, frameBuffer, 0, PipelineStage_VertexShader | PipelineStage_PixelShader);
 

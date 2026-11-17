@@ -13,6 +13,9 @@
 #include "CommonUtilities/Math/Matrix4x4.hpp"
 #include "CommonUtilities/Math/Quaternion.hpp"
 
+#include <imgui/imgui.h>
+#include <ImGuizmo/ImGuizmo.h>
+
 GameCamera::GameCamera() :
 	Actor(0)
 {
@@ -105,83 +108,6 @@ void GameCamera::FocusOn(const Actor* aTarget)
 	SetMode(CameraMode::OrbitTarget);
 }
 
-CommonUtilities::Ray<float> GameCamera::ScreenToWorldRay(const CommonUtilities::Vector2f& aScreenPosition) const
-{
-	//convert screen pos to ndc 
-
-	const float ndcX = (2.0f * (aScreenPosition.x / static_cast<float>(myCameraData->RenderCamera.GetResolution().x))) - 1.0f;
-	const float ndcY = 1.0f - (2.0f * (aScreenPosition.y / static_cast<float>(myCameraData->RenderCamera.GetResolution().y)));
-
-	// Position on the far plane in clip space
-	CommonUtilities::Vector4f clipPosition =
-	{
-		ndcX,
-		ndcY,
-		0.f,
-		1.0f
-	};
-
-	// Clip space -> view space
-	const CommonUtilities::Matrix4x4f inverseProjection = myCameraData->RenderCamera.GetProjection().GetInverse();
-
-	CommonUtilities::Vector4f viewPosition = clipPosition * inverseProjection;
-
-	// Perspective divide
-	if (viewPosition.w != 0.0f)
-	{
-		viewPosition.x /= viewPosition.w;
-		viewPosition.y /= viewPosition.w;
-		viewPosition.z /= viewPosition.w;
-		viewPosition.w = 1.0f;
-	}
-
-	CommonUtilities::Vector4f worldPosition = viewPosition * GetComponent<Transform>()->GetWorldMatrix();
-
-	const CommonUtilities::Vector3f rayOrigin = GetComponent<Transform>()->GetPosition();
-
-	const CommonUtilities::Vector3f rayDirection = CommonUtilities::Vector3f(worldPosition.x - rayOrigin.x, worldPosition.y - rayOrigin.y, worldPosition.z - rayOrigin.z).GetNormalized();
-
-	return CommonUtilities::Ray<float>(rayOrigin, rayDirection);
-}
-
-bool GameCamera::WorldToScreen(const CommonUtilities::Vector3f& aWorldPosition, CommonUtilities::Vector2f& outScreenPosition) const
-{
-	CommonUtilities::Vector4f worldPosition =
-	{
-		aWorldPosition.x,
-		aWorldPosition.y,
-		aWorldPosition.z,
-		1.0f
-	};
-
-	const CommonUtilities::Matrix4x4f viewMatrix = GetComponent<Transform>()->GetWorldMatrix().GetFastInverse();
-	const CommonUtilities::Matrix4x4f& projectionMatrix = myCameraData->RenderCamera.GetProjection();
-
-	CommonUtilities::Vector4f clipPosition = worldPosition * viewMatrix * projectionMatrix;
-
-	if (clipPosition.w <= 0.0f)
-	{
-		return false;
-	}
-
-
-	// Perspective divide 
-	const float ndcX = clipPosition.x / clipPosition.w;
-	const float ndcY = clipPosition.y / clipPosition.w;
-
-
-	if (ndcX < -1.0f || ndcX > 1.0f || ndcY < -1.0f || ndcY > 1.0f)
-	{
-		return false;
-	}
-
-	const CommonUtilities::Vector2ui resolution = myCameraData->RenderCamera.GetResolution();
-
-	outScreenPosition.x = (ndcX + 1.0f) * 0.5f * static_cast<float>(resolution.x);
-	outScreenPosition.y = (1.0f - ndcY) * 0.5f * static_cast<float>(resolution.y);
-	return true;
-}
-
 void GameCamera::UpdateFrustum() const
 {
 	if (myCameraData == nullptr)
@@ -194,76 +120,86 @@ void GameCamera::UpdateFrustum() const
 
 void GameCamera::UpdateFreeLook(float aDeltaTime)
 {
-	if (GEngineContext.InputManager.IsKeyDown(KeyCode::W))
-	{
-		GetComponent<Transform>()->Translate(GetComponent<Transform>()->GetForward() * myCameraMoveSpeed * aDeltaTime);
+	ImGuiIO& imGuiIO = ImGui::GetIO();
+	const bool imguiMouseFocused = imGuiIO.WantCaptureMouse && !ImGuizmo::IsOver();
+	const bool imguiKeyboardFocused = imGuiIO.WantCaptureKeyboard;
 
-		myIsDirty = true;
+	if (!imguiKeyboardFocused)
+	{
+		if (GEngineContext.InputManager.IsKeyDown(KeyCode::W))
+		{
+			GetComponent<Transform>()->Translate(GetComponent<Transform>()->GetForward() * myCameraMoveSpeed * aDeltaTime);
+
+			myIsDirty = true;
+		}
+
+		if (GEngineContext.InputManager.IsKeyDown(KeyCode::A))
+		{
+			GetComponent<Transform>()->Translate(-GetComponent<Transform>()->GetRight() * myCameraMoveSpeed * aDeltaTime);
+
+			myIsDirty = true;
+		}
+
+		if (GEngineContext.InputManager.IsKeyDown(KeyCode::S))
+		{
+			GetComponent<Transform>()->Translate(-GetComponent<Transform>()->GetForward() * myCameraMoveSpeed * aDeltaTime);
+
+			myIsDirty = true;
+		}
+
+		if (GEngineContext.InputManager.IsKeyDown(KeyCode::D))
+		{
+			GetComponent<Transform>()->Translate(GetComponent<Transform>()->GetRight() * myCameraMoveSpeed * aDeltaTime);
+
+			myIsDirty = true;
+		}
+
+		if (GEngineContext.InputManager.IsKeyDown(KeyCode::Space))
+		{
+			GetComponent<Transform>()->Translate(GetComponent<Transform>()->GetUp() * myCameraMoveSpeed * aDeltaTime);
+
+			myIsDirty = true;
+		}
+
+		if (GEngineContext.InputManager.IsKeyDown(KeyCode::Control))
+		{
+			GetComponent<Transform>()->Translate(-GetComponent<Transform>()->GetUp() * myCameraMoveSpeed * aDeltaTime);
+
+			myIsDirty = true;
+		}
 	}
 
-	if (GEngineContext.InputManager.IsKeyDown(KeyCode::A))
+	if (!imguiMouseFocused)
 	{
-		GetComponent<Transform>()->Translate(-GetComponent<Transform>()->GetRight() * myCameraMoveSpeed * aDeltaTime);
+		if (GEngineContext.InputManager.IsKeyPressed(KeyCode::RMB))
+		{
+			GEngineContext.InputManager.CaptureMouse();
+			GEngineContext.InputManager.HideMouse();
+			GEngineContext.InputManager.CenterCursor();
+		}
+		else if (GEngineContext.InputManager.IsKeyReleased(KeyCode::RMB))
+		{
+			GEngineContext.InputManager.ReleaseMouse();
+			GEngineContext.InputManager.ShowMouse();
+		}
 
-		myIsDirty = true;
-	}
+		if (GEngineContext.InputManager.IsKeyDown(KeyCode::RMB))
+		{
+			const CommonUtilities::Vector2f mouseDelta = GEngineContext.InputManager.GetCapturedMouseDelta();
 
-	if (GEngineContext.InputManager.IsKeyDown(KeyCode::S))
-	{
-		GetComponent<Transform>()->Translate(-GetComponent<Transform>()->GetForward() * myCameraMoveSpeed * aDeltaTime);
+			float pitch = mouseDelta.y * myMouseSensitivity;
+			float yaw = mouseDelta.x * myMouseSensitivity;
 
-		myIsDirty = true;
-	}
+			CommonUtilities::Quaternion<float> pitchQuat({ 1.0f, 0.0f, 0.0f }, pitch);
+			CommonUtilities::Quaternion<float> yawQuat({ 0.0f, 1.0f, 0.0f }, yaw);
 
-	if (GEngineContext.InputManager.IsKeyDown(KeyCode::D))
-	{
-		GetComponent<Transform>()->Translate(GetComponent<Transform>()->GetRight() * myCameraMoveSpeed * aDeltaTime);
+			GetComponent<Transform>()->Rotate(pitchQuat, false);
+			GetComponent<Transform>()->Rotate(yawQuat, true);
 
-		myIsDirty = true;
-	}
+			GEngineContext.InputManager.CenterCursor();
 
-	if (GEngineContext.InputManager.IsKeyDown(KeyCode::Space))
-	{
-		GetComponent<Transform>()->Translate(GetComponent<Transform>()->GetUp() * myCameraMoveSpeed * aDeltaTime);
-
-		myIsDirty = true;
-	}
-
-	if (GEngineContext.InputManager.IsKeyDown(KeyCode::Control))
-	{
-		GetComponent<Transform>()->Translate(-GetComponent<Transform>()->GetUp() * myCameraMoveSpeed * aDeltaTime);
-
-		myIsDirty = true;
-	}
-
-	if (GEngineContext.InputManager.IsKeyPressed(KeyCode::RMB))
-	{
-		GEngineContext.InputManager.CaptureMouse();
-		GEngineContext.InputManager.HideMouse();
-		GEngineContext.InputManager.CenterCursor();
-	}
-	else if (GEngineContext.InputManager.IsKeyReleased(KeyCode::RMB))
-	{
-		GEngineContext.InputManager.ReleaseMouse();
-		GEngineContext.InputManager.ShowMouse();
-	}
-
-	if (GEngineContext.InputManager.IsKeyDown(KeyCode::RMB))
-	{
-		const CommonUtilities::Vector2f mouseDelta = GEngineContext.InputManager.GetCapturedMouseDelta();
-
-		float pitch = mouseDelta.y * myMouseSensitivity;
-		float yaw = mouseDelta.x * myMouseSensitivity;
-
-		CommonUtilities::Quaternion<float> pitchQuat({ 1.0f, 0.0f, 0.0f }, pitch);
-		CommonUtilities::Quaternion<float> yawQuat({ 0.0f, 1.0f, 0.0f }, yaw);
-
-		GetComponent<Transform>()->Rotate(pitchQuat, false);
-		GetComponent<Transform>()->Rotate(yawQuat, true);
-
-		GEngineContext.InputManager.CenterCursor();
-
-		myIsDirty = true;
+			myIsDirty = true;
+		}
 	}
 }
 

@@ -26,7 +26,7 @@ public:
     void RequestPixelPick(unsigned aX, unsigned aY);
     bool HasPendingPick() const;
 
-    std::optional<unsigned> TryGetPickResult(const RenderHardwareInterface& aRHI);
+    unsigned int TryGetPickResult(const RenderHardwareInterface& aRHI);
 
 private:
     std::unique_ptr<PipelineStateObject> myPickingPSO;

@@ -458,6 +458,12 @@
     <FxCompile Include="Shaders\Line_VS.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>
+    <FxCompile Include="Shaders\Outline_PS.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Outline_VS.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
     <FxCompile Include="Shaders\PixelPicking_PS.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>

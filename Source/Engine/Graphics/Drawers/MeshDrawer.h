@@ -5,7 +5,7 @@
 #include "CommonUtilities/Math/Matrix4x4.hpp"
 
 #include "Graphics/Materials/Material.h"
-#include "Graphics/Buffers/InstanceDataBuffer.h"
+#include <Graphics/Objects/GPU/InstanceData.h>
 
 class Mesh;
 
@@ -34,7 +34,7 @@ public:
 
     const std::vector<MeshDrawCall>& GetMeshDrawCalls() const;
 
-    void Clear();
+    void BeginFrame();
 
 private:
     std::vector<MeshDrawCall> myDrawCalls;

@@ -32,6 +32,12 @@ struct ParticleVertex
     float4 ChannelMask : CHANNELMASK;
 };
 
+struct InstanceData
+{
+    float4x4 World;
+    float4x4 WorldInvT;
+};
+
 struct SpriteVertex
 {
     float4 Position : POSITION;
@@ -82,13 +88,14 @@ cbuffer FrameBuffer : register(b0)
     uint FB_TypeOfRenderPass;
     uint FB_TypeOfTonemap;
     bool FB_SSAOFlag;
-    float2 _FB_Padding;
+    uint2 FB_ViewportSize;
 }
 
 cbuffer ObjectBuffer : register(b1)
 {
     float4x4 OB_World;
     float4x4 OB_WorldInvT;
+    float4 OB_Color;
     bool OB_SkinningFlag;
     bool OB_IsInstanced;
     uint OB_ObjectId;
