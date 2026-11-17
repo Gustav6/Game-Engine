@@ -33,7 +33,7 @@ bool MeshAsset::Load(const std::filesystem::path& aPath)
 {
     ZoneScopedN("Load Mesh")
 
-    std::unique_ptr<TGA::FBX::Mesh> tgaMesh = std::make_unique<TGA::FBX::Mesh>();
+        std::unique_ptr<TGA::FBX::Mesh> tgaMesh = std::make_unique<TGA::FBX::Mesh>();
     const TGA::FBX::FbxImportStatus& importStatus = TGA::FBX::Importer::LoadMesh(aPath, *tgaMesh);
 
     if (!importStatus)
@@ -125,6 +125,9 @@ bool MeshAsset::Load(const std::filesystem::path& aPath)
     std::vector<Vertex> meshVertices;
     std::vector<unsigned> meshIndices;
 
+    CommonUtilities::Vector3f meshMin(FLT_MAX, FLT_MAX, FLT_MAX);
+    CommonUtilities::Vector3f meshMax(-FLT_MAX, -FLT_MAX, -FLT_MAX);
+
     for (TGA::FBX::Mesh::Element& tgaElement : tgaMesh->Elements)
     {
         Mesh::Element element;
@@ -154,27 +157,31 @@ bool MeshAsset::Load(const std::filesystem::path& aPath)
             meshIndices.emplace_back(index + element.VertexOffset);
         }
 
+        CommonUtilities::Vector3f elemMin(FLT_MAX, FLT_MAX, FLT_MAX);
+        CommonUtilities::Vector3f elemMax(-FLT_MAX, -FLT_MAX, -FLT_MAX);
+
+        for (size_t v = element.VertexOffset; v < meshVertices.size(); v++)
+        {
+            const auto& p = meshVertices[v].Position;
+            elemMin.x = std::min(elemMin.x, p.x); elemMax.x = std::max(elemMax.x, p.x);
+            elemMin.y = std::min(elemMin.y, p.y); elemMax.y = std::max(elemMax.y, p.y);
+            elemMin.z = std::min(elemMin.z, p.z); elemMax.z = std::max(elemMax.z, p.z);
+        }
+
+        element.BoundingBox.InitWithMinAndMax(elemMin, elemMax);
+
+        CommonUtilities::Vector3f center = element.BoundingBox.GetCenter();
+
+        float radius = (center - elemMin).Length();
+
         element.BoundingSphere.InitWithCenterAndRadius(
-            {
-                tgaElement.BoxSphereBounds.Center[0],
-                tgaElement.BoxSphereBounds.Center[1],
-                tgaElement.BoxSphereBounds.Center[2]
-            },
-            tgaElement.BoxSphereBounds.Radius
+            center,
+            radius
         );
 
-        element.BoundingBox.InitWithMinAndMax(
-            {
-                tgaElement.BoxBounds.Min[0],
-                tgaElement.BoxBounds.Min[1],
-                tgaElement.BoxBounds.Min[2]
-            },
-            {
-                tgaElement.BoxBounds.Max[0],
-                tgaElement.BoxBounds.Max[1],
-                tgaElement.BoxBounds.Max[2]
-            }
-        );
+        meshMin.x = std::min(meshMin.x, elemMin.x); meshMax.x = std::max(meshMax.x, elemMax.x);
+        meshMin.y = std::min(meshMin.y, elemMin.y); meshMax.y = std::max(meshMax.y, elemMax.y);
+        meshMin.z = std::min(meshMin.z, elemMin.z); meshMax.z = std::max(meshMax.z, elemMax.z);
 
         elements.emplace_back(std::move(element));
     }
@@ -203,28 +210,17 @@ bool MeshAsset::Load(const std::filesystem::path& aPath)
         skeleton->JointNameToIndex = std::move(tgaMesh->Skeleton.BoneNameToIndex);
     }
 
+    CommonUtilities::AABB3D<float> boundingBox;
+    boundingBox.InitWithMinAndMax(meshMin, meshMax);
+
+    CommonUtilities::Vector3f center = boundingBox.GetCenter();
+
+    float radius = (center - meshMin).Length();
+
     CommonUtilities::Sphere<float> boundingSphere;
     boundingSphere.InitWithCenterAndRadius(
-        {
-            tgaMesh->BoxSphereBounds.Center[0],
-            tgaMesh->BoxSphereBounds.Center[1],
-            tgaMesh->BoxSphereBounds.Center[2]
-        },
-        tgaMesh->BoxSphereBounds.Radius
-    );
-
-    CommonUtilities::AABB3D<float> boundingBox;
-    boundingBox.InitWithMinAndMax(
-        {
-            tgaMesh->BoxBounds.Min[0],
-            tgaMesh->BoxBounds.Min[1],
-            tgaMesh->BoxBounds.Min[2]
-        },
-        {
-            tgaMesh->BoxBounds.Max[0],
-            tgaMesh->BoxBounds.Max[1],
-            tgaMesh->BoxBounds.Max[2]
-        }
+        center,
+        radius
     );
 
     myMesh->Initialize(aPath.filename().string(), std::move(elements), std::move(meshVertices), std::move(meshIndices), std::move(skeleton), boundingSphere, boundingBox);
