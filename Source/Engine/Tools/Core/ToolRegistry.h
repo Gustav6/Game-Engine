@@ -7,6 +7,7 @@
 #include <unordered_map>
 
 #include <Tools/Core/Interface/ITool.h>
+#include <Wrappers/Logger/LoggerWrapper.h>
 
 // This registry holds all registered tools as well as their "factory" method.
 
@@ -27,6 +28,7 @@ public:
 
 		if (myTools.contains(type))
 		{
+			SPDLOG_WARN("Tried to register a tool that is already registered!");
 			return false;
 		}
 
@@ -51,6 +53,7 @@ public:
 
 		if (it == myTools.end())
 		{
+			SPDLOG_ERROR("Tried to create a tool that is not registered!");
 			return nullptr;
 		}
 

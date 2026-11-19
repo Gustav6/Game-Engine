@@ -1,6 +1,8 @@
 #include "Graphics/GraphicsEngine.pch.h"
 #include "ShadowRenderPass.h"
 
+#include <Graphics/GraphicsEngine.hpp>
+
 #include "CommonUtilities/Collision/Frustum.hpp"
 
 #include "Shared/DrawCallSubmitter.h"
@@ -189,7 +191,7 @@ void ShadowRenderPass::Execute(
 						FrameBuffer frameBuffer{};
 						frameBuffer.Projection = orthoProjection;
 						frameBuffer.View = lightView;
-						frameBuffer.ViewportSize = aContext.RHI->GetClientSize();
+						frameBuffer.ViewportSize = GraphicsEngine::Get().GetClientSize();
 
 						inoutCommandList.BeginEvent(std::format("Cascade Shadow Pass {}", (c + 1)));
 
@@ -232,7 +234,7 @@ void ShadowRenderPass::Execute(
 				frameBuffer.Projection = light.Projection;
 				frameBuffer.View = light.Transform.GetFastInverse();
 				frameBuffer.CameraPosition = light.Transform.GetTranslation();
-				frameBuffer.ViewportSize = aContext.RHI->GetClientSize();
+				frameBuffer.ViewportSize = GraphicsEngine::Get().GetClientSize();
 
 				inoutCommandList.BeginEvent("Spot Light Shadow Pass");
 
@@ -253,7 +255,7 @@ void ShadowRenderPass::Execute(
 				frameBuffer.Projection = light.Projection;
 				frameBuffer.View = light.Transform.GetFastInverse();
 				frameBuffer.CameraPosition = light.Transform.GetTranslation();
-				frameBuffer.ViewportSize = aContext.RHI->GetClientSize();
+				frameBuffer.ViewportSize = GraphicsEngine::Get().GetClientSize();
 
 				inoutCommandList.BeginEvent("Point Light Shadow Pass");
 

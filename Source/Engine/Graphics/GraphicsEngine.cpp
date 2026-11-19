@@ -199,9 +199,14 @@ FrameStats GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const C
 	{
 		inoutCommandList.BeginEvent("Clear Backbuffers");
 
-		inoutCommandList.ClearRenderTarget(*myBackBuffer);
 		inoutCommandList.ClearRenderTarget(*myHDRBuffer);
 		inoutCommandList.ClearDepthStencil(*myDepthBuffer);
+		inoutCommandList.ClearRenderTarget(*myBackBuffer);
+
+		if (myRenderTargetOverride != nullptr)
+		{
+			inoutCommandList.ClearRenderTarget(*myRenderTargetOverride->RenderTarget);
+		}
 
 		inoutCommandList.EndEvent();
 	}
@@ -445,6 +450,11 @@ FrameStats GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const C
 			.DepthBuffer = myDepthBuffer.get()
 		};
 
+		if (myRenderTargetOverride != nullptr)
+		{
+			targets.RenderTarget = myRenderTargetOverride->RenderTarget;
+		}
+
 		myScreenSpaceEffectPass->Execute(inoutCommandList, targets, context, myHDRBuffer.get());
 		myDebugRenderPass->Execute(inoutCommandList, targets, context);
 		myScreenSpaceRenderPass->Execute(inoutCommandList, screenSpaceItems, targets, context);
@@ -510,6 +520,17 @@ void GraphicsEngine::SetTonemap(ToneMapper aToneMapper)
 
 CommonUtilities::Vector2ui GraphicsEngine::GetClientSize() const
 {
+	if (myRenderTargetOverride != nullptr)
+	{
+		CommonUtilities::Vector2ui size = 
+		{
+			static_cast<unsigned int>(myRenderTargetOverride->RenderTarget->GetViewport().Width),
+			static_cast<unsigned int>(myRenderTargetOverride->RenderTarget->GetViewport().Height)
+		};
+
+		return size;
+	}
+
 	return myRHI->GetClientSize();
 }
 
@@ -574,6 +595,16 @@ void GraphicsEngine::ClearRenderOverlay()
 
 	myRenderOverlay->OnDetach();
 	myRenderOverlay = nullptr;
+}
+
+void GraphicsEngine::SetRenderTarget(std::unique_ptr<RenderTargetOverride> aOverride)
+{
+	myRenderTargetOverride = std::move(aOverride);
+}
+
+void GraphicsEngine::ClearRenderTargetOverride()
+{
+	myRenderTargetOverride = nullptr;
 }
 
 void GraphicsEngine::SetSettings(const RenderSettings& aSettings)

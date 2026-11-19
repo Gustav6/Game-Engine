@@ -94,7 +94,7 @@ bool ScreenSpaceEffectPass::Initialize(RenderHardwareInterface& aRHI)
 	{
 		mySceneLuminance = std::make_unique<Texture>();
 
-		CommonUtilities::Vector2ui clientSize = aRHI.GetClientSize();
+		CommonUtilities::Vector2ui clientSize = GraphicsEngine::Get().GetClientSize();
 
 		if (!aRHI.CreateTexture("SceneLuminance", clientSize.x, clientSize.y, 1, ResourceFormat::R16G16B16A16_FLOAT, ResourceBindFlag_ShaderResource | ResourceBindFlag_RenderTarget, *mySceneLuminance))
 		{
@@ -105,7 +105,7 @@ bool ScreenSpaceEffectPass::Initialize(RenderHardwareInterface& aRHI)
 
 	// Bloom Mips
 	{
-		CommonUtilities::Vector2ui mipSize = aRHI.GetClientSize() / 2u;
+		CommonUtilities::Vector2ui mipSize = GraphicsEngine::Get().GetClientSize() / 2u;
 
 		for (int i = 0; i < myBloomMips.size(); ++i)
 		{

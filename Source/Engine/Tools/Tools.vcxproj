@@ -129,14 +129,15 @@
     <ClInclude Include="Core\Interface\ITool.h" />
     <ClInclude Include="Core\ToolManager.h" />
     <ClInclude Include="Core\ToolRegistry.h" />
+    <ClInclude Include="Core\Toolbar.h" />
     <ClInclude Include="Custom\Debug\DebugInfo.h" />
     <ClInclude Include="Custom\Debug\DebugTool.h" />
     <ClInclude Include="Editor\AssetBrowser\AssetBrowser.h" />
     <ClInclude Include="Editor\Hierarchy\SceneHierarchy.h" />
     <ClInclude Include="Editor\Properties\PropertiesPanel.h" />
-    <ClInclude Include="Editor\Viewport\Viewport.h" />
+    <ClInclude Include="Editor\Viewport\SceneViewport.h" />
     <ClInclude Include="ImGui\ImGuiLayer.h" />
-    <ClInclude Include="Toolbar.h" />
+    <ClInclude Include="ImGui\ImGuiWidgets.h" />
     <ClInclude Include="Tools.pch.h" />
   </ItemGroup>
   <ItemGroup>
@@ -177,13 +178,14 @@
     <ClCompile Include="Core\Interface\ITool.cpp" />
     <ClCompile Include="Core\ToolManager.cpp" />
     <ClCompile Include="Core\ToolRegistry.cpp" />
+    <ClCompile Include="Core\Toolbar.cpp" />
     <ClCompile Include="Custom\Debug\DebugTool.cpp" />
     <ClCompile Include="Editor\AssetBrowser\AssetBrowser.cpp" />
     <ClCompile Include="Editor\Hierarchy\SceneHierarchy.cpp" />
     <ClCompile Include="Editor\Properties\PropertiesPanel.cpp" />
-    <ClCompile Include="Editor\Viewport\Viewport.cpp" />
+    <ClCompile Include="Editor\Viewport\SceneViewport.cpp" />
     <ClCompile Include="ImGui\ImGuiLayer.cpp" />
-    <ClCompile Include="Toolbar.cpp" />
+    <ClCompile Include="ImGui\ImGuiWidgets.cpp" />
     <ClCompile Include="Tools.pch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>

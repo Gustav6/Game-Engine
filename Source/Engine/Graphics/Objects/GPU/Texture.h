@@ -20,6 +20,9 @@ public:
 	std::string_view GetName() const { return myName; }
 	const Viewport& GetViewport() const { return myViewport; }
 
+	using NativeHandle = void*;
+	NativeHandle GetShaderResourceHandle() const { return mySRV.Get(); }
+
 private:
 	std::string myName;
 

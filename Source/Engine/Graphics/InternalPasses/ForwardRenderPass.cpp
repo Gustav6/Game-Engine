@@ -44,7 +44,7 @@ void ForwardRenderPass::Execute(
 	frameBuffer.Projection = aContext.Camera->RenderCamera.GetProjection();
 	frameBuffer.CameraPosition = aContext.Camera->Transform.GetTranslation();
 	frameBuffer.TypeOfRenderPass = static_cast<unsigned int>(aContext.RenderSettings->DebugRenderMode);
-	frameBuffer.ViewportSize = aContext.RHI->GetClientSize();
+	frameBuffer.ViewportSize = GraphicsEngine::Get().GetClientSize();
 
 	aContext.Buffers->UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::FrameBuffer, frameBuffer, 0, PipelineStage_VertexShader | PipelineStage_PixelShader);
 

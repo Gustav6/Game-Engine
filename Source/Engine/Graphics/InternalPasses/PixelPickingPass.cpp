@@ -1,7 +1,7 @@
 #include "Graphics/GraphicsEngine.pch.h"
 #include "PixelPickingPass.h"
 
-
+#include <Graphics/GraphicsEngine.hpp>
 
 #include "Shared/DrawCallSubmitter.h"
 
@@ -31,7 +31,7 @@ PixelPickingPass::~PixelPickingPass() = default;
 
 bool PixelPickingPass::Initialize(RenderHardwareInterface& aRHI)
 {
-    const CommonUtilities::Vector2ui resolution = aRHI.GetClientSize();
+    const CommonUtilities::Vector2ui clientSize = GraphicsEngine::Get().GetClientSize();
 
     {
         PipelineStateDescription pickingPSODesc{};
@@ -57,7 +57,7 @@ bool PixelPickingPass::Initialize(RenderHardwareInterface& aRHI)
     {
         myIDBuffer = std::make_unique<Texture>();
 
-        if (!aRHI.CreateTexture("IDBuffer", resolution.x, resolution.y, 1, ResourceFormat::R32_UINT, ResourceBindFlag_RenderTarget, *myIDBuffer))
+        if (!aRHI.CreateTexture("IDBuffer", clientSize.x, clientSize.y, 1, ResourceFormat::R32_UINT, ResourceBindFlag_RenderTarget, *myIDBuffer))
         {
             SPDLOG_ERROR("Failed to create IDBuffer texture!");
             return false;
@@ -77,7 +77,7 @@ bool PixelPickingPass::Initialize(RenderHardwareInterface& aRHI)
 	{
         myPickDepth = std::make_unique<Texture>();
 
-        if (!aRHI.CreateDepthStencil("PickDepth", resolution.x, resolution.y, *myPickDepth, false))
+        if (!aRHI.CreateDepthStencil("PickDepth", clientSize.x, clientSize.y, *myPickDepth, false))
         {
             SPDLOG_ERROR("Failed to create PickDepth texture!");
             return false;
@@ -106,7 +106,7 @@ void PixelPickingPass::Execute(
     frameBuffer.View = aContext.Camera->Transform.GetFastInverse();
     frameBuffer.Projection = aContext.Camera->RenderCamera.GetProjection();
     frameBuffer.CameraPosition = aContext.Camera->Transform.GetTranslation();
-    frameBuffer.ViewportSize = aContext.RHI->GetClientSize();
+    frameBuffer.ViewportSize = GraphicsEngine::Get().GetClientSize();
 
     aContext.Buffers->UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::FrameBuffer, frameBuffer, 0, PipelineStage_VertexShader | PipelineStage_PixelShader);
 

@@ -73,6 +73,23 @@ void SceneHierarchy::Update(float aDeltaTime)
 
 void SceneHierarchy::Render()
 {
+	if (mySelectedActor != nullptr)
+	{
+		MeshComponent* mesh = mySelectedActor->GetComponent<MeshComponent>();
+
+		if (mesh != nullptr)
+		{
+			mesh->RenderOutline();
+		}
+
+		InstancedMeshComponent* instancedMesh = mySelectedActor->GetComponent<InstancedMeshComponent>();
+
+		if (instancedMesh != nullptr)
+		{
+			instancedMesh->RenderOutline();
+		}
+	}
+
 	ImGui::Begin("Scene Hierarchy", nullptr, ImGuiWindowFlags_AlwaysAutoResize);
 
 	ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_DrawLinesToNodes | ImGuiTreeNodeFlags_DefaultOpen;

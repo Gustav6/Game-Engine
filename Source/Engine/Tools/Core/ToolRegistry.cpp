@@ -4,6 +4,8 @@
 #include <Tools/Custom/Debug/DebugTool.h>
 
 #include <Tools/Editor/Hierarchy/SceneHierarchy.h>
+#include <Tools/Editor/Viewport/SceneViewport.h>
+#include <Tools/Editor/AssetBrowser/AssetBrowser.h>
 
 ToolRegistry& ToolRegistry::Get()
 {
@@ -18,6 +20,8 @@ bool ToolRegistry::Initialize()
 {
     RegisterTool<DebugTool>();
     RegisterTool<SceneHierarchy>();
+    RegisterTool<SceneViewport>();
+    RegisterTool<AssetBrowser>();
 
     return true;
 }

@@ -44,18 +44,11 @@
 
 #include <Tools/Custom/Debug/DebugTool.h>
 #include <Tools/Editor/Hierarchy/SceneHierarchy.h>
+#include <Tools/Editor/Viewport/SceneViewport.h>
 
 #include <Tools/ImGui/ImGuiLayer.h>
 #include <ImGui/imgui.h>
 #endif
-
-
-// TODO: Temp
-#include <Core/Scene/Components/Concrete/Transform/Transform.h>
-#include <Core/Scene/Components/Concrete/Rendering/MeshComponent.h>
-#include <Core/Scene/Components/Concrete/Rendering/InstancedMeshComponent.h>
-#include <Graphics/Drawers/DebugDrawer.h>
-
 
 Game::Game() = default;
 Game::~Game() = default;
@@ -192,6 +185,7 @@ bool Game::Initialize(SIZE aWindowSize, WNDPROC aWindowProcess, LPCWSTR aWindowT
 
 		ToolManager::Get().AddTool<DebugTool>(); 
 		ToolManager::Get().AddTool<SceneHierarchy>();
+		//ToolManager::Get().AddTool<SceneViewport>();
 
 		ToolManager::Get().GetTool<SceneHierarchy>()->SetCameraReference(&GEngineContext.GameCamera->GetCameraData());
 	}
@@ -254,26 +248,9 @@ int Game::Run()
 			RenderScene();
 
 #ifndef _RETAIL
-			Actor* selectedActor = ToolManager::Get().GetTool<SceneHierarchy>()->GetSelectedActor();
-
-			if (selectedActor != nullptr)
-			{
-				MeshComponent* mesh = selectedActor->GetComponent<MeshComponent>();
-
-				if (mesh != nullptr)
-				{
-					mesh->RenderOutline();
-				}
-
-				InstancedMeshComponent* instancedMesh = selectedActor->GetComponent<InstancedMeshComponent>();
-
-				if (instancedMesh != nullptr)
-				{
-					instancedMesh->RenderOutline();
-				}
-			}
-
+			ToolManager::Get().Render();
 #endif
+
 			FrameStats frameStats = GE.Render(*myGraphicsCommandList, GEngineContext.GameCamera->GetCameraData());
 
 #ifndef _RETAIL
@@ -288,8 +265,6 @@ int Game::Run()
 			};
 
 			ToolManager::Get().GetTool<DebugTool>()->SetInfo(info);
-
-			ToolManager::Get().Render();
 #endif
 	
 			myGraphicsCommandList->FinishCommandList();

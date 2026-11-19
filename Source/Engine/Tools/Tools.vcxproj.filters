@@ -69,6 +69,9 @@
     <ClInclude Include="Core\ToolRegistry.h">
       <Filter>Core</Filter>
     </ClInclude>
+    <ClInclude Include="Core\Toolbar.h">
+      <Filter>Core</Filter>
+    </ClInclude>
     <ClInclude Include="Custom\Debug\DebugInfo.h">
       <Filter>Custom\Debug</Filter>
     </ClInclude>
@@ -84,13 +87,15 @@
     <ClInclude Include="Editor\Properties\PropertiesPanel.h">
       <Filter>Editor\Properties</Filter>
     </ClInclude>
-    <ClInclude Include="Editor\Viewport\Viewport.h">
+    <ClInclude Include="Editor\Viewport\SceneViewport.h">
       <Filter>Editor\Viewport</Filter>
     </ClInclude>
     <ClInclude Include="ImGui\ImGuiLayer.h">
       <Filter>ImGui</Filter>
     </ClInclude>
-    <ClInclude Include="Toolbar.h" />
+    <ClInclude Include="ImGui\ImGuiWidgets.h">
+      <Filter>ImGui</Filter>
+    </ClInclude>
     <ClInclude Include="Tools.pch.h" />
   </ItemGroup>
   <ItemGroup>
@@ -133,6 +138,9 @@
     <ClCompile Include="Core\ToolRegistry.cpp">
       <Filter>Core</Filter>
     </ClCompile>
+    <ClCompile Include="Core\Toolbar.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
     <ClCompile Include="Custom\Debug\DebugTool.cpp">
       <Filter>Custom\Debug</Filter>
     </ClCompile>
@@ -145,13 +153,15 @@
     <ClCompile Include="Editor\Properties\PropertiesPanel.cpp">
       <Filter>Editor\Properties</Filter>
     </ClCompile>
-    <ClCompile Include="Editor\Viewport\Viewport.cpp">
+    <ClCompile Include="Editor\Viewport\SceneViewport.cpp">
       <Filter>Editor\Viewport</Filter>
     </ClCompile>
     <ClCompile Include="ImGui\ImGuiLayer.cpp">
       <Filter>ImGui</Filter>
     </ClCompile>
-    <ClCompile Include="Toolbar.cpp" />
+    <ClCompile Include="ImGui\ImGuiWidgets.cpp">
+      <Filter>ImGui</Filter>
+    </ClCompile>
     <ClCompile Include="Tools.pch.cpp" />
   </ItemGroup>
 </Project>

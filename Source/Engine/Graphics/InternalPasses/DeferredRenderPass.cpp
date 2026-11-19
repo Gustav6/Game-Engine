@@ -45,9 +45,9 @@ bool DeferredRenderPass::Initialize(RenderHardwareInterface& aRHI)
 	{
 		myGBuffer = std::make_unique<GBuffer>();
 
-		CommonUtilities::Vector2ui renderSize = aRHI.GetClientSize();
+		CommonUtilities::Vector2ui clientSize = GraphicsEngine::Get().GetClientSize();
 
-		aRHI.CreateGBuffer("GBuffer", renderSize.x, renderSize.y, *myGBuffer);
+		aRHI.CreateGBuffer("GBuffer", clientSize.x, clientSize.y, *myGBuffer);
 	}
 
 	// Deffered Ambient light
@@ -159,7 +159,7 @@ bool DeferredRenderPass::Initialize(RenderHardwareInterface& aRHI)
 
 	// SSAO Textures
 	{
-		CommonUtilities::Vector2ui clientSize = aRHI.GetClientSize();
+		CommonUtilities::Vector2ui clientSize = GraphicsEngine::Get().GetClientSize();
 		CommonUtilities::Vector2ui halfClientSize = clientSize / 2u;
 
 		myHalfSizeSSAOTexture = std::make_unique<Texture>();
@@ -214,7 +214,7 @@ void DeferredRenderPass::Execute(
 	frameBuffer.CameraPosition = aContext.Camera->Transform.GetTranslation();
 	frameBuffer.TypeOfRenderPass = static_cast<unsigned int>(aContext.RenderSettings->DebugRenderMode);
 	frameBuffer.SSAOFlag = mySSAOEnabled;
-	frameBuffer.ViewportSize = aContext.RHI->GetClientSize();
+	frameBuffer.ViewportSize = GraphicsEngine::Get().GetClientSize();
 
 	aContext.Buffers->UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::FrameBuffer, frameBuffer, 0, PipelineStage_VertexShader | PipelineStage_PixelShader);
 

@@ -8,10 +8,25 @@
 #include <unordered_map>
 
 #include "ToolRegistry.h"
+#include "Toolbar.h"
 #include <Tools/Core/Interface/ITool.h>
 
 // TODO: Add method to set different settings such as font.
 // TODO: Add method to allow the user to set dock settings.
+
+enum class DockSlot
+{
+    None,
+    Center,
+    Left,
+    Right,
+    Top,
+    Bottom,
+    TopLeft,
+    BottomLeft,
+    TopRight,
+    BottomRight
+};
 
 class ToolManager
 {
@@ -25,7 +40,7 @@ public:
 
     template<typename ToolClass>
     requires std::is_base_of_v<ITool, ToolClass>
-    bool AddTool()
+    bool AddTool(DockSlot aDockSlot = DockSlot::None)
     {
         const std::type_index type = typeid(ToolClass);
 
@@ -36,14 +51,7 @@ public:
 
         std::unique_ptr<ITool> tool = ToolRegistry::Get().CreateTool<ToolClass>();
 
-        if (tool == nullptr)
-        {
-            return false;
-        }
-
-        myTools.emplace(type, std::move(tool));
-
-        return true;
+        return AddToolInternal(std::move(tool), type, aDockSlot);
     }
 
     template<typename ToolClass>
@@ -83,5 +91,8 @@ public:
 private:
 	ToolManager();
 
+    bool AddToolInternal(std::unique_ptr<ITool> aTool, std::type_index aTypeIndex, DockSlot aDockSlot);
+
     std::unordered_map<std::type_index, std::unique_ptr<ITool>> myTools;
+    Toolbar myToolbar;
 };

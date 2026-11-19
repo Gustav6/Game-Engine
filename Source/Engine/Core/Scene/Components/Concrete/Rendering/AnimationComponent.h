@@ -13,6 +13,8 @@ struct Animation;
 struct Skeleton;
 class AnimationAsset;
 
+// TODO: Fix layers not blending correctly.
+
 enum class JointGroup
 {
 	All,

@@ -4,6 +4,8 @@
 #include <d3dcompiler.h>
 #include <fstream>
 
+#include <Graphics/GraphicsEngine.hpp>
+
 #include "StringHelpers.h"
 #include "Graphics/Objects/GPU/Buffer.h"
 #include "Graphics/Objects/GPU/Texture.h"
@@ -174,7 +176,7 @@ bool RenderHardwareInterface::Initialize(HWND aWindowHandle, bool aEnableDebug, 
 
 	SetObjectName(outBackBuffer.myRTV, "BackBuffer_RTV");
 
-	CommonUtilities::Vector2ui clientSize = GetClientSize();
+	CommonUtilities::Vector2ui clientSize = GraphicsEngine::Get().GetClientSize();
 	Viewport viewport = { 0, 0, static_cast<float>(clientSize.x), static_cast<float>(clientSize.y), 0, 1 };
 	outBackBuffer.myViewport = viewport;
 

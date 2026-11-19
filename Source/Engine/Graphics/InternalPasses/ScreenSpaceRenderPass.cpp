@@ -1,6 +1,8 @@
 #include "Graphics/GraphicsEngine.pch.h"
 #include "ScreenSpaceRenderPass.h"
 
+#include <Graphics/GraphicsEngine.hpp>
+
 #include "CommonUtilities/Math/Matrix4x4.hpp"
 #include "CommonUtilities/Math/Vector2.hpp"
 
@@ -134,10 +136,10 @@ void ScreenSpaceRenderPass::RenderText(
 	const TextDrawCall& aDrawCall, 
 	RenderContext& aContext)
 {
-	const CommonUtilities::Vector2ui windowSize = aContext.RHI->GetClientSize();
+	const CommonUtilities::Vector2ui clientSize = GraphicsEngine::Get().GetClientSize();
 
 	CommonUtilities::Matrix4x4f scale;
-	scale.SetScaling({ 2.0f / static_cast<float>(windowSize.x), -2.0f / static_cast<float>(windowSize.y), 1.0f });
+	scale.SetScaling({ 2.0f / static_cast<float>(clientSize.x), -2.0f / static_cast<float>(clientSize.y), 1.0f });
 
 	CommonUtilities::Matrix4x4f translation;
 	translation.SetTranslation({ -1.0f, 1.0f, 0.0f });
@@ -148,7 +150,7 @@ void ScreenSpaceRenderPass::RenderText(
 	frameBuffer.View = aContext.Camera->Transform.GetFastInverse();
 	frameBuffer.Projection = aContext.Camera->RenderCamera.GetProjection();
 	frameBuffer.CameraPosition = aContext.Camera->Transform.GetTranslation();
-	frameBuffer.ViewportSize = aContext.RHI->GetClientSize();
+	frameBuffer.ViewportSize = GraphicsEngine::Get().GetClientSize();
 
 	aContext.Buffers->UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::FrameBuffer, frameBuffer, 0, PipelineStage_VertexShader | PipelineStage_PixelShader);
 
@@ -205,7 +207,7 @@ void ScreenSpaceRenderPass::RenderSprite(
 {
 	FrameBuffer frameBuffer{};
 	frameBuffer.Projection = mySpriteProjection;
-	frameBuffer.ViewportSize = aContext.RHI->GetClientSize();
+	frameBuffer.ViewportSize = GraphicsEngine::Get().GetClientSize();
 	aContext.Buffers->UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::FrameBuffer, frameBuffer, 0, PipelineStage_VertexShader | PipelineStage_PixelShader);
 
 	mySpriteVertices.clear();

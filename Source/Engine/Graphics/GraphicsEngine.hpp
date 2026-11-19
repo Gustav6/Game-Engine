@@ -63,6 +63,11 @@ struct RenderSettings
 	bool VSyncEnabled = false;
 };
 
+struct RenderTargetOverride
+{
+	Texture* RenderTarget = nullptr;
+};
+
 class GraphicsEngine
 {
 public:
@@ -100,6 +105,9 @@ public:
 
 	void SetRenderOverlay(RenderOverlay* aOverlay);
 	void ClearRenderOverlay();
+
+	void SetRenderTarget(std::unique_ptr<RenderTargetOverride> aOverride);
+	void ClearRenderTargetOverride();
 
 	void SetSettings(const RenderSettings& aSettings);
 	const RenderSettings& GetSettings() const;
@@ -151,5 +159,6 @@ private:
 	std::vector<RenderItem> myForwardItems;
 	std::vector<RenderItem> myShadowItems;
 
+	std::unique_ptr<RenderTargetOverride> myRenderTargetOverride;
 	RenderOverlay* myRenderOverlay = nullptr;
 };

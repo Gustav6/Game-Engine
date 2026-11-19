@@ -120,86 +120,76 @@ void GameCamera::UpdateFrustum() const
 
 void GameCamera::UpdateFreeLook(float aDeltaTime)
 {
-	ImGuiIO& imGuiIO = ImGui::GetIO();
-	const bool imguiMouseFocused = imGuiIO.WantCaptureMouse && !ImGuizmo::IsOver();
-	const bool imguiKeyboardFocused = imGuiIO.WantCaptureKeyboard;
-
-	if (!imguiKeyboardFocused)
+	if (GEngineContext.InputManager.IsKeyDown(KeyCode::W))
 	{
-		if (GEngineContext.InputManager.IsKeyDown(KeyCode::W))
-		{
-			GetComponent<Transform>()->Translate(GetComponent<Transform>()->GetForward() * myCameraMoveSpeed * aDeltaTime);
+		GetComponent<Transform>()->Translate(GetComponent<Transform>()->GetForward() * myCameraMoveSpeed * aDeltaTime);
 
-			myIsDirty = true;
-		}
-
-		if (GEngineContext.InputManager.IsKeyDown(KeyCode::A))
-		{
-			GetComponent<Transform>()->Translate(-GetComponent<Transform>()->GetRight() * myCameraMoveSpeed * aDeltaTime);
-
-			myIsDirty = true;
-		}
-
-		if (GEngineContext.InputManager.IsKeyDown(KeyCode::S))
-		{
-			GetComponent<Transform>()->Translate(-GetComponent<Transform>()->GetForward() * myCameraMoveSpeed * aDeltaTime);
-
-			myIsDirty = true;
-		}
-
-		if (GEngineContext.InputManager.IsKeyDown(KeyCode::D))
-		{
-			GetComponent<Transform>()->Translate(GetComponent<Transform>()->GetRight() * myCameraMoveSpeed * aDeltaTime);
-
-			myIsDirty = true;
-		}
-
-		if (GEngineContext.InputManager.IsKeyDown(KeyCode::Space))
-		{
-			GetComponent<Transform>()->Translate(GetComponent<Transform>()->GetUp() * myCameraMoveSpeed * aDeltaTime);
-
-			myIsDirty = true;
-		}
-
-		if (GEngineContext.InputManager.IsKeyDown(KeyCode::Control))
-		{
-			GetComponent<Transform>()->Translate(-GetComponent<Transform>()->GetUp() * myCameraMoveSpeed * aDeltaTime);
-
-			myIsDirty = true;
-		}
+		myIsDirty = true;
 	}
 
-	if (!imguiMouseFocused)
+	if (GEngineContext.InputManager.IsKeyDown(KeyCode::A))
 	{
-		if (GEngineContext.InputManager.IsKeyPressed(KeyCode::RMB))
-		{
-			GEngineContext.InputManager.CaptureMouse();
-			GEngineContext.InputManager.HideMouse();
-			GEngineContext.InputManager.CenterCursor();
-		}
-		else if (GEngineContext.InputManager.IsKeyReleased(KeyCode::RMB))
-		{
-			GEngineContext.InputManager.ReleaseMouse();
-			GEngineContext.InputManager.ShowMouse();
-		}
+		GetComponent<Transform>()->Translate(-GetComponent<Transform>()->GetRight() * myCameraMoveSpeed * aDeltaTime);
 
-		if (GEngineContext.InputManager.IsKeyDown(KeyCode::RMB))
-		{
-			const CommonUtilities::Vector2f mouseDelta = GEngineContext.InputManager.GetCapturedMouseDelta();
+		myIsDirty = true;
+	}
 
-			float pitch = mouseDelta.y * myMouseSensitivity;
-			float yaw = mouseDelta.x * myMouseSensitivity;
+	if (GEngineContext.InputManager.IsKeyDown(KeyCode::S))
+	{
+		GetComponent<Transform>()->Translate(-GetComponent<Transform>()->GetForward() * myCameraMoveSpeed * aDeltaTime);
 
-			CommonUtilities::Quaternion<float> pitchQuat({ 1.0f, 0.0f, 0.0f }, pitch);
-			CommonUtilities::Quaternion<float> yawQuat({ 0.0f, 1.0f, 0.0f }, yaw);
+		myIsDirty = true;
+	}
 
-			GetComponent<Transform>()->Rotate(pitchQuat, false);
-			GetComponent<Transform>()->Rotate(yawQuat, true);
+	if (GEngineContext.InputManager.IsKeyDown(KeyCode::D))
+	{
+		GetComponent<Transform>()->Translate(GetComponent<Transform>()->GetRight() * myCameraMoveSpeed * aDeltaTime);
 
-			GEngineContext.InputManager.CenterCursor();
+		myIsDirty = true;
+	}
 
-			myIsDirty = true;
-		}
+	if (GEngineContext.InputManager.IsKeyDown(KeyCode::Space))
+	{
+		GetComponent<Transform>()->Translate(GetComponent<Transform>()->GetUp() * myCameraMoveSpeed * aDeltaTime);
+
+		myIsDirty = true;
+	}
+
+	if (GEngineContext.InputManager.IsKeyDown(KeyCode::Control))
+	{
+		GetComponent<Transform>()->Translate(-GetComponent<Transform>()->GetUp() * myCameraMoveSpeed * aDeltaTime);
+
+		myIsDirty = true;
+	}
+
+	if (GEngineContext.InputManager.IsKeyPressed(KeyCode::RMB))
+	{
+		GEngineContext.InputManager.CaptureMouse();
+		GEngineContext.InputManager.HideMouse();
+		GEngineContext.InputManager.CenterCursor();
+	}
+	else if (GEngineContext.InputManager.IsKeyReleased(KeyCode::RMB))
+	{
+		GEngineContext.InputManager.ReleaseMouse();
+		GEngineContext.InputManager.ShowMouse();
+	}
+
+	if (GEngineContext.InputManager.IsKeyDown(KeyCode::RMB))
+	{
+		const CommonUtilities::Vector2f mouseDelta = GEngineContext.InputManager.GetCapturedMouseDelta();
+
+		float pitch = mouseDelta.y * myMouseSensitivity;
+		float yaw = mouseDelta.x * myMouseSensitivity;
+
+		CommonUtilities::Quaternion<float> pitchQuat({ 1.0f, 0.0f, 0.0f }, pitch);
+		CommonUtilities::Quaternion<float> yawQuat({ 0.0f, 1.0f, 0.0f }, yaw);
+
+		GetComponent<Transform>()->Rotate(pitchQuat, false);
+		GetComponent<Transform>()->Rotate(yawQuat, true);
+
+		GEngineContext.InputManager.CenterCursor();
+
+		myIsDirty = true;
 	}
 }
 
