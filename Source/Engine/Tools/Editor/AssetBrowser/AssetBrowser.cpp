@@ -23,7 +23,9 @@ void AssetBrowser::Render()
     {
         if (item.is_regular_file() && item.path().has_extension())
         {
-            
+            std::string assetName = item.path().stem().string();
+
+            ImGui::Text(assetName.c_str());
         }
     }
 

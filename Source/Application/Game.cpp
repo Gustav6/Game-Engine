@@ -45,6 +45,7 @@
 #include <Tools/Custom/Debug/DebugTool.h>
 #include <Tools/Editor/Hierarchy/SceneHierarchy.h>
 #include <Tools/Editor/Viewport/SceneViewport.h>
+#include <Tools/Editor/AssetBrowser/AssetBrowser.h>
 
 #include <Tools/ImGui/ImGuiLayer.h>
 #include <ImGui/imgui.h>
@@ -185,7 +186,8 @@ bool Game::Initialize(SIZE aWindowSize, WNDPROC aWindowProcess, LPCWSTR aWindowT
 
 		ToolManager::Get().AddTool<DebugTool>(); 
 		ToolManager::Get().AddTool<SceneHierarchy>();
-		//ToolManager::Get().AddTool<SceneViewport>();
+		ToolManager::Get().AddTool<SceneViewport>();
+		ToolManager::Get().AddTool<AssetBrowser>();
 
 		ToolManager::Get().GetTool<SceneHierarchy>()->SetCameraReference(&GEngineContext.GameCamera->GetCameraData());
 	}
