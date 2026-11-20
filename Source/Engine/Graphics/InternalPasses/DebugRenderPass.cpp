@@ -23,16 +23,21 @@
 #include "Graphics/Objects/GPU/Vertex.h"
 #include "Graphics/Objects/Mesh/Mesh.h"
 #include "Graphics/Objects/GPU/Buffer.h"
+#include <Graphics/Objects/GPU/Texture.h>
 
 #include "Graphics/Drawers/DebugDrawer.h"
 #include "Graphics/Buffers/InstanceDataBuffer.h"
+#include "Graphics/Objects/GPU/GBuffer.h"
+
 #include "Surface_VS.h"
 #include "Unlit_PS.h"
 #include "Line_PS.h"
 #include "Line_VS.h"
-
 #include "Outline_VS.h"
 #include "Outline_PS.h"
+#include "SolidColor_PS.h"
+#include "OutlineScreenSpace_PS.h"
+#include "Fullscreen_VS.h"
 
 constexpr size_t MAX_LINEVERTEX_PER_DRAWCALL = 1000;
 
@@ -82,19 +87,51 @@ bool DebugRenderPass::Initialize(RenderHardwareInterface& aRHI)
 	{
 		PipelineStateDescription outlinePSODesc;
 		outlinePSODesc.Name = "Outline Mesh";
-		outlinePSODesc.VertexShader.ByteCode = INTERNAL_Outline_VS_ByteCode;
-		outlinePSODesc.VertexShader.ByteCodeSize = sizeof(INTERNAL_Outline_VS_ByteCode);
-		outlinePSODesc.PixelShader.ByteCode = INTERNAL_Outline_PS_ByteCode;
-		outlinePSODesc.PixelShader.ByteCodeSize = sizeof(INTERNAL_Outline_PS_ByteCode);
-		outlinePSODesc.InputLayoutElements = Vertex::Description;
-		outlinePSODesc.BlendMode = BlendMode::Alpha;
-		outlinePSODesc.RasterizerState = RasterizerState::FillSolidCullFront;
+		outlinePSODesc.VertexShader.ByteCode = INTERNAL_Fullscreen_VS_ByteCode;
+		outlinePSODesc.VertexShader.ByteCodeSize = sizeof(INTERNAL_Fullscreen_VS_ByteCode);
+		outlinePSODesc.PixelShader.ByteCode = INTERNAL_OutlineScreenSpace_PS_ByteCode;
+		outlinePSODesc.PixelShader.ByteCodeSize = sizeof(INTERNAL_OutlineScreenSpace_PS_ByteCode);
+		outlinePSODesc.Topology = Topology::TriangleStrip;
+		outlinePSODesc.BlendMode = BlendMode::Opaque;
 
 		myMeshOutlinePSO = std::make_unique<PipelineStateObject>();
 
 		if (!aRHI.CreatePipelineStateObject(outlinePSODesc, *myMeshOutlinePSO))
 		{
 			SPDLOG_CRITICAL("Failed to create Outline pipeline state object!");
+			return false;
+		}
+	}
+
+	// Outline Mesh Mask PSO
+	{
+		PipelineStateDescription outlinePSODesc;
+		outlinePSODesc.Name = "Outline Mesh Mask";
+		outlinePSODesc.VertexShader.ByteCode = INTERNAL_Surface_VS_ByteCode;
+		outlinePSODesc.VertexShader.ByteCodeSize = sizeof(INTERNAL_Surface_VS_ByteCode);
+		outlinePSODesc.PixelShader.ByteCode = INTERNAL_SolidColor_PS_ByteCode;
+		outlinePSODesc.PixelShader.ByteCodeSize = sizeof(INTERNAL_SolidColor_PS_ByteCode);
+		outlinePSODesc.InputLayoutElements = Vertex::Description;
+		outlinePSODesc.BlendMode = BlendMode::Opaque;
+
+		myMeshOutlineMaskPSO = std::make_unique<PipelineStateObject>();
+
+		if (!aRHI.CreatePipelineStateObject(outlinePSODesc, *myMeshOutlineMaskPSO))
+		{
+			SPDLOG_CRITICAL("Failed to create Outline pipeline state object!");
+			return false;
+		}
+	}
+
+	// Outline Mesh Buffer Texture
+	{
+		myOutlineBuffer = std::make_unique<Texture>();
+
+		CommonUtilities::Vector2ui clientSize = GraphicsEngine::Get().GetClientSize();
+
+		if (!aRHI.CreateTexture("OutlineBuffer", clientSize.x, clientSize.y, 1, ResourceFormat::R16G16B16A16_FLOAT, ResourceBindFlag_ShaderResource | ResourceBindFlag_RenderTarget, *myOutlineBuffer))
+		{
+			SPDLOG_CRITICAL("Failed to create Scene Luminance texture!");
 			return false;
 		}
 	}
@@ -146,7 +183,7 @@ void DebugRenderPass::Execute(
 	aContext.Buffers->UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::FrameBuffer, frameBuffer, 0, PipelineStage_VertexShader | PipelineStage_PixelShader);
 
 	RenderWireMeshes(inoutCommandList, aContext);
-	RenderOutlines(inoutCommandList, aContext);
+	RenderOutlines(inoutCommandList, aContext, aFrameTargets);
 	RenderLines(inoutCommandList, aContext);
 
 	inoutCommandList.EndEvent();
@@ -160,6 +197,8 @@ void DebugRenderPass::RenderWireMeshes(GraphicsCommandList& inoutCommandList, Re
 	{
 		return;
 	}
+
+	inoutCommandList.BeginEvent("Wire Meshes");
 
 	// TODO: Add support to color the wireframes!
 
@@ -207,6 +246,8 @@ void DebugRenderPass::RenderWireMeshes(GraphicsCommandList& inoutCommandList, Re
 
 		inoutCommandList.EndEvent();
 	}
+
+	inoutCommandList.EndEvent();
 }
 
 void DebugRenderPass::RenderLines(GraphicsCommandList& inoutCommandList, RenderContext& aContext)
@@ -219,6 +260,8 @@ void DebugRenderPass::RenderLines(GraphicsCommandList& inoutCommandList, RenderC
 	{
 		return;
 	}
+
+	inoutCommandList.BeginEvent("Lines");
 
 	inoutCommandList.SetPipelineStateObject(*myLinePSO);
 
@@ -249,9 +292,11 @@ void DebugRenderPass::RenderLines(GraphicsCommandList& inoutCommandList, RenderC
 
 		inoutCommandList.DrawSpecificVertices(static_cast<unsigned int>(count), 0);
 	}
+
+	inoutCommandList.EndEvent();
 }
 
-void DebugRenderPass::RenderOutlines(GraphicsCommandList& inoutCommandList, RenderContext& aContext)
+void DebugRenderPass::RenderOutlines(GraphicsCommandList& inoutCommandList, RenderContext& aContext, FrameTargets& aFrameTargets)
 {
 	const std::vector<OutlineDrawCall>& outlineCalls = DebugDrawer::Get().GetMeshOutlineDrawCalls();
 
@@ -260,7 +305,12 @@ void DebugRenderPass::RenderOutlines(GraphicsCommandList& inoutCommandList, Rend
 		return;
 	}
 
-	inoutCommandList.SetPipelineStateObject(*myMeshWireframePSO);
+	inoutCommandList.BeginEvent("Outlines");
+
+	inoutCommandList.SetPipelineStateObject(*myMeshOutlineMaskPSO);
+
+	inoutCommandList.SetRenderTarget(myOutlineBuffer.get(), nullptr);
+	inoutCommandList.ClearRenderTarget(*myOutlineBuffer);
 
 	for (const auto& drawCall : outlineCalls)
 	{
@@ -296,16 +346,16 @@ void DebugRenderPass::RenderOutlines(GraphicsCommandList& inoutCommandList, Rend
 			ObjectBuffer objectBuffer;
 			objectBuffer.World = drawCall.Transform;
 			objectBuffer.WorldInvT = (drawCall.Transform.GetInverse()).GetTranspose();
-			objectBuffer.Color = drawCall.Color;
+			objectBuffer.Color = { 0.f, 1.f, 0.f, 1.f };
 			objectBuffer.IsInstanced = drawCall.Instances != nullptr;
 
-			aContext.Buffers->UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::ObjectBuffer, objectBuffer, 1, PipelineStage_VertexShader);
+			aContext.Buffers->UpdateAndSetConstantBuffer(inoutCommandList, ConstantBuffer::ObjectBuffer, objectBuffer, 1, PipelineStage_VertexShader | PipelineStage_PixelShader);
 
 			if (objectBuffer.IsInstanced)
 			{
 				const unsigned int instanceCount = std::min(drawCall.AmountOfInstances, MAX_MESH_INSTANCES);
 
-				if (instanceCount > MAX_MESH_INSTANCES)
+				if (drawCall.AmountOfInstances > MAX_MESH_INSTANCES)
 				{
 					SPDLOG_WARN("Too many instances submitted!");
 					continue;
@@ -328,4 +378,15 @@ void DebugRenderPass::RenderOutlines(GraphicsCommandList& inoutCommandList, Rend
 
 		inoutCommandList.EndEvent();
 	}
+
+	inoutCommandList.SetPipelineStateObject(*myMeshOutlinePSO);
+
+	inoutCommandList.SetRenderTarget(aFrameTargets.RenderTarget, nullptr);
+
+	inoutCommandList.SetShaderResource(myOutlineBuffer.get(), 0, PipelineStage_PixelShader);
+	inoutCommandList.Draw(4);
+
+	inoutCommandList.SetRenderTarget(aFrameTargets.RenderTarget, aFrameTargets.DepthBuffer);
+
+	inoutCommandList.EndEvent();
 }

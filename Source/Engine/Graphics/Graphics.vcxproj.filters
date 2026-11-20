@@ -458,10 +458,10 @@
     <FxCompile Include="Shaders\Line_VS.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>
-    <FxCompile Include="Shaders\Outline_PS.hlsl">
+    <FxCompile Include="Shaders\OutlineInverseHull_VS.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>
-    <FxCompile Include="Shaders\Outline_VS.hlsl">
+    <FxCompile Include="Shaders\OutlineScreenSpace_PS.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>
     <FxCompile Include="Shaders\PixelPicking_PS.hlsl">
@@ -496,6 +496,9 @@
     </FxCompile>
     <FxCompile Include="Shaders\Shadows\ShadowCube_GS.hlsl">
       <Filter>Shaders\Shadows</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\SolidColor_PS.hlsl">
+      <Filter>Shaders</Filter>
     </FxCompile>
     <FxCompile Include="Shaders\UI\Font_PS.hlsl">
       <Filter>Shaders\UI</Filter>

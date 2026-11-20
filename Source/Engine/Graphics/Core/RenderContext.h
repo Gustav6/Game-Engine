@@ -6,6 +6,7 @@ class RenderHardwareInterface;
 class BuiltinAssets;
 class BufferManager;
 class PostProcessFilters;
+class Texture;
 
 struct ShadowCascade;
 struct CameraData;
@@ -23,4 +24,5 @@ struct RenderContext
     const CameraData* Camera = nullptr;
     RenderSettings* RenderSettings = {};
     const std::array<ShadowCascade, 4>* CascadeShadows = nullptr; // NUM_CASCADES
+    std::array<const Texture*, 5> GBufferTextures {}; // NUM_GBUFFER_TARGETS
 };

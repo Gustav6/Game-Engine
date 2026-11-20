@@ -444,23 +444,6 @@ FrameStats GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const C
 	inoutCommandList.EndEvent();
 
 	{
-		FrameTargets targets =
-		{
-			.RenderTarget = myBackBuffer.get(),
-			.DepthBuffer = myDepthBuffer.get()
-		};
-
-		if (myRenderTargetOverride != nullptr)
-		{
-			targets.RenderTarget = myRenderTargetOverride->RenderTarget;
-		}
-
-		myScreenSpaceEffectPass->Execute(inoutCommandList, targets, context, myHDRBuffer.get());
-		myDebugRenderPass->Execute(inoutCommandList, targets, context);
-		myScreenSpaceRenderPass->Execute(inoutCommandList, screenSpaceItems, targets, context);
-	}
-
-	{
 		std::vector<RenderItem> allItems;
 		allItems.reserve(myDeferredItems.size() + myForwardItems.size());
 
@@ -477,6 +460,23 @@ FrameStats GraphicsEngine::Render(GraphicsCommandList& inoutCommandList, const C
 		);
 
 		myPixelPickingPass->Execute(inoutCommandList, allItems, context);
+	}
+
+	{
+		FrameTargets targets =
+		{
+			.RenderTarget = myBackBuffer.get(),
+			.DepthBuffer = myDepthBuffer.get()
+		};
+
+		if (myRenderTargetOverride != nullptr)
+		{
+			targets.RenderTarget = myRenderTargetOverride->RenderTarget;
+		}
+
+		myScreenSpaceEffectPass->Execute(inoutCommandList, targets, context, myHDRBuffer.get());
+		myDebugRenderPass->Execute(inoutCommandList, targets, context);
+		myScreenSpaceRenderPass->Execute(inoutCommandList, screenSpaceItems, targets, context);
 	}
 
 	frameStats.PipelineSwitches = inoutCommandList.GetPipelineSwitchCount();

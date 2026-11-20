@@ -328,6 +328,12 @@ void DeferredRenderPass::Execute(
 		inoutCommandList.EndEvent();
 	}
 
+	memcpy_s(
+		aContext.GBufferTextures.data(), 
+		sizeof(const Texture*) * GBuffer::NUM_GBUFFER_TARGETS, 
+		myGBufferTextures.data(), 
+		sizeof(const Texture*) * GBuffer::NUM_GBUFFER_TARGETS);
+
 	inoutCommandList.EndEvent();
 }
 

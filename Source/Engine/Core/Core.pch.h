@@ -22,6 +22,7 @@
 #include <cassert>
 #include <cmath>
 #include <initializer_list>
+#include <cstdlib>
 
 #include "ensure.h"
 

@@ -186,7 +186,7 @@ bool Game::Initialize(SIZE aWindowSize, WNDPROC aWindowProcess, LPCWSTR aWindowT
 
 		ToolManager::Get().AddTool<DebugTool>(); 
 		ToolManager::Get().AddTool<SceneHierarchy>();
-		ToolManager::Get().AddTool<SceneViewport>();
+		//ToolManager::Get().AddTool<SceneViewport>();
 		ToolManager::Get().AddTool<AssetBrowser>();
 
 		ToolManager::Get().GetTool<SceneHierarchy>()->SetCameraReference(&GEngineContext.GameCamera->GetCameraData());
