@@ -233,15 +233,14 @@ Actor* SceneHierarchy::GetSelectedActor()
 
 void SceneHierarchy::DisplayActorNode(Actor* aActor)
 {
-	ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_DrawLinesToNodes;
+	ImGuiTreeNodeFlags flags = 
+		ImGuiTreeNodeFlags_SpanAvailWidth | 
+		ImGuiTreeNodeFlags_DrawLinesToNodes |
+		ImGuiTreeNodeFlags_OpenOnArrow;
 
 	if (aActor->GetChildren().empty())
 	{
 		flags |= ImGuiTreeNodeFlags_Leaf;
-	}
-	else
-	{
-		flags |= ImGuiTreeNodeFlags_OpenOnArrow;
 	}
 
 	if (mySelectedActor == aActor)

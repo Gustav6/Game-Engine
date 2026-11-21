@@ -46,6 +46,12 @@ bool AssetRegistry::Initialize()
                 std::string assetName = item.path().stem().string();
                 std::ranges::transform(assetName, assetName.begin(), tolower);
 
+                if (myAssets.contains(assetName))
+                {
+                    SPDLOG_ERROR("Tried to register multiple assets with the name [{}]!", assetName);
+                    continue;
+                }
+
                 AssetInformation asset;
 
                 asset.Path = item.path();
